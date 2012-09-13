@@ -1,0 +1,63 @@
+#!/usr/bin/env node
+
+var qfs = require('qfs'),
+  clc = require('cli-color'),
+  args = process.argv.slice(2),
+  command = args.shift();
+
+switch(command){
+  case '-v':
+  case '--version':
+    qfs(__dirname, '..', 'package.json').read(function(err, file){
+      var version = JSON.parse(file).version;
+      console.log(version);
+    });
+
+    break;
+
+  case 'server':
+    require('../lib/server')(qfs(__dirname).dir());
+
+    break;
+
+  case 'deploy':
+    break;
+
+  case 'init':
+    break;
+
+  case 'generate':
+    break;
+
+  default:
+    var maxLen = 0,
+      result = '\nUsage: writer <command>\n\nOptions:\n';
+      
+    var helps = [
+      ['-v, --version', 'Display version'],
+      ['help', 'Display help'],
+      ['init', 'Initalize'],
+      ['server', 'Run server'],
+      ['generate', 'Generate static files'],
+      ['deploy', 'Deploy']
+    ];
+
+    helps.forEach(function(val){
+      var length = val[0].length;
+      if (maxLen < length) maxLen = length;
+    });
+
+    helps.forEach(function(val){
+      result += '  ' + clc.bold(val[0]);
+
+      for (var i=0; i<maxLen + 3 - val[0].length; i++){
+        result += ' ';
+      }
+
+      result += val[1] + '\n';
+    });
+
+    console.log(result);
+
+    break;
+}
