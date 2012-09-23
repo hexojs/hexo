@@ -11,11 +11,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://SkyArrow@bitbucket.org/SkyArrow/writer.git"
+    "url": "git://github.com/tommy351/writer.git"
   },
   "keywords": ["website", "blog", "cms"],
-  "author": "Tommy Chen <tommy351@gmail.com>",
-  "license": "MIT",
+  "author": {
+    "name": "Tommy Chen",
+    "email": "tommy351@gmail.com",
+    "url": "http://zespia.tw"
+  },
+  "license": {
+    "type": "MIT",
+    "url": "https://raw.github.com/tommy351/writer/master/LICENSE"
+  },
   "dependencies": {
     "async": "*",
     "connect": "*",
