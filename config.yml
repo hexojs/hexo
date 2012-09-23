@@ -1,0 +1,39 @@
+# Core
+title: Zespia
+subtitle:
+author: SkyArrow
+description: 
+language: zh_TW
+port: 4000
+
+# Category
+category: false
+
+# Date / Time Format
+date_format: YYYY/M/D
+time_format: H:mm:ss
+
+# Pagination
+per_page: 5
+pagination_dir: page
+excerpt_link: Read more
+
+# Feedburner
+feedburner_rss: 
+feedburner_email: 
+
+# Permalink
+url: http://zespia.tw
+root: /
+permalink: :year/:month/:day/:title
+tag_dir: tags
+archive_dir: archives
+
+# Disqus
+disqus:
+  short_name: zespiatw
+  show_comment_count: true
+
+# Extensions
+plugins: []
+theme: slash

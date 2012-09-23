@@ -2,7 +2,10 @@
   "name": "writer",
   "version": "0.0.1",
   "description": "Static website generator",
-  "main": "index.js",
+  "main": "index",
+  "bin": {
+    "writer": "./bin/writer"
+  },
   "scripts": {
     "test": "make test"
   },
@@ -14,7 +17,29 @@
   "author": "Tommy Chen <tommy351@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "async": "*"
+    "async": "*",
+    "connect": "*",
+    "ejs": "*",
+    "stylus": "*",
+    "nib": "*",
+    "marked": "*",
+    "moment": "*",
+    "cli-color": "*",
+    "less": "*",
+    "node-sass": "*",
+    "coffee-script": "*",
+    "highlight": "*",
+    "yamljs": "*",
+    "graceful-fs": "*",
+    "underscore": "*",
+    "rimraf": "*"
+  },
+  "optionalDependencies": {
+    "stylus": "*",
+    "nib": "*",
+    "less": "*",
+    "node-sass": "*",
+    "coffee-script": "*"
   },
   "devDependencies": {
     "mocha": "*",

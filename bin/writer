@@ -1,63 +1,38 @@
 #!/usr/bin/env node
 
-var qfs = require('qfs'),
+var fs = require('fs'),
   clc = require('cli-color'),
   args = process.argv.slice(2),
   command = args.shift();
 
-switch(command){
+switch (command){
   case '-v':
   case '--version':
-    qfs(__dirname, '..', 'package.json').read(function(err, file){
-      var version = JSON.parse(file).version;
-      console.log(version);
-    });
-
+    var version = require('../package.json').version;
+    console.log(version);
     break;
 
   case 'server':
-    require('../lib/server')(qfs(__dirname).dir());
-
+    if (args[0] === '-w'){
+      require('../lib/cli/watch')();
+    } else {
+      require('../lib/cli/server')();
+    }
     break;
 
   case 'deploy':
+    require('../lib/cli/deploy')();
     break;
 
   case 'init':
+    require('../lib/cli/init')();
     break;
 
   case 'generate':
+    require('../lib/cli/generate')();
     break;
 
   default:
-    var maxLen = 0,
-      result = '\nUsage: writer <command>\n\nOptions:\n';
-      
-    var helps = [
-      ['-v, --version', 'Display version'],
-      ['help', 'Display help'],
-      ['init', 'Initalize'],
-      ['server', 'Run server'],
-      ['generate', 'Generate static files'],
-      ['deploy', 'Deploy']
-    ];
-
-    helps.forEach(function(val){
-      var length = val[0].length;
-      if (maxLen < length) maxLen = length;
-    });
-
-    helps.forEach(function(val){
-      result += '  ' + clc.bold(val[0]);
-
-      for (var i=0; i<maxLen + 3 - val[0].length; i++){
-        result += ' ';
-      }
-
-      result += val[1] + '\n';
-    });
-
-    console.log(result);
-
+    require('../lib/cli/help')();
     break;
 }
