@@ -39,7 +39,8 @@
     "yamljs": "*",
     "graceful-fs": "*",
     "underscore": "*",
-    "rimraf": "*"
+    "rimraf": "*",
+    "query-engine": "*"
   },
   "optionalDependencies": {
     "stylus": "*",
