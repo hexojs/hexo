@@ -40,7 +40,8 @@
     "graceful-fs": "*",
     "underscore": "*",
     "rimraf": "*",
-    "query-engine": "*"
+    "query-engine": "*",
+    "jstoxml": "*"
   },
   "optionalDependencies": {
     "stylus": "*",
