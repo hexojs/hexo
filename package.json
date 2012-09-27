@@ -1,17 +1,17 @@
 {
-  "name": "writer",
+  "name": "hexo",
   "version": "0.0.1",
   "description": "Static website generator",
   "main": "index",
   "bin": {
-    "writer": "./bin/writer"
+    "hexo": "./bin/hexo"
   },
   "scripts": {
     "test": "make test"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/tommy351/writer.git"
+    "url": "git://github.com/tommy351/hexo.git"
   },
   "keywords": ["website", "blog", "cms"],
   "author": {
