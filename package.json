@@ -49,6 +49,7 @@
     "less": "*",
     "node-sass": "*",
     "coffee-script": "*"
+    "swig": "*"
   },
   "devDependencies": {
     "mocha": "*",
