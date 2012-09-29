@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-var fs = require('fs'),
-  clc = require('cli-color'),
+var lib = require('../lib/cli'),
   args = process.argv.slice(2),
   command = args.shift();
 
@@ -14,25 +13,25 @@ switch (command){
 
   case 'server':
     if (args[0] === '-w'){
-      require('../lib/cli/watch')();
+      lib.watch();
     } else {
-      require('../lib/cli/server')();
+      lib.server();
     }
     break;
 
   case 'deploy':
-    require('../lib/cli/deploy')();
+    lib.deploy();
     break;
 
-  case 'init':
-    require('../lib/cli/init')();
+  case 'setup':
+    lib.setup();
     break;
 
   case 'generate':
-    require('../lib/cli/generate')();
+    lib.generate();
     break;
 
   default:
-    require('../lib/cli/help')();
+    lib.help();
     break;
 }
