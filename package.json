@@ -21,7 +21,7 @@
   },
   "license": {
     "type": "MIT",
-    "url": "https://raw.github.com/tommy351/writer/master/LICENSE"
+    "url": "https://raw.github.com/tommy351/hexo/master/LICENSE"
   },
   "dependencies": {
     "async": "*",
