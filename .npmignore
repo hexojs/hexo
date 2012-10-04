@@ -1,2 +1,5 @@
 .git*
 .DS_Store
+source
+public
+plugins
