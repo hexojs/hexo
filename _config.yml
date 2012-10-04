@@ -4,11 +4,13 @@ subtitle:
 description: 
 url: http://zespia.tw
 author: SkyArrow
+email: tommy351@gmail.com
 
 # Permalink
 permalink: :year/:month/:day/:title
 tag_dir: tags
 archive_dir: archives
+category: posts
 
 # Server
 port: 4000
