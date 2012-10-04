@@ -24,7 +24,6 @@ time_format: H:mm:ss
 # Pagination
 per_page: 5
 pagination_dir: page
-excerpt_link: Read More
 
 # Disqus
 disqus_shortname: zespiatw
