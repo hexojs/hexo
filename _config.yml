@@ -1,38 +1,31 @@
-# Core
+# Basic
 title: Zespia
-subtitle:
-author: SkyArrow
+subtitle: 
 description: 
-language: zh_TW
+url: http://zespia.tw
+author: SkyArrow
+
+# Permalink
+permalink: :year/:month/:day/:title
+tag_dir: tags
+archive_dir: archives
+
+# Server
 port: 4000
 
-# Category
-category: false
-
-# Date / Time Format
+# Date / Time format
+# Hexo uses Moment.js to parse and display date
+# Reference: http://momentjs.com/docs/#/displaying/format/
 date_format: YYYY/M/D
 time_format: H:mm:ss
 
 # Pagination
 per_page: 5
 pagination_dir: page
-excerpt_link: Read more
-
-# Feedburner
-feedburner_rss: 
-feedburner_email: 
-
-# Permalink
-url: http://zespia.tw
-root: /
-permalink: :year/:month/:day/:title
-tag_dir: tags
-archive_dir: archives
+excerpt_link: Read More
 
 # Disqus
-disqus:
-  short_name: zespiatw
-  show_comment_count: true
+disqus_shortname: zespiatw
 
 # Extensions
 plugins: []
