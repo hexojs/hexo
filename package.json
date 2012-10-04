@@ -6,9 +6,6 @@
   "bin": {
     "hexo": "./bin/hexo"
   },
-  "scripts": {
-    "test": "make test"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/tommy351/hexo.git"
@@ -38,9 +35,5 @@
     "rimraf": "*",
     "swig": "*",
     "jstoxml": "*"
-  },
-  "devDependencies": {
-    "mocha": "*",
-    "should": "*"
   }
 }
