@@ -6,17 +6,13 @@ var lib = require('../lib/cli'),
 
 switch (command){
   case '-v':
-  case '--version':
+  case 'version':
     var version = require('../package.json').version;
     console.log(version);
     break;
 
   case 'server':
-    if (args[0] === '-w'){
-      lib.watch();
-    } else {
-      lib.server();
-    }
+    lib.server();
     break;
 
   case 'deploy':
@@ -29,6 +25,14 @@ switch (command){
 
   case 'generate':
     lib.generate();
+    break;
+
+  case 'new_post':
+    lib.new.post(args);
+    break;
+
+  case 'new_page':
+    lib.new.page(args);
     break;
 
   default:
