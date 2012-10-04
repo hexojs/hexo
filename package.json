@@ -1,7 +1,7 @@
 {
   "name": "hexo",
   "version": "0.0.1",
-  "description": "Static website generator",
+  "description": "Static website generator. Inspired by Jekyll & Octopress.",
   "main": "index",
   "bin": {
     "hexo": "./bin/hexo"
@@ -13,7 +13,7 @@
     "type": "git",
     "url": "git://github.com/tommy351/hexo.git"
   },
-  "keywords": ["website", "blog", "cms"],
+  "keywords": ["website", "blog", "cms", "hexo"],
   "author": {
     "name": "Tommy Chen",
     "email": "tommy351@gmail.com",
