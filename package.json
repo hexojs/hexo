@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "async": "*",
-    "connect": "*",
+    "connect": "2.x",
     "ejs": "*",
     "stylus": "*",
     "nib": "*",
