@@ -19,8 +19,8 @@ switch (command){
     lib.deploy();
     break;
 
-  case 'setup':
-    lib.setup();
+  case 'init':
+    lib.init();
     break;
 
   case 'generate':
