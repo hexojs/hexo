@@ -20,7 +20,7 @@ switch (command){
     break;
 
   case 'init':
-    lib.init();
+    lib.init(args);
     break;
 
   case 'generate':
