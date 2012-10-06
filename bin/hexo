@@ -16,7 +16,11 @@ switch (command){
     break;
 
   case 'deploy':
-    lib.deploy();
+    lib.deploy.deploy();
+    break;
+
+  case 'setup_deploy':
+    lib.deploy.setup(args);
     break;
 
   case 'init':
