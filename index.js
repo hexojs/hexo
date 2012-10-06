@@ -1,1 +1,0 @@
-require('lib/config').init(require('lib/server'));
