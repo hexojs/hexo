@@ -1,10 +1,10 @@
 # Basic
-title: Zespia
-subtitle: 
+title: Hexo
+subtitle: Fastest blogging framework
 description: 
-url: http://zespia.tw
-author: SkyArrow
-email: tommy351@gmail.com
+url: http://yoursite.com
+author: John Doe
+email:
 
 # Permalink
 permalink: :year/:month/:day/:title
@@ -18,16 +18,16 @@ port: 4000
 # Date / Time format
 # Hexo uses Moment.js to parse and display date
 # Reference: http://momentjs.com/docs/#/displaying/format/
-date_format: YYYY/M/D
+date_format: MMM D, YYYY
 time_format: H:mm:ss
 
 # Pagination
-per_page: 5
+per_page: 10
 pagination_dir: page
 
 # Disqus
-disqus_shortname: zespiatw
+disqus_shortname:
 
 # Extensions
 plugins: []
-theme: slash
+theme: light
