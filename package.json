@@ -30,7 +30,7 @@
     "marked": "*",
     "moment": "*",
     "cli-color": "*",
-    "highlight": "*",
+    "highlight.js": "*",
     "yamljs": "*",
     "underscore": "*",
     "rimraf": "*",
