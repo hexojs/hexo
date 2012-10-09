@@ -1,7 +1,2 @@
 .git*
 .DS_Store
-source
-public
-plugins
-themes
-_config.yml

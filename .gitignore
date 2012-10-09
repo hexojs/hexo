@@ -1,7 +1,2 @@
 .DS_Store
 node_modules
-source
-public
-plugins
-themes
-_config.yml
