@@ -1,6 +1,6 @@
 # Hexo
 
-Node.js static file generator. Inspired by [Jekyll](https://github.com/mojombo/jekyll) & [Octopress](https://github.com/imathis/octopress).
+Node.js blogging framework. Inspired by [Jekyll](https://github.com/mojombo/jekyll) & [Octopress](https://github.com/imathis/octopress).
 
 ## Install
 
