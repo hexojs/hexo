@@ -32,7 +32,6 @@
     "highlight.js": "*",
     "yamljs": "*",
     "underscore": "*",
-    "rimraf": "*",
     "swig": "*",
     "jstoxml": "*"
   }
