@@ -1,6 +1,6 @@
 {
   "name": "hexo",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Node.js Blogging framework. Inspired by Jekyll & Octopress.",
   "preferGlobal": true,
   "bin": {
