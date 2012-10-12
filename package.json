@@ -1,21 +1,24 @@
 {
   "name": "hexo",
   "version": "0.0.5",
-  "description": "Node.js Blogging framework. Inspired by Jekyll & Octopress.",
+  "description": "Node.js Blog framework. Inspired by Jekyll & Octopress.",
   "preferGlobal": true,
   "bin": {
     "hexo": "./bin/hexo"
+  },
+  "directories": {
+    "lib": "./lib",
+    "bin": "./bin"
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/tommy351/hexo.git"
   },
-  "keywords": ["website", "blog", "cms", "hexo"],
-  "author": {
-    "name": "Tommy Chen",
-    "email": "tommy351@gmail.com",
-    "url": "http://zespia.tw"
+  "bugs": {
+    "url": "https://github.com/tommy351/hexo/issues"
   },
+  "keywords": ["website", "blog", "cms", "framework", "hexo"],
+  "author": "Tommy Chen <tommy351@gmail.com> (http://zespia.tw)",
   "license": {
     "type": "MIT",
     "url": "https://raw.github.com/tommy351/hexo/master/LICENSE"
