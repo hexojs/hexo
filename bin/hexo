@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-var lib = require('../lib/cli'),
-  args = process.argv.slice(2),
+var args = process.argv.slice(2),
   command = args.shift();
 
 switch (command){
@@ -11,35 +10,7 @@ switch (command){
     console.log(version);
     break;
 
-  case 'server':
-    lib.server();
-    break;
-
-  case 'deploy':
-    lib.deploy.deploy();
-    break;
-
-  case 'setup_deploy':
-    lib.deploy.setup(args);
-    break;
-
-  case 'init':
-    lib.init(args);
-    break;
-
-  case 'generate':
-    lib.generate();
-    break;
-
-  case 'new_post':
-    lib.new.post(args);
-    break;
-
-  case 'new_page':
-    lib.new.page(args);
-    break;
-
   default:
-    lib.help();
+    require('../lib/console')(command, args);
     break;
 }
