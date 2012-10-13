@@ -5,6 +5,7 @@ var args = process.argv.slice(2),
 
 switch (command){
   case '-v':
+  case '--version':
   case 'version':
     var version = require('../package.json').version;
     console.log(version);
