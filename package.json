@@ -1,7 +1,7 @@
 {
   "name": "hexo",
   "version": "0.1.1",
-  "description": "Node.js blog framework. Inspired by Jekyll & Octopress.",
+  "description": "A fast, simple & powerful blog framework, powered by Node.js.",
   "preferGlobal": true,
   "bin": {
     "hexo": "./bin/hexo"
