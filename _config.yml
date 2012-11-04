@@ -8,7 +8,7 @@ email: tommy351@gmail.com
 language:
 
 # Permalink
-root: /
+root: /hexo/
 permalink: :category/:title/
 tag_dir: tags
 archive_dir: archives
