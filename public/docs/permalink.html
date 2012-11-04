@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hexo - Permalink</title>
+  
+  <meta name="description" content="Hexo is a simple, fast blog framework powered by Node.js.">
+  
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+<h1><a href="/">Hexo</a></h1>
+<div class="clearfix"></div>
+<nav id="main-nav">
+  <ul>
+    <li><a href="/docs/">Docs</a></li>
+    <li><a href="/plugins/">Plugins</a></li>
+    <li><a href="/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo">Source</a></li>
+  </ul>
+</nav></header>
+    <div id="content">
+      
+
+<article class="page">
+  <h1 class="title">Permalink</h1>
+  <div class="entry"><h2>Configure</h2>
+<p>Edit <code>permalink</code> in <code>_config.yml</code>. Here is the default:
+
+</p>
+<pre><code>permalink<span class="symbol">:</span> <span class="symbol">:year</span>/<span class="symbol">:month</span>/<span class="symbol">:day</span>/<span class="symbol">:title</span>/</code></pre>
+<p>You can add the following variables in the permalink. Only the variables started with <code>:</code> is valid.
+
+</p>
+<ul>
+<li><strong>year</strong> - 4-digit year</li>
+<li><strong>month</strong> - 2-digit month</li>
+<li><strong>day</strong> - 2-digit date</li>
+<li><strong>title</strong> - The filename of the post</li>
+<li><strong>category</strong> - The category of the post. (Relative path to <code>source/_posts</code>) If the post is uncategorized, it will be <code>category_dir</code> in <code>_config.yml</code>.</li>
+</ul>
+<p><em>（The date is based on the date set in the post）</em>
+
+</p>
+<h2>Example</h2>
+<p>Given a post named <code>title.md</code> with the following content:
+
+</p>
+<pre><code><span class="comment">---</span>
+<span class="title">layout</span>: post
+<span class="title">title</span>: <span class="type">Post</span> <span class="type">Title</span>
+<span class="title">date</span>: <span class="number">2012</span>-<span class="number">10</span>-<span class="number">09</span> <span class="number">14</span>:<span class="number">09</span>:<span class="number">37</span>
+<span class="title">tags</span>:
+- <span class="type">Node</span>.js
+- <span class="type">JavaScript</span>
+<span class="comment">---</span></code></pre>
+<p>And here is the result:
+
+</p>
+<pre><code>:<span class="built_in">year</span>/:<span class="built_in">month</span>/:<span class="built_in">day</span>/:title/ => /<span class="number">2012</span>/<span class="number">10</span>/<span class="number">09</span>/title/
+:<span class="built_in">year</span>-:<span class="built_in">month</span>-:<span class="built_in">day</span>/:title/ => /<span class="number">2012</span>-<span class="number">10</span>-<span class="number">09</span>/title/
+:category/title/ => /post/title/</code></pre>
+</div>
+</article>
+      <footer id="footer">
+<div class="alignleft">&copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a></div>
+<div class="alignright">
+  <select id="lang-select">
+    <option value="" selected>English</option>
+    
+      <option value="zh-TW">正體中文</option>
+    
+  </select>
+</div></footer>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <script src="/js/main.js"></script>
+<a href="https://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+</body>
+</html>

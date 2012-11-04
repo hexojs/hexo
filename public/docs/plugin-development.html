@@ -1,0 +1,301 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hexo - Plugin Development</title>
+  
+  <meta name="description" content="Hexo is a simple, fast blog framework powered by Node.js.">
+  
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+<h1><a href="/">Hexo</a></h1>
+<div class="clearfix"></div>
+<nav id="main-nav">
+  <ul>
+    <li><a href="/docs/">Docs</a></li>
+    <li><a href="/plugins/">Plugins</a></li>
+    <li><a href="/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo">Source</a></li>
+  </ul>
+</nav></header>
+    <div id="content">
+      
+
+<article class="page">
+  <h1 class="title">Plugin Development</h1>
+  <div class="entry"><h2>Contents</h2>
+<ul>
+<li><a href="#variable">Global Variable</a></li>
+<li><a href="#generator">Generator</a></li>
+<li><a href="#renderer">Renderer</a></li>
+<li><a href="#helper">Helper</a></li>
+<li><a href="#deployer">Deployer</a></li>
+<li><a href="#processor">Processor</a></li>
+<li><a href="#tag">Tag</a></li>
+<li><a href="#console">Console</a></li>
+<li><a href="#source">Source</a></li>
+</ul>
+<p><a id="variable"></a>
+</p>
+<h2>Global Variable</h2>
+<p>When initializing, Hexo create a namespace named <code>hexo</code> with the following content. Do not delete or modify them.
+
+</p>
+<ul>
+<li><strong>base_dir</strong> - Root directory of website</li>
+<li><strong>public_dir</strong> - Static files directory (<code>public</code>)</li>
+<li><strong>source_dir</strong> - Source files directory (<code>source</code>)</li>
+<li><strong>theme_dir</strong> - Theme directory (<code>theme/theme_name</code>)</li>
+<li><strong>plugin_dir</strong> - Plugin directory (<code>node_modules</code>)</li>
+<li><strong>version</strong> - Version of Hexo</li>
+<li><strong>config</strong> - Global configuration</li>
+<li><strong>extend</strong> - Extensions</li>
+<li><strong>util</strong> - Utilities</li>
+</ul>
+<p><a id="generator"></a>
+</p>
+<h2>Generator</h2>
+<p>Generator is used to generate static files.
+
+</p>
+<h3>Syntax</h3>
+<pre><code>hexo<span class="preprocessor">.extend</span><span class="preprocessor">.generator</span><span class="preprocessor">.register</span>(iterator)<span class="comment">;</span></code></pre>
+<ul>
+<li><strong>iterator(locals, render, callback)</strong><ul>
+<li><strong>locals</strong> - <a href="theme-development.html#variable">Global site data (site)</a></li>
+<li><strong>render(layout, locals, callback)</strong> - Render function<ul>
+<li><strong>layout</strong> - The template to use</li>
+<li><strong>locals</strong> - Page data, <code>page</code> in <a href="theme-development.html#variable">theme variables</a>.</li>
+<li><strong>callback</strong> - Callback function, execute when rendering is completed</li>
+</ul>
+</li>
+<li><strong>callback</strong> - Callback function, execute when generating is completed</li>
+</ul>
+</li>
+</ul>
+<h3>Example</h3>
+<p>Generate archive page at <code>public/archive.html</code>.
+
+</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> fs = require(<span class="string">'fs'</span>);
+
+hexo.extend.generator.register(<span class="keyword">function</span>(locals, render, callback){
+  render(<span class="string">'archive'</span>, locals.posts, <span class="keyword">function</span>(err, result){
+      <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;
+      fs.writeFile(hexo.public_dir + <span class="string">'archive.html'</span>, result, callback);
+  });
+});</code></pre>
+<p><a id="renderer"></a>
+</p>
+<h2>Renderer</h2>
+<p>Renderer is used to process specific files.
+
+</p>
+<h3>Syntax</h3>
+<pre><code class="lang-javascript">hexo.extend.renderer.register(tag, output, iterator, [sync])</code></pre>
+<ul>
+<li><strong>tag</strong> - Filename extension of input file</li>
+<li><strong>output</strong> - Filename extension of output file</li>
+<li><strong>iterator</strong> - As below</li>
+<li><strong>sync</strong> - Ability to execute synchronously. Default is <code>false</code>.</li>
+</ul>
+<p><strong>Synchronous mode</strong> (When <code>sync</code> equals <code>true</code>)
+
+</p>
+<p><code>iterator(path, content, [locals])</code> - Use <code>return</code> to return the result
+
+</p>
+<ul>
+<li><strong>path</strong> - Path of input file. Only available in compile mode.</li>
+<li><strong>content</strong> - Content of input file</li>
+<li><strong>locals</strong> - Custom variables</li>
+</ul>
+<p><strong>Asynchronous mode</strong> (When <code>sync</code> equals <code>false</code>)
+
+</p>
+<p><code>iterator(path, content, [locals], [callback])</code> - Use <code>callback</code> to return the result
+
+</p>
+<ul>
+<li><strong>path</strong> - Path of input file. Only available in compile mode.</li>
+<li><strong>content</strong> - Content of input file.</li>
+<li><strong>locals</strong> - Custom variables</li>
+<li><strong>callback</strong> - Callback function, execute when done</li>
+</ul>
+<h3>Example</h3>
+<p>Here are the source code of the built-in renderers: EJS &amp; Stylus. In order to use <code>@import</code> in Stylus, it must use asynchronous mode.
+
+</p>
+<pre><code class="lang-javascript"><span class="keyword">var</span> ejs = require(<span class="string">'ejs'</span>);
+
+hexo.extend.renderer.register(<span class="string">'ejs'</span>, <span class="string">'html'</span>, <span class="keyword">function</span>(filename, content, locals){
+    <span class="keyword">if</span> (filename) locals = _.extend(locals, {filename: filename});
+    <span class="keyword">return</span> ejs.render(content, locals);
+}, <span class="literal">true</span>);</code></pre>
+<pre><code class="lang-javascript"><span class="keyword">var</span> stylus = require(<span class="string">'stylus'</span>);
+
+hexo.extend.renderer.register(<span class="string">'styl'</span>, <span class="string">'css'</span>, <span class="keyword">function</span>(filename, content, callback){
+    stylus(content).set(<span class="string">'filename'</span>, file).render(callback);
+});</code></pre>
+<p><a id="helper"></a>
+</p>
+<h2>Helper</h2>
+<p>Helper is the function used in articles.
+
+</p>
+<h3>Syntax</h3>
+<pre><code class="lang-javascript">hexo.extend.helper.register(tag, iterator)</code></pre>
+<ul>
+<li><strong>tag</strong> - Tag</li>
+<li><strong>iterator(path, template, locals)</strong> - It should return a function<ul>
+<li><strong>path</strong> - Template path</li>
+<li><strong>template</strong> - Template source</li>
+<li><strong>locals</strong> - Custom variables</li>
+</ul>
+</li>
+</ul>
+<h3>Example</h3>
+<p>Here is the source code of the built-in helper: js.
+
+</p>
+<pre><code class="lang-javascript">hexo.extend.helper.register(<span class="string">'js'</span>, <span class="keyword">function</span>(){
+  <span class="keyword">return</span> <span class="keyword">function</span>(path){
+    <span class="keyword">return</span> <span class="string">'&lt;script type="text/javascript" src="'</span> + path + <span class="string">'">&lt;/script>'</span>;
+  }
+});</code></pre>
+<p><a id="deployer"></a>
+</p>
+<h2>Deployer</h2>
+<p>Deployer is used to deploy.
+
+</p>
+<h3>Syntax</h3>
+<pre><code class="lang-javascript">hexo.extend.deployer.register(tag, method)</code></pre>
+<ul>
+<li><strong>tag</strong> - Tag</li>
+<li><strong>method</strong> - It should be a object include the two following items<ul>
+<li><strong>setup(args)</strong> - Execute when run <code>hexo setup_deploy</code></li>
+<li><strong>deploy(args)</strong> - Execute when run <code>hexo deploy</code></li>
+</ul>
+</li>
+</ul>
+<h3>Example</h3>
+<pre><code class="lang-javascript">hexo.extend.deployer.register(<span class="string">'github'</span>, {
+    setup: <span class="keyword">function</span>(args){ … },
+    deploy: <span class="keyword">function</span>(args){ … }
+});</code></pre>
+<p><a id="processor"></a>
+</p>
+<h2>Processor</h2>
+<p>Processor is used to process source files.
+
+</p>
+<h3>Syntax</h3>
+<pre><code class="lang-javascript">hexo.extend.processor.register(iterator)</code></pre>
+<ul>
+<li><strong>iterator(locals, callback)</strong><ul>
+<li><strong>locals</strong> - <a href="theme-development.html#variable">Global site data (site)</a></li>
+<li><strong>callback(err, locals)</strong><ul>
+<li><strong>err</strong> - Error content. Return <code>null</code> when no error occurred.</li>
+<li><strong>locals</strong> - Processed <a href="theme-development.html#variable">global site data (site)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3>Example</h3>
+<p>Sort articles by date descending.
+
+</p>
+<pre><code class="lang-javascript">hexo.extend.processor.register(<span class="keyword">function</span>(locals, callback){
+    locals.posts = locals.posts.sort(<span class="string">'date'</span>, -<span class="number">1</span>);
+    locals.pages = locals.pages.sort(<span class="string">'date'</span>, -<span class="number">1</span>);
+
+    callback(<span class="literal">null</span>, locals);
+});</code></pre>
+<p><a id="tag"></a>
+</p>
+<h2>Tag</h2>
+<p>Tag is the function used in articles.
+
+</p>
+<h3>Syntax</h3>
+<pre><code class="lang-javascript">hexo.extend.tag.register(tag, iterator, [ends])</code></pre>
+<ul>
+<li><strong>tag</strong> - Tag</li>
+<li><strong>iterator(args, content)</strong><ul>
+<li><strong>args</strong> - Arguments</li>
+<li><strong>content</strong> - Content</li>
+</ul>
+</li>
+<li><strong>ends</strong> - Whether to add end tag</li>
+</ul>
+<h3>Example</h3>
+<p>Here are the source code of the built-in helpers: youtube, pullquote.
+
+</p>
+<pre><code class="lang-javascript">hexo.extend.tag.register(<span class="string">'youtube'</span>, <span class="keyword">function</span>(args, content){
+  <span class="keyword">var</span> id = args[<span class="number">0</span>];
+
+  <span class="keyword">return</span> <span class="string">'&lt;div class="video-container">&lt;iframe width="560" height="315" src="http://www.youtube.com/embed/'</span> + id + <span class="string">'" frameborder="0" allowfullscreen>&lt;/iframe>&lt;/div>'</span>;
+});</code></pre>
+<pre><code class="lang-javascript">hexo.extend.tag.register(<span class="string">'pullquote'</span>, <span class="keyword">function</span>(args, content){
+  <span class="keyword">var</span> className = args.length ? <span class="string">' '</span> + args.join(<span class="string">' '</span>) : <span class="string">''</span>;
+
+  <span class="keyword">return</span> <span class="string">'&lt;blockquote class="pullquote'</span> + className + <span class="string">'">'</span> + content + <span class="string">'&lt;/blockquote>'</span>;
+}, <span class="literal">true</span>);</code></pre>
+<p><a id="console"></a>
+</p>
+<h2>Console</h2>
+<p>Console allows you to execute commands in command-line interface (CLI).
+
+</p>
+<h3>Syntax</h3>
+<pre><code class="lang-javascript">hexo.extend.console.register(tag, description, iterator)</code></pre>
+<ul>
+<li><strong>tag</strong> - Tag</li>
+<li><strong>description</strong> - Description</li>
+<li><strong>iterator(args)</strong><ul>
+<li><strong>args</strong> - Arguments</li>
+</ul>
+</li>
+</ul>
+<h3>Example</h3>
+<p>Display the configuration of website when execute the following command.
+
+</p>
+<pre><code class="lang-bash">hexo config</code></pre>
+<pre><code class="lang-javascript">hexo.extend.console.register(<span class="string">'config'</span>, <span class="string">'Display configuration'</span>, <span class="keyword">function</span>(args){
+  console.log(hexo.config);
+});</code></pre>
+<p><a id="source"></a>
+</p>
+<h2>Source</h2>
+<p>You can reference the <a href="https://github.com/tommy351/hexo/tree/master/lib">source code</a> of the built-in plugins to create your plugin.
+
+</p>
+</div>
+</article>
+      <footer id="footer">
+<div class="alignleft">&copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a></div>
+<div class="alignright">
+  <select id="lang-select">
+    <option value="" selected>English</option>
+    
+      <option value="zh-TW">正體中文</option>
+    
+  </select>
+</div></footer>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <script src="/js/main.js"></script>
+<a href="https://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+</body>
+</html>

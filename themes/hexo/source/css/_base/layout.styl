@@ -1,0 +1,49 @@
+*
+  margin 0
+  padding 0
+
+body
+  background url(images/shattered.png) color-background
+  background-position 0 0
+  color color-font
+  font-family font-default
+  font-size 14px
+  text-shadow 0 0 1px #fff
+
+h1, h2, h3
+  font-weight 300
+
+h1
+  font-size 1.8em
+
+h2
+  font-size 1.5em
+
+h3
+  font-size 1.3em
+
+a
+  text-decoration none
+  color color-link
+  &:hover
+    text-decoration underline
+
+.alignleft
+  float left
+
+.alignright
+  float right
+
+.clearfix
+  clearfix()
+
+.wrapper
+  width page-width
+  margin 0 auto
+
+#content
+  width page-width - side-width - 30px - 40*2px
+  padding 50px 40px
+  float right
+  background rgba(255,255,255,0.5)
+  box-shadow 0 0 20px rgb(210,210,210)

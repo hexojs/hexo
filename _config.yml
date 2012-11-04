@@ -1,0 +1,64 @@
+# Basic
+title: Hexo
+subtitle: Node.js blog framework
+description: Hexo is a simple, fast blog framework powered by Node.js.
+url: http://zespia.tw/hexo
+author: SkyArrow
+email: tommy351@gmail.com
+language:
+
+# Permalink
+root: /
+permalink: :category/:title/
+tag_dir: tags
+archive_dir: archives
+category_dir: posts
+
+# Archives
+# 2: Paginate result
+# 1: Display result in same page
+archive: 0
+category: 0
+tag: 0
+
+# Server
+# Hexo uses Connect to serve static files
+# Reference: http://www.senchalabs.org/connect/
+port: 4000
+logger: false
+logger_format:
+
+# Date / Time format
+# Hexo uses Moment.js to parse and display date
+# Reference: http://momentjs.com/docs/#/displaying/format/
+date_format: MMM D, YYYY
+time_format: H:mm:ss
+
+# Pagination
+per_page: 0
+pagination_dir: page
+
+# Disqus
+disqus_shortname:
+
+# Extensions
+plugins:
+theme: hexo
+exclude_generator:
+- category
+- tag
+- home
+- post
+- archive
+
+# Enhancement
+auto_spacing: true
+titlecase: false
+
+# Deployment
+# Type: github, heroku
+# Read documentaion for more information
+deploy:
+  type: github
+  repository: https://github.com/tommy351/hexo.git
+  branch: gh-pages

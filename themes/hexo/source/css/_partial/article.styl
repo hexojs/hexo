@@ -1,0 +1,59 @@
+article
+  margin-bottom 50px
+  .entry
+    line-height 1.6
+
+    p, ul, ol, dl, blockquote, table, iframe, h3, h4, h5, h6, .video-container
+      margin-top 15px
+
+    ul, ol, dl
+      margin-left 20px
+      ul, ol, dl
+        margin-top 0
+
+    img, video
+      max-width 100%
+      height auto
+      border none
+
+    h1, h2
+      margin-top 30px
+      padding-top 20px
+      border-top 1px dashed color-border
+
+    code, pre
+      font-family font-mono
+
+    code
+      background lighten(color-border, 35%)
+      border 1px solid color-border
+      font-size 0.9em
+      margin 0 5px
+      padding 0 5px
+      color #666
+
+    pre
+      margin-top 15px
+      background lighten(color-border, 35%)
+      border 1px solid color-border
+      padding 7px 15px
+      overflow auto
+      code
+        background none
+        border none
+        margin 0
+        padding 0
+
+    .video-container
+      position relative
+      padding-bottom 56.25%
+      padding-top 30px
+      height 0
+      overflow hidden
+      iframe, object, embed
+        position absolute
+        top 0
+        left 0
+        width 100%
+        height 100%
+        margin-top 0

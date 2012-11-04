@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hexo - Tag Plugins</title>
+  
+  <meta name="description" content="Hexo is a simple, fast blog framework powered by Node.js.">
+  
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+<h1><a href="/">Hexo</a></h1>
+<div class="clearfix"></div>
+<nav id="main-nav">
+  <ul>
+    <li><a href="/docs/">Docs</a></li>
+    <li><a href="/plugins/">Plugins</a></li>
+    <li><a href="/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo">Source</a></li>
+  </ul>
+</nav></header>
+    <div id="content">
+      
+
+<article class="page">
+  <h1 class="title">Tag Plugins</h1>
+  <div class="entry"><p>A tag plugin is different from a tag in an article. A tag plugin is used to insert specific content to the article quickly.
+
+</p>
+<h2>Contents</h2>
+<ul>
+<li><a href="#blockquote">Block Quote</a></li>
+<li><a href="#codeblock">Code Block</a></li>
+<li><a href="#pullquote">Pull Quote</a></li>
+<li><a href="#jsfiddle">jsFiddle</a></li>
+<li><a href="#gist">Gist</a></li>
+<li><a href="#youtube">Youtube</a></li>
+<li><a href="#vimeo">Vimeo</a></li>
+</ul>
+<p><a id="blockquote"></a>
+</p>
+<h2>Block Quote</h2>
+<pre><code>{% blockquote [author[, source]] [link] [source_link_title] %}
+content
+{% endblockquote %}
+</code></pre>
+
+
+<p><strong>Alias：</strong><code>quote</code>
+
+</p>
+<p><a id="codeblock"></a>
+</p>
+<h2>Code Block</h2>
+<pre><code>{% codeblock [title] [lang:language] [url] [link text] %}
+content
+{% endcodeblock %}
+</code></pre>
+
+
+<p><strong>Alias：</strong><code>code</code>
+
+</p>
+<p><a id="pullquote"></a>
+</p>
+<h2>Pull Quote</h2>
+<pre><code>{% pullquote [class_name] %}
+content
+{% endpullquote %}
+</code></pre>
+
+
+<p><a id="jsfiddle"></a>
+</p>
+<h2>jsFiddle</h2>
+<pre><code>{% jsfiddle shorttag [tabs] [skin] [width] [height] %}
+</code></pre>
+
+
+<p><a id="gist"></a>
+</p>
+<h2>Gist</h2>
+<pre><code>{% gist gist_id [filename] %}
+</code></pre>
+
+
+<p><a id="youtube"></a>
+</p>
+<h2>Youtube</h2>
+<pre><code>{% youtube video_id %}
+</code></pre>
+
+
+<p><a id="vimeo"></a>
+</p>
+<h2>Vimeo</h2>
+<pre><code>{% vimeo video_id %}
+</code></pre>
+</div>
+</article>
+      <footer id="footer">
+<div class="alignleft">&copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a></div>
+<div class="alignright">
+  <select id="lang-select">
+    <option value="" selected>English</option>
+    
+      <option value="zh-TW">正體中文</option>
+    
+  </select>
+</div></footer>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <script src="/js/main.js"></script>
+<a href="https://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+</body>
+</html>
