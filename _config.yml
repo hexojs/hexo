@@ -1,7 +1,7 @@
 # Basic
 title: Hexo
 subtitle: Node.js blog framework
-description: Hexo is a simple, fast blog framework powered by Node.js.
+description: A fast, simple & powerful blog framework, powered by Node.js.
 url: http://zespia.tw/hexo
 author: SkyArrow
 email: tommy351@gmail.com
@@ -17,9 +17,9 @@ category_dir: posts
 # Archives
 # 2: Paginate result
 # 1: Display result in same page
-archive: 0
-category: 0
-tag: 0
+archive: 2
+category: 2
+tag: 2
 
 # Server
 # Hexo uses Connect to serve static files
