@@ -1,13 +1,8 @@
-<%
-var lang = [
-  ['zh-TW', '正體中文']
-];
-%>
 <div class="alignleft">&copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a></div>
 <div class="alignright">
   <select id="lang-select">
     <option value=""<% if (!page.lang){ %> selected<% } %>>English</option>
-    <% lang.forEach(function(item){ %>
+    <% theme.language.forEach(function(item){ %>
       <option value="<%= item[0] %>"<% if (page.lang == item[0]){ %> selected<% } %>><%= item[1] %></option>
     <% }); %>
   </select>
