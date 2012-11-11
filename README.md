@@ -16,6 +16,12 @@ A fast, simple & powerful blog framework, powered by [Node.js](http://nodejs.org
 ``` bash
 npm install -g hexo
 ```
+
+## Update
+
+``` bash
+npm update -g
+```
   
 ## Getting Started
 
