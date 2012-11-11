@@ -42,6 +42,14 @@ hexo setup_deploy
 hexo deploy
 ```
 
+### 移除
+
+執行下列指令移除佈署。
+
+``` bash
+rm -rf .deploy
+```
+
 ### 自定網域
 
 在`source`資料夾內建立名為`CNAME`的檔案，其內容為：
@@ -110,6 +118,16 @@ app.listen(port, function(){
 
 ``` bash
 hexo deploy
+```
+
+### 移除
+
+刪除下列檔案和資料夾移除佈署。
+
+``` plain
+|-- _.git
+|-- app.js
+|-- Procfile
 ```
 
 請參考 [Heroku] 以取得更多資訊。

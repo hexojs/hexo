@@ -41,6 +41,14 @@ After the static files are generated, execute the following to deploy.
 hexo deploy
 ```
 
+### Remove
+
+Execute the following command to remove deployment.
+
+``` bash
+rm -rf .deploy
+```
+
 ### Custom Domain
 
 Create a file name `CNAME` in `source` folder with the following content.
@@ -107,6 +115,16 @@ After the static files are generated, execute the following to deploy.
 
 ``` bash
 hexo deploy
+```
+
+### Remove
+
+Delete the following files and folders to remove deployment.
+
+``` plain
+|-- _.git
+|-- app.js
+|-- Procfile
 ```
 
 Check [Heroku] for more info.
