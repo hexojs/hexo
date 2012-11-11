@@ -19,6 +19,12 @@ date: 2012-11-01 18:13:30
 ``` bash
 npm install -g hexo
 ```
+
+## Update
+
+``` bash
+npm update -g
+```
 	
 ## Getting Started
 

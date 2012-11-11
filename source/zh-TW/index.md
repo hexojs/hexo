@@ -20,6 +20,12 @@ lang: zh-TW
 ``` bash
 npm install -g hexo
 ```
+
+## 更新
+
+``` bash
+npm update -g
+```
 	
 ## 開始
 
