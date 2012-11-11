@@ -12,7 +12,7 @@ hexo init <folder>
 
 After the files are built, the structure of folder will look like this.
 
-``` yaml
+``` plain
 |-- .gitignore
 |-- _config.yml
 |-- package.json

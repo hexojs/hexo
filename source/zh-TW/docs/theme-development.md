@@ -16,7 +16,7 @@ date: 2012-11-01 18:13:30
 <a id="structure"></a>
 ## 結構
 
-```
+``` plain
 |-- _config.yml
 |-- layout
 |-- source

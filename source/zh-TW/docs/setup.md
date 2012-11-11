@@ -13,7 +13,7 @@ hexo init <folder>
 
 建立完成後，資料夾結構如下：
 
-```
+``` plain
 |-- .gitignore
 |-- _config.yml
 |-- package.json
