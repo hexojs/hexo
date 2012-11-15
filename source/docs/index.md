@@ -14,6 +14,8 @@ date: 2012-11-01 18:13:30
 
 #### [Deploy](deploy.html)
 
+#### [Migrate](migrate.html)
+
 ## Usage
 
 #### [Writing](writing.html)

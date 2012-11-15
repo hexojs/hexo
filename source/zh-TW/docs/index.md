@@ -15,6 +15,8 @@ date: 2012-11-01 18:13:30
 
 #### [佈署](deploy.html)
 
+#### [遷移](migrate.html)
+
 ## 使用
 
 #### [撰寫文章](writing.html)
