@@ -1,3 +1,9 @@
+## 0.1.5 (2011-11-15)
+
+- Added [Migrator plugin](http://zespia.tw/hexo/docs/migrate.html)
+- Ignore global configuration when users set `permalink`, `updated` in articles ([Issue #5](https://github.com/tommy351/hexo/issues/5))
+- Load plugins when initializing
+
 ## 0.1.4 (2012-11-12)
 
 - Added [Backtick Code Block](http://octopress.org/docs/plugins/backtick-codeblock/) based on [Octopress](https://raw.github.com/imathis/octopress/master/plugins/backtick_code_block.rb)
