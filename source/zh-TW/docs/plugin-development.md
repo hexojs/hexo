@@ -15,6 +15,8 @@ date: 2012-11-01 18:13:30
 - [Processor](#processor)
 - [Tag](#tag)
 - [Console](#console)
+- [Migrator](#migrator)
+- [發佈](#publish)
 - [原始碼](#source)
 
 <a id="variable"></a>
@@ -270,6 +272,32 @@ hexo.extend.console.register('config', 'Display configuration', function(args){
   console.log(hexo.config);
 });
 ```
+
+<a id="migrator"></a>
+## Migrator
+
+Migrator讓你輕鬆地從其他系統遷移。
+
+### 語法
+
+``` javascript
+hexo.extend.migrator.register(tag, iterator)
+```
+
+- **tag** - 標籤
+- **iterator(args)**
+	- **args** - 參數
+	
+<a id="publish"></a>
+## 發佈
+
+執行下列指令將你的外掛發佈至 NPM，發佈前別忘了檢查。
+
+``` bash
+npm publish
+```
+
+請參考 [NPM](https://npmjs.org/doc) 以取得更多資訊。
 
 <a id="source"></a>
 ## 原始碼

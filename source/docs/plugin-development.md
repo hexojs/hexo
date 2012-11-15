@@ -14,6 +14,8 @@ date: 2012-11-01 18:13:30
 - [Processor](#processor)
 - [Tag](#tag)
 - [Console](#console)
+- [Migrator](#migrator)
+- [Publish](#publish)
 - [Source](#source)
 
 <a id="variable"></a>
@@ -269,6 +271,32 @@ hexo.extend.console.register('config', 'Display configuration', function(args){
   console.log(hexo.config);
 });
 ```
+
+<a id="migrator"></a>
+## Migrator
+
+Migrator helps you migrate from other system easily.
+
+### Syntax
+
+``` javascript
+hexo.extend.migrator.register(tag, iterator)
+```
+
+- **tag** - Tag
+- **iterator(args)**
+	- **args** - Arguments
+	
+<a id="publish"></a>
+## Publish
+
+Execute the following command to publish your plugin to NPM registry. Remember to test it before published.
+
+``` bash
+npm publish
+```
+
+Check [NPM](https://npmjs.org/doc) for more info.
 
 <a id="source"></a>
 ## Source
