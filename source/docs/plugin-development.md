@@ -296,7 +296,7 @@ Execute the following command to publish your plugin to NPM registry. Remember t
 npm publish
 ```
 
-Check [NPM](https://npmjs.org/doc) for more info.
+Check [npm](https://npmjs.org/doc) for more info.
 
 <a id="source"></a>
 ## Source

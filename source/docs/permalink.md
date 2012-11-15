@@ -26,7 +26,7 @@ You can add the following variables in the permalink. Only the variables started
 
 Given a post named `title.md` with the following content:
 
-```
+``` plain
 ---
 layout: post
 title: Post Title

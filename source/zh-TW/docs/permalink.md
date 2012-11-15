@@ -27,7 +27,7 @@ permalink: :year/:month/:day/:title/
 
 假設有一文章名為`title.md`，內容為：
 
-```
+``` plain
 ---
 layout: post
 title: Post Title

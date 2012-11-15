@@ -16,7 +16,7 @@ hexo new_post <title>
 
 New post will saved at `source/_posts/title.md` in the root directory with the following content.
 
-``` yaml
+``` plain
 ---
 layout: post
 title: title
@@ -74,7 +74,7 @@ hexo new_page <title>
 
 New page will saved at `source/title/index.md` in the root directory with the following content.
 
-``` yaml
+``` plain
 ---
 layout: page
 title: title

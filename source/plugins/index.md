@@ -32,7 +32,7 @@ npm install <plugin-name>
 
 Add plugin name to `plugins` in `_config.yml`.
 
-``` yaml
+``` plain
 plugins:
 - plugin-one
 - plugin-name
@@ -42,7 +42,7 @@ plugins:
 
 Remove plugin name from `plugins` in `_config.yml`.
 
-``` yaml
+``` plain
 plugins:
 - plugin-one
 ```

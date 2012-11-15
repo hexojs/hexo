@@ -297,7 +297,7 @@ hexo.extend.migrator.register(tag, iterator)
 npm publish
 ```
 
-請參考 [NPM](https://npmjs.org/doc) 以取得更多資訊。
+請參考 [npm](https://npmjs.org/doc) 以取得更多資訊。
 
 <a id="source"></a>
 ## 原始碼

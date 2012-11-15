@@ -33,7 +33,7 @@ npm install <plugin-name>
 
 在`_config.yml`的`plugins`欄位中加入外掛名稱。
 
-``` yaml
+``` plain
 plugins:
 - plugin-one
 - plugin-name
@@ -43,7 +43,7 @@ plugins:
 
 從`_config.yml`的`plugins`欄位中移除外掛名稱。
 
-``` yaml
+``` plain
 plugins:
 - plugin-one
 ```

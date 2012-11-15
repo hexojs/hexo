@@ -17,7 +17,7 @@ hexo new_post <title>
 
 新文章會儲存於網站根目錄的 `source/_posts/title.md` 內容為：
 
-``` yaml
+``` plain
 ---
 layout: post
 title: title
@@ -75,7 +75,7 @@ hexo new_page <title>
 
 新分頁會儲存於網站根目錄的`source/title/index.md`，內容為：
 
-``` yaml
+``` plain
 ---
 layout: page
 title: title
