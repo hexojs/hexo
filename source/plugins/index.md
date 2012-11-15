@@ -14,6 +14,7 @@ date: 2012-11-01 18:13:30
 - [Processor](#processor)
 - [Tag](#tag)
 - [Console](#console)
+- [Migrator](#migrator)
 - [Development](#development)
 
 <a id="usage"></a>
@@ -105,6 +106,13 @@ Tag is the function used in articles.
 
 Console allows you to execute commands in command-line interface (CLI).
 
+<a id="migrator"></a>
+## Migrator
+
+Migrator helps you migrate from other system easily.
+
+- [hexo-migrator-rss] - RSS
+
 <a id="development"></a>
 ## Development
 
@@ -118,4 +126,5 @@ If you wanna your plugin listed in this page. Please add it to the [wiki].
 [hexo-renderer-haml]: https://github.com/tommy351/hexo-plugins/tree/master/renderer/haml
 [hexo-renderer-jade]: https://github.com/tommy351/hexo-plugins/tree/master/renderer/jade
 [hexo-renderer-less]: https://github.com/tommy351/hexo-plugins/tree/master/renderer/less
+[hexo-migrator-rss]: https://github.com/tommy351/hexo-plugins/tree/master/migrator/rss
 [wiki]: https://github.com/tommy351/hexo/wiki/Plugins

@@ -15,6 +15,7 @@ date: 2012-11-01 18:13:30
 - [Processor](#processor)
 - [Tag](#tag)
 - [Console](#console)
+- [Migrator](#migrator)
 - [開發](#development)
 
 <a id="usage"></a>
@@ -106,6 +107,13 @@ Tag為文章中使用的函數。
 
 Console可讓你在命令列介面（CLI）中執行指令。
 
+<a id="migrator"></a>
+## Migrator
+
+Migrator讓你輕鬆地從其他系統遷移。
+
+- [hexo-migrator-rss] - RSS
+
 <a id="development"></a>
 ## 開發
 
@@ -119,4 +127,5 @@ Console可讓你在命令列介面（CLI）中執行指令。
 [hexo-renderer-haml]: https://github.com/tommy351/hexo-plugins/tree/master/renderer/haml
 [hexo-renderer-jade]: https://github.com/tommy351/hexo-plugins/tree/master/renderer/jade
 [hexo-renderer-less]: https://github.com/tommy351/hexo-plugins/tree/master/renderer/less
+[hexo-migrator-rss]: https://github.com/tommy351/hexo-plugins/tree/master/migrator/rss
 [Wiki]: https://github.com/tommy351/hexo/wiki/Plugins
