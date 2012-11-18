@@ -43,6 +43,7 @@ disqus_shortname:
 
 # Extensions
 plugins:
+- hexo-generator-sitemap
 theme: hexo
 exclude_generator:
 - category
