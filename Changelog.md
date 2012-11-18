@@ -1,3 +1,8 @@
+## 0.1.6 (2011-11-18)
+
+- Update Hexo and Light theme to fix link/photo layout ([Issue #6](https://github.com/tommy351/hexo/issues/6))
+- Layout fallback
+
 ## 0.1.5 (2011-11-15)
 
 - Added [Migrator plugin](http://zespia.tw/hexo/docs/migrate.html)
