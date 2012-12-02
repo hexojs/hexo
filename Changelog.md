@@ -1,3 +1,23 @@
+## 0.1.7 (2011-12-02)
+
+- Expose `render` function
+- Added `env` variable to global variable
+- API updated: ([Issue #7](https://github.com/tommy351/hexo/issues/7))
+  - `page.source` - Path of source file of post
+  - `page.path` - Relative path of post
+  - `page.permalink` - Permalink of post
+- Fixed layout of command list
+- Load config & plugins before console start
+- Transform command into lower case - you can enter `Config`, `CONFIG` or `config` in console
+
+**Please execute the following code to update plugins and themes after update:**
+
+```
+npm update
+cd themes/light
+git pull
+```
+
 ## 0.1.6 (2011-11-18)
 
 - Update Hexo and Light theme to fix link/photo layout ([Issue #6](https://github.com/tommy351/hexo/issues/6))
