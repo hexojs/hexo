@@ -76,7 +76,8 @@ Hexo 內建 [Stylus] 及 [nib] 支援，你可安裝 [Renderer 外掛] 讓 Hexo 
 - **stats** - 文章的檔案狀態（[fs.Stats] 類別）
 - **content** - 文章內文
 - **excerpt** - 文章摘要（內文中 `<!-- more -->` 之前的內容）
-- **path** - 原始檔案路徑
+- **source** - 原始檔案路徑
+- **path** - 文章的相對路徑
 
 以及使用者在文章設定中所設定的其他變數。
 

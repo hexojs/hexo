@@ -75,7 +75,8 @@ Data of the current page. The content is various from pages.
 - **stats** - The file status of the article ([fs.Stats] class)
 - **content** - Article content
 - **excerpt** - Article summary (Content before `<!-- more -->`)
-- **path** - Source file path
+- **source** - Source file path
+- **path** - The relative path of the article
 
 And other variable user set in article.
 
