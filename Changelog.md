@@ -1,3 +1,20 @@
+## 0.1.8 (2011-12-04)
+
+- Use [Stream](nodejs.org/api/stream.html) to copy files - faster generating speed!
+- Not to load plugins twice
+- Added **Safe Mode** to ignore plugins. Added `--safe` in command like this.
+
+  ```
+  hexo generate --safe
+  ```
+
+- I found that NPM won't update your plugins unless you add them into `package.json`. So please install the plugin with `--save` and NPM will add it to `package.json` automatically.
+
+  ```
+  npm install <plugin-name> --save
+  ```
+
+
 ## 0.1.7 (2011-12-02)
 
 - Expose `render` function
