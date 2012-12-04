@@ -26,7 +26,7 @@ date: 2012-11-01 18:13:30
 執行以下指令。
 
 ``` bash
-npm install <plugin-name>
+npm install <plugin-name> --save
 ```
 
 ### 啟用

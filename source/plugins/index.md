@@ -25,7 +25,7 @@ date: 2012-11-01 18:13:30
 Execute the following command.
 
 ``` bash
-npm install <plugin-name>
+npm install <plugin-name> --save
 ```
 
 ### Enable
