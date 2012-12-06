@@ -15,9 +15,8 @@ git clone <repository> themes/<theme-name>
 
 ## 列表
 
-### [light]
-
-Hexo的預設主題。
+- **[Light]** - Hexo 的預設主題
+- **[Phase]** - Hexo 最華麗的主題
 
 ## 開發
 
@@ -25,5 +24,6 @@ Hexo的預設主題。
 
 若想要將你開發的主題列於此頁面，請在 [Wiki] 中加入你的主題。
 
-[light]: https://github.com/tommy351/hexo-theme-light
+[Light]: https://github.com/tommy351/hexo-theme-light
+[Phase]: https://github.com/tommy351/hexo-theme-phase
 [Wiki]: https://github.com/tommy351/hexo/wiki/Themes
