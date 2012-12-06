@@ -1,3 +1,13 @@
+## 0.1.9 (2011-12-06)
+
+- Added `-t`, `--theme` for ignoring theme installation when generating.
+
+  ```
+  hexo generate -t
+  hexo generate --theme
+  ```
+- Optimize generating speed
+
 ## 0.1.8 (2011-12-04)
 
 - Use [Stream](nodejs.org/api/stream.html) to copy files - faster generating speed!
