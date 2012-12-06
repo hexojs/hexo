@@ -1,0 +1,177 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hexo - 外掛</title>
+  
+  <meta name="description" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
+  
+  <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4910098-7']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+<h1><a href="/hexo/zh-TW/">Hexo</a></h1>
+<div class="clearfix"></div>
+<nav id="main-nav">
+  <ul>
+    <li><a href="/hexo/zh-TW/docs/">Docs</a></li>
+    <li><a href="/hexo/zh-TW/plugins/">Plugins</a></li>
+    <li><a href="/hexo/zh-TW/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo">Source</a></li>
+  </ul>
+</nav></header>
+    <div id="content">
+      
+
+<article class="page">
+  <h1 class="title">外掛</h1>
+  <div class="entry"><h2>目錄</h2>
+<ul>
+<li><a href="#usage">使用</a></li>
+<li><a href="#generator">Generator</a></li>
+<li><a href="#renderer">Renderer</a></li>
+<li><a href="#helper">Helper</a></li>
+<li><a href="#deployer">Deployer</a></li>
+<li><a href="#processor">Processor</a></li>
+<li><a href="#tag">Tag</a></li>
+<li><a href="#console">Console</a></li>
+<li><a href="#migrator">Migrator</a></li>
+<li><a href="#development">開發</a></li>
+</ul>
+<p><a id="usage"></a>
+</p>
+<h2>使用</h2>
+<h3>安裝</h3>
+<p>執行以下指令。
+
+</p>
+<pre><code class="lang-bash"><div class="line">npm install &lt;plugin-name&gt; --save</div></code></pre>
+<h3>啟用</h3>
+<p>在<code>_config.yml</code>的<code>plugins</code>欄位中加入外掛名稱。
+
+</p>
+<pre><code class="lang-plain"><div class="line">plugins:</div><div class="line">- plugin-one</div><div class="line">- plugin-name</div></code></pre>
+<h3>停用</h3>
+<p>從<code>_config.yml</code>的<code>plugins</code>欄位中移除外掛名稱。
+
+</p>
+<pre><code class="lang-plain"><div class="line">plugins:</div><div class="line">- plugin-one</div></code></pre>
+<h3>更新</h3>
+<p>執行以下指令。
+
+</p>
+<pre><code class="lang-bash"><div class="line">npm update</div></code></pre>
+<h3>移除</h3>
+<p>執行以下指令，在移除前別忘了先停用外掛。
+
+</p>
+<pre><code class="lang-bash"><div class="line">npm uninstall &lt;plugin-name&gt;</div></code></pre>
+<p><a id="generator"></a>
+</p>
+<h2>Generator</h2>
+<p>Generator 用於生成靜態檔案。
+
+</p>
+<ul>
+<li><a href="https://github.com/tommy351/hexo-plugins/tree/master/generator/feed">hexo-generator-feed</a> - RSS Feed</li>
+<li><a href="https://github.com/tommy351/hexo-plugins/tree/master/generator/sitemap">hexo-generator-sitemap</a> - Sitemap</li>
+</ul>
+<p><a id="renderer"></a>
+</p>
+<h2>Renderer</h2>
+<p>Renderer 用於處理特定類型的檔案。
+
+</p>
+<ul>
+<li><a href="https://github.com/tommy351/hexo-plugins/tree/master/renderer/coffeescript">hexo-renderer-coffeescript</a> - CoffeeScript</li>
+<li><a href="https://github.com/tommy351/hexo-plugins/tree/master/renderer/haml">hexo-renderer-haml</a> - Haml</li>
+<li><a href="https://github.com/tommy351/hexo-plugins/tree/master/renderer/jade">hexo-renderer-jade</a> - Jade</li>
+<li><a href="https://github.com/tommy351/hexo-plugins/tree/master/renderer/less">hexo-renderer-less</a> - Less</li>
+</ul>
+<p><a id="helper"></a>
+</p>
+<h2>Helper</h2>
+<p>Helper 為模版檔案中使用的函數。
+
+</p>
+<p><a id="deployer"></a>
+</p>
+<h2>Deployer</h2>
+<p>Deployer 用於佈署檔案。
+
+</p>
+<p><a id="processor"></a>
+</p>
+<h2>Processor</h2>
+<p>Processor 用於處理原始檔案。
+
+</p>
+<p><a id="tag"></a>
+</p>
+<h2>Tag</h2>
+<p>Tag 為文章中使用的函數。
+
+</p>
+<p><a id="console"></a>
+</p>
+<h2>Console</h2>
+<p>Console 可讓你在命令列介面（CLI）中執行指令。
+
+</p>
+<p><a id="migrator"></a>
+</p>
+<h2>Migrator</h2>
+<p>Migrator 讓你輕鬆地從其他系統遷移。
+
+</p>
+<ul>
+<li><a href="https://github.com/tommy351/hexo-plugins/tree/master/migrator/rss">hexo-migrator-rss</a> - RSS</li>
+</ul>
+<p><a id="development"></a>
+</p>
+<h2>開發</h2>
+<p>參考 <a href="../docs/plugin-development.html">外掛開發</a> 以獲得更多資訊。
+
+</p>
+<p>若想要將你開發的外掛列於此頁面，請在 <a href="https://github.com/tommy351/hexo/wiki/Plugins">Wiki</a> 中加入你的外掛。
+
+</p>
+</div>
+</article>
+      <footer id="footer"><div class="alignleft">
+  &copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
+  Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>.
+</div>
+<div class="alignright">
+  <select id="lang-select">
+    <option value="">English</option>
+    
+      <option value="zh-TW" selected>正體中文</option>
+    
+  </select>
+</div>
+<div class="clearfix"></div></footer>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <script src="/hexo/js/main.js"></script>
+<a href="https://github.com/tommy351/hexo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+</body>
+</html>

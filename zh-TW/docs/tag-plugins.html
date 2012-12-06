@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hexo - 標籤外掛</title>
+  
+  <meta name="description" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
+  
+  <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4910098-7']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+<h1><a href="/hexo/zh-TW/">Hexo</a></h1>
+<div class="clearfix"></div>
+<nav id="main-nav">
+  <ul>
+    <li><a href="/hexo/zh-TW/docs/">Docs</a></li>
+    <li><a href="/hexo/zh-TW/plugins/">Plugins</a></li>
+    <li><a href="/hexo/zh-TW/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo">Source</a></li>
+  </ul>
+</nav></header>
+    <div id="content">
+      
+
+<article class="page">
+  <h1 class="title">標籤外掛</h1>
+  <div class="entry"><p>標籤外掛（Tag Plugin）與文章中的標籤（Tag）不同，標籤外掛用於在文章內快速加入特定內容。
+
+</p>
+<h2>目錄</h2>
+<ul>
+<li><a href="#blockquote">Block Quote</a></li>
+<li><a href="#codeblock">Code Block</a></li>
+<li><a href="#pullquote">Pull Quote</a></li>
+<li><a href="#jsfiddle">jsFiddle</a></li>
+<li><a href="#gist">Gist</a></li>
+<li><a href="#youtube">Youtube</a></li>
+<li><a href="#vimeo">Vimeo</a></li>
+</ul>
+<p><a id="blockquote"></a>
+</p>
+<h2>Block Quote</h2>
+<pre><code>{% blockquote [author[, source]] [link] [source_link_title] %}
+content
+{% endblockquote %}
+</code></pre>
+
+
+<p><strong>別名：</strong><code>quote</code>
+
+</p>
+<p><a id="codeblock"></a>
+</p>
+<h2>Code Block</h2>
+<pre><code>{% codeblock [title] [lang:language] [url] [link text] %}
+content
+{% endcodeblock %}
+</code></pre>
+
+
+<p><strong>別名：</strong><code>code</code>
+
+</p>
+<p><a id="pullquote"></a>
+</p>
+<h2>Pull Quote</h2>
+<pre><code>{% pullquote [class_name] %}
+content
+{% endpullquote %}
+</code></pre>
+
+
+<p><a id="jsfiddle"></a>
+</p>
+<h2>jsFiddle</h2>
+<pre><code>{% jsfiddle shorttag [tabs] [skin] [width] [height] %}
+</code></pre>
+
+
+<p><a id="gist"></a>
+</p>
+<h2>Gist</h2>
+<pre><code>{% gist gist_id [filename] %}
+</code></pre>
+
+
+<p><a id="youtube"></a>
+</p>
+<h2>Youtube</h2>
+<pre><code>{% youtube video_id %}
+</code></pre>
+
+
+<p><a id="vimeo"></a>
+</p>
+<h2>Vimeo</h2>
+<pre><code>{% vimeo video_id %}
+</code></pre>
+</div>
+</article>
+      <footer id="footer"><div class="alignleft">
+  &copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
+  Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>.
+</div>
+<div class="alignright">
+  <select id="lang-select">
+    <option value="">English</option>
+    
+      <option value="zh-TW" selected>正體中文</option>
+    
+  </select>
+</div>
+<div class="clearfix"></div></footer>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <script src="/hexo/js/main.js"></script>
+<a href="https://github.com/tommy351/hexo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+</body>
+</html>

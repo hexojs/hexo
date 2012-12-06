@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hexo - Deploy</title>
+  
+  <meta name="description" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
+  
+  <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4910098-7']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+<h1><a href="/hexo/">Hexo</a></h1>
+<div class="clearfix"></div>
+<nav id="main-nav">
+  <ul>
+    <li><a href="/hexo/docs/">Docs</a></li>
+    <li><a href="/hexo/plugins/">Plugins</a></li>
+    <li><a href="/hexo/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo">Source</a></li>
+  </ul>
+</nav></header>
+    <div id="content">
+      
+
+<article class="page">
+  <h1 class="title">Deploy</h1>
+  <div class="entry"><p>It&#39;s easy to deploy with Hexo. It just needs 3 steps to complete setup, &quot;Configure → Setup → Deploy&quot;.
+
+</p>
+<h2>Contents</h2>
+<ul>
+<li><a href="#github">GitHub</a></li>
+<li><a href="#heroku">Heroku</a></li>
+</ul>
+<p><a id="github"></a>
+</p>
+<h2>GitHub</h2>
+<h3>Configure</h3>
+<p>Edit <code>_config.yml</code>. Fill <code>repository</code> with GitHub repository. If repository is like <code>username.github.com</code>, fill <code>branch</code> with <code>master</code>, otherwise <code>gh-pages</code>.
+
+</p>
+<pre><code class="lang-yaml"><div class="line"><span class="method">deploy:</span></div><div class="line">    <span class="method">type:</span> github</div><div class="line">    <span class="method">repository:</span></div><div class="line">    <span class="method">branch:</span></div></code></pre>
+<h3>Setup</h3>
+<p>Execute the following command. Hexo will build a hidden folder named <code>.deploy</code>, initialize Git and setup remote repository.
+
+</p>
+<pre><code class="lang-bash"><div class="line">hexo setup_deploy</div></code></pre>
+<h3>Deploy</h3>
+<p>After the static files are generated, execute the following to deploy.
+
+</p>
+<pre><code class="lang-bash"><div class="line">hexo deploy</div></code></pre>
+<h3>Remove</h3>
+<p>Execute the following command to remove deployment.
+
+</p>
+<pre><code class="lang-bash"><div class="line">rm -rf .deploy</div></code></pre>
+<h3>Custom Domain</h3>
+<p>Create a file name <code>CNAME</code> in <code>source</code> folder with the following content.
+
+</p>
+<pre><code><div class="line"><span class="filename">example.com</div></code></pre>
+<p>Configure DNS according to the type of domain.
+
+</p>
+<h4>Top-level Domain</h4>
+<p>If the domain is like <code>example.com</code>, add A record <code>204.232.175.78</code>.
+
+</p>
+<h4>Subdomain</h4>
+<p>If the domain is like <code>username.example.com</code>, add CNAME record <code>username.github.com</code>.
+
+</p>
+<p>Check <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages">GitHub Pages</a> for more info.
+
+</p>
+<p><a id="heroku"></a>
+</p>
+<h2>Heroku</h2>
+<h3>Configure</h3>
+<p>Edit <code>_config.yml</code>. Fill <code>repository</code> with Heroku repository.
+
+</p>
+<pre><code class="lang-yaml"><div class="line"><span class="title">deploy</span>:</div><div class="line">    <span class="typedef"><span class="keyword">type</span>: heroku</span></div><div class="line">    repository:</div></code></pre>
+<h3>Setup</h3>
+<p>Execute the following command. Hexo will create two files in the root directory: <code>Procfile</code> &amp; <code>app.js</code>, initialize Git and setup remote repository.
+
+</p>
+<pre><code class="lang-bash"><div class="line">hexo setup_deploy</div></code></pre>
+<p><code>Procfile</code> &amp; <code>app.js</code> is necessary. <strong>Do not delete them.</strong> If you had delete them, rebuilt with the following content manually.
+
+</p>
+<figure class="highlight"><figcaption><span>Procfile</span></figcaption><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="attribute">web</span>: <span class="string">node app</span></div></code></pre></td></tr></table></figure>
+<figure class="highlight"><figcaption><span>app.js</span></figcaption><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div></code></pre></td><td class="code"><pre><code><div class="line">var <span class="keyword">connect</span> = <span class="keyword">require</span>(<span class="string">&#39;connect&#39;</span>),</div><div class="line">    app = <span class="keyword">connect</span>.createServer(),</div><div class="line">    port = process.env.PORT;</div><div class="line">    </div><div class="line">app.<span class="keyword">use</span>(<span class="keyword">connect</span>.static(__dirname + <span class="string">&quot;/public&quot;</span>));</div><div class="line">app.<span class="keyword">use</span>(<span class="keyword">connect</span>.compress());</div><br><div class="line">app.<span class="keyword">listen</span>(port, function(){</div><div class="line">    console.<span class="keyword">log</span>(<span class="string">&quot;Hexo is running on port <span class="variable">%d</span>.&quot;</span>, port);</div><div class="line">});</div></code></pre></td></tr></table></figure>
+
+<h3>Deploy</h3>
+<p>After the static files are generated, execute the following to deploy.
+
+</p>
+<pre><code class="lang-bash"><div class="line">hexo deploy</div></code></pre>
+<h3>Remove</h3>
+<p>Delete the following files and folders to remove deployment.
+
+</p>
+<pre><code class="lang-plain"><div class="line">|-- _.git</div><div class="line">|-- app.js</div><div class="line">|-- Procfile</div></code></pre>
+<p>Check <a href="https://devcenter.heroku.com/">Heroku</a> for more info.
+
+</p>
+</div>
+</article>
+      <footer id="footer"><div class="alignleft">
+  &copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
+  Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>.
+</div>
+<div class="alignright">
+  <select id="lang-select">
+    <option value="" selected>English</option>
+    
+      <option value="zh-TW">正體中文</option>
+    
+  </select>
+</div>
+<div class="clearfix"></div></footer>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <script src="/hexo/js/main.js"></script>
+<a href="https://github.com/tommy351/hexo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+</body>
+</html>
