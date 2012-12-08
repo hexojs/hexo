@@ -46,6 +46,7 @@
 <ul>
 <li><a href="#rss">RSS</a></li>
 <li><a href="#jekyll">Jekyll / Octopress</a></li>
+<li><a href="#wordpress">WordPress</a></li>
 </ul>
 <p><a id="rss"></a>
 </p>
@@ -53,15 +54,28 @@
 <p>First, execute the following command to install RSS migrator plugin, and add <code>hexo-migrator-rss</code> in <code>plugins</code> field in <code>_config.yml</code>.
 
 </p>
-<pre><code class="lang-bash"><div class="line">npm install hexo-migrator-rss</div></code></pre>
+<pre><code class="lang-plain"><div class="line">npm install hexo-migrator-rss</div></code></pre>
 <p>After installed, execute the following command to migrate. <code>source</code> argument can be file path or URL.
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo migrate rss &lt;source&gt;</div></code></pre>
+<pre><code class="lang-plain"><div class="line">hexo migrate rss <source></div></code></pre>
 <p><a id="jekyll"></a>
 </p>
 <h2>Jekyll / Octopress</h2>
-<p>Move files in <code>source/_posts</code> to <code>source/_posts</code> of Hexo, and modify <code>categories</code> field of articles to <code>tags</code>.</p>
+<p>Move files in <code>source/_posts</code> to <code>source/_posts</code> of Hexo, and modify <code>categories</code> field of articles to <code>tags</code>.
+
+</p>
+<p><a id="wordpress"></a>
+</p>
+<h2>WordPress</h2>
+<p>First, execute the following command to install WordPress migrator plugin, and add <code>hexo-migrator-wordpress</code> in <code>plugins</code> field in <code>_config.yml</code>.
+
+</p>
+<pre><code class="lang-plain"><div class="line">npm install hexo-migrator-wordpress</div></code></pre>
+<p>After installed, execute the following command to migrate. <code>source</code> argument can be file path or URL.
+
+</p>
+<pre><code class="lang-plain"><div class="line">hexo migrate wordpress <source></div></code></pre>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">
