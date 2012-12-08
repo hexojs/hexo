@@ -112,6 +112,7 @@ Console allows you to execute commands in command-line interface (CLI).
 Migrator helps you migrate from other system easily.
 
 - [hexo-migrator-rss] - RSS
+- [hexo-migrator-wordpress] - WordPress
 
 <a id="development"></a>
 ## Development
@@ -127,4 +128,5 @@ If you wanna your plugin listed in this page. Please add it to the [wiki].
 [hexo-renderer-jade]: https://github.com/tommy351/hexo-plugins/tree/master/renderer/jade
 [hexo-renderer-less]: https://github.com/tommy351/hexo-plugins/tree/master/renderer/less
 [hexo-migrator-rss]: https://github.com/tommy351/hexo-plugins/tree/master/migrator/rss
+[hexo-migrator-wordpress]: https://github.com/tommy351/hexo-plugins/tree/master/migrator/wordpress
 [wiki]: https://github.com/tommy351/hexo/wiki/Plugins

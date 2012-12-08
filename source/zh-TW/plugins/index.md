@@ -113,6 +113,7 @@ Console可讓你在命令列介面（CLI）中執行指令。
 Migrator讓你輕鬆地從其他系統遷移。
 
 - [hexo-migrator-rss] - RSS
+- [hexo-migrator-wordpress] - WordPress
 
 <a id="development"></a>
 ## 開發
@@ -128,4 +129,5 @@ Migrator讓你輕鬆地從其他系統遷移。
 [hexo-renderer-jade]: https://github.com/tommy351/hexo-plugins/tree/master/renderer/jade
 [hexo-renderer-less]: https://github.com/tommy351/hexo-plugins/tree/master/renderer/less
 [hexo-migrator-rss]: https://github.com/tommy351/hexo-plugins/tree/master/migrator/rss
+[hexo-migrator-wordpress]: https://github.com/tommy351/hexo-plugins/tree/master/migrator/wordpress
 [Wiki]: https://github.com/tommy351/hexo/wiki/Plugins
