@@ -33,7 +33,7 @@
     "moment": "*",
     "cli-color": "*",
     "highlight.js": "*",
-    "yamljs": "*",
+    "js-yaml": "*",
     "underscore": "*",
     "swig": "*"
   }
