@@ -6,6 +6,9 @@
   "bin": {
     "hexo": "./bin/hexo"
   },
+  "scripts": {
+    "test": "make test"
+  },
   "directories": {
     "lib": "./lib",
     "bin": "./bin"
@@ -38,5 +41,9 @@
     "swig": "*",
     "graceful-fs": "*",
     "mime": "*"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*"
   }
 }
