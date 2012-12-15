@@ -1,12 +1,11 @@
 #!/usr/bin/env node
 
 var args = process.argv.slice(2),
-  command = args[0] ? args.shift().toLowerCase() : '',
-  _ = require('underscore');
+  safe = args.indexOf('--safe');
 
-var safe = _.indexOf(args, '--safe');
+if (safe !== -1) args.splice(safe, 1);
 
-if (safe !== -1) args = args.splice(safe, 1);
+var command = args.length ? args.shift().toLowerCase() : '';
 
 switch (command){
   case '-v':
@@ -19,5 +18,4 @@ switch (command){
 
   default:
     require('../lib/console')(command, (safe !== -1 ? true : false), args);
-    break;
 }
