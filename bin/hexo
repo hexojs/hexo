@@ -1,9 +1,17 @@
 #!/usr/bin/env node
 
 var args = process.argv.slice(2),
-  safe = args.indexOf('--safe');
+  argss = args.join(' '),
+  regex = /--safe/i,
+  safe = argss.match(regex);
 
-if (safe !== -1) args.splice(safe, 1);
+if (safe){
+  args = argss.replace(regex, '').split(' ');
+
+  for (var i=0; i<args.length; i++){
+    if (!args[i]) args.splice(i, 1);
+  }
+}
 
 var command = args.length ? args.shift().toLowerCase() : '';
 
