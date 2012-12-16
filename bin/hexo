@@ -1,12 +1,19 @@
 #!/usr/bin/env node
 
 var args = process.argv.slice(2),
-  command = args[0] ? args.shift().toLowerCase() : '',
-  _ = require('underscore');
+  argss = args.join(' '),
+  regex = /--safe/i,
+  safe = argss.match(regex);
 
-var safe = _.indexOf(args, '--safe');
+if (safe){
+  args = argss.replace(regex, '').split(' ');
 
-if (safe !== -1) args = args.splice(safe, 1);
+  for (var i=0; i<args.length; i++){
+    if (!args[i]) args.splice(i, 1);
+  }
+}
+
+var command = args.length ? args.shift().toLowerCase() : '';
 
 switch (command){
   case '-v':
@@ -18,6 +25,5 @@ switch (command){
     break;
 
   default:
-    require('../lib/console')(command, (safe !== -1 ? true : false), args);
-    break;
+    require('../lib/console')(command, (safe ? true : false), args);
 }
