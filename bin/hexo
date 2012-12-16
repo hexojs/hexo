@@ -25,5 +25,5 @@ switch (command){
     break;
 
   default:
-    require('../lib/console')(command, (safe !== -1 ? true : false), args);
+    require('../lib/console')(command, (safe ? true : false), args);
 }
