@@ -36,6 +36,7 @@
     "yamljs": "*",
     "underscore": "*",
     "swig": "*",
-    "graceful-fs": "*"
+    "graceful-fs": "*",
+    "mime": "*"
   }
 }
