@@ -35,6 +35,8 @@
     "highlight.js": "*",
     "yamljs": "*",
     "underscore": "*",
-    "swig": "*"
+    "swig": "*",
+    "graceful-fs": "*",
+    "mime": "*"
   }
 }
