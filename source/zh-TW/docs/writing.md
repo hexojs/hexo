@@ -15,7 +15,7 @@ date: 2012-11-01 18:13:30
 hexo new_post <title>
 ```
 
-新文章會儲存於網站根目錄的 `source/_posts/title.md` 內容為：
+新文章會儲存於網站根目錄的 `source/_posts/name.md` 內容為：
 
 ``` plain
 ---
@@ -27,9 +27,15 @@ tags:
 ---
 ```
 
+檔案名稱根據 `_config.yml` 中的 `new_post_name` 設定和 `title` 參數命名，標題會被轉成小寫，空白會被轉成連字號。例如：
+
+```
+hexo new_post Test Post => source/_posts/test-post.md
+```
+
 ### 設定
 
-文章最前面有一段用`---`包裹的區塊，稱為 [YAML Front Matter]。你可使用 YAML 格式設定文章。
+文章最前面有一段用`---`包裹的區塊，稱為 [YAML Front Matter][1]。你可使用 YAML 格式設定文章。
 
 以下是預設的設定內容，你可隨自己喜好增減內容。
 
@@ -38,6 +44,7 @@ tags:
 - **date** - 文章的發佈日期（格式為 `YYYY-MM-DD HH:mm:ss`）
 - **comments** - 開啟此文章的留言功能
 - **tags** - 文章標籤
+- **permalink** - 覆寫預設網址（選填）
 
 ### 分類
 
@@ -73,7 +80,7 @@ tags:
 hexo new_page <title>
 ```
 
-新分頁會儲存於網站根目錄的`source/title/index.md`，內容為：
+新分頁會儲存於網站根目錄的`source/name/index.md`，內容為：
 
 ``` plain
 ---
@@ -84,9 +91,15 @@ comments: true
 ---
 ```
 
+檔案名稱根據 `title` 參數命名，標題會被轉成小寫，空白會被轉成連字號。例如：
+
+```
+hexo new_page Test Page => source/test-page/index.md
+```
+
 ### 設定
 
-文章最前面有一段用`---`包裹的區塊，稱為 [YAML Front Matter]。你可使用 YAML 格式設定文章。
+文章最前面有一段用`---`包裹的區塊，稱為 [YAML Front Matter][1]。你可使用 YAML 格式設定文章。
 
 以下是預設的設定內容，你可隨自己喜好增減內容。
 
@@ -94,6 +107,7 @@ comments: true
 - **title** - 文章標題
 - **date** - 文章的發佈日期（格式為 `YYYY-MM-DD HH:mm:ss`）
 - **comments** - 開啟此文章的留言功能
+- **permalink** - 覆寫預設網址（選填）
 
 ## 生成靜態檔案
 
@@ -103,4 +117,4 @@ comments: true
 hexo generate
 ```
 
-[YAML Front Matter]: https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter
+[1]: https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter

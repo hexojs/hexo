@@ -31,8 +31,16 @@ date: 2012-11-01 18:13:30
 
 ## 開發
 
-#### [外掛開發](plugin-development.html)
+#### [全域變數](global-variables.html)
+
+#### [樣版資料](template-data.html)
+
+#### [輔助方法 (Helper)](helpers.html)
+
+#### [集合 (Collection)](collection.html)
 
 #### [主題開發](theme-development.html)
+
+#### [外掛開發](plugin-development.html)
 
 #### [貢獻](contribute.html)

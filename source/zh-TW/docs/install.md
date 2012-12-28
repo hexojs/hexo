@@ -5,7 +5,7 @@ lang: zh-TW
 date: 2012-11-01 18:13:30
 ---
 
-在安裝 Hexo 之前，必須先安裝 [Git] 和 [Node.js]。
+在安裝 Hexo 之前，必須先安裝 [Git][2] 和 [Node.js][1]。
 
 ## 目錄
 
@@ -18,15 +18,15 @@ date: 2012-11-01 18:13:30
 
 ### Git
 
-下載 [msysgit](http://code.google.com/p/msysgit/) 並執行即可完成安裝。
+下載 [msysgit][7] 並執行即可完成安裝。
 
 ### Node.js
 
-在 Windows 環境下安裝 Node.js 非常簡單，僅須至 [Node.js 的官方網站][Node.js] 下載 Windows 的安裝檔案並執行即可完成安裝。
+在 Windows 環境下安裝 Node.js 非常簡單，僅須至 [Node.js 的官方網站][1] 下載 Windows 的安裝檔案並執行即可完成安裝。
 
 ### Hexo
 
-利用 [npm] 即可安裝。
+利用 [npm][3] 即可安裝。
 
 ``` bash
 npm install -g hexo
@@ -39,25 +39,25 @@ npm install -g hexo
 
 Mac 已內建 Git，雖然版本較舊，不過還是能用，如果你想要使用較新版的 Git 的話，可參考以下方式安裝。
 
-1. 使用 [Homebrew]。
+1. 使用 [Homebrew][5]。
 	
 	``` bash
 brew install git
 	```
 	
-2. 使用 [MacPorts]。
+2. 使用 [MacPorts][6]。
 
 	``` bash
 sudo port install git-core
 	```
 	
-3. 使用 [安裝程式](http://code.google.com/p/git-osx-installer/)。
+3. 使用 [安裝程式][8]。
 
 如果出現錯誤情況，可能是尚未安裝編譯工具，請至 App Store 下載 Xcode。
 
 ### Node.js
 
-Mac 環境下有很多安裝方式可供選擇，以下使用 [nvm] 來安裝。
+Mac 環境下有很多安裝方式可供選擇，以下使用 [nvm][4] 來安裝。
 
 執行以下指令。
 
@@ -71,7 +71,7 @@ git clone git://github.com/creationix/nvm.git ~/nvm
 . ~/nvm/nvm.sh
 ```
 
-之後即可使用 [nvm] 來安裝 Node.js 了，編譯可能需要花些時間，請耐心等候。
+之後即可使用 [nvm][4] 來安裝 Node.js 了，編譯可能需要花些時間，請耐心等候。
 
 ``` bash
 nvm install v0.8.14
@@ -81,7 +81,7 @@ nvm alias default v0.8.14
 
 ### Hexo
 
-利用 [npm] 即可安裝。
+利用 [npm][3] 即可安裝。
 
 ``` bash
 npm install -g hexo
@@ -106,7 +106,7 @@ sudo yum install git-core
 
 ### Node.js
 
-Linux 環境下有很多安裝方式可供選擇，以下使用 [nvm] 來安裝。
+Linux 環境下有很多安裝方式可供選擇，以下使用 [nvm][4] 來安裝。
 
 執行以下指令。
 
@@ -120,7 +120,7 @@ git clone git://github.com/creationix/nvm.git ~/nvm
 . ~/nvm/nvm.sh
 ```
 
-之後即可使用 [nvm] 來安裝 Node.js 了，編譯可能需要花些時間，請耐心等候。
+之後即可使用 [nvm][4] 來安裝 Node.js 了，編譯可能需要花些時間，請耐心等候。
 
 ``` bash
 nvm install v0.8.14
@@ -130,15 +130,17 @@ nvm alias default v0.8.14
 
 ### Hexo
 
-利用 [npm] 即可安裝。
+利用 [npm][3] 即可安裝。
 
 ``` bash
 npm install -g hexo
 ```
 
-[Node.js]: http://nodejs.org/
-[Git]: http://git-scm.com/
-[npm]: http://npmjs.org/
-[nvm]: https://github.com/creationix/nvm
-[Homebrew]: http://mxcl.github.com/homebrew/
-[MacPorts]: http://www.macports.org/
+[1]: http://nodejs.org/
+[2]: http://git-scm.com/
+[3]: http://npmjs.org/
+[4]: https://github.com/creationix/nvm
+[5]: http://mxcl.github.com/homebrew/
+[6]: http://www.macports.org/
+[7]: http://code.google.com/p/msysgit/
+[8]: http://code.google.com/p/git-osx-installer/

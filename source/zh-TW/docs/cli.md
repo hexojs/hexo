@@ -20,10 +20,23 @@ hexo version
 hexo init <folder>
 ```
 
-顯示網站設定
+建立新文章
 
 ``` bash
-hexo config
+hexo new_post <title>
+```
+
+建立新分頁
+
+``` bash
+hexo new_page <title>
+```
+
+生成靜態檔案，使用`-t`或`--theme`以忽略主題安裝
+
+``` bash
+hexo generate
+hexo generate -t/--theme
 ```
 
 啟動伺服器，按下`Ctrl+C`停止伺服器
@@ -32,10 +45,10 @@ hexo config
 hexo server
 ```
 
-生成靜態檔案
+顯示網站設定
 
 ``` bash
-hexo generate
+hexo config
 ```
 
 佈署
@@ -50,14 +63,8 @@ hexo deploy
 hexo setup_deploy
 ```
 
-建立新文章，檔案會放置於網站根目錄的`source/_posts/title.md`。
+安全模式，此模式下外掛不會被載入
 
 ``` bash
-hexo new_post <title>
-```
-
-建立新分頁，檔案會放至於網站根目錄的`source/title/index.md`。
-
-``` bash
-hexo new_page <title>
+hexo --safe
 ```

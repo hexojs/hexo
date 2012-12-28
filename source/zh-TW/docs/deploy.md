@@ -11,6 +11,7 @@ Hexo 的佈署非常簡單，所有的佈署都只需要三步僅可完成設定
 
 - [GitHub](#github)
 - [Heroku](#heroku)
+- [Rsync](#rsync)
 
 <a id="github"></a>
 ## GitHub
@@ -68,7 +69,7 @@ example.com
 
 若網域類似`username.example.com`，則加入 **CNAME 記錄 (CNAME record)** `username.github.com`。
 
-請參考 [GitHub Pages] 以取得更多資訊。
+請參考 [GitHub Pages][1] 以取得更多資訊。
 
 <a id="heroku"></a>
 ## Heroku
@@ -130,7 +131,42 @@ hexo deploy
 |-- Procfile
 ```
 
-請參考 [Heroku] 以取得更多資訊。
+請參考 [Heroku][2] 以取得更多資訊。
 
-[GitHub Pages]: https://help.github.com/articles/setting-up-a-custom-domain-with-pages
-[Heroku]: https://devcenter.heroku.com/
+<a id="rsync"></a>
+## Rsync
+
+### 設定
+
+編輯`_config.yml`檔案。
+
+``` yaml
+deploy:
+  type: rsync
+  host:
+  user:
+  root:
+  port:
+  delete:
+```
+
+- **host** - 遠端主機的位址
+- **user** - 使用者名稱
+- **root** - 遠端主機的根目錄
+- **port** - 連接埠（預設為`22`）
+- **delete** - 刪除遠端主機的舊有檔案（預設為`true`）
+
+### 建立
+
+無須建立。
+
+### 佈署
+
+靜態檔案生成後，執行下列指令即可完成佈署。
+
+``` bash
+hexo deploy
+```
+
+[1]: https://help.github.com/articles/setting-up-a-custom-domain-with-pages
+[2]: https://devcenter.heroku.com/

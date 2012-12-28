@@ -13,7 +13,7 @@ date: 2012-11-01 18:13:30
 <a id="builtin"></a>
 ## 內建伺服器
 
-Hexo 使用 [Connect] 作為靜態檔案的伺服器。
+Hexo 使用 [Connect][1] 作為靜態檔案的伺服器。
 
 編輯`_config.yml`中的`port`欄位調整伺服器的連接埠。
 
@@ -29,7 +29,7 @@ hexo server
 
 ### 記錄器
 
-編輯`_config.yml`中的`logger`欄位啟動記錄器。編輯`logger_format`欄位可調整記錄的顯示方式，參考 [文件](http://www.senchalabs.org/connect/logger.html) 以獲得更多資訊。
+編輯`_config.yml`中的`logger`欄位啟動記錄器。編輯`logger_format`欄位可調整記錄的顯示方式，參考 [Connect][4] 以獲得更多資訊。
 
 ``` yaml
 logger: true
@@ -39,7 +39,7 @@ logger_format:
 <a id="pow"></a>
 ## Pow
 
-[Pow] 是由Node.js所建立的Mac環境專用的零配置Rack伺服器，不過它也能用於處理一般的靜態檔案。
+[Pow][2] 是由Node.js所建立的Mac環境專用的零配置Rack伺服器，不過它也能用於處理一般的靜態檔案。
 
 ### 安裝
 
@@ -60,7 +60,9 @@ ln -s /path/to/myapp
 
 完成後，網站即會出現在`http://myapp.dev`，網址根據連結名稱而有所不同。
 
-參考 [文件](http://pow.cx/manual.html) 以獲得更多資訊。
+參考 [Pow][3] 以獲得更多資訊。
 
-[Connect]: https://github.com/senchalabs/connect
-[Pow]: http://pow.cx/
+[1]: https://github.com/senchalabs/connect
+[2]: http://pow.cx/
+[3]: http://pow.cx/manual.html
+[4]: http://www.senchalabs.org/connect/logger.html
