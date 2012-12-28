@@ -20,9 +20,7 @@ git clone <repository> themes/<theme-name>
 
 ## 開發
 
-參考 [主題開發](../docs/theme-development.html) 以獲得更多資訊。
-
-若想要將你開發的主題列於此頁面，請在 [Wiki] 中加入你的主題。
+參考 [主題開發](../docs/theme-development.html) 以獲得更多資訊。若想要將你開發的主題列於此頁面，請在 [Wiki] 中加入你的主題。
 
 [Light]: https://github.com/tommy351/hexo-theme-light
 [Phase]: https://github.com/tommy351/hexo-theme-phase
