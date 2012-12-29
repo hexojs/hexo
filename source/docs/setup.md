@@ -4,13 +4,13 @@ title: Setup
 date: 2012-11-01 18:13:30
 ---
 
-After the installation is done, execute the following command, Hexo will build all necessary files for the website.
+After installed, execute the following command in the folder you want. Hexo will build all files you need in the target folder.
 
 ``` bash
 hexo init <folder>
 ```
 
-After the files are built, the structure of folder will look like this.
+After built, here's how the folder looks like:
 
 ``` plain
 |-- .gitignore
@@ -30,7 +30,7 @@ Global configuration file.
 
 ### package.json
 
-Application data. **Do not delete it.** If you had deleted it, rebuilt with the following content manually.
+Application data. **Don't delete it.** If you deleted it unfortunately, rebuild the file with the following content. 
 
 {% code package.json %}
 {
@@ -47,10 +47,10 @@ Application data. **Do not delete it.** If you had deleted it, rebuilt with the 
 
 ### source
 
-The files in this folder will be processed and saved in `public` folder. File or Folder whose name started with `.` or `_` will be ignored except `_posts` folder.
+Files in this folder will be processed and saved in `public` folder. File or folder whose name started with `.` (dot) or `_` (underscore) will be ignored except `_posts` folder.
 
 ### themes
 
-Theme folder. The default theme of Hexo is [Light].
+Theme folder. The default theme of Hexo is [Light][1]。
 
-[Light]: https://github.com/tommy351/hexo-theme-light
+[1]: https://github.com/tommy351/hexo-theme-light

@@ -8,7 +8,7 @@ date: 2012-11-01 18:13:30
 
 Edit `permalink` in `_config.yml`. Here is the default:
 
-``` plain
+```
 permalink: :year/:month/:day/:title/
 ```
 
@@ -24,7 +24,7 @@ You can add the following variables in the permalink. Only the variables started
 
 ## Example
 
-Given a post named `title.md` in `source/_posts/foo/bar` directory with the following content:
+Given a post named `title.md` with the following content:
 
 ``` plain
 ---
@@ -39,8 +39,8 @@ tags:
 
 And here is the result:
 
-``` plain
+```
 :year/:month/:day/:title/ => /2012/10/09/title/
 :year-:month-:day/:title/ => /2012-10-09/title/
-:category/:title/ => /foo/bar/title/
+:category/title/ => /post/title/
 ```

@@ -11,20 +11,21 @@ date: 2012-11-01 18:13:30
 - **[page](#page)** - 目前頁面的資料，內容根據不同頁面而有所差異，由 [Generator][2] 所控制
 - **config** - [全域設定][3]，即`_config.yml`的內容
 - **theme** - 主題設定，即主題資料夾內`_config.yml`的內容，根據不同主題而有所差異
+- **__**（雙底線） - 取得 [國際化（i18n）][9] 字串
 
 <a id="site"></a>
 ## site
 
-網站全域資料，在沒有掛載其他擴充套件的情況下，site擁有以下內容：
+網站全域資料，在沒有掛載其他擴充套件的情況下，**site**擁有以下內容：
 
 - **posts** - 所有文章，根據發表日期降冪排列
 - **pages** - 所有分頁，根據發表日期降冪排列
 - **categories** - 所有分類，根據字母順序排列
 - **tags** - 所有標籤，根據字母順序排列
 
-**posts**, **pages** 為 [Collection 類別][4]
+**posts**, **pages** 為 [Collection][4] 物件
 
-**categories**, **tags** 為 [Taxonomy 類別][5]
+**categories**, **tags** 為 [Taxonomy][5] 物件
 
 <a id="page"></a>
 ## page
@@ -51,24 +52,24 @@ page和post的差別不大，僅在於page沒有`categories`和`tags`變數。
 
 #### index
 
-- 啟用分頁功能：[Paginator 類別][6]
-- 關閉分頁功能：[Taxonomy 類別][5]
+- 啟用分頁功能：[Paginator][6] 物件
+- 關閉分頁功能：[Taxonomy][5] 物件
 
 #### archive
 
-- 啟用分頁功能：[Paginator 類別][6]
-- 關閉分頁功能：[Taxonomy 類別][5]
+- 啟用分頁功能：[Paginator][6] 物件
+- 關閉分頁功能：[Taxonomy][5] 物件
 
 以及以下變數：
 
 - **archive** - 恆為`true`
-- **year** - 彙整年份（僅出現於年彙整）
-- **month** - 彙整月份（僅出現於月彙整）
+- **year** - 彙整年份
+- **month** - 彙整月份
 
 #### category
 
-- 啟用分頁功能：[Paginator 類別][6]
-- 關閉分頁功能：[Taxonomy 類別][5]
+- 啟用分頁功能：[Paginator][6] 物件
+- 關閉分頁功能：[Taxonomy][5] 物件
 
 以及以下變數：
 
@@ -76,8 +77,8 @@ page和post的差別不大，僅在於page沒有`categories`和`tags`變數。
 
 #### tag
 
-- 啟用分頁功能：[Paginator 類別][6]
-- 關閉分頁功能：[Taxonomy 類別][5]
+- 啟用分頁功能：[Paginator][6] 物件
+- 關閉分頁功能：[Taxonomy][5] 物件
 
 以及以下變數：
 
@@ -91,3 +92,4 @@ page和post的差別不大，僅在於page沒有`categories`和`tags`變數。
 [6]: collection.html#paginator
 [7]: http://momentjs.com/
 [8]: http://nodejs.org/api/fs.html#fs_class_fs_stats
+[9]: global-variables.html#i18n

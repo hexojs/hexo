@@ -14,15 +14,14 @@ git clone <repository> themes/<theme-name>
 
 ## List
 
-- **[Light]** - The default theme of Hexo
-- **[Phase]** - The most beautiful theme for Hexo.
+- **[Light][1]** - The default theme of Hexo
+- **[Phase][2]** - The most beautiful theme for Hexo.
 
 ## Development
 
-Reference [theme development](../docs/theme-development.html) for more info.
+Reference [theme development][3] for more info. If you wanna your theme listed in this page. Please add it to the [wiki][4].
 
-If you wanna your theme listed in this page. Please add it to the [wiki].
-
-[Light]: https://github.com/tommy351/hexo-theme-light
-[Phase]: https://github.com/tommy351/hexo-theme-phase
-[wiki]: https://github.com/tommy351/hexo/wiki/Themes
+[1]: https://github.com/tommy351/hexo-theme-light
+[2]: https://github.com/tommy351/hexo-theme-phase
+[3]: ../docs/theme-development.html
+[4]: https://github.com/tommy351/hexo/wiki/Themes

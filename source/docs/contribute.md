@@ -4,30 +4,59 @@ title: Contribute
 date: 2012-11-01 18:13:30
 ---
 
-You can contribute to Hexo to make it perfect!
+## Report Issues
 
-## Debugger
+You may have found some bugs when using Hexo, or have some questions and recommendations. Feel free to submit them on GitHub.
 
-The simplest work is: Use hexo, and report when you find a bug.  You can do it!
+[Report an issue][1]
 
-[Report an issue](https://github.com/tommy351/hexo/issues)
+## Write Docs
 
-## Developer
+If you found there's an error in the docs, you can:
 
-If you wanna participate in the development of Hexo, you can:
+1. Fork this project
+2. Create a new branch based on **site** branch
+3. Edit the docs
+4. Submit a pull request to **site** branch
+
+If you want to help translate the docs, create a new folder in `source` folder and copy source files into it. For example:
+
+``` plain
+zh-TW
+|-- docs
+|-- index.md
+|-- plugins
+|-- themes
+```
+
+And add language setting in every posts like this:
+
+``` plain
+---
+layout: page
+title: 貢獻
+lang: zh-TW
+date: 2012-11-01 18:13:30
+---
+```
+
+Please follow the [IETF format][3].
+
+[Source code][2]
+
+## Participate
+
+If you want to participate in the development, you can:
 
 1. Fork this project
 2. Create a new branch
-3. After the development is done, make a pull request on GitHub
+3. Submit a pull request to **dev** branch after the new feature is done
 
-[Source](https://github.com/tommy351/hexo)
+If you make an awesome plugin, you can submit a pull request, too. The plugin you developed may be a part of the main program!
 
-## Translator
+[Source code][4]
 
-Do you wanna Hexo speak your language? You can help translate documentation, become a missionary, make people know the wonderful of Hexo.
-
-1. Fork this project
-2. Create a new branch based on `site`
-3. After the translation is done, make a pull request on GitHub
-
-[Source](https://github.com/tommy351/hexo/tree/site)
+[1]: https://github.com/tommy351/hexo/issues
+[2]: https://github.com/tommy351/hexo/tree/site
+[3]: http://www.w3.org/International/articles/language-tags/
+[4]: https://github.com/tommy351/hexo

@@ -16,16 +16,16 @@ The global configuration file is saved at `_config.yml` in the root directory of
 - **url** - Website URL
 - **author** - The author of the website
 - **email** - Email address of the author
-- **language** - The language used in the website ([IETF format][1]. e.g. Traditional Chinese is `zh-TW`)
+- **language** - The language used in the website ([IETF format](http://www.w3.org/International/articles/language-tags/). e.g. Traditional Chinese is `zh-TW`)
 
 ### Permalink
 
 - **root** - The root directory of the website. For example, given `url` is `http://yoursite.com/child`, then `root` is `/child/`.
-- **permalink** - The URL format of articles ([Configure][2])
+- **permalink** - The URL format of articles ([Configure](permalink.html))
 - **tag_dir** - Tag directory
 - **archive_dir** - Archive directory
 - **category_dir** - The default name of category
-- **new_post_name** - Filename of new post
+- **new_post_name** - Filename of new posts
 
 #### new_post_name
 
@@ -38,8 +38,8 @@ e.g. Octopress style file name: `:year-:month-:day-:title.md`
 
 ### Archive
 
-`2` - Enable pagination
-`1` - Disable pagination
+`2` - Enable pagination for archive
+`1` - Disable pagination for archive
 
 - **archive**
 - **category**
@@ -49,11 +49,11 @@ e.g. Octopress style file name: `:year-:month-:day-:title.md`
 
 - **port** - Server port
 - **logger** - Enable logger for server
-- **logger_format** - The format of logger ([Connect][3])
+- **logger_format** - The format of logger([Configure](http://www.senchalabs.org/connect/logger.html))
 
 ### Date / Time Format
 
-Hexo uses Moment.js to parse and display date. ([Moment.js][4])
+Hexo uses [Moment.js] to parse and display date. Check [documentation](http://momentjs.com/docs/#/displaying/format/) for more info.
 
 - **date_format** - Date format
 - **time_format** - Time format
@@ -65,7 +65,7 @@ Hexo uses Moment.js to parse and display date. ([Moment.js][4])
 
 ### Disqus
 
-- **disqus_shortname** - [Disqus][5] shortname
+- **disqus_shortname** - [Disqus] shortname
 
 ### Extensions
 
@@ -136,9 +136,6 @@ Configure settings according to the deployment plugin you used.
 	# Deploy
 	deploy:
 		type:
-		
-[1]: http://www.w3.org/International/articles/language-tags/
-[2]: permalink.html
-[3]: http://www.senchalabs.org/connect/logger.html
-[4]: http://momentjs.com/docs/#/displaying/format/
-[5]: http://disqus.com/
+
+[Disqus]: http://disqus.com/
+[Moment.js]: http://momentjs.com/

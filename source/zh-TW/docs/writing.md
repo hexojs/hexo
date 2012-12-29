@@ -15,7 +15,7 @@ date: 2012-11-01 18:13:30
 hexo new_post <title>
 ```
 
-新文章會儲存於網站根目錄的 `source/_posts/name.md` 內容為：
+新文章會儲存於 `source/_posts/name.md`，內容為：
 
 ``` plain
 ---
@@ -39,11 +39,11 @@ hexo new_post Test Post => source/_posts/test-post.md
 
 以下是預設的設定內容，你可隨自己喜好增減內容。
 
-- **layout** - 文章布局
-- **title** - 文章標題
-- **date** - 文章的發佈日期（格式為 `YYYY-MM-DD HH:mm:ss`）
-- **comments** - 開啟此文章的留言功能
-- **tags** - 文章標籤
+- **layout** - 布局
+- **title** - 標題
+- **date** - 發表日期（`YYYY-MM-DD HH:mm:ss`）
+- **comments** - 留言功能
+- **tags** - 標籤
 - **permalink** - 覆寫預設網址（選填）
 
 ### 分類
@@ -103,10 +103,10 @@ hexo new_page Test Page => source/test-page/index.md
 
 以下是預設的設定內容，你可隨自己喜好增減內容。
 
-- **layout** - 文章布局
-- **title** - 文章標題
-- **date** - 文章的發佈日期（格式為 `YYYY-MM-DD HH:mm:ss`）
-- **comments** - 開啟此文章的留言功能
+- **layout** - 布局
+- **title** - 標題
+- **date** - 發佈日期（`YYYY-MM-DD HH:mm:ss`）
+- **comments** - 留言功能
 - **permalink** - 覆寫預設網址（選填）
 
 ## 生成靜態檔案
@@ -115,6 +115,12 @@ hexo new_page Test Page => source/test-page/index.md
 
 ``` bash
 hexo generate
+```
+往後，若你想要加快檔案生成速度，可以加入`-t`或`--theme`來忽略主題安裝。
+
+``` bash
+hexo generate -t
+hexo generate --theme
 ```
 
 [1]: https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter

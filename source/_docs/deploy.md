@@ -68,7 +68,7 @@ If the domain is like `example.com`, add A record `204.232.175.78`.
 
 If the domain is like `username.example.com`, add CNAME record `username.github.com`.
 
-Check [GitHub Pages][1] for more info.
+Check [GitHub Pages] for more info.
 
 <a id="heroku"></a>
 ## Heroku
@@ -128,34 +128,28 @@ Delete the following files and folders to remove deployment.
 |-- Procfile
 ```
 
-Check [Heroku][2] for more info.
+Check [Heroku] for more info.
 
 <a id="rsync"></a>
 ## Rsync
 
 ### Configure
 
-Edit`_config.yml`.
+Edit `_config.yml`.
 
 ``` yaml
 deploy:
-  type: rsync
-  host:
-  user:
-  root:
-  port:
-  delete:
+	type: rsync
+	host:
+	user:
+	root: # Default is `~/yoursite.com`
+	port: # Default is 22
+	delete: # Default is true
 ```
-
-- **host** - Address of remote host
-- **user** - Username
-- **root** - Root directory of remote host
-- **port** - Port (Default is `22`)
-- **delete** - Delete old files on remote host (Default is `true`)
 
 ### Setup
 
-Don't need to setup.
+No need to setup.
 
 ### Deploy
 
@@ -165,5 +159,5 @@ After the static files are generated, execute the following to deploy.
 hexo deploy
 ```
 
-[1]: https://help.github.com/articles/setting-up-a-custom-domain-with-pages
-[2]: https://devcenter.heroku.com/
+[GitHub Pages]: https://help.github.com/articles/setting-up-a-custom-domain-with-pages
+[Heroku]: https://devcenter.heroku.com/

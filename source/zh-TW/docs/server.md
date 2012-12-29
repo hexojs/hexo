@@ -5,12 +5,6 @@ lang: zh-TW
 date: 2012-11-01 18:13:30
 ---
 
-## 目錄
-
-- [內建伺服器](#builtin)
-- [Pow](#pow)
-
-<a id="builtin"></a>
 ## 內建伺服器
 
 Hexo 使用 [Connect][1] 作為靜態檔案的伺服器。
@@ -29,14 +23,13 @@ hexo server
 
 ### 記錄器
 
-編輯`_config.yml`中的`logger`欄位啟動記錄器。編輯`logger_format`欄位可調整記錄的顯示方式，參考 [Connect][4] 以獲得更多資訊。
+編輯`_config.yml`中的`logger`欄位啟動記錄器。編輯`logger_format`欄位可調整記錄的顯示內容，參考 [Connect][4] 以獲得更多資訊。
 
 ``` yaml
 logger: true
 logger_format:
 ```
 
-<a id="pow"></a>
 ## Pow
 
 [Pow][2] 是由Node.js所建立的Mac環境專用的零配置Rack伺服器，不過它也能用於處理一般的靜態檔案。

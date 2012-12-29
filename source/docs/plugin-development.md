@@ -4,65 +4,44 @@ title: Plugin Development
 date: 2012-11-01 18:13:30
 ---
 
-## Contents
+There're 8 sorts of plugins:
 
-- [Global Variable](#variable)
-- [Generator](#generator)
-- [Renderer](#renderer)
-- [Helper](#helper)
-- [Deployer](#deployer)
-- [Processor](#processor)
-- [Tag](#tag)
-- [Console](#console)
-- [Migrator](#migrator)
-- [Publish](#publish)
-- [Source](#source)
-
-<a id="variable"></a>
-## Global Variable
-
-When initializing, Hexo create a namespace named `hexo` with the following content. Do not delete or modify them.
-
-- **base_dir** - Root directory of website
-- **public_dir** - Static files directory (`public`)
-- **source_dir** - Source files directory (`source`)
-- **theme_dir** - Theme directory (`theme/theme_name`)
-- **plugin_dir** - Plugin directory (`node_modules`)
-- **version** - Version of Hexo
-- **config** - Global configuration
-- **extend** - Extensions
-- **util** - Utilities
+- [Generator](#generator) - Generates static files
+- [Renderer](#renderer) - Renders files
+- [Helper](#helper) - Template helpers
+- [Deployer](#deployer) - Deploy
+- [Processor](#processor) - Process source files
+- [Tag](#tag) - Article tag
+- [Console](#console) - Command-line Interface (CLI)
+- [Migrator](#migrator) - Migrate tool
 
 <a id="generator"></a>
 ## Generator
 
-Generator is used to generate static files.
+Please use [route module][4] to register paths after version 0.3.
 
 ### Syntax
 
-```
-hexo.extend.generator.register(iterator);
+``` js
+hexo.extend.generator.register(fn);
 ```
 
-- **iterator(locals, render, callback)**
-	- **locals** - [Global site data (site)][1]
-	- **render(layout, locals, callback)** - Render function
-		- **layout** - The template to use
-		- **locals** - Page data, `page` in [theme variables][1].
-		- **callback** - Callback function, execute when rendering is completed
-	- **callback** - Callback function, execute when generating is completed
-	
+- **fn(locals, render, callback)**
+  - **locals** - [Global site data][1]
+  - **render(layout, locals)** - Render function
+    - **layout** - The template to use
+    - **locals** - Data passed to the template, the `page` variable in the template
+  - **callback** - Callback function
+  
 ### Example
 
-Generate archive page at `public/archive.html`.
+Generates archives at `public/archive.html`.
 
-``` javascript
-var fs = require('fs');
-
+``` js
 hexo.extend.generator.register(function(locals, render, callback){
-  render('archive', locals.posts, function(err, result){
-  	if (err) throw err;
-  	fs.writeFile(hexo.public_dir + 'archive.html', result, callback);
+  hexo.route.set('archive.html', function(func){
+    var result = render('archive', locals);
+    func(null, result);
   });
 });
 ```
@@ -70,79 +49,75 @@ hexo.extend.generator.register(function(locals, render, callback){
 <a id="renderer"></a>
 ## Renderer
 
-Renderer is used to process specific files.
-
 ### Syntax
 
-``` javascript
-hexo.extend.renderer.register(tag, output, iterator, [sync])
+``` js
+hexo.extend.renderer.register(name, output, fn, [sync]);
 ```
 
-- **tag** - Filename extension of input file
-- **output** - Filename extension of output file
-- **iterator** - As below
-- **sync** - Ability to execute synchronously. Default is `false`.
+- **name** - Extension of input file (lowercase, `.` excluded)
+- **output** - Extension of output file (lowercase, `.` excluded)
+- **fn** - As below
+- **sync** - Sync mode (Default is `false`)
 
-**Synchronous mode** (When `sync` equals `true`)
+**Sync mode**
 
-`iterator(path, content, [locals])` - Use `return` to return the result
+`fn(path, content, [locals])` - Use `return` to passes the result when complete
 
-- **path** - Path of input file. Only available in compile mode.
+- **path** - Path of input file. Only available in compile mode
 - **content** - Content of input file
-- **locals** - Custom variables
+- **locals** - Local variables
 
-**Asynchronous mode** (When `sync` equals `false`)
+**Async mode**
 
-`iterator(path, content, [locals], [callback])` - Use `callback` to return the result
+`fn(path, content, [locals], callback)` - Use `callback` passes the result when complete
 
-- **path** - Path of input file. Only available in compile mode.
-- **content** - Content of input file.
-- **locals** - Custom variables
-- **callback** - Callback function, execute when done
+- **path** - Path of input file. Only available in compile mode
+- **content** - Content of input file
+- **locals** - Local variables
+- **callback** - Callback function
 
-### Example
+### Example 
 
-Here are the source code of the built-in renderers: EJS & Stylus. In order to use `@import` in Stylus, it must use asynchronous mode.
+#### Sync mode
 
-``` javascript
-var ejs = require('ejs');
+``` js
+var ejs = require('ejs'),
+	_ = require('underscore');
 
-hexo.extend.renderer.register('ejs', 'html', function(filename, content, locals){
-	if (filename) locals = _.extend(locals, {filename: filename});
+hexo.extend.renderer.register('ejs', 'html', function(path, content, locals){
+	if (path) locals = _.extend(locals, {filename: path});
 	return ejs.render(content, locals);
 }, true);
 ```
 
-``` javascript
+#### Async mode
+
+``` js
 var stylus = require('stylus');
 
-hexo.extend.renderer.register('styl', 'css', function(filename, content, callback){
-	stylus(content).set('filename', file).render(callback);
+hexo.extend.renderer.register('styl', 'css', function(path, content, callback){
+	stylus(content).set('filename', path).render(callback);
 });
 ```
 
 <a id="helper"></a>
 ## Helper
 
-Helper is the function used in articles.
-
 ### Syntax
 
-``` javascript
-hexo.extend.helper.register(tag, iterator)
+``` js
+hexo.extend.helper.register(name, fn);
 ```
 
-- **tag** - Tag
-- **iterator(path, template, locals)** - It should return a function
-	- **path** - Template path
-	- **template** - Template source
-	- **locals** - Custom variables
+- **tag** - Name (lowercase)
+- **fn** - Should return a function
 	
 ### Example
 
-Here is the source code of the built-in helper: js.
+Inserts a JavaScript file.
 
-``` javascript
+``` js
 hexo.extend.helper.register('js', function(){
   return function(path){
     return '<script type="text/javascript" src="' + path + '"></script>';
@@ -150,25 +125,35 @@ hexo.extend.helper.register('js', function(){
 });
 ```
 
+Input:
+
+```
+<%- js('script.js') %>
+```
+
+Output:
+
+``` html
+<script type="text/javascript" src="script.js"></script>
+```
+
 <a id="deployer"></a>
 ## Deployer
 
-Deployer is used to deploy.
-
 ### Syntax
 
-``` javascript
-hexo.extend.deployer.register(tag, method)
+``` js
+hexo.extend.deployer.register(name, method);
 ```
 
-- **tag** - Tag
-- **method** - It should be a object include the two following items
-	- **setup(args)** - Execute when run `hexo setup_deploy`
-	- **deploy(args)** - Execute when run `hexo deploy`
+- **name** - Name (lowercase)
+- **method** - An object included the following two elements
+	- **setup(args)** - Executes when `hexo setup_deploy` executed
+	- **deploy(args)** - Executes when `hexo deploy` executed
 	
 ### Example
 
-``` javascript
+``` js
 hexo.extend.deployer.register('github', {
 	setup: function(args){ … },
 	deploy: function(args){ … }
@@ -178,29 +163,26 @@ hexo.extend.deployer.register('github', {
 <a id="processor"></a>
 ## Processor
 
-Processor is used to process source files.
-
 ### Syntax
 
-``` javascript
-hexo.extend.processor.register(iterator)
+``` js
+hexo.extend.processor.register(fn);
 ```
 
-- **iterator(locals, callback)**
-	- **locals** - [Global site data (site)][1]
+- **fn(locals, callback)**
+	- **locals** - [Global site data][1]
 	- **callback(err, locals)**
 		- **err** - Error content. Return `null` when no error occurred.
-		- **locals** - Processed [global site data (site)][1]
+		- **locals** - Processed data
 		
 ### Example
 
 Sort articles by date descending.
 
-``` javascript
+``` js
 hexo.extend.processor.register(function(locals, callback){
 	locals.posts = locals.posts.sort('date', -1);
 	locals.pages = locals.pages.sort('date', -1);
-	
 	callback(null, locals);
 });
 ```
@@ -208,36 +190,34 @@ hexo.extend.processor.register(function(locals, callback){
 <a id="tag"></a>
 ## Tag
 
-Tag is the function used in articles.
-
 ### Syntax
 
-``` javascript
-hexo.extend.tag.register(tag, iterator, [ends])
+``` js
+hexo.extend.tag.register(name, fn, [ends]);
 ```
 
-- **tag** - Tag
-- **iterator(args, content)**
+- **name** - Name (lowercase)
+- **fn(args, content)**
 	- **args** - Arguments
 	- **content** - Content
-- **ends** - Whether to add end tag
+- **ends** - End tag
 
 ### Example
 
-Here are the source code of the built-in helpers: youtube, pullquote.
+Inserts a Youtube video.
 
-``` javascript
+``` js
 hexo.extend.tag.register('youtube', function(args, content){
   var id = args[0];
-
   return '<div class="video-container"><iframe width="560" height="315" src="http://www.youtube.com/embed/' + id + '" frameborder="0" allowfullscreen></iframe></div>';
 });
 ```
 
-``` javascript
+Inserts a pull quote.
+
+``` js
 hexo.extend.tag.register('pullquote', function(args, content){
   var className = args.length ? ' ' + args.join(' ') : '';
-
   return '<blockquote class="pullquote' + className + '">' + content + '</blockquote>';
 }, true);
 ```
@@ -245,28 +225,26 @@ hexo.extend.tag.register('pullquote', function(args, content){
 <a id="console"></a>
 ## Console
 
-Console allows you to execute commands in command-line interface (CLI).
-
 ### Syntax
 
-``` javascript
-hexo.extend.console.register(tag, description, iterator)
+``` js
+hexo.extend.console.register(name, desc, fn);
 ```
 
-- **tag** - Tag
-- **description** - Description
-- **iterator(args)**
+- **name** - Name (lowercase)
+- **desc** - Description
+- **fn(args)**
 	- **args** - Arguments
 	
 ### Example
 
-Display the configuration of website when execute the following command.
+Display configuration when the following executed.
 
-``` bash
+``` 
 hexo config
 ```
 
-``` javascript
+``` js
 hexo.extend.console.register('config', 'Display configuration', function(args){
   console.log(hexo.config);
 });
@@ -275,32 +253,32 @@ hexo.extend.console.register('config', 'Display configuration', function(args){
 <a id="migrator"></a>
 ## Migrator
 
-Migrator helps you migrate from other system easily.
-
 ### Syntax
 
-``` javascript
-hexo.extend.migrator.register(tag, iterator)
+``` js
+hexo.extend.migrator.register(name, fn);
 ```
 
-- **tag** - Tag
-- **iterator(args)**
+- **name** - Name (lowercase)
+- **fn(args)**
 	- **args** - Arguments
 	
-<a id="publish"></a>
+	
 ## Publish
 
-Execute the following command to publish your plugin to NPM registry. Remember to test it before published.
+Don't forget to test before publishing. Copy your plugin into `node_modules` folder and install dependencies. Try to use or do unit tests.
 
-``` bash
+After all the tests done. Execute the following command to publish your plugins to NPM.
+
+```
 npm publish
 ```
 
-Check [npm](https://npmjs.org/doc) for more info.
+## Reference
 
-<a id="source"></a>
-## Source
+You can reference [built-in modules][2] and [official plugins][3] to develop your plugin.
 
-You can reference the [source code](https://github.com/tommy351/hexo/tree/master/lib) of the built-in plugins to create your plugin.
-
-[1]: theme-development.html#variable
+[1]: template-data.html#site
+[2]: https://github.com/tommy351/hexo/tree/master/lib
+[3]: https://github.com/tommy351/hexo-plugins
+[4]: global-variables.html#route

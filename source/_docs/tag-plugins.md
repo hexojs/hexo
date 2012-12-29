@@ -4,11 +4,21 @@ title: Tag Plugins
 date: 2012-11-01 18:13:30
 ---
 
-Tag plugins are different from tags in posts. Tag plugins are used for inserting specific contents in posts.
+A tag plugin is different from a tag in an article. A tag plugin is used to insert specific content to the article quickly.
 
+## Contents
+
+- [Block Quote](#blockquote)
+- [Code Block](#codeblock)
+- [Pull Quote](#pullquote)
+- [jsFiddle](#jsfiddle)
+- [Gist](#gist)
+- [Image Tag](#image-tag)
+- [Youtube](#youtube)
+- [Vimeo](#vimeo)
+
+<a id="blockquote"></a>
 ## Block Quote
-
-Insert a block quote.
 
 {% raw %}
 <pre><code>{% blockquote [author[, source]] [link] [source_link_title] %}
@@ -17,13 +27,10 @@ content
 </code></pre>
 {% endraw %}
 
-**Alias:**`quote`
+**Alias：**`quote`
 
-[Reference][1]
-
+<a id="codeblock"></a>
 ## Code Block
-
-Inserts a code block.
 
 {% raw %}
 <pre><code>{% codeblock [title] [lang:language] [url] [link text] %}
@@ -32,23 +39,10 @@ content
 </code></pre>
 {% endraw %}
 
-**Alias:**`code`
+**Alias：**`code`
 
-[Reference][2]
-
-## Backtick Code Block
-
-Inserts a code block.
-
-	``` [language] [title] [url] [link text]
-	content
-	```
-
-[Reference][3]
-
+<a id="pullquote"></a>
 ## Pull Quote
-
-Inserts a pull quote.
 
 {% raw %}
 <pre><code>{% pullquote [class_name] %}
@@ -57,63 +51,42 @@ content
 </code></pre>
 {% endraw %}
 
-[Reference][4]
-
+<a id="jsfiddle"></a>
 ## jsFiddle
-
-Embeds jsFiddle.
 
 {% raw %}
 <pre><code>{% jsfiddle shorttag [tabs] [skin] [width] [height] %}
 </code></pre>
 {% endraw %}
 
-[Reference][5]
-
+<a id="gist"></a>
 ## Gist
-
-Embeds Gist.
 
 {% raw %}
 <pre><code>{% gist gist_id [filename] %}
 </code></pre>
 {% endraw %}
 
-[Reference][6]
-
+<a id="image-tag"></a>
 ## Image Tag
-
-Inserts a picture.
 
 {% raw %}
 <pre><code>{% img [class names] /path/to/image [width] [height] [title text [alt text]] %}
 </code></pre>
 {% endraw %}
 
-[Reference][7]
-
+<a id="youtube"></a>
 ## Youtube
-
-Inserts a Youtube video.
 
 {% raw %}
 <pre><code>{% youtube video_id %}
 </code></pre>
 {% endraw %}
 
+<a id="vimeo"></a>
 ## Vimeo
-
-Inserts a Vimeo video.
 
 {% raw %}
 <pre><code>{% vimeo video_id %}
 </code></pre>
 {% endraw %}
-
-[1]: http://octopress.org/docs/plugins/blockquote/
-[2]: http://octopress.org/docs/plugins/codeblock/
-[3]: http://octopress.org/docs/plugins/backtick-codeblock/
-[4]: http://octopress.org/docs/plugins/pullquote/
-[5]: http://octopress.org/docs/plugins/jsfiddle-tag/
-[6]: http://octopress.org/docs/plugins/gist-tag/
-[7]: http://octopress.org/docs/plugins/image-tag/

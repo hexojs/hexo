@@ -1,16 +1,16 @@
 ---
 layout: index
 title: Node.js blog framework
-subtitle: A fast, simple & powerful blog framework, powered by <a href="http://nodejs.org">Node.js</a>.
+subtitle: A fast, simple & powerful blog framework, powered by Node.js.
 date: 2012-11-01 18:13:30
 ---
 
 ## Features
 
 - Incredibly fast - generate static files in a glance
-- [Markdown] support
-- Deploy to [GitHub Pages] & [Heroku] with only one command
-- Ported [Octopress] plugins
+- [Markdown][1] support
+- Deploy to [GitHub Pages][2] & [Heroku][3] with only one command
+- Ported [Octopress][4] plugins
 - High extendibility & customizability
 - Compatible with Windows, Mac & Linux
 
@@ -54,9 +54,10 @@ hexo server
 	
 ## Next Step
 
-Interested? Check the [documentation](docs) for more info!
+Interested? Check the [documentation][5] for more info!
 
-[Markdown]: http://daringfireball.net/projects/markdown/
-[GitHub Pages]: http://pages.github.com/
-[Heroku]: http://heroku.com/
-[Octopress]: http://octopress.org/
+[1]: http://daringfireball.net/projects/markdown/
+[2]: http://pages.github.com/
+[3]: http://heroku.com/
+[4]: http://octopress.org/
+[5]: docs/

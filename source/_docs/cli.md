@@ -13,29 +13,22 @@ hexo ver
 hexo version
 ```
 
+Safe mode. Plugins will not be loaded in this mode.
+
+``` bash
+hexo --safe
+```
+
 Setup website. If `folder` is not defined, Hexo will setup website at current directory.
 
 ``` bash
 hexo init <folder>
 ```
 
-Create a new post
+Display configuration of the website
 
 ``` bash
-hexo new_post <title>
-```
-
-Create a new page
-
-``` bash
-hexo new_page <title>
-```
-
-Generate static files. Use `-t` or `--theme` to skip theme installation.
-
-``` bash
-hexo generate
-hexo generate -t/--theme
+hexo config
 ```
 
 Start server. Press `Ctrl+C` to stop it.
@@ -44,10 +37,24 @@ Start server. Press `Ctrl+C` to stop it.
 hexo server
 ```
 
-Display configuration of the site
+Generate static files. Use `-t` or `--theme` to skip theme installation.
 
 ``` bash
-hexo config
+hexo generate
+hexo generate -t
+hexo generate --theme
+```
+
+Preview site
+
+``` bash
+hexo preview
+```
+
+Display all routes of site
+
+``` bash
+hexo routes
 ```
 
 Deploy
@@ -62,8 +69,14 @@ Setup deploy
 hexo setup_deploy
 ```
 
-Safe mode. Plugins will not be loaded in this mode.
+Create a new post. File will be saved at `source/_posts/title.md` in the root directory.
 
 ``` bash
-hexo --safe
+hexo new_post <title>
+```
+
+Create a new page. File will be saved at `source/title/index.md` in the root directory.
+
+``` bash
+hexo new_page <title>
 ```

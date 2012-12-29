@@ -4,7 +4,7 @@ title: Install
 date: 2012-11-01 18:13:30
 ---
 
-Before installing Hexo, you should infall [Git][2] & [Node.js][1] first.
+Before installing Hexo, you should infall [Git] & [Node.js] first.
 
 ## Contents
 
@@ -17,15 +17,15 @@ Before installing Hexo, you should infall [Git][2] & [Node.js][1] first.
 
 ### Git
 
-Download & execute [msysgit][7].
+Download & execute [msysgit](http://code.google.com/p/msysgit/).
 
 ### Node.js
 
-It's very easy to install Node.js. Just [download][1] the installer and execute it.
+It's very easy to install Node.js. Just go to [Node.js official site][Node.js], download and execute the installer.
 
 ### Hexo
 
-Use [npm][3] to install.
+Use [npm] to install.
 
 ``` bash
 npm install -g hexo
@@ -38,25 +38,25 @@ npm install -g hexo
 
 Mac has already built-in an older version Git. If you want to update it, you can try the following way.
 
-1. Use [Homebrew][5].
+1. Use [Homebrew]。
 	
 	``` bash
 brew install git
 	```
 	
-2. Use [MacPorts][6].
+2. Use [MacPorts]。
 
 	``` bash
 sudo port install git-core
 	```
 	
-3. Use [Installer](http://code.google.com/p/git-osx-installer/).
+3. Use [Installer](http://code.google.com/p/git-osx-installer/)。
 
 If an error occurred, maybe it's because you didn't install the compiler first, please go to App Store, download & install Xcode.
 
 ### Node.js
 
-There are many way to install Node.js in Mac. We use [nvm][4] to install it.
+There are many way to install Node.js in Mac. We use [nvm] to install it.
 
 Execute the following command.
 
@@ -70,7 +70,7 @@ After the installation is done, add the following content in `~/.bash_profile` o
 . ~/nvm/nvm.sh
 ```
 
-Then you can install Node.js with [nvm][4]. It takes time to compile. Be patiently.
+Then you can install Node.js with [nvm]. It takes time to compile. Be patiently.
 
 ``` bash
 nvm install v0.8.14
@@ -80,7 +80,7 @@ nvm alias default v0.8.14
 
 ### Hexo
 
-Use [npm][3] to install.
+Use [npm] to install.
 
 ``` bash
 npm install -g hexo
@@ -105,7 +105,7 @@ sudo yum install git-core
 
 ### Node.js
 
-There are many way to install Node.js in Linux. We use [nvm][4] to install it.
+There are many way to install Node.js in Linux. We use [nvm] to install it.
 
 Execute the following command.
 
@@ -115,11 +115,11 @@ git clone git://github.com/creationix/nvm.git ~/nvm
 
 After the installation is done, add the following content in `~/.bash_profile` or `~/.bashrc` and open a new terminal window.
 
-``` plain
+```
 . ~/nvm/nvm.sh
 ```
 
-Then you can install Node.js with [nvm][4]. It takes time to compile. Be patiently.
+Then you can install Node.js with [nvm]. It takes time to compile. Be patiently.
 
 ``` bash
 nvm install v0.8.14
@@ -129,17 +129,15 @@ nvm alias default v0.8.14
 
 ### Hexo
 
-Use [npm][3] to install.
+Use [npm] to install.
 
 ``` bash
 npm install -g hexo
 ```
 
-[1]: http://nodejs.org/
-[2]: http://git-scm.com/
-[3]: http://npmjs.org/
-[4]: https://github.com/creationix/nvm
-[5]: http://mxcl.github.com/homebrew/
-[6]: http://www.macports.org/
-[7]: http://code.google.com/p/msysgit/
-[8]: http://code.google.com/p/git-osx-installer/
+[Node.js]: http://nodejs.org/
+[Git]: http://git-scm.com/
+[npm]: http://npmjs.org/
+[nvm]: https://github.com/creationix/nvm
+[Homebrew]: http://mxcl.github.com/homebrew/
+[MacPorts]: http://www.macports.org/

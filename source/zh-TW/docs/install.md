@@ -22,7 +22,7 @@ date: 2012-11-01 18:13:30
 
 ### Node.js
 
-在 Windows 環境下安裝 Node.js 非常簡單，僅須至 [Node.js 的官方網站][1] 下載 Windows 的安裝檔案並執行即可完成安裝。
+在 Windows 環境下安裝 Node.js 非常簡單，僅須 [下載][1] 安裝檔案並執行即可完成安裝。
 
 ### Hexo
 
@@ -116,7 +116,7 @@ git clone git://github.com/creationix/nvm.git ~/nvm
 
 安裝完畢後，在`~/.bash_profile`或`~/.bashrc`加入以下內容並重開一個新的終端機視窗。
 
-```
+``` plain
 . ~/nvm/nvm.sh
 ```
 

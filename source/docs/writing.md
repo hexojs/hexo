@@ -14,7 +14,7 @@ Execute the following command.
 hexo new_post <title>
 ```
 
-New post will saved at `source/_posts/title.md` in the root directory with the following content.
+The new post will be saved at `source/_posts/name.md` with the following content.
 
 ``` plain
 ---
@@ -26,19 +26,26 @@ tags:
 ---
 ```
 
+File name is based on `title` argument and `new_post_name` setting in `_config.yml`, title will be transformed into lower case, spaces will be transformed into dash. For example:
+
+```
+hexo new_post Test Post => source/_posts/test-post.md
+```
+
 ### Configure
 
-The beginning of article is a block wrapped with `---`, called [YAML Front Matter]. You can use YAML to configure posts.
+The beginning of article is a block wrapped with `---`, called [YAML Front Matter][1]. You can use YAML to configure posts.
 
 The following is default configuration. You can modify them as you like.
 
-- **layout** - Article layout
-- **title** - Article title
-- **date** - Published date of article (Format is `YYYY-MM-DD HH:mm:ss`)
-- **comments** - Enable comment for this article
-- **tags** - Tags of article
+- **layout** - Layout
+- **title** - Title
+- **date** - Published date (`YYYY-MM-DD HH:mm:ss`)
+- **comments** - Comments
+- **tags** - Tags
+- **permalink** - Override default URL (Optional)
 
-### Category
+### Categories
 
 Category is the relative path to `source/_posts`. It's hierarchical.
 
@@ -48,13 +55,13 @@ For example:
 - `source/_posts/Fruits/title.md` - Fruit
 - `source/_posts/Fruits/Apple/title.md` - Fruit, Apple
 
-### Tag
+### Tags
 
 ``` yaml
-# Single Tag
+# Single tag
 tags: Apple
 
-# Multiple Tags
+# Multiple tags
 tags: [Apple, Banana]
 
 tags:
@@ -72,7 +79,7 @@ Execute the following command.
 hexo new_page <title>
 ```
 
-New page will saved at `source/title/index.md` in the root directory with the following content.
+The new post will be saved at `source/name/index.md` with the following content.
 
 ``` plain
 ---
@@ -83,16 +90,23 @@ comments: true
 ---
 ```
 
+File name is based on `title` argument, title will be transformed into lower case, spaces will be transformed into dash. For example:
+
+```
+hexo new_page Test Page => source/test-page/index.md
+```
+
 ### Configure
 
-The beginning of article is a block wrapped with `---`, called [YAML Front Matter]. You can use YAML to configure posts.
+The beginning of article is a block wrapped with `---`, called [YAML Front Matter][1]. You can use YAML to configure posts.
 
 The following is default configuration. You can modify them as you like.
 
-- **layout** - Article layout
-- **title** - Article title
-- **date** - Published date of article (Format is `YYYY-MM-DD HH:mm:ss`)
-- **comments** - Enable comment for this article
+- **layout** - Layout
+- **title** - Title
+- **date** - Published date (`YYYY-MM-DD HH:mm:ss`)
+- **comments** - Comments
+- **permalink** - Override default URL (Optional)
 
 ## Generate Static Files
 
@@ -102,4 +116,11 @@ Execute the following command to transform articles into static files.
 hexo generate
 ```
 
-[YAML Front Matter]: https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter
+After that, you can add `-t` or `--theme` after the command to ignore theme installation to make generating faster.
+
+``` bash
+hexo generate -t
+hexo generate --theme
+```
+
+[1]: https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter

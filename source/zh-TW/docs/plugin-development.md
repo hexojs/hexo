@@ -19,7 +19,7 @@ date: 2012-11-01 18:13:30
 <a id="generator"></a>
 ## Generator
 
-Generator 用於生成靜態檔案，0.3版後請使用 [路由模組](global-variables.html#route) 來註冊路徑。
+0.3版後請使用 [路由模組](global-variables.html#route) 來註冊路徑。
 
 ### 語法
 
@@ -50,16 +50,14 @@ hexo.extend.generator.register(function(locals, render, callback){
 <a id="renderer"></a>
 ## Renderer
 
-Renderer用於處理特定類型的檔案。
-
 ### 語法
 
 ``` js
-hexo.extend.renderer.register(tag, output, fn, [sync]);
+hexo.extend.renderer.register(name, output, fn, [sync]);
 ```
 
-- **tag** - 輸入檔案的副檔名
-- **output** - 輸出檔案的副檔名
+- **name** - 輸入檔案的副檔名（小寫，不包含`.`）
+- **output** - 輸出檔案的副檔名（小寫，不包含`.`）
 - **fn** - 見下方
 - **sync** - 同步模式，預設為`false`
 
@@ -80,7 +78,9 @@ hexo.extend.renderer.register(tag, output, fn, [sync]);
 - **locals** - 自定變數
 - **callback** - 回傳函數
 
-以下分別是內建Renderer中EJS和Stylus的原始碼，Stylus為了要使用`@import`功能，一定得使用非同步模式。
+### 範例
+
+#### 同步模式
 
 ``` js
 var ejs = require('ejs'),
@@ -91,6 +91,8 @@ hexo.extend.renderer.register('ejs', 'html', function(path, content, locals){
 	return ejs.render(content, locals);
 }, true);
 ```
+
+#### 非同步模式
 
 ``` js
 var stylus = require('stylus');
@@ -103,20 +105,18 @@ hexo.extend.renderer.register('styl', 'css', function(path, content, callback){
 <a id="helper"></a>
 ## Helper
 
-Helper為樣板的輔助方法。
-
 ### 語法
 
 ``` js
-hexo.extend.helper.register(tag, fn);
+hexo.extend.helper.register(name, fn);
 ```
 
-- **tag** - 標籤
+- **name** - 名稱（小寫）
 - **fn** - 應傳回一函數
 	
 ### 舉例
 
-快速插入 JavaScript 檔案。
+插入 JavaScript 檔案。
 
 ``` js
 hexo.extend.helper.register('js', function(){
@@ -141,15 +141,13 @@ hexo.extend.helper.register('js', function(){
 <a id="deployer"></a>
 ## Deployer
 
-Deployer用於佈署檔案。
-
 ### 語法
 
 ``` js
-hexo.extend.deployer.register(tag, method);
+hexo.extend.deployer.register(name, method);
 ```
 
-- **tag** - 標籤
+- **name** - 名稱（小寫）
 - **method** - 應為包含以下兩個項目的物件
 	- **setup(args)** - 執行`hexo setup_deploy`時執行的函數
 	- **deploy(args)** - 執行`hexo deploy`時執行的函數
@@ -165,8 +163,6 @@ hexo.extend.deployer.register('github', {
 
 <a id="processor"></a>
 ## Processor
-
-Processor用於處理原始檔案。
 
 ### 語法
 
@@ -195,15 +191,13 @@ hexo.extend.processor.register(function(locals, callback){
 <a id="tag"></a>
 ## Tag
 
-Tag用於在文章中快速插入內容。
-
 ### 語法
 
 ``` js
-hexo.extend.tag.register(tag, fn, [ends]);
+hexo.extend.tag.register(name, fn, [ends]);
 ```
 
-- **tag** - 標籤
+- **name** - 名稱（小寫）
 - **fn(args, content)**
 	- **args** - 參數
 	- **content** - 內容
@@ -232,15 +226,13 @@ hexo.extend.tag.register('pullquote', function(args, content){
 <a id="console"></a>
 ## Console
 
-Console用於在命令列介面（CLI）中執行指令。
-
 ### 語法
 
 ``` js
-hexo.extend.console.register(tag, desc, fn);
+hexo.extend.console.register(name, desc, fn);
 ```
 
-- **tag** - 標籤
+- **name** - 名稱（小寫）
 - **desc** - 描述
 - **fn(args)**
 	- **args** - 參數
@@ -262,15 +254,13 @@ hexo.extend.console.register('config', 'Display configuration', function(args){
 <a id="migrator"></a>
 ## Migrator
 
-Migrator讓你輕鬆地從其他系統遷移。
-
 ### 語法
 
 ``` js
-hexo.extend.migrator.register(tag, fn);
+hexo.extend.migrator.register(name, fn);
 ```
 
-- **tag** - 標籤
+- **name** - 名稱（小寫）
 - **fn(args)**
 	- **args** - 參數
 

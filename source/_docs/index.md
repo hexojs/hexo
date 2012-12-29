@@ -38,8 +38,14 @@ date: 2012-11-01 18:13:30
 
 #### [Collection](collection.html)
 
-#### [Theme Development](theme-development.html)
-
 #### [Plugin Development](plugin-development.html)
 
+#### [Theme Development](theme-development.html)
+
+<!--
+#### [Plugin Development](plugin-development.html)
+
+#### [Theme Development](theme-development.html)
+
 #### [Contribute](contribute.html)
+-->
