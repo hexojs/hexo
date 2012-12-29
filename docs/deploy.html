@@ -7,6 +7,7 @@
   <meta name="description" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
   
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   
@@ -39,7 +40,6 @@
 </nav></header>
     <div id="content">
       
-
 <article class="page">
   <h1 class="title">Deploy</h1>
   <div class="entry"><p>It&#39;s easy to deploy with Hexo. It just needs 3 steps to complete setup, &quot;Configure → Setup → Deploy&quot;.
@@ -49,6 +49,7 @@
 <ul>
 <li><a href="#github">GitHub</a></li>
 <li><a href="#heroku">Heroku</a></li>
+<li><a href="#rsync">Rsync</a></li>
 </ul>
 <p><a id="github"></a>
 </p>
@@ -124,6 +125,30 @@
 <p>Check <a href="https://devcenter.heroku.com/">Heroku</a> for more info.
 
 </p>
+<p><a id="rsync"></a>
+</p>
+<h2>Rsync</h2>
+<h3>Configure</h3>
+<p>Edit<code>_config.yml</code>.
+
+</p>
+<pre><code class="lang-yaml"><div class="line"><span class="method">deploy:</span></div><div class="line">  <span class="method">type:</span> rsync</div><div class="line">  <span class="method">host:</span></div><div class="line">  <span class="method">user:</span></div><div class="line">  <span class="method">root:</span></div><div class="line">  <span class="method">port:</span></div><div class="line">  <span class="method">delete:</span></div></code></pre>
+<ul>
+<li><strong>host</strong> - Address of remote host</li>
+<li><strong>user</strong> - Username</li>
+<li><strong>root</strong> - Root directory of remote host</li>
+<li><strong>port</strong> - Port (Default is <code>22</code>)</li>
+<li><strong>delete</strong> - Delete old files on remote host (Default is <code>true</code>)</li>
+</ul>
+<h3>Setup</h3>
+<p>Don&#39;t need to setup.
+
+</p>
+<h3>Deploy</h3>
+<p>After the static files are generated, execute the following to deploy.
+
+</p>
+<pre><code class="lang-bash"><div class="line">hexo deploy</div></code></pre>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

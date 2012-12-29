@@ -1,11 +1,9 @@
-@import url("http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700");
 * {
   margin: 0;
   padding: 0;
 }
 body {
   background: url("images/shattered.png") #dcdcdc;
-  background-position: 0 0;
   color: #444;
   font-family: 'Lato', 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
   font-size: 14px;

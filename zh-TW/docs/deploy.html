@@ -7,6 +7,7 @@
   <meta name="description" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
   
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   
@@ -39,7 +40,6 @@
 </nav></header>
     <div id="content">
       
-
 <article class="page">
   <h1 class="title">佈署</h1>
   <div class="entry"><p>Hexo 的佈署非常簡單，所有的佈署都只需要三步僅可完成設定，分別是「設定 → 建立 → 佈署」。
@@ -49,6 +49,7 @@
 <ul>
 <li><a href="#github">GitHub</a></li>
 <li><a href="#heroku">Heroku</a></li>
+<li><a href="#rsync">Rsync</a></li>
 </ul>
 <p><a id="github"></a>
 </p>
@@ -127,6 +128,30 @@
 <p>請參考 <a href="https://devcenter.heroku.com/">Heroku</a> 以取得更多資訊。
 
 </p>
+<p><a id="rsync"></a>
+</p>
+<h2>Rsync</h2>
+<h3>設定</h3>
+<p>編輯<code>_config.yml</code>檔案。
+
+</p>
+<pre><code class="lang-yaml"><div class="line"><span class="method">deploy:</span></div><div class="line">  <span class="method">type:</span> rsync</div><div class="line">  <span class="method">host:</span></div><div class="line">  <span class="method">user:</span></div><div class="line">  <span class="method">root:</span></div><div class="line">  <span class="method">port:</span></div><div class="line">  <span class="method">delete:</span></div></code></pre>
+<ul>
+<li><strong>host</strong> - 遠端主機的位址</li>
+<li><strong>user</strong> - 使用者名稱</li>
+<li><strong>root</strong> - 遠端主機的根目錄</li>
+<li><strong>port</strong> - 連接埠（預設為<code>22</code>）</li>
+<li><strong>delete</strong> - 刪除遠端主機的舊有檔案（預設為<code>true</code>）</li>
+</ul>
+<h3>建立</h3>
+<p>無須建立。
+
+</p>
+<h3>佈署</h3>
+<p>靜態檔案生成後，執行下列指令即可完成佈署。
+
+</p>
+<pre><code class="lang-bash"><div class="line">hexo deploy</div></code></pre>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

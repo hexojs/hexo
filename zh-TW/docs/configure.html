@@ -7,6 +7,7 @@
   <meta name="description" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
   
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   
@@ -39,7 +40,6 @@
 </nav></header>
     <div id="content">
       
-
 <article class="page">
   <h1 class="title">設定</h1>
   <div class="entry"><p>全域設定檔案儲存於網站根目錄下的<code>_config.yml</code>。
@@ -63,7 +63,18 @@
 <li><strong>tag_dir</strong> - 標籤資料夾</li>
 <li><strong>archive_dir</strong> - 網誌彙整資料夾</li>
 <li><strong>category_dir</strong> - 分類的預設名稱</li>
+<li><strong>new_post_name</strong> - 新文章的檔案名稱</li>
 </ul>
+<h4>new_post_name</h4>
+<ul>
+<li><code>:title</code> - 文章的預設網址</li>
+<li><code>:year</code> - 文章的發佈年份（4 位數）</li>
+<li><code>:month</code> - 文章的發佈月份（2 位數）</li>
+<li><code>:day</code> - 文章的發佈日期（2 位數）</li>
+</ul>
+<p>例：Octopress 式的檔案名稱：<code>:year-:month-:day-:title.md</code>
+
+</p>
 <h3>網誌彙整</h3>
 <p><code>2</code> - 開啟彙整的分頁功能<br><code>1</code> - 關閉彙整的分頁功能
 
@@ -77,10 +88,10 @@
 <ul>
 <li><strong>port</strong> - 伺服器連接埠</li>
 <li><strong>logger</strong> - 啟用伺服器記錄</li>
-<li><strong>logger_format</strong> - 伺服器記錄的格式（<a href="http://www.senchalabs.org/connect/logger.html">設定</a>）</li>
+<li><strong>logger_format</strong> - 伺服器記錄的格式（<a href="http://www.senchalabs.org/connect/logger.html">Connect</a>）</li>
 </ul>
 <h3>日期 / 時間格式</h3>
-<p>Hexo 使用 <a href="http://momentjs.com/">Moment.js</a> 以解析和顯示日期。參考 <a href="http://momentjs.com/docs/#/displaying/format/">文件</a> 以取得進一步資訊。
+<p>Hexo 使用 Moment.js 解析和顯示日期。（<a href="http://momentjs.com/docs/#/displaying/format/">Moment.js</a>）
 
 </p>
 <ul>
@@ -115,7 +126,7 @@
 
 </p>
 <h2>預設值</h2>
-<pre><code><div class="line"><span class="preprocessor"># Basic</span></div><div class="line"><span class="label">title:</span> Hexo</div><div class="line"><span class="label">subtitle:</span> Node<span class="preprocessor">.js</span> blog framework</div><div class="line"><span class="label">description:</span></div><div class="line"><span class="label">url:</span> http://yoursite<span class="preprocessor">.com</span></div><div class="line"><span class="label">author:</span> John Doe</div><div class="line"><span class="label">email:</span></div><div class="line"><span class="label">language:</span></div><br><div class="line"><span class="preprocessor"># Permalink</span></div><div class="line"><span class="label">root:</span> /</div><div class="line"><span class="label">permalink:</span> :year/:month/:day/:title/</div><div class="line"><span class="label">tag_dir:</span> tags</div><div class="line"><span class="label">archive_dir:</span> archives</div><div class="line"><span class="label">category_dir:</span> posts</div><br><div class="line"><span class="preprocessor"># Archives</span></div><div class="line"><span class="label">archive:</span> <span class="number">2</span></div><div class="line"><span class="label">category:</span> <span class="number">2</span></div><div class="line"><span class="label">tag:</span> <span class="number">2</span></div><br><div class="line"><span class="preprocessor"># Server</span></div><div class="line"><span class="label">port:</span> <span class="number">4000</span></div><div class="line"><span class="label">logger:</span> false</div><div class="line"><span class="label">logger_format:</span></div><br><div class="line"><span class="preprocessor"># Date / Time format</span></div><div class="line"><span class="label">date_format:</span> MMM D, YYYY</div><div class="line"><span class="label">time_format:</span> H:mm:ss</div><br><div class="line"><span class="preprocessor"># Pagination</span></div><div class="line"><span class="label">per_page:</span> <span class="number">10</span></div><div class="line"><span class="label">pagination_dir:</span> page</div><br><div class="line"><span class="preprocessor"># Disqus</span></div><div class="line"><span class="label">disqus_shortname:</span></div><br><div class="line"><span class="preprocessor"># Extensions</span></div><div class="line"><span class="label">plugins:</span></div><div class="line"><span class="label">theme:</span> light</div><div class="line"><span class="label">exclude_generator:</span></div><br><div class="line"><span class="preprocessor"># Enhancement</span></div><div class="line"><span class="label">auto_spacing:</span> false</div><div class="line"><span class="label">titlecase:</span> false</div><br><div class="line"><span class="preprocessor"># Deploy</span></div><div class="line"><span class="label">deploy:</span></div><div class="line">  type:</div></code></pre>
+<pre><code><div class="line"><span class="preprocessor"># Basic</span></div><div class="line"><span class="label">title:</span> Hexo</div><div class="line"><span class="label">subtitle:</span> Node<span class="preprocessor">.js</span> blog framework</div><div class="line"><span class="label">description:</span></div><div class="line"><span class="label">url:</span> http://yoursite<span class="preprocessor">.com</span></div><div class="line"><span class="label">author:</span> John Doe</div><div class="line"><span class="label">email:</span></div><div class="line"><span class="label">language:</span></div><br><div class="line"><span class="preprocessor"># Permalink</span></div><div class="line"><span class="label">root:</span> /</div><div class="line"><span class="label">permalink:</span> :year/:month/:day/:title/</div><div class="line"><span class="label">tag_dir:</span> tags</div><div class="line"><span class="label">archive_dir:</span> archives</div><div class="line"><span class="label">category_dir:</span> posts</div><div class="line"><span class="label">new_post_name:</span> :title<span class="preprocessor">.md</span></div><br><div class="line"><span class="preprocessor"># Archives</span></div><div class="line"><span class="label">archive:</span> <span class="number">2</span></div><div class="line"><span class="label">category:</span> <span class="number">2</span></div><div class="line"><span class="label">tag:</span> <span class="number">2</span></div><br><div class="line"><span class="preprocessor"># Server</span></div><div class="line"><span class="label">port:</span> <span class="number">4000</span></div><div class="line"><span class="label">logger:</span> false</div><div class="line"><span class="label">logger_format:</span></div><br><div class="line"><span class="preprocessor"># Date / Time format</span></div><div class="line"><span class="label">date_format:</span> MMM D, YYYY</div><div class="line"><span class="label">time_format:</span> H:mm:ss</div><br><div class="line"><span class="preprocessor"># Pagination</span></div><div class="line"><span class="label">per_page:</span> <span class="number">10</span></div><div class="line"><span class="label">pagination_dir:</span> page</div><br><div class="line"><span class="preprocessor"># Disqus</span></div><div class="line"><span class="label">disqus_shortname:</span></div><br><div class="line"><span class="preprocessor"># Extensions</span></div><div class="line"><span class="label">plugins:</span></div><div class="line"><span class="label">theme:</span> light</div><div class="line"><span class="label">exclude_generator:</span></div><br><div class="line"><span class="preprocessor"># Enhancement</span></div><div class="line"><span class="label">auto_spacing:</span> false</div><div class="line"><span class="label">titlecase:</span> false</div><br><div class="line"><span class="preprocessor"># Deploy</span></div><div class="line"><span class="label">deploy:</span></div><div class="line">    type:</div></code></pre>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

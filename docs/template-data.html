@@ -1,0 +1,158 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hexo - Template Data</title>
+  
+  <meta name="description" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
+  
+  <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4910098-7']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+<h1><a href="/hexo/">Hexo</a></h1>
+<div class="clearfix"></div>
+<nav id="main-nav">
+  <ul>
+    <li><a href="/hexo/docs/">Docs</a></li>
+    <li><a href="/hexo/plugins/">Plugins</a></li>
+    <li><a href="/hexo/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo">Source</a></li>
+  </ul>
+</nav></header>
+    <div id="content">
+      
+<article class="page">
+  <h1 class="title">Template Data</h1>
+  <div class="entry"><h2>Global</h2>
+<ul>
+<li><strong><a href="#site">site</a></strong> - Global site data, controlled by <a href="plugin-development.html#processor">Processor</a></li>
+<li><strong><a href="#page">page</a></strong> - Data of the current page, differed from each page, controlled by <a href="plugin-development.html#generator">Generator</a></li>
+<li><strong>config</strong> - <a href="configure.html">Global configuration</a>, the content of <code>_config.yml</code></li>
+<li><strong>theme</strong> - Theme configuration, the content of <code>_config.yml</code> in theme folder, differed from each theme</li>
+<li><strong>__</strong> (double underscores) - Gets <a href="global-variables.html#i18n">internationalization (i18n)</a> strings</li>
+</ul>
+<p><a id="site"></a>
+</p>
+<h2>site</h2>
+<p>Global site data. In case of no other plugins loaded, <strong>site</strong> has the following content:
+
+</p>
+<ul>
+<li><strong>posts</strong> - All posts, sorted by published date descending.</li>
+<li><strong>pages</strong> - All pages, sorted by published date descending.</li>
+<li><strong>categories</strong> - All categories, sorted alphabetically.</li>
+<li><strong>tags</strong> - All tags, sorted alphabetically.</li>
+</ul>
+<p><strong>posts</strong>, <strong>pages</strong> is a <a href="collection.html#collection">Collection</a> object
+
+</p>
+<p><strong>categories</strong>, <strong>tags</strong> is a <a href="collection.html#taxonomy">Taxonomy</a> object
+
+</p>
+<p><a id="page"></a>
+</p>
+<h2>page</h2>
+<p>Data of the current page, differed from each page. The following is the content of built-in generators.
+
+</p>
+<h4>page, post</h4>
+<ul>
+<li><strong>layout</strong> - Article layout</li>
+<li><strong>title</strong> - Article title</li>
+<li><strong>date</strong> - Published date（<a href="http://momentjs.com/">Moment.js</a> object）</li>
+<li><strong>updated</strong> - Updated date（<a href="http://momentjs.com/">Moment.js</a> object）</li>
+<li><strong>comments</strong> - Comments</li>
+<li><strong>permalink</strong> - Permalink</li>
+<li><strong>stats</strong> - Status of source file（<a href="http://nodejs.org/api/fs.html#fs_class_fs_stats">fs.Stats</a> object）</li>
+<li><strong>content</strong> - Content</li>
+<li><strong>excerpt</strong> - Excerpt (Content before <code>&lt;!-- more --&gt;</code>)</li>
+<li><strong>source</strong> - Path of source file</li>
+<li><strong>path</strong> - Relative path</li>
+</ul>
+<p>And other variables user set in articles.
+
+</p>
+<p>The difference of <strong>page</strong> and <strong>post</strong> is that <strong>page</strong> doesn&#39;t have <code>categories</code> and <code>tag</code>.
+
+</p>
+<h4>index</h4>
+<ul>
+<li>Enable pagination: <a href="collection.html#paginator">Paginator</a> object</li>
+<li>Disable pagination: <a href="collection.html#taxonomy">Taxonomy</a> object</li>
+</ul>
+<h4>archive</h4>
+<ul>
+<li>Enable pagination: <a href="collection.html#paginator">Paginator</a> object</li>
+<li>Disable pagination: <a href="collection.html#taxonomy">Taxonomy</a> object</li>
+</ul>
+<p>And the following variable:
+
+</p>
+<ul>
+<li><strong>archive</strong> - Equals <code>true</code></li>
+<li><strong>year</strong> - Archive year</li>
+<li><strong>month</strong> - Archive month</li>
+</ul>
+<h4>category</h4>
+<ul>
+<li>Enable pagination: <a href="collection.html#paginator">Paginator</a> object</li>
+<li>Disable pagination: <a href="collection.html#taxonomy">Taxonomy</a> object</li>
+</ul>
+<p>And the following variable:
+
+</p>
+<ul>
+<li><strong>category</strong> - Category name</li>
+</ul>
+<h4>tag</h4>
+<ul>
+<li>Enable pagination: <a href="collection.html#paginator">Paginator</a> object</li>
+<li>Disable pagination: <a href="collection.html#taxonomy">Taxonomy</a> object</li>
+</ul>
+<p>And the following variable:
+
+</p>
+<ul>
+<li><strong>tag</strong> - Tag name</li>
+</ul>
+</div>
+</article>
+      <footer id="footer"><div class="alignleft">
+  &copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
+  Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>.
+</div>
+<div class="alignright">
+  <select id="lang-select">
+    <option value="" selected>English</option>
+    
+      <option value="zh-TW">正體中文</option>
+    
+  </select>
+</div>
+<div class="clearfix"></div></footer>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <script src="/hexo/js/main.js"></script>
+<a href="https://github.com/tommy351/hexo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+</body>
+</html>

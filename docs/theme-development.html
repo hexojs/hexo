@@ -7,6 +7,7 @@
   <meta name="description" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
   
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   
@@ -39,296 +40,54 @@
 </nav></header>
     <div id="content">
       
-
 <article class="page">
   <h1 class="title">Theme Development</h1>
-  <div class="entry"><h2>Contents</h2>
-<ul>
-<li><a href="#structure">Structure</a></li>
-<li><a href="#variable">Variable</a></li>
-<li><a href="#class">Class</a></li>
-<li><a href="#helper">Helper</a></li>
-<li><a href="#source">Source</a></li>
-</ul>
-<p><a id="structure"></a>
-</p>
-<h2>Structure</h2>
-<pre><code class="lang-plain"><div class="line">|-- _config.yml</div><div class="line">|-- layout</div><div class="line">|-- source</div></code></pre>
+  <div class="entry"><h2>Structure</h2>
+<pre><code class="lang-plain"><div class="line">|-- _config.yml</div><div class="line">|-- languages</div><div class="line">|-- layout</div><div class="line">|-- source</div></code></pre>
 <h3>_config.yml</h3>
 <p>Theme configuration file.
 
 </p>
+<p>Reference: <a href="configure.html">Configure</a>
+
+</p>
+<h3>languages</h3>
+<p>Folder of language files.
+
+</p>
+<p>Reference: <a href="global-variables.html#i18n">Internationalization (i18n)</a>
+
+</p>
 <h3>layout</h3>
-<p>Layout folder. You can <a href="https://github.com/visionmedia/ejs">EJS</a> or <a href="http://paularmstrong.github.com/swig/">Swig</a> to render templates, or you can install <a href="../plugins/#renderer">Renderer plugins</a> to use the template engine you like.
+<p>Layout folder. You can use <a href="https://github.com/visionmedia/ejs">EJS</a> or <a href="http://paularmstrong.github.com/swig/">Swig</a> to render template files, or install <a href="../plugins/#renderer">renderer plugins</a> to use the template engine you like.
 
 </p>
 <p>Basic layouts:
 
 </p>
 <ul>
-<li><strong>archive</strong> - Blog archive</li>
-<li><strong>category</strong> - Category archive</li>
-<li><strong>index</strong> - Home</li>
-<li><strong>page</strong> - Page</li>
-<li><strong>post</strong> - Post</li>
-<li><strong>tag</strong> - Tag archive</li>
+<li><strong>archive</strong> - Archives, use <strong>index</strong> layout instead if not exist</li>
+<li><strong>category</strong> - Category archives, use <strong>archive</strong> layout instead if not exist</li>
+<li><strong>index</strong> - Home page</li>
+<li><strong>page</strong> - Page, use <strong>index</strong> layout instead if not exist</li>
+<li><strong>post</strong> - Post, use <strong>index</strong> layout instead if not exist</li>
+<li><strong>tag</strong> - Tag archives, use <strong>archive</strong> layout instead if not exist</li>
 </ul>
+<p>You can customize other layouts such as <code>link</code> or <code>photo</code>. If the custom layout not found, it&#39;ll use other layout based on generators.
+
+</p>
+<p><em>（<strong>index</strong> layout at least）</em>
+
+</p>
 <h3>source</h3>
-<p>Source folder. CSS, JavaScript files (<em>Asset</em>) should be stored in this folder. Files in this folder will be rendered and saved in <code>public</code> folder. File or Folder whose name started with <code>.</code> or <code>_</code> will be ignored.
+<p>Source files folder. CSS, JavaScript and other files (Asset) should be placed in this folder. The files in this folder will be processed and copied to <code>public</code> folder. File or folder whose name started with <code>.</code> (dot) or <code>_</code> (underscore) will be ignored.
 
 </p>
-<p>Hexo comes with <a href="http://learnboost.github.com/stylus/">Stylus</a> &amp; <a href="http://visionmedia.github.com/nib/">nib</a> support built-in. You can install <a href="../plugins/#renderer">Renderer plugins</a> to add more support for Hexo.
+<p>Hexo supports <a href="http://learnboost.github.com/stylus/">Stylus</a> &amp; <a href="http://visionmedia.github.com/nib/">nib</a>. You can install <a href="../plugins/#renderer">renderer plugins</a> to add more support for Hexo.
 
 </p>
-<p><a id="variable"></a>
-</p>
-<h2>Variable</h2>
-<h3>site</h3>
-<p>Global site data.
-
-</p>
-<ul>
-<li><strong>posts</strong> - All posts. Sort by article date descending.</li>
-<li><strong>pages</strong> - All pages. Sort by article date descending.</li>
-<li><strong>categories</strong> - All categories. Sort alphabetically.</li>
-<li><strong>tags</strong> - All tags. Sort alphabetically.</li>
-</ul>
-<p><code>posts</code>, <code>pages</code> uses <a href="#collection">Collection class</a>。
-
-</p>
-<p><code>categories</code>, <code>tags</code> uses <a href="#taxonomy">Taxonomy class</a>。
-
-</p>
-<h3>page</h3>
-<p>Data of the current page. The content is various from pages.
-
-</p>
-<p><strong>page, post:</strong>
-
-</p>
-<ul>
-<li><strong>layout</strong> - Article layout</li>
-<li><strong>title</strong> - Article title</li>
-<li><strong>date</strong> - The published date of the article (<a href="http://momentjs.com/">Moment.js</a> object)</li>
-<li><strong>updated</strong> - The updated date of the article (<a href="http://momentjs.com/">Moment.js</a> object)</li>
-<li><strong>comments</strong> - Enable comment for the article</li>
-<li><strong>permalink</strong> - The permalink of the article</li>
-<li><strong>stats</strong> - The file status of the article (<a href="http://nodejs.org/api/fs.html#fs_class_fs_stats">fs.Stats</a> class)</li>
-<li><strong>content</strong> - Article content</li>
-<li><strong>excerpt</strong> - Article summary (Content before <code>&lt;!-- more --&gt;</code>)</li>
-<li><strong>source</strong> - Source file path</li>
-<li><strong>path</strong> - The relative path of the article</li>
-</ul>
-<p>And other variable user set in article.
-
-</p>
-<p>The difference of page and post is that page doesn&#39;t have <code>categories</code> and <code>tag</code> variables.
-
-</p>
-<p><strong>index:</strong>
-
-</p>
-<ul>
-<li>Enable pagination: <a href="#paginator">Paginator class</a></li>
-<li>Disable pagination: <a href="#taxonomy">Taxonomy class</a></li>
-</ul>
-<p><strong>archive:</strong>
-
-</p>
-<ul>
-<li>Enable pagination: <a href="#paginator">Paginator class</a></li>
-<li>Disable pagination: <a href="#taxonomy">Taxonomy class</a></li>
-</ul>
-<p>And the following variables:
-
-</p>
-<ul>
-<li><strong>archive</strong> - equals <code>true</code></li>
-<li><strong>year</strong> - The year of archive (Only available in archive by year)</li>
-<li><strong>month</strong> - The month of archive (Only available in archive by month)</li>
-</ul>
-<p><strong>category:</strong>
-
-</p>
-<ul>
-<li>Enable pagination: <a href="#paginator">Paginator class</a></li>
-<li>Disable pagination: <a href="#taxonomy">Taxonomy class</a></li>
-</ul>
-<p>And the following variables:
-
-</p>
-<ul>
-<li><strong>category</strong> - Category name</li>
-</ul>
-<p><strong>tag:</strong>
-
-</p>
-<ul>
-<li>Enable pagination: <a href="#paginator">Paginator class</a></li>
-<li>Disable pagination: <a href="#taxonomy">Taxonomy class</a></li>
-</ul>
-<p>And the following variables:
-
-</p>
-<ul>
-<li><strong>tag</strong> - Tag name</li>
-</ul>
-<h3>config</h3>
-<p>Global <a href="config.html">configuration</a>.
-
-</p>
-<h3>theme</h3>
-<p>Theme configuration.
-
-</p>
-<p><a id="class"></a>
-</p>
-<h2>Class</h2>
-<p><a id="collection"></a>
-</p>
-<h3>Collection</h3>
-<ul>
-<li><p><strong>each(iterator)</strong></p>
-<p>  Run loop <code>iterator(item, i)</code>. <code>item</code> is the current item of the loop. <code>i</code> is the times loop has ran (started from 0).</p>
-<p>  <strong>Alias:</strong> forEach</p>
-</li>
-<li><p><strong>map(iterator)</strong></p>
-<p>  Run loop <code>iterator(item, i)</code> and replace original value with return value. <code>item</code> is the current item of the loop. <code>i</code> is the times loop has ran (started from 0).</p>
-</li>
-<li><p><strong>filter(iterator)</strong></p>
-<p>  Run loop <code>iterator(item, i)</code>. If the return value is true, preserve it. <code>item</code> is the current item of the loop. <code>i</code> is the times loop has ran (started from 0).</p>
-<p>  <strong>Alias:</strong> select</p>
-</li>
-<li><p><strong>toArray</strong></p>
-<p>  Transform the object into an array.</p>
-</li>
-<li><p><strong>slice(start, [end])</strong></p>
-<p>  Get a specific part of the object. <code>start</code>, <code>end</code> can be negative number.</p>
-</li>
-<li><p><strong>skip(num)</strong></p>
-<p>  Ignore the first specified range of the object.</p>
-</li>
-<li><p><strong>limit(num)</strong></p>
-<p>  Limit the amount of items in the object.</p>
-</li>
-<li><p><strong>set(item)</strong></p>
-<p>  Add a new item to the object.</p>
-<p>  <strong>Alias:</strong> push</p>
-</li>
-<li><p><strong>sort(orderby, [order])</strong></p>
-<p>  Sort the object. When <code>order</code> equals <code>1</code>, <code>asc</code> means ascending sort, <code>-1</code>, <code>desc</code> means descending sort.</p>
-</li>
-<li><p><strong>reverse</strong></p>
-<p>  Reverse the order of the object.</p>
-</li>
-<li><p><strong>random</strong></p>
-<p>  Sort the object randomly.</p>
-<p>  <strong>Alias:</strong> shuffle</p>
-</li>
-</ul>
-<p><a id="taxonomy"></a>
-</p>
-<h3>Taxonomy</h3>
-<p>Taxonomy class is inheritance of <a href="#collection">Collection class</a>. Most method is same as <a href="#collection">Collection class</a>. Only the following method is different.
-
-</p>
-<ul>
-<li><p><strong>get(name)</strong></p>
-<p>  Get the specific item from the object.</p>
-</li>
-<li><p><strong>set(name, item)</strong></p>
-<p>  Add a new item named <code>name</code> to the object.</p>
-<p>  <strong>Alias:</strong> push</p>
-</li>
-<li><p><strong>each(iterator)</strong></p>
-<p>  Run loop <code>iterator(value, key, i)</code>. <code>value</code> is the value of the current item of the loop. <code>key</code> is the name of the current item of the loop. <code>i</code> is the times loop has ran (started from 0).</p>
-<p>  <strong>Alias:</strong> forEach</p>
-</li>
-<li><p><strong>map(iterator)</strong></p>
-<p>  Run loop <code>iterator(item, i)</code> and replace original value with return value. <code>value</code> is the value of the current item of the loop. <code>key</code> is the name of the current item of the loop. <code>i</code> is the times loop has ran (started from 0).</p>
-</li>
-<li><p><strong>filter(iterator)</strong></p>
-<p>  Run loop <code>iterator(item, i)</code>. If the return value is true, preserve it. <code>value</code> is the value of the current item of the loop. <code>key</code> is the name of the current item of the loop. <code>i</code> is the times loop has ran (started from 0).</p>
-<p>  <strong>Alias:</strong> select</p>
-</li>
-</ul>
-<p><a id="paginator"></a>
-</p>
-<h3>Paginator</h3>
-<p>Paginator class is inheritance of original class. The following properties are added.
-
-</p>
-<ul>
-<li><strong>per_page</strong> - Posts displayed in a single page</li>
-<li><strong>total</strong> - Amount of posts</li>
-<li><strong>current</strong> - Current page number</li>
-<li><strong>current_url</strong> - Link of current page</li>
-<li><strong>posts</strong> - <a href="#collection">Collection class</a></li>
-<li><strong>prev</strong> - Previous page number</li>
-<li><strong>prev_link</strong> - Link of previous page</li>
-<li><strong>next</strong> - Next page number</li>
-<li><strong>next_link</strong> - Link of next page</li>
-</ul>
-<p><a id="helper"></a>
-</p>
-<h2>Helper</h2>
-<p>Helper helps you insert code in template faster. The following are the built-in helpers. You can install <a href="../plugins/#helper">Helper plugins</a> to make theme development more convenient. (The following syntax is written in EJS)
-
-</p>
-<h3>css</h3>
-<p>Load CSS file.
-
-</p>
-<pre><code><div class="line">&lt;<span class="string">%- css(path) %&gt;</div></code></pre>
-<h3>js</h3>
-<p>Load JavaScript file.
-
-</p>
-<pre><code><div class="line">&lt;<span class="string">%- js(path) %&gt;</div></code></pre>
-<h3>trim</h3>
-<p>Clear spaces in string.
-
-</p>
-<pre><code><div class="line">&lt;<span class="string">%- trim(string) %&gt;</div></code></pre>
-<h3>strip_html</h3>
-<p>Clear all HTML tags in string.
-
-</p>
-<pre><code><div class="line">&lt;<span class="string">%- strip_html(string) %&gt;</div></code></pre>
-<h3>titlecase</h3>
-<p>Transform string into proper title capitalization.
-
-</p>
-<pre><code><div class="line">&lt;<span class="string">%- titlecase(string) %&gt;</div></code></pre>
-<h3>partial</h3>
-<p>Load other template. Use <code>locals</code> to define variable in template. (Same as <a href="https://github.com/publicclass/express-partials">express-partials</a>)
-
-</p>
-<pre><code><div class="line">&lt;<span class="string">%- partial(layout, [locals]) %&gt;</div></code></pre>
-<h3>tagcloud</h3>
-<p>Insert tag cloud.
-
-</p>
-<pre><code><div class="line">&lt;<span class="string">%- tagcloud(tags, [options]) %&gt;</div></code></pre>
-<p><strong>Options:</strong>
-
-</p>
-<ul>
-<li><strong>min_font</strong> - Minimal font size</li>
-<li><strong>max_font</strong> - Maximum font size</li>
-<li><strong>unit</strong> - Unit of font size</li>
-<li><strong>amount</strong> - Amount of the tags</li>
-<li><strong>orderby</strong> - Order of the tags</li>
-<li><strong>order</strong> - Sort order. <code>1</code>, <code>asc</code> means ascending sort. <code>-1</code>, <code>desc</code> means descending sort. <code>rand</code>, <code>random</code> means random sort.</li>
-</ul>
-<p><strong>Default:</strong>
-
-</p>
-<pre><code><div class="line">{</div><div class="line">    <span class="method">min_font:</span> <span class="number">10</span>,</div><div class="line">    <span class="method">max_font:</span> <span class="number">20</span>,</div><div class="line">    <span class="method">unit:</span> <span class="string">'px'</span>,</div><div class="line">    <span class="method">amount:</span> <span class="number">40</span>,</div><div class="line">    <span class="method">orderby:</span> <span class="string">'name'</span>,</div><div class="line">    <span class="method">order:</span> <span class="number">1</span></div><div class="line">}</div></code></pre>
-<p><a id="source"></a>
-</p>
-<h2>Source</h2>
-<p>You can reference the <a href="https://github.com/tommy351/hexo-theme-light">source code</a> of the default theme &quot;Light&quot; to create your theme.
+<h2>Reference</h2>
+<p>Reference the default theme <a href="https://github.com/tommy351/hexo-theme-light">Light</a> to make your theme.
 
 </p>
 </div>

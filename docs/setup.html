@@ -7,6 +7,7 @@
   <meta name="description" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
   
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   
@@ -39,14 +40,13 @@
 </nav></header>
     <div id="content">
       
-
 <article class="page">
   <h1 class="title">Setup</h1>
-  <div class="entry"><p>After the installation is done, execute the following command, Hexo will build all necessary files for the website.
+  <div class="entry"><p>After installed, execute the following command in the folder you want. Hexo will build all files you need in the target folder.
 
 </p>
 <pre><code class="lang-bash"><div class="line">hexo init &lt;folder&gt;</div></code></pre>
-<p>After the files are built, the structure of folder will look like this.
+<p>After built, here&#39;s how the folder looks like:
 
 </p>
 <pre><code class="lang-plain"><div class="line">|-- .gitignore</div><div class="line">|-- _config.yml</div><div class="line">|-- package.json</div><div class="line">|-- source</div><div class="line">|   |-- _posts</div><div class="line">        |-- hello-world.md</div><div class="line">|   |-- _drafts</div><div class="line">|-- themes</div><div class="line">    |-- light</div></code></pre>
@@ -55,17 +55,17 @@
 
 </p>
 <h3>package.json</h3>
-<p>Application data. <strong>Do not delete it.</strong> If you had deleted it, rebuilt with the following content manually.
+<p>Application data. <strong>Don&#39;t delete it.</strong> If you deleted it unfortunately, rebuild the file with the following content. 
 
 </p>
 <figure class="highlight"><figcaption><span>package.json</span></figcaption><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div></code></pre></td><td class="code"><pre><code><div class="line">{</div><div class="line">    &quot;<span class="attribute">name</span>&quot;: <span class="value"><span class="string">&quot;hexo&quot;</span></span>,</div><div class="line">    &quot;<span class="attribute">version</span>&quot;: <span class="value"><span class="string">&quot;0.0.1&quot;</span></span>,</div><div class="line">    &quot;<span class="attribute">private</span>&quot;: <span class="value"><span class="literal">true</span></span>,</div><div class="line">    &quot;<span class="attribute">engines</span>&quot;: <span class="value">{</div><div class="line">        &quot;<span class="attribute">node</span>&quot;: <span class="value"><span class="string">&quot;&gt;0.6.0&quot;</span></span>,</div><div class="line">        &quot;<span class="attribute">npm</span>&quot;: <span class="value"><span class="string">&quot;&gt;1.1.0&quot;</span></div><div class="line">    }</span></span>,</div><div class="line">    &quot;<span class="attribute">dependencies</span>&quot;: <span class="value">{}</div><div class="line">}</span></div></code></pre></td></tr></table></figure>
 
 <h3>source</h3>
-<p>The files in this folder will be processed and saved in <code>public</code> folder. File or Folder whose name started with <code>.</code> or <code>_</code> will be ignored except <code>_posts</code> folder.
+<p>Files in this folder will be processed and saved in <code>public</code> folder. File or folder whose name started with <code>.</code> (dot) or <code>_</code> (underscore) will be ignored except <code>_posts</code> folder.
 
 </p>
 <h3>themes</h3>
-<p>Theme folder. The default theme of Hexo is <a href="https://github.com/tommy351/hexo-theme-light">Light</a>.
+<p>Theme folder. The default theme of Hexo is <a href="https://github.com/tommy351/hexo-theme-light">Light</a>。
 
 </p>
 </div>

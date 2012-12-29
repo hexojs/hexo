@@ -7,6 +7,7 @@
   <meta name="description" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
   
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   
@@ -39,41 +40,54 @@
 </nav></header>
     <div id="content">
       
-
 <article class="page">
   <h1 class="title">貢獻</h1>
-  <div class="entry"><p>你可以為 Hexo 貢獻心力，讓 Hexo 更臻完美！
-
-</p>
-<h2>Debugger</h2>
-<p>最簡單的工作就是：使用 Hexo，發現 Bug 時主動回報，你也做得到的！
+  <div class="entry"><h2>回報錯誤</h2>
+<p>當你使用 Hexo 時，如果發現錯誤的話，請在 GitHub 上回報，如果有任何建議的話，也歡迎提出。
 
 </p>
 <p><a href="https://github.com/tommy351/hexo/issues">回報問題</a>
 
 </p>
-<h2>Developer</h2>
-<p>如果你想要參與 Hexo 的開發，你可以：
+<h2>撰寫文件</h2>
+<p>當發現文件有不足或訛誤時，你可以：
 
 </p>
 <ol>
 <li>Fork 本專案</li>
-<li>建立新分支</li>
-<li>在新分支上開發完成後，使用 Pull Request 將分支 Push 到 GitHub</li>
+<li>根據 <strong>site</strong> 分支建立新分支</li>
+<li>修改文件</li>
+<li>發送 Pull Request 到 <strong>site</strong> 分支</li>
 </ol>
-<p><a href="https://github.com/tommy351/hexo">原始碼</a>
+<p>如果想要幫忙翻譯文件，請在<code>source</code>文件夾開一個新的資料夾，並將原始檔案複製進去。例如：
 
 </p>
-<h2>Translator</h2>
-<p>想要讓 Hexo 說你聽得懂的語言嗎？你可以幫助翻譯文件，成為傳教士，讓每個人都了解 Hexo 的美好。
+<pre><code class="lang-plain"><div class="line">zh-TW</div><div class="line">|-- docs</div><div class="line">|-- index.md</div><div class="line">|-- plugins</div><div class="line">|-- themes</div></code></pre>
+<p>並在每個文章新增語言參數，例如：
+
+</p>
+<pre><code class="lang-plain"><div class="line">---</div><div class="line">layout: page</div><div class="line">title: 貢獻</div><div class="line">lang: zh-TW</div><div class="line">date: 2012-11-01 18:13:30</div><div class="line">---</div></code></pre>
+<p>語言碼請依照 <a href="http://www.w3.org/International/articles/language-tags/">IETF 格式</a> 命名。
+
+</p>
+<p><a href="https://github.com/tommy351/hexo/tree/site">原始碼</a>
+
+</p>
+<h2>參與開發</h2>
+<p>如果你想要參與開發，你可以：
 
 </p>
 <ol>
-<li>Fork 專案</li>
-<li>根據<code>site</code>分支建立新分支</li>
-<li>文件翻譯完成後，使用 Pull Request 將分支 Push 到 GitHub</li>
+<li>Fork 本專案</li>
+<li>開新分支</li>
+<li>新功能開發完成後，發送 Pull Request 到 <strong>dev</strong> 分支</li>
 </ol>
-<p><a href="https://github.com/tommy351/hexo/tree/site">原始碼</a></p>
+<p>如果你開發了很棒的外掛的話，也可以發送 Pull Request，也許你開發的外掛能夠併入主程式！
+
+</p>
+<p><a href="https://github.com/tommy351/hexo">原始碼</a>
+
+</p>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

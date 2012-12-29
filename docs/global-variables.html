@@ -1,0 +1,264 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hexo - Global Variables</title>
+  
+  <meta name="description" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
+  
+  <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4910098-7']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+<h1><a href="/hexo/">Hexo</a></h1>
+<div class="clearfix"></div>
+<nav id="main-nav">
+  <ul>
+    <li><a href="/hexo/docs/">Docs</a></li>
+    <li><a href="/hexo/plugins/">Plugins</a></li>
+    <li><a href="/hexo/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo">Source</a></li>
+  </ul>
+</nav></header>
+    <div id="content">
+      
+<article class="page">
+  <h1 class="title">Global Variables</h1>
+  <div class="entry"><p>Hexo creates a namespace <code>hexo</code> when initializing with the following read-only variables.
+
+</p>
+<ul>
+<li><strong>base_dir</strong> - Root directory</li>
+<li><strong>public_dir</strong> - Static files directory（public）</li>
+<li><strong>source_dir</strong> - Source files directory（source）</li>
+<li><strong>theme_dir</strong> - Theme directory（theme/theme_name）</li>
+<li><strong>plugin_dir</strong> - Plugin directory（node_modules）</li>
+<li><strong>version</strong> - Version of Hexo</li>
+<li><strong>env</strong> - Environment</li>
+<li><strong>config</strong> - <a href="configure.html">Global configuration</a>, the content of <code>_config.yml</code></li>
+<li><strong><a href="#extend">extend</a></strong> - Extensions</li>
+<li><strong><a href="#util">util</a></strong> - Utilities</li>
+<li><strong><a href="#render">render</a></strong> - Render module</li>
+<li><strong><a href="#i18n">i18n</a></strong> - Internationalization (i18n) module</li>
+<li><strong><a href="#route">route</a></strong> - Route module</li>
+</ul>
+<p><a id="extend"></a>
+</p>
+<h3>extend</h3>
+<p><strong>extend</strong> is the module handling all extensions. Each extension has two method: <strong>list</strong> &amp; <strong>register</strong>. The former lists all extensions that the object handling; the letter registers a new extension to the object.
+
+</p>
+<h4>generator</h4>
+<ul>
+<li><strong>list</strong> - Returns an array.</li>
+<li><strong>register(fn)</strong> - Registers a extension.</li>
+</ul>
+<h4>renderer</h4>
+<ul>
+<li><strong>list</strong> - Returns an object. The element in the object has <code>output</code> property.</li>
+<li><strong>register(name, output, fn, sync)</strong> - Registers a extension. <code>name</code> is the name of the extension. <code>output</code> is the extension of output files. <code>sync</code> is sync mode. (Default is <code>false</code>)</li>
+</ul>
+<h4>tag</h4>
+<ul>
+<li><strong>list</strong> - Returns an object.</li>
+<li><strong>register(name, fn, ends)</strong> - Registers a extension. <code>name</code> is the name of the extension. <code>ends</code> is end tag. (Default is <code>false</code>)</li>
+</ul>
+<h4>deployer</h4>
+<ul>
+<li><strong>list</strong> - Returns an object.</li>
+<li><strong>register(name, fn)</strong> - Registers a extension. <code>name</code> is the name of the extension.</li>
+</ul>
+<h4>processor</h4>
+<ul>
+<li><strong>list</strong> - Returns an array.</li>
+<li><strong>register(fn)</strong> - Registers a extension.</li>
+</ul>
+<h4>helper</h4>
+<ul>
+<li><strong>list</strong> - Returns an array.</li>
+<li><strong>register(name, fn)</strong> - Registers a extension. <code>name</code> is the name of the extension.</li>
+</ul>
+<h4>console</h4>
+<ul>
+<li><strong>list</strong> - Return an object. The element in the object has <code>description</code> property.</li>
+<li><strong>register(name, desc, fn)</strong> - Registers a extension. <code>name</code> is the name of the extension. <code>desc</code> is the description of the extension.</li>
+</ul>
+<h4>migrator</h4>
+<ul>
+<li><strong>list</strong> - Returns an object.</li>
+<li><strong>register(name, fn)</strong> - Registers a extension. <code>name</code> is the name of the extension.</li>
+</ul>
+<p>Check <a href="plugin-development.html">plugin development</a> for more info.
+
+</p>
+<p><a id="util"></a>
+</p>
+<h3>util</h3>
+<p><strong>util</strong> is the utilities, including the following module:
+
+</p>
+<h4>file</h4>
+<p>Operates file I/O, owning the following method:
+
+</p>
+<ul>
+<li><strong>mkdir(dest, callback)</strong></li>
+<li><strong>write(dest, content, callback)</strong></li>
+<li><strong>copy(src, dest, callback)</strong></li>
+<li><strong>dir(src, callback)</strong></li>
+<li><strong>read(src, callback)</strong></li>
+<li><strong>readSync(src, callback)</strong></li>
+<li><strong>empty(target, exclude, callback)</strong></li>
+</ul>
+<h4>highlight(string, options)</h4>
+<p>Exports highlighted code block. The following is the options:
+
+</p>
+<ul>
+<li><strong>gutter</strong> - Display line numbers</li>
+<li><strong>first_line</strong> - The first line number</li>
+<li><strong>lang</strong> - Language</li>
+<li><strong>caption</strong> - Caption</li>
+</ul>
+<h4>titlecase(string)</h4>
+<p>Transforms a string into proper title capitalization.
+
+</p>
+<h4>yfm(string)</h4>
+<p>Parses <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front Matter</a>. Exports an object. The content is <code>_content</code> property.
+
+</p>
+<p><a id="render"></a>
+</p>
+<h3>render</h3>
+<p>Each render function has two method: <strong>render</strong> &amp; <strong>compile</strong>. The former renders a string; the letter renders a file. Both method have sync and async mode.
+
+</p>
+<p><strong>render(string, ext, [locals], callback)</strong><br><strong>renderSync(string, ext, [locals])</strong>
+
+</p>
+<ul>
+<li><strong>string</strong> - Import string</li>
+<li><strong>ext</strong> - Extension name</li>
+<li><strong>locals</strong> - Local variables</li>
+<li><strong>callback</strong> - Callback function</li>
+</ul>
+<p><strong>compile(src, locals, callback)</strong><br><strong>compileSync(src, locals)</strong>
+
+</p>
+<ul>
+<li><strong>src</strong> - Path of source file</li>
+<li><strong>locals</strong> - Local variables</li>
+<li><strong>callback</strong> - Callback function</li>
+</ul>
+<p><a id="i18n"></a>
+</p>
+<h3>i18n</h3>
+<p><strong>i18n</strong> is internationalization (i18n) module. Here&#39;s how to use:
+
+</p>
+<pre><code class="lang-js"><div class="line"><span class="keyword">var</span> i18n = <span class="keyword">new</span> hexo.i18n();</div></code></pre>
+<p>A i18n object owns the following methods:
+
+</p>
+<h4>get</h4>
+<p>The first argument must be the key value. The other arguments will be processed by <a href="http://nodejs.org/api/util.html#util_util_format_format">util.format</a>.
+
+</p>
+<p>When the first argument is an array, it will detect the second argument to process plural nouns.
+
+</p>
+<ul>
+<li>2 elements in the 1st argument:<ul>
+<li>n &gt; 1: Use the 2nd element</li>
+<li>n &lt;= 1: Use the 1st element</li>
+</ul>
+</li>
+<li>3 elements in the 1st argument:<ul>
+<li>n &gt; 1: Use the 3rd element</li>
+<li>0 &lt; n &lt;= 1: Use the 2nd element</li>
+<li>n == 0: Use the 1st element</li>
+</ul>
+</li>
+</ul>
+<h4>set(key, value)</h4>
+<ul>
+<li><strong>key</strong> - Key value</li>
+<li><strong>value</strong> - Value</li>
+</ul>
+<h4>list([obj])</h4>
+<p>Returns all elements of the object if <code>obj</code> undefined. Replaces the object with the argument if <code>obj</code> is an object.
+
+</p>
+<h4>load(path, callback)</h4>
+<p>Loads language files automatically. <code>path</code> is the language file directory. Hexo will based on <code>language</code> setting in <code>_config.yml</code>. If the language file is not found, it will load <code>default.yml</code> instead. So the directory must have <code>default.yml</code> at least.
+
+</p>
+<p><a id="route"></a>
+</p>
+<h3>route</h3>
+<p>Hexo has started using route module to handle all paths of the website since version 0.3.
+
+</p>
+<h4>get(path)</h4>
+<p>Gets the content of the path.
+
+</p>
+<pre><code class="lang-js"><div class="line">route.get(path, <span class="keyword">function</span>(err, result){</div><div class="line">    ...</div><div class="line">});</div></code></pre>
+<h4>set(path, content)</h4>
+<p>Sets the content of the path. <code>content</code> can be a function or else. If it is a function, it must pass a callback with two arguments: <code>(err, result)</code>.
+
+</p>
+<pre><code class="lang-js"><div class="line">route.set(path, content);</div><br><div class="line">route.set(path, <span class="keyword">function</span>(fn){</div><div class="line">    fn(<span class="literal">null</span>, <span class="string">'content'</span>);</div><div class="line">});</div></code></pre>
+<h4>format(path)</h4>
+<p>Formats the path. Adds <code>index.html</code> if the path is empty or ended with <code>/</code>.
+
+</p>
+<h4>destroy(path)</h4>
+<p>Deletes a path.
+
+</p>
+<h4>list()</h4>
+<p>Returns an object.
+
+</p>
+</div>
+</article>
+      <footer id="footer"><div class="alignleft">
+  &copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
+  Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>.
+</div>
+<div class="alignright">
+  <select id="lang-select">
+    <option value="" selected>English</option>
+    
+      <option value="zh-TW">正體中文</option>
+    
+  </select>
+</div>
+<div class="clearfix"></div></footer>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <script src="/hexo/js/main.js"></script>
+<a href="https://github.com/tommy351/hexo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hexo - Helpers</title>
+  
+  <meta name="description" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
+  
+  <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4910098-7']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+<h1><a href="/hexo/">Hexo</a></h1>
+<div class="clearfix"></div>
+<nav id="main-nav">
+  <ul>
+    <li><a href="/hexo/docs/">Docs</a></li>
+    <li><a href="/hexo/plugins/">Plugins</a></li>
+    <li><a href="/hexo/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo">Source</a></li>
+  </ul>
+</nav></header>
+    <div id="content">
+      
+<article class="page">
+  <h1 class="title">Helpers</h1>
+  <div class="entry"><p>Helpers help you transform data into HTML string in templates, making it easier to develop a theme. The following is built-in helpers. (EJS syntax)
+
+</p>
+<h4>css</h4>
+<p>Loads a CSS file.
+
+</p>
+<pre><code><div class="line">&lt;<span class="string">%- css(path) %&gt;</div></code></pre>
+<h4>js</h4>
+<p>Loads a JavaScript file.
+
+</p>
+<pre><code><div class="line">&lt;<span class="string">%- js(path) %&gt;</div></code></pre>
+<h4>trim</h4>
+<p>Clears all spaces in a string.
+
+</p>
+<pre><code><div class="line">&lt;<span class="string">%- trim(string) %&gt;</div></code></pre>
+<h4>strip_html</h4>
+<p>Clears all HTML tags in a string.
+
+</p>
+<pre><code><div class="line">&lt;<span class="string">%- strip_html(string) %&gt;</div></code></pre>
+<h4>titlecase</h4>
+<p>Transforms a string into proper title capitalization.
+
+</p>
+<pre><code><div class="line">&lt;<span class="string">%- titlecase(string) %&gt;</div></code></pre>
+<h4>partial</h4>
+<p>Loads other template. Use <code>locals</code> to define variables in the template. (Same as <a href="https://github.com/publicclass/express-partials">express-partials</a>)
+
+</p>
+<pre><code><div class="line">&lt;<span class="string">%- partial(layout, [locals]) %&gt;</div></code></pre>
+<h4>tagcloud</h4>
+<p>Inserts tag cloud.
+
+</p>
+<pre><code><div class="line">&lt;<span class="string">%- tagcloud(tags, [options]) %&gt;</div></code></pre>
+<p><strong>Options:</strong>
+
+</p>
+<ul>
+<li><strong>min_font</strong> - Minimal font size</li>
+<li><strong>max_font</strong> - Maximum font size</li>
+<li><strong>unit</strong> - Unit of font size</li>
+<li><strong>amount</strong> - Amount of tags</li>
+<li><strong>orderby</strong> - Order of tags</li>
+<li><strong>order</strong> - Sort order. <code>1</code>, <code>asc</code> as ascending; <code>-1</code>, <code>desc</code> as descending.</li>
+</ul>
+<p><strong>Default:</strong>
+
+</p>
+<pre><code><div class="line">{</div><div class="line">    <span class="method">min_font:</span> <span class="number">10</span>,</div><div class="line">    <span class="method">max_font:</span> <span class="number">20</span>,</div><div class="line">    <span class="method">unit:</span> <span class="string">'px'</span>,</div><div class="line">    <span class="method">amount:</span> <span class="number">40</span>,</div><div class="line">    <span class="method">orderby:</span> <span class="string">'name'</span>,</div><div class="line">    <span class="method">order:</span> <span class="number">1</span></div><div class="line">}</div></code></pre>
+</div>
+</article>
+      <footer id="footer"><div class="alignleft">
+  &copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
+  Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>.
+</div>
+<div class="alignright">
+  <select id="lang-select">
+    <option value="" selected>English</option>
+    
+      <option value="zh-TW">正體中文</option>
+    
+  </select>
+</div>
+<div class="clearfix"></div></footer>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <script src="/hexo/js/main.js"></script>
+<a href="https://github.com/tommy351/hexo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+</body>
+</html>

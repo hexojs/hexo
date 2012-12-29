@@ -7,6 +7,7 @@
   <meta name="description" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
   
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   
@@ -39,17 +40,9 @@
 </nav></header>
     <div id="content">
       
-
 <article class="page">
   <h1 class="title">伺服器</h1>
-  <div class="entry"><h2>目錄</h2>
-<ul>
-<li><a href="#builtin">內建伺服器</a></li>
-<li><a href="#pow">Pow</a></li>
-</ul>
-<p><a id="builtin"></a>
-</p>
-<h2>內建伺服器</h2>
+  <div class="entry"><h2>內建伺服器</h2>
 <p>Hexo 使用 <a href="https://github.com/senchalabs/connect">Connect</a> 作為靜態檔案的伺服器。
 
 </p>
@@ -62,12 +55,10 @@
 </p>
 <pre><code class="lang-bash"><div class="line">hexo server</div></code></pre>
 <h3>記錄器</h3>
-<p>編輯<code>_config.yml</code>中的<code>logger</code>欄位啟動記錄器。編輯<code>logger_format</code>欄位可調整記錄的顯示方式，參考 <a href="http://www.senchalabs.org/connect/logger.html">文件</a> 以獲得更多資訊。
+<p>編輯<code>_config.yml</code>中的<code>logger</code>欄位啟動記錄器。編輯<code>logger_format</code>欄位可調整記錄的顯示內容，參考 <a href="http://www.senchalabs.org/connect/logger.html">Connect</a> 以獲得更多資訊。
 
 </p>
 <pre><code class="lang-yaml"><div class="line"><span class="attribute">logger</span>: <span class="string">true</span></div><div class="line"><span class="attribute">logger_format:</div></code></pre>
-<p><a id="pow"></a>
-</p>
 <h2>Pow</h2>
 <p><a href="http://pow.cx/">Pow</a> 是由 Node.js 所建立的 Mac 環境專用的零配置 Rack 伺服器，不過它也能用於處理一般的靜態檔案。
 
@@ -85,7 +76,7 @@
 <p>完成後，網站即會出現在<code>http://myapp.dev</code>，網址根據連結名稱而有所不同。
 
 </p>
-<p>參考 <a href="http://pow.cx/manual.html">文件</a> 以獲得更多資訊。
+<p>參考 <a href="http://pow.cx/manual.html">Pow</a> 以獲得更多資訊。
 
 </p>
 </div>

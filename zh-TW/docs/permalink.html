@@ -7,6 +7,7 @@
   <meta name="description" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
   
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   
@@ -39,15 +40,14 @@
 </nav></header>
     <div id="content">
       
-
 <article class="page">
   <h1 class="title">永久連結</h1>
   <div class="entry"><h2>設定</h2>
 <p>在<code>_config.yml</code>中的<code>permalink</code>欄位設定文章連結，預設值為：
 
 </p>
-<pre><code><div class="line"><span class="symbol">permalink:</span> <span class="symbol">:year/</span><span class="symbol">:month/</span><span class="symbol">:day/</span><span class="symbol">:title/</span></div></code></pre>
-<p>在永久連結中可加入以下變數，必須要在變數名稱前加入<code>:</code>才有效。
+<pre><code class="lang-plain"><div class="line">permalink: :year/:month/:day/:title/</div></code></pre>
+<p>在永久連結中可加入以下變數，變數名稱前必須擁有<code>:</code>才有效。
 
 </p>
 <ul>
@@ -61,14 +61,14 @@
 
 </p>
 <h2>舉例</h2>
-<p>假設有一文章名為<code>title.md</code>，內容為：
+<p>假設有一文章名為<code>title.md</code>，放置於<code>source/_posts/foo/bar</code>資料夾，內容為：
 
 </p>
 <pre><code class="lang-plain"><div class="line">---</div><div class="line">layout: post</div><div class="line">title: Post Title</div><div class="line">date: 2012-10-09 14:09:37</div><div class="line">tags:</div><div class="line">- Node.js</div><div class="line">- JavaScript</div><div class="line">---</div></code></pre>
 <p>則結果會是：
 
 </p>
-<pre><code><div class="line">:<span class="built_in">year</span>/:<span class="built_in">month</span>/:<span class="built_in">day</span>/:title/ =&gt; /<span class="number">2012</span>/<span class="number">10</span>/<span class="number">09</span>/title/</div><div class="line">:<span class="built_in">year</span>-:<span class="built_in">month</span>-:<span class="built_in">day</span>/:title/ =&gt; /<span class="number">2012</span>-<span class="number">10</span>-<span class="number">09</span>/title/</div><div class="line">:category/title/ =&gt; /post/title/</div></code></pre>
+<pre><code class="lang-plain"><div class="line">:year/:month/:day/:title/ => /2012/10/09/title/</div><div class="line">:year-:month-:day/:title/ => /2012-10-09/title/</div><div class="line">:category/:title/ => /foo/bar/title/</div></code></pre>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

@@ -7,6 +7,7 @@
   <meta name="description" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
   
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   
@@ -39,296 +40,54 @@
 </nav></header>
     <div id="content">
       
-
 <article class="page">
   <h1 class="title">主題開發</h1>
-  <div class="entry"><h2>目錄</h2>
-<ul>
-<li><a href="#structure">結構</a></li>
-<li><a href="#variable">變數</a></li>
-<li><a href="#class">類別 (Class)</a></li>
-<li><a href="#helper">Helper</a></li>
-<li><a href="#source">原始碼</a></li>
-</ul>
-<p><a id="structure"></a>
-</p>
-<h2>結構</h2>
-<pre><code class="lang-plain"><div class="line">|-- _config.yml</div><div class="line">|-- layout</div><div class="line">|-- source</div></code></pre>
+  <div class="entry"><h2>結構</h2>
+<pre><code class="lang-plain"><div class="line">|-- _config.yml</div><div class="line">|-- languages</div><div class="line">|-- layout</div><div class="line">|-- source</div></code></pre>
 <h3>_config.yml</h3>
 <p>主題的設定檔案。
 
 </p>
-<h3>layout</h3>
-<p>模版資料夾。你可使用 <a href="https://github.com/visionmedia/ejs">EJS</a> 或 <a href="http://paularmstrong.github.com/swig/">Swig</a> 處理模版檔案，或安裝 <a href="../plugins/#renderer">Renderer 外掛</a> 以使用你喜愛的模版引擎。
+<p>參考：<a href="configure.html">設定</a>
 
 </p>
-<p>基礎模版：
+<h3>languages</h3>
+<p>主題的語言檔案。
+
+</p>
+<p>參考：<a href="global-variables.html#i18n">國際化（i18n）</a>
+
+</p>
+<h3>layout</h3>
+<p>樣板資料夾。你可使用 <a href="https://github.com/visionmedia/ejs">EJS</a> 或 <a href="http://paularmstrong.github.com/swig/">Swig</a> 處理模版檔案，或安裝 <a href="../plugins/#renderer">Renderer 外掛</a> 以使用你喜愛的樣板引擎。
+
+</p>
+<p>基礎布局：
 
 </p>
 <ul>
-<li><strong>archive</strong> - 網誌彙整</li>
-<li><strong>category</strong> - 分類彙整</li>
+<li><strong>archive</strong> - 網誌彙整，若無此樣板則使用 <strong>index</strong> 布局。</li>
+<li><strong>category</strong> - 分類彙整，若無此樣板則使用 <strong>archive</strong> 布局。</li>
 <li><strong>index</strong> - 首頁</li>
-<li><strong>page</strong> - 分頁</li>
-<li><strong>post</strong> - 文章</li>
-<li><strong>tag</strong> - 標籤彙整</li>
+<li><strong>page</strong> - 分頁，若無此樣板則使用 <strong>index</strong> 布局。</li>
+<li><strong>post</strong> - 文章，若無此樣板則使用 <strong>index</strong> 布局。</li>
+<li><strong>tag</strong> - 標籤彙整，若無此樣板則使用 <strong>archive</strong> 布局。</li>
 </ul>
+<p>你也可以在主題中自定其他布局，例如<code>link</code>或<code>photo</code>之類的，若找不到自定的布局的話，則會根據 Generator 的不同，使用相對應的布局代替。
+
+</p>
+<p><em>（至少要有<strong>index</strong>布局）</em>
+
+</p>
 <h3>source</h3>
-<p>原始檔資料夾，CSS、JavaScript 等檔案（<em>Asset</em>）應放置於此資料夾。此資料夾內的檔案在經過處理後會被複製至<code>public</code>資料夾，檔案或資料夾名稱開頭為<code>.</code>或<code>_</code>的會被忽略。
+<p>原始檔資料夾，CSS、JavaScript 等檔案（Asset）應放置於此資料夾。此資料夾內的檔案在經過處理後會被複製至<code>public</code>資料夾，檔案或資料夾名稱開頭為<code>.</code>（點）或<code>_</code>（底線）的會被忽略。
 
 </p>
 <p>Hexo 內建 <a href="http://learnboost.github.com/stylus/">Stylus</a> 及 <a href="http://visionmedia.github.com/nib/">nib</a> 支援，你可安裝 <a href="../plugins/#renderer">Renderer 外掛</a> 讓 Hexo 支援更多檔案格式。
 
 </p>
-<p><a id="variable"></a>
-</p>
-<h2>變數</h2>
-<h3>site</h3>
-<p>網站全域資料。
-
-</p>
-<ul>
-<li><strong>posts</strong> - 所有文章，根據文章日期降冪排列。</li>
-<li><strong>pages</strong> - 所有分頁，根據文章日期降冪排列。</li>
-<li><strong>categories</strong> - 所有分類，根據字母順序排列。</li>
-<li><strong>tags</strong> - 所有標籤，根據字母順序排列。</li>
-</ul>
-<p><code>posts</code>, <code>pages</code>使用 <a href="#collection">Collection 類別</a>。
-
-</p>
-<p><code>categories</code>, <code>tags</code>使用 <a href="#taxonomy">Taxonomy 類別</a>。
-
-</p>
-<h3>page</h3>
-<p>目前頁面的資料。內容根據不同頁面而有所差異。
-
-</p>
-<p><strong>page, post:</strong>
-
-</p>
-<ul>
-<li><strong>layout</strong> - 文章佈局</li>
-<li><strong>title</strong> - 文章標題</li>
-<li><strong>date</strong> - 文章的發佈日期（<a href="http://momentjs.com/">Moment.js</a> 物件）</li>
-<li><strong>updated</strong> - 文章的更新日期（<a href="http://momentjs.com/">Moment.js</a> 物件）</li>
-<li><strong>comments</strong> - 開啟此文章的留言功能</li>
-<li><strong>permalink</strong> - 文章的永久連結</li>
-<li><strong>stats</strong> - 文章的檔案狀態（<a href="http://nodejs.org/api/fs.html#fs_class_fs_stats">fs.Stats</a> 類別）</li>
-<li><strong>content</strong> - 文章內文</li>
-<li><strong>excerpt</strong> - 文章摘要（內文中 <code>&lt;!-- more --&gt;</code> 之前的內容）</li>
-<li><strong>source</strong> - 原始檔案路徑</li>
-<li><strong>path</strong> - 文章的相對路徑</li>
-</ul>
-<p>以及使用者在文章設定中所設定的其他變數。
-
-</p>
-<p>page 和 post 的差別不大，僅在於 page 沒有<code>categories</code>和<code>tags</code>變數。
-
-</p>
-<p><strong>index:</strong>
-
-</p>
-<ul>
-<li>啟用分頁功能：<a href="#paginator">Paginator 類別</a></li>
-<li>關閉分頁功能：<a href="#taxonomy">Taxonomy 類別</a></li>
-</ul>
-<p><strong>archive:</strong>
-
-</p>
-<ul>
-<li>啟用分頁功能：<a href="#paginator">Paginator 類別</a></li>
-<li>關閉分頁功能：<a href="#taxonomy">Taxonomy 類別</a></li>
-</ul>
-<p>以及以下變數：
-
-</p>
-<ul>
-<li><strong>archive</strong> - 恆為<code>true</code></li>
-<li><strong>year</strong> - 彙整年份（僅出現於年彙整）</li>
-<li><strong>month</strong> - 彙整月份（僅出現於月彙整）</li>
-</ul>
-<p><strong>category:</strong>
-
-</p>
-<ul>
-<li>啟用分頁功能：<a href="#paginator">Paginator 類別</a></li>
-<li>關閉分頁功能：<a href="#taxonomy">Taxonomy 類別</a></li>
-</ul>
-<p>以及以下變數：
-
-</p>
-<ul>
-<li><strong>category</strong> - 分類名稱</li>
-</ul>
-<p><strong>tag:</strong>
-
-</p>
-<ul>
-<li>啟用分頁功能：<a href="#paginator">Paginator 類別</a></li>
-<li>關閉分頁功能：<a href="#taxonomy">Taxonomy 類別</a></li>
-</ul>
-<p>以及以下變數：
-
-</p>
-<ul>
-<li><strong>tag</strong> - 標籤名稱</li>
-</ul>
-<h3>config</h3>
-<p>全域 <a href="config.html">設定</a>。
-
-</p>
-<h3>theme</h3>
-<p>主題設定。
-
-</p>
-<p><a id="class"></a>
-</p>
-<h2>類別 (Class)</h2>
-<p><a id="collection"></a>
-</p>
-<h3>Collection</h3>
-<ul>
-<li><p><strong>each(iterator)</strong></p>
-<p>  執行迴圈<code>iterator(item, i)</code>，<code>item</code>為迴圈目前的項目，<code>i</code>為迴圈執行的次數（從 0 開始）。</p>
-<p>  <strong>別名：</strong>forEach</p>
-</li>
-<li><p><strong>map(iterator)</strong></p>
-<p>  執行迴圈<code>iterator(item, i)</code>，並用其回傳值代替原項目的值，<code>item</code>為迴圈目前的項目，<code>i</code>為迴圈執行的次數（從 0 開始）。</p>
-</li>
-<li><p><strong>filter(iterator)</strong></p>
-<p>  執行迴圈<code>iterator(item, i)</code>，若其回傳值為真，則保留其值，<code>item</code>為迴圈目前的項目，<code>i</code>為迴圈執行的次數（從 0 開始）。</p>
-<p>  <strong>別名：</strong>select</p>
-</li>
-<li><p><strong>toArray</strong></p>
-<p>  將物件轉換為陣列（Array）。</p>
-</li>
-<li><p><strong>slice(start, [end])</strong></p>
-<p>  取出物件中的特定部分。<code>start</code>, <code>end</code>的值可為負數。</p>
-</li>
-<li><p><strong>skip(num)</strong></p>
-<p>  忽略物件中最前的指定段落。</p>
-</li>
-<li><p><strong>limit(num)</strong></p>
-<p>  限制傳回的物件數量。</p>
-</li>
-<li><p><strong>set(item)</strong></p>
-<p>  在物件中新增項目。</p>
-<p>  <strong>別名：</strong>push</p>
-</li>
-<li><p><strong>sort(orderby, [order])</strong></p>
-<p>  排列物件。<code>order</code>為<code>1</code>, <code>asc</code>時為升冪排列（預設），<code>-1</code>, <code>desc</code>時為降冪排列。</p>
-</li>
-<li><p><strong>reverse</strong></p>
-<p>  反轉物件順序。</p>
-</li>
-<li><p><strong>random</strong></p>
-<p>  隨機排列物件。</p>
-<p>  <strong>別名：</strong>shuffle</p>
-</li>
-</ul>
-<p><a id="taxonomy"></a>
-</p>
-<h3>Taxonomy</h3>
-<p>Taxonomy 類別是 <a href="#collection">Collection 類別</a> 的繼承，大部分的方法都與 <a href="#collection">Collection 類別</a> 類似，僅有下列方法有所差異。
-
-</p>
-<ul>
-<li><p><strong>get(name)</strong></p>
-<p>  取得物件中的指定項目。</p>
-</li>
-<li><p><strong>set(name, item)</strong></p>
-<p>  在物件中新增一個名為<code>name</code>的項目。</p>
-<p>  <strong>別名：</strong>push</p>
-</li>
-<li><p><strong>each(iterator)</strong></p>
-<p>  執行迴圈<code>iterator(value, key, i)</code>，<code>value</code>為迴圈目前的項目數值，<code>key</code>為迴圈目前的項目名稱，<code>i</code>為迴圈執行的次數（從 0 開始）。</p>
-<p>  <strong>別名：</strong>forEach</p>
-</li>
-<li><p><strong>map(iterator)</strong></p>
-<p>  執行迴圈<code>iterator(value, key, i)</code>，並用其回傳值代替原項目的值，<code>value</code>為迴圈目前的項目數值，<code>key</code>為迴圈目前的項目名稱，<code>i</code>為迴圈執行的次數（從 0 開始）。</p>
-</li>
-<li><p><strong>filter(iterator)</strong></p>
-<p>  執行迴圈<code>iterator(value, key, i)</code>，若其回傳值為真，則保留其值，<code>value</code>為迴圈目前的項目數值，<code>key</code>為迴圈目前的項目名稱，<code>i</code>為迴圈執行的次數（從 0 開始）。</p>
-<p>  <strong>別名：</strong>select</p>
-</li>
-</ul>
-<p><a id="paginator"></a>
-</p>
-<h3>Paginator</h3>
-<p>Paginator 類別是原類別的繼承，僅增加下列屬性。
-
-</p>
-<ul>
-<li><strong>per_page</strong> - 每頁顯示的文章數量</li>
-<li><strong>total</strong> - 文章總數量</li>
-<li><strong>current</strong> - 目前頁數</li>
-<li><strong>current_url</strong> - 目前頁數的網址</li>
-<li><strong>posts</strong> - <a href="#collection">Collection 類別</a></li>
-<li><strong>prev</strong> - 上一頁的頁數</li>
-<li><strong>prev_link</strong> - 上一頁的連結</li>
-<li><strong>next</strong> - 下一頁的頁數</li>
-<li><strong>next_link</strong> - 下一頁的連結</li>
-</ul>
-<p><a id="helper"></a>
-</p>
-<h2>Helper</h2>
-<p>Helper 可幫助你在模版檔案中快速加入程式碼，以下是 Hexo 內建的 Helper，你可安裝 <a href="../plugins/#helper">Helper 外掛</a> 讓主題開發更加方便。（以下語法以 EJS 為範例）
-
-</p>
-<h3>css</h3>
-<p>載入 CSS 檔案。
-
-</p>
-<pre><code><div class="line">&lt;<span class="string">%- css(path) %&gt;</div></code></pre>
-<h3>js</h3>
-<p>載入 JavaScript 檔案。
-
-</p>
-<pre><code><div class="line">&lt;<span class="string">%- js(path) %&gt;</div></code></pre>
-<h3>trim</h3>
-<p>清除字串中的空白。
-
-</p>
-<pre><code><div class="line">&lt;<span class="string">%- trim(string) %&gt;</div></code></pre>
-<h3>strip_html</h3>
-<p>清除字串中的所有 HTML 標籤。
-
-</p>
-<pre><code><div class="line">&lt;<span class="string">%- strip_html(string) %&gt;</div></code></pre>
-<h3>titlecase</h3>
-<p>將字串轉為合適的標題大寫。
-
-</p>
-<pre><code><div class="line">&lt;<span class="string">%- titlecase(string) %&gt;</div></code></pre>
-<h3>partial</h3>
-<p>載入其他模版，可使用<code>locals</code>指定模版內的變數。（使用方法與 <a href="https://github.com/publicclass/express-partials">express-partials</a> 相同）
-
-</p>
-<pre><code><div class="line">&lt;<span class="string">%- partial(layout, [locals]) %&gt;</div></code></pre>
-<h3>tagcloud</h3>
-<p>插入標籤雲（Tag Cloud）。
-
-</p>
-<pre><code><div class="line">&lt;<span class="string">%- tagcloud(tags, [options]) %&gt;</div></code></pre>
-<p><strong>選項：</strong>
-
-</p>
-<ul>
-<li><strong>min_font</strong> - 最小的字體大小</li>
-<li><strong>max_font</strong> - 最大的字體大小</li>
-<li><strong>unit</strong> - 字體單位</li>
-<li><strong>amount</strong> - 標籤數量</li>
-<li><strong>orderby</strong> - 排列順序</li>
-<li><strong>order</strong> - 排列方式。<code>1</code>, <code>asc</code>代表升冪排列，<code>-1</code>, <code>desc</code>代表降冪排列，<code>rand</code>, <code>random</code>代表隨機排列。</li>
-</ul>
-<p><strong>預設值：</strong>
-
-</p>
-<pre><code><div class="line">{</div><div class="line">    <span class="method">min_font:</span> <span class="number">10</span>,</div><div class="line">    <span class="method">max_font:</span> <span class="number">20</span>,</div><div class="line">    <span class="method">unit:</span> <span class="string">'px'</span>,</div><div class="line">    <span class="method">amount:</span> <span class="number">40</span>,</div><div class="line">    <span class="method">orderby:</span> <span class="string">'name'</span>,</div><div class="line">    <span class="method">order:</span> <span class="number">1</span></div><div class="line">}</div></code></pre>
-<p><a id="source"></a>
-</p>
-<h2>原始碼</h2>
-<p>你可參考預設主題 Light 的 <a href="https://github.com/tommy351/hexo-theme-light">原始碼</a> 來製作主題。
+<h2>參考</h2>
+<p>你可參考預設主題 <a href="https://github.com/tommy351/hexo-theme-light">Light</a> 來製作主題。
 
 </p>
 </div>

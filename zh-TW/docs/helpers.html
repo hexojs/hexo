@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hexo - 輔助方法 (Helper)</title>
+  
+  <meta name="description" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
+  
+  <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4910098-7']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+<h1><a href="/hexo/zh-TW/">Hexo</a></h1>
+<div class="clearfix"></div>
+<nav id="main-nav">
+  <ul>
+    <li><a href="/hexo/zh-TW/docs/">Docs</a></li>
+    <li><a href="/hexo/zh-TW/plugins/">Plugins</a></li>
+    <li><a href="/hexo/zh-TW/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo">Source</a></li>
+  </ul>
+</nav></header>
+    <div id="content">
+      
+<article class="page">
+  <h1 class="title">輔助方法 (Helper)</h1>
+  <div class="entry"><p>輔助方法（Helper）為樣板中所使用的輔助方法，可將資料轉換為 HTML 字串，使主題開發更加容易。以下是內建的輔助方法：（語法以 EJS 為範例）
+
+</p>
+<h4>css</h4>
+<p>載入 CSS 檔案。
+
+</p>
+<pre><code><div class="line">&lt;<span class="string">%- css(path) %&gt;</div></code></pre>
+<h4>js</h4>
+<p>載入 JavaScript 檔案。
+
+</p>
+<pre><code><div class="line">&lt;<span class="string">%- js(path) %&gt;</div></code></pre>
+<h4>trim</h4>
+<p>清除字串內的空白。
+
+</p>
+<pre><code><div class="line">&lt;<span class="string">%- trim(string) %&gt;</div></code></pre>
+<h4>strip_html</h4>
+<p>清除字串內的所有 HTML 標籤。
+
+</p>
+<pre><code><div class="line">&lt;<span class="string">%- strip_html(string) %&gt;</div></code></pre>
+<h4>titlecase</h4>
+<p>將字串轉為合適的標題大小寫。
+
+</p>
+<pre><code><div class="line">&lt;<span class="string">%- titlecase(string) %&gt;</div></code></pre>
+<h4>partial</h4>
+<p>載入其他模版，可使用<code>locals</code>指定模版內的變數。（使用方法與 <a href="https://github.com/publicclass/express-partials">express-partials</a> 相同）
+
+</p>
+<pre><code><div class="line">&lt;<span class="string">%- partial(layout, [locals]) %&gt;</div></code></pre>
+<h4>tagcloud</h4>
+<p>插入標籤雲（Tag Cloud）。
+
+</p>
+<pre><code><div class="line">&lt;<span class="string">%- tagcloud(tags, [options]) %&gt;</div></code></pre>
+<p><strong>選項：</strong>
+
+</p>
+<ul>
+<li><strong>min_font</strong> - 最小的字體大小</li>
+<li><strong>max_font</strong> - 最大的字體大小</li>
+<li><strong>unit</strong> - 字體單位</li>
+<li><strong>amount</strong> - 標籤數量</li>
+<li><strong>orderby</strong> - 排列順序</li>
+<li><strong>order</strong> - 排列方式。<code>1</code>, <code>asc</code>代表升冪排列，<code>-1</code>, <code>desc</code>代表降冪排列，<code>rand</code>, <code>random</code>代表隨機排列。</li>
+</ul>
+<p><strong>預設值：</strong>
+
+</p>
+<pre><code><div class="line">{</div><div class="line">    <span class="method">min_font:</span> <span class="number">10</span>,</div><div class="line">    <span class="method">max_font:</span> <span class="number">20</span>,</div><div class="line">    <span class="method">unit:</span> <span class="string">'px'</span>,</div><div class="line">    <span class="method">amount:</span> <span class="number">40</span>,</div><div class="line">    <span class="method">orderby:</span> <span class="string">'name'</span>,</div><div class="line">    <span class="method">order:</span> <span class="number">1</span></div><div class="line">}</div></code></pre>
+</div>
+</article>
+      <footer id="footer"><div class="alignleft">
+  &copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
+  Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>.
+</div>
+<div class="alignright">
+  <select id="lang-select">
+    <option value="">English</option>
+    
+      <option value="zh-TW" selected>正體中文</option>
+    
+  </select>
+</div>
+<div class="clearfix"></div></footer>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <script src="/hexo/js/main.js"></script>
+<a href="https://github.com/tommy351/hexo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+</body>
+</html>

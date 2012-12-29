@@ -7,6 +7,7 @@
   <meta name="description" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
   
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
   
@@ -39,41 +40,54 @@
 </nav></header>
     <div id="content">
       
-
 <article class="page">
   <h1 class="title">Contribute</h1>
-  <div class="entry"><p>You can contribute to Hexo to make it perfect!
-
-</p>
-<h2>Debugger</h2>
-<p>The simplest work is: Use hexo, and report when you find a bug.  You can do it!
+  <div class="entry"><h2>Report Issues</h2>
+<p>You may have found some bugs when using Hexo, or have some questions and recommendations. Feel free to submit them on GitHub.
 
 </p>
 <p><a href="https://github.com/tommy351/hexo/issues">Report an issue</a>
 
 </p>
-<h2>Developer</h2>
-<p>If you wanna participate in the development of Hexo, you can:
+<h2>Write Docs</h2>
+<p>If you found there&#39;s an error in the docs, you can:
+
+</p>
+<ol>
+<li>Fork this project</li>
+<li>Create a new branch based on <strong>site</strong> branch</li>
+<li>Edit the docs</li>
+<li>Submit a pull request to <strong>site</strong> branch</li>
+</ol>
+<p>If you want to help translate the docs, create a new folder in <code>source</code> folder and copy source files into it. For example:
+
+</p>
+<pre><code class="lang-plain"><div class="line">zh-TW</div><div class="line">|-- docs</div><div class="line">|-- index.md</div><div class="line">|-- plugins</div><div class="line">|-- themes</div></code></pre>
+<p>And add language setting in every posts like this:
+
+</p>
+<pre><code class="lang-plain"><div class="line">---</div><div class="line">layout: page</div><div class="line">title: 貢獻</div><div class="line">lang: zh-TW</div><div class="line">date: 2012-11-01 18:13:30</div><div class="line">---</div></code></pre>
+<p>Please follow the <a href="http://www.w3.org/International/articles/language-tags/">IETF format</a>.
+
+</p>
+<p><a href="https://github.com/tommy351/hexo/tree/site">Source code</a>
+
+</p>
+<h2>Participate</h2>
+<p>If you want to participate in the development, you can:
 
 </p>
 <ol>
 <li>Fork this project</li>
 <li>Create a new branch</li>
-<li>After the development is done, make a pull request on GitHub</li>
+<li>Submit a pull request to <strong>dev</strong> branch after the new feature is done</li>
 </ol>
-<p><a href="https://github.com/tommy351/hexo">Source</a>
+<p>If you make an awesome plugin, you can submit a pull request, too. The plugin you developed may be a part of the main program!
 
 </p>
-<h2>Translator</h2>
-<p>Do you wanna Hexo speak your language? You can help translate documentation, become a missionary, make people know the wonderful of Hexo.
+<p><a href="https://github.com/tommy351/hexo">Source code</a>
 
 </p>
-<ol>
-<li>Fork this project</li>
-<li>Create a new branch based on <code>site</code></li>
-<li>After the translation is done, make a pull request on GitHub</li>
-</ol>
-<p><a href="https://github.com/tommy351/hexo/tree/site">Source</a></p>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">
