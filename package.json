@@ -37,6 +37,7 @@
     "underscore": "*",
     "swig": "*",
     "graceful-fs": "*",
-    "mime": "*"
+    "mime": "*",
+    "lodash": "*"
   }
 }
