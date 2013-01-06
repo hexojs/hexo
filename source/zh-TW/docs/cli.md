@@ -68,3 +68,9 @@ hexo setup_deploy
 ``` bash
 hexo --safe
 ```
+
+除錯模式
+
+``` bash
+hexo --debug
+```

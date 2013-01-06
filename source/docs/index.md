@@ -26,6 +26,8 @@ date: 2012-11-01 18:13:30
 
 #### [Permalink](permalink.html)
 
+#### [Scripts](scripts.html)
+
 #### [Command-line Interface (CLI)](cli.html)
 
 ## Development
@@ -37,6 +39,10 @@ date: 2012-11-01 18:13:30
 #### [Helpers](helpers.html)
 
 #### [Collection](collection.html)
+
+#### [Events](events.html)
+
+#### [Render](render.html)
 
 #### [Theme Development](theme-development.html)
 

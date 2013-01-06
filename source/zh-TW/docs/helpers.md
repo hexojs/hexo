@@ -57,7 +57,7 @@ date: 2012-11-01 18:13:30
 
 ### render
 
-渲染內容。`engine` 請參考 [渲染][2]；可使用`locals`指定區域變數。
+使用指定的[渲染引擎][2]（`engine`）渲染內容，可使用`locals`指定區域變數。
 
 ```
 <%- render(string, engine, [locals]) %>

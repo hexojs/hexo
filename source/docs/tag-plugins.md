@@ -110,6 +110,16 @@ Inserts a Vimeo video.
 </code></pre>
 {% endraw %}
 
+## Raw
+
+Escapes contents. (Please delete the backslash)
+
+{% raw %}
+<pre><code>{% raw %}
+{% endraw /%}
+</code></pre>
+{% endraw %}
+
 [1]: http://octopress.org/docs/plugins/blockquote/
 [2]: http://octopress.org/docs/plugins/codeblock/
 [3]: http://octopress.org/docs/plugins/backtick-codeblock/

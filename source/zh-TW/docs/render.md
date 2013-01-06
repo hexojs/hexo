@@ -7,13 +7,13 @@ date: 2012-11-01 18:13:30
 
 ## 使用
 
-渲染模組分別擁有兩種方法，**render** 和 **compile**，前者為輸入字串後渲染，後者為讀取檔案後渲染，兩種方法都有同步和非同步兩種模式。
+渲染模組擁有兩種方法，**render** 和 **compile**，前者為輸入字串後渲染，後者為讀取檔案後渲染，兩種方法都有同步和非同步兩種模式。
 
-**render(string, ext, [locals], callback)**  
-**renderSync(string, ext, [locals])**
+**render(string, engine, [locals], callback)**  
+**renderSync(string, engine, [locals])**
 
 - **string** - 輸入字串
-- **ext** - 渲染引擎的副檔名
+- **engine** - 渲染引擎
 - **locals** - 區域變數
 - **callback** - 回傳函數
   - **err** - 錯誤內容

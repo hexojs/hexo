@@ -13,10 +13,12 @@ Hexo creates a namespace `hexo` when initializing with the following read-only v
 - **plugin_dir** - Plugin directory（node_modules）
 - **version** - Version of Hexo
 - **env** - Environment
+- **safe** - Safe mode
+- **debug** - Debug mode
 - **config** - [Global configuration][1], the content of `_config.yml`
+- **render** - [Render][5]
 - **[extend](#extend)** - Extensions
 - **[util](#util)** - Utilities
-- **[render](#render)** - Render module
 - **[i18n](#i18n)** - Internationalization (i18n) module
 - **[route](#route)** - Route module
 
@@ -101,26 +103,6 @@ Transforms a string into proper title capitalization.
 
 Parses [YAML Front Matter][3]. Exports an object. The content is `_content` property.
 
-<a id="render"></a>
-### render
-
-Each render function has two method: **render** & **compile**. The former renders a string; the letter renders a file. Both method have sync and async mode.
-
-**render(string, ext, [locals], callback)**  
-**renderSync(string, ext, [locals])**
-
-- **string** - Import string
-- **ext** - Extension name
-- **locals** - Local variables
-- **callback** - Callback function
-
-**compile(src, locals, callback)**  
-**compileSync(src, locals)**
-
-- **src** - Path of source file
-- **locals** - Local variables
-- **callback** - Callback function
-
 <a id="i18n"></a>
 ### i18n
 
@@ -202,3 +184,4 @@ Returns an object.
 [2]: plugin-development.html
 [3]: https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter
 [4]: http://nodejs.org/api/util.html#util_util_format_format
+[5]: render.html

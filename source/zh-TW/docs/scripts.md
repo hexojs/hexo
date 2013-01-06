@@ -13,13 +13,13 @@ date: 2012-11-01 18:13:30
 
 ## 範例
 
-文章建立後，自動使用 Vim 開啟檔案。
+文章建立後，自動開啟檔案。
 
 ```
-var exec = require('child_process').exec;
+var spawn = require('child_process').spawn;
 
 hexo.on('newPost', function(){
-	exec('vim ' + target);
+	spawn('open', [target]);
 });
 ```
 

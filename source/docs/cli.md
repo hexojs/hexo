@@ -67,3 +67,9 @@ Safe mode. Plugins will not be loaded in this mode.
 ``` bash
 hexo --safe
 ```
+
+Debug mode.
+
+``` bash
+hexo --debug
+```
