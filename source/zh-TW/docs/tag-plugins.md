@@ -111,6 +111,16 @@ content
 </code></pre>
 {% endraw %}
 
+## Raw
+
+逸脫處理。（請去掉反斜線）
+
+{% raw %}
+<pre><code>{% raw %}
+{% endraw /%}
+</code></pre>
+{% endraw %}
+
 [1]: http://octopress.org/docs/plugins/blockquote/
 [2]: http://octopress.org/docs/plugins/codeblock/
 [3]: http://octopress.org/docs/plugins/backtick-codeblock/

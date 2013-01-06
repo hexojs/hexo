@@ -14,10 +14,12 @@ Hexo 在初始化時，會建立一個名為`hexo`的命名空間（Namespace）
 - **plugin_dir** - 外掛目錄（node_modules）
 - **version** - Hexo 版本號
 - **env** - 執行環境
+- **safe** - 安全模式
+- **debug** - 除錯模式
 - **config** - [全域設定][1]，即`_config.yml`的內容
+- **render** - [渲染][5]
 - **[extend](#extend)** - 擴充功能
 - **[util](#util)** - 工具程式
-- **[render](#render)** - 渲染模組
 - **[i18n](#i18n)** - 國際化（i18n）模組
 - **[route](#route)** - 路由模組
 
@@ -102,26 +104,6 @@ util為工具程式，包含下列模組：
 
 用以解析 [YAML Front Matter][3]，輸出一個物件（Object），本文存放於`_content`屬性。
 
-<a id="render"></a>
-### render
-
-render函數分別擁有兩種方法，**render** 和 **compile**，前者為輸入字串後渲染，後者為讀取檔案後渲染，兩種方法都有同步和非同步兩種模式。
-
-**render(string, ext, [locals], callback)**  
-**renderSync(string, ext, [locals])**
-
-- **string** - 輸入字串
-- **ext** - 渲染引擎的副檔名
-- **locals** - 區域變數
-- **callback** - 回傳函數
-
-**compile(src, locals, callback)**  
-**compileSync(src, locals)**
-
-- **src** - 原始檔案路徑
-- **locals** - 區域變數
-- **callback** - 回傳函數
-
 <a id="i18n"></a>
 ### i18n
 
@@ -189,3 +171,4 @@ i18n物件擁有以下方法：
 [2]: plugin-development.html
 [3]: https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter
 [4]: http://nodejs.org/api/util.html#util_util_format_format
+[5]: render.html

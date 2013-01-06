@@ -27,6 +27,8 @@ date: 2012-11-01 18:13:30
 
 #### [永久連結](permalink.html)
 
+#### [腳本](scripts.html)
+
 #### [命令列介面 (CLI)](cli.html)
 
 ## 開發
@@ -38,6 +40,10 @@ date: 2012-11-01 18:13:30
 #### [輔助方法 (Helper)](helpers.html)
 
 #### [集合 (Collection)](collection.html)
+
+#### [事件](events.html)
+
+#### [渲染](render.html)
 
 #### [主題開發](theme-development.html)
 
