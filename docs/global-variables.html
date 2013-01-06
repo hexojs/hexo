@@ -52,10 +52,12 @@
 <li><strong>plugin_dir</strong> - Plugin directory（node_modules）</li>
 <li><strong>version</strong> - Version of Hexo</li>
 <li><strong>env</strong> - Environment</li>
+<li><strong>safe</strong> - Safe mode</li>
+<li><strong>debug</strong> - Debug mode</li>
 <li><strong>config</strong> - <a href="configure.html">Global configuration</a>, the content of <code>_config.yml</code></li>
+<li><strong>render</strong> - <a href="render.html">Render</a></li>
 <li><strong><a href="#extend">extend</a></strong> - Extensions</li>
 <li><strong><a href="#util">util</a></strong> - Utilities</li>
-<li><strong><a href="#render">render</a></strong> - Render module</li>
 <li><strong><a href="#i18n">i18n</a></strong> - Internationalization (i18n) module</li>
 <li><strong><a href="#route">route</a></strong> - Route module</li>
 </ul>
@@ -145,29 +147,6 @@
 <p>Parses <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front Matter</a>. Exports an object. The content is <code>_content</code> property.
 
 </p>
-<p><a id="render"></a>
-</p>
-<h3>render</h3>
-<p>Each render function has two method: <strong>render</strong> &amp; <strong>compile</strong>. The former renders a string; the letter renders a file. Both method have sync and async mode.
-
-</p>
-<p><strong>render(string, ext, [locals], callback)</strong><br><strong>renderSync(string, ext, [locals])</strong>
-
-</p>
-<ul>
-<li><strong>string</strong> - Import string</li>
-<li><strong>ext</strong> - Extension name</li>
-<li><strong>locals</strong> - Local variables</li>
-<li><strong>callback</strong> - Callback function</li>
-</ul>
-<p><strong>compile(src, locals, callback)</strong><br><strong>compileSync(src, locals)</strong>
-
-</p>
-<ul>
-<li><strong>src</strong> - Path of source file</li>
-<li><strong>locals</strong> - Local variables</li>
-<li><strong>callback</strong> - Callback function</li>
-</ul>
 <p><a id="i18n"></a>
 </p>
 <h3>i18n</h3>

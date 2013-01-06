@@ -1,8 +1,116 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://zespia.tw/hexo/docs/tag-plugins.html</loc>
+    <lastmod>2013-01-06T14:32:33.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/docs/scripts.html</loc>
+    <lastmod>2013-01-06T14:30:57.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/cli.html</loc>
+    <lastmod>2013-01-06T14:27:52.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/docs/cli.html</loc>
+    <lastmod>2013-01-06T14:27:35.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/docs/render.html</loc>
+    <lastmod>2013-01-06T14:25:06.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/render.html</loc>
+    <lastmod>2013-01-06T14:23:51.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/docs/index.html</loc>
+    <lastmod>2013-01-06T14:19:26.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/docs/events.html</loc>
+    <lastmod>2013-01-06T14:18:41.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/events.html</loc>
+    <lastmod>2013-01-06T14:13:30.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/docs/helpers.html</loc>
+    <lastmod>2013-01-06T14:12:53.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/helpers.html</loc>
+    <lastmod>2013-01-06T14:04:52.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/scripts.html</loc>
+    <lastmod>2013-01-06T11:40:56.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/docs/global-variables.html</loc>
+    <lastmod>2013-01-06T11:23:53.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/permalink.html</loc>
+    <lastmod>2013-01-06T11:19:29.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/theme-development.html</loc>
+    <lastmod>2013-01-06T11:19:29.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/configure.html</loc>
+    <lastmod>2013-01-06T11:19:29.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/contribute.html</loc>
+    <lastmod>2013-01-06T11:19:29.000Z</lastmod>
+  </url>
+  <url>
     <loc>http://zespia.tw/hexo/zh-TW/docs/install.html</loc>
-    <lastmod>2012-12-29T10:07:05.000Z</lastmod>
+    <lastmod>2013-01-06T11:19:29.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/docs/migrate.html</loc>
+    <lastmod>2013-01-06T11:19:29.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/writing.html</loc>
+    <lastmod>2013-01-06T11:19:29.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/plugin-development.html</loc>
+    <lastmod>2013-01-06T11:19:29.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/deploy.html</loc>
+    <lastmod>2013-01-06T11:19:29.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/setup.html</loc>
+    <lastmod>2013-01-06T11:19:29.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/migrate.html</loc>
+    <lastmod>2013-01-06T11:19:29.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/server.html</loc>
+    <lastmod>2013-01-06T11:19:29.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/global-variables.html</loc>
+    <lastmod>2013-01-06T04:27:25.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/index.html</loc>
+    <lastmod>2013-01-06T04:08:40.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/tag-plugins.html</loc>
+    <lastmod>2013-01-06T03:40:59.000Z</lastmod>
   </url>
   <url>
     <loc>http://zespia.tw/hexo/docs/install.html</loc>
@@ -11,10 +119,6 @@
   <url>
     <loc>http://zespia.tw/hexo/docs/writing.html</loc>
     <lastmod>2012-12-29T10:04:00.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/writing.html</loc>
-    <lastmod>2012-12-29T09:59:41.000Z</lastmod>
   </url>
   <url>
     <loc>http://zespia.tw/hexo/docs/theme-development.html</loc>
@@ -29,18 +133,6 @@
     <lastmod>2012-12-29T09:49:41.000Z</lastmod>
   </url>
   <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/theme-development.html</loc>
-    <lastmod>2012-12-29T03:33:30.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/docs/tag-plugins.html</loc>
-    <lastmod>2012-12-29T02:58:28.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/setup.html</loc>
-    <lastmod>2012-12-29T02:54:18.000Z</lastmod>
-  </url>
-  <url>
     <loc>http://zespia.tw/hexo/docs/setup.html</loc>
     <lastmod>2012-12-29T02:54:01.000Z</lastmod>
   </url>
@@ -49,40 +141,12 @@
     <lastmod>2012-12-29T02:49:16.000Z</lastmod>
   </url>
   <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/server.html</loc>
-    <lastmod>2012-12-29T02:45:43.000Z</lastmod>
-  </url>
-  <url>
     <loc>http://zespia.tw/hexo/docs/plugin-development.html</loc>
     <lastmod>2012-12-29T02:42:57.000Z</lastmod>
   </url>
   <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/plugin-development.html</loc>
-    <lastmod>2012-12-29T02:35:43.000Z</lastmod>
-  </url>
-  <url>
     <loc>http://zespia.tw/hexo/docs/permalink.html</loc>
     <lastmod>2012-12-28T14:49:42.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/docs/migrate.html</loc>
-    <lastmod>2012-12-28T14:48:14.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/docs/helpers.html</loc>
-    <lastmod>2012-12-28T14:43:42.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/global-variables.html</loc>
-    <lastmod>2012-12-28T14:34:18.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/docs/global-variables.html</loc>
-    <lastmod>2012-12-28T14:33:38.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/helpers.html</loc>
-    <lastmod>2012-12-28T14:31:35.000Z</lastmod>
   </url>
   <url>
     <loc>http://zespia.tw/hexo/docs/deploy.html</loc>
@@ -93,24 +157,12 @@
     <lastmod>2012-12-28T08:35:48.000Z</lastmod>
   </url>
   <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/contribute.html</loc>
-    <lastmod>2012-12-28T08:27:30.000Z</lastmod>
-  </url>
-  <url>
     <loc>http://zespia.tw/hexo/docs/configure.html</loc>
     <lastmod>2012-12-28T08:19:40.000Z</lastmod>
   </url>
   <url>
     <loc>http://zespia.tw/hexo/docs/collection.html</loc>
     <lastmod>2012-12-28T08:15:43.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/docs/index.html</loc>
-    <lastmod>2012-12-28T07:34:18.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/docs/cli.html</loc>
-    <lastmod>2012-12-28T07:31:56.000Z</lastmod>
   </url>
   <url>
     <loc>http://zespia.tw/hexo/themes/index.html</loc>
@@ -137,35 +189,7 @@
     <lastmod>2012-12-28T07:23:21.000Z</lastmod>
   </url>
   <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/tag-plugins.html</loc>
-    <lastmod>2012-12-28T07:20:09.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/index.html</loc>
-    <lastmod>2012-12-28T07:13:52.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/permalink.html</loc>
-    <lastmod>2012-12-28T07:12:04.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/cli.html</loc>
-    <lastmod>2012-12-28T07:06:10.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/deploy.html</loc>
-    <lastmod>2012-12-28T06:40:16.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/configure.html</loc>
-    <lastmod>2012-12-28T06:34:59.000Z</lastmod>
-  </url>
-  <url>
     <loc>http://zespia.tw/hexo/zh-TW/docs/collection.html</loc>
     <lastmod>2012-12-27T16:23:12.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/migrate.html</loc>
-    <lastmod>2012-12-08T09:38:33.000Z</lastmod>
   </url>
 </urlset>

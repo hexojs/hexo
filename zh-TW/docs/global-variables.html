@@ -52,10 +52,12 @@
 <li><strong>plugin_dir</strong> - 外掛目錄（node_modules）</li>
 <li><strong>version</strong> - Hexo 版本號</li>
 <li><strong>env</strong> - 執行環境</li>
+<li><strong>safe</strong> - 安全模式</li>
+<li><strong>debug</strong> - 除錯模式</li>
 <li><strong>config</strong> - <a href="configure.html">全域設定</a>，即<code>_config.yml</code>的內容</li>
+<li><strong>render</strong> - <a href="render.html">渲染</a></li>
 <li><strong><a href="#extend">extend</a></strong> - 擴充功能</li>
 <li><strong><a href="#util">util</a></strong> - 工具程式</li>
-<li><strong><a href="#render">render</a></strong> - 渲染模組</li>
 <li><strong><a href="#i18n">i18n</a></strong> - 國際化（i18n）模組</li>
 <li><strong><a href="#route">route</a></strong> - 路由模組</li>
 </ul>
@@ -145,29 +147,6 @@
 <p>用以解析 <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front Matter</a>，輸出一個物件（Object），本文存放於<code>_content</code>屬性。
 
 </p>
-<p><a id="render"></a>
-</p>
-<h3>render</h3>
-<p>render 函數分別擁有兩種方法，<strong>render</strong> 和 <strong>compile</strong>，前者為輸入字串後渲染，後者為讀取檔案後渲染，兩種方法都有同步和非同步兩種模式。
-
-</p>
-<p><strong>render(string, ext, [locals], callback)</strong><br><strong>renderSync(string, ext, [locals])</strong>
-
-</p>
-<ul>
-<li><strong>string</strong> - 輸入字串</li>
-<li><strong>ext</strong> - 渲染引擎的副檔名</li>
-<li><strong>locals</strong> - 區域變數</li>
-<li><strong>callback</strong> - 回傳函數</li>
-</ul>
-<p><strong>compile(src, locals, callback)</strong><br><strong>compileSync(src, locals)</strong>
-
-</p>
-<ul>
-<li><strong>src</strong> - 原始檔案路徑</li>
-<li><strong>locals</strong> - 區域變數</li>
-<li><strong>callback</strong> - 回傳函數</li>
-</ul>
 <p><a id="i18n"></a>
 </p>
 <h3>i18n</h3>
