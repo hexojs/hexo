@@ -55,6 +55,10 @@ exclude_generator:
 # Enhancement
 auto_spacing: true
 titlecase: false
+highlight:
+  enable: true
+  backtick_code_block: true
+  line_number: false
 
 # Deployment
 # Type: github, heroku
