@@ -40,15 +40,11 @@ Mac has already built-in an older version Git. If you want to update it, you can
 
 1. Use [Homebrew][5].
 	
-	``` bash
-brew install git
-	```
+		brew install git
 	
 2. Use [MacPorts][6].
 
-	``` bash
-sudo port install git-core
-	```
+		sudo port install git-core
 	
 3. Use [Installer](http://code.google.com/p/git-osx-installer/).
 

@@ -41,15 +41,11 @@ Mac 已內建 Git，雖然版本較舊，不過還是能用，如果你想要使
 
 1. 使用 [Homebrew][5]。
 	
-	``` bash
-brew install git
-	```
+		brew install git
 	
 2. 使用 [MacPorts][6]。
 
-	``` bash
-sudo port install git-core
-	```
+		sudo port install git-core
 	
 3. 使用 [安裝程式][8]。
 
