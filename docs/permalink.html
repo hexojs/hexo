@@ -45,7 +45,8 @@
 <p>Edit <code>permalink</code> in <code>_config.yml</code>. Here is the default:
 
 </p>
-<pre><code class="lang-plain"><div class="line">permalink: :year/:month/:day/:title/</div></code></pre>
+<pre><code><div class="line">permalink: :year/:month/:day/:title/</div></code></pre>
+
 <p>You can add the following variables in the permalink. Only the variables started with <code>:</code> is valid.
 
 </p>
@@ -63,12 +64,12 @@
 <p>Given a post named <code>title.md</code> in <code>source/_posts/foo/bar</code> directory with the following content:
 
 </p>
-<pre><code class="lang-plain"><div class="line">---</div><div class="line">layout: post</div><div class="line">title: Post Title</div><div class="line">date: 2012-10-09 14:09:37</div><div class="line">tags:</div><div class="line">- Node.js</div><div class="line">- JavaScript</div><div class="line">---</div></code></pre>
+<pre><code><div class="line">---</div><div class="line">layout: post</div><div class="line">title: Post Title</div><div class="line">date: 2012-10-09 14:09:37</div><div class="line">tags:</div><div class="line">- Node.js</div><div class="line">- JavaScript</div><div class="line">---</div></code></pre>
+
 <p>And here is the result:
 
 </p>
-<pre><code class="lang-plain"><div class="line">:year/:month/:day/:title/ => /2012/10/09/title/</div><div class="line">:year-:month-:day/:title/ => /2012-10-09/title/</div><div class="line">:category/:title/ => /foo/bar/title/</div></code></pre>
-</div>
+<pre><code><div class="line">:year/:month/:day/:title/ => /2012/10/09/title/</div><div class="line">:year-:month-:day/:title/ => /2012-10-09/title/</div><div class="line">:category/:title/ => /foo/bar/title/</div></code></pre></div>
 </article>
       <footer id="footer"><div class="alignleft">
   &copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>

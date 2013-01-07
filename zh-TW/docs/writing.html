@@ -46,15 +46,18 @@
 <p>執行以下指令。
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo new_post &lt;title&gt;</div></code></pre>
+<pre><code><div class="line">hexo new_post &lt;title&gt;</div></code></pre>
+
 <p>新文章會儲存於 <code>source/_posts/name.md</code>，內容為：
 
 </p>
-<pre><code class="lang-plain"><div class="line">---</div><div class="line">layout: post</div><div class="line">title: title</div><div class="line">date: YYYY-MM-DD HH:mm:ss</div><div class="line">comments: true</div><div class="line">tags:</div><div class="line">---</div></code></pre>
+<pre><code><div class="line">---</div><div class="line">layout: post</div><div class="line">title: title</div><div class="line">date: YYYY-MM-DD HH:mm:ss</div><div class="line">comments: true</div><div class="line">tags:</div><div class="line">---</div></code></pre>
+
 <p>檔案名稱根據 <code>_config.yml</code> 中的 <code>new_post_name</code> 設定和 <code>title</code> 參數命名，標題會被轉成小寫，空白會被轉成連字號。例如：
 
 </p>
 <pre><code><div class="line">hexo new_post Test Post =&gt; source/_posts/test-<span class="filename">post.md</div></code></pre>
+
 <h3>設定</h3>
 <p>文章最前面有一段用<code>---</code>包裹的區塊，稱為 <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front Matter</a>。你可使用 YAML 格式設定文章。
 
@@ -83,21 +86,25 @@
 <li><code>source/_posts/Fruits/Apple/title.md</code> - Fruit, Apple</li>
 </ul>
 <h3>標籤</h3>
-<pre><code class="lang-yaml"><div class="line"><span class="preprocessor"># 單一標籤</span></div><div class="line"><span class="label">tags:</span> Apple</div><br><div class="line"><span class="preprocessor"># 多重標籤</span></div><div class="line"><span class="label">tags:</span> [Apple, Banana]</div><br><div class="line"><span class="label">tags:</span></div><div class="line">- Apple</div><div class="line">- Banana</div></code></pre>
+<pre><code><div class="line"><span class="preprocessor"># 單一標籤</span></div><div class="line"><span class="label">tags:</span> Apple</div><br><div class="line"><span class="preprocessor"># 多重標籤</span></div><div class="line"><span class="label">tags:</span> [Apple, Banana]</div><br><div class="line"><span class="label">tags:</span></div><div class="line">- Apple</div><div class="line">- Banana</div></code></pre>
+
 <h2>分頁</h2>
 <h3>建立</h3>
 <p>執行以下指令。
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo new_page &lt;title&gt;</div></code></pre>
+<pre><code><div class="line">hexo new_page &lt;title&gt;</div></code></pre>
+
 <p>新分頁會儲存於網站根目錄的<code>source/name/index.md</code>，內容為：
 
 </p>
-<pre><code class="lang-plain"><div class="line">---</div><div class="line">layout: page</div><div class="line">title: title</div><div class="line">date: YYYY-MM-DD HH:mm:ss</div><div class="line">comments: true</div><div class="line">---</div></code></pre>
+<pre><code><div class="line">---</div><div class="line">layout: page</div><div class="line">title: title</div><div class="line">date: YYYY-MM-DD HH:mm:ss</div><div class="line">comments: true</div><div class="line">---</div></code></pre>
+
 <p>檔案名稱根據 <code>title</code> 參數命名，標題會被轉成小寫，空白會被轉成連字號。例如：
 
 </p>
 <pre><code><div class="line">hexo new_page Test Page =&gt; source/test-page/<span class="filename">index.md</div></code></pre>
+
 <h3>設定</h3>
 <p>文章最前面有一段用<code>---</code>包裹的區塊，稱為 <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front Matter</a>。你可使用 YAML 格式設定文章。
 
@@ -116,11 +123,11 @@
 <p>執行下列指令，即可將文章轉換成靜態檔案。
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo generate</div></code></pre>
-<p>往後，若你想要加快檔案生成速度，可以加入<code>-t</code>或<code>--theme</code>來忽略主題安裝。
+<pre><code><div class="line">hexo generate</div></code></pre>
+往後，若你想要加快檔案生成速度，可以加入<code>-t</code>或<code>--theme</code>來忽略主題安裝。
 
-</p>
-<pre><code class="lang-bash"><div class="line">hexo generate -t</div><div class="line">hexo generate --theme</div></code></pre>
+<pre><code><div class="line">hexo generate -t</div><div class="line">hexo generate --theme</div></code></pre>
+
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

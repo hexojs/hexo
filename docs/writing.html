@@ -46,15 +46,18 @@
 <p>Execute the following command.
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo new_post &lt;title&gt;</div></code></pre>
+<pre><code><div class="line">hexo new_post &lt;title&gt;</div></code></pre>
+
 <p>The new post will be saved at <code>source/_posts/name.md</code> with the following content.
 
 </p>
-<pre><code class="lang-plain"><div class="line">---</div><div class="line">layout: post</div><div class="line">title: title</div><div class="line">date: YYYY-MM-DD HH:mm:ss</div><div class="line">comments: true</div><div class="line">tags:</div><div class="line">---</div></code></pre>
+<pre><code><div class="line">---</div><div class="line">layout: post</div><div class="line">title: title</div><div class="line">date: YYYY-MM-DD HH:mm:ss</div><div class="line">comments: true</div><div class="line">tags:</div><div class="line">---</div></code></pre>
+
 <p>File name is based on <code>title</code> argument and <code>new_post_name</code> setting in <code>_config.yml</code>, title will be transformed into lower case, spaces will be transformed into dash. For example:
 
 </p>
 <pre><code><div class="line">hexo new_post Test Post =&gt; source/_posts/test-<span class="filename">post.md</div></code></pre>
+
 <h3>Configure</h3>
 <p>The beginning of article is a block wrapped with <code>---</code>, called <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front Matter</a>. You can use YAML to configure posts.
 
@@ -83,21 +86,25 @@
 <li><code>source/_posts/Fruits/Apple/title.md</code> - Fruit, Apple</li>
 </ul>
 <h3>Tags</h3>
-<pre><code class="lang-yaml"><div class="line"><span class="preprocessor"># Single tag</span></div><div class="line"><span class="label">tags:</span> Apple</div><br><div class="line"><span class="preprocessor"># Multiple tags</span></div><div class="line"><span class="label">tags:</span> [Apple, Banana]</div><br><div class="line"><span class="label">tags:</span></div><div class="line">- Apple</div><div class="line">- Banana</div></code></pre>
+<pre><code><div class="line"><span class="preprocessor"># Single tag</span></div><div class="line"><span class="label">tags:</span> Apple</div><br><div class="line"><span class="preprocessor"># Multiple tags</span></div><div class="line"><span class="label">tags:</span> [Apple, Banana]</div><br><div class="line"><span class="label">tags:</span></div><div class="line">- Apple</div><div class="line">- Banana</div></code></pre>
+
 <h2>Page</h2>
 <h3>Create</h3>
 <p>Execute the following command.
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo new_page &lt;title&gt;</div></code></pre>
+<pre><code><div class="line">hexo new_page &lt;title&gt;</div></code></pre>
+
 <p>The new post will be saved at <code>source/name/index.md</code> with the following content.
 
 </p>
-<pre><code class="lang-plain"><div class="line">---</div><div class="line">layout: page</div><div class="line">title: title</div><div class="line">date: YYYY-MM-DD HH:mm:ss</div><div class="line">comments: true</div><div class="line">---</div></code></pre>
+<pre><code><div class="line">---</div><div class="line">layout: page</div><div class="line">title: title</div><div class="line">date: YYYY-MM-DD HH:mm:ss</div><div class="line">comments: true</div><div class="line">---</div></code></pre>
+
 <p>File name is based on <code>title</code> argument, title will be transformed into lower case, spaces will be transformed into dash. For example:
 
 </p>
 <pre><code><div class="line">hexo new_page Test Page =&gt; source/test-page/<span class="filename">index.md</div></code></pre>
+
 <h3>Configure</h3>
 <p>The beginning of article is a block wrapped with <code>---</code>, called <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front Matter</a>. You can use YAML to configure posts.
 
@@ -116,11 +123,13 @@
 <p>Execute the following command to transform articles into static files.
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo generate</div></code></pre>
+<pre><code><div class="line">hexo generate</div></code></pre>
+
 <p>After that, you can add <code>-t</code> or <code>--theme</code> after the command to ignore theme installation to make generating faster.
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo generate -t</div><div class="line">hexo generate --theme</div></code></pre>
+<pre><code><div class="line">hexo generate -t</div><div class="line">hexo generate --theme</div></code></pre>
+
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

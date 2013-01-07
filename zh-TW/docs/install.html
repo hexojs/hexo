@@ -65,7 +65,8 @@
 <p>利用 <a href="http://npmjs.org/">npm</a> 即可安裝。
 
 </p>
-<pre><code class="lang-bash"><div class="line">npm install -g hexo</div></code></pre>
+<pre><code><div class="line">npm install -g hexo</div></code></pre>
+
 <p><a id="mac"></a>
 </p>
 <h2>Mac</h2>
@@ -75,71 +76,33 @@
 </p>
 <ol>
 <li><p>使用 <a href="http://mxcl.github.com/homebrew/">Homebrew</a>。</p>
-<pre><code class="lang-bash"><div class="line">brew install git</div></code></pre>
-</li>
-<li><p>使用 <a href="http://www.macports.org/">MacPorts</a>。</p>
-<pre><code class="lang-bash"><div class="line">sudo port install git-core</div></code></pre>
-</li>
-<li><p>使用 <a href="http://code.google.com/p/git-osx-installer/">安裝程式</a>。</p>
+<p> <pre><code><div class="line">brew install git</div><div class="line">	```</div><div class="line">	</div><div class="line">2. 使用 [MacPorts][6]。</div><br><div class="line">	``` bash</div><div class="line">sudo port install git-core</div><div class="line">	```</div><div class="line">	</div><div class="line">3. 使用 [安裝程式][8]。</div><br><div class="line">如果出現錯誤情況，可能是尚未安裝編譯工具，請至 App Store 下載 Xcode。</div><br><div class="line"><span class="comment">### Node.js</span></div><br><div class="line">Mac 環境下有很多安裝方式可供選擇，以下使用 [nvm][4] 來安裝。</div><br><div class="line">執行以下指令。</div><br></code></pre> bash
+git clone git://github.com/creationix/nvm.git ~/nvm
+<pre><code><br><div class="line">安裝完畢後，在`<span class="javascript">~<span class="regexp">/.bash_profile</span>`或`<span class="javascript">~<span class="regexp">/.bashrc</span>`加入以下內容並重開一個新的終端機視窗。</div><br></code></pre> bash
+. ~/nvm/nvm.sh
+<pre><code><br><div class="line">之後即可使用 <span class="matrix">[nvm]</span><span class="matrix">[<span class="number">4</span>]</span> 來安裝 <span class="transposed_variable">Node.</span>js 了，編譯可能需要花些時間，請耐心等候。</div><br></code></pre> bash
+nvm install v0.8.14
+nvm use v0.8.14
+nvm alias default v0.8.14
+<pre><code><br><div class="line">### <span class="tag">Hexo</span></div><br><div class="line">利用 <span class="attr_selector">[npm]</span><span class="attr_selector">[3]</span> 即可安裝。</div><br></code></pre> bash
+npm install -g hexo
+<pre><code><div class="line"><span class="xml"></div><div class="line"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">id</span>=<span class="value">"linux"</span>&gt;</span><span class="tag">&lt;/<span class="title">a</span>&gt;</span></div><div class="line"></span><span class="comment">## Linux</span><span class="xml"></div><br><div class="line"></span><span class="comment">### Git</span><span class="xml"></div><br><div class="line">**Ubuntu, Debian:**</div><div class="line"></span></div></code></pre> bash
+sudo apt-get install git-core
+<pre><code><br><div class="line"><span class="variable">**</span>Fedora, Red Hat, CentOS:<span class="variable">**</span></div><br></code></pre> bash
+sudo yum install git-core
+<pre><code><br><div class="line"><span class="comment">### Node.js</span></div><br><div class="line"><span class="title">Linux</span> 環境下有很多安裝方式可供選擇，以下使用 [nvm][<span class="number">4</span>] 來安裝。</div><br><div class="line">執行以下指令。</div><br></code></pre> bash
+git clone git://github.com/creationix/nvm.git ~/nvm
+<pre><code><br><div class="line">安裝完畢後，在`<span class="javascript">~<span class="regexp">/.bash_profile</span>`或`<span class="javascript">~<span class="regexp">/.bashrc</span>`加入以下內容並重開一個新的終端機視窗。</div><br></code></pre> plain
+. ~/nvm/nvm.sh
+<pre><code><br><div class="line">之後即可使用 <span class="matrix">[nvm]</span><span class="matrix">[<span class="number">4</span>]</span> 來安裝 <span class="transposed_variable">Node.</span>js 了，編譯可能需要花些時間，請耐心等候。</div><br></code></pre> bash
+nvm install v0.8.14
+nvm use v0.8.14
+nvm alias default v0.8.14
+<pre><code><br><div class="line">### <span class="tag">Hexo</span></div><br><div class="line">利用 <span class="attr_selector">[npm]</span><span class="attr_selector">[3]</span> 即可安裝。</div><br></code></pre> bash
+npm install -g hexo
+```</p>
 </li>
 </ol>
-<p>如果出現錯誤情況，可能是尚未安裝編譯工具，請至 App Store 下載 Xcode。
-
-</p>
-<h3>Node.js</h3>
-<p>Mac 環境下有很多安裝方式可供選擇，以下使用 <a href="https://github.com/creationix/nvm">nvm</a> 來安裝。
-
-</p>
-<p>執行以下指令。
-
-</p>
-<pre><code class="lang-bash"><div class="line">git clone git://github.com/creationix/nvm.git ~/nvm</div></code></pre>
-<p>安裝完畢後，在<code>~/.bash_profile</code>或<code>~/.bashrc</code>加入以下內容並重開一個新的終端機視窗。
-
-</p>
-<pre><code class="lang-bash"><div class="line">. ~/nvm/nvm.sh</div></code></pre>
-<p>之後即可使用 <a href="https://github.com/creationix/nvm">nvm</a> 來安裝 Node.js 了，編譯可能需要花些時間，請耐心等候。
-
-</p>
-<pre><code class="lang-bash"><div class="line">nvm install v0.8.14</div><div class="line">nvm use v0.8.14</div><div class="line">nvm alias default v0.8.14</div></code></pre>
-<h3>Hexo</h3>
-<p>利用 <a href="http://npmjs.org/">npm</a> 即可安裝。
-
-</p>
-<pre><code class="lang-bash"><div class="line">npm install -g hexo</div></code></pre>
-<p><a id="linux"></a>
-</p>
-<h2>Linux</h2>
-<h3>Git</h3>
-<p><strong>Ubuntu, Debian:</strong>
-
-</p>
-<pre><code class="lang-bash"><div class="line">sudo apt-get install git-core</div></code></pre>
-<p><strong>Fedora, Red Hat, CentOS:</strong>
-
-</p>
-<pre><code class="lang-bash"><div class="line">sudo yum install git-core</div></code></pre>
-<h3>Node.js</h3>
-<p>Linux 環境下有很多安裝方式可供選擇，以下使用 <a href="https://github.com/creationix/nvm">nvm</a> 來安裝。
-
-</p>
-<p>執行以下指令。
-
-</p>
-<pre><code class="lang-bash"><div class="line">git clone git://github.com/creationix/nvm.git ~/nvm</div></code></pre>
-<p>安裝完畢後，在<code>~/.bash_profile</code>或<code>~/.bashrc</code>加入以下內容並重開一個新的終端機視窗。
-
-</p>
-<pre><code class="lang-plain"><div class="line">. ~/nvm/nvm.sh</div></code></pre>
-<p>之後即可使用 <a href="https://github.com/creationix/nvm">nvm</a> 來安裝 Node.js 了，編譯可能需要花些時間，請耐心等候。
-
-</p>
-<pre><code class="lang-bash"><div class="line">nvm install v0.8.14</div><div class="line">nvm use v0.8.14</div><div class="line">nvm alias default v0.8.14</div></code></pre>
-<h3>Hexo</h3>
-<p>利用 <a href="http://npmjs.org/">npm</a> 即可安裝。
-
-</p>
-<pre><code class="lang-bash"><div class="line">npm install -g hexo</div></code></pre>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

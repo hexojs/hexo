@@ -52,7 +52,8 @@
 <p>文章建立後，自動開啟檔案。
 
 </p>
-<pre><code><div class="line">var spawn = require(<span class="comment">'child_process').spawn;</span></div><br><div class="line">hexo.<span class="keyword">on</span>(<span class="comment">'newPost', function(){</span></div><div class="line">    spawn(<span class="comment">'open', [target]);</span></div><div class="line">});</div></code></pre>
+<pre><code><div class="line">var spawn = require(<span class="comment">'child_process').spawn;</span></div><br><div class="line">hexo.<span class="keyword">on</span>(<span class="comment">'newPost', function(){</span></div><div class="line">	spawn(<span class="comment">'open', [target]);</span></div><div class="line">});</div></code></pre>
+
 <h2>參考</h2>
 <ul>
 <li><a href="global_variables.html">全域變數</a></li>

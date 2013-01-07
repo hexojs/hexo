@@ -57,27 +57,32 @@
 <p>Edit <code>_config.yml</code>. Fill <code>repository</code> with GitHub repository. If repository is like <code>username.github.com</code>, fill <code>branch</code> with <code>master</code>, otherwise <code>gh-pages</code>.
 
 </p>
-<pre><code class="lang-yaml"><div class="line"><span class="method">deploy:</span></div><div class="line">    <span class="method">type:</span> github</div><div class="line">    <span class="method">repository:</span></div><div class="line">    <span class="method">branch:</span></div></code></pre>
+<pre><code><div class="line"><span class="method">deploy:</span></div><div class="line">	<span class="method">type:</span> github</div><div class="line">	<span class="method">repository:</span></div><div class="line">	<span class="method">branch:</span></div></code></pre>
+
 <h3>Setup</h3>
 <p>Execute the following command. Hexo will build a hidden folder named <code>.deploy</code>, initialize Git and setup remote repository.
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo setup_deploy</div></code></pre>
+<pre><code><div class="line">hexo setup_deploy</div></code></pre>
+
 <h3>Deploy</h3>
 <p>After the static files are generated, execute the following to deploy.
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo deploy</div></code></pre>
+<pre><code><div class="line">hexo deploy</div></code></pre>
+
 <h3>Remove</h3>
 <p>Execute the following command to remove deployment.
 
 </p>
-<pre><code class="lang-bash"><div class="line">rm -rf .deploy</div></code></pre>
+<pre><code><div class="line">rm -rf .deploy</div></code></pre>
+
 <h3>Custom Domain</h3>
 <p>Create a file name <code>CNAME</code> in <code>source</code> folder with the following content.
 
 </p>
 <pre><code><div class="line"><span class="filename">example.com</div></code></pre>
+
 <p>Configure DNS according to the type of domain.
 
 </p>
@@ -99,12 +104,14 @@
 <p>Edit <code>_config.yml</code>. Fill <code>repository</code> with Heroku repository.
 
 </p>
-<pre><code class="lang-yaml"><div class="line"><span class="title">deploy</span>:</div><div class="line">    <span class="typedef"><span class="keyword">type</span>: heroku</span></div><div class="line">    repository:</div></code></pre>
+<pre><code><div class="line"><span class="title">deploy</span>:</div><div class="line">	<span class="typedef"><span class="keyword">type</span>: heroku</span></div><div class="line">	repository:</div></code></pre>
+
 <h3>Setup</h3>
 <p>Execute the following command. Hexo will create two files in the root directory: <code>Procfile</code> &amp; <code>app.js</code>, initialize Git and setup remote repository.
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo setup_deploy</div></code></pre>
+<pre><code><div class="line">hexo setup_deploy</div></code></pre>
+
 <p><code>Procfile</code> &amp; <code>app.js</code> is necessary. <strong>Do not delete them.</strong> If you had delete them, rebuilt with the following content manually.
 
 </p>
@@ -115,12 +122,14 @@
 <p>After the static files are generated, execute the following to deploy.
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo deploy</div></code></pre>
+<pre><code><div class="line">hexo deploy</div></code></pre>
+
 <h3>Remove</h3>
 <p>Delete the following files and folders to remove deployment.
 
 </p>
-<pre><code class="lang-plain"><div class="line">|-- _.git</div><div class="line">|-- app.js</div><div class="line">|-- Procfile</div></code></pre>
+<pre><code><div class="line">|-- _.git</div><div class="line">|-- app.js</div><div class="line">|-- Procfile</div></code></pre>
+
 <p>Check <a href="https://devcenter.heroku.com/">Heroku</a> for more info.
 
 </p>
@@ -131,7 +140,8 @@
 <p>Edit<code>_config.yml</code>.
 
 </p>
-<pre><code class="lang-yaml"><div class="line"><span class="method">deploy:</span></div><div class="line">  <span class="method">type:</span> rsync</div><div class="line">  <span class="method">host:</span></div><div class="line">  <span class="method">user:</span></div><div class="line">  <span class="method">root:</span></div><div class="line">  <span class="method">port:</span></div><div class="line">  <span class="method">delete:</span></div></code></pre>
+<pre><code><div class="line"><span class="method">deploy:</span></div><div class="line">  <span class="method">type:</span> rsync</div><div class="line">  <span class="method">host:</span></div><div class="line">  <span class="method">user:</span></div><div class="line">  <span class="method">root:</span></div><div class="line">  <span class="method">port:</span></div><div class="line">  <span class="method">delete:</span></div></code></pre>
+
 <ul>
 <li><strong>host</strong> - Address of remote host</li>
 <li><strong>user</strong> - Username</li>
@@ -147,7 +157,8 @@
 <p>After the static files are generated, execute the following to deploy.
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo deploy</div></code></pre>
+<pre><code><div class="line">hexo deploy</div></code></pre>
+
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

@@ -49,50 +49,60 @@
 
 </p>
 <pre><code><div class="line">&lt;<span class="string">%- css(path) %&gt;</div></code></pre>
+
 <h3>js</h3>
 <p>載入 JavaScript 檔案。
 
 </p>
 <pre><code><div class="line">&lt;<span class="string">%- js(path) %&gt;</div></code></pre>
+
 <h3>gravatar</h3>
 <p>載入 Gravatar。
 
 </p>
 <pre><code><div class="line">&lt;<span class="string">%- gravatar(email, [size]) %&gt;</div></code></pre>
+
 <h3>trim</h3>
 <p>清除字串內的空白。
 
 </p>
 <pre><code><div class="line">&lt;<span class="string">%- trim(string) %&gt;</div></code></pre>
+
 <h3>strip_html</h3>
 <p>清除字串內的所有 HTML 標籤。
 
 </p>
 <pre><code><div class="line">&lt;<span class="string">%- strip_html(string) %&gt;</div></code></pre>
+
 <h3>titlecase</h3>
 <p>將字串轉為合適的標題大小寫。
 
 </p>
 <pre><code><div class="line">&lt;<span class="string">%- titlecase(string) %&gt;</div></code></pre>
+
 <h3>render</h3>
 <p>使用指定的<a href="render.html">渲染引擎</a>（<code>engine</code>）渲染內容，可使用<code>locals</code>指定區域變數。
 
 </p>
 <pre><code><div class="line">&lt;<span class="string">%- render(string, engine, [locals]) %&gt;</div></code></pre>
+
 <p>例如：使用 Markdown 渲染。
 
 </p>
 <pre><code><div class="line">&lt;<span class="string">%- render('**bold**', 'md') %&gt;</div></code></pre>
+
 <h3>partial</h3>
 <p>載入其他樣版。<code>layout</code>為樣版的相對路徑；可使用<code>locals</code>指定區域變數。（使用方法與 <a href="https://github.com/publicclass/express-partials">express-partials</a> 相同）
 
 </p>
 <pre><code><div class="line">&lt;<span class="string">%- partial(layout, [locals]) %&gt;</div></code></pre>
+
 <h3>tagcloud</h3>
 <p>插入標籤雲（Tag Cloud）。<code>tags</code>請輸入 <a href="template-data.html">樣板變數</a> <code>tags</code>；<code>options</code>詳見下方。
 
 </p>
 <pre><code><div class="line">&lt;<span class="string">%- tagcloud(tags, [options]) %&gt;</div></code></pre>
+
 <p><strong>選項：</strong>
 
 </p>
@@ -107,12 +117,14 @@
 <p><strong>預設值：</strong>
 
 </p>
-<pre><code><div class="line">{</div><div class="line">    <span class="method">min_font:</span> <span class="number">10</span>,</div><div class="line">    <span class="method">max_font:</span> <span class="number">20</span>,</div><div class="line">    <span class="method">unit:</span> <span class="string">'px'</span>,</div><div class="line">    <span class="method">amount:</span> <span class="number">40</span>,</div><div class="line">    <span class="method">orderby:</span> <span class="string">'name'</span>,</div><div class="line">    <span class="method">order:</span> <span class="number">1</span></div><div class="line">}</div></code></pre>
+<pre><code><div class="line">{</div><div class="line">	<span class="method">min_font:</span> <span class="number">10</span>,</div><div class="line">	<span class="method">max_font:</span> <span class="number">20</span>,</div><div class="line">	<span class="method">unit:</span> <span class="string">'px'</span>,</div><div class="line">	<span class="method">amount:</span> <span class="number">40</span>,</div><div class="line">	<span class="method">orderby:</span> <span class="string">'name'</span>,</div><div class="line">	<span class="method">order:</span> <span class="number">1</span></div><div class="line">}</div></code></pre>
+
 <h3>paginator</h3>
 <p>插入翻頁導航（Paginator）。<code>options</code>詳見下方。
 
 </p>
 <pre><code><div class="line">&lt;<span class="string">%- paginator(options) %&gt;</div></code></pre>
+
 <p><strong>選項：</strong>
 
 </p>
@@ -132,7 +144,8 @@
 <p><strong>預設值：</strong>
 
 </p>
-<pre><code><div class="line">{</div><div class="line">    <span class="method">base:</span> <span class="string">'/'</span>,</div><div class="line">    <span class="method">format:</span> <span class="string">'page/%d/'</span>,</div><div class="line">    <span class="method">total:</span> <span class="number">1</span>,</div><div class="line">    <span class="method">current:</span> <span class="number">0</span>,</div><div class="line">    <span class="method">prev_text:</span> <span class="string">'Prev'</span>,</div><div class="line">    <span class="method">next_text:</span> <span class="string">'Next'</span>,</div><div class="line">    <span class="method">space:</span> <span class="string">'&amp;hellp;'</span>,</div><div class="line">    <span class="method">prev_next:</span> <span class="keyword">true</span>,</div><div class="line">    <span class="method">end_size:</span> <span class="number">1</span>,</div><div class="line">    <span class="method">mid_size:</span> <span class="number">2</span>,</div><div class="line">    <span class="method">show_all:</span> <span class="keyword">false</span></div><div class="line">}</div></code></pre>
+<pre><code><div class="line">{</div><div class="line">	<span class="method">base:</span> <span class="string">'/'</span>,</div><div class="line">	<span class="method">format:</span> <span class="string">'page/%d/'</span>,</div><div class="line">	<span class="method">total:</span> <span class="number">1</span>,</div><div class="line">	<span class="method">current:</span> <span class="number">0</span>,</div><div class="line">	<span class="method">prev_text:</span> <span class="string">'Prev'</span>,</div><div class="line">	<span class="method">next_text:</span> <span class="string">'Next'</span>,</div><div class="line">	<span class="method">space:</span> <span class="string">'&amp;hellp;'</span>,</div><div class="line">	<span class="method">prev_next:</span> <span class="keyword">true</span>,</div><div class="line">	<span class="method">end_size:</span> <span class="number">1</span>,</div><div class="line">	<span class="method">mid_size:</span> <span class="number">2</span>,</div><div class="line">	<span class="method">show_all:</span> <span class="keyword">false</span></div><div class="line">}</div></code></pre>
+
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

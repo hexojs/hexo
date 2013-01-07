@@ -48,16 +48,19 @@
 <p>編輯<code>_config.yml</code>中的<code>port</code>欄位調整伺服器的連接埠。
 
 </p>
-<pre><code class="lang-yaml"><div class="line"><span class="attribute">port</span>: <span class="string">4000</span></div></code></pre>
+<pre><code><div class="line"><span class="attribute">port</span>: <span class="string">4000</span></div></code></pre>
+
 <p>執行以下命令啟動伺服器，按下<code>Ctrl+C</code>關閉伺服器。
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo server</div></code></pre>
+<pre><code><div class="line">hexo server</div></code></pre>
+
 <h3>記錄器</h3>
 <p>編輯<code>_config.yml</code>中的<code>logger</code>欄位啟動記錄器。編輯<code>logger_format</code>欄位可調整記錄的顯示內容，參考 <a href="http://www.senchalabs.org/connect/logger.html">Connect</a> 以獲得更多資訊。
 
 </p>
-<pre><code class="lang-yaml"><div class="line"><span class="attribute">logger</span>: <span class="string">true</span></div><div class="line"><span class="attribute">logger_format:</div></code></pre>
+<pre><code><div class="line"><span class="attribute">logger</span>: <span class="string">true</span></div><div class="line"><span class="attribute">logger_format:</div></code></pre>
+
 <h2>Pow</h2>
 <p><a href="http://pow.cx/">Pow</a> 是由 Node.js 所建立的 Mac 環境專用的零配置 Rack 伺服器，不過它也能用於處理一般的靜態檔案。
 
@@ -66,12 +69,14 @@
 <p>執行以下命令即可完成安裝。
 
 </p>
-<pre><code class="lang-bash"><div class="line">curl get.pow.cx | sh</div></code></pre>
+<pre><code><div class="line">curl get.pow.cx | sh</div></code></pre>
+
 <h3>使用</h3>
 <p>在<code>~/.pow</code>建立連結即可使用。
 
 </p>
-<pre><code class="lang-bash"><div class="line">cd ~/.pow</div><div class="line">ln -s /path/to/myapp</div></code></pre>
+<pre><code><div class="line">cd ~/.pow</div><div class="line">ln -s /path/to/myapp</div></code></pre>
+
 <p>完成後，網站即會出現在<code>http://myapp.dev</code>，網址根據連結名稱而有所不同。
 
 </p>

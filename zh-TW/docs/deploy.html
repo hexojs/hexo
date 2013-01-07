@@ -57,27 +57,32 @@
 <p>編輯<code>_config.yml</code>，在<code>repository</code>欄位填入 GitHub 的 Repository。若 Repository 類似<code>username.github.com</code>，則在<code>branch</code>欄位填入<code>master</code>，否則填入<code>gh-pages</code>。
 
 </p>
-<pre><code class="lang-yaml"><div class="line"><span class="method">deploy:</span></div><div class="line">    <span class="method">type:</span> github</div><div class="line">    <span class="method">repository:</span></div><div class="line">    <span class="method">branch:</span></div></code></pre>
+<pre><code><div class="line"><span class="method">deploy:</span></div><div class="line">	<span class="method">type:</span> github</div><div class="line">	<span class="method">repository:</span></div><div class="line">	<span class="method">branch:</span></div></code></pre>
+
 <h3>建立</h3>
 <p>執行以下指令，Hexo 會自動建立一個隱藏資料夾<code>.deploy</code>，初始化 Git 並設定遠端 Repository。
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo setup_deploy</div></code></pre>
+<pre><code><div class="line">hexo setup_deploy</div></code></pre>
+
 <h3>佈署</h3>
 <p>靜態檔案生成後，執行下列指令即可完成佈署。
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo deploy</div></code></pre>
+<pre><code><div class="line">hexo deploy</div></code></pre>
+
 <h3>移除</h3>
 <p>執行下列指令移除佈署。
 
 </p>
-<pre><code class="lang-bash"><div class="line">rm -rf .deploy</div></code></pre>
+<pre><code><div class="line">rm -rf .deploy</div></code></pre>
+
 <h3>自定網域</h3>
 <p>在<code>source</code>資料夾內建立名為<code>CNAME</code>的檔案，其內容為：
 
 </p>
 <pre><code><div class="line"><span class="filename">example.com</div></code></pre>
+
 <p>請根據你的網域類型設定 DNS。
 
 </p>
@@ -99,12 +104,14 @@
 <p>編輯 <code>_config.yml</code>，在<code>repository</code>欄位填入 Heroku 的 Repository。
 
 </p>
-<pre><code class="lang-yaml"><div class="line"><span class="title">deploy</span>:</div><div class="line">    <span class="typedef"><span class="keyword">type</span>: heroku</span></div><div class="line">    repository:</div></code></pre>
+<pre><code><div class="line"><span class="title">deploy</span>:</div><div class="line">	<span class="typedef"><span class="keyword">type</span>: heroku</span></div><div class="line">	repository:</div></code></pre>
+
 <h3>建立</h3>
 <p>執行以下指令：
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo setup_deploy</div></code></pre>
+<pre><code><div class="line">hexo setup_deploy</div></code></pre>
+
 <p>Hexo 會在網站根目錄建立兩個檔案：<code>Procfile</code>和<code>app.js</code>，初始化 Git 並設定遠端 Repository。
 
 </p>
@@ -118,12 +125,14 @@
 <p>靜態檔案生成後，執行下列指令即可完成佈署。
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo deploy</div></code></pre>
+<pre><code><div class="line">hexo deploy</div></code></pre>
+
 <h3>移除</h3>
 <p>刪除下列檔案和資料夾移除佈署。
 
 </p>
-<pre><code class="lang-plain"><div class="line">|-- _.git</div><div class="line">|-- app.js</div><div class="line">|-- Procfile</div></code></pre>
+<pre><code><div class="line">|-- _.git</div><div class="line">|-- app.js</div><div class="line">|-- Procfile</div></code></pre>
+
 <p>請參考 <a href="https://devcenter.heroku.com/">Heroku</a> 以取得更多資訊。
 
 </p>
@@ -134,7 +143,8 @@
 <p>編輯<code>_config.yml</code>檔案。
 
 </p>
-<pre><code class="lang-yaml"><div class="line"><span class="method">deploy:</span></div><div class="line">  <span class="method">type:</span> rsync</div><div class="line">  <span class="method">host:</span></div><div class="line">  <span class="method">user:</span></div><div class="line">  <span class="method">root:</span></div><div class="line">  <span class="method">port:</span></div><div class="line">  <span class="method">delete:</span></div></code></pre>
+<pre><code><div class="line"><span class="method">deploy:</span></div><div class="line">  <span class="method">type:</span> rsync</div><div class="line">  <span class="method">host:</span></div><div class="line">  <span class="method">user:</span></div><div class="line">  <span class="method">root:</span></div><div class="line">  <span class="method">port:</span></div><div class="line">  <span class="method">delete:</span></div></code></pre>
+
 <ul>
 <li><strong>host</strong> - 遠端主機的位址</li>
 <li><strong>user</strong> - 使用者名稱</li>
@@ -150,7 +160,8 @@
 <p>靜態檔案生成後，執行下列指令即可完成佈署。
 
 </p>
-<pre><code class="lang-bash"><div class="line">hexo deploy</div></code></pre>
+<pre><code><div class="line">hexo deploy</div></code></pre>
+
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

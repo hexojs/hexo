@@ -65,7 +65,8 @@
 <p>Use <a href="http://npmjs.org/">npm</a> to install.
 
 </p>
-<pre><code class="lang-bash"><div class="line">npm install -g hexo</div></code></pre>
+<pre><code><div class="line">npm install -g hexo</div></code></pre>
+
 <p><a id="mac"></a>
 </p>
 <h2>Mac</h2>
@@ -75,71 +76,33 @@
 </p>
 <ol>
 <li><p>Use <a href="http://mxcl.github.com/homebrew/">Homebrew</a>.</p>
-<pre><code class="lang-bash"><div class="line">brew install git</div></code></pre>
-</li>
-<li><p>Use <a href="http://www.macports.org/">MacPorts</a>.</p>
-<pre><code class="lang-bash"><div class="line">sudo port install git-core</div></code></pre>
-</li>
-<li><p>Use <a href="http://code.google.com/p/git-osx-installer/">Installer</a>.</p>
+<p> <pre><code><div class="line">brew install git</div><div class="line">	```</div><div class="line">	</div><div class="line">2. Use [MacPorts][6].</div><br><div class="line">	``` bash</div><div class="line">sudo port install git-core</div><div class="line">	```</div><div class="line">	</div><div class="line">3. Use [Installer](http://code.google.com/p/git-osx-installer/).</div><br><div class="line">If an error occurred, maybe it<span class="string">'s because you didn'</span>t install the compiler first, please go to App Store, download &amp; install Xcode.</div><br><div class="line"><span class="comment">### Node.js</span></div><br><div class="line">There are many way to install Node.js <span class="keyword">in</span> Mac. We use [nvm][4] to install it.</div><br><div class="line">Execute the following command.</div><br></code></pre> bash
+git clone git://github.com/creationix/nvm.git ~/nvm
+<pre><code><br><div class="line">After the installation <span class="keyword">is</span> done, add the following content <span class="keyword">in</span> `<span class="javascript">~<span class="regexp">/.bash_profile</span>` <span class="keyword">or</span> `<span class="javascript">~<span class="regexp">/.bashrc</span>` <span class="keyword">and</span> open a <span class="keyword">new</span> terminal window.</div><br></code></pre>
+. ~/nvm/nvm.sh
+<pre><code><br><div class="line">Then you can install <span class="transposed_variable">Node.</span>js with <span class="matrix">[nvm]</span><span class="matrix">[<span class="number">4</span>].</span> It takes time to <span class="transposed_variable">compile.</span> Be <span class="transposed_variable">patiently.</span></div><br></code></pre> bash
+nvm install v0.8.14
+nvm use v0.8.14
+nvm alias default v0.8.14
+<pre><code><br><div class="line"><span class="comment">### Hexo</span></div><br><div class="line"><span class="title">Use</span> [npm][<span class="number">3</span>] to install.</div><br></code></pre> bash
+npm install -g hexo
+<pre><code><div class="line"><span class="xml"></div><div class="line"><span class="tag">&lt;<span class="title">a</span> <span class="attribute">id</span>=<span class="value">"linux"</span>&gt;</span><span class="tag">&lt;/<span class="title">a</span>&gt;</span></div><div class="line"></span><span class="comment">## Linux</span><span class="xml"></div><br><div class="line"></span><span class="comment">### Git</span><span class="xml"></div><br><div class="line">**Ubuntu, Debian:**</div><div class="line"></span></div></code></pre> bash
+sudo apt-get install git-core
+<pre><code><br><div class="line"><span class="variable">**</span>Fedora, Red Hat, CentOS:<span class="variable">**</span></div><br></code></pre> bash
+sudo yum install git-core
+<pre><code><br><div class="line"><span class="comment">### Node.js</span></div><br><div class="line">There are many way <span class="keyword">to</span> install Node.js <span class="keyword">in</span> Linux. We use [nvm][<span class="number">4</span>] <span class="keyword">to</span> install <span class="keyword">it</span>.</div><br><div class="line">Execute <span class="keyword">the</span> following command.</div><br></code></pre> bash
+git clone git://github.com/creationix/nvm.git ~/nvm
+<pre><code><br><div class="line">After the installation <span class="keyword">is</span> done, add the following content <span class="keyword">in</span> `<span class="javascript">~<span class="regexp">/.bash_profile</span>` <span class="keyword">or</span> `<span class="javascript">~<span class="regexp">/.bashrc</span>` <span class="keyword">and</span> open a <span class="keyword">new</span> terminal window.</div><br></code></pre> plain
+. ~/nvm/nvm.sh
+<pre><code><br><div class="line">Then you can install <span class="transposed_variable">Node.</span>js with <span class="matrix">[nvm]</span><span class="matrix">[<span class="number">4</span>].</span> It takes time to <span class="transposed_variable">compile.</span> Be <span class="transposed_variable">patiently.</span></div><br></code></pre> bash
+nvm install v0.8.14
+nvm use v0.8.14
+nvm alias default v0.8.14
+<pre><code><br><div class="line"><span class="comment">### Hexo</span></div><br><div class="line"><span class="title">Use</span> [npm][<span class="number">3</span>] to install.</div><br></code></pre> bash
+npm install -g hexo
+```</p>
 </li>
 </ol>
-<p>If an error occurred, maybe it&#39;s because you didn&#39;t install the compiler first, please go to App Store, download &amp; install Xcode.
-
-</p>
-<h3>Node.js</h3>
-<p>There are many way to install Node.js in Mac. We use <a href="https://github.com/creationix/nvm">nvm</a> to install it.
-
-</p>
-<p>Execute the following command.
-
-</p>
-<pre><code class="lang-bash"><div class="line">git clone git://github.com/creationix/nvm.git ~/nvm</div></code></pre>
-<p>After the installation is done, add the following content in <code>~/.bash_profile</code> or <code>~/.bashrc</code> and open a new terminal window.
-
-</p>
-<pre><code><div class="line"><span class="string">.</span> <span class="comment">~/nvm/nvm</span>.<span class="comment">sh</div></code></pre>
-<p>Then you can install Node.js with <a href="https://github.com/creationix/nvm">nvm</a>. It takes time to compile. Be patiently.
-
-</p>
-<pre><code class="lang-bash"><div class="line">nvm install v0.8.14</div><div class="line">nvm use v0.8.14</div><div class="line">nvm alias default v0.8.14</div></code></pre>
-<h3>Hexo</h3>
-<p>Use <a href="http://npmjs.org/">npm</a> to install.
-
-</p>
-<pre><code class="lang-bash"><div class="line">npm install -g hexo</div></code></pre>
-<p><a id="linux"></a>
-</p>
-<h2>Linux</h2>
-<h3>Git</h3>
-<p><strong>Ubuntu, Debian:</strong>
-
-</p>
-<pre><code class="lang-bash"><div class="line">sudo apt-get install git-core</div></code></pre>
-<p><strong>Fedora, Red Hat, CentOS:</strong>
-
-</p>
-<pre><code class="lang-bash"><div class="line">sudo yum install git-core</div></code></pre>
-<h3>Node.js</h3>
-<p>There are many way to install Node.js in Linux. We use <a href="https://github.com/creationix/nvm">nvm</a> to install it.
-
-</p>
-<p>Execute the following command.
-
-</p>
-<pre><code class="lang-bash"><div class="line">git clone git://github.com/creationix/nvm.git ~/nvm</div></code></pre>
-<p>After the installation is done, add the following content in <code>~/.bash_profile</code> or <code>~/.bashrc</code> and open a new terminal window.
-
-</p>
-<pre><code class="lang-plain"><div class="line">. ~/nvm/nvm.sh</div></code></pre>
-<p>Then you can install Node.js with <a href="https://github.com/creationix/nvm">nvm</a>. It takes time to compile. Be patiently.
-
-</p>
-<pre><code class="lang-bash"><div class="line">nvm install v0.8.14</div><div class="line">nvm use v0.8.14</div><div class="line">nvm alias default v0.8.14</div></code></pre>
-<h3>Hexo</h3>
-<p>Use <a href="http://npmjs.org/">npm</a> to install.
-
-</p>
-<pre><code class="lang-bash"><div class="line">npm install -g hexo</div></code></pre>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

@@ -153,7 +153,8 @@
 <p><strong>i18n</strong> is internationalization (i18n) module. Here&#39;s how to use:
 
 </p>
-<pre><code class="lang-js"><div class="line"><span class="keyword">var</span> i18n = <span class="keyword">new</span> hexo.i18n();</div></code></pre>
+<pre><code><div class="line"><span class="keyword">var</span> i18n = <span class="keyword">new</span> hexo.i18n();</div></code></pre>
+
 <p>A i18n object owns the following methods:
 
 </p>
@@ -200,12 +201,14 @@
 <p>Gets the content of the path.
 
 </p>
-<pre><code class="lang-js"><div class="line">route.get(path, <span class="keyword">function</span>(err, result){</div><div class="line">    ...</div><div class="line">});</div></code></pre>
+<pre><code><div class="line">route.get(path, <span class="keyword">function</span>(err, result){</div><div class="line">	...</div><div class="line">});</div></code></pre>
+
 <h4>set(path, content)</h4>
 <p>Sets the content of the path. <code>content</code> can be a function or else. If it is a function, it must pass a callback with two arguments: <code>(err, result)</code>.
 
 </p>
-<pre><code class="lang-js"><div class="line">route.set(path, content);</div><br><div class="line">route.set(path, <span class="keyword">function</span>(fn){</div><div class="line">    fn(<span class="literal">null</span>, <span class="string">'content'</span>);</div><div class="line">});</div></code></pre>
+<pre><code><div class="line">route.set(path, content);</div><br><div class="line">route.set(path, <span class="keyword">function</span>(fn){</div><div class="line">	fn(<span class="literal">null</span>, <span class="string">'content'</span>);</div><div class="line">});</div></code></pre>
+
 <h4>format(path)</h4>
 <p>Formats the path. Adds <code>index.html</code> if the path is empty or ended with <code>/</code>.
 
