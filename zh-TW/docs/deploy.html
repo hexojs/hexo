@@ -57,7 +57,7 @@
 <p>編輯<code>_config.yml</code>，在<code>repository</code>欄位填入 GitHub 的 Repository。若 Repository 類似<code>username.github.com</code>，則在<code>branch</code>欄位填入<code>master</code>，否則填入<code>gh-pages</code>。
 
 </p>
-<pre><code><div class="line"><span class="method">deploy:</span></div><div class="line">	<span class="method">type:</span> github</div><div class="line">	<span class="method">repository:</span></div><div class="line">	<span class="method">branch:</span></div></code></pre>
+<pre><code><div class="line"><span class="method">deploy:</span></div><div class="line">  <span class="method">type:</span> github</div><div class="line">  <span class="method">repository:</span></div><div class="line">  <span class="method">branch:</span></div></code></pre>
 
 <h3>建立</h3>
 <p>執行以下指令，Hexo 會自動建立一個隱藏資料夾<code>.deploy</code>，初始化 Git 並設定遠端 Repository。
@@ -104,7 +104,7 @@
 <p>編輯 <code>_config.yml</code>，在<code>repository</code>欄位填入 Heroku 的 Repository。
 
 </p>
-<pre><code><div class="line"><span class="title">deploy</span>:</div><div class="line">	<span class="typedef"><span class="keyword">type</span>: heroku</span></div><div class="line">	repository:</div></code></pre>
+<pre><code><div class="line"><span class="title">deploy</span>:</div><div class="line">  <span class="typedef"><span class="keyword">type</span>: heroku</span></div><div class="line">  repository:</div></code></pre>
 
 <h3>建立</h3>
 <p>執行以下指令：
@@ -119,7 +119,7 @@
 
 </p>
 <figure class="highlight"><figcaption><span>Procfile</span></figcaption><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="attribute">web</span>: <span class="string">node app</span></div></code></pre></td></tr></table></figure>
-<figure class="highlight"><figcaption><span>app.js</span></figcaption><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div></code></pre></td><td class="code"><pre><code><div class="line">var <span class="keyword">connect</span> = <span class="keyword">require</span>(<span class="string">'connect'</span>),</div><div class="line">	app = <span class="keyword">connect</span>.createServer(),</div><div class="line">	port = process.env.PORT;</div><div class="line">	</div><div class="line">app.<span class="keyword">use</span>(<span class="keyword">connect</span>.static(__dirname + <span class="string">"/public"</span>));</div><div class="line">app.<span class="keyword">use</span>(<span class="keyword">connect</span>.compress());</div><br><div class="line">app.<span class="keyword">listen</span>(port, function(){</div><div class="line">	console.<span class="keyword">log</span>(<span class="string">"Hexo is running on port <span class="variable">%d</span>."</span>, port);</div><div class="line">});</div></code></pre></td></tr></table></figure>
+<figure class="highlight"><figcaption><span>app.js</span></figcaption><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div></code></pre></td><td class="code"><pre><code><div class="line">var <span class="keyword">connect</span> = <span class="keyword">require</span>(<span class="string">'connect'</span>),</div><div class="line">  app = <span class="keyword">connect</span>.createServer(),</div><div class="line">  port = process.env.PORT;</div><br><div class="line">app.<span class="keyword">use</span>(<span class="keyword">connect</span>.static(__dirname + <span class="string">"/public"</span>));</div><div class="line">app.<span class="keyword">use</span>(<span class="keyword">connect</span>.compress());</div><br><div class="line">app.<span class="keyword">listen</span>(port, function(){</div><div class="line">  console.<span class="keyword">log</span>(<span class="string">"Hexo is running on port <span class="variable">%d</span>."</span>, port);</div><div class="line">});</div></code></pre></td></tr></table></figure>
 
 <h3>佈署</h3>
 <p>靜態檔案生成後，執行下列指令即可完成佈署。
