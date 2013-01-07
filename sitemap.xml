@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/migrate.html</loc>
+    <lastmod>2013-01-07T14:16:14.000Z</lastmod>
+  </url>
+  <url>
     <loc>http://zespia.tw/hexo/zh-TW/docs/cli.html</loc>
     <lastmod>2013-01-07T14:11:50.000Z</lastmod>
   </url>
@@ -97,11 +101,11 @@
     <lastmod>2013-01-06T14:13:30.000Z</lastmod>
   </url>
   <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/writing.html</loc>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/plugin-development.html</loc>
     <lastmod>2013-01-06T11:19:29.000Z</lastmod>
   </url>
   <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/permalink.html</loc>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/writing.html</loc>
     <lastmod>2013-01-06T11:19:29.000Z</lastmod>
   </url>
   <url>
@@ -109,7 +113,7 @@
     <lastmod>2013-01-06T11:19:29.000Z</lastmod>
   </url>
   <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/plugin-development.html</loc>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/permalink.html</loc>
     <lastmod>2013-01-06T11:19:29.000Z</lastmod>
   </url>
   <url>
@@ -118,10 +122,6 @@
   </url>
   <url>
     <loc>http://zespia.tw/hexo/zh-TW/docs/theme-development.html</loc>
-    <lastmod>2013-01-06T11:19:29.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/migrate.html</loc>
     <lastmod>2013-01-06T11:19:29.000Z</lastmod>
   </url>
   <url>
