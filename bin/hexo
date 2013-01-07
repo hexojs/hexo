@@ -1,31 +1,21 @@
 #!/usr/bin/env node
 
 var args = process.argv.slice(2),
-  argss = args.join(' ');
+  length = args.length,
+  safe = false,
+  debug = false;
 
-var regex = {
-  safe: /--safe/i,
-  debug: /--debug/i
-};
+for (var i=0; i<length; i++){
+  var item = args[i],
+    match = item.match(/^--(safe|debug)$/i);
 
-var result = {
-  safe: false,
-  debug: false
-};
-
-Object.keys(regex).forEach(function(key){
-  var item = regex[key];
-
-  if (argss.match(item)){
-    argss = argss.replace(item, '');
-    result[key] = true;
+  if (match){
+    if (match[1] === 'safe') safe = true;
+    else if (match[1] === 'debug') debug = true;
+    args.splice(i, 1);
+    length--;
+    i--;
   }
-});
-
-args = argss.split(' ');
-
-for (var i=0; i<args.length; i++){
-  if (!args[i]) args.splice(i, 1);
 }
 
 var command = args.length ? args.shift().toLowerCase() : '';
@@ -40,5 +30,5 @@ switch (command){
     break;
 
   default:
-    require('../lib/console')(command, result, args);
+    require('../lib/console')(command, {safe: safe, debug: debug}, args);
 }
