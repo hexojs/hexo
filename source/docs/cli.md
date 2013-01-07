@@ -62,6 +62,12 @@ Setup deploy
 hexo setup_deploy
 ```
 
+Render a file
+
+``` bash
+hexo render <source> <destination>
+```
+
 Safe mode. Plugins will not be loaded in this mode.
 
 ``` bash

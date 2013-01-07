@@ -63,6 +63,12 @@ hexo deploy
 hexo setup_deploy
 ```
 
+渲染檔案
+
+``` bash
+hexo render <source> <destination>
+```
+
 安全模式，此模式下外掛不會被載入
 
 ``` bash
