@@ -35,14 +35,14 @@ hexo init <folder>
 
 {% code package.json %}
 {
-	"name": "hexo",
-	"version": "0.0.1",
-	"private": true,
-	"engines": {
-		"node": ">0.6.0",
-		"npm": ">1.1.0"
-	},
-	"dependencies": {}
+  "name": "hexo",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": ">0.6.0",
+    "npm": ">1.1.0"
+  },
+  "dependencies": {}
 }
 {% endcode %}
 

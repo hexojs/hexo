@@ -21,9 +21,7 @@ npm install hexo-migrator-rss
 
 After installed, execute the following command to migrate. `source` argument can be file path or URL.
 
-``` plain
-hexo migrate rss <source>
-```
+	hexo migrate rss <source>
 
 <a id="jekyll"></a>
 ## Jekyll / Octopress
@@ -41,6 +39,4 @@ npm install hexo-migrator-wordpress
 
 After installed, execute the following command to migrate. `source` argument can be file path or URL.
 
-``` plain
-hexo migrate wordpress <source>
-```
+	hexo migrate wordpress <source>

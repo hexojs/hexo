@@ -18,7 +18,7 @@ Open file after the post created.
 var spawn = require('child_process').spawn;
 
 hexo.on('newPost', function(){
-	spawn('open', [target]);
+  spawn('open', [target]);
 });
 ```
 

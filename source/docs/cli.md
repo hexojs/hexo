@@ -6,76 +6,52 @@ date: 2012-11-01 18:13:30
 
 Display current version of Hexo
 
-``` bash
-hexo -v
-hexo --version
-hexo ver
-hexo version
-```
+	hexo -v
+	hexo --version
+	hexo ver
+	hexo version
 
 Setup website. If `folder` is not defined, Hexo will setup website at current directory.
 
-``` bash
-hexo init <folder>
-```
+	hexo init <folder>
 
 Create a new post
 
-``` bash
-hexo new_post <title>
-```
+	hexo new_post <title>
 
 Create a new page
 
-``` bash
-hexo new_page <title>
-```
+	hexo new_page <title>
 
 Generate static files. Use `-t` or `--theme` to skip theme installation.
 
-``` bash
-hexo generate
-hexo generate -t/--theme
-```
+	hexo generate
+	hexo generate -t/--theme
 
 Start server. Press `Ctrl+C` to stop it.
 
-``` bash
-hexo server
-```
+	hexo server
 
 Display configuration of the site
 
-``` bash
-hexo config
-```
+	hexo config
 
 Deploy
 
-``` bash
-hexo deploy
-```
+	hexo deploy
 
 Setup deploy
 
-``` bash
-hexo setup_deploy
-```
+	hexo setup_deploy
 
 Render a file
 
-``` bash
-hexo render <source> <destination>
-```
+	hexo render <source> <destination>
 
 Safe mode. Plugins will not be loaded in this mode.
 
-``` bash
-hexo --safe
-```
+	hexo --safe
 
 Debug mode.
 
-``` bash
-hexo --debug
-```
+	hexo --debug

@@ -22,9 +22,9 @@ Hexo 的佈署非常簡單，所有的佈署都只需要三步僅可完成設定
 
 ``` yaml
 deploy:
-	type: github
-	repository:
-	branch:
+  type: github
+  repository:
+  branch:
 ```
 
 ### 建立
@@ -80,8 +80,8 @@ example.com
 
 ``` yaml
 deploy:
-	type: heroku
-	repository:
+  type: heroku
+  repository:
 ```
 
 ### 建立
@@ -102,14 +102,14 @@ web: node app
 
 {% code app.js %}
 var connect = require('connect'),
-	app = connect.createServer(),
-	port = process.env.PORT;
-	
+  app = connect.createServer(),
+  port = process.env.PORT;
+
 app.use(connect.static(__dirname + "/public"));
 app.use(connect.compress());
 
 app.listen(port, function(){
-	console.log("Hexo is running on port %d.", port);
+  console.log("Hexo is running on port %d.", port);
 });
 {% endcode %}
 

@@ -98,12 +98,12 @@ date: 2012-11-01 18:13:30
 
 ```
 {
-	min_font: 10,
-	max_font: 20,
-	unit: 'px',
-	amount: 40,
-	orderby: 'name',
-	order: 1
+  min_font: 10,
+  max_font: 20,
+  unit: 'px',
+  amount: 40,
+  orderby: 'name',
+  order: 1
 }
 ```
 
@@ -133,17 +133,17 @@ date: 2012-11-01 18:13:30
 
 ```
 {
-	base: '/',
-	format: 'page/%d/',
-	total: 1,
-	current: 0,
-	prev_text: 'Prev',
-	next_text: 'Next',
-	space: '&hellp;',
-	prev_next: true,
-	end_size: 1,
-	mid_size: 2,
-	show_all: false
+  base: '/',
+  format: 'page/%d/',
+  total: 1,
+  current: 0,
+  prev_text: 'Prev',
+  next_text: 'Next',
+  space: '&hellp;',
+  prev_next: true,
+  end_size: 1,
+  mid_size: 2,
+  show_all: false
 }
 ```
 

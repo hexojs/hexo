@@ -12,7 +12,7 @@ Listen an event:
 
 ```
 hexo.on('ready', function(){
-	...
+  ...
 });
 ```
 

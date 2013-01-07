@@ -30,18 +30,18 @@ Global configuration file.
 
 ### package.json
 
-Application data. **Don't delete it.** If you deleted it unfortunately, rebuild the file with the following content. 
+Application data. **Don't delete it.** If you deleted it unfortunately, rebuild the file with the following content.
 
 {% code package.json %}
 {
-	"name": "hexo",
-	"version": "0.0.1",
-	"private": true,
-	"engines": {
-		"node": ">0.6.0",
-		"npm": ">1.1.0"
-	},
-	"dependencies": {}
+  "name": "hexo",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": ">0.6.0",
+    "npm": ">1.1.0"
+  },
+  "dependencies": {}
 }
 {% endcode %}
 

@@ -152,7 +152,7 @@ Gets the content of the path.
 
 ``` js
 route.get(path, function(err, result){
-	...
+  ...
 });
 ```
 
@@ -164,7 +164,7 @@ Sets the content of the path. `content` can be a function or else. If it is a fu
 route.set(path, content);
 
 route.set(path, function(fn){
-	fn(null, 'content');
+  fn(null, 'content');
 });
 ```
 

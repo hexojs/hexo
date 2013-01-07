@@ -39,7 +39,7 @@ date: 2012-11-01 18:13:30
 
 ### 網誌彙整
 
-`2` - 開啟彙整的分頁功能  
+`2` - 開啟彙整的分頁功能
 `1` - 關閉彙整的分頁功能
 
 - **archive**
@@ -87,57 +87,59 @@ Hexo 使用 Moment.js 解析和顯示日期。（[Moment.js][4]）
 
 ## 預設值
 
-	# Basic
-	title: Hexo
-	subtitle: Node.js blog framework
-	description:
-	url: http://yoursite.com
-	author: John Doe
-	email:
-	language:
+``` yaml
+# Basic
+title: Hexo
+subtitle: Node.js blog framework
+description:
+url: http://yoursite.com
+author: John Doe
+email:
+language:
 
-	# Permalink
-	root: /
-	permalink: :year/:month/:day/:title/
-	tag_dir: tags
-	archive_dir: archives
-	category_dir: posts
-	new_post_name: :title.md
+# Permalink
+root: /
+permalink: :year/:month/:day/:title/
+tag_dir: tags
+archive_dir: archives
+category_dir: posts
+new_post_name: :title.md
 
-	# Archives
-	archive: 2
-	category: 2
-	tag: 2
+# Archives
+archive: 2
+category: 2
+tag: 2
 
-	# Server
-	port: 4000
-	logger: false
-	logger_format:
+# Server
+port: 4000
+logger: false
+logger_format:
 
-	# Date / Time format
-	date_format: MMM D, YYYY
-	time_format: H:mm:ss
+# Date / Time format
+date_format: MMM D, YYYY
+time_format: H:mm:ss
 
-	# Pagination
-	per_page: 10
-	pagination_dir: page
+# Pagination
+per_page: 10
+pagination_dir: page
 
-	# Disqus
-	disqus_shortname:
+# Disqus
+disqus_shortname:
 
-	# Extensions
-	plugins:
-	theme: light
-	exclude_generator:
+# Extensions
+plugins:
+theme: light
+exclude_generator:
 
-	# Enhancement
-	auto_spacing: false
-	titlecase: false
+# Enhancement
+auto_spacing: false
+titlecase: false
 
-	# Deploy
-	deploy:
-		type:
-		
+# Deploy
+deploy:
+  type:
+```
+
 [1]: http://www.w3.org/International/articles/language-tags/
 [2]: permalink.html
 [3]: http://www.senchalabs.org/connect/logger.html

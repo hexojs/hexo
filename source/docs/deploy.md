@@ -21,9 +21,9 @@ Edit `_config.yml`. Fill `repository` with GitHub repository. If repository is l
 
 ``` yaml
 deploy:
-	type: github
-	repository:
-	branch:
+  type: github
+  repository:
+  branch:
 ```
 
 ### Setup
@@ -79,8 +79,8 @@ Edit `_config.yml`. Fill `repository` with Heroku repository.
 
 ``` yaml
 deploy:
-	type: heroku
-	repository:
+  type: heroku
+  repository:
 ```
 
 ### Setup
@@ -99,14 +99,14 @@ web: node app
 
 {% code app.js %}
 var connect = require('connect'),
-	app = connect.createServer(),
-	port = process.env.PORT;
-	
+  app = connect.createServer(),
+  port = process.env.PORT;
+
 app.use(connect.static(__dirname + "/public"));
 app.use(connect.compress());
 
 app.listen(port, function(){
-	console.log("Hexo is running on port %d.", port);
+  console.log("Hexo is running on port %d.", port);
 });
 {% endcode %}
 
