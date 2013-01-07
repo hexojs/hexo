@@ -58,6 +58,7 @@ npm uninstall <plugin-name>
 ## Renderer
 
 - [hexo-renderer-coffeescript] - CoffeeScript
+- [hexo-renderer-discount] - Discount
 - [hexo-renderer-haml] - Haml
 - [hexo-renderer-jade] - Jade
 - [hexo-renderer-less] - Less
@@ -79,4 +80,5 @@ npm uninstall <plugin-name>
 [hexo-renderer-less]: https://github.com/tommy351/hexo-plugins/tree/master/renderer/less
 [hexo-migrator-rss]: https://github.com/tommy351/hexo-plugins/tree/master/migrator/rss
 [hexo-migrator-wordpress]: https://github.com/tommy351/hexo-plugins/tree/master/migrator/wordpress
+[hexo-renderer-discount]: https://github.com/tommy351/hexo-plugins/tree/master/renderer/discount
 [Wiki]: https://github.com/tommy351/hexo/wiki/Plugins
