@@ -6,6 +6,7 @@ test:
 		--require should \
 		--reporter $(REPORTER) \
 		--timeout 60000 \
+		--slow 30000
 		$(TESTS)
 
 .PHONY: test
