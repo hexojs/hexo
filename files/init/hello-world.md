@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Hello World
-date: 2013-01-09 01:14:32
+date: %date%
 comments: true
 tags:
 ---
