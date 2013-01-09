@@ -41,7 +41,7 @@
     "swig": "*",
     "graceful-fs": "*",
     "mime": "*",
-    "watch": "*"
+    "fs-watch-tree": "*"
   },
   "devDependencies": {
     "mocha": "*",
