@@ -40,7 +40,8 @@
     "underscore": "*",
     "swig": "*",
     "graceful-fs": "*",
-    "mime": "*"
+    "mime": "*",
+    "watch": "*"
   },
   "devDependencies": {
     "mocha": "*",
