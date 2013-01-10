@@ -41,6 +41,7 @@
     "swig": "*",
     "graceful-fs": "*",
     "mime": "*",
+    "optimist": "*",
     "fs-watch-tree": "*"
   },
   "devDependencies": {
