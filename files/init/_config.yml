@@ -23,6 +23,7 @@ highlight:
   enable: true
   backtick_code_block: true
   line_number: true
+  tab_replace:
 
 # Archives
 archive: 2
