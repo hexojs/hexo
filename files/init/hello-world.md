@@ -1,8 +1,6 @@
 ---
-layout: post
 title: Hello World
 date: %date%
-comments: true
 tags:
 ---
 
