@@ -1,19 +1,29 @@
-# Basic
+# Site
 title: Hexo
-subtitle: Node.js blog framework
+subtitle:
 description:
-url: http://yoursite.com
 author: John Doe
 email:
 language:
 
-# Permalink
+# URL
+url: http://yoursite.com
 root: /
 permalink: :year/:month/:day/:title/
 tag_dir: tags
 archive_dir: archives
 category_dir: posts
+
+
+# Writing
 new_post_name: :title.md
+default_layout: post
+auto_spacing: false
+titlecase: false
+highlight:
+  enable: true
+  backtick_code_block: true
+  line_number: true
 
 # Archives
 archive: 2
@@ -40,14 +50,6 @@ disqus_shortname:
 plugins:
 theme: light
 exclude_generator:
-
-# Enhancement
-auto_spacing: false
-titlecase: false
-highlight:
-  enable: true
-  backtick_code_block: true
-  line_number: true
 
 # Deployment
 deploy:
