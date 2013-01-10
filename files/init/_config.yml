@@ -14,7 +14,6 @@ tag_dir: tags
 archive_dir: archives
 category_dir: posts
 
-
 # Writing
 new_post_name: :title.md
 default_layout: post
