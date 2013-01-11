@@ -171,18 +171,6 @@ describe('Core', function(){
     });
   });
 
-  describe('Server', function(){
-    it('server', function(done){
-      command('../bin/hexo', ['server'], {cwd: tmpDir}, done);
-    });
-  });
-
-  describe('Preview', function(){
-    it('preview', function(done){
-      command('../bin/hexo', ['preview'], {cwd: tmpDir}, done);
-    });
-  });
-
   describe('Routes', function(){
     it('routes', function(done){
       command('../bin/hexo', ['routes'], {cwd: tmpDir}, done);
