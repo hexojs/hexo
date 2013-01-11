@@ -183,6 +183,12 @@ describe('Core', function(){
     });
   });
 
+  describe('Routes', function(){
+    it('routes', function(done){
+      command('../bin/hexo', ['routes'], {cwd: tmpDir}, done);
+    });
+  });
+
   after(function(){
     command('rm', ['-rf', 'tmp'], {});
   });
