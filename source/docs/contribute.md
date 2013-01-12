@@ -8,6 +8,14 @@ date: 2012-11-01 18:13:30
 
 You may have found some bugs when using Hexo, or have some questions and recommendations. Feel free to submit them on GitHub.
 
+You can clone the **dev** branch on GitHub to try the new features. It's updated everyday!
+
+```
+git clone -b dev git://github.com/tommy351/hexo.git
+cd hexo
+./bin/hexo
+```
+
 [Report an issue][1]
 
 ## Write Docs

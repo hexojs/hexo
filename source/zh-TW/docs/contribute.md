@@ -9,6 +9,14 @@ date: 2012-11-01 18:13:30
 
 當你使用Hexo時，如果發現錯誤的話，請在GitHub上回報，如果有任何建議的話，也歡迎提出。
 
+你可從GitHub上複製**dev**分支嘗鮮，幾乎每天都有新玩意！
+
+```
+git clone -b dev git://github.com/tommy351/hexo.git
+cd hexo
+./bin/hexo
+```
+
 [回報問題][1]
 
 ## 撰寫文件

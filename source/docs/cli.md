@@ -20,25 +20,28 @@ Generate static files.
 
 - -t/--theme: Skip theme installation
 - -d/--deploy: Deploy automatically after generate
+- -w/--watch: Watch file changes
 
 ```
 hexo generate
 hexo generate -t/--theme
 hexo generate -d/--deploy
+hexo generate -w/--watch
 ```
 
 Start server. Press `Ctrl+C` to stop it.
 
-- -p: Port setting
+- -p/--port: Port setting
 
 ```
 hexo server
 hexo server -p 12345
 ```
-	
+
 Preview. Press `Ctrl+C` to stop it.
 
-- -p: Port setting
+- -p/--port: Port setting
+- -w/--watch: Watch file changes
 
 ```
 hexo preview

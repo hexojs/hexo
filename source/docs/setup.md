@@ -69,5 +69,5 @@ Files in this folder will be processed and saved in `public` folder. File or fol
 Theme folder. The default theme of Hexo is [Light][1]。
 
 [1]: https://github.com/tommy351/hexo-theme-light
-[2]: scaffolds.html
+[2]: writing.html
 [3]: scripts.html

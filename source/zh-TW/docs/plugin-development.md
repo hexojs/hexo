@@ -195,7 +195,7 @@ hexo.extend.tag.register(name, fn, [ends]);
 
 - **name** - 名稱（小寫）
 - **fn(args, content)**
-	- **args** - 參數
+	- **args** - 引數
 	- **content** - 內容
 - **ends** - 結尾標籤
 
@@ -232,7 +232,7 @@ hexo.extend.console.register(name, desc, [options], fn);
 - **desc** - 描述
 - **options** - 選項（見下方）
 - **fn(args)**
-	- **args** - 參數
+	- **args** - 引數
 
 ### 選項
 
@@ -264,7 +264,7 @@ hexo.extend.migrator.register(name, fn);
 
 - **name** - 名稱（小寫）
 - **fn(args)**
-	- **args** - 參數
+	- **args** - 引數
 
 ## 發佈
 

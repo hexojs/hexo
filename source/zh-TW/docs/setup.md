@@ -70,5 +70,5 @@ hexo init <folder>
 主題資料夾。Hexo 的預設主題為 [Light][1]。
 
 [1]: https://github.com/tommy351/hexo-theme-light
-[2]: scaffolds.html
+[2]: writing.html
 [3]: scripts.html

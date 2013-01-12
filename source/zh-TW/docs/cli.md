@@ -21,16 +21,18 @@ date: 2012-11-01 18:13:30
 
 - -t/--theme：忽略主題安裝
 - -d/--deploy：生成後自動佈署
+- -w/--watch：監視檔案變更
 
 ```
 hexo generate
 hexo generate -t/--theme
 hexo generate -d/--deploy
+hexo generate -w/--watch
 ```
 
 啟動伺服器，按下`Ctrl+C`停止伺服器
 
-- -p：連接埠設定
+- -p/--port：連接埠設定
 
 ```
 hexo server
@@ -39,11 +41,12 @@ hexo server -p 12345
 
 預覽，按下`Ctrl+C`停止伺服器
 
-- -p：連接埠設定
+- -p/--port：連接埠設定
+- -w/--watch：監視檔案變更
 
 ```
-hexo server
-hexo server -p 12345
+hexo preview
+hexo preview -p 12345
 ```
 
 顯示網站設定
