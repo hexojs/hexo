@@ -39,19 +39,15 @@ hexo.emit('event', [arg1], [arg2], [….]);
 
 生成檔案完成後。
 
-### newPost
+### new
 
 建立新文章後。回傳一個參數 `target`，代表新檔案的絕對路徑。
 
-### newPage
-
-建立新分頁後。回傳一個參數 `target`，代表新檔案的絕對路徑。
-
-### serverOn
+### server
 
 伺服器開啟後。
 
-### previewOn
+### preview
 
 預覽伺服器開啟後。
 

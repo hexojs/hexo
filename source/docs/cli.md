@@ -6,31 +6,44 @@ date: 2012-11-01 18:13:30
 
 Display current version of Hexo
 
-	hexo -v
-	hexo --version
-	hexo ver
 	hexo version
 
 Setup website. If `folder` is not defined, Hexo will setup website at current directory.
 
 	hexo init <folder>
 
-Create a new post
+Create a new article
 
-	hexo new_post <title>
+	hexo new [layout] <title>
 
-Create a new page
+Generate static files.
 
-	hexo new_page <title>
+- -t/--theme: Skip theme installation
+- -d/--deploy: Deploy automatically after generate
 
-Generate static files. Use `-t` or `--theme` to skip theme installation.
-
-	hexo generate
-	hexo generate -t/--theme
+```
+hexo generate
+hexo generate -t/--theme
+hexo generate -d/--deploy
+```
 
 Start server. Press `Ctrl+C` to stop it.
 
-	hexo server
+- -p: Port setting
+
+```
+hexo server
+hexo server -p 12345
+```
+	
+Preview. Press `Ctrl+C` to stop it.
+
+- -p: Port setting
+
+```
+hexo preview
+hexo preview -p 12345
+```
 
 Display configuration of the site
 
@@ -38,11 +51,14 @@ Display configuration of the site
 
 Deploy
 
-	hexo deploy
+- --setup: Setup without deployment
+- --generate: Generate before deployment
 
-Setup deploy
-
-	hexo setup_deploy
+```
+hexo deploy
+hexo deploy --setup
+hexo deploy --generate
+```
 
 Render a file
 

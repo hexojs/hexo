@@ -38,19 +38,15 @@ Called before generating.
 
 Called after generating.
 
-### newPost
+### new
 
-Called after a new post created. Return an argument `target` which means the absolute path of the new file.
+Called after a new article created. Return an argument `target` which means the absolute path of the new file.
 
-### newPage
-
-Called after a new page created. Return an argument `target` which means the absolute path of the new file.
-
-### serverOn
+### server
 
 Called after the server is on.
 
-### previewOn
+### preview
 
 Called after the preview server is on.
 

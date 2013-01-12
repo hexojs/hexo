@@ -4,7 +4,7 @@ title: Install
 date: 2012-11-01 18:13:30
 ---
 
-Before installing Hexo, you should infall [Git][2] & [Node.js][1] first.
+Before installing Hexo, you should install [Git][2] & [Node.js][1] first.
 
 ## Contents
 

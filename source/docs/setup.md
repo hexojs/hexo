@@ -16,6 +16,9 @@ After built, here's how the folder looks like:
 |-- .gitignore
 |-- _config.yml
 |-- package.json
+|-- public
+|-- scaffolds
+|-- scripts
 |-- source
 |   |-- _posts
         |-- hello-world.md
@@ -32,7 +35,7 @@ Global configuration file.
 
 Application data. **Don't delete it.** If you deleted it unfortunately, rebuild the file with the following content.
 
-{% code package.json %}
+``` json
 {
   "name": "hexo",
   "version": "0.0.1",
@@ -43,7 +46,19 @@ Application data. **Don't delete it.** If you deleted it unfortunately, rebuild 
   },
   "dependencies": {}
 }
-{% endcode %}
+```
+
+### public
+
+Static file folder.
+
+### scaffolds
+
+[Scaffold][2] folder.
+
+### scripts
+
+[Script][3] folder.
 
 ### source
 
@@ -54,3 +69,5 @@ Files in this folder will be processed and saved in `public` folder. File or fol
 Theme folder. The default theme of Hexo is [Light][1]。
 
 [1]: https://github.com/tommy351/hexo-theme-light
+[2]: scaffolds.html
+[3]: scripts.html

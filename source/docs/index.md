@@ -24,6 +24,8 @@ date: 2012-11-01 18:13:30
 
 #### [Server](server.html)
 
+#### [Scaffolds](scaffolds.html)
+
 #### [Permalink](permalink.html)
 
 #### [Scripts](scripts.html)

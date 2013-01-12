@@ -17,6 +17,9 @@ hexo init <folder>
 |-- .gitignore
 |-- _config.yml
 |-- package.json
+|-- public
+|-- scaffolds
+|-- scripts
 |-- source
 |   |-- _posts
         |-- hello-world.md
@@ -33,7 +36,7 @@ hexo init <folder>
 
 應用程式資料。**請勿刪除**，若不幸刪除，請依照以下內容重建檔案。
 
-{% code package.json %}
+``` json
 {
   "name": "hexo",
   "version": "0.0.1",
@@ -44,7 +47,19 @@ hexo init <folder>
   },
   "dependencies": {}
 }
-{% endcode %}
+```
+
+### public
+
+靜態檔案資料夾。
+
+### scaffolds
+
+[骨架][2] 資料夾。
+
+### scripts
+
+[腳本][3] 資料夾。
 
 ### source
 
@@ -55,3 +70,5 @@ hexo init <folder>
 主題資料夾。Hexo 的預設主題為 [Light][1]。
 
 [1]: https://github.com/tommy351/hexo-theme-light
+[2]: scaffolds.html
+[3]: scripts.html
