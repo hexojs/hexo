@@ -59,6 +59,7 @@ highlight:
   enable: true
   backtick_code_block: true
   line_number: false
+  tab_replace: '  '
 
 # Deployment
 # Type: github, heroku
