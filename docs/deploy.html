@@ -32,25 +32,19 @@
 <nav id="main-nav">
   <ul>
     <li><a href="/hexo/docs/">Docs</a></li>
-    <li><a href="/hexo/plugins/">Plugins</a></li>
-    <li><a href="/hexo/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Plugins">Plugins</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Themes">Themes</a></li>
     <li><a href="https://github.com/tommy351/hexo">Source</a></li>
   </ul>
 </nav></header>
     <div id="content">
       
+
 <article class="page">
   <h1 class="title">Deploy</h1>
-  <div class="entry"><p>It&#39;s easy to deploy with Hexo. It just needs 3 steps to complete setup, &quot;Configure → Setup → Deploy&quot;.
+  <small>Last updated: Jan 12, 2013</small>
+  <div class="entry"><p>It&#39;s easy to deploy with Hexo. It just needs 1 command to complete all the settings.
 
-</p>
-<h2>Contents</h2>
-<ul>
-<li><a href="#github">GitHub</a></li>
-<li><a href="#heroku">Heroku</a></li>
-<li><a href="#rsync">Rsync</a></li>
-</ul>
-<p><a id="github"></a>
 </p>
 <h2>GitHub</h2>
 <h3>Configure</h3>
@@ -59,17 +53,15 @@
 </p>
 <pre><code><div class="line"><span class="method">deploy:</span></div><div class="line">  <span class="method">type:</span> github</div><div class="line">  <span class="method">repository:</span></div><div class="line">  <span class="method">branch:</span></div></code></pre>
 
-<h3>Setup</h3>
-<p>Execute the following command. Hexo will build a hidden folder named <code>.deploy</code>, initialize Git and setup remote repository.
-
-</p>
-<pre><code><div class="line">hexo setup_deploy</div></code></pre>
-
+<ul>
+<li><strong>repository</strong> - GitHub repository</li>
+<li><strong>branch</strong> - If repository is like <code>username.github.com</code>, fill it with <code>master</code>, otherwise <code>gh-pages</code></li>
+</ul>
 <h3>Deploy</h3>
-<p>After the static files are generated, execute the following to deploy.
+<p>After the static files are generated, execute the following to deploy. You can add <code>--generate</code> option to generate automatically before deploy.
 
 </p>
-<pre><code><div class="line">hexo deploy</div></code></pre>
+<pre><code><div class="line">hexo deploy</div><div class="line">hexo deploy --generate</div></code></pre>
 
 <h3>Remove</h3>
 <p>Execute the following command to remove deployment.
@@ -97,43 +89,28 @@
 <p>Check <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages">GitHub Pages</a> for more info.
 
 </p>
-<p><a id="heroku"></a>
-</p>
 <h2>Heroku</h2>
 <h3>Configure</h3>
-<p>Edit <code>_config.yml</code>. Fill <code>repository</code> with Heroku repository.
+<p>Edit <code>_config.yml</code>.
 
 </p>
 <pre><code><div class="line"><span class="title">deploy</span>:</div><div class="line">  <span class="typedef"><span class="keyword">type</span>: heroku</span></div><div class="line">  repository:</div></code></pre>
 
-<h3>Setup</h3>
-<p>Execute the following command. Hexo will create two files in the root directory: <code>Procfile</code> &amp; <code>app.js</code>, initialize Git and setup remote repository.
-
-</p>
-<pre><code><div class="line">hexo setup_deploy</div></code></pre>
-
-<p><code>Procfile</code> &amp; <code>app.js</code> is necessary. <strong>Do not delete them.</strong> If you had delete them, rebuilt with the following content manually.
-
-</p>
-<figure class="highlight"><figcaption><span>Procfile</span></figcaption><table><tr><td class="gutter"><pre><code><div class="line-number">1</div></code></pre></td><td class="code"><pre><code><div class="line"><span class="attribute">web</span>: <span class="string">node app</span></div></code></pre></td></tr></table></figure>
-<figure class="highlight"><figcaption><span>app.js</span></figcaption><table><tr><td class="gutter"><pre><code><div class="line-number">1</div><div class="line-number">2</div><div class="line-number">3</div><div class="line-number">4</div><div class="line-number">5</div><div class="line-number">6</div><div class="line-number">7</div><div class="line-number">8</div><div class="line-number">9</div><div class="line-number">10</div></code></pre></td><td class="code"><pre><code><div class="line">var <span class="keyword">connect</span> = <span class="keyword">require</span>(<span class="string">'connect'</span>),</div><div class="line">  app = <span class="keyword">connect</span>.createServer(),</div><div class="line">  port = process.env.PORT;</div><br><div class="line">app.<span class="keyword">use</span>(<span class="keyword">connect</span>.static(__dirname + <span class="string">"/public"</span>));</div><div class="line">app.<span class="keyword">use</span>(<span class="keyword">connect</span>.compress());</div><br><div class="line">app.<span class="keyword">listen</span>(port, function(){</div><div class="line">  console.<span class="keyword">log</span>(<span class="string">"Hexo is running on port <span class="variable">%d</span>."</span>, port);</div><div class="line">});</div></code></pre></td></tr></table></figure>
-
+<ul>
+<li><strong>repository</strong> - Heroku repository</li>
+</ul>
 <h3>Deploy</h3>
-<p>After the static files are generated, execute the following to deploy.
+<p>After the static files are generated, execute the following to deploy. You can add <code>--generate</code> option to generate automatically before deploy.
 
 </p>
-<pre><code><div class="line">hexo deploy</div></code></pre>
-
-<h3>Remove</h3>
-<p>Delete the following files and folders to remove deployment.
-
-</p>
-<pre><code><div class="line">|-- _.git</div><div class="line">|-- app.js</div><div class="line">|-- Procfile</div></code></pre>
+<pre><code><div class="line">hexo deploy</div><div class="line">hexo deploy --generate</div></code></pre>
 
 <p>Check <a href="https://devcenter.heroku.com/">Heroku</a> for more info.
 
 </p>
-<p><a id="rsync"></a>
+<h3>Remove</h3>
+<p>Remove <code>.git</code>, <code>app.js</code> and <code>Procfile</code>.
+
 </p>
 <h2>Rsync</h2>
 <h3>Configure</h3>
@@ -149,15 +126,11 @@
 <li><strong>port</strong> - Port (Default is <code>22</code>)</li>
 <li><strong>delete</strong> - Delete old files on remote host (Default is <code>true</code>)</li>
 </ul>
-<h3>Setup</h3>
-<p>Don&#39;t need to setup.
-
-</p>
 <h3>Deploy</h3>
-<p>After the static files are generated, execute the following to deploy.
+<p>After the static files are generated, execute the following to deploy. You can add <code>--generate</code> option to generate automatically before deploy.
 
 </p>
-<pre><code><div class="line">hexo deploy</div></code></pre>
+<pre><code><div class="line">hexo deploy</div><div class="line">hexo deploy --generate</div></code></pre>
 
 </div>
 </article>

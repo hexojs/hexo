@@ -32,15 +32,17 @@
 <nav id="main-nav">
   <ul>
     <li><a href="/hexo/zh-TW/docs/">Docs</a></li>
-    <li><a href="/hexo/zh-TW/plugins/">Plugins</a></li>
-    <li><a href="/hexo/zh-TW/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Plugins">Plugins</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Themes">Themes</a></li>
     <li><a href="https://github.com/tommy351/hexo">Source</a></li>
   </ul>
 </nav></header>
     <div id="content">
       
+
 <article class="page">
   <h1 class="title">事件</h1>
+  <small>Last updated: Jan 12, 2013</small>
   <div class="entry"><p><a href="global-variables.html">全域變數</a> <code>hexo</code> 本身是一個 <a href="http://nodejs.org/api/events.html#events_class_events_eventemitter">EventEmitter</a> 物件，你可直接監聽或觸發事件。
 
 </p>
@@ -48,7 +50,7 @@
 <p>監聽事件：
 
 </p>
-<pre><code><div class="line">hexo.on(<span class="string">'ready'</span>, <span class="keyword">function</span>(){</div><div class="line">	<span class="keyword">...</span></div><div class="line">});</div></code></pre>
+<pre><code><div class="line">hexo.on(<span class="string">'ready'</span>, <span class="keyword">function</span>(){</div><div class="line">  <span class="keyword">...</span></div><div class="line">});</div></code></pre>
 
 <p>觸發事件：
 
@@ -71,19 +73,15 @@
 <p>生成檔案完成後。
 
 </p>
-<h3>newPost</h3>
+<h3>new</h3>
 <p>建立新文章後。回傳一個參數 <code>target</code>，代表新檔案的絕對路徑。
 
 </p>
-<h3>newPage</h3>
-<p>建立新分頁後。回傳一個參數 <code>target</code>，代表新檔案的絕對路徑。
-
-</p>
-<h3>serverOn</h3>
+<h3>server</h3>
 <p>伺服器開啟後。
 
 </p>
-<h3>previewOn</h3>
+<h3>preview</h3>
 <p>預覽伺服器開啟後。
 
 </p>

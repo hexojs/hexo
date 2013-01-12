@@ -32,49 +32,61 @@
 <nav id="main-nav">
   <ul>
     <li><a href="/hexo/docs/">Docs</a></li>
-    <li><a href="/hexo/plugins/">Plugins</a></li>
-    <li><a href="/hexo/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Plugins">Plugins</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Themes">Themes</a></li>
     <li><a href="https://github.com/tommy351/hexo">Source</a></li>
   </ul>
 </nav></header>
     <div id="content">
       
+
 <article class="page">
   <h1 class="title">Writing</h1>
-  <div class="entry"><h2>Post</h2>
+  <small>Last updated: Jan 12, 2013</small>
+  <div class="entry"><h2>Basic</h2>
 <h3>Create</h3>
 <p>Execute the following command.
 
 </p>
-<pre><code><div class="line">hexo new_post &lt;title&gt;</div></code></pre>
+<pre><code><div class="line">hexo new [layout] &lt;title&gt;</div></code></pre>
 
-<p>The new post will be saved at <code>source/_posts/name.md</code> with the following content.
-
-</p>
-<pre><code><div class="line">---</div><div class="line">layout: post</div><div class="line">title: title</div><div class="line">date: YYYY-MM-DD HH:mm:ss</div><div class="line">comments: true</div><div class="line">tags:</div><div class="line">---</div></code></pre>
-
-<p>File name is based on <code>title</code> argument and <code>new_post_name</code> setting in <code>_config.yml</code>, title will be transformed into lower case, spaces will be transformed into dash. For example:
+<p><code>layout</code> is optional. Default is <code>default_layout</code> setting in <a href="configure.html">global configuration</a>.
 
 </p>
-<pre><code><div class="line">hexo new_post Test Post =&gt; source/_posts/test-<span class="filename">post.md</div></code></pre>
+<p>The title will be transform into lower case. Spaces will be replaced with dash. If the target file exists, adding number after the filename. For example:
 
+</p>
+<pre><code><div class="line">hexo <span class="keyword">new</span> <span class="string">"New Post"</span> -&gt; source<span class="regexp">/_posts/</span><span class="keyword">new</span>-post.md</div><div class="line">hexo <span class="keyword">new</span> page <span class="string">"New Page"</span> -&gt; source<span class="regexp">/new-page/i</span>ndex.md</div><div class="line">hexo <span class="keyword">new</span> draft <span class="string">"New Draft"</span> -&gt; source<span class="regexp">/_drafts/</span><span class="keyword">new</span>-draft.md</div></code></pre>
+
+<h3>Filename</h3>
+<p>You can configure the name of new files by editing <code>new_post_name</code> setting in <a href="configure.html">global configuration</a>. Default is <code>:title.md</code>.
+
+</p>
+<ul>
+<li><code>:title</code> - Article title (Default URL of the article)</li>
+<li><code>:year</code> - Published year (4-digit)</li>
+<li><code>:month</code> - Published month (2-digit)</li>
+<li><code>:day</code> - Published date (2-digit)</li>
+</ul>
+<p>To make files sorted by date, you can set it to <code>:year-:month-:day-:title.md</code>.
+
+</p>
 <h3>Configure</h3>
 <p>The beginning of article is a block wrapped with <code>---</code>, called <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front Matter</a>. You can use YAML to configure posts.
 
 </p>
-<p>The following is default configuration. You can modify them as you like.
-
-</p>
 <ul>
-<li><strong>layout</strong> - Layout</li>
+<li><strong>layout</strong> - Layout (Optional)</li>
 <li><strong>title</strong> - Title</li>
-<li><strong>date</strong> - Published date (<code>YYYY-MM-DD HH:mm:ss</code>)</li>
-<li><strong>comments</strong> - Comments</li>
-<li><strong>tags</strong> - Tags</li>
+<li><strong>date</strong> - Published date</li>
+<li><strong>updated</strong> - Last updated date (Optional)</li>
+<li><strong>comments</strong> - Whether to enable comment (Optional. Enabled by default)</li>
+<li><strong>tags</strong> - Tags (Optional. Not availiable for page)</li>
+<li><strong>categories</strong> - Categories (Optional. Not availiable for page)</li>
 <li><strong>permalink</strong> - Override default URL (Optional)</li>
 </ul>
 <h3>Categories</h3>
-<p>Category is the relative path to <code>source/_posts</code>. It&#39;s hierarchical.
+<p>Category is the relative path to <code>source/_posts</code>. It&#39;s hierarchical. You can add <code>categories</code> property in the file. Its content will be added after the original categories. For example:
 
 </p>
 <p>For example:
@@ -85,51 +97,49 @@
 <li><code>source/_posts/Fruits/title.md</code> - Fruit</li>
 <li><code>source/_posts/Fruits/Apple/title.md</code> - Fruit, Apple</li>
 </ul>
+<p>Categories settings:
+
+</p>
+<pre><code><div class="line"><span class="preprocessor"># Single category</span></div><div class="line"><span class="label">categories:</span> Fruits</div><br><div class="line"><span class="preprocessor"># Multiple categories</span></div><div class="line"><span class="label">categories:</span> Fruits/Apple</div><br><div class="line"><span class="label">categories:</span> [Fruits, Apple]</div><br><div class="line"><span class="label">categories:</span></div><div class="line">- Fruits</div><div class="line">- Apple</div></code></pre>
+
 <h3>Tags</h3>
 <pre><code><div class="line"><span class="preprocessor"># Single tag</span></div><div class="line"><span class="label">tags:</span> Apple</div><br><div class="line"><span class="preprocessor"># Multiple tags</span></div><div class="line"><span class="label">tags:</span> [Apple, Banana]</div><br><div class="line"><span class="label">tags:</span></div><div class="line">- Apple</div><div class="line">- Banana</div></code></pre>
 
-<h2>Page</h2>
-<h3>Create</h3>
-<p>Execute the following command.
+<h2>Scaffolds</h2>
+<p>A scaffold is the default template of articles. Hexo will create articles based on the scaffolds.
 
 </p>
-<pre><code><div class="line">hexo new_page &lt;title&gt;</div></code></pre>
+<h3>Example</h3>
+<p>Create <code>photo.md</code> in <code>scaffolds</code> folder.
 
-<p>The new post will be saved at <code>source/name/index.md</code> with the following content.
-
-</p>
-<pre><code><div class="line">---</div><div class="line">layout: page</div><div class="line">title: title</div><div class="line">date: YYYY-MM-DD HH:mm:ss</div><div class="line">comments: true</div><div class="line">---</div></code></pre>
-
-<p>File name is based on <code>title</code> argument, title will be transformed into lower case, spaces will be transformed into dash. For example:
 
 </p>
-<pre><code><div class="line">hexo new_page Test Page =&gt; source/test-page/<span class="filename">index.md</div></code></pre>
+<pre><code>---
+layout: {{ layout }}
+title: {{ title }}
+date: {{ date }}
+tags:
+---
+</code></pre>
 
-<h3>Configure</h3>
-<p>The beginning of article is a block wrapped with <code>---</code>, called <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front Matter</a>. You can use YAML to configure posts.
+
+<p>And execute the following:
 
 </p>
-<p>The following is default configuration. You can modify them as you like.
+<pre><code><div class="line"><span class="title">hexo</span> new photo <span class="string">"New Gallery"</span></div></code></pre>
+
+<p>Hexo will create a new file based on the content above.
+
+</p>
+<h3>Usage</h3>
+<p>A scaffold is processed by Swig. Variables are wrapped by double curly brackets. The following are the variables:
 
 </p>
 <ul>
-<li><strong>layout</strong> - Layout</li>
-<li><strong>title</strong> - Title</li>
-<li><strong>date</strong> - Published date (<code>YYYY-MM-DD HH:mm:ss</code>)</li>
-<li><strong>comments</strong> - Comments</li>
-<li><strong>permalink</strong> - Override default URL (Optional)</li>
+<li><strong>layout</strong> - Layout name</li>
+<li><strong>title</strong> - Article title</li>
+<li><strong>date</strong> - Published date</li>
 </ul>
-<h2>Generate Static Files</h2>
-<p>Execute the following command to transform articles into static files.
-
-</p>
-<pre><code><div class="line">hexo generate</div></code></pre>
-
-<p>After that, you can add <code>-t</code> or <code>--theme</code> after the command to ignore theme installation to make generating faster.
-
-</p>
-<pre><code><div class="line">hexo generate -t</div><div class="line">hexo generate --theme</div></code></pre>
-
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

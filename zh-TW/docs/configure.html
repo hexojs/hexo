@@ -32,51 +32,57 @@
 <nav id="main-nav">
   <ul>
     <li><a href="/hexo/zh-TW/docs/">Docs</a></li>
-    <li><a href="/hexo/zh-TW/plugins/">Plugins</a></li>
-    <li><a href="/hexo/zh-TW/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Plugins">Plugins</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Themes">Themes</a></li>
     <li><a href="https://github.com/tommy351/hexo">Source</a></li>
   </ul>
 </nav></header>
     <div id="content">
       
+
 <article class="page">
   <h1 class="title">設定</h1>
+  <small>Last updated: Jan 12, 2013</small>
   <div class="entry"><p>全域設定檔案儲存於網站根目錄下的<code>_config.yml</code>。
 
 </p>
 <h2>設定</h2>
-<h3>基礎</h3>
+<h3>網站</h3>
 <ul>
 <li><strong>title</strong> - 網站標題</li>
 <li><strong>subtitle</strong> - 網站副標題</li>
 <li><strong>description</strong> - 網站描述</li>
-<li><strong>url</strong> - 網站網址</li>
 <li><strong>author</strong> - 網站作者</li>
 <li><strong>email</strong> - 網站作者的電子信箱位址</li>
 <li><strong>language</strong> - 網站使用的語言（<a href="http://www.w3.org/International/articles/language-tags/">IETF 格式</a>，例如正體中文為 <code>zh-TW</code>）</li>
 </ul>
-<h3>永久連結</h3>
+<h3>網址</h3>
 <ul>
+<li><strong>url</strong> - 網站網址</li>
 <li><strong>root</strong> - 網站的根目錄。假設 <code>url</code> 為 <code>http://yoursite.com/child</code>，則 <code>root</code> 為 <code>/child/</code>。</li>
 <li><strong>permalink</strong> - 文章的網址格式（<a href="permalink.html">設定</a>）</li>
 <li><strong>tag_dir</strong> - 標籤資料夾</li>
 <li><strong>archive_dir</strong> - 網誌彙整資料夾</li>
 <li><strong>category_dir</strong> - 分類的預設名稱</li>
-<li><strong>new_post_name</strong> - 新文章的檔案名稱</li>
 </ul>
-<h4>new_post_name</h4>
+<h3>寫作</h3>
 <ul>
-<li><code>:title</code> - 文章的預設網址</li>
-<li><code>:year</code> - 文章的發佈年份（4 位數）</li>
-<li><code>:month</code> - 文章的發佈月份（2 位數）</li>
-<li><code>:day</code> - 文章的發佈日期（2 位數）</li>
+<li><strong>new_post_name</strong> - 新文章的檔案名稱（<a href="writing.html">設定</a>）</li>
+<li><strong>default_layout</strong> - 預設布局</li>
+<li><strong>auto_spacing</strong> - 在東方文字與西方文字之間插入空白</li>
+<li><strong>titlecase</strong> - 將標題轉為合適的大小寫</li>
+<li><strong>highlight</strong> - 程式碼區塊設定<ul>
+<li><strong>enable</strong> - 啟用程式碼 Highlight</li>
+<li><strong>backtick_code_block</strong> - 啟用 <a href="tag-plugins.html">Backtick Code Block</a></li>
+<li><strong>line_number</strong> - 顯示行號</li>
+<li><strong>tab_replace</strong> - 取代 Tab</li>
 </ul>
-<p>例：Octopress 式的檔案名稱：<code>:year-:month-:day-:title.md</code>
-
-</p>
+</li>
+</ul>
 <h3>網誌彙整</h3>
 <p><code>2</code> - 開啟彙整的分頁功能
 <code>1</code> - 關閉彙整的分頁功能
+<code>0</code> - 完全關閉
 
 </p>
 <ul>
@@ -113,11 +119,6 @@
 <li><strong>themes</strong> - 目前使用的主題</li>
 <li><strong>exclude_generator</strong> - 要關閉的 Generator（archive, category, home, page, post, tag）</li>
 </ul>
-<h3>增強套件</h3>
-<ul>
-<li><strong>auto_spacing</strong> - 在中文、日文與西文、數字、符號之間插入空白</li>
-<li><strong>titlecase</strong> - 將標題轉為合適的大小寫</li>
-</ul>
 <h3>佈署</h3>
 <ul>
 <li><strong>type</strong> - 佈署類型</li>
@@ -126,7 +127,7 @@
 
 </p>
 <h2>預設值</h2>
-<pre><code><div class="line"><span class="preprocessor"># Basic</span></div><div class="line"><span class="label">title:</span> Hexo</div><div class="line"><span class="label">subtitle:</span> Node<span class="preprocessor">.js</span> blog framework</div><div class="line"><span class="label">description:</span></div><div class="line"><span class="label">url:</span> http://yoursite<span class="preprocessor">.com</span></div><div class="line"><span class="label">author:</span> John Doe</div><div class="line"><span class="label">email:</span></div><div class="line"><span class="label">language:</span></div><br><div class="line"><span class="preprocessor"># Permalink</span></div><div class="line"><span class="label">root:</span> /</div><div class="line"><span class="label">permalink:</span> :year/:month/:day/:title/</div><div class="line"><span class="label">tag_dir:</span> tags</div><div class="line"><span class="label">archive_dir:</span> archives</div><div class="line"><span class="label">category_dir:</span> posts</div><div class="line"><span class="label">new_post_name:</span> :title<span class="preprocessor">.md</span></div><br><div class="line"><span class="preprocessor"># Archives</span></div><div class="line"><span class="label">archive:</span> <span class="number">2</span></div><div class="line"><span class="label">category:</span> <span class="number">2</span></div><div class="line"><span class="label">tag:</span> <span class="number">2</span></div><br><div class="line"><span class="preprocessor"># Server</span></div><div class="line"><span class="label">port:</span> <span class="number">4000</span></div><div class="line"><span class="label">logger:</span> false</div><div class="line"><span class="label">logger_format:</span></div><br><div class="line"><span class="preprocessor"># Date / Time format</span></div><div class="line"><span class="label">date_format:</span> MMM D, YYYY</div><div class="line"><span class="label">time_format:</span> H:mm:ss</div><br><div class="line"><span class="preprocessor"># Pagination</span></div><div class="line"><span class="label">per_page:</span> <span class="number">10</span></div><div class="line"><span class="label">pagination_dir:</span> page</div><br><div class="line"><span class="preprocessor"># Disqus</span></div><div class="line"><span class="label">disqus_shortname:</span></div><br><div class="line"><span class="preprocessor"># Extensions</span></div><div class="line"><span class="label">plugins:</span></div><div class="line"><span class="label">theme:</span> light</div><div class="line"><span class="label">exclude_generator:</span></div><br><div class="line"><span class="preprocessor"># Enhancement</span></div><div class="line"><span class="label">auto_spacing:</span> false</div><div class="line"><span class="label">titlecase:</span> false</div><br><div class="line"><span class="preprocessor"># Deploy</span></div><div class="line"><span class="label">deploy:</span></div><div class="line">  type:</div></code></pre>
+<pre><code><div class="line"><span class="preprocessor"># Hexo Configuration</span></div><div class="line"><span class="preprocessor">## Docs: http://zespia.tw/hexo/docs/configure.html</span></div><div class="line"><span class="preprocessor">## Source: https://github.com/tommy351/hexo/</span></div><br><div class="line"><span class="preprocessor"># Site</span></div><div class="line"><span class="label">title:</span> Hexo</div><div class="line"><span class="label">subtitle:</span></div><div class="line"><span class="label">description:</span></div><div class="line"><span class="label">author:</span> John Doe</div><div class="line"><span class="label">email:</span></div><div class="line"><span class="label">language:</span></div><br><div class="line"><span class="preprocessor"># URL</span></div><div class="line"><span class="preprocessor">## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'</span></div><div class="line"><span class="label">url:</span> http://yoursite<span class="preprocessor">.com</span></div><div class="line"><span class="label">root:</span> /</div><div class="line"><span class="label">permalink:</span> :year/:month/:day/:title/</div><div class="line"><span class="label">tag_dir:</span> tags</div><div class="line"><span class="label">archive_dir:</span> archives</div><div class="line"><span class="label">category_dir:</span> posts</div><br><div class="line"><span class="preprocessor"># Writing</span></div><div class="line"><span class="label">new_post_name:</span> :title<span class="preprocessor">.md</span> <span class="preprocessor"># File name of new posts</span></div><div class="line"><span class="label">default_layout:</span> post</div><div class="line"><span class="label">auto_spacing:</span> false <span class="preprocessor"># Add spaces between asian characters and western characters</span></div><div class="line"><span class="label">titlecase:</span> false <span class="preprocessor"># Transform title into titlecase</span></div><div class="line"><span class="label">highlight:</span></div><div class="line">  enable: true</div><div class="line">  backtick_code_block: true</div><div class="line">  line_number: true</div><div class="line">  tab_replace:</div><br><div class="line"><span class="preprocessor"># Archives</span></div><div class="line"><span class="preprocessor">## 2: Enable pagination</span></div><div class="line"><span class="preprocessor">## 1: Disable pagination</span></div><div class="line"><span class="preprocessor">## 0: Fully Disable</span></div><div class="line"><span class="label">archive:</span> <span class="number">2</span></div><div class="line"><span class="label">category:</span> <span class="number">2</span></div><div class="line"><span class="label">tag:</span> <span class="number">2</span></div><br><div class="line"><span class="preprocessor"># Server</span></div><div class="line"><span class="preprocessor">## Hexo uses Connect as a server</span></div><div class="line"><span class="preprocessor">## You can customize the logger format as defined in</span></div><div class="line"><span class="preprocessor">## http://www.senchalabs.org/connect/logger.html</span></div><div class="line"><span class="label">port:</span> <span class="number">4000</span></div><div class="line"><span class="label">logger:</span> false</div><div class="line"><span class="label">logger_format:</span></div><br><div class="line"><span class="preprocessor"># Date / Time format</span></div><div class="line"><span class="preprocessor">## Hexo uses Moment.js to parse and display date</span></div><div class="line"><span class="preprocessor">## You can customize the date format as defined in</span></div><div class="line"><span class="preprocessor">## http://momentjs.com/docs/#/displaying/format/</span></div><div class="line"><span class="label">date_format:</span> MMM D YYYY</div><div class="line"><span class="label">time_format:</span> H:mm:ss</div><br><div class="line"><span class="preprocessor"># Pagination</span></div><div class="line"><span class="preprocessor">## Set per_page to 0 to disable pagination</span></div><div class="line"><span class="label">per_page:</span> <span class="number">10</span></div><div class="line"><span class="label">pagination_dir:</span> page</div><br><div class="line"><span class="preprocessor"># Disqus</span></div><div class="line"><span class="label">disqus_shortname:</span></div><br><div class="line"><span class="preprocessor"># Extensions</span></div><div class="line"><span class="preprocessor">## Plugins: https://github.com/tommy351/hexo/wiki/Plugins</span></div><div class="line"><span class="preprocessor">## Themes: https://github.com/tommy351/hexo/wiki/Themes</span></div><div class="line"><span class="label">plugins:</span></div><div class="line"><span class="label">theme:</span> light</div><div class="line"><span class="label">exclude_generator:</span></div><br><div class="line"><span class="preprocessor"># Deployment</span></div><div class="line"><span class="preprocessor">## Docs: http://zespia.tw/hexo/docs/deploy.html</span></div><div class="line"><span class="label">deploy:</span></div><div class="line">  type:</div></code></pre>
 
 </div>
 </article>

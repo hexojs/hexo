@@ -93,6 +93,9 @@ article.index header strong {
 article {
   margin-bottom: 50px;
 }
+article small {
+  color: #999;
+}
 article .entry {
   line-height: 1.6;
 }

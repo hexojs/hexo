@@ -32,15 +32,17 @@
 <nav id="main-nav">
   <ul>
     <li><a href="/hexo/zh-TW/docs/">Docs</a></li>
-    <li><a href="/hexo/zh-TW/plugins/">Plugins</a></li>
-    <li><a href="/hexo/zh-TW/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Plugins">Plugins</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Themes">Themes</a></li>
     <li><a href="https://github.com/tommy351/hexo">Source</a></li>
   </ul>
 </nav></header>
     <div id="content">
       
+
 <article class="page">
   <h1 class="title">外掛開發</h1>
+  <small>Last updated: Jan 12, 2013</small>
   <div class="entry"><p>外掛分為以下八種類型：
 
 </p>
@@ -57,9 +59,6 @@
 <p><a id="generator"></a>
 </p>
 <h2>Generator</h2>
-<p>0.3 版後請使用 <a href="global-variables.html#route">路由模組</a> 來註冊路徑。
-
-</p>
 <h3>語法</h3>
 <pre><code><div class="line">hexo.extend.generator.register(fn);</div></code></pre>
 
@@ -118,10 +117,10 @@
 </ul>
 <h3>範例</h3>
 <h4>同步模式</h4>
-<pre><code><div class="line"><span class="keyword">var</span> ejs = require(<span class="string">'ejs'</span>),</div><div class="line">	_ = require(<span class="string">'underscore'</span>);</div><br><div class="line">hexo.extend.renderer.register(<span class="string">'ejs'</span>, <span class="string">'html'</span>, <span class="keyword">function</span>(path, content, locals){</div><div class="line">	<span class="keyword">if</span> (path) locals = _.extend(locals, {filename: path});</div><div class="line">	<span class="keyword">return</span> ejs.render(content, locals);</div><div class="line">}, <span class="literal">true</span>);</div></code></pre>
+<pre><code><div class="line"><span class="keyword">var</span> ejs = require(<span class="string">'ejs'</span>),</div><div class="line">  _ = require(<span class="string">'underscore'</span>);</div><br><div class="line">hexo.extend.renderer.register(<span class="string">'ejs'</span>, <span class="string">'html'</span>, <span class="keyword">function</span>(path, content, locals){</div><div class="line">  <span class="keyword">if</span> (path) locals = _.extend(locals, {filename: path});</div><div class="line">  <span class="keyword">return</span> ejs.render(content, locals);</div><div class="line">}, <span class="literal">true</span>);</div></code></pre>
 
 <h4>非同步模式</h4>
-<pre><code><div class="line"><span class="keyword">var</span> stylus = require(<span class="string">'stylus'</span>);</div><br><div class="line">hexo.extend.renderer.register(<span class="string">'styl'</span>, <span class="string">'css'</span>, <span class="keyword">function</span>(path, content, callback){</div><div class="line">	stylus(content).set(<span class="string">'filename'</span>, path).render(callback);</div><div class="line">});</div></code></pre>
+<pre><code><div class="line"><span class="keyword">var</span> stylus = require(<span class="string">'stylus'</span>);</div><br><div class="line">hexo.extend.renderer.register(<span class="string">'styl'</span>, <span class="string">'css'</span>, <span class="keyword">function</span>(path, content, callback){</div><div class="line">  stylus(content).set(<span class="string">'filename'</span>, path).render(callback);</div><div class="line">});</div></code></pre>
 
 <p><a id="helper"></a>
 </p>
@@ -147,24 +146,23 @@
 <p>輸出：
 
 </p>
-<pre><code><div class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"script.js"</span>&gt;</span><span class="javascript"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></div></code></pre>
+<pre><code><div class="line">&lt;script type="text/javascript" src="script.js"&gt;&lt;/script&gt;</div></code></pre>
 
 <p><a id="deployer"></a>
 </p>
 <h2>Deployer</h2>
 <h3>語法</h3>
-<pre><code><div class="line">hexo.extend.deployer.register(name, method);</div></code></pre>
+<pre><code><div class="line">hexo.extend.deployer.register(name, fn);</div></code></pre>
 
 <ul>
 <li><strong>name</strong> - 名稱（小寫）</li>
-<li><strong>method</strong> - 應為包含以下兩個項目的物件<ul>
-<li><strong>setup(args)</strong> - 執行<code>hexo setup_deploy</code>時執行的函數</li>
-<li><strong>deploy(args)</strong> - 執行<code>hexo deploy</code>時執行的函數</li>
+<li><strong>fn(args)</strong><ul>
+<li><strong>args</strong> - 引數</li>
 </ul>
 </li>
 </ul>
 <h3>範例</h3>
-<pre><code><div class="line">hexo.extend.deployer.register(<span class="string">'github'</span>, {</div><div class="line">	setup: <span class="keyword">function</span>(args){ … },</div><div class="line">	deploy: <span class="keyword">function</span>(args){ … }</div><div class="line">});</div></code></pre>
+<pre><code><div class="line">hexo.extend.deployer.register(<span class="string">'github'</span>, <span class="keyword">function</span>(args){</div><div class="line">  <span class="comment">// ...</span></div><div class="line">});</div></code></pre>
 
 <p><a id="processor"></a>
 </p>
@@ -187,7 +185,7 @@
 <p>根據日期降冪排列文章。
 
 </p>
-<pre><code><div class="line">hexo.extend.processor.register(<span class="keyword">function</span>(locals, callback){</div><div class="line">	locals.posts = locals.posts.sort(<span class="string">'date'</span>, -<span class="number">1</span>);</div><div class="line">	locals.pages = locals.pages.sort(<span class="string">'date'</span>, -<span class="number">1</span>);</div><div class="line">	callback(<span class="literal">null</span>, locals);</div><div class="line">});</div></code></pre>
+<pre><code><div class="line">hexo.extend.processor.register(<span class="keyword">function</span>(locals, callback){</div><div class="line">  locals.posts = locals.posts.sort(<span class="string">'date'</span>, -<span class="number">1</span>);</div><div class="line">  locals.pages = locals.pages.sort(<span class="string">'date'</span>, -<span class="number">1</span>);</div><div class="line">  callback(<span class="literal">null</span>, locals);</div><div class="line">});</div></code></pre>
 
 <p><a id="tag"></a>
 </p>
@@ -198,7 +196,7 @@
 <ul>
 <li><strong>name</strong> - 名稱（小寫）</li>
 <li><strong>fn(args, content)</strong><ul>
-<li><strong>args</strong> - 參數</li>
+<li><strong>args</strong> - 引數</li>
 <li><strong>content</strong> - 內容</li>
 </ul>
 </li>
@@ -219,15 +217,21 @@
 </p>
 <h2>Console</h2>
 <h3>語法</h3>
-<pre><code><div class="line">hexo.extend.console.register(name, desc, fn);</div></code></pre>
+<pre><code><div class="line">hexo.extend.console.register(name, desc, [options], fn);</div></code></pre>
 
 <ul>
 <li><strong>name</strong> - 名稱（小寫）</li>
 <li><strong>desc</strong> - 描述</li>
+<li><strong>options</strong> - 選項（見下方）</li>
 <li><strong>fn(args)</strong><ul>
-<li><strong>args</strong> - 參數</li>
+<li><strong>args</strong> - 引數</li>
 </ul>
 </li>
+</ul>
+<h3>選項</h3>
+<ul>
+<li><strong>init</strong> - 未初始化時顯示</li>
+<li><strong>debug</strong> - 除錯模式時顯示</li>
 </ul>
 <h3>範例</h3>
 <p>執行以下指令時顯示網站設定。
@@ -246,7 +250,7 @@
 <ul>
 <li><strong>name</strong> - 名稱（小寫）</li>
 <li><strong>fn(args)</strong><ul>
-<li><strong>args</strong> - 參數</li>
+<li><strong>args</strong> - 引數</li>
 </ul>
 </li>
 </ul>

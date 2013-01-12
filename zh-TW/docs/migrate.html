@@ -32,15 +32,17 @@
 <nav id="main-nav">
   <ul>
     <li><a href="/hexo/zh-TW/docs/">Docs</a></li>
-    <li><a href="/hexo/zh-TW/plugins/">Plugins</a></li>
-    <li><a href="/hexo/zh-TW/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Plugins">Plugins</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Themes">Themes</a></li>
     <li><a href="https://github.com/tommy351/hexo">Source</a></li>
   </ul>
 </nav></header>
     <div id="content">
       
+
 <article class="page">
   <h1 class="title">遷移</h1>
+  <small>Last updated: Jan 12, 2013</small>
   <div class="entry"><h2>目錄</h2>
 <ul>
 <li><a href="#rss">RSS</a></li>
@@ -62,7 +64,10 @@
 <p><a id="jekyll"></a>
 </p>
 <h2>Jekyll / Octopress</h2>
-<p>將<code>source/_posts</code>內的檔案拷貝至 Hexo 的<code>source/_posts</code>內，並將文章內的<code>categories</code>屬性修改為<code>tags</code>即可。
+<p>將<code>source/_posts</code>內的檔案拷貝至 Hexo 的<code>source/_posts</code>內，並將文章內的<code>categories</code>屬性修改為<code>tags</code>。
+
+</p>
+<p>然後調整 <code>_config.yml</code> 中的 <code>new_post_name</code> 為 <code>:year-:month-:day-:title.md</code>。
 
 </p>
 <p><a id="wordpress"></a>

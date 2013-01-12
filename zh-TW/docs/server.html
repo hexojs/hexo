@@ -32,15 +32,17 @@
 <nav id="main-nav">
   <ul>
     <li><a href="/hexo/zh-TW/docs/">Docs</a></li>
-    <li><a href="/hexo/zh-TW/plugins/">Plugins</a></li>
-    <li><a href="/hexo/zh-TW/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Plugins">Plugins</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Themes">Themes</a></li>
     <li><a href="https://github.com/tommy351/hexo">Source</a></li>
   </ul>
 </nav></header>
     <div id="content">
       
+
 <article class="page">
   <h1 class="title">伺服器</h1>
+  <small>Last updated: Jan 13, 2013</small>
   <div class="entry"><h2>內建伺服器</h2>
 <p>Hexo 使用 <a href="https://github.com/senchalabs/connect">Connect</a> 作為靜態檔案的伺服器。
 
@@ -50,10 +52,10 @@
 </p>
 <pre><code><div class="line"><span class="attribute">port</span>: <span class="string">4000</span></div></code></pre>
 
-<p>執行以下命令啟動伺服器，按下<code>Ctrl+C</code>關閉伺服器。
+<p>執行以下命令啟動伺服器，按下<code>Ctrl+C</code>關閉伺服器。加入 <code>-p/--port</code> 選項設定連接埠。
 
 </p>
-<pre><code><div class="line">hexo server</div></code></pre>
+<pre><code><div class="line">hexo server</div><div class="line">hexo server -p 12345</div></code></pre>
 
 <h3>記錄器</h3>
 <p>編輯<code>_config.yml</code>中的<code>logger</code>欄位啟動記錄器。編輯<code>logger_format</code>欄位可調整記錄的顯示內容，參考 <a href="http://www.senchalabs.org/connect/logger.html">Connect</a> 以獲得更多資訊。

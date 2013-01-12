@@ -32,15 +32,17 @@
 <nav id="main-nav">
   <ul>
     <li><a href="/hexo/docs/">Docs</a></li>
-    <li><a href="/hexo/plugins/">Plugins</a></li>
-    <li><a href="/hexo/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Plugins">Plugins</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Themes">Themes</a></li>
     <li><a href="https://github.com/tommy351/hexo">Source</a></li>
   </ul>
 </nav></header>
     <div id="content">
       
+
 <article class="page">
   <h1 class="title">Permalink</h1>
+  <small>Last updated: Jan 12, 2013</small>
   <div class="entry"><h2>Configure</h2>
 <p>Edit <code>permalink</code> in <code>_config.yml</code>. Here is the default:
 
@@ -64,12 +66,12 @@
 <p>Given a post named <code>title.md</code> in <code>source/_posts/foo/bar</code> directory with the following content:
 
 </p>
-<pre><code><div class="line">---</div><div class="line">layout: post</div><div class="line">title: Post Title</div><div class="line">date: 2012-10-09 14:09:37</div><div class="line">tags:</div><div class="line">- Node.js</div><div class="line">- JavaScript</div><div class="line">---</div></code></pre>
+<pre><code><div class="line">---</div><div class="line">title: Post Title</div><div class="line">date: 2012-10-09 14:09:37</div><div class="line">tags:</div><div class="line">- Node.js</div><div class="line">- JavaScript</div><div class="line">---</div></code></pre>
 
 <p>And here is the result:
 
 </p>
-<pre><code><div class="line">:year/:month/:day/:title/ => /2012/10/09/title/</div><div class="line">:year-:month-:day/:title/ => /2012-10-09/title/</div><div class="line">:category/:title/ => /foo/bar/title/</div></code></pre></div>
+<pre><code><div class="line">:year/:month/:day/:title/ =&gt; /2012/10/09/title/</div><div class="line">:year-:month-:day/:title/ =&gt; /2012-10-09/title/</div><div class="line">:category/:title/ =&gt; /foo/bar/title/</div></code></pre></div>
 </article>
       <footer id="footer"><div class="alignleft">
   &copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>

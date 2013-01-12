@@ -32,15 +32,17 @@
 <nav id="main-nav">
   <ul>
     <li><a href="/hexo/docs/">Docs</a></li>
-    <li><a href="/hexo/plugins/">Plugins</a></li>
-    <li><a href="/hexo/themes/">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Plugins">Plugins</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Themes">Themes</a></li>
     <li><a href="https://github.com/tommy351/hexo">Source</a></li>
   </ul>
 </nav></header>
     <div id="content">
       
+
 <article class="page">
   <h1 class="title">Server</h1>
+  <small>Last updated: Jan 13, 2013</small>
   <div class="entry"><h2>Built-in Server</h2>
 <p>Hexo uses <a href="https://github.com/senchalabs/connect">Connect</a> to serve static files.
 
@@ -50,10 +52,10 @@
 </p>
 <pre><code><div class="line"><span class="attribute">port</span>: <span class="string">4000</span></div></code></pre>
 
-<p>Execute the following command to start the server. Press <code>Ctrl+c</code> to stop it.
+<p>Execute the following command to start the server. Press <code>Ctrl+c</code> to stop it. Add <code>-p/--port</code> option to set the port.
 
 </p>
-<pre><code><div class="line">hexo server</div></code></pre>
+<pre><code><div class="line">hexo server</div><div class="line">hexo server -p 12345</div></code></pre>
 
 <h3>Logger</h3>
 <p>Edit <code>logger</code> in <code>_config.yml</code> to enable logger. Edit <code>logger_format</code> to adjust the content displayed. Check <a href="http://www.senchalabs.org/connect/logger.html">Connect</a> for more info.
