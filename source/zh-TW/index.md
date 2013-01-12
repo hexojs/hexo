@@ -32,13 +32,14 @@ npm update -g
 建立專案：
 
 ``` bash
-hexo init project && cd project
+hexo init project
+cd project
 ```
 	
 建立新文章：
 
 ``` bash
-hexo new_post title
+hexo new "New Post"
 ```
 	
 生成靜態檔案：

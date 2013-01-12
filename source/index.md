@@ -31,13 +31,14 @@ npm update -g
 Setup a project:
 
 ``` bash
-hexo init project && cd project
+hexo init project
+cd project
 ```
 	
 Create a new article:
 
 ``` bash
-hexo new_post title
+hexo new "New Post"
 ```
 	
 Generate static files:
