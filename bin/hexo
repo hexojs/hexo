@@ -1,34 +1,6 @@
 #!/usr/bin/env node
 
-var args = process.argv.slice(2),
-  length = args.length,
-  safe = false,
-  debug = false;
+var argv = require('optimist').argv,
+  command = argv._[0] ? argv._.shift().toLowerCase() : '';
 
-for (var i=0; i<length; i++){
-  var item = args[i],
-    match = item.match(/^--(safe|debug)$/i);
-
-  if (match){
-    if (match[1] === 'safe') safe = true;
-    else if (match[1] === 'debug') debug = true;
-    args.splice(i, 1);
-    length--;
-    i--;
-  }
-}
-
-var command = args.length ? args.shift().toLowerCase() : '';
-
-switch (command){
-  case '-v':
-  case '--version':
-  case 'ver':
-  case 'version':
-    var version = require('../package.json').version;
-    console.log(version);
-    break;
-
-  default:
-    require('../lib/console')(command, {safe: safe, debug: debug}, args);
-}
+require('../lib/console')(command, argv);

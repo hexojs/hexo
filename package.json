@@ -6,6 +6,9 @@
   "bin": {
     "hexo": "./bin/hexo"
   },
+  "scripts": {
+    "test": "make test"
+  },
   "directories": {
     "lib": "./lib",
     "bin": "./bin"
@@ -31,12 +34,18 @@
     "nib": "*",
     "marked": "*",
     "moment": "*",
-    "cli-color": "*",
+    "colors": "*",
     "highlight.js": "*",
     "yamljs": "*",
     "underscore": "*",
     "swig": "*",
     "graceful-fs": "*",
-    "mime": "*"
+    "mime": "*",
+    "optimist": "*",
+    "fs-watch-tree": "*"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*"
   }
 }
