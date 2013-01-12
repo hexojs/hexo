@@ -19,13 +19,11 @@ date: 2012-11-01 18:13:30
 
 ## 使用
 
-#### [撰寫文章](writing.html)
+#### [寫作](writing.html)
 
 #### [標籤外掛](tag-plugins.html)
 
 #### [伺服器](server.html)
-
-#### [骨架 (Scaffold)](scaffolds.html)
 
 #### [永久連結](permalink.html)
 

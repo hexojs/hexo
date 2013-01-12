@@ -9,38 +9,41 @@ date: 2012-11-01 18:13:30
 
 ## 設定
 
-### 基礎
+### 網站
 
 - **title** - 網站標題
 - **subtitle** - 網站副標題
 - **description** - 網站描述
-- **url** - 網站網址
 - **author** - 網站作者
 - **email** - 網站作者的電子信箱位址
 - **language** - 網站使用的語言（[IETF 格式][1]，例如正體中文為 `zh-TW`）
 
-### 永久連結
+### 網址
 
+- **url** - 網站網址
 - **root** - 網站的根目錄。假設 `url` 為 `http://yoursite.com/child`，則 `root` 為 `/child/`。
 - **permalink** - 文章的網址格式（[設定][2]）
 - **tag_dir** - 標籤資料夾
 - **archive_dir** - 網誌彙整資料夾
 - **category_dir** - 分類的預設名稱
-- **new_post_name** - 新文章的檔案名稱
 
-#### new_post_name
+### 寫作
 
-- `:title` - 文章的預設網址
-- `:year` - 文章的發佈年份（4位數）
-- `:month` - 文章的發佈月份（2位數）
-- `:day` - 文章的發佈日期（2位數）
-
-例：Octopress式的檔案名稱：`:year-:month-:day-:title.md`
+- **new_post_name** - 新文章的檔案名稱（[設定][7]）
+- **default_layout** - 預設布局
+- **auto_spacing** - 在中文、日文與西文、數字、符號之間插入空白
+- **titlecase** - 將標題轉為合適的大小寫
+- **highlight** - 程式碼區塊設定
+  - **enable** - 啟用程式碼 Highlight
+  - **backtick_code_block** - 啟用 [Backtick Code Block][6]
+  - **line_number** - 顯示行號
+  - **tab_replace** - 取代 Tab
 
 ### 網誌彙整
 
-`2` - 開啟彙整的分頁功能
-`1` - 關閉彙整的分頁功能
+`2` - 開啟彙整的分頁功能  
+`1` - 關閉彙整的分頁功能  
+`0` - 完全關閉
 
 - **archive**
 - **category**
@@ -74,11 +77,6 @@ Hexo 使用 Moment.js 解析和顯示日期。（[Moment.js][4]）
 - **themes** - 目前使用的主題
 - **exclude_generator** - 要關閉的 Generator（archive, category, home, page, post, tag）
 
-### 增強套件
-
-- **auto_spacing** - 在中文、日文與西文、數字、符號之間插入空白
-- **titlecase** - 將標題轉為合適的大小寫
-
 ### 佈署
 
 - **type** - 佈署類型
@@ -88,38 +86,63 @@ Hexo 使用 Moment.js 解析和顯示日期。（[Moment.js][4]）
 ## 預設值
 
 ``` yaml
-# Basic
+# Hexo Configuration
+## Docs: http://zespia.tw/hexo/docs/configure.html
+## Source: https://github.com/tommy351/hexo/
+
+# Site
 title: Hexo
-subtitle: Node.js blog framework
+subtitle:
 description:
-url: http://yoursite.com
 author: John Doe
 email:
 language:
 
-# Permalink
+# URL
+## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
+url: http://yoursite.com
 root: /
 permalink: :year/:month/:day/:title/
 tag_dir: tags
 archive_dir: archives
 category_dir: posts
-new_post_name: :title.md
+
+# Writing
+new_post_name: :title.md # File name of new posts
+default_layout: post
+auto_spacing: false # Add spaces between asian characters and western characters
+titlecase: false # Transform title into titlecase
+highlight:
+  enable: true
+  backtick_code_block: true
+  line_number: true
+  tab_replace:
 
 # Archives
+## 2: Enable pagination
+## 1: Disable pagination
+## 0: Fully Disable
 archive: 2
 category: 2
 tag: 2
 
 # Server
+## Hexo uses Connect as a server
+## You can customize the logger format as defined in
+## http://www.senchalabs.org/connect/logger.html
 port: 4000
 logger: false
 logger_format:
 
 # Date / Time format
-date_format: MMM D, YYYY
+## Hexo uses Moment.js to parse and display date
+## You can customize the date format as defined in
+## http://momentjs.com/docs/#/displaying/format/
+date_format: MMM D YYYY
 time_format: H:mm:ss
 
 # Pagination
+## Set per_page to 0 to disable pagination
 per_page: 10
 pagination_dir: page
 
@@ -127,15 +150,14 @@ pagination_dir: page
 disqus_shortname:
 
 # Extensions
+## Plugins: https://github.com/tommy351/hexo/wiki/Plugins
+## Themes: https://github.com/tommy351/hexo/wiki/Themes
 plugins:
 theme: light
 exclude_generator:
 
-# Enhancement
-auto_spacing: false
-titlecase: false
-
-# Deploy
+# Deployment
+## Docs: http://zespia.tw/hexo/docs/deploy.html
 deploy:
   type:
 ```
@@ -145,3 +167,5 @@ deploy:
 [3]: http://www.senchalabs.org/connect/logger.html
 [4]: http://momentjs.com/docs/#/displaying/format/
 [5]: http://disqus.com/
+[6]: tag-plugins.html
+[7]: writing.html

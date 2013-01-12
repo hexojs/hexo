@@ -1,60 +1,76 @@
 ---
 layout: page
-title: 撰寫文章
+title: 寫作
 lang: zh-TW
 date: 2012-11-01 18:13:30
 ---
 
-## 文章
+## 基礎
 
 ### 建立
 
 執行以下指令。
 
 ``` bash
-hexo new_post <title>
+hexo new [layout] <title>
 ```
 
-新文章會儲存於 `source/_posts/name.md`，內容為：
+`layout` 參數可忽略，預設為 [全域設定][2] 的 `default_layout` 設定。
 
-``` plain
----
-layout: post
-title: title
-date: YYYY-MM-DD HH:mm:ss
-comments: true
-tags:
----
-```
-
-檔案名稱根據 `_config.yml` 中的 `new_post_name` 設定和 `title` 參數命名，標題會被轉成小寫，空白會被轉成連字號。例如：
+標題會被轉為小寫，空白會被轉為連字號，檔名若重複則會在後面加上數字。例如：
 
 ```
-hexo new_post Test Post => source/_posts/test-post.md
+hexo new "New Post" -> source/_posts/new-post.md
+hexo new page "New Page" -> source/new-page/index.md
+hexo new draft "New Draft" -> source/_drafts/new-draft.md
 ```
 
-### 設定
+### 檔名設定
 
-文章最前面有一段用`---`包裹的區塊，稱為 [YAML Front Matter][1]。你可使用 YAML 格式設定文章。
+你可在 [全域設定][2] 的 `new_post_name` 設定調整新建檔案的名稱，預設為 `:title.md`。
 
-以下是預設的設定內容，你可隨自己喜好增減內容。
+- `:title` - 文章標題（文章的預設網址）
+- `:year` - 發表年份（4位數）
+- `:month` - 發表月份（2位數）
+- `:day` - 發表日期（2位數）
 
-- **layout** - 布局
+如果你想要讓文章依日期排列，可設定為 `:year-:month-:day-:title.md`。
+
+### 文章設定
+
+文章最前面有一段用 `---` 包裹的區塊，稱為 [YAML Front Matter][1]。你可使用 YAML 格式設定文章。以下是預設內容，你可隨自己喜好增減內容。
+
+- **layout** - 布局（選填）
 - **title** - 標題
-- **date** - 發表日期（`YYYY-MM-DD HH:mm:ss`）
-- **comments** - 留言功能
-- **tags** - 標籤
+- **date** - 發表日期
+- **comments** - 留言功能（選填，預設開啟）
+- **tags** - 標籤（選填，不適用於分頁）
+- **categories** - 分類（選填，不適用於分頁）
 - **permalink** - 覆寫預設網址（選填）
 
 ### 分類
 
-分類為文章與 `source/_posts` 的相對位址，具有階層性。
-
-舉例來說：
+分類為文章與 `source/_posts` 的相對位址，具有階層性。你也可在檔案內設定 `categories` 屬性，該屬性的內容會加入至原本分類的後面。例如：
 
 - `source/_posts/title.md` - 無分類
 - `source/_posts/Fruits/title.md` - Fruit
 - `source/_posts/Fruits/Apple/title.md` - Fruit, Apple
+
+分類設定：
+
+``` yaml
+# 單一分類
+categories: Fruits
+
+# 多重分類
+categories: Fruits/Apple
+
+categories: [Fruits, Apple]
+
+categories:
+- Fruits
+- Apple
+```
 
 ### 標籤
 
@@ -70,57 +86,39 @@ tags:
 - Banana
 ```
 
-## 分頁
+## 骨架（Scaffold）
 
-### 建立
+骨架（Scaffold）為文章的預設模版，新建文章時會根據骨架（Scaffold）內容建立文章。
 
-執行以下指令。
+### 範例
 
-``` bash
-hexo new_page <title>
-```
+在 `scaffolds` 資料夾內建立 `photo.md`。
 
-新分頁會儲存於網站根目錄的`source/name/index.md`，內容為：
-
-``` plain
+{% raw %}
+<pre><code>---
+layout: {{ layout }}
+title: {{ title }}
+date: {{ date }}
+tags:
 ---
-layout: page
-title: title
-date: YYYY-MM-DD HH:mm:ss
-comments: true
----
-```
+</code></pre>
+{% endraw %}
 
-檔案名稱根據 `title` 參數命名，標題會被轉成小寫，空白會被轉成連字號。例如：
+如此一來，輸入
 
 ```
-hexo new_page Test Page => source/test-page/index.md
+hexo new photo "New Gallery"
 ```
 
-### 設定
+就會根據上面的內容建立新檔案了。
 
-文章最前面有一段用`---`包裹的區塊，稱為 [YAML Front Matter][1]。你可使用 YAML 格式設定文章。
+### 使用
 
-以下是預設的設定內容，你可隨自己喜好增減內容。
+骨架（Scaffold）使用 Swig 處理，變數以雙大括號包裹。以下是變數內容：
 
-- **layout** - 布局
-- **title** - 標題
-- **date** - 發佈日期（`YYYY-MM-DD HH:mm:ss`）
-- **comments** - 留言功能
-- **permalink** - 覆寫預設網址（選填）
-
-## 生成靜態檔案
-
-執行下列指令，即可將文章轉換成靜態檔案。
-
-``` bash
-hexo generate
-```
-往後，若你想要加快檔案生成速度，可以加入`-t`或`--theme`來忽略主題安裝。
-
-``` bash
-hexo generate -t
-hexo generate --theme
-```
+- **layout** - 布局名稱
+- **title** - 文章標題
+- **date** - 發表日期
 
 [1]: https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter
+[2]: configure.html

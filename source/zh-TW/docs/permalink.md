@@ -29,7 +29,6 @@ permalink: :year/:month/:day/:title/
 
 ``` plain
 ---
-layout: post
 title: Post Title
 date: 2012-10-09 14:09:37
 tags:

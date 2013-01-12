@@ -33,7 +33,7 @@ hexo.extend.generator.register(fn);
     - **layout** - 要使用的樣板
     - **locals** - 傳入樣板的資料，即樣板中的`page`變數
   - **callback** - 回傳函數
-  
+
 ### 範例
 
 在`public/archive.html`生成文章彙整頁面。
@@ -113,7 +113,7 @@ hexo.extend.helper.register(name, fn);
 
 - **name** - 名稱（小寫）
 - **fn** - 應傳回一函數
-	
+
 ### 舉例
 
 插入 JavaScript 檔案。
@@ -144,20 +144,18 @@ hexo.extend.helper.register('js', function(){
 ### 語法
 
 ``` js
-hexo.extend.deployer.register(name, method);
+hexo.extend.deployer.register(name, fn);
 ```
 
 - **name** - 名稱（小寫）
-- **method** - 應為包含以下兩個項目的物件
-	- **setup(args)** - 執行`hexo setup_deploy`時執行的函數
-	- **deploy(args)** - 執行`hexo deploy`時執行的函數
-	
+- **fn(args)**
+  - **args** - 引數
+
 ### 範例
 
 ``` js
-hexo.extend.deployer.register('github', {
-	setup: function(args){ … },
-	deploy: function(args){ … }
+hexo.extend.deployer.register('github', function(args){
+	// ...
 });
 ```
 
@@ -175,7 +173,7 @@ hexo.extend.processor.register(fn);
 	- **callback(err, locals)**
 		- **err** - 錯誤內容，當無錯誤時請返回`null`
 		- **locals** - 處理後的資料
-		
+
 ### 範例
 
 根據日期降冪排列文章。
@@ -229,14 +227,20 @@ hexo.extend.tag.register('pullquote', function(args, content){
 ### 語法
 
 ``` js
-hexo.extend.console.register(name, desc, fn);
+hexo.extend.console.register(name, desc, [options], fn);
 ```
 
 - **name** - 名稱（小寫）
 - **desc** - 描述
+- **options** - 選項（見下方）
 - **fn(args)**
 	- **args** - 參數
-	
+
+### 選項
+
+- **init** - 未初始化時顯示
+- **debug** - 除錯模式時顯示
+
 ### 範例
 
 執行以下指令時顯示網站設定。

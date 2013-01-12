@@ -12,6 +12,10 @@ Hexo 在初始化時，會建立一個名為`hexo`的命名空間（Namespace）
 - **source_dir** - 原始檔目錄（source）
 - **theme_dir** - 主題目錄（theme/theme_name）
 - **plugin_dir** - 外掛目錄（node_modules）
+- **script_dir** - 腳本目錄（scripts）
+- **scaffold_dir** - 骨架（Scaffold）目錄（scaffolds）
+- **core_dir** - 程式根目錄（hexo）
+- **lib_dir** - 程式資源庫目錄（hexo/lib）
 - **version** - Hexo 版本號
 - **env** - 執行環境
 - **safe** - 安全模式
@@ -22,6 +26,7 @@ Hexo 在初始化時，會建立一個名為`hexo`的命名空間（Namespace）
 - **[util](#util)** - 工具程式
 - **[i18n](#i18n)** - 國際化（i18n）模組
 - **[route](#route)** - 路由模組
+- **[cache](#cache)** - 快取模組
 
 <a id="extend"></a>
 ### extend
@@ -166,6 +171,25 @@ i18n物件擁有以下方法：
 #### list()
 
 返回一個物件（Object）。
+
+<a id="cache"></a>
+### cache
+
+#### list()
+
+列出所有快取內容。
+
+#### get(name)
+
+取得指定快取。
+
+#### set(name, value, [callback])
+
+設定快取內容。
+
+#### destroy(name, [callback])
+
+刪除指定快取。
 
 [1]: configure.html
 [2]: plugin-development.html
