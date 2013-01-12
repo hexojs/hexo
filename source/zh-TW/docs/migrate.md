@@ -27,7 +27,9 @@ npm install hexo-migrator-rss
 <a id="jekyll"></a>
 ## Jekyll / Octopress
 
-將`source/_posts`內的檔案拷貝至Hexo的`source/_posts`內，並將文章內的`categories`屬性修改為`tags`即可。
+將`source/_posts`內的檔案拷貝至Hexo的`source/_posts`內，並將文章內的`categories`屬性修改為`tags`。
+
+然後調整 `_config.yml` 中的 `new_post_name` 為 `:year-:month-:day-:title.md`。
 
 <a id="wordpress"></a>
 ## WordPress

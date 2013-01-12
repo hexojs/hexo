@@ -8,38 +8,42 @@ The global configuration file is saved at `_config.yml` in the root directory of
 
 ## Configure
 
-### Basics
+### Site
 
 - **title** - Website title
 - **subtitle** - Website subtitle
 - **description** - Website description
-- **url** - Website URL
+
 - **author** - The author of the website
 - **email** - Email address of the author
 - **language** - The language used in the website ([IETF format][1]. e.g. Traditional Chinese is `zh-TW`)
 
-### Permalink
+### URL
 
+- **url** - Website URL
 - **root** - The root directory of the website. For example, given `url` is `http://yoursite.com/child`, then `root` is `/child/`.
 - **permalink** - The URL format of articles ([Configure][2])
 - **tag_dir** - Tag directory
 - **archive_dir** - Archive directory
 - **category_dir** - The default name of category
-- **new_post_name** - Filename of new post
 
-#### new_post_name
+### Writing
 
-- `:title` - Post title and default URL of the post
-- `:year` - Published year of the post (4-digit)
-- `:month` - Published month of the post (2-digit)
-- `:day` - Published date of the post (2-digit)
-
-e.g. Octopress style file name: `:year-:month-:day-:title.md`
+- **new_post_name** - Filename of new post ([Configure][7])
+- **default_layout** - Default layout
+- **auto_spacing** - Add spaces between eastern and wastern characters
+- **titlecase** - Transform title into title case
+- **highlight** - Code block settings
+  - **enable** - Enable code highlight
+  - **backtick_code_block** - Enable [Backtick Code Block][6]
+  - **line_number** - Display line numbers
+  - **tab_replace** - Tab replacement
 
 ### Archive
 
 `2` - Enable pagination
 `1` - Disable pagination
+`0` - Fully disable
 
 - **archive**
 - **category**
@@ -73,11 +77,6 @@ Hexo uses Moment.js to parse and display date. ([Moment.js][4])
 - **themes** - Current theme
 - **exclude_generator** - The generators to disable(archive, category, home, page, post, tag)
 
-### Enhancements
-
-- **auto_spacing** - Add spacing between Chinese, Japanese and western language, number, punctuation
-- **titlecase** - Transform title into proper title capitalization
-
 ### Deployment
 
 - **type** - Deployment type
@@ -87,38 +86,63 @@ Configure settings according to the deployment plugin you used.
 ## Default
 
 ``` yaml
-# Basic
+# Hexo Configuration
+## Docs: http://zespia.tw/hexo/docs/configure.html
+## Source: https://github.com/tommy351/hexo/
+
+# Site
 title: Hexo
-subtitle: Node.js blog framework
+subtitle:
 description:
-url: http://yoursite.com
 author: John Doe
 email:
 language:
 
-# Permalink
+# URL
+## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
+url: http://yoursite.com
 root: /
 permalink: :year/:month/:day/:title/
 tag_dir: tags
 archive_dir: archives
 category_dir: posts
-new_post_name: :title.md
+
+# Writing
+new_post_name: :title.md # File name of new posts
+default_layout: post
+auto_spacing: false # Add spaces between asian characters and western characters
+titlecase: false # Transform title into titlecase
+highlight:
+  enable: true
+  backtick_code_block: true
+  line_number: true
+  tab_replace:
 
 # Archives
+## 2: Enable pagination
+## 1: Disable pagination
+## 0: Fully Disable
 archive: 2
 category: 2
 tag: 2
 
 # Server
+## Hexo uses Connect as a server
+## You can customize the logger format as defined in
+## http://www.senchalabs.org/connect/logger.html
 port: 4000
 logger: false
 logger_format:
 
 # Date / Time format
-date_format: MMM D, YYYY
+## Hexo uses Moment.js to parse and display date
+## You can customize the date format as defined in
+## http://momentjs.com/docs/#/displaying/format/
+date_format: MMM D YYYY
 time_format: H:mm:ss
 
 # Pagination
+## Set per_page to 0 to disable pagination
 per_page: 10
 pagination_dir: page
 
@@ -126,15 +150,14 @@ pagination_dir: page
 disqus_shortname:
 
 # Extensions
+## Plugins: https://github.com/tommy351/hexo/wiki/Plugins
+## Themes: https://github.com/tommy351/hexo/wiki/Themes
 plugins:
 theme: light
 exclude_generator:
 
-# Enhancement
-auto_spacing: false
-titlecase: false
-
-# Deploy
+# Deployment
+## Docs: http://zespia.tw/hexo/docs/deploy.html
 deploy:
   type:
 ```
@@ -144,3 +167,5 @@ deploy:
 [3]: http://www.senchalabs.org/connect/logger.html
 [4]: http://momentjs.com/docs/#/displaying/format/
 [5]: http://disqus.com/
+[6]: tag-plugins.html
+[7]: writing.html

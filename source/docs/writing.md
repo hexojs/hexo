@@ -4,56 +4,75 @@ title: Writing
 date: 2012-11-01 18:13:30
 ---
 
-## Post
+## Basic
 
 ### Create
 
 Execute the following command.
 
 ``` bash
-hexo new_post <title>
+hexo new [layout] <title>
 ```
 
-The new post will be saved at `source/_posts/name.md` with the following content.
+`layout` is optional. Default is `default_layout` setting in [global configuration][2].
 
-``` plain
----
-layout: post
-title: title
-date: YYYY-MM-DD HH:mm:ss
-comments: true
-tags:
----
-```
-
-File name is based on `title` argument and `new_post_name` setting in `_config.yml`, title will be transformed into lower case, spaces will be transformed into dash. For example:
+The title will be transform into lower case. Spaces will be replaced with dash. If the target file exists, adding number after the filename. For example:
 
 ```
-hexo new_post Test Post => source/_posts/test-post.md
+hexo new "New Post" -> source/_posts/new-post.md
+hexo new page "New Page" -> source/new-page/index.md
+hexo new draft "New Draft" -> source/_drafts/new-draft.md
 ```
+
+### Filename
+
+You can configure the name of new files by editing `new_post_name` setting in [global configuration][2]. Default is `:title.md`.
+
+- `:title` - Article title (Default URL of the article)
+- `:year` - Published year (4-digit)
+- `:month` - Published month (2-digit)
+- `:day` - Published date (2-digit)
+
+To make files sorted by date, you can set it to `:year-:month-:day-:title.md`.
 
 ### Configure
 
 The beginning of article is a block wrapped with `---`, called [YAML Front Matter][1]. You can use YAML to configure posts.
 
-The following is default configuration. You can modify them as you like.
-
-- **layout** - Layout
+- **layout** - Layout (Optional)
 - **title** - Title
-- **date** - Published date (`YYYY-MM-DD HH:mm:ss`)
-- **comments** - Comments
-- **tags** - Tags
+- **date** - Published date
+- **updated** - Last updated date (Optional)
+- **comments** - Whether to enable comment (Optional. Enabled by default)
+- **tags** - Tags (Optional. Not availiable for page)
+- **categories** - Categories (Optional. Not availiable for page)
 - **permalink** - Override default URL (Optional)
 
 ### Categories
 
-Category is the relative path to `source/_posts`. It's hierarchical.
+Category is the relative path to `source/_posts`. It's hierarchical. You can add `categories` property in the file. Its content will be added after the original categories. For example:
 
 For example:
 
 - `source/_posts/title.md` - Uncategorized
 - `source/_posts/Fruits/title.md` - Fruit
 - `source/_posts/Fruits/Apple/title.md` - Fruit, Apple
+
+Categories settings:
+
+``` yaml
+# Single category
+categories: Fruits
+
+# Multiple categories
+categories: Fruits/Apple
+
+categories: [Fruits, Apple]
+
+categories:
+- Fruits
+- Apple
+```
 
 ### Tags
 
@@ -69,58 +88,39 @@ tags:
 - Banana
 ```
 
-## Page
+## Scaffolds
 
-### Create
+A scaffold is the default template of articles. Hexo will create articles based on the scaffolds.
 
-Execute the following command.
+### Example
 
-``` bash
-hexo new_page <title>
-```
+Create `photo.md` in `scaffolds` folder.
 
-The new post will be saved at `source/name/index.md` with the following content.
-
-``` plain
+{% raw %}
+<pre><code>---
+layout: {{ layout }}
+title: {{ title }}
+date: {{ date }}
+tags:
 ---
-layout: page
-title: title
-date: YYYY-MM-DD HH:mm:ss
-comments: true
----
-```
+</code></pre>
+{% endraw %}
 
-File name is based on `title` argument, title will be transformed into lower case, spaces will be transformed into dash. For example:
+And execute the following:
 
 ```
-hexo new_page Test Page => source/test-page/index.md
+hexo new photo "New Gallery"
 ```
 
-### Configure
+Hexo will create a new file based on the content above.
 
-The beginning of article is a block wrapped with `---`, called [YAML Front Matter][1]. You can use YAML to configure posts.
+### Usage
 
-The following is default configuration. You can modify them as you like.
+A scaffold is processed by Swig. Variables are wrapped by double curly brackets. The following are the variables:
 
-- **layout** - Layout
-- **title** - Title
-- **date** - Published date (`YYYY-MM-DD HH:mm:ss`)
-- **comments** - Comments
-- **permalink** - Override default URL (Optional)
-
-## Generate Static Files
-
-Execute the following command to transform articles into static files.
-
-``` bash
-hexo generate
-```
-
-After that, you can add `-t` or `--theme` after the command to ignore theme installation to make generating faster.
-
-``` bash
-hexo generate -t
-hexo generate --theme
-```
+- **layout** - Layout name
+- **title** - Article title
+- **date** - Published date
 
 [1]: https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter
+[2]: configure.html

@@ -14,10 +14,11 @@ Edit `port` setting in `_config.yml` to configure the port of the server.
 port: 4000
 ```
 
-Execute the following command to start the server. Press `Ctrl+c` to stop it.
+Execute the following command to start the server. Press `Ctrl+c` to stop it. Add `-p` option to set the port.
 
 ``` bash
 hexo server
+hexo server -p 12345
 ```
 
 ### Logger

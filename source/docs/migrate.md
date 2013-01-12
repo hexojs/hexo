@@ -28,6 +28,8 @@ After installed, execute the following command to migrate. `source` argument can
 
 Move files in `source/_posts` to `source/_posts` of Hexo, and modify `categories` field of articles to `tags`.
 
+Then edit `new_post_name` in `_config.yml` with `:year-:month-:day-:title.md`.
+
 <a id="wordpress"></a>
 ## WordPress
 

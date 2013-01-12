@@ -7,10 +7,14 @@ date: 2012-11-01 18:13:30
 Hexo creates a namespace `hexo` when initializing with the following read-only variables.
 
 - **base_dir** - Root directory
-- **public_dir** - Static files directory（public）
-- **source_dir** - Source files directory（source）
-- **theme_dir** - Theme directory（theme/theme_name）
-- **plugin_dir** - Plugin directory（node_modules）
+- **public_dir** - Static files directory (public)
+- **source_dir** - Source files directory (source)
+- **theme_dir** - Theme directory (theme/theme_name)
+- **plugin_dir** - Plugin directory (node_modules)
+- **script_dir** - Script directory (scripts)
+- **scaffold_dir** - Scaffold directory (scaffolds)
+- **core_dir** - Program root directory (hexo)
+- **lib_dir** - Program library directory (hexo/lib)
 - **version** - Version of Hexo
 - **env** - Environment
 - **safe** - Safe mode
@@ -21,6 +25,7 @@ Hexo creates a namespace `hexo` when initializing with the following read-only v
 - **[util](#util)** - Utilities
 - **[i18n](#i18n)** - Internationalization (i18n) module
 - **[route](#route)** - Route module
+- **[cache](#cache)** - Cache module
 
 <a id="extend"></a>
 ### extend
@@ -179,6 +184,25 @@ Deletes a path.
 #### list()
 
 Returns an object.
+
+<a id="cache"></a>
+### cache
+
+#### list()
+
+List all contents of cache.
+
+#### get(name)
+
+Get the specific cache.
+
+#### set(name, value, [callback])
+
+Set the cache.
+
+#### destroy(name, [callback])
+
+Delete the specific cache.
 
 [1]: configure.html
 [2]: plugin-development.html

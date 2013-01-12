@@ -19,8 +19,6 @@ date: 2012-11-01 18:13:30
 <a id="generator"></a>
 ## Generator
 
-0.3版後請使用 [路由模組](global-variables.html#route) 來註冊路徑。
-
 ### 語法
 
 ``` js

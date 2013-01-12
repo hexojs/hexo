@@ -18,8 +18,6 @@ There're 8 sorts of plugins:
 <a id="generator"></a>
 ## Generator
 
-Please use [route module][4] to register paths after version 0.3.
-
 ### Syntax
 
 ``` js
@@ -32,7 +30,7 @@ hexo.extend.generator.register(fn);
     - **layout** - The template to use
     - **locals** - Data passed to the template, the `page` variable in the template
   - **callback** - Callback function
-  
+
 ### Example
 
 Generates archives at `public/archive.html`.
@@ -77,7 +75,7 @@ hexo.extend.renderer.register(name, output, fn, [sync]);
 - **locals** - Local variables
 - **callback** - Callback function
 
-### Example 
+### Example
 
 #### Sync mode
 
@@ -112,7 +110,7 @@ hexo.extend.helper.register(name, fn);
 
 - **tag** - Name (lowercase)
 - **fn** - Should return a function
-	
+
 ### Example
 
 Inserts a JavaScript file.
@@ -147,16 +145,14 @@ hexo.extend.deployer.register(name, method);
 ```
 
 - **name** - Name (lowercase)
-- **method** - An object included the following two elements
-	- **setup(args)** - Executes when `hexo setup_deploy` executed
-	- **deploy(args)** - Executes when `hexo deploy` executed
-	
+- **method(args)**
+  - **args** - Arguments
+
 ### Example
 
 ``` js
 hexo.extend.deployer.register('github', {
-	setup: function(args){ … },
-	deploy: function(args){ … }
+  // ...
 });
 ```
 
@@ -174,7 +170,7 @@ hexo.extend.processor.register(fn);
 	- **callback(err, locals)**
 		- **err** - Error content. Return `null` when no error occurred.
 		- **locals** - Processed data
-		
+
 ### Example
 
 Sort articles by date descending.
@@ -228,19 +224,25 @@ hexo.extend.tag.register('pullquote', function(args, content){
 ### Syntax
 
 ``` js
-hexo.extend.console.register(name, desc, fn);
+hexo.extend.console.register(name, desc, [options], fn);
 ```
 
 - **name** - Name (lowercase)
 - **desc** - Description
+- **options** - Options (As below)
 - **fn(args)**
 	- **args** - Arguments
-	
+
+### Options
+
+- **init** - Display when uninitialized
+- **debug** - Display in debug mode
+
 ### Example
 
 Display configuration when the following executed.
 
-``` 
+```
 hexo config
 ```
 
@@ -262,8 +264,8 @@ hexo.extend.migrator.register(name, fn);
 - **name** - Name (lowercase)
 - **fn(args)**
 	- **args** - Arguments
-	
-	
+
+
 ## Publish
 
 Don't forget to test before publishing. Copy your plugin into `node_modules` folder and install dependencies. Try to use or do unit tests.
@@ -281,4 +283,3 @@ You can reference [built-in modules][2] and [official plugins][3] to develop you
 [1]: template-data.html#site
 [2]: https://github.com/tommy351/hexo/tree/master/lib
 [3]: https://github.com/tommy351/hexo-plugins
-[4]: global-variables.html#route

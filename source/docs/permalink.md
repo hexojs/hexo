@@ -28,7 +28,6 @@ Given a post named `title.md` in `source/_posts/foo/bar` directory with the foll
 
 ``` plain
 ---
-layout: post
 title: Post Title
 date: 2012-10-09 14:09:37
 tags:

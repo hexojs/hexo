@@ -17,7 +17,7 @@ hexo new [layout] <title>
 
 `layout` 參數可忽略，預設為 [全域設定][2] 的 `default_layout` 設定。
 
-標題會被轉為小寫，空白會被轉為連字號，檔名若重複則會在後面加上數字。例如：
+標題會被轉為小寫，空白會被轉為連字號，若目標檔名若重複則會在後面加上數字。例如：
 
 ```
 hexo new "New Post" -> source/_posts/new-post.md
@@ -25,7 +25,7 @@ hexo new page "New Page" -> source/new-page/index.md
 hexo new draft "New Draft" -> source/_drafts/new-draft.md
 ```
 
-### 檔名設定
+### 檔案名稱
 
 你可在 [全域設定][2] 的 `new_post_name` 設定調整新建檔案的名稱，預設為 `:title.md`。
 
@@ -36,13 +36,14 @@ hexo new draft "New Draft" -> source/_drafts/new-draft.md
 
 如果你想要讓文章依日期排列，可設定為 `:year-:month-:day-:title.md`。
 
-### 文章設定
+### 設定
 
 文章最前面有一段用 `---` 包裹的區塊，稱為 [YAML Front Matter][1]。你可使用 YAML 格式設定文章。以下是預設內容，你可隨自己喜好增減內容。
 
 - **layout** - 布局（選填）
 - **title** - 標題
 - **date** - 發表日期
+- **updated** - 更新日期（選填）
 - **comments** - 留言功能（選填，預設開啟）
 - **tags** - 標籤（選填，不適用於分頁）
 - **categories** - 分類（選填，不適用於分頁）

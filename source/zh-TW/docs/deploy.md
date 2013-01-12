@@ -21,7 +21,7 @@ deploy:
 ```
 
 - **repository** - GitHub的Repository網址
-- **branch** - 若 Repository類似`username.github.com`，則在`branch`欄位填入`master`，否則填入`gh-pages`
+- **branch** - 若 Repository類似`username.github.com`，則填入`master`，否則填入`gh-pages`
 
 ### 佈署
 

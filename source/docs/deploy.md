@@ -4,15 +4,8 @@ title: Deploy
 date: 2012-11-01 18:13:30
 ---
 
-It's easy to deploy with Hexo. It just needs 3 steps to complete setup, "Configure → Setup → Deploy".
+It's easy to deploy with Hexo. It just needs 1 command to complete all the settings.
 
-## Contents
-
-- [GitHub](#github)
-- [Heroku](#heroku)
-- [Rsync](#rsync)
-
-<a id="github"></a>
 ## GitHub
 
 ### Configure
@@ -26,20 +19,16 @@ deploy:
   branch:
 ```
 
-### Setup
-
-Execute the following command. Hexo will build a hidden folder named `.deploy`, initialize Git and setup remote repository.
-
-``` bash
-hexo setup_deploy
-```
+- **repository** - GitHub repository
+- **branch** - If repository is like `username.github.com`, fill it with `master`, otherwise `gh-pages`
 
 ### Deploy
 
-After the static files are generated, execute the following to deploy.
+After the static files are generated, execute the following to deploy. You can add `--generate` option to generate automatically before deploy.
 
 ``` bash
 hexo deploy
+hexo deploy --generate
 ```
 
 ### Remove
@@ -70,12 +59,11 @@ If the domain is like `username.example.com`, add CNAME record `username.github.
 
 Check [GitHub Pages][1] for more info.
 
-<a id="heroku"></a>
 ## Heroku
 
 ### Configure
 
-Edit `_config.yml`. Fill `repository` with Heroku repository.
+Edit `_config.yml`.
 
 ``` yaml
 deploy:
@@ -83,54 +71,23 @@ deploy:
   repository:
 ```
 
-### Setup
-
-Execute the following command. Hexo will create two files in the root directory: `Procfile` & `app.js`, initialize Git and setup remote repository.
-
-``` bash
-hexo setup_deploy
-```
-
-`Procfile` & `app.js` is necessary. **Do not delete them.** If you had delete them, rebuilt with the following content manually.
-
-{% code Procfile %}
-web: node app
-{% endcode %}
-
-{% code app.js %}
-var connect = require('connect'),
-  app = connect.createServer(),
-  port = process.env.PORT;
-
-app.use(connect.static(__dirname + "/public"));
-app.use(connect.compress());
-
-app.listen(port, function(){
-  console.log("Hexo is running on port %d.", port);
-});
-{% endcode %}
+- **repository** - Heroku repository
 
 ### Deploy
 
-After the static files are generated, execute the following to deploy.
+After the static files are generated, execute the following to deploy. You can add `--generate` option to generate automatically before deploy.
 
 ``` bash
 hexo deploy
-```
-
-### Remove
-
-Delete the following files and folders to remove deployment.
-
-``` plain
-|-- _.git
-|-- app.js
-|-- Procfile
+hexo deploy --generate
 ```
 
 Check [Heroku][2] for more info.
 
-<a id="rsync"></a>
+### Remove
+
+Remove `.git`, `app.js` and `Procfile`.
+
 ## Rsync
 
 ### Configure
@@ -153,16 +110,13 @@ deploy:
 - **port** - Port (Default is `22`)
 - **delete** - Delete old files on remote host (Default is `true`)
 
-### Setup
-
-Don't need to setup.
-
 ### Deploy
 
-After the static files are generated, execute the following to deploy.
+After the static files are generated, execute the following to deploy. You can add `--generate` option to generate automatically before deploy.
 
 ``` bash
 hexo deploy
+hexo deploy --generate
 ```
 
 [1]: https://help.github.com/articles/setting-up-a-custom-domain-with-pages
