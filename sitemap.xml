@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://zespia.tw/hexo/docs/contribute.html</loc>
+    <lastmod>2013-01-17T09:03:57.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/contribute.html</loc>
+    <lastmod>2013-01-17T09:03:47.000Z</lastmod>
+  </url>
+  <url>
     <loc>http://zespia.tw/hexo/zh-TW/docs/configure.html</loc>
     <lastmod>2013-01-17T08:55:16.000Z</lastmod>
   </url>
@@ -23,14 +31,6 @@
   <url>
     <loc>http://zespia.tw/hexo/docs/server.html</loc>
     <lastmod>2013-01-12T16:55:37.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/contribute.html</loc>
-    <lastmod>2013-01-12T16:03:51.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/docs/contribute.html</loc>
-    <lastmod>2013-01-12T16:03:48.000Z</lastmod>
   </url>
   <url>
     <loc>http://zespia.tw/hexo/zh-TW/docs/plugin-development.html</loc>
