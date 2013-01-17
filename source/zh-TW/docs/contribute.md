@@ -12,9 +12,7 @@ date: 2012-11-01 18:13:30
 你可從GitHub上複製**dev**分支嘗鮮，幾乎每天都有新玩意！
 
 ```
-git clone -b dev git://github.com/tommy351/hexo.git
-cd hexo
-./bin/hexo
+npm install -g https://github.com/tommy351/hexo/archive/dev.tar.gz
 ```
 
 [回報問題][1]

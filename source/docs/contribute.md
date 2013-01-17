@@ -11,9 +11,7 @@ You may have found some bugs when using Hexo, or have some questions and recomme
 You can clone the **dev** branch on GitHub to try the new features. It's updated everyday!
 
 ```
-git clone -b dev git://github.com/tommy351/hexo.git
-cd hexo
-./bin/hexo
+npm install -g https://github.com/tommy351/hexo/archive/dev.tar.gz
 ```
 
 [Report an issue][1]
