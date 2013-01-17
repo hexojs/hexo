@@ -1,6 +1,6 @@
 {
   "name": "hexo",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
   "preferGlobal": true,
   "bin": {
