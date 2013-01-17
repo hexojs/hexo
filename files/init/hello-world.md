@@ -1,4 +1,3 @@
----
 title: Hello World
 date: %date%
 tags:
