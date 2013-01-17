@@ -25,12 +25,13 @@ date: 2012-11-01 18:13:30
 - **permalink** - 文章的網址格式（[設定][2]）
 - **tag_dir** - 標籤資料夾
 - **archive_dir** - 網誌彙整資料夾
-- **category_dir** - 分類的預設名稱
+- **category_dir** - 分類資料夾
 
 ### 寫作
 
-- **new_post_name** - 新文章的檔案名稱（[設定][7]）
+- **new_post_name** - 新文章的檔案名- 稱（[設定][7]）
 - **default_layout** - 預設布局
+- **default_category** - 預設分類
 - **auto_spacing** - 在東方文字與西方文字之間插入空白
 - **titlecase** - 將標題轉為合適的大小寫
 - **highlight** - 程式碼區塊設定
@@ -105,11 +106,12 @@ root: /
 permalink: :year/:month/:day/:title/
 tag_dir: tags
 archive_dir: archives
-category_dir: posts
+category_dir: categories
 
 # Writing
 new_post_name: :title.md # File name of new posts
 default_layout: post
+default_category: uncategorized
 auto_spacing: false # Add spaces between asian characters and western characters
 titlecase: false # Transform title into titlecase
 highlight:

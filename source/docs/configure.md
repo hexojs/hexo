@@ -13,7 +13,6 @@ The global configuration file is saved at `_config.yml` in the root directory of
 - **title** - Website title
 - **subtitle** - Website subtitle
 - **description** - Website description
-
 - **author** - The author of the website
 - **email** - Email address of the author
 - **language** - The language used in the website ([IETF format][1]. e.g. Traditional Chinese is `zh-TW`)
@@ -25,12 +24,13 @@ The global configuration file is saved at `_config.yml` in the root directory of
 - **permalink** - The URL format of articles ([Configure][2])
 - **tag_dir** - Tag directory
 - **archive_dir** - Archive directory
-- **category_dir** - The default name of category
+- **category_dir** - Category directory
 
 ### Writing
 
 - **new_post_name** - Filename of new post ([Configure][7])
 - **default_layout** - Default layout
+- **default_category** - Default category
 - **auto_spacing** - Add spaces between eastern and wastern characters
 - **titlecase** - Transform title into title case
 - **highlight** - Code block settings
@@ -105,11 +105,12 @@ root: /
 permalink: :year/:month/:day/:title/
 tag_dir: tags
 archive_dir: archives
-category_dir: posts
+category_dir: categories
 
 # Writing
 new_post_name: :title.md # File name of new posts
 default_layout: post
+default_category: uncategorized
 auto_spacing: false # Add spaces between asian characters and western characters
 titlecase: false # Transform title into titlecase
 highlight:
