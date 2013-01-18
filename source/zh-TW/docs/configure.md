@@ -31,14 +31,20 @@ date: 2012-11-01 18:13:30
 
 - **new_post_name** - 新文章的檔案名- 稱（[設定][7]）
 - **default_layout** - 預設布局
-- **default_category** - 預設分類
 - **auto_spacing** - 在東方文字與西方文字之間插入空白
 - **titlecase** - 將標題轉為合適的大小寫
+- **max_open_file** - 最大同時處理檔案數量
 - **highlight** - 程式碼區塊設定
   - **enable** - 啟用程式碼 Highlight
   - **backtick_code_block** - 啟用 [Backtick Code Block][6]
   - **line_number** - 顯示行號
   - **tab_replace** - 取代 Tab
+  
+### 分類 & 標籤
+
+- **default_category** - 預設分類
+- **category_map** - 分類別名
+- **tag_map** - 標籤別名
 
 ### 網誌彙整
 
@@ -74,7 +80,6 @@ Hexo 使用 Moment.js 解析和顯示日期。（[Moment.js][4]）
 
 ### 擴充套件
 
-- **plugins** - 要開啟的外掛
 - **themes** - 目前使用的主題
 - **exclude_generator** - 要關閉的 Generator（archive, category, home, page, post, tag）
 
@@ -111,14 +116,19 @@ category_dir: categories
 # Writing
 new_post_name: :title.md # File name of new posts
 default_layout: post
-default_category: uncategorized
 auto_spacing: false # Add spaces between asian characters and western characters
 titlecase: false # Transform title into titlecase
+max_open_file: 100
 highlight:
   enable: true
   backtick_code_block: true
   line_number: true
   tab_replace:
+
+# Category & Tag
+default_category: uncategorized
+category_map:
+tag_map:
 
 # Archives
 ## 2: Enable pagination
@@ -154,7 +164,6 @@ disqus_shortname:
 # Extensions
 ## Plugins: https://github.com/tommy351/hexo/wiki/Plugins
 ## Themes: https://github.com/tommy351/hexo/wiki/Themes
-plugins:
 theme: light
 exclude_generator:
 

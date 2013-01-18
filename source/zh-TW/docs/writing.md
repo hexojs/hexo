@@ -96,8 +96,7 @@ tags:
 在 `scaffolds` 資料夾內建立 `photo.md`。
 
 {% raw %}
-<pre><code>---
-layout: {{ layout }}
+<pre><code>layout: {{ layout }}
 title: {{ title }}
 date: {{ date }}
 tags:

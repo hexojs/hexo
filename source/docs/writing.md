@@ -97,8 +97,7 @@ A scaffold is the default template of articles. Hexo will create articles based 
 Create `photo.md` in `scaffolds` folder.
 
 {% raw %}
-<pre><code>---
-layout: {{ layout }}
+<pre><code>layout: {{ layout }}
 title: {{ title }}
 date: {{ date }}
 tags:

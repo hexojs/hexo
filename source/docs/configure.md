@@ -30,14 +30,20 @@ The global configuration file is saved at `_config.yml` in the root directory of
 
 - **new_post_name** - Filename of new post ([Configure][7])
 - **default_layout** - Default layout
-- **default_category** - Default category
 - **auto_spacing** - Add spaces between eastern and wastern characters
 - **titlecase** - Transform title into title case
+- **max_open_file** - Synchronous I/O maximum
 - **highlight** - Code block settings
   - **enable** - Enable code highlight
   - **backtick_code_block** - Enable [Backtick Code Block][6]
   - **line_number** - Display line numbers
   - **tab_replace** - Tab replacement
+  
+### Category & Tag
+
+- **default_category** - Default category
+- **category_map** - Category slugs
+- **tag_map** - Tag slugs
 
 ### Archive
 
@@ -73,7 +79,6 @@ Hexo uses Moment.js to parse and display date. ([Moment.js][4])
 
 ### Extensions
 
-- **plugins** - The plugins to enable
 - **themes** - Current theme
 - **exclude_generator** - The generators to disable(archive, category, home, page, post, tag)
 
@@ -110,14 +115,19 @@ category_dir: categories
 # Writing
 new_post_name: :title.md # File name of new posts
 default_layout: post
-default_category: uncategorized
 auto_spacing: false # Add spaces between asian characters and western characters
 titlecase: false # Transform title into titlecase
+max_open_file: 100
 highlight:
   enable: true
   backtick_code_block: true
   line_number: true
   tab_replace:
+
+# Category & Tag
+default_category: uncategorized
+category_map:
+tag_map:
 
 # Archives
 ## 2: Enable pagination
@@ -153,15 +163,13 @@ disqus_shortname:
 # Extensions
 ## Plugins: https://github.com/tommy351/hexo/wiki/Plugins
 ## Themes: https://github.com/tommy351/hexo/wiki/Themes
-plugins:
 theme: light
 exclude_generator:
 
 # Deployment
 ## Docs: http://zespia.tw/hexo/docs/deploy.html
 deploy:
-  type:
-```
+  type:```
 
 [1]: http://www.w3.org/International/articles/language-tags/
 [2]: permalink.html
