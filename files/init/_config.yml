@@ -22,7 +22,6 @@ category_dir: categories
 # Writing
 new_post_name: :title.md # File name of new posts
 default_layout: post
-default_category: uncategorized
 auto_spacing: false # Add spaces between asian characters and western characters
 titlecase: false # Transform title into titlecase
 max_open_file: 100
@@ -31,6 +30,11 @@ highlight:
   backtick_code_block: true
   line_number: true
   tab_replace:
+
+# Category & Tag
+default_category: uncategorized
+category_map:
+tag_map:
 
 # Archives
 ## 2: Enable pagination
@@ -66,7 +70,6 @@ disqus_shortname:
 # Extensions
 ## Plugins: https://github.com/tommy351/hexo/wiki/Plugins
 ## Themes: https://github.com/tommy351/hexo/wiki/Themes
-plugins:
 theme: light
 exclude_generator:
 

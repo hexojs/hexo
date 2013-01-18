@@ -8,9 +8,9 @@ var child_process = require('child_process'),
   tmpDir = coreDir + 'tmp/';
 
 var regex = {
-  post: /---\ntitle: (.*?)\ndate: \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\ntags:(.*)?\n---/,
-  page: /---\ntitle: (.*?)\ndate: \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\n---/,
-  normal: /---\nlayout: (.*?)\ntitle: (.*?)\ndate: \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\ntags:(.*)?\n---/,
+  post: /title: (.*?)\ndate: \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\ntags:(.*)?\n---/,
+  page: /title: (.*?)\ndate: \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\n---/,
+  normal: /layout: (.*?)\ntitle: (.*?)\ndate: \d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\ntags:(.*)?\n---/,
 };
 
 var command = function(comm, args, options, callback){
@@ -20,11 +20,15 @@ var command = function(comm, args, options, callback){
 
   command.stderr.setEncoding('utf8');
   command.stderr.on('data', function(data){
-    console.log(data);
+    process.stdout.write(data);
   });
 };
 
 describe('Core', function(){
+  after(function(done){
+    command('rm', ['-rf', 'tmp'], {}, done);
+  });
+
   describe('Initialize', function(){
     it('init', function(done){
       command('./bin/hexo', ['init', 'tmp'], {}, done);
@@ -34,7 +38,7 @@ describe('Core', function(){
       async.parallel([
         // .gitignore
         function(next){
-          file.read(coreDir + 'files/init/.gitignore', next);
+          file.read(coreDir + 'files/init/gitignore', next);
         },
         function(next){
           file.read(tmpDir + '.gitignore', next);
@@ -175,9 +179,5 @@ describe('Core', function(){
     it('routes', function(done){
       command('../bin/hexo', ['routes'], {cwd: tmpDir}, done);
     });
-  });
-
-  after(function(){
-    command('rm', ['-rf', 'tmp'], {});
   });
 });
