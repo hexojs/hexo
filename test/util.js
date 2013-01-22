@@ -5,37 +5,6 @@ var util = require('../lib/util'),
   yfm = util.yfm;
 
 describe('Utilities', function(){
-  /*
-  describe('file', function(){
-    it('#mkdir()', function(done){
-
-    });
-
-    it('#write()', function(done){
-
-    });
-
-    it('#copy()', function(done){
-
-    });
-
-    it('#dir()', function(done){
-
-    });
-
-    it('#read()', function(done){
-
-    });
-
-    it('#readSync()', function(){
-
-    });
-
-    it('#empty()', function(){
-
-    });
-  });*/
-
   describe('titlecase()', function(){
     it('All upper case', function(){
       titlecase('TODAY IS A BEATUIFUL DAY').should.equal('Today Is a Beatuiful Day');
