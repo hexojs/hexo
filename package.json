@@ -42,7 +42,7 @@
     "graceful-fs": "*",
     "mime": "*",
     "optimist": "*",
-    "fs-watch-tree": "*"
+    "watchr": "*"
   },
   "devDependencies": {
     "mocha": "*",
