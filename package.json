@@ -34,7 +34,7 @@
     "nib": "*",
     "marked": "*",
     "moment": "*",
-    "colors": "*",
+    "term": "*",
     "highlight.js": "*",
     "yamljs": "*",
     "underscore": "*",
