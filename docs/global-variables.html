@@ -38,12 +38,12 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">Global Variables</h1>
   <small>Last updated: Jan 12, 2013</small>
-  <div class="entry"><p>Hexo creates a namespace <code>hexo</code> when initializing with the following read-only variables.
-
-</p>
+  <div class="entry"><p>Hexo creates a namespace <code>hexo</code> when initializing with the following read-only variables.</p>
 <ul>
 <li><strong>base_dir</strong> - Root directory</li>
 <li><strong>public_dir</strong> - Static files directory (public)</li>
@@ -66,12 +66,9 @@
 <li><strong><a href="#route">route</a></strong> - Route module</li>
 <li><strong><a href="#cache">cache</a></strong> - Cache module</li>
 </ul>
-<p><a id="extend"></a>
-</p>
+<p><a id="extend"></a></p>
 <h3>extend</h3>
-<p><strong>extend</strong> is the module handling all extensions. Each extension has two method: <strong>list</strong> &amp; <strong>register</strong>. The former lists all extensions that the object handling; the letter registers a new extension to the object.
-
-</p>
+<p><strong>extend</strong> is the module handling all extensions. Each extension has two method: <strong>list</strong> &amp; <strong>register</strong>. The former lists all extensions that the object handling; the letter registers a new extension to the object.</p>
 <h4>generator</h4>
 <ul>
 <li><strong>list</strong> - Returns an array.</li>
@@ -112,19 +109,12 @@
 <li><strong>list</strong> - Returns an object.</li>
 <li><strong>register(name, fn)</strong> - Registers a extension. <code>name</code> is the name of the extension.</li>
 </ul>
-<p>Check <a href="plugin-development.html">plugin development</a> for more info.
-
-</p>
-<p><a id="util"></a>
-</p>
+<p>Check <a href="plugin-development.html">plugin development</a> for more info.</p>
+<p><a id="util"></a></p>
 <h3>util</h3>
-<p><strong>util</strong> is the utilities, including the following module:
-
-</p>
+<p><strong>util</strong> is the utilities, including the following module:</p>
 <h4>file</h4>
-<p>Operates file I/O, owning the following method:
-
-</p>
+<p>Operates file I/O, owning the following method:</p>
 <ul>
 <li><strong>mkdir(dest, callback)</strong></li>
 <li><strong>write(dest, content, callback)</strong></li>
@@ -135,9 +125,7 @@
 <li><strong>empty(target, exclude, callback)</strong></li>
 </ul>
 <h4>highlight(string, options)</h4>
-<p>Exports highlighted code block. The following is the options:
-
-</p>
+<p>Exports highlighted code block. The following is the options:</p>
 <ul>
 <li><strong>gutter</strong> - Display line numbers</li>
 <li><strong>first_line</strong> - The first line number</li>
@@ -145,31 +133,18 @@
 <li><strong>caption</strong> - Caption</li>
 </ul>
 <h4>titlecase(string)</h4>
-<p>Transforms a string into proper title capitalization.
-
-</p>
+<p>Transforms a string into proper title capitalization.</p>
 <h4>yfm(string)</h4>
-<p>Parses <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front Matter</a>. Exports an object. The content is <code>_content</code> property.
-
-</p>
-<p><a id="i18n"></a>
-</p>
+<p>Parses <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front Matter</a>. Exports an object. The content is <code>_content</code> property.</p>
+<p><a id="i18n"></a></p>
 <h3>i18n</h3>
-<p><strong>i18n</strong> is internationalization (i18n) module. Here&#39;s how to use:
-
-</p>
+<p><strong>i18n</strong> is internationalization (i18n) module. Here&#39;s how to use:</p>
 <pre><code><div class="line"><span class="keyword">var</span> i18n = <span class="keyword">new</span> hexo.i18n();</div></code></pre>
 
-<p>A i18n object owns the following methods:
-
-</p>
+<p>A i18n object owns the following methods:</p>
 <h4>get</h4>
-<p>The first argument must be the key value. The other arguments will be processed by <a href="http://nodejs.org/api/util.html#util_util_format_format">util.format</a>.
-
-</p>
-<p>When the first argument is an array, it will detect the second argument to process plural nouns.
-
-</p>
+<p>The first argument must be the key value. The other arguments will be processed by <a href="http://nodejs.org/api/util.html#util_util_format_format">util.format</a>.</p>
+<p>When the first argument is an array, it will detect the second argument to process plural nouns.</p>
 <ul>
 <li>2 elements in the 1st argument:<ul>
 <li>n &gt; 1: Use the 2nd element</li>
@@ -189,62 +164,36 @@
 <li><strong>value</strong> - Value</li>
 </ul>
 <h4>list([obj])</h4>
-<p>Returns all elements of the object if <code>obj</code> undefined. Replaces the object with the argument if <code>obj</code> is an object.
-
-</p>
+<p>Returns all elements of the object if <code>obj</code> undefined. Replaces the object with the argument if <code>obj</code> is an object.</p>
 <h4>load(path, callback)</h4>
-<p>Loads language files automatically. <code>path</code> is the language file directory. Hexo will based on <code>language</code> setting in <code>_config.yml</code>. If the language file is not found, it will load <code>default.yml</code> instead. So the directory must have <code>default.yml</code> at least.
-
-</p>
-<p><a id="route"></a>
-</p>
+<p>Loads language files automatically. <code>path</code> is the language file directory. Hexo will based on <code>language</code> setting in <code>_config.yml</code>. If the language file is not found, it will load <code>default.yml</code> instead. So the directory must have <code>default.yml</code> at least.</p>
+<p><a id="route"></a></p>
 <h3>route</h3>
-<p>Hexo has started using route module to handle all paths of the website since version 0.3.
-
-</p>
+<p>Hexo has started using route module to handle all paths of the website since version 0.3.</p>
 <h4>get(path)</h4>
-<p>Gets the content of the path.
-
-</p>
+<p>Gets the content of the path.</p>
 <pre><code><div class="line">route.get(path, <span class="keyword">function</span>(err, result){</div><div class="line">  ...</div><div class="line">});</div></code></pre>
 
 <h4>set(path, content)</h4>
-<p>Sets the content of the path. <code>content</code> can be a function or else. If it is a function, it must pass a callback with two arguments: <code>(err, result)</code>.
-
-</p>
+<p>Sets the content of the path. <code>content</code> can be a function or else. If it is a function, it must pass a callback with two arguments: <code>(err, result)</code>.</p>
 <pre><code><div class="line">route.set(path, content);</div><br><div class="line">route.set(path, <span class="keyword">function</span>(fn){</div><div class="line">  fn(<span class="literal">null</span>, <span class="string">'content'</span>);</div><div class="line">});</div></code></pre>
 
 <h4>format(path)</h4>
-<p>Formats the path. Adds <code>index.html</code> if the path is empty or ended with <code>/</code>.
-
-</p>
+<p>Formats the path. Adds <code>index.html</code> if the path is empty or ended with <code>/</code>.</p>
 <h4>destroy(path)</h4>
-<p>Deletes a path.
-
-</p>
+<p>Deletes a path.</p>
 <h4>list()</h4>
-<p>Returns an object.
-
-</p>
-<p><a id="cache"></a>
-</p>
+<p>Returns an object.</p>
+<p><a id="cache"></a></p>
 <h3>cache</h3>
 <h4>list()</h4>
-<p>List all contents of cache.
-
-</p>
+<p>List all contents of cache.</p>
 <h4>get(name)</h4>
-<p>Get the specific cache.
-
-</p>
+<p>Get the specific cache.</p>
 <h4>set(name, value, [callback])</h4>
-<p>Set the cache.
-
-</p>
+<p>Set the cache.</p>
 <h4>destroy(name, [callback])</h4>
-<p>Delete the specific cache.
-
-</p>
+<p>Delete the specific cache.</p>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

@@ -38,7 +38,9 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">樣板資料</h1>
   <small>Last updated: Dec 29, 2012</small>
   <div class="entry"><h2>全域</h2>
@@ -49,30 +51,20 @@
 <li><strong>theme</strong> - 主題設定，即主題資料夾內<code>_config.yml</code>的內容，根據不同主題而有所差異</li>
 <li><strong>__</strong>（雙底線） - 取得 <a href="global-variables.html#i18n">國際化（i18n）</a> 字串</li>
 </ul>
-<p><a id="site"></a>
-</p>
+<p><a id="site"></a></p>
 <h2>site</h2>
-<p>網站全域資料，在沒有掛載其他擴充套件的情況下，<strong>site</strong>擁有以下內容：
-
-</p>
+<p>網站全域資料，在沒有掛載其他擴充套件的情況下，<strong>site</strong>擁有以下內容：</p>
 <ul>
 <li><strong>posts</strong> - 所有文章，根據發表日期降冪排列</li>
 <li><strong>pages</strong> - 所有分頁，根據發表日期降冪排列</li>
 <li><strong>categories</strong> - 所有分類，根據字母順序排列</li>
 <li><strong>tags</strong> - 所有標籤，根據字母順序排列</li>
 </ul>
-<p><strong>posts</strong>, <strong>pages</strong> 為 <a href="collection.html#collection">Collection</a> 物件
-
-</p>
-<p><strong>categories</strong>, <strong>tags</strong> 為 <a href="collection.html#taxonomy">Taxonomy</a> 物件
-
-</p>
-<p><a id="page"></a>
-</p>
+<p><strong>posts</strong>, <strong>pages</strong> 為 <a href="collection.html#collection">Collection</a> 物件</p>
+<p><strong>categories</strong>, <strong>tags</strong> 為 <a href="collection.html#taxonomy">Taxonomy</a> 物件</p>
+<p><a id="page"></a></p>
 <h2>page</h2>
-<p>目前頁面的資料，內容根據不同頁面而有所差異，以下僅列舉內建 Generator 所擁有的 page 內容。
-
-</p>
+<p>目前頁面的資料，內容根據不同頁面而有所差異，以下僅列舉內建 Generator 所擁有的 page 內容。</p>
 <h4>page, post</h4>
 <ul>
 <li><strong>layout</strong> - 文章佈局</li>
@@ -87,12 +79,8 @@
 <li><strong>source</strong> - 原始檔案路徑</li>
 <li><strong>path</strong> - 文章的相對路徑</li>
 </ul>
-<p>以及使用者在文章設定中所設定的其他變數。
-
-</p>
-<p>page 和 post 的差別不大，僅在於 page 沒有<code>categories</code>和<code>tags</code>變數。
-
-</p>
+<p>以及使用者在文章設定中所設定的其他變數。</p>
+<p>page 和 post 的差別不大，僅在於 page 沒有<code>categories</code>和<code>tags</code>變數。</p>
 <h4>index</h4>
 <ul>
 <li>啟用分頁功能：<a href="collection.html#paginator">Paginator</a> 物件</li>
@@ -103,9 +91,7 @@
 <li>啟用分頁功能：<a href="collection.html#paginator">Paginator</a> 物件</li>
 <li>關閉分頁功能：<a href="collection.html#taxonomy">Taxonomy</a> 物件</li>
 </ul>
-<p>以及以下變數：
-
-</p>
+<p>以及以下變數：</p>
 <ul>
 <li><strong>archive</strong> - 恆為<code>true</code></li>
 <li><strong>year</strong> - 彙整年份</li>
@@ -116,9 +102,7 @@
 <li>啟用分頁功能：<a href="collection.html#paginator">Paginator</a> 物件</li>
 <li>關閉分頁功能：<a href="collection.html#taxonomy">Taxonomy</a> 物件</li>
 </ul>
-<p>以及以下變數：
-
-</p>
+<p>以及以下變數：</p>
 <ul>
 <li><strong>category</strong> - 分類名稱</li>
 </ul>
@@ -127,9 +111,7 @@
 <li>啟用分頁功能：<a href="collection.html#paginator">Paginator</a> 物件</li>
 <li>關閉分頁功能：<a href="collection.html#taxonomy">Taxonomy</a> 物件</li>
 </ul>
-<p>以及以下變數：
-
-</p>
+<p>以及以下變數：</p>
 <ul>
 <li><strong>tag</strong> - 標籤名稱</li>
 </ul>

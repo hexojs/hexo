@@ -38,12 +38,12 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">外掛開發</h1>
   <small>Last updated: Jan 12, 2013</small>
-  <div class="entry"><p>外掛分為以下八種類型：
-
-</p>
+  <div class="entry"><p>外掛分為以下八種類型：</p>
 <ul>
 <li><a href="#generator">Generator</a> - 生成靜態檔案</li>
 <li><a href="#renderer">Renderer</a> - 渲染檔案</li>
@@ -54,8 +54,7 @@
 <li><a href="#console">Console</a> - 命令列介面（CLI）</li>
 <li><a href="#migrator">Migrator</a> - 遷移工具</li>
 </ul>
-<p><a id="generator"></a>
-</p>
+<p><a id="generator"></a></p>
 <h2>Generator</h2>
 <h3>語法</h3>
 <pre><code><div class="line">hexo.extend.generator.register(fn);</div></code></pre>
@@ -73,13 +72,10 @@
 </li>
 </ul>
 <h3>範例</h3>
-<p>在<code>public/archive.html</code>生成文章彙整頁面。
-
-</p>
+<p>在<code>public/archive.html</code>生成文章彙整頁面。</p>
 <pre><code><div class="line">hexo.extend.generator.register(<span class="keyword">function</span>(locals, render, callback){</div><div class="line">  hexo.route.set(<span class="string">'archive.html'</span>, <span class="keyword">function</span>(func){</div><div class="line">    <span class="keyword">var</span> result = render(<span class="string">'archive'</span>, locals);</div><div class="line">    func(<span class="literal">null</span>, result);</div><div class="line">  });</div><div class="line">});</div></code></pre>
 
-<p><a id="renderer"></a>
-</p>
+<p><a id="renderer"></a></p>
 <h2>Renderer</h2>
 <h3>語法</h3>
 <pre><code><div class="line">hexo.extend.renderer.register(name, output, fn, [sync]);</div></code></pre>
@@ -90,23 +86,15 @@
 <li><strong>fn</strong> - 見下方</li>
 <li><strong>sync</strong> - 同步模式，預設為<code>false</code></li>
 </ul>
-<p><strong>同步模式</strong>（當<code>sync</code>為<code>true</code>時）
-
-</p>
-<p><code>fn(path, content, [locals])</code> - 當執行完成時，應使用<code>return</code>回傳結果
-
-</p>
+<p><strong>同步模式</strong>（當<code>sync</code>為<code>true</code>時）</p>
+<p><code>fn(path, content, [locals])</code> - 當執行完成時，應使用<code>return</code>回傳結果</p>
 <ul>
 <li><strong>path</strong> - 輸入檔案的路徑，僅在編譯（Compile）模式時有效</li>
 <li><strong>content</strong> - 輸入檔案的內容</li>
 <li><strong>locals</strong> - 自定變數</li>
 </ul>
-<p><strong>非同步模式</strong>（當<code>sync</code>為<code>false</code>或未指定時）
-
-</p>
-<p><code>fn(path, content, [locals], [callback])</code> - 當執行完成時，應透過<code>callback</code>回傳結果
-
-</p>
+<p><strong>非同步模式</strong>（當<code>sync</code>為<code>false</code>或未指定時）</p>
+<p><code>fn(path, content, [locals], [callback])</code> - 當執行完成時，應透過<code>callback</code>回傳結果</p>
 <ul>
 <li><strong>path</strong> - 輸入檔案的路徑，僅在編譯（Compile）模式時有效</li>
 <li><strong>content</strong> - 輸入檔案的內容</li>
@@ -120,8 +108,7 @@
 <h4>非同步模式</h4>
 <pre><code><div class="line"><span class="keyword">var</span> stylus = require(<span class="string">'stylus'</span>);</div><br><div class="line">hexo.extend.renderer.register(<span class="string">'styl'</span>, <span class="string">'css'</span>, <span class="keyword">function</span>(path, content, callback){</div><div class="line">  stylus(content).set(<span class="string">'filename'</span>, path).render(callback);</div><div class="line">});</div></code></pre>
 
-<p><a id="helper"></a>
-</p>
+<p><a id="helper"></a></p>
 <h2>Helper</h2>
 <h3>語法</h3>
 <pre><code><div class="line">hexo.extend.helper.register(name, fn);</div></code></pre>
@@ -131,23 +118,16 @@
 <li><strong>fn</strong> - 應傳回一函數</li>
 </ul>
 <h3>舉例</h3>
-<p>插入 JavaScript 檔案。
-
-</p>
+<p>插入 JavaScript 檔案。</p>
 <pre><code><div class="line">hexo.extend.helper.register(<span class="string">'js'</span>, <span class="keyword">function</span>(){</div><div class="line">  <span class="keyword">return</span> <span class="keyword">function</span>(path){</div><div class="line">    <span class="keyword">return</span> <span class="string">'&lt;script type="text/javascript" src="'</span> + path + <span class="string">'"&gt;&lt;/script&gt;'</span>;</div><div class="line">  }</div><div class="line">});</div></code></pre>
 
-<p>輸入：
-
-</p>
+<p>輸入：</p>
 <pre><code><div class="line">&lt;<span class="string">%- js('script.js') %&gt;</div></code></pre>
 
-<p>輸出：
-
-</p>
+<p>輸出：</p>
 <pre><code><div class="line">&lt;script type="text/javascript" src="script.js"&gt;&lt;/script&gt;</div></code></pre>
 
-<p><a id="deployer"></a>
-</p>
+<p><a id="deployer"></a></p>
 <h2>Deployer</h2>
 <h3>語法</h3>
 <pre><code><div class="line">hexo.extend.deployer.register(name, fn);</div></code></pre>
@@ -162,8 +142,7 @@
 <h3>範例</h3>
 <pre><code><div class="line">hexo.extend.deployer.register(<span class="string">'github'</span>, <span class="keyword">function</span>(args){</div><div class="line">  <span class="comment">// ...</span></div><div class="line">});</div></code></pre>
 
-<p><a id="processor"></a>
-</p>
+<p><a id="processor"></a></p>
 <h2>Processor</h2>
 <h3>語法</h3>
 <pre><code><div class="line">hexo.extend.processor.register(fn);</div></code></pre>
@@ -180,13 +159,10 @@
 </li>
 </ul>
 <h3>範例</h3>
-<p>根據日期降冪排列文章。
-
-</p>
+<p>根據日期降冪排列文章。</p>
 <pre><code><div class="line">hexo.extend.processor.register(<span class="keyword">function</span>(locals, callback){</div><div class="line">  locals.posts = locals.posts.sort(<span class="string">'date'</span>, -<span class="number">1</span>);</div><div class="line">  locals.pages = locals.pages.sort(<span class="string">'date'</span>, -<span class="number">1</span>);</div><div class="line">  callback(<span class="literal">null</span>, locals);</div><div class="line">});</div></code></pre>
 
-<p><a id="tag"></a>
-</p>
+<p><a id="tag"></a></p>
 <h2>Tag</h2>
 <h3>語法</h3>
 <pre><code><div class="line">hexo.extend.tag.register(name, fn, [ends]);</div></code></pre>
@@ -201,18 +177,13 @@
 <li><strong>ends</strong> - 結尾標籤</li>
 </ul>
 <h3>範例</h3>
-<p>插入 Youtube 影片。
-
-</p>
+<p>插入 Youtube 影片。</p>
 <pre><code><div class="line">hexo.extend.tag.register(<span class="string">'youtube'</span>, <span class="keyword">function</span>(args, content){</div><div class="line">  <span class="keyword">var</span> id = args[<span class="number">0</span>];</div><div class="line">  <span class="keyword">return</span> <span class="string">'&lt;div class="video-container"&gt;&lt;iframe width="560" height="315" src="http://www.youtube.com/embed/'</span> + id + <span class="string">'" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;'</span>;</div><div class="line">});</div></code></pre>
 
-<p>插入 Pull Quote
-
-</p>
+<p>插入 Pull Quote</p>
 <pre><code><div class="line">hexo.extend.tag.register(<span class="string">'pullquote'</span>, <span class="keyword">function</span>(args, content){</div><div class="line">  <span class="keyword">var</span> className = args.length ? <span class="string">' '</span> + args.join(<span class="string">' '</span>) : <span class="string">''</span>;</div><div class="line">  <span class="keyword">return</span> <span class="string">'&lt;blockquote class="pullquote'</span> + className + <span class="string">'"&gt;'</span> + content + <span class="string">'&lt;/blockquote&gt;'</span>;</div><div class="line">}, <span class="literal">true</span>);</div></code></pre>
 
-<p><a id="console"></a>
-</p>
+<p><a id="console"></a></p>
 <h2>Console</h2>
 <h3>語法</h3>
 <pre><code><div class="line">hexo.extend.console.register(name, desc, [options], fn);</div></code></pre>
@@ -232,15 +203,12 @@
 <li><strong>debug</strong> - 除錯模式時顯示</li>
 </ul>
 <h3>範例</h3>
-<p>執行以下指令時顯示網站設定。
-
-</p>
+<p>執行以下指令時顯示網站設定。</p>
 <pre><code><div class="line">hexo config</div></code></pre>
 
 <pre><code><div class="line">hexo.extend.console.register(<span class="string">'config'</span>, <span class="string">'Display configuration'</span>, <span class="keyword">function</span>(args){</div><div class="line">  console.log(hexo.config);</div><div class="line">});</div></code></pre>
 
-<p><a id="migrator"></a>
-</p>
+<p><a id="migrator"></a></p>
 <h2>Migrator</h2>
 <h3>語法</h3>
 <pre><code><div class="line">hexo.extend.migrator.register(name, fn);</div></code></pre>
@@ -253,18 +221,12 @@
 </li>
 </ul>
 <h2>發佈</h2>
-<p>在發佈之前，別忘了先測試。將外掛複製至<code>node_modules</code>資料夾內，安裝相依性模組後，試著實際使用，或進行單元測試。
-
-</p>
-<p>當一切測試結束後，執行以下指令，將外掛發佈至 NPM。
-
-</p>
+<p>在發佈之前，別忘了先測試。將外掛複製至<code>node_modules</code>資料夾內，安裝相依性模組後，試著實際使用，或進行單元測試。</p>
+<p>當一切測試結束後，執行以下指令，將外掛發佈至 NPM。</p>
 <pre><code><div class="line"><span class="title">npm</span> publish</div></code></pre>
 
 <h2>參考</h2>
-<p>你可參考 <a href="https://github.com/tommy351/hexo/tree/master/lib">內建模組</a> 和 <a href="https://github.com/tommy351/hexo-plugins">官方外掛</a> 的原始碼來製作外掛。
-
-</p>
+<p>你可參考 <a href="https://github.com/tommy351/hexo/tree/master/lib">內建模組</a> 和 <a href="https://github.com/tommy351/hexo-plugins">官方外掛</a> 的原始碼來製作外掛。</p>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

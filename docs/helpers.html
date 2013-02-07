@@ -38,74 +38,52 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">Helpers</h1>
   <small>Last updated: Jan 7, 2013</small>
-  <div class="entry"><p>Helpers help you transform data into HTML string in templates, making it easier to develop a theme. The following is built-in helpers. (EJS syntax)
-
-</p>
+  <div class="entry"><p>Helpers help you transform data into HTML string in templates, making it easier to develop a theme. The following is built-in helpers. (EJS syntax)</p>
 <h3>css</h3>
-<p>Loads a CSS file.
-
-</p>
+<p>Loads a CSS file.</p>
 <pre><code><div class="line">&lt;<span class="string">%- css(path) %&gt;</div></code></pre>
 
 <h3>js</h3>
-<p>Loads a JavaScript file.
-
-</p>
+<p>Loads a JavaScript file.</p>
 <pre><code><div class="line">&lt;<span class="string">%- js(path) %&gt;</div></code></pre>
 
 <h3>gravatar</h3>
-<p>Loads Gravatar.
-
-</p>
+<p>Loads Gravatar.</p>
 <pre><code><div class="line">&lt;<span class="string">%- gravatar(email, [size]) %&gt;</div></code></pre>
 
 <h3>trim</h3>
-<p>Clears all spaces in a string.
-
-</p>
+<p>Clears all spaces in a string.</p>
 <pre><code><div class="line">&lt;<span class="string">%- trim(string) %&gt;</div></code></pre>
 
 <h3>strip_html</h3>
-<p>Clears all HTML tags in a string.
-
-</p>
+<p>Clears all HTML tags in a string.</p>
 <pre><code><div class="line">&lt;<span class="string">%- strip_html(string) %&gt;</div></code></pre>
 
 <h3>titlecase</h3>
-<p>Transforms a string into proper title capitalization.
-
-</p>
+<p>Transforms a string into proper title capitalization.</p>
 <pre><code><div class="line">&lt;<span class="string">%- titlecase(string) %&gt;</div></code></pre>
 
 <h3>render</h3>
-<p>Uses a specific <a href="render.html">render engine</a> (<code>engine</code>) to render contents. Use <code>locals</code> to define local variables.
-
-</p>
+<p>Uses a specific <a href="render.html">render engine</a> (<code>engine</code>) to render contents. Use <code>locals</code> to define local variables.</p>
 <pre><code><div class="line">&lt;<span class="string">%- render(string, engine, [locals]) %&gt;</div></code></pre>
 
-<p>e.g. Render Markdown.
-
-</p>
+<p>e.g. Render Markdown.</p>
 <pre><code><div class="line">&lt;<span class="string">%- render('**bold**', 'md') %&gt;</div></code></pre>
 
 <h3>partial</h3>
-<p>Loads other template. Use <code>locals</code> to define local variables. (Same as <a href="https://github.com/publicclass/express-partials">express-partials</a>)
-
-</p>
+<p>Loads other template. Use <code>locals</code> to define local variables. (Same as <a href="https://github.com/publicclass/express-partials">express-partials</a>)</p>
 <pre><code><div class="line">&lt;<span class="string">%- partial(layout, [locals]) %&gt;</div></code></pre>
 
 <h3>tagcloud</h3>
-<p>Inserts tag cloud. Input <code>tags</code> with <a href="template-data.html">template data</a>. The following is <code>options</code>.
-
-</p>
+<p>Inserts tag cloud. Input <code>tags</code> with <a href="template-data.html">template data</a>. The following is <code>options</code>.</p>
 <pre><code><div class="line">&lt;<span class="string">%- tagcloud(tags, [options]) %&gt;</div></code></pre>
 
-<p><strong>Options:</strong>
-
-</p>
+<p><strong>Options:</strong></p>
 <ul>
 <li><strong>min_font</strong> - Minimal font size</li>
 <li><strong>max_font</strong> - Maximum font size</li>
@@ -114,20 +92,14 @@
 <li><strong>orderby</strong> - Order of tags</li>
 <li><strong>order</strong> - Sort order. <code>1</code>, <code>asc</code> as ascending; <code>-1</code>, <code>desc</code> as descending.</li>
 </ul>
-<p><strong>Default:</strong>
-
-</p>
+<p><strong>Default:</strong></p>
 <pre><code><div class="line">{</div><div class="line">  <span class="method">min_font:</span> <span class="number">10</span>,</div><div class="line">  <span class="method">max_font:</span> <span class="number">20</span>,</div><div class="line">  <span class="method">unit:</span> <span class="string">'px'</span>,</div><div class="line">  <span class="method">amount:</span> <span class="number">40</span>,</div><div class="line">  <span class="method">orderby:</span> <span class="string">'name'</span>,</div><div class="line">  <span class="method">order:</span> <span class="number">1</span></div><div class="line">}</div></code></pre>
 
 <h3>paginator</h3>
-<p>Inserts paginator. The following is <code>options</code>.
-
-</p>
+<p>Inserts paginator. The following is <code>options</code>.</p>
 <pre><code><div class="line">&lt;<span class="string">%- paginator(options) %&gt;</div></code></pre>
 
-<p><strong>Options:</strong>
-
-</p>
+<p><strong>Options:</strong></p>
 <ul>
 <li><strong>base</strong> - Base URL</li>
 <li><strong>format</strong> - URL format</li>
@@ -141,9 +113,7 @@
 <li><strong>mid_size</strong> - Number of pages displayed between current page, but not including current page</li>
 <li><strong>show_all</strong> - Display all pages</li>
 </ul>
-<p><strong>Default:</strong>
-
-</p>
+<p><strong>Default:</strong></p>
 <pre><code><div class="line">{</div><div class="line">  <span class="method">base:</span> <span class="string">'/'</span>,</div><div class="line">  <span class="method">format:</span> <span class="string">'page/%d/'</span>,</div><div class="line">  <span class="method">total:</span> <span class="number">1</span>,</div><div class="line">  <span class="method">current:</span> <span class="number">0</span>,</div><div class="line">  <span class="method">prev_text:</span> <span class="string">'Prev'</span>,</div><div class="line">  <span class="method">next_text:</span> <span class="string">'Next'</span>,</div><div class="line">  <span class="method">space:</span> <span class="string">'&hellp;'</span>,</div><div class="line">  <span class="method">prev_next:</span> <span class="keyword">true</span>,</div><div class="line">  <span class="method">end_size:</span> <span class="number">1</span>,</div><div class="line">  <span class="method">mid_size:</span> <span class="number">2</span>,</div><div class="line">  <span class="method">show_all:</span> <span class="keyword">false</span></div><div class="line">}</div></code></pre>
 
 </div>

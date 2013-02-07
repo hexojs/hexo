@@ -38,24 +38,18 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">命令列介面 (CLI)</h1>
   <small>Last updated: Jan 13, 2013</small>
-  <div class="entry"><p>顯示 Hexo 目前的版本號
-
-</p>
+  <div class="entry"><p>顯示 Hexo 目前的版本號</p>
 <pre><code><div class="line"><span class="title">hexo</span> version</div></code></pre>
-<p>建立網站，若<code>folder</code>未定義，則 Hexo 會在目前的資料夾建立網站
-
-</p>
+<p>建立網站，若<code>folder</code>未定義，則 Hexo 會在目前的資料夾建立網站</p>
 <pre><code><div class="line">hexo init <span class="tag">&lt;<span class="title">folder</span>&gt;</span></div></code></pre>
-<p>建立新文章
-
-</p>
+<p>建立新文章</p>
 <pre><code><div class="line">hexo new [layout] <span class="tag">&lt;<span class="title">title</span>&gt;</span></div></code></pre>
-<p>生成靜態檔案，使用<code>-t</code>或<code>--theme</code>以忽略主題安裝
-
-</p>
+<p>生成靜態檔案，使用<code>-t</code>或<code>--theme</code>以忽略主題安裝</p>
 <ul>
 <li>-t/--theme：忽略主題安裝</li>
 <li>-d/--deploy：生成後自動佈署</li>
@@ -63,47 +57,33 @@
 </ul>
 <pre><code><div class="line"><span class="title">hexo</span> generate</div><div class="line"><span class="title">hexo</span> generate -t/<span class="comment">--theme</span></div><div class="line"><span class="title">hexo</span> generate -d/<span class="comment">--deploy</span></div><div class="line"><span class="title">hexo</span> generate -w/<span class="comment">--watch</span></div></code></pre>
 
-<p>啟動伺服器，按下<code>Ctrl+C</code>停止伺服器
-
-</p>
+<p>啟動伺服器，按下<code>Ctrl+C</code>停止伺服器</p>
 <ul>
 <li>-p/--port：連接埠設定</li>
 </ul>
 <pre><code><div class="line"><span class="title">hexo</span> server</div><div class="line"><span class="title">hexo</span> server -p <span class="number">12345</span></div></code></pre>
 
-<p>預覽，按下<code>Ctrl+C</code>停止伺服器
-
-</p>
+<p>預覽，按下<code>Ctrl+C</code>停止伺服器</p>
 <ul>
 <li>-p/--port：連接埠設定</li>
 <li>-w/--watch：監視檔案變更</li>
 </ul>
 <pre><code><div class="line"><span class="title">hexo</span> preview</div><div class="line"><span class="title">hexo</span> preview -p <span class="number">12345</span></div></code></pre>
 
-<p>顯示網站設定
-
-</p>
+<p>顯示網站設定</p>
 <pre><code><div class="line"><span class="title">hexo</span> config</div></code></pre>
-<p>佈署
-
-</p>
+<p>佈署</p>
 <ul>
 <li>--setup：只設定不佈署</li>
 <li>--generate：佈署前先生成檔案</li>
 </ul>
 <pre><code><div class="line"><span class="title">hexo</span> deploy</div><div class="line"><span class="title">hexo</span> deploy <span class="comment">--setup</span></div><div class="line"><span class="title">hexo</span> deploy <span class="comment">--generate</span></div></code></pre>
 
-<p>渲染檔案
-
-</p>
+<p>渲染檔案</p>
 <pre><code><div class="line">hexo render <span class="tag">&lt;<span class="title">source</span>&gt;</span> <span class="tag">&lt;<span class="title">destination</span>&gt;</span></div></code></pre>
-<p>安全模式，此模式下外掛不會被載入
-
-</p>
+<p>安全模式，此模式下外掛不會被載入</p>
 <pre><code><div class="line"><span class="comment">hexo</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">safe</div></code></pre>
-<p>除錯模式
-
-</p>
+<p>除錯模式</p>
 <pre><code><div class="line"><span class="title">hexo</span> --<span class="built_in">debug</span></div></code></pre>
 </div>
 </article>

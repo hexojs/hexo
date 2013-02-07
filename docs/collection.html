@@ -38,126 +38,69 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">Collection</h1>
   <small>Last updated: Dec 28, 2012</small>
-  <div class="entry"><p><a id="collection"></a>
-</p>
+  <div class="entry"><p><a id="collection"></a></p>
 <h2>Collection</h2>
-<p>Collection class is used for general article collection.
-
-</p>
+<p>Collection class is used for general article collection.</p>
 <h4>each(iterator)</h4>
-<p>Iterates over the elements of the collection. The iterator has two arguments: <code>(item, i)</code>, <code>item</code> is the current item of the iterator, <code>i</code> is the times that the iterator has executed.
-
-</p>
-<p><strong>Alias</strong>：forEach
-
-</p>
+<p>Iterates over the elements of the collection. The iterator has two arguments: <code>(item, i)</code>, <code>item</code> is the current item of the iterator, <code>i</code> is the times that the iterator has executed.</p>
+<p><strong>Alias</strong>：forEach</p>
 <h4>map(iterator)</h4>
-<p>Produces a new collection by iterating over the elements of the collection and replacing the original value with the return value. The iterator has two arguments: <code>(item, i)</code>, <code>item</code> is the current item of the iterator, <code>i</code> is the times that the iterator has executed.
-
-</p>
+<p>Produces a new collection by iterating over the elements of the collection and replacing the original value with the return value. The iterator has two arguments: <code>(item, i)</code>, <code>item</code> is the current item of the iterator, <code>i</code> is the times that the iterator has executed.</p>
 <h4>filter(iterator)</h4>
-<p>Iterates over the elements of the collection and returns a new collection of all the elements that pass a truth test (<strong>iterator</strong>). The iterator has two arguments: <code>(item, i)</code>, <code>item</code> is the current item of the iterator, <code>i</code> is the times that the iterator has executed.
-
-</p>
-<p><strong>Alias</strong>：select
-
-</p>
+<p>Iterates over the elements of the collection and returns a new collection of all the elements that pass a truth test (<strong>iterator</strong>). The iterator has two arguments: <code>(item, i)</code>, <code>item</code> is the current item of the iterator, <code>i</code> is the times that the iterator has executed.</p>
+<p><strong>Alias</strong>：select</p>
 <h4>toArray</h4>
-<p>Converts the collection into an array.
-
-</p>
+<p>Converts the collection into an array.</p>
 <h4>slice(start, [end])</h4>
-<p>Returns a specific part of the collection. <code>start</code>, <code>end</code> can be a negative number.
-
-</p>
+<p>Returns a specific part of the collection. <code>start</code>, <code>end</code> can be a negative number.</p>
 <h4>skip(num)</h4>
-<p>Skips the first specific elements of the collection.
-
-</p>
+<p>Skips the first specific elements of the collection.</p>
 <pre><code><div class="line">collection.skip(<span class="number">10</span>);</div></code></pre>
 
-<p>Equals:
-
-</p>
+<p>Equals:</p>
 <pre><code><div class="line">collection.slice(<span class="number">10</span>);</div></code></pre>
 
 <h4>limit(num)</h4>
-<p>Limits the quantity of elements in the collection.
-
-</p>
+<p>Limits the quantity of elements in the collection.</p>
 <pre><code><div class="line">collection.limit(<span class="number">10</span>);</div></code></pre>
 
-<p>Equals:
-
-</p>
+<p>Equals:</p>
 <pre><code><div class="line">collection.slice(<span class="number">0</span>, <span class="number">10</span>);</div></code></pre>
 
 <h4>set(item)</h4>
-<p>Adds a element to the collection.
-
-</p>
-<p><strong>Alias</strong>：push
-
-</p>
+<p>Adds a element to the collection.</p>
+<p><strong>Alias</strong>：push</p>
 <h4>sort(orderby, [order])</h4>
-<p>Sorts the elements of the collection. Ascending when <code>order</code> equals <code>1</code> or <code>asc</code>, descending when <code>order</code> equals <code>-1</code> or <code>desc</code>.
-
-</p>
+<p>Sorts the elements of the collection. Ascending when <code>order</code> equals <code>1</code> or <code>asc</code>, descending when <code>order</code> equals <code>-1</code> or <code>desc</code>.</p>
 <h4>reverse</h4>
-<p>Returns a reversed copy of the collection.
-
-</p>
+<p>Returns a reversed copy of the collection.</p>
 <h4>random</h4>
-<p>Returns a shuffled copy of the collection.
-
-</p>
-<p><strong>Alias</strong>：shuffle
-
-</p>
-<p><a id="taxonomy"></a>
-</p>
+<p>Returns a shuffled copy of the collection.</p>
+<p><strong>Alias</strong>：shuffle</p>
+<p><a id="taxonomy"></a></p>
 <h2>Taxonomy</h2>
-<p>Taxonomy is used for taxonomy collection, the inheritance of Collection class. The difference between Collection class is that Taxonomy class uses a string as a key value.
-
-</p>
+<p>Taxonomy is used for taxonomy collection, the inheritance of Collection class. The difference between Collection class is that Taxonomy class uses a string as a key value.</p>
 <h4>get(name)</h4>
-<p>Gets the specific element of the collection.
-
-</p>
+<p>Gets the specific element of the collection.</p>
 <h4>set(name, item)</h4>
-<p>Added a element named <code>name</code> to the collection.
-
-</p>
-<p><strong>Alias</strong>：push
-
-</p>
+<p>Added a element named <code>name</code> to the collection.</p>
+<p><strong>Alias</strong>：push</p>
 <h4>each(iterator)</h4>
-<p>Iterates over the elements of the collection. The iterator has three arguments: <code>(value, key, i)</code>, <code>value</code> is the value of the current item, <code>key</code> is the key value of the current item, <code>i</code> is the times that the iterator has executed.
-
-</p>
-<p><strong>Alias</strong>：forEach
-
-</p>
+<p>Iterates over the elements of the collection. The iterator has three arguments: <code>(value, key, i)</code>, <code>value</code> is the value of the current item, <code>key</code> is the key value of the current item, <code>i</code> is the times that the iterator has executed.</p>
+<p><strong>Alias</strong>：forEach</p>
 <h4>map(iterator)</h4>
-<p>Produces a new collection by iterating over the elements of the collection and replacing the original value with the return value. The iterator has three arguments: <code>(value, key, i)</code>, <code>value</code> is the value of the current item, <code>key</code> is the key value of the current item, <code>i</code> is the times that the iterator has executed.
-
-</p>
+<p>Produces a new collection by iterating over the elements of the collection and replacing the original value with the return value. The iterator has three arguments: <code>(value, key, i)</code>, <code>value</code> is the value of the current item, <code>key</code> is the key value of the current item, <code>i</code> is the times that the iterator has executed.</p>
 <h4>filter(iterator)</h4>
-<p>Iterates over the elements of the collection and returns a new collection of all the elements that pass a truth test (<strong>iterator</strong>). The iterator has three arguments: <code>(value, key, i)</code>, <code>value</code> is the value of the current item, <code>key</code> is the key value of the current item, <code>i</code> is the times that the iterator has executed.
-
-</p>
-<p><strong>Alias</strong>：select
-
-</p>
-<p><a id="paginator"></a>
-</p>
+<p>Iterates over the elements of the collection and returns a new collection of all the elements that pass a truth test (<strong>iterator</strong>). The iterator has three arguments: <code>(value, key, i)</code>, <code>value</code> is the value of the current item, <code>key</code> is the key value of the current item, <code>i</code> is the times that the iterator has executed.</p>
+<p><strong>Alias</strong>：select</p>
+<p><a id="paginator"></a></p>
 <h2>Paginator</h2>
-<p>Paginator inherits the original class and adds the following properties.
-
-</p>
+<p>Paginator inherits the original class and adds the following properties.</p>
 <ul>
 <li><strong>per_page</strong> - Posts displayed per page</li>
 <li><strong>total</strong> - Amount of posts</li>

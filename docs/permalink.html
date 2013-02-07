@@ -38,18 +38,16 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">Permalink</h1>
   <small>Last updated: Jan 12, 2013</small>
   <div class="entry"><h2>Configure</h2>
-<p>Edit <code>permalink</code> in <code>_config.yml</code>. Here is the default:
-
-</p>
+<p>Edit <code>permalink</code> in <code>_config.yml</code>. Here is the default:</p>
 <pre><code><div class="line">permalink: :year/:month/:day/:title/</div></code></pre>
 
-<p>You can add the following variables in the permalink. Only the variables started with <code>:</code> is valid.
-
-</p>
+<p>You can add the following variables in the permalink. Only the variables started with <code>:</code> is valid.</p>
 <ul>
 <li><strong>year</strong> - 4-digit year</li>
 <li><strong>month</strong> - 2-digit month</li>
@@ -57,18 +55,12 @@
 <li><strong>title</strong> - The filename of the post</li>
 <li><strong>category</strong> - The category of the post. (Relative path to <code>source/_posts</code>) If the post is uncategorized, it will be <code>category_dir</code> in <code>_config.yml</code>.</li>
 </ul>
-<p><em>(The date is based on the date set in the post)</em>
-
-</p>
+<p><em>(The date is based on the date set in the post)</em></p>
 <h2>Example</h2>
-<p>Given a post named <code>title.md</code> in <code>source/_posts/foo/bar</code> directory with the following content:
-
-</p>
+<p>Given a post named <code>title.md</code> in <code>source/_posts/foo/bar</code> directory with the following content:</p>
 <pre><code><div class="line">---</div><div class="line">title: Post Title</div><div class="line">date: 2012-10-09 14:09:37</div><div class="line">tags:</div><div class="line">- Node.js</div><div class="line">- JavaScript</div><div class="line">---</div></code></pre>
 
-<p>And here is the result:
-
-</p>
+<p>And here is the result:</p>
 <pre><code><div class="line">:year/:month/:day/:title/ =&gt; /2012/10/09/title/</div><div class="line">:year-:month-:day/:title/ =&gt; /2012-10-09/title/</div><div class="line">:category/:title/ =&gt; /foo/bar/title/</div></code></pre></div>
 </article>
       <footer id="footer"><div class="alignleft">

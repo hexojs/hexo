@@ -38,7 +38,9 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">Migrate</h1>
   <small>Last updated: Jan 12, 2013</small>
   <div class="entry"><h2>Contents</h2>
@@ -47,38 +49,23 @@
 <li><a href="#jekyll">Jekyll / Octopress</a></li>
 <li><a href="#wordpress">WordPress</a></li>
 </ul>
-<p><a id="rss"></a>
-</p>
+<p><a id="rss"></a></p>
 <h2>RSS</h2>
-<p>First, execute the following command to install RSS migrator plugin, and add <code>hexo-migrator-rss</code> in <code>plugins</code> field in <code>_config.yml</code>.
-
-</p>
+<p>First, execute the following command to install RSS migrator plugin, and add <code>hexo-migrator-rss</code> in <code>plugins</code> field in <code>_config.yml</code>.</p>
 <pre><code><div class="line">npm install hexo-migrator-rss</div></code></pre>
 
-<p>After installed, execute the following command to migrate. <code>source</code> argument can be file path or URL.
-
-</p>
+<p>After installed, execute the following command to migrate. <code>source</code> argument can be file path or URL.</p>
 <pre><code><div class="line">hexo migrate rss <span class="tag">&lt;<span class="title">source</span>&gt;</span></div></code></pre>
-<p><a id="jekyll"></a>
-</p>
+<p><a id="jekyll"></a></p>
 <h2>Jekyll / Octopress</h2>
-<p>Move files in <code>source/_posts</code> to <code>source/_posts</code> of Hexo, and modify <code>categories</code> field of articles to <code>tags</code>.
-
-</p>
-<p>Then edit <code>new_post_name</code> in <code>_config.yml</code> with <code>:year-:month-:day-:title.md</code>.
-
-</p>
-<p><a id="wordpress"></a>
-</p>
+<p>Move files in <code>source/_posts</code> to <code>source/_posts</code> of Hexo, and modify <code>categories</code> field of articles to <code>tags</code>.</p>
+<p>Then edit <code>new_post_name</code> in <code>_config.yml</code> with <code>:year-:month-:day-:title.md</code>.</p>
+<p><a id="wordpress"></a></p>
 <h2>WordPress</h2>
-<p>First, execute the following command to install WordPress migrator plugin, and add <code>hexo-migrator-wordpress</code> in <code>plugins</code> field in <code>_config.yml</code>.
-
-</p>
+<p>First, execute the following command to install WordPress migrator plugin, and add <code>hexo-migrator-wordpress</code> in <code>plugins</code> field in <code>_config.yml</code>.</p>
 <pre><code><div class="line">npm install hexo-migrator-wordpress</div></code></pre>
 
-<p>After installed, execute the following command to migrate. <code>source</code> argument can be file path or URL.
-
-</p>
+<p>After installed, execute the following command to migrate. <code>source</code> argument can be file path or URL.</p>
 <pre><code><div class="line">hexo migrate wordpress <span class="tag">&lt;<span class="title">source</span>&gt;</span></div></code></pre>
 </div>
 </article>

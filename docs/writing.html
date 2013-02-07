@@ -38,41 +38,31 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">Writing</h1>
   <small>Last updated: Jan 18, 2013</small>
   <div class="entry"><h2>Basic</h2>
 <h3>Create</h3>
-<p>Execute the following command.
-
-</p>
+<p>Execute the following command.</p>
 <pre><code><div class="line">hexo new [layout] &lt;title&gt;</div></code></pre>
 
-<p><code>layout</code> is optional. Default is <code>default_layout</code> setting in <a href="configure.html">global configuration</a>.
-
-</p>
-<p>The title will be transform into lower case. Spaces will be replaced with dash. If the target file exists, adding number after the filename. For example:
-
-</p>
+<p><code>layout</code> is optional. Default is <code>default_layout</code> setting in <a href="configure.html">global configuration</a>.</p>
+<p>The title will be transform into lower case. Spaces will be replaced with dash. If the target file exists, adding number after the filename. For example:</p>
 <pre><code><div class="line">hexo <span class="keyword">new</span> <span class="string">"New Post"</span> -&gt; source<span class="regexp">/_posts/</span><span class="keyword">new</span>-post.md</div><div class="line">hexo <span class="keyword">new</span> page <span class="string">"New Page"</span> -&gt; source<span class="regexp">/new-page/i</span>ndex.md</div><div class="line">hexo <span class="keyword">new</span> draft <span class="string">"New Draft"</span> -&gt; source<span class="regexp">/_drafts/</span><span class="keyword">new</span>-draft.md</div></code></pre>
 
 <h3>Filename</h3>
-<p>You can configure the name of new files by editing <code>new_post_name</code> setting in <a href="configure.html">global configuration</a>. Default is <code>:title.md</code>.
-
-</p>
+<p>You can configure the name of new files by editing <code>new_post_name</code> setting in <a href="configure.html">global configuration</a>. Default is <code>:title.md</code>.</p>
 <ul>
 <li><code>:title</code> - Article title (Default URL of the article)</li>
 <li><code>:year</code> - Published year (4-digit)</li>
 <li><code>:month</code> - Published month (2-digit)</li>
 <li><code>:day</code> - Published date (2-digit)</li>
 </ul>
-<p>To make files sorted by date, you can set it to <code>:year-:month-:day-:title.md</code>.
-
-</p>
+<p>To make files sorted by date, you can set it to <code>:year-:month-:day-:title.md</code>.</p>
 <h3>Configure</h3>
-<p>The beginning of article is a block wrapped with <code>---</code>, called <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front Matter</a>. You can use YAML to configure posts.
-
-</p>
+<p>The beginning of article is a block wrapped with <code>---</code>, called <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front Matter</a>. You can use YAML to configure posts.</p>
 <ul>
 <li><strong>layout</strong> - Layout (Optional)</li>
 <li><strong>title</strong> - Title</li>
@@ -84,34 +74,23 @@
 <li><strong>permalink</strong> - Override default URL (Optional)</li>
 </ul>
 <h3>Categories</h3>
-<p>Category is the relative path to <code>source/_posts</code>. It&#39;s hierarchical. You can add <code>categories</code> property in the file. Its content will be added after the original categories. For example:
-
-</p>
-<p>For example:
-
-</p>
+<p>Category is the relative path to <code>source/_posts</code>. It&#39;s hierarchical. You can add <code>categories</code> property in the file. Its content will be added after the original categories. For example:</p>
+<p>For example:</p>
 <ul>
 <li><code>source/_posts/title.md</code> - Uncategorized</li>
 <li><code>source/_posts/Fruits/title.md</code> - Fruit</li>
 <li><code>source/_posts/Fruits/Apple/title.md</code> - Fruit, Apple</li>
 </ul>
-<p>Categories settings:
-
-</p>
+<p>Categories settings:</p>
 <pre><code><div class="line"><span class="preprocessor"># Single category</span></div><div class="line"><span class="label">categories:</span> Fruits</div><br><div class="line"><span class="preprocessor"># Multiple categories</span></div><div class="line"><span class="label">categories:</span> Fruits/Apple</div><br><div class="line"><span class="label">categories:</span> [Fruits, Apple]</div><br><div class="line"><span class="label">categories:</span></div><div class="line">- Fruits</div><div class="line">- Apple</div></code></pre>
 
 <h3>Tags</h3>
 <pre><code><div class="line"><span class="preprocessor"># Single tag</span></div><div class="line"><span class="label">tags:</span> Apple</div><br><div class="line"><span class="preprocessor"># Multiple tags</span></div><div class="line"><span class="label">tags:</span> [Apple, Banana]</div><br><div class="line"><span class="label">tags:</span></div><div class="line">- Apple</div><div class="line">- Banana</div></code></pre>
 
 <h2>Scaffolds</h2>
-<p>A scaffold is the default template of articles. Hexo will create articles based on the scaffolds.
-
-</p>
+<p>A scaffold is the default template of articles. Hexo will create articles based on the scaffolds.</p>
 <h3>Example</h3>
-<p>Create <code>photo.md</code> in <code>scaffolds</code> folder.
-
-
-</p>
+<p>Create <code>photo.md</code> in <code>scaffolds</code> folder.</p>
 <pre><code>layout: {{ layout }}
 title: {{ title }}
 date: {{ date }}
@@ -120,18 +99,12 @@ tags:
 </code></pre>
 
 
-<p>And execute the following:
-
-</p>
+<p>And execute the following:</p>
 <pre><code><div class="line"><span class="title">hexo</span> new photo <span class="string">"New Gallery"</span></div></code></pre>
 
-<p>Hexo will create a new file based on the content above.
-
-</p>
+<p>Hexo will create a new file based on the content above.</p>
 <h3>Usage</h3>
-<p>A scaffold is processed by Swig. Variables are wrapped by double curly brackets. The following are the variables:
-
-</p>
+<p>A scaffold is processed by Swig. Variables are wrapped by double curly brackets. The following are the variables:</p>
 <ul>
 <li><strong>layout</strong> - Layout name</li>
 <li><strong>title</strong> - Article title</li>

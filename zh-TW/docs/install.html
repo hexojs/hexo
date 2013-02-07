@@ -38,42 +38,32 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">安裝</h1>
   <small>Last updated: Jan 7, 2013</small>
-  <div class="entry"><p>在安裝 Hexo 之前，必須先安裝 <a href="http://git-scm.com/">Git</a> 和 <a href="http://nodejs.org/">Node.js</a>。
-
-</p>
+  <div class="entry"><p>在安裝 Hexo 之前，必須先安裝 <a href="http://git-scm.com/">Git</a> 和 <a href="http://nodejs.org/">Node.js</a>。</p>
 <h2>目錄</h2>
 <ul>
 <li><a href="#windows">Windows</a></li>
 <li><a href="#mac">Mac</a></li>
 <li><a href="#linux">Linux</a></li>
 </ul>
-<p><a id="windows"></a>
-</p>
+<p><a id="windows"></a></p>
 <h2>Windows</h2>
 <h3>Git</h3>
-<p>下載 <a href="http://code.google.com/p/msysgit/">msysgit</a> 並執行即可完成安裝。
-
-</p>
+<p>下載 <a href="http://code.google.com/p/msysgit/">msysgit</a> 並執行即可完成安裝。</p>
 <h3>Node.js</h3>
-<p>在 Windows 環境下安裝 Node.js 非常簡單，僅須 <a href="http://nodejs.org/">下載</a> 安裝檔案並執行即可完成安裝。
-
-</p>
+<p>在 Windows 環境下安裝 Node.js 非常簡單，僅須 <a href="http://nodejs.org/">下載</a> 安裝檔案並執行即可完成安裝。</p>
 <h3>Hexo</h3>
-<p>利用 <a href="http://npmjs.org/">npm</a> 即可安裝。
-
-</p>
+<p>利用 <a href="http://npmjs.org/">npm</a> 即可安裝。</p>
 <pre><code><div class="line">npm install -g hexo</div></code></pre>
 
-<p><a id="mac"></a>
-</p>
+<p><a id="mac"></a></p>
 <h2>Mac</h2>
 <h3>Git</h3>
-<p>Mac 已內建 Git，雖然版本較舊，不過還是能用，如果你想要使用較新版的 Git 的話，可參考以下方式安裝。
-
-</p>
+<p>Mac 已內建 Git，雖然版本較舊，不過還是能用，如果你想要使用較新版的 Git 的話，可參考以下方式安裝。</p>
 <ol>
 <li><p>使用 <a href="http://mxcl.github.com/homebrew/">Homebrew</a>。</p>
 <pre><code><div class="line"> <span class="title">brew</span> install git</div></code></pre>
@@ -84,71 +74,44 @@
 <li><p>使用 <a href="http://code.google.com/p/git-osx-installer/">安裝程式</a>。</p>
 </li>
 </ol>
-<p>如果出現錯誤情況，可能是尚未安裝編譯工具，請至 App Store 下載 Xcode。
-
-</p>
+<p>如果出現錯誤情況，可能是尚未安裝編譯工具，請至 App Store 下載 Xcode。</p>
 <h3>Node.js</h3>
-<p>Mac 環境下有很多安裝方式可供選擇，以下使用 <a href="https://github.com/creationix/nvm">nvm</a> 來安裝。
-
-</p>
-<p>執行以下指令。
-
-</p>
+<p>Mac 環境下有很多安裝方式可供選擇，以下使用 <a href="https://github.com/creationix/nvm">nvm</a> 來安裝。</p>
+<p>執行以下指令。</p>
 <pre><code><div class="line">git clone git://github.com/creationix/nvm.git ~/nvm</div></code></pre>
 
-<p>安裝完畢後，在<code>~/.bash_profile</code>或<code>~/.bashrc</code>加入以下內容並重開一個新的終端機視窗。
-
-</p>
+<p>安裝完畢後，在<code>~/.bash_profile</code>或<code>~/.bashrc</code>加入以下內容並重開一個新的終端機視窗。</p>
 <pre><code><div class="line">. ~/nvm/nvm.sh</div></code></pre>
 
-<p>之後即可使用 <a href="https://github.com/creationix/nvm">nvm</a> 來安裝 Node.js 了，編譯可能需要花些時間，請耐心等候。
-
-</p>
+<p>之後即可使用 <a href="https://github.com/creationix/nvm">nvm</a> 來安裝 Node.js 了，編譯可能需要花些時間，請耐心等候。</p>
 <pre><code><div class="line">nvm install v0.8.14</div><div class="line">nvm use v0.8.14</div><div class="line">nvm alias default v0.8.14</div></code></pre>
 
 <h3>Hexo</h3>
-<p>利用 <a href="http://npmjs.org/">npm</a> 即可安裝。
-
-</p>
+<p>利用 <a href="http://npmjs.org/">npm</a> 即可安裝。</p>
 <pre><code><div class="line">npm install -g hexo</div></code></pre>
 
-<p><a id="linux"></a>
-</p>
+<p><a id="linux"></a></p>
 <h2>Linux</h2>
 <h3>Git</h3>
-<p><strong>Ubuntu, Debian:</strong>
-
-</p>
+<p><strong>Ubuntu, Debian:</strong></p>
 <pre><code><div class="line">sudo apt-get install git-core</div></code></pre>
 
-<p><strong>Fedora, Red Hat, CentOS:</strong>
-
-</p>
+<p><strong>Fedora, Red Hat, CentOS:</strong></p>
 <pre><code><div class="line">sudo yum install git-core</div></code></pre>
 
 <h3>Node.js</h3>
-<p>Linux 環境下有很多安裝方式可供選擇，以下使用 <a href="https://github.com/creationix/nvm">nvm</a> 來安裝。
-
-</p>
-<p>執行以下指令。
-
-</p>
+<p>Linux 環境下有很多安裝方式可供選擇，以下使用 <a href="https://github.com/creationix/nvm">nvm</a> 來安裝。</p>
+<p>執行以下指令。</p>
 <pre><code><div class="line">git clone git://github.com/creationix/nvm.git ~/nvm</div></code></pre>
 
-<p>安裝完畢後，在<code>~/.bash_profile</code>或<code>~/.bashrc</code>加入以下內容並重開一個新的終端機視窗。
-
-</p>
+<p>安裝完畢後，在<code>~/.bash_profile</code>或<code>~/.bashrc</code>加入以下內容並重開一個新的終端機視窗。</p>
 <pre><code><div class="line">. ~/nvm/nvm.sh</div></code></pre>
 
-<p>之後即可使用 <a href="https://github.com/creationix/nvm">nvm</a> 來安裝 Node.js 了，編譯可能需要花些時間，請耐心等候。
-
-</p>
+<p>之後即可使用 <a href="https://github.com/creationix/nvm">nvm</a> 來安裝 Node.js 了，編譯可能需要花些時間，請耐心等候。</p>
 <pre><code><div class="line">nvm install v0.8.14</div><div class="line">nvm use v0.8.14</div><div class="line">nvm alias default v0.8.14</div></code></pre>
 
 <h3>Hexo</h3>
-<p>利用 <a href="http://npmjs.org/">npm</a> 即可安裝。
-
-</p>
+<p>利用 <a href="http://npmjs.org/">npm</a> 即可安裝。</p>
 <pre><code><div class="line">npm install -g hexo</div></code></pre>
 
 </div>

@@ -38,112 +38,59 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">集合（Collection）</h1>
   <small>Last updated: Dec 28, 2012</small>
-  <div class="entry"><p><a id="collection"></a>
-</p>
+  <div class="entry"><p><a id="collection"></a></p>
 <h2>Collection</h2>
-<p>Collection 類別用於一般的文章集合。
-
-</p>
+<p>Collection 類別用於一般的文章集合。</p>
 <h4>each(iterator)</h4>
-<p>執行迴圈<code>iterator(item, i)</code>，<code>item</code>為迴圈目前的項目，<code>i</code>為迴圈執行的次數（從 0 開始）。
-
-</p>
-<p><strong>別名</strong>：forEach
-
-</p>
+<p>執行迴圈<code>iterator(item, i)</code>，<code>item</code>為迴圈目前的項目，<code>i</code>為迴圈執行的次數（從 0 開始）。</p>
+<p><strong>別名</strong>：forEach</p>
 <h4>map(iterator)</h4>
-<p>執行迴圈<code>iterator(item, i)</code>，並用其回傳值代替原項目的值，<code>item</code>為迴圈目前的項目，<code>i</code>為迴圈執行的次數（從 0 開始）。
-
-</p>
+<p>執行迴圈<code>iterator(item, i)</code>，並用其回傳值代替原項目的值，<code>item</code>為迴圈目前的項目，<code>i</code>為迴圈執行的次數（從 0 開始）。</p>
 <h4>filter(iterator)</h4>
-<p>執行迴圈<code>iterator(item, i)</code>，若其回傳值為真，則保留其值，<code>item</code>為迴圈目前的項目，<code>i</code>為迴圈執行的次數（從 0 開始）。
-
-</p>
-<p><strong>別名</strong>：select
-
-</p>
+<p>執行迴圈<code>iterator(item, i)</code>，若其回傳值為真，則保留其值，<code>item</code>為迴圈目前的項目，<code>i</code>為迴圈執行的次數（從 0 開始）。</p>
+<p><strong>別名</strong>：select</p>
 <h4>toArray</h4>
-<p>將物件轉換為陣列（Array）。
-
-</p>
+<p>將物件轉換為陣列（Array）。</p>
 <h4>slice(start, [end])</h4>
-<p>取出物件中的特定部分。<code>start</code>, <code>end</code>的值可為負數。
-
-</p>
+<p>取出物件中的特定部分。<code>start</code>, <code>end</code>的值可為負數。</p>
 <h4>skip(num)</h4>
-<p>忽略物件中最前的指定段落。
-
-</p>
+<p>忽略物件中最前的指定段落。</p>
 <h4>limit(num)</h4>
-<p>限制傳回的物件數量。
-
-</p>
+<p>限制傳回的物件數量。</p>
 <h4>set(item)</h4>
-<p>在物件中新增項目。
-
-</p>
-<p><strong>別名</strong>：push
-
-</p>
+<p>在物件中新增項目。</p>
+<p><strong>別名</strong>：push</p>
 <h4>sort(orderby, [order])</h4>
-<p>排列物件。<code>order</code>為<code>1</code>, <code>asc</code>時為升冪排列（預設），<code>-1</code>, <code>desc</code>時為降冪排列。
-
-</p>
+<p>排列物件。<code>order</code>為<code>1</code>, <code>asc</code>時為升冪排列（預設），<code>-1</code>, <code>desc</code>時為降冪排列。</p>
 <h4>reverse</h4>
-<p>反轉物件順序。
-
-</p>
+<p>反轉物件順序。</p>
 <h4>random</h4>
-<p>隨機排列物件。
-
-</p>
-<p><strong>別名</strong>：shuffle
-
-</p>
-<p><a id="taxonomy"></a>
-</p>
+<p>隨機排列物件。</p>
+<p><strong>別名</strong>：shuffle</p>
+<p><a id="taxonomy"></a></p>
 <h2>Taxonomy</h2>
-<p>Taxonomy 類別用於文章分類集合，是 Collection 類別的繼承，與 Collection 類別的差別在於 Taxonomy 類別使用字串當作鍵值。
-
-</p>
+<p>Taxonomy 類別用於文章分類集合，是 Collection 類別的繼承，與 Collection 類別的差別在於 Taxonomy 類別使用字串當作鍵值。</p>
 <h4>get(name)</h4>
-<p>取得物件中的指定項目。
-
-</p>
+<p>取得物件中的指定項目。</p>
 <h4>set(name, item)</h4>
-<p>在物件中新增一個名為<code>name</code>的項目。
-
-</p>
-<p><strong>別名</strong>：push
-
-</p>
+<p>在物件中新增一個名為<code>name</code>的項目。</p>
+<p><strong>別名</strong>：push</p>
 <h4>each(iterator)</h4>
-<p>執行迴圈<code>iterator(value, key, i)</code>，<code>value</code>為迴圈目前的項目數值，<code>key</code>為迴圈目前的項目名稱，<code>i</code>為迴圈執行的次數（從 0 開始）。
-
-</p>
-<p><strong>別名</strong>：forEach
-
-</p>
+<p>執行迴圈<code>iterator(value, key, i)</code>，<code>value</code>為迴圈目前的項目數值，<code>key</code>為迴圈目前的項目名稱，<code>i</code>為迴圈執行的次數（從 0 開始）。</p>
+<p><strong>別名</strong>：forEach</p>
 <h4>map(iterator)</h4>
-<p>執行迴圈<code>iterator(value, key, i)</code>，並用其回傳值代替原項目的值，<code>value</code>為迴圈目前的項目數值，<code>key</code>為迴圈目前的項目名稱，<code>i</code>為迴圈執行的次數（從 0 開始）。
-
-</p>
+<p>執行迴圈<code>iterator(value, key, i)</code>，並用其回傳值代替原項目的值，<code>value</code>為迴圈目前的項目數值，<code>key</code>為迴圈目前的項目名稱，<code>i</code>為迴圈執行的次數（從 0 開始）。</p>
 <h4>filter(iterator)</h4>
-<p>執行迴圈<code>iterator(value, key, i)</code>，若其回傳值為真，則保留其值，<code>value</code>為迴圈目前的項目數值，<code>key</code>為迴圈目前的項目名稱，<code>i</code>為迴圈執行的次數（從 0 開始）。
-
-</p>
-<p><strong>別名</strong>：select
-
-</p>
-<p><a id="paginator"></a>
-</p>
+<p>執行迴圈<code>iterator(value, key, i)</code>，若其回傳值為真，則保留其值，<code>value</code>為迴圈目前的項目數值，<code>key</code>為迴圈目前的項目名稱，<code>i</code>為迴圈執行的次數（從 0 開始）。</p>
+<p><strong>別名</strong>：select</p>
+<p><a id="paginator"></a></p>
 <h2>Paginator</h2>
-<p>Paginator 類別是原類別的繼承，僅增加下列屬性。
-
-</p>
+<p>Paginator 類別是原類別的繼承，僅增加下列屬性。</p>
 <ul>
 <li><strong>per_page</strong> - 每頁顯示的文章數量</li>
 <li><strong>total</strong> - 文章總數量</li>

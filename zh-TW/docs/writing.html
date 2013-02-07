@@ -38,41 +38,31 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">寫作</h1>
   <small>Last updated: Jan 18, 2013</small>
   <div class="entry"><h2>基礎</h2>
 <h3>建立</h3>
-<p>執行以下指令。
-
-</p>
+<p>執行以下指令。</p>
 <pre><code><div class="line">hexo new [layout] &lt;title&gt;</div></code></pre>
 
-<p><code>layout</code> 參數可忽略，預設為 <a href="configure.html">全域設定</a> 的 <code>default_layout</code> 設定。
-
-</p>
-<p>標題會被轉為小寫，空白會被轉為連字號，若目標檔名若重複則會在後面加上數字。例如：
-
-</p>
+<p><code>layout</code> 參數可忽略，預設為 <a href="configure.html">全域設定</a> 的 <code>default_layout</code> 設定。</p>
+<p>標題會被轉為小寫，空白會被轉為連字號，若目標檔名若重複則會在後面加上數字。例如：</p>
 <pre><code><div class="line">hexo <span class="keyword">new</span> <span class="string">"New Post"</span> -&gt; source<span class="regexp">/_posts/</span><span class="keyword">new</span>-post.md</div><div class="line">hexo <span class="keyword">new</span> page <span class="string">"New Page"</span> -&gt; source<span class="regexp">/new-page/i</span>ndex.md</div><div class="line">hexo <span class="keyword">new</span> draft <span class="string">"New Draft"</span> -&gt; source<span class="regexp">/_drafts/</span><span class="keyword">new</span>-draft.md</div></code></pre>
 
 <h3>檔案名稱</h3>
-<p>你可在 <a href="configure.html">全域設定</a> 的 <code>new_post_name</code> 設定調整新建檔案的名稱，預設為 <code>:title.md</code>。
-
-</p>
+<p>你可在 <a href="configure.html">全域設定</a> 的 <code>new_post_name</code> 設定調整新建檔案的名稱，預設為 <code>:title.md</code>。</p>
 <ul>
 <li><code>:title</code> - 文章標題（文章的預設網址）</li>
 <li><code>:year</code> - 發表年份（4 位數）</li>
 <li><code>:month</code> - 發表月份（2 位數）</li>
 <li><code>:day</code> - 發表日期（2 位數）</li>
 </ul>
-<p>如果你想要讓文章依日期排列，可設定為 <code>:year-:month-:day-:title.md</code>。
-
-</p>
+<p>如果你想要讓文章依日期排列，可設定為 <code>:year-:month-:day-:title.md</code>。</p>
 <h3>設定</h3>
-<p>文章最前面有一段用 <code>---</code> 包裹的區塊，稱為 <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front Matter</a>。你可使用 YAML 格式設定文章。以下是預設內容，你可隨自己喜好增減內容。
-
-</p>
+<p>文章最前面有一段用 <code>---</code> 包裹的區塊，稱為 <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front Matter</a>。你可使用 YAML 格式設定文章。以下是預設內容，你可隨自己喜好增減內容。</p>
 <ul>
 <li><strong>layout</strong> - 布局（選填）</li>
 <li><strong>title</strong> - 標題</li>
@@ -84,31 +74,22 @@
 <li><strong>permalink</strong> - 覆寫預設網址（選填）</li>
 </ul>
 <h3>分類</h3>
-<p>分類為文章與 <code>source/_posts</code> 的相對位址，具有階層性。你也可在檔案內設定 <code>categories</code> 屬性，該屬性的內容會加入至原本分類的後面。例如：
-
-</p>
+<p>分類為文章與 <code>source/_posts</code> 的相對位址，具有階層性。你也可在檔案內設定 <code>categories</code> 屬性，該屬性的內容會加入至原本分類的後面。例如：</p>
 <ul>
 <li><code>source/_posts/title.md</code> - 無分類</li>
 <li><code>source/_posts/Fruits/title.md</code> - Fruit</li>
 <li><code>source/_posts/Fruits/Apple/title.md</code> - Fruit, Apple</li>
 </ul>
-<p>分類設定：
-
-</p>
+<p>分類設定：</p>
 <pre><code><div class="line"><span class="preprocessor"># 單一分類</span></div><div class="line"><span class="label">categories:</span> Fruits</div><br><div class="line"><span class="preprocessor"># 多重分類</span></div><div class="line"><span class="label">categories:</span> Fruits/Apple</div><br><div class="line"><span class="label">categories:</span> [Fruits, Apple]</div><br><div class="line"><span class="label">categories:</span></div><div class="line">- Fruits</div><div class="line">- Apple</div></code></pre>
 
 <h3>標籤</h3>
 <pre><code><div class="line"><span class="preprocessor"># 單一標籤</span></div><div class="line"><span class="label">tags:</span> Apple</div><br><div class="line"><span class="preprocessor"># 多重標籤</span></div><div class="line"><span class="label">tags:</span> [Apple, Banana]</div><br><div class="line"><span class="label">tags:</span></div><div class="line">- Apple</div><div class="line">- Banana</div></code></pre>
 
 <h2>骨架（Scaffold）</h2>
-<p>骨架（Scaffold）為文章的預設模版，新建文章時會根據骨架（Scaffold）內容建立文章。
-
-</p>
+<p>骨架（Scaffold）為文章的預設模版，新建文章時會根據骨架（Scaffold）內容建立文章。</p>
 <h3>範例</h3>
-<p>在 <code>scaffolds</code> 資料夾內建立 <code>photo.md</code>。
-
-
-</p>
+<p>在 <code>scaffolds</code> 資料夾內建立 <code>photo.md</code>。</p>
 <pre><code>layout: {{ layout }}
 title: {{ title }}
 date: {{ date }}
@@ -117,18 +98,12 @@ tags:
 </code></pre>
 
 
-<p>如此一來，輸入
-
-</p>
+<p>如此一來，輸入</p>
 <pre><code><div class="line"><span class="title">hexo</span> new photo <span class="string">"New Gallery"</span></div></code></pre>
 
-<p>就會根據上面的內容建立新檔案了。
-
-</p>
+<p>就會根據上面的內容建立新檔案了。</p>
 <h3>使用</h3>
-<p>骨架（Scaffold）使用 Swig 處理，變數以雙大括號包裹。以下是變數內容：
-
-</p>
+<p>骨架（Scaffold）使用 Swig 處理，變數以雙大括號包裹。以下是變數內容：</p>
 <ul>
 <li><strong>layout</strong> - 布局名稱</li>
 <li><strong>title</strong> - 文章標題</li>

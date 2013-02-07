@@ -38,12 +38,12 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">Plugin Development</h1>
   <small>Last updated: Jan 12, 2013</small>
-  <div class="entry"><p>There&#39;re 8 sorts of plugins:
-
-</p>
+  <div class="entry"><p>There&#39;re 8 sorts of plugins:</p>
 <ul>
 <li><a href="#generator">Generator</a> - Generates static files</li>
 <li><a href="#renderer">Renderer</a> - Renders files</li>
@@ -54,8 +54,7 @@
 <li><a href="#console">Console</a> - Command-line Interface (CLI)</li>
 <li><a href="#migrator">Migrator</a> - Migrate tool</li>
 </ul>
-<p><a id="generator"></a>
-</p>
+<p><a id="generator"></a></p>
 <h2>Generator</h2>
 <h3>Syntax</h3>
 <pre><code><div class="line">hexo.extend.generator.register(fn);</div></code></pre>
@@ -73,13 +72,10 @@
 </li>
 </ul>
 <h3>Example</h3>
-<p>Generates archives at <code>public/archive.html</code>.
-
-</p>
+<p>Generates archives at <code>public/archive.html</code>.</p>
 <pre><code><div class="line">hexo.extend.generator.register(<span class="keyword">function</span>(locals, render, callback){</div><div class="line">  hexo.route.set(<span class="string">'archive.html'</span>, <span class="keyword">function</span>(func){</div><div class="line">    <span class="keyword">var</span> result = render(<span class="string">'archive'</span>, locals);</div><div class="line">    func(<span class="literal">null</span>, result);</div><div class="line">  });</div><div class="line">});</div></code></pre>
 
-<p><a id="renderer"></a>
-</p>
+<p><a id="renderer"></a></p>
 <h2>Renderer</h2>
 <h3>Syntax</h3>
 <pre><code><div class="line">hexo.extend.renderer.register(name, output, fn, [sync]);</div></code></pre>
@@ -90,23 +86,15 @@
 <li><strong>fn</strong> - As below</li>
 <li><strong>sync</strong> - Sync mode (Default is <code>false</code>)</li>
 </ul>
-<p><strong>Sync mode</strong>
-
-</p>
-<p><code>fn(path, content, [locals])</code> - Use <code>return</code> to passes the result when complete
-
-</p>
+<p><strong>Sync mode</strong></p>
+<p><code>fn(path, content, [locals])</code> - Use <code>return</code> to passes the result when complete</p>
 <ul>
 <li><strong>path</strong> - Path of input file. Only available in compile mode</li>
 <li><strong>content</strong> - Content of input file</li>
 <li><strong>locals</strong> - Local variables</li>
 </ul>
-<p><strong>Async mode</strong>
-
-</p>
-<p><code>fn(path, content, [locals], callback)</code> - Use <code>callback</code> passes the result when complete
-
-</p>
+<p><strong>Async mode</strong></p>
+<p><code>fn(path, content, [locals], callback)</code> - Use <code>callback</code> passes the result when complete</p>
 <ul>
 <li><strong>path</strong> - Path of input file. Only available in compile mode</li>
 <li><strong>content</strong> - Content of input file</li>
@@ -120,8 +108,7 @@
 <h4>Async mode</h4>
 <pre><code><div class="line"><span class="keyword">var</span> stylus = require(<span class="string">'stylus'</span>);</div><br><div class="line">hexo.extend.renderer.register(<span class="string">'styl'</span>, <span class="string">'css'</span>, <span class="keyword">function</span>(path, content, callback){</div><div class="line">  stylus(content).set(<span class="string">'filename'</span>, path).render(callback);</div><div class="line">});</div></code></pre>
 
-<p><a id="helper"></a>
-</p>
+<p><a id="helper"></a></p>
 <h2>Helper</h2>
 <h3>Syntax</h3>
 <pre><code><div class="line">hexo.extend.helper.register(name, fn);</div></code></pre>
@@ -131,23 +118,16 @@
 <li><strong>fn</strong> - Should return a function</li>
 </ul>
 <h3>Example</h3>
-<p>Inserts a JavaScript file.
-
-</p>
+<p>Inserts a JavaScript file.</p>
 <pre><code><div class="line">hexo.extend.helper.register(<span class="string">'js'</span>, <span class="keyword">function</span>(){</div><div class="line">  <span class="keyword">return</span> <span class="keyword">function</span>(path){</div><div class="line">    <span class="keyword">return</span> <span class="string">'&lt;script type="text/javascript" src="'</span> + path + <span class="string">'"&gt;&lt;/script&gt;'</span>;</div><div class="line">  }</div><div class="line">});</div></code></pre>
 
-<p>Input:
-
-</p>
+<p>Input:</p>
 <pre><code><div class="line">&lt;<span class="string">%- js('script.js') %&gt;</div></code></pre>
 
-<p>Output:
-
-</p>
+<p>Output:</p>
 <pre><code><div class="line">&lt;script type="text/javascript" src="script.js"&gt;&lt;/script&gt;</div></code></pre>
 
-<p><a id="deployer"></a>
-</p>
+<p><a id="deployer"></a></p>
 <h2>Deployer</h2>
 <h3>Syntax</h3>
 <pre><code><div class="line">hexo.extend.deployer.register(name, method);</div></code></pre>
@@ -162,8 +142,7 @@
 <h3>Example</h3>
 <pre><code><div class="line">hexo.extend.deployer.register(<span class="string">'github'</span>, {</div><div class="line">  <span class="comment">// ...</span></div><div class="line">});</div></code></pre>
 
-<p><a id="processor"></a>
-</p>
+<p><a id="processor"></a></p>
 <h2>Processor</h2>
 <h3>Syntax</h3>
 <pre><code><div class="line">hexo.extend.processor.register(fn);</div></code></pre>
@@ -180,13 +159,10 @@
 </li>
 </ul>
 <h3>Example</h3>
-<p>Sort articles by date descending.
-
-</p>
+<p>Sort articles by date descending.</p>
 <pre><code><div class="line">hexo.extend.processor.register(<span class="keyword">function</span>(locals, callback){</div><div class="line">  locals.posts = locals.posts.sort(<span class="string">'date'</span>, -<span class="number">1</span>);</div><div class="line">  locals.pages = locals.pages.sort(<span class="string">'date'</span>, -<span class="number">1</span>);</div><div class="line">  callback(<span class="literal">null</span>, locals);</div><div class="line">});</div></code></pre>
 
-<p><a id="tag"></a>
-</p>
+<p><a id="tag"></a></p>
 <h2>Tag</h2>
 <h3>Syntax</h3>
 <pre><code><div class="line">hexo.extend.tag.register(name, fn, [ends]);</div></code></pre>
@@ -201,18 +177,13 @@
 <li><strong>ends</strong> - End tag</li>
 </ul>
 <h3>Example</h3>
-<p>Inserts a Youtube video.
-
-</p>
+<p>Inserts a Youtube video.</p>
 <pre><code><div class="line">hexo.extend.tag.register(<span class="string">'youtube'</span>, <span class="keyword">function</span>(args, content){</div><div class="line">  <span class="keyword">var</span> id = args[<span class="number">0</span>];</div><div class="line">  <span class="keyword">return</span> <span class="string">'&lt;div class="video-container"&gt;&lt;iframe width="560" height="315" src="http://www.youtube.com/embed/'</span> + id + <span class="string">'" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;'</span>;</div><div class="line">});</div></code></pre>
 
-<p>Inserts a pull quote.
-
-</p>
+<p>Inserts a pull quote.</p>
 <pre><code><div class="line">hexo.extend.tag.register(<span class="string">'pullquote'</span>, <span class="keyword">function</span>(args, content){</div><div class="line">  <span class="keyword">var</span> className = args.length ? <span class="string">' '</span> + args.join(<span class="string">' '</span>) : <span class="string">''</span>;</div><div class="line">  <span class="keyword">return</span> <span class="string">'&lt;blockquote class="pullquote'</span> + className + <span class="string">'"&gt;'</span> + content + <span class="string">'&lt;/blockquote&gt;'</span>;</div><div class="line">}, <span class="literal">true</span>);</div></code></pre>
 
-<p><a id="console"></a>
-</p>
+<p><a id="console"></a></p>
 <h2>Console</h2>
 <h3>Syntax</h3>
 <pre><code><div class="line">hexo.extend.console.register(name, desc, [options], fn);</div></code></pre>
@@ -232,15 +203,12 @@
 <li><strong>debug</strong> - Display in debug mode</li>
 </ul>
 <h3>Example</h3>
-<p>Display configuration when the following executed.
-
-</p>
+<p>Display configuration when the following executed.</p>
 <pre><code><div class="line"><span class="title">hexo</span> config</div></code></pre>
 
 <pre><code><div class="line">hexo.extend.console.register(<span class="string">'config'</span>, <span class="string">'Display configuration'</span>, <span class="keyword">function</span>(args){</div><div class="line">  console.log(hexo.config);</div><div class="line">});</div></code></pre>
 
-<p><a id="migrator"></a>
-</p>
+<p><a id="migrator"></a></p>
 <h2>Migrator</h2>
 <h3>Syntax</h3>
 <pre><code><div class="line">hexo.extend.migrator.register(name, fn);</div></code></pre>
@@ -253,18 +221,12 @@
 </li>
 </ul>
 <h2>Publish</h2>
-<p>Don&#39;t forget to test before publishing. Copy your plugin into <code>node_modules</code> folder and install dependencies. Try to use or do unit tests.
-
-</p>
-<p>After all the tests done. Execute the following command to publish your plugins to NPM.
-
-</p>
+<p>Don&#39;t forget to test before publishing. Copy your plugin into <code>node_modules</code> folder and install dependencies. Try to use or do unit tests.</p>
+<p>After all the tests done. Execute the following command to publish your plugins to NPM.</p>
 <pre><code><div class="line"><span class="title">npm</span> publish</div></code></pre>
 
 <h2>Reference</h2>
-<p>You can reference <a href="https://github.com/tommy351/hexo/tree/master/lib">built-in modules</a> and <a href="https://github.com/tommy351/hexo-plugins">official plugins</a> to develop your plugin.
-
-</p>
+<p>You can reference <a href="https://github.com/tommy351/hexo/tree/master/lib">built-in modules</a> and <a href="https://github.com/tommy351/hexo-plugins">official plugins</a> to develop your plugin.</p>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

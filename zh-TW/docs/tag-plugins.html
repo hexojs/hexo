@@ -38,127 +38,80 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">標籤外掛</h1>
   <small>Last updated: Jan 6, 2013</small>
-  <div class="entry"><p>標籤外掛（Tag Plugin）與文章中的標籤（Tag）不同，標籤外掛用於在文章內快速加入特定內容。
-
-</p>
+  <div class="entry"><p>標籤外掛（Tag Plugin）與文章中的標籤（Tag）不同，標籤外掛用於在文章內快速加入特定內容。</p>
 <h2>Block Quote</h2>
-<p>插入 Block Quote。
-
-
-</p>
+<p>插入 Block Quote。</p>
 <pre><code>{% blockquote [author[, source]] [link] [source_link_title] %}
 content
 {% endblockquote %}
 </code></pre>
 
 
-<p><strong>別名：</strong><code>quote</code>
-
-</p>
-<p><a href="http://octopress.org/docs/plugins/blockquote/">參考</a>
-
-</p>
+<p><strong>別名：</strong><code>quote</code></p>
+<p><a href="http://octopress.org/docs/plugins/blockquote/">參考</a></p>
 <h2>Code Block</h2>
-<p>插入程式碼區塊。
-
-
-</p>
+<p>插入程式碼區塊。</p>
 <pre><code>{% codeblock [title] [lang:language] [url] [link text] %}
 content
 {% endcodeblock %}
 </code></pre>
 
 
-<p><strong>別名：</strong><code>code</code>
-
-</p>
-<p><a href="http://octopress.org/docs/plugins/codeblock/">參考</a>
-
-</p>
+<p><strong>別名：</strong><code>code</code></p>
+<p><a href="http://octopress.org/docs/plugins/codeblock/">參考</a></p>
 <h2>Backtick Code Block</h2>
-<p>插入程式碼區塊。
-
-</p>
+<p>插入程式碼區塊。</p>
 <pre><code><div class="line">``` <span class="attr_selector">[language]</span> <span class="attr_selector">[title]</span> <span class="attr_selector">[url]</span> <span class="attr_selector">[link text]</span></div><div class="line"><span class="tag">content</span></div><div class="line">```</div></code></pre>
-<p><a href="http://octopress.org/docs/plugins/backtick-codeblock/">參考</a>
-
-</p>
+<p><a href="http://octopress.org/docs/plugins/backtick-codeblock/">參考</a></p>
 <h2>Pull Quote</h2>
-<p>插入 Pull Quote。
-
-
-</p>
+<p>插入 Pull Quote。</p>
 <pre><code>{% pullquote [class_name] %}
 content
 {% endpullquote %}
 </code></pre>
 
 
-<p><a href="http://octopress.org/docs/plugins/pullquote/">參考</a>
-
-</p>
+<p><a href="http://octopress.org/docs/plugins/pullquote/">參考</a></p>
 <h2>jsFiddle</h2>
-<p>插入 jsFiddle。
-
-
-</p>
+<p>插入 jsFiddle。</p>
 <pre><code>{% jsfiddle shorttag [tabs] [skin] [width] [height] %}
 </code></pre>
 
 
-<p><a href="http://octopress.org/docs/plugins/jsfiddle-tag/">參考</a>
-
-</p>
+<p><a href="http://octopress.org/docs/plugins/jsfiddle-tag/">參考</a></p>
 <h2>Gist</h2>
-<p>插入 Gist。
-
-
-</p>
+<p>插入 Gist。</p>
 <pre><code>{% gist gist_id [filename] %}
 </code></pre>
 
 
-<p><a href="http://octopress.org/docs/plugins/gist-tag/">參考</a>
-
-</p>
+<p><a href="http://octopress.org/docs/plugins/gist-tag/">參考</a></p>
 <h2>Image Tag</h2>
-<p>插入圖片。
-
-
-</p>
+<p>插入圖片。</p>
 <pre><code>{% img [class names] /path/to/image [width] [height] [title text [alt text]] %}
 </code></pre>
 
 
-<p><a href="http://octopress.org/docs/plugins/image-tag/">參考</a>
-
-</p>
+<p><a href="http://octopress.org/docs/plugins/image-tag/">參考</a></p>
 <h2>Youtube</h2>
-<p>插入 Youtube 影片。
-
-
-</p>
+<p>插入 Youtube 影片。</p>
 <pre><code>{% youtube video_id %}
 </code></pre>
 
 
 <h2>Vimeo</h2>
-<p>插入 Vimeo 影片。
-
-
-</p>
+<p>插入 Vimeo 影片。</p>
 <pre><code>{% vimeo video_id %}
 </code></pre>
 
 
 <h2>Raw</h2>
-<p>逸脫處理。（請去掉反斜線）
-
-
-</p>
+<p>逸脫處理。（請去掉反斜線）</p>
 <pre><code>{% raw %}
 {% endraw /%}
 </code></pre>

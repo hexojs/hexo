@@ -38,7 +38,9 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">Template Data</h1>
   <small>Last updated: Dec 29, 2012</small>
   <div class="entry"><h2>Global</h2>
@@ -49,30 +51,20 @@
 <li><strong>theme</strong> - Theme configuration, the content of <code>_config.yml</code> in theme folder, differed from each theme</li>
 <li><strong>__</strong> (double underscores) - Gets <a href="global-variables.html#i18n">internationalization (i18n)</a> strings</li>
 </ul>
-<p><a id="site"></a>
-</p>
+<p><a id="site"></a></p>
 <h2>site</h2>
-<p>Global site data. In case of no other plugins loaded, <strong>site</strong> has the following content:
-
-</p>
+<p>Global site data. In case of no other plugins loaded, <strong>site</strong> has the following content:</p>
 <ul>
 <li><strong>posts</strong> - All posts, sorted by published date descending.</li>
 <li><strong>pages</strong> - All pages, sorted by published date descending.</li>
 <li><strong>categories</strong> - All categories, sorted alphabetically.</li>
 <li><strong>tags</strong> - All tags, sorted alphabetically.</li>
 </ul>
-<p><strong>posts</strong>, <strong>pages</strong> is a <a href="collection.html#collection">Collection</a> object
-
-</p>
-<p><strong>categories</strong>, <strong>tags</strong> is a <a href="collection.html#taxonomy">Taxonomy</a> object
-
-</p>
-<p><a id="page"></a>
-</p>
+<p><strong>posts</strong>, <strong>pages</strong> is a <a href="collection.html#collection">Collection</a> object</p>
+<p><strong>categories</strong>, <strong>tags</strong> is a <a href="collection.html#taxonomy">Taxonomy</a> object</p>
+<p><a id="page"></a></p>
 <h2>page</h2>
-<p>Data of the current page, differed from each page. The following is the content of built-in generators.
-
-</p>
+<p>Data of the current page, differed from each page. The following is the content of built-in generators.</p>
 <h4>page, post</h4>
 <ul>
 <li><strong>layout</strong> - Article layout</li>
@@ -87,12 +79,8 @@
 <li><strong>source</strong> - Path of source file</li>
 <li><strong>path</strong> - Relative path</li>
 </ul>
-<p>And other variables user set in articles.
-
-</p>
-<p>The difference of <strong>page</strong> and <strong>post</strong> is that <strong>page</strong> doesn&#39;t have <code>categories</code> and <code>tag</code>.
-
-</p>
+<p>And other variables user set in articles.</p>
+<p>The difference of <strong>page</strong> and <strong>post</strong> is that <strong>page</strong> doesn&#39;t have <code>categories</code> and <code>tag</code>.</p>
 <h4>index</h4>
 <ul>
 <li>Enable pagination: <a href="collection.html#paginator">Paginator</a> object</li>
@@ -103,9 +91,7 @@
 <li>Enable pagination: <a href="collection.html#paginator">Paginator</a> object</li>
 <li>Disable pagination: <a href="collection.html#taxonomy">Taxonomy</a> object</li>
 </ul>
-<p>And the following variable:
-
-</p>
+<p>And the following variable:</p>
 <ul>
 <li><strong>archive</strong> - Equals <code>true</code></li>
 <li><strong>year</strong> - Archive year</li>
@@ -116,9 +102,7 @@
 <li>Enable pagination: <a href="collection.html#paginator">Paginator</a> object</li>
 <li>Disable pagination: <a href="collection.html#taxonomy">Taxonomy</a> object</li>
 </ul>
-<p>And the following variable:
-
-</p>
+<p>And the following variable:</p>
 <ul>
 <li><strong>category</strong> - Category name</li>
 </ul>
@@ -127,9 +111,7 @@
 <li>Enable pagination: <a href="collection.html#paginator">Paginator</a> object</li>
 <li>Disable pagination: <a href="collection.html#taxonomy">Taxonomy</a> object</li>
 </ul>
-<p>And the following variable:
-
-</p>
+<p>And the following variable:</p>
 <ul>
 <li><strong>tag</strong> - Tag name</li>
 </ul>

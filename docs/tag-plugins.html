@@ -38,127 +38,80 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">Tag Plugins</h1>
   <small>Last updated: Jan 6, 2013</small>
-  <div class="entry"><p>Tag plugins are different from tags in posts. Tag plugins are used for inserting specific contents in posts.
-
-</p>
+  <div class="entry"><p>Tag plugins are different from tags in posts. Tag plugins are used for inserting specific contents in posts.</p>
 <h2>Block Quote</h2>
-<p>Insert a block quote.
-
-
-</p>
+<p>Insert a block quote.</p>
 <pre><code>{% blockquote [author[, source]] [link] [source_link_title] %}
 content
 {% endblockquote %}
 </code></pre>
 
 
-<p><strong>Alias:</strong><code>quote</code>
-
-</p>
-<p><a href="http://octopress.org/docs/plugins/blockquote/">Reference</a>
-
-</p>
+<p><strong>Alias:</strong><code>quote</code></p>
+<p><a href="http://octopress.org/docs/plugins/blockquote/">Reference</a></p>
 <h2>Code Block</h2>
-<p>Inserts a code block.
-
-
-</p>
+<p>Inserts a code block.</p>
 <pre><code>{% codeblock [title] [lang:language] [url] [link text] %}
 content
 {% endcodeblock %}
 </code></pre>
 
 
-<p><strong>Alias:</strong><code>code</code>
-
-</p>
-<p><a href="http://octopress.org/docs/plugins/codeblock/">Reference</a>
-
-</p>
+<p><strong>Alias:</strong><code>code</code></p>
+<p><a href="http://octopress.org/docs/plugins/codeblock/">Reference</a></p>
 <h2>Backtick Code Block</h2>
-<p>Inserts a code block.
-
-</p>
+<p>Inserts a code block.</p>
 <pre><code><div class="line">``` <span class="attr_selector">[language]</span> <span class="attr_selector">[title]</span> <span class="attr_selector">[url]</span> <span class="attr_selector">[link text]</span></div><div class="line"><span class="tag">content</span></div><div class="line">```</div></code></pre>
-<p><a href="http://octopress.org/docs/plugins/backtick-codeblock/">Reference</a>
-
-</p>
+<p><a href="http://octopress.org/docs/plugins/backtick-codeblock/">Reference</a></p>
 <h2>Pull Quote</h2>
-<p>Inserts a pull quote.
-
-
-</p>
+<p>Inserts a pull quote.</p>
 <pre><code>{% pullquote [class_name] %}
 content
 {% endpullquote %}
 </code></pre>
 
 
-<p><a href="http://octopress.org/docs/plugins/pullquote/">Reference</a>
-
-</p>
+<p><a href="http://octopress.org/docs/plugins/pullquote/">Reference</a></p>
 <h2>jsFiddle</h2>
-<p>Embeds jsFiddle.
-
-
-</p>
+<p>Embeds jsFiddle.</p>
 <pre><code>{% jsfiddle shorttag [tabs] [skin] [width] [height] %}
 </code></pre>
 
 
-<p><a href="http://octopress.org/docs/plugins/jsfiddle-tag/">Reference</a>
-
-</p>
+<p><a href="http://octopress.org/docs/plugins/jsfiddle-tag/">Reference</a></p>
 <h2>Gist</h2>
-<p>Embeds Gist.
-
-
-</p>
+<p>Embeds Gist.</p>
 <pre><code>{% gist gist_id [filename] %}
 </code></pre>
 
 
-<p><a href="http://octopress.org/docs/plugins/gist-tag/">Reference</a>
-
-</p>
+<p><a href="http://octopress.org/docs/plugins/gist-tag/">Reference</a></p>
 <h2>Image Tag</h2>
-<p>Inserts a picture.
-
-
-</p>
+<p>Inserts a picture.</p>
 <pre><code>{% img [class names] /path/to/image [width] [height] [title text [alt text]] %}
 </code></pre>
 
 
-<p><a href="http://octopress.org/docs/plugins/image-tag/">Reference</a>
-
-</p>
+<p><a href="http://octopress.org/docs/plugins/image-tag/">Reference</a></p>
 <h2>Youtube</h2>
-<p>Inserts a Youtube video.
-
-
-</p>
+<p>Inserts a Youtube video.</p>
 <pre><code>{% youtube video_id %}
 </code></pre>
 
 
 <h2>Vimeo</h2>
-<p>Inserts a Vimeo video.
-
-
-</p>
+<p>Inserts a Vimeo video.</p>
 <pre><code>{% vimeo video_id %}
 </code></pre>
 
 
 <h2>Raw</h2>
-<p>Escapes contents. (Please delete the backslash)
-
-
-</p>
+<p>Escapes contents. (Please delete the backslash)</p>
 <pre><code>{% raw %}
 {% endraw /%}
 </code></pre>

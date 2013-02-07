@@ -38,51 +38,33 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">Events</h1>
   <small>Last updated: Jan 12, 2013</small>
-  <div class="entry"><p><a href="global-variables.html">Global variable</a> <code>hexo</code> itself is a <a href="http://nodejs.org/api/events.html#events_class_events_eventemitter">EventEmitter</a> object. You can listen or emit events.
-
-</p>
+  <div class="entry"><p><a href="global-variables.html">Global variable</a> <code>hexo</code> itself is a <a href="http://nodejs.org/api/events.html#events_class_events_eventemitter">EventEmitter</a> object. You can listen or emit events.</p>
 <h2>Usage</h2>
-<p>Listen an event:
-
-</p>
+<p>Listen an event:</p>
 <pre><code><div class="line">hexo.on(<span class="string">'ready'</span>, <span class="keyword">function</span>(){</div><div class="line">  <span class="keyword">...</span></div><div class="line">});</div></code></pre>
 
-<p>Emit an event:
-
-</p>
+<p>Emit an event:</p>
 <pre><code><div class="line"><span class="transposed_variable">hexo.</span>emit(<span class="string">'event'</span>, <span class="matrix">[arg1]</span>, <span class="matrix">[arg2]</span>, <span class="matrix">[….]</span>);</div></code></pre>
 
-<p><a href="http://nodejs.org/api/events.html#events_class_events_eventemitter">Reference</a>
-
-</p>
+<p><a href="http://nodejs.org/api/events.html#events_class_events_eventemitter">Reference</a></p>
 <h2>Default events</h2>
 <h3>ready</h3>
-<p>Called after all configurations and plugins loaded completely.
-
-</p>
+<p>Called after all configurations and plugins loaded completely.</p>
 <h3>generateBefore</h3>
-<p>Called before generating.
-
-</p>
+<p>Called before generating.</p>
 <h3>generateAfter</h3>
-<p>Called after generating.
-
-</p>
+<p>Called after generating.</p>
 <h3>new</h3>
-<p>Called after a new article created. Return an argument <code>target</code> which means the absolute path of the new file.
-
-</p>
+<p>Called after a new article created. Return an argument <code>target</code> which means the absolute path of the new file.</p>
 <h3>server</h3>
-<p>Called after the server is on.
-
-</p>
+<p>Called after the server is on.</p>
 <h3>preview</h3>
-<p>Called after the preview server is on.
-
-</p>
+<p>Called after the preview server is on.</p>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

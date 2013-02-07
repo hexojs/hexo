@@ -38,16 +38,14 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">渲染</h1>
   <small>Last updated: Jan 6, 2013</small>
   <div class="entry"><h2>使用</h2>
-<p>渲染模組擁有兩種方法，<strong>render</strong> 和 <strong>compile</strong>，前者為輸入字串後渲染，後者為讀取檔案後渲染，兩種方法都有同步和非同步兩種模式。
-
-</p>
-<p><strong>render(string, engine, [locals], callback)</strong><br><strong>renderSync(string, engine, [locals])</strong>
-
-</p>
+<p>渲染模組擁有兩種方法，<strong>render</strong> 和 <strong>compile</strong>，前者為輸入字串後渲染，後者為讀取檔案後渲染，兩種方法都有同步和非同步兩種模式。</p>
+<p><strong>render(string, engine, [locals], callback)</strong><br><strong>renderSync(string, engine, [locals])</strong></p>
 <ul>
 <li><strong>string</strong> - 輸入字串</li>
 <li><strong>engine</strong> - 渲染引擎</li>
@@ -59,9 +57,7 @@
 </ul>
 </li>
 </ul>
-<p><strong>compile(src, locals, callback)</strong><br><strong>compileSync(src, locals)</strong>
-
-</p>
+<p><strong>compile(src, locals, callback)</strong><br><strong>compileSync(src, locals)</strong></p>
 <ul>
 <li><strong>src</strong> - 原始檔案路徑</li>
 <li><strong>locals</strong> - 區域變數</li>
@@ -73,13 +69,9 @@
 </li>
 </ul>
 <h3>範例</h3>
-<p>渲染 Markdown 字串。
-
-</p>
+<p>渲染 Markdown 字串。</p>
 <pre><code><div class="line"><span class="transposed_variable">hexo.</span><span class="transposed_variable">render.</span>render(<span class="string">'**bold**'</span>, <span class="string">'md'</span>, <span class="keyword">function</span>(err, content, ext)<span class="cell">{</div><div class="line">    // …</div><div class="line">}</span>);</div></code></pre>
-<p>編譯 EJS 樣板。
-
-</p>
+<p>編譯 EJS 樣板。</p>
 <pre><code><div class="line"><span class="transposed_variable">hexo.</span><span class="transposed_variable">render.</span>compile(<span class="string">'layout.ejs'</span>, <span class="cell">{foo: <span class="number">1</span>, bar: <span class="number">2</span>}</span>, <span class="keyword">function</span>(err, content, ext)<span class="cell">{</div><div class="line">    // …</div><div class="line">}</span>);</div></code></pre>
 <h2>內建渲染器</h2>
 <h3>EJS</h3>
@@ -87,9 +79,7 @@
 <li>輸入檔名：ejs</li>
 <li>輸出檔名：html</li>
 </ul>
-<p>參考：
-
-</p>
+<p>參考：</p>
 <ul>
 <li><a href="https://github.com/visionmedia/ejs">EJS</a></li>
 </ul>
@@ -98,9 +88,7 @@
 <li>輸入檔名：md, markdown, mkd, mkdn, mdwn, mdtxt, mdtext</li>
 <li>輸出檔名：html</li>
 </ul>
-<p>參考：
-
-</p>
+<p>參考：</p>
 <ul>
 <li><a href="https://github.com/chjj/marked">Marked</a></li>
 <li><a href="http://daringfireball.net/projects/markdown/">Markdown</a></li>
@@ -110,9 +98,7 @@
 <li>輸入檔名：styl, stylus</li>
 <li>輸出檔名：css</li>
 </ul>
-<p>參考：
-
-</p>
+<p>參考：</p>
 <ul>
 <li><a href="http://learnboost.github.com/stylus/">Stylus</a></li>
 <li><a href="http://visionmedia.github.com/nib/">Nib</a></li>
@@ -122,9 +108,7 @@
 <li>輸入檔名：swig</li>
 <li>輸出檔名：html</li>
 </ul>
-<p>參考：
-
-</p>
+<p>參考：</p>
 <ul>
 <li><a href="http://paularmstrong.github.com/swig/">Swig</a></li>
 </ul>
@@ -133,9 +117,7 @@
 <li>輸入檔名：yml, yaml</li>
 <li>輸出檔名：json</li>
 </ul>
-<p>參考：
-
-</p>
+<p>參考：</p>
 <ul>
 <li><a href="https://github.com/jeremyfa/yaml.js">yamljs</a></li>
 <li><a href="http://www.yaml.org/">YAML</a></li>

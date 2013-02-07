@@ -38,17 +38,15 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">Deploy</h1>
   <small>Last updated: Jan 12, 2013</small>
-  <div class="entry"><p>It&#39;s easy to deploy with Hexo. It just needs 1 command to complete all the settings.
-
-</p>
+  <div class="entry"><p>It&#39;s easy to deploy with Hexo. It just needs 1 command to complete all the settings.</p>
 <h2>GitHub</h2>
 <h3>Configure</h3>
-<p>Edit <code>_config.yml</code>. Fill <code>repository</code> with GitHub repository. If repository is like <code>username.github.com</code>, fill <code>branch</code> with <code>master</code>, otherwise <code>gh-pages</code>.
-
-</p>
+<p>Edit <code>_config.yml</code>. Fill <code>repository</code> with GitHub repository. If repository is like <code>username.github.com</code>, fill <code>branch</code> with <code>master</code>, otherwise <code>gh-pages</code>.</p>
 <pre><code><div class="line"><span class="method">deploy:</span></div><div class="line">  <span class="method">type:</span> github</div><div class="line">  <span class="method">repository:</span></div><div class="line">  <span class="method">branch:</span></div></code></pre>
 
 <ul>
@@ -56,65 +54,41 @@
 <li><strong>branch</strong> - If repository is like <code>username.github.com</code>, fill it with <code>master</code>, otherwise <code>gh-pages</code></li>
 </ul>
 <h3>Deploy</h3>
-<p>After the static files are generated, execute the following to deploy. You can add <code>--generate</code> option to generate automatically before deploy.
-
-</p>
+<p>After the static files are generated, execute the following to deploy. You can add <code>--generate</code> option to generate automatically before deploy.</p>
 <pre><code><div class="line">hexo deploy</div><div class="line">hexo deploy --generate</div></code></pre>
 
 <h3>Remove</h3>
-<p>Execute the following command to remove deployment.
-
-</p>
+<p>Execute the following command to remove deployment.</p>
 <pre><code><div class="line">rm -rf .deploy</div></code></pre>
 
 <h3>Custom Domain</h3>
-<p>Create a file name <code>CNAME</code> in <code>source</code> folder with the following content.
-
-</p>
+<p>Create a file name <code>CNAME</code> in <code>source</code> folder with the following content.</p>
 <pre><code><div class="line"><span class="filename">example.com</div></code></pre>
 
-<p>Configure DNS according to the type of domain.
-
-</p>
+<p>Configure DNS according to the type of domain.</p>
 <h4>Top-level Domain</h4>
-<p>If the domain is like <code>example.com</code>, add A record <code>204.232.175.78</code>.
-
-</p>
+<p>If the domain is like <code>example.com</code>, add A record <code>204.232.175.78</code>.</p>
 <h4>Subdomain</h4>
-<p>If the domain is like <code>username.example.com</code>, add CNAME record <code>username.github.com</code>.
-
-</p>
-<p>Check <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages">GitHub Pages</a> for more info.
-
-</p>
+<p>If the domain is like <code>username.example.com</code>, add CNAME record <code>username.github.com</code>.</p>
+<p>Check <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages">GitHub Pages</a> for more info.</p>
 <h2>Heroku</h2>
 <h3>Configure</h3>
-<p>Edit <code>_config.yml</code>.
-
-</p>
+<p>Edit <code>_config.yml</code>.</p>
 <pre><code><div class="line"><span class="title">deploy</span>:</div><div class="line">  <span class="typedef"><span class="keyword">type</span>: heroku</span></div><div class="line">  repository:</div></code></pre>
 
 <ul>
 <li><strong>repository</strong> - Heroku repository</li>
 </ul>
 <h3>Deploy</h3>
-<p>After the static files are generated, execute the following to deploy. You can add <code>--generate</code> option to generate automatically before deploy.
-
-</p>
+<p>After the static files are generated, execute the following to deploy. You can add <code>--generate</code> option to generate automatically before deploy.</p>
 <pre><code><div class="line">hexo deploy</div><div class="line">hexo deploy --generate</div></code></pre>
 
-<p>Check <a href="https://devcenter.heroku.com/">Heroku</a> for more info.
-
-</p>
+<p>Check <a href="https://devcenter.heroku.com/">Heroku</a> for more info.</p>
 <h3>Remove</h3>
-<p>Remove <code>.git</code>, <code>app.js</code> and <code>Procfile</code>.
-
-</p>
+<p>Remove <code>.git</code>, <code>app.js</code> and <code>Procfile</code>.</p>
 <h2>Rsync</h2>
 <h3>Configure</h3>
-<p>Edit<code>_config.yml</code>.
-
-</p>
+<p>Edit<code>_config.yml</code>.</p>
 <pre><code><div class="line"><span class="method">deploy:</span></div><div class="line">  <span class="method">type:</span> rsync</div><div class="line">  <span class="method">host:</span></div><div class="line">  <span class="method">user:</span></div><div class="line">  <span class="method">root:</span></div><div class="line">  <span class="method">port:</span></div><div class="line">  <span class="method">delete:</span></div></code></pre>
 
 <ul>
@@ -125,9 +99,7 @@
 <li><strong>delete</strong> - Delete old files on remote host (Default is <code>true</code>)</li>
 </ul>
 <h3>Deploy</h3>
-<p>After the static files are generated, execute the following to deploy. You can add <code>--generate</code> option to generate automatically before deploy.
-
-</p>
+<p>After the static files are generated, execute the following to deploy. You can add <code>--generate</code> option to generate automatically before deploy.</p>
 <pre><code><div class="line">hexo deploy</div><div class="line">hexo deploy --generate</div></code></pre>
 
 </div>

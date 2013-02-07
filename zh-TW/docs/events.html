@@ -38,51 +38,33 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">事件</h1>
   <small>Last updated: Jan 12, 2013</small>
-  <div class="entry"><p><a href="global-variables.html">全域變數</a> <code>hexo</code> 本身是一個 <a href="http://nodejs.org/api/events.html#events_class_events_eventemitter">EventEmitter</a> 物件，你可直接監聽或觸發事件。
-
-</p>
+  <div class="entry"><p><a href="global-variables.html">全域變數</a> <code>hexo</code> 本身是一個 <a href="http://nodejs.org/api/events.html#events_class_events_eventemitter">EventEmitter</a> 物件，你可直接監聽或觸發事件。</p>
 <h2>使用</h2>
-<p>監聽事件：
-
-</p>
+<p>監聽事件：</p>
 <pre><code><div class="line">hexo.on(<span class="string">'ready'</span>, <span class="keyword">function</span>(){</div><div class="line">  <span class="keyword">...</span></div><div class="line">});</div></code></pre>
 
-<p>觸發事件：
-
-</p>
+<p>觸發事件：</p>
 <pre><code><div class="line"><span class="transposed_variable">hexo.</span>emit(<span class="string">'event'</span>, <span class="matrix">[arg1]</span>, <span class="matrix">[arg2]</span>, <span class="matrix">[….]</span>);</div></code></pre>
 
-<p><a href="http://nodejs.org/api/events.html#events_class_events_eventemitter">參考</a>
-
-</p>
+<p><a href="http://nodejs.org/api/events.html#events_class_events_eventemitter">參考</a></p>
 <h2>預設事件</h2>
 <h3>ready</h3>
-<p>設定和所有外掛都載入完畢後。
-
-</p>
+<p>設定和所有外掛都載入完畢後。</p>
 <h3>generateBefore</h3>
-<p>開始生成檔案前。
-
-</p>
+<p>開始生成檔案前。</p>
 <h3>generateAfter</h3>
-<p>生成檔案完成後。
-
-</p>
+<p>生成檔案完成後。</p>
 <h3>new</h3>
-<p>建立新文章後。回傳一個參數 <code>target</code>，代表新檔案的絕對路徑。
-
-</p>
+<p>建立新文章後。回傳一個參數 <code>target</code>，代表新檔案的絕對路徑。</p>
 <h3>server</h3>
-<p>伺服器開啟後。
-
-</p>
+<p>伺服器開啟後。</p>
 <h3>preview</h3>
-<p>預覽伺服器開啟後。
-
-</p>
+<p>預覽伺服器開啟後。</p>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

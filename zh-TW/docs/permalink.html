@@ -38,18 +38,16 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">永久連結</h1>
   <small>Last updated: Jan 12, 2013</small>
   <div class="entry"><h2>設定</h2>
-<p>在<code>_config.yml</code>中的<code>permalink</code>欄位設定文章連結，預設值為：
-
-</p>
+<p>在<code>_config.yml</code>中的<code>permalink</code>欄位設定文章連結，預設值為：</p>
 <pre><code><div class="line">permalink: :year/:month/:day/:title/</div></code></pre>
 
-<p>在永久連結中可加入以下變數，變數名稱前必須擁有<code>:</code>才有效。
-
-</p>
+<p>在永久連結中可加入以下變數，變數名稱前必須擁有<code>:</code>才有效。</p>
 <ul>
 <li><strong>year</strong> - 4 位數的年份</li>
 <li><strong>month</strong> - 2 位數的月份</li>
@@ -57,18 +55,12 @@
 <li><strong>title</strong> - 文章的檔案名稱</li>
 <li><strong>category</strong> - 文章的分類（對於<code>source/_posts</code>的相對路徑），若文章無分類，則為<code>_config.yml</code>中的<code>category_dir</code>欄位</li>
 </ul>
-<p><em>（日期以文章設定中的日期為基準）</em>
-
-</p>
+<p><em>（日期以文章設定中的日期為基準）</em></p>
 <h2>舉例</h2>
-<p>假設有一文章名為<code>title.md</code>，放置於<code>source/_posts/foo/bar</code>資料夾，內容為：
-
-</p>
+<p>假設有一文章名為<code>title.md</code>，放置於<code>source/_posts/foo/bar</code>資料夾，內容為：</p>
 <pre><code><div class="line">---</div><div class="line">title: Post Title</div><div class="line">date: 2012-10-09 14:09:37</div><div class="line">tags:</div><div class="line">- Node.js</div><div class="line">- JavaScript</div><div class="line">---</div></code></pre>
 
-<p>則結果會是：
-
-</p>
+<p>則結果會是：</p>
 <pre><code><div class="line">:year/:month/:day/:title/ =&gt; /2012/10/09/title/</div><div class="line">:year-:month-:day/:title/ =&gt; /2012-10-09/title/</div><div class="line">:category/:title/ =&gt; /foo/bar/title/</div></code></pre></div>
 </article>
       <footer id="footer"><div class="alignleft">

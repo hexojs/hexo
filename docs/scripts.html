@@ -38,20 +38,16 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">Scripts</h1>
   <small>Last updated: Jan 7, 2013</small>
-  <div class="entry"><p>A script is a extension which is smaller than a plugin and only has one file.
-
-</p>
+  <div class="entry"><p>A script is a extension which is smaller than a plugin and only has one file.</p>
 <h2>Usage</h2>
-<p>Put a JavaScript file in <code>scripts</code> folder and it will be loaded automatically. File or folder whose name started with <code>.</code> (dot) or <code>_</code> (underscore) will be ignored.
-
-</p>
+<p>Put a JavaScript file in <code>scripts</code> folder and it will be loaded automatically. File or folder whose name started with <code>.</code> (dot) or <code>_</code> (underscore) will be ignored.</p>
 <h2>Example</h2>
-<p>Open file after the post created.
-
-</p>
+<p>Open file after the post created.</p>
 <pre><code><div class="line">var spawn = require(<span class="comment">'child_process').spawn;</span></div><br><div class="line">hexo.<span class="keyword">on</span>(<span class="comment">'newPost', function(){</span></div><div class="line">  spawn(<span class="comment">'open', [target]);</span></div><div class="line">});</div></code></pre>
 
 <h2>Reference</h2>

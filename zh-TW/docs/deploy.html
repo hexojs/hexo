@@ -38,17 +38,15 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">佈署</h1>
   <small>Last updated: Jan 12, 2013</small>
-  <div class="entry"><p>Hexo 的佈署非常簡單，僅需一個指令即可完成所有設定。
-
-</p>
+  <div class="entry"><p>Hexo 的佈署非常簡單，僅需一個指令即可完成所有設定。</p>
 <h2>GitHub</h2>
 <h3>設定</h3>
-<p>編輯<code>_config.yml</code>。
-
-</p>
+<p>編輯<code>_config.yml</code>。</p>
 <pre><code><div class="line"><span class="method">deploy:</span></div><div class="line">  <span class="method">type:</span> github</div><div class="line">  <span class="method">repository:</span></div><div class="line">  <span class="method">branch:</span></div></code></pre>
 
 <ul>
@@ -56,65 +54,41 @@
 <li><strong>branch</strong> - 若 Repository 類似<code>username.github.com</code>，則填入<code>master</code>，否則填入<code>gh-pages</code></li>
 </ul>
 <h3>佈署</h3>
-<p>靜態檔案生成後，執行下列指令即可完成佈署，或可加入 <code>--generate</code> 選項，在佈署前自動生成檔案。
-
-</p>
+<p>靜態檔案生成後，執行下列指令即可完成佈署，或可加入 <code>--generate</code> 選項，在佈署前自動生成檔案。</p>
 <pre><code><div class="line">hexo deploy</div><div class="line">hexo deploy --generate</div></code></pre>
 
 <h3>移除</h3>
-<p>執行下列指令移除佈署檔案。
-
-</p>
+<p>執行下列指令移除佈署檔案。</p>
 <pre><code><div class="line">rm -rf .deploy</div></code></pre>
 
 <h3>自定網域</h3>
-<p>在<code>source</code>資料夾內建立名為<code>CNAME</code>的檔案，其內容為：
-
-</p>
+<p>在<code>source</code>資料夾內建立名為<code>CNAME</code>的檔案，其內容為：</p>
 <pre><code><div class="line"><span class="filename">example.com</div></code></pre>
 
-<p>請根據你的網域類型設定 DNS。
-
-</p>
+<p>請根據你的網域類型設定 DNS。</p>
 <h4>頂級網域 (Top-level domain)</h4>
-<p>若網域類似<code>example.com</code>，則加入 <strong>A 記錄 (A record)</strong> <code>204.232.175.78</code>。
-
-</p>
+<p>若網域類似<code>example.com</code>，則加入 <strong>A 記錄 (A record)</strong> <code>204.232.175.78</code>。</p>
 <h4>子網域 (Subdomain)</h4>
-<p>若網域類似<code>username.example.com</code>，則加入 <strong>CNAME 記錄 (CNAME record)</strong> <code>username.github.com</code>。
-
-</p>
-<p>請參考 <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages">GitHub Pages</a> 以取得更多資訊。
-
-</p>
+<p>若網域類似<code>username.example.com</code>，則加入 <strong>CNAME 記錄 (CNAME record)</strong> <code>username.github.com</code>。</p>
+<p>請參考 <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages">GitHub Pages</a> 以取得更多資訊。</p>
 <h2>Heroku</h2>
 <h3>設定</h3>
-<p>編輯 <code>_config.yml</code>。
-
-</p>
+<p>編輯 <code>_config.yml</code>。</p>
 <pre><code><div class="line"><span class="title">deploy</span>:</div><div class="line">  <span class="typedef"><span class="keyword">type</span>: heroku</span></div><div class="line">  repository:</div></code></pre>
 
 <ul>
 <li><strong>repository</strong> - Heroku 的 Repository</li>
 </ul>
 <h3>佈署</h3>
-<p>靜態檔案生成後，執行下列指令即可完成佈署，或可加入 <code>--generate</code> 選項，在佈署前自動生成檔案。
-
-</p>
+<p>靜態檔案生成後，執行下列指令即可完成佈署，或可加入 <code>--generate</code> 選項，在佈署前自動生成檔案。</p>
 <pre><code><div class="line">hexo deploy</div><div class="line">hexo deploy --generate</div></code></pre>
 
-<p>請參考 <a href="https://devcenter.heroku.com/">Heroku</a> 以取得更多資訊。
-
-</p>
+<p>請參考 <a href="https://devcenter.heroku.com/">Heroku</a> 以取得更多資訊。</p>
 <h3>移除</h3>
-<p>刪除<code>.git</code>、<code>app.js</code>和<code>Procfile</code>即可移除佈署。
-
-</p>
+<p>刪除<code>.git</code>、<code>app.js</code>和<code>Procfile</code>即可移除佈署。</p>
 <h2>Rsync</h2>
 <h3>設定</h3>
-<p>編輯<code>_config.yml</code>檔案。
-
-</p>
+<p>編輯<code>_config.yml</code>檔案。</p>
 <pre><code><div class="line"><span class="method">deploy:</span></div><div class="line">  <span class="method">type:</span> rsync</div><div class="line">  <span class="method">host:</span></div><div class="line">  <span class="method">user:</span></div><div class="line">  <span class="method">root:</span></div><div class="line">  <span class="method">port:</span></div><div class="line">  <span class="method">delete:</span></div></code></pre>
 
 <ul>
@@ -125,9 +99,7 @@
 <li><strong>delete</strong> - 刪除遠端主機的舊有檔案（預設為<code>true</code>）</li>
 </ul>
 <h3>佈署</h3>
-<p>靜態檔案生成後，執行下列指令即可完成佈署，或可加入 <code>--generate</code> 選項，在佈署前自動生成檔案。
-
-</p>
+<p>靜態檔案生成後，執行下列指令即可完成佈署，或可加入 <code>--generate</code> 選項，在佈署前自動生成檔案。</p>
 <pre><code><div class="line">hexo deploy</div><div class="line">hexo deploy --generate</div></code></pre>
 
 </div>

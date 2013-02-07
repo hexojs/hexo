@@ -38,20 +38,16 @@
   </ul>
 </nav></header>
     <div id="content">
-      <article class="page">
+      
+
+<article class="page">
   <h1 class="title">腳本</h1>
   <small>Last updated: Jan 7, 2013</small>
-  <div class="entry"><p>腳本（Script）相較於外掛（Plugin），是規模較小且僅有單一檔案的擴充元件。
-
-</p>
+  <div class="entry"><p>腳本（Script）相較於外掛（Plugin），是規模較小且僅有單一檔案的擴充元件。</p>
 <h2>使用</h2>
-<p>將 JavaScript 檔案放置於<code>scripts</code>資料夾，即會自動載入，檔案或資料夾名稱開頭為<code>_</code>（點）或<code>.</code>（底線）的會被忽略。
-
-</p>
+<p>將 JavaScript 檔案放置於<code>scripts</code>資料夾，即會自動載入，檔案或資料夾名稱開頭為<code>_</code>（點）或<code>.</code>（底線）的會被忽略。</p>
 <h2>範例</h2>
-<p>文章建立後，自動開啟檔案。
-
-</p>
+<p>文章建立後，自動開啟檔案。</p>
 <pre><code><div class="line">var spawn = require(<span class="comment">'child_process').spawn;</span></div><br><div class="line">hexo.<span class="keyword">on</span>(<span class="comment">'newPost', function(){</span></div><div class="line">  spawn(<span class="comment">'open', [target]);</span></div><div class="line">});</div></code></pre>
 
 <h2>參考</h2>
