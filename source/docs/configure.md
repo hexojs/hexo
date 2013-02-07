@@ -33,6 +33,7 @@ The global configuration file is saved at `_config.yml` in the root directory of
 - **auto_spacing** - Add spaces between eastern and wastern characters
 - **titlecase** - Transform title into title case
 - **max_open_file** - Synchronous I/O maximum
+- **filename_case** - Transform file name into (1) lower case (2) uppercase
 - **highlight** - Code block settings
   - **enable** - Enable code highlight
   - **backtick_code_block** - Enable [Backtick Code Block][6]
@@ -47,8 +48,8 @@ The global configuration file is saved at `_config.yml` in the root directory of
 
 ### Archive
 
-`2` - Enable pagination
-`1` - Disable pagination
+`2` - Enable pagination  
+`1` - Disable pagination  
 `0` - Fully disable
 
 - **archive**
@@ -118,6 +119,7 @@ default_layout: post
 auto_spacing: false # Add spaces between asian characters and western characters
 titlecase: false # Transform title into titlecase
 max_open_file: 100
+filename_case: 0
 highlight:
   enable: true
   backtick_code_block: true

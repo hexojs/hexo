@@ -34,6 +34,7 @@ date: 2012-11-01 18:13:30
 - **auto_spacing** - 在東方文字與西方文字之間插入空白
 - **titlecase** - 將標題轉為合適的大小寫
 - **max_open_file** - 最大同時處理檔案數量
+- **filename_case** - 轉換檔案名稱為 (1) 小寫 (2) 大寫
 - **highlight** - 程式碼區塊設定
   - **enable** - 啟用程式碼 Highlight
   - **backtick_code_block** - 啟用 [Backtick Code Block][6]
@@ -48,8 +49,8 @@ date: 2012-11-01 18:13:30
 
 ### 網誌彙整
 
-`2` - 開啟彙整的分頁功能
-`1` - 關閉彙整的分頁功能
+`2` - 開啟彙整的分頁功能  
+`1` - 關閉彙整的分頁功能  
 `0` - 完全關閉
 
 - **archive**
@@ -119,6 +120,7 @@ default_layout: post
 auto_spacing: false # Add spaces between asian characters and western characters
 titlecase: false # Transform title into titlecase
 max_open_file: 100
+filename_case: 0
 highlight:
   enable: true
   backtick_code_block: true
