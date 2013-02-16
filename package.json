@@ -37,7 +37,7 @@
     "term": "*",
     "highlight.js": "*",
     "yamljs": "*",
-    "underscore": "*",
+    "lodash": "*",
     "swig": "*",
     "graceful-fs": "*",
     "mime": "*",
