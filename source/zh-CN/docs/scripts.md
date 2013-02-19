@@ -1,7 +1,7 @@
 ---
 layout: page
 title: 脚本
-lang: zh-TW
+lang: zh-CN
 date: 2013-02-18 19:32:35
 ---
 
