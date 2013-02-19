@@ -1,3 +1,4 @@
 .git*
 .DS_Store
 test/
+.travis.yml
