@@ -1,0 +1,143 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hexo - 辅助方法 (Helper)</title>
+  <meta name="descripton" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
+
+  <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4910098-7']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+<h1><a href="/hexo/zh-CN/">Hexo</a></h1>
+<div class="clearfix"></div>
+<nav id="main-nav">
+  <ul>
+    <li><a href="/hexo/zh-CN/docs/">Docs</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Plugins">Plugins</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Themes">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo">Source</a></li>
+  </ul>
+</nav></header>
+    <div id="content">
+      
+
+<article class="page">
+  <h1 class="title">辅助方法 (Helper)</h1>
+  <small>Last updated: Feb 20, 2013</small>
+  <div class="entry"><p>辅助方法（Helper）为模板中所使用的辅助方法，可将资料转换为 HTML 字串，使主题开发更加容易。以下是内建的辅助方法：（语法以 EJS 为范例）</p>
+<h3>css</h3>
+<p>载入 CSS 文件。</p>
+<pre><code><div class="line">&lt;<span class="string">%- css(path) %&gt;</div></code></pre>
+
+<h3>js</h3>
+<p>载入 JavaScript 文件。</p>
+<pre><code><div class="line">&lt;<span class="string">%- js(path) %&gt;</div></code></pre>
+
+<h3>gravatar</h3>
+<p>载入 Gravatar。</p>
+<pre><code><div class="line">&lt;<span class="string">%- gravatar(email, [size]) %&gt;</div></code></pre>
+
+<h3>trim</h3>
+<p>清除字串内的空白。</p>
+<pre><code><div class="line">&lt;<span class="string">%- trim(string) %&gt;</div></code></pre>
+
+<h3>strip_html</h3>
+<p>清除字串内的所有 HTML 标签。</p>
+<pre><code><div class="line">&lt;<span class="string">%- strip_html(string) %&gt;</div></code></pre>
+
+<h3>titlecase</h3>
+<p>将字串转为合适的标题大小写。</p>
+<pre><code><div class="line">&lt;<span class="string">%- titlecase(string) %&gt;</div></code></pre>
+
+<h3>render</h3>
+<p>使用指定的<a href="render.html">渲染引擎</a>（<code>engine</code>）渲染内容，可使用<code>locals</code>指定区域变量。</p>
+<pre><code><div class="line">&lt;<span class="string">%- render(string, engine, [locals]) %&gt;</div></code></pre>
+
+<p>例如：使用 Markdown 渲染。</p>
+<pre><code><div class="line">&lt;<span class="string">%- render('**bold**', 'md') %&gt;</div></code></pre>
+
+<h3>partial</h3>
+<p>载入其他模板。<code>layout</code>为模板的相对路径；可使用<code>locals</code>指定区域变量。（使用方法与 <a href="https://github.com/publicclass/express-partials">express-partials</a> 相同）</p>
+<pre><code><div class="line">&lt;<span class="string">%- partial(layout, [locals]) %&gt;</div></code></pre>
+
+<h3>tagcloud</h3>
+<p>插入标签云（Tag Cloud）。<code>tags</code>请输入 <a href="template-data.html">模板变量</a> <code>tags</code>；<code>options</code>详见下方。</p>
+<pre><code><div class="line">&lt;<span class="string">%- tagcloud(tags, [options]) %&gt;</div></code></pre>
+
+<p><strong>选项：</strong></p>
+<ul>
+<li><strong>min_font</strong> - 最小的字体大小</li>
+<li><strong>max_font</strong> - 最大的字体大小</li>
+<li><strong>unit</strong> - 字体单位</li>
+<li><strong>amount</strong> - 标签数量</li>
+<li><strong>orderby</strong> - 排列顺序</li>
+<li><strong>order</strong> - 排列方式。<code>1</code>, <code>asc</code>代表升序排列，<code>-1</code>, <code>desc</code>代表降序排列，<code>rand</code>, <code>random</code>代表随机排列。</li>
+</ul>
+<p><strong>预设值：</strong></p>
+<pre><code><div class="line">{</div><div class="line">  <span class="method">min_font:</span> <span class="number">10</span>,</div><div class="line">  <span class="method">max_font:</span> <span class="number">20</span>,</div><div class="line">  <span class="method">unit:</span> <span class="string">'px'</span>,</div><div class="line">  <span class="method">amount:</span> <span class="number">40</span>,</div><div class="line">  <span class="method">orderby:</span> <span class="string">'name'</span>,</div><div class="line">  <span class="method">order:</span> <span class="number">1</span></div><div class="line">}</div></code></pre>
+
+<h3>paginator</h3>
+<p>插入翻页导航（Paginator）。<code>options</code>详见下方。</p>
+<pre><code><div class="line">&lt;<span class="string">%- paginator(options) %&gt;</div></code></pre>
+
+<p><strong>选项：</strong></p>
+<ul>
+<li><strong>base</strong> - 基础网址</li>
+<li><strong>format</strong> - 网址格式</li>
+<li><strong>total</strong> - 总页数</li>
+<li><strong>current</strong> - 目前页数</li>
+<li><strong>prev_text</strong> - 上一页文字</li>
+<li><strong>next_text</strong> - 下一页文字</li>
+<li><strong>space</strong> - 间隔</li>
+<li><strong>prev_next</strong> - 显示上一页和下一页链接</li>
+<li><strong>end_size</strong> - 开头和尾端显示的分页数量</li>
+<li><strong>mid_size</strong> - 目前页面周围显示的分页数量</li>
+<li><strong>show_all</strong> - 显示所有分页</li>
+</ul>
+<p><strong>预设值：</strong></p>
+<pre><code><div class="line">{</div><div class="line">  <span class="method">base:</span> <span class="string">'/'</span>,</div><div class="line">  <span class="method">format:</span> <span class="string">'page/%d/'</span>,</div><div class="line">  <span class="method">total:</span> <span class="number">1</span>,</div><div class="line">  <span class="method">current:</span> <span class="number">0</span>,</div><div class="line">  <span class="method">prev_text:</span> <span class="string">'Prev'</span>,</div><div class="line">  <span class="method">next_text:</span> <span class="string">'Next'</span>,</div><div class="line">  <span class="method">space:</span> <span class="string">'&hellp;'</span>,</div><div class="line">  <span class="method">prev_next:</span> <span class="keyword">true</span>,</div><div class="line">  <span class="method">end_size:</span> <span class="number">1</span>,</div><div class="line">  <span class="method">mid_size:</span> <span class="number">2</span>,</div><div class="line">  <span class="method">show_all:</span> <span class="keyword">false</span></div><div class="line">}</div></code></pre>
+
+</div>
+</article>
+      <footer id="footer"><div class="alignleft">
+  &copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
+  Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>.
+</div>
+<div class="alignright">
+  <select id="lang-select">
+    <option value="">English</option>
+    
+      <option value="zh-TW">繁体中文</option>
+    
+      <option value="zh-CN" selected>简体中文</option>
+    
+  </select>
+</div>
+<div class="clearfix"></div></footer>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <script src="/hexo/js/main.js"></script>
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+<a href="https://github.com/tommy351/hexo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+</body>
+</html>

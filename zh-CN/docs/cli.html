@@ -1,0 +1,112 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hexo - 命令 (CLI)</title>
+  <meta name="descripton" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
+
+  <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4910098-7']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+<h1><a href="/hexo/zh-CN/">Hexo</a></h1>
+<div class="clearfix"></div>
+<nav id="main-nav">
+  <ul>
+    <li><a href="/hexo/zh-CN/docs/">Docs</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Plugins">Plugins</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Themes">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo">Source</a></li>
+  </ul>
+</nav></header>
+    <div id="content">
+      
+
+<article class="page">
+  <h1 class="title">命令 (CLI)</h1>
+  <small>Last updated: Feb 20, 2013</small>
+  <div class="entry"><p>显示 Hexo 目前的版本号</p>
+<pre><code><div class="line"><span class="title">hexo</span> version</div></code></pre>
+<p>建立网站，若<code>folder</code>未定义，则 Hexo 会在目前的资料夹建立网站</p>
+<pre><code><div class="line">hexo init <span class="tag">&lt;<span class="title">folder</span>&gt;</span></div></code></pre>
+<p>建立新文章</p>
+<pre><code><div class="line">hexo new [layout] <span class="tag">&lt;<span class="title">title</span>&gt;</span></div></code></pre>
+<p>生成静态文件，使用<code>-t</code>或<code>--theme</code>以忽略主题安装</p>
+<ul>
+<li>-t/--theme：忽略主题安装</li>
+<li>-d/--deploy：生成后自动布局</li>
+<li>-w/--watch：监视文件变更</li>
+</ul>
+<pre><code><div class="line"><span class="title">hexo</span> generate</div><div class="line"><span class="title">hexo</span> generate -t/<span class="comment">--theme</span></div><div class="line"><span class="title">hexo</span> generate -d/<span class="comment">--deploy</span></div><div class="line"><span class="title">hexo</span> generate -w/<span class="comment">--watch</span></div></code></pre>
+
+<p>启动服务器，按下<code>Ctrl+C</code>停止服务器</p>
+<ul>
+<li>-p/--port：连接端口设定</li>
+</ul>
+<pre><code><div class="line"><span class="title">hexo</span> server</div><div class="line"><span class="title">hexo</span> server -p <span class="number">12345</span></div></code></pre>
+
+<p>预览，按下<code>Ctrl+C</code>停止服务器</p>
+<ul>
+<li>-p/--port：连接端口设定</li>
+<li>-w/--watch：监视文件变更</li>
+</ul>
+<pre><code><div class="line"><span class="title">hexo</span> preview</div><div class="line"><span class="title">hexo</span> preview -p <span class="number">12345</span></div></code></pre>
+
+<p>显示网站设定</p>
+<pre><code><div class="line"><span class="title">hexo</span> config</div></code></pre>
+<p>部署</p>
+<ul>
+<li>--setup：只设定不部署</li>
+<li>--generate：部署前先生成文件</li>
+</ul>
+<pre><code><div class="line"><span class="title">hexo</span> deploy</div><div class="line"><span class="title">hexo</span> deploy <span class="comment">--setup</span></div><div class="line"><span class="title">hexo</span> deploy <span class="comment">--generate</span></div></code></pre>
+
+<p>渲染文件</p>
+<pre><code><div class="line">hexo render <span class="tag">&lt;<span class="title">source</span>&gt;</span> <span class="tag">&lt;<span class="title">destination</span>&gt;</span></div></code></pre>
+<p>安全模式，此模式下插件不会被载入</p>
+<pre><code><div class="line"><span class="comment">hexo</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">safe</div></code></pre>
+<p>调试模式</p>
+<pre><code><div class="line"><span class="title">hexo</span> --<span class="built_in">debug</span></div></code></pre>
+</div>
+</article>
+      <footer id="footer"><div class="alignleft">
+  &copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
+  Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>.
+</div>
+<div class="alignright">
+  <select id="lang-select">
+    <option value="">English</option>
+    
+      <option value="zh-TW">繁体中文</option>
+    
+      <option value="zh-CN" selected>简体中文</option>
+    
+  </select>
+</div>
+<div class="clearfix"></div></footer>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <script src="/hexo/js/main.js"></script>
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+<a href="https://github.com/tommy351/hexo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+</body>
+</html>

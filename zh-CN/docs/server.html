@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Hexo - 服务器</title>
+  <meta name="descripton" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
+
+  <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:400,400italic,300,700">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4910098-7']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body>
+  <div class="wrapper">
+    <header id="header">
+<h1><a href="/hexo/zh-CN/">Hexo</a></h1>
+<div class="clearfix"></div>
+<nav id="main-nav">
+  <ul>
+    <li><a href="/hexo/zh-CN/docs/">Docs</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Plugins">Plugins</a></li>
+    <li><a href="https://github.com/tommy351/hexo/wiki/Themes">Themes</a></li>
+    <li><a href="https://github.com/tommy351/hexo">Source</a></li>
+  </ul>
+</nav></header>
+    <div id="content">
+      
+
+<article class="page">
+  <h1 class="title">服务器</h1>
+  <small>Last updated: Feb 20, 2013</small>
+  <div class="entry"><h2>内建服务器</h2>
+<p>Hexo 使用 <a href="https://github.com/senchalabs/connect">Connect</a> 作为静态文件的服务器。</p>
+<p>编辑<code>_config.yml</code>中的<code>port</code>栏位调整服务器的连接端口。</p>
+<pre><code><div class="line"><span class="attribute">port</span>: <span class="string">4000</span></div></code></pre>
+
+<p>执行以下命令启动服务器，按下<code>Ctrl+C</code>关闭服务器。加入 <code>-p/--port</code> 选项设定连接端口。</p>
+<pre><code><div class="line">hexo server</div><div class="line">hexo server -p 12345</div></code></pre>
+
+<h3>记录器</h3>
+<p>编辑<code>_config.yml</code>中的<code>logger</code>栏位启动记录器。编辑<code>logger_format</code>栏位可调整记录的显示内容，参考 <a href="http://www.senchalabs.org/connect/logger.html">Connect</a> 以获得更多资讯。</p>
+<pre><code><div class="line"><span class="attribute">logger</span>: <span class="string">true</span></div><div class="line"><span class="attribute">logger_format:</div></code></pre>
+
+<h2>Pow</h2>
+<p><a href="http://pow.cx/">Pow</a> 是由 Node.js 所建立的 Mac 环境专用的零配置 Rack 服务器，不过它也能用于处理一般的静态文件。</p>
+<h3>安装</h3>
+<p>执行以下命令即可完成安装。</p>
+<pre><code><div class="line">curl get.pow.cx | sh</div></code></pre>
+
+<h3>使用</h3>
+<p>在<code>~/.pow</code>建立链接即可使用。</p>
+<pre><code><div class="line">cd ~/.pow</div><div class="line">ln -s /path/to/myapp</div></code></pre>
+
+<p>完成后，网站即会出现在<code>http://myapp.dev</code>，网址根据链接名称而有所不同。</p>
+<p>参考 <a href="http://pow.cx/manual.html">Pow</a> 以获得更多资讯。</p>
+</div>
+</article>
+      <footer id="footer"><div class="alignleft">
+  &copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
+  Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>.
+</div>
+<div class="alignright">
+  <select id="lang-select">
+    <option value="">English</option>
+    
+      <option value="zh-TW">繁体中文</option>
+    
+      <option value="zh-CN" selected>简体中文</option>
+    
+  </select>
+</div>
+<div class="clearfix"></div></footer>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+  <script src="/hexo/js/main.js"></script>
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+<a href="https://github.com/tommy351/hexo"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png" alt="Fork me on GitHub"></a>
+</body>
+</html>
