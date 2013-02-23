@@ -34,15 +34,16 @@
     "nib": "*",
     "marked": "*",
     "moment": "*",
-    "colors": "*",
+    "term": "*",
     "highlight.js": "*",
     "yamljs": "*",
-    "underscore": "*",
+    "lodash": "*",
     "swig": "*",
     "graceful-fs": "*",
     "mime": "*",
     "optimist": "*",
-    "watchr": "*"
+    "watchr": "*",
+    "warehouse": "*"
   },
   "devDependencies": {
     "mocha": "*",
