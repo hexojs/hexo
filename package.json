@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "async": "*",
-    "connect": "*",
+    "express": "*",
     "ejs": "*",
     "stylus": "*",
     "nib": "*",
@@ -40,7 +40,6 @@
     "lodash": "*",
     "swig": "*",
     "graceful-fs": "*",
-    "mime": "*",
     "optimist": "*",
     "watchr": "*",
     "warehouse": "*"
