@@ -18,4 +18,10 @@ css:
 		--compress \
 		$(CSS_DIR)
 
+css-watch:
+	@./node_modules/.bin/stylus \
+		--use ./node_modules/nib/lib/nib \
+		--out public/css \
+		--watch $(CSS_DIR)
+
 .PHONY: test css js
