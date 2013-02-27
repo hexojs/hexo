@@ -1,4 +1,30 @@
-<form method="post">
-  <input type="password" name="pass">
-  <input type="submit">
-</form>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Hexo Web UI</title>
+    <link rel="stylesheet" href="/admin/css/auth.css" media="screen" type="text/css">
+    <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  </head>
+  <body>
+    <div id="content">
+      <div class="logo"></div>
+      <form method="post" <% if (error){ %>class="error"<% } %>>
+        <input type="password" name="pass" placeholder="Password" class="alignleft">
+        <button type="submit" class="alignleft"></button>
+        <div class="clearfix"></div>
+      </form>
+    </div>
+    <footer id="footer">
+      <div class="inner">
+        <div class="alignleft">
+          <a href="http://zespia.tw/hexo/" target="_blank">Hexo <%= version %></a>
+          <a href="http://zespia.tw/hexo/docs/" target="_blank">Documentations</a>
+          <a href="https://github.com/tommy351/hexo" target="_blank">GitHub</a>
+          <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </footer>
+  </body>
+</html>
