@@ -28,21 +28,21 @@
   },
   "dependencies": {
     "async": "*",
-    "connect": "*",
+    "express": "*",
     "ejs": "*",
     "stylus": "*",
     "nib": "*",
     "marked": "*",
     "moment": "*",
-    "colors": "*",
+    "term": "*",
     "highlight.js": "*",
     "yamljs": "*",
-    "underscore": "*",
+    "lodash": "*",
     "swig": "*",
     "graceful-fs": "*",
-    "mime": "*",
     "optimist": "*",
-    "fs-watch-tree": "*"
+    "watchr": "*",
+    "warehouse": "*"
   },
   "devDependencies": {
     "mocha": "*",

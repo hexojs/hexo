@@ -1,3 +1,6 @@
 .git*
 .DS_Store
 test/
+.travis.yml
+assets/css
+assets/js
