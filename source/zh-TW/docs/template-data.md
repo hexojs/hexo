@@ -7,89 +7,92 @@ date: 2012-11-01 18:13:30
 
 ## 全域
 
-- **[site](#site)** - 網站全域資料，由 [Processor][1] 所控制
-- **[page](#page)** - 目前頁面的資料，內容根據不同頁面而有所差異，由 [Generator][2] 所控制
+- **[site](#site)** - 網站全域資料
+- **[page](#page)** - 目前頁面的資料，內容根據不同頁面而有所差異
 - **config** - [全域設定][3]，即`_config.yml`的內容
 - **theme** - 主題設定，即主題資料夾內`_config.yml`的內容，根據不同主題而有所差異
 - **__**（雙底線） - 取得 [國際化（i18n）][9] 字串
+- **layout** - 布局
+- **cache** - 快取
 
-<a id="site"></a>
+<a name="site"></a>
 ## site
 
-網站全域資料，在沒有掛載其他擴充套件的情況下，**site**擁有以下內容：
+網站全域資料，在沒有掛載其他擴充套件的情況下，**site** 擁有以下內容：
 
 - **posts** - 所有文章，根據發表日期降冪排列
 - **pages** - 所有分頁，根據發表日期降冪排列
 - **categories** - 所有分類，根據字母順序排列
 - **tags** - 所有標籤，根據字母順序排列
 
-**posts**, **pages** 為 [Collection][4] 物件
-
-**categories**, **tags** 為 [Taxonomy][5] 物件
-
-<a id="page"></a>
+<a name="page"></a>
 ## page
 
-目前頁面的資料，內容根據不同頁面而有所差異，以下僅列舉內建Generator所擁有的page內容。
+目前頁面的資料，內容根據不同頁面而有所差異。
 
-#### page, post
+### 文章（post, page, …）
 
-- **layout** - 文章佈局
-- **title** - 文章標題
-- **date** - 文章的發佈日期（[Moment.js][7] 物件）
-- **updated** - 文章的更新日期（[Moment.js][7] 物件）
+- **title** - 標題
+- **date** - 發表日期（[Moment.js][7] 物件）
+- **updated** - 更新日期（[Moment.js][7] 物件）
+- **categories** - 分類（[Model][5] 物件）
+- **tags** - 標籤（[Model][5] 物件）
 - **comments** - 開啟此文章的留言功能
-- **permalink** - 文章的永久連結
-- **stats** - 文章的檔案狀態（[fs.Stats][8] 類別）
-- **content** - 文章內文
-- **excerpt** - 文章摘要（內文中 `<!-- more -->` 之前的內容）
-- **source** - 原始檔案路徑
-- **path** - 文章的相對路徑
+- **layout** - 布局
+- **content** - 內文
+- **excerpt** - 摘要（內文中`<!--more-->`之前的內容）
+- **source** - 檔案原始位置
+- **path** - 路徑
+- **ctime** - 檔案建立時間（[Moment.js][7] 物件）
+- **mtime** - 檔案修改時間（[Moment.js][7] 物件）
+- **prev** - 前一篇文章
+- **next** - 後一篇文章
 
-以及使用者在文章設定中所設定的其他變數。
+以及使用者在文章設定中所設定的其他變數。page 和 post 的差別不大，僅在於 page 沒有 `categories`, `tags`, `prev` 和 `next` 變數。
 
-page和post的差別不大，僅在於page沒有`categories`和`tags`變數。
+<a name="index"></a>
+### 首頁（index）
 
-#### index
+**啟用分頁功能**：
 
-- 啟用分頁功能：[Paginator][6] 物件
-- 關閉分頁功能：[Taxonomy][5] 物件
+- **per_page** - 每頁顯示的文章數量
+- **total** - 文章總數量
+- **current** - 目前頁碼
+- **current_url** - 目前頁的連結
+- **posts** - 文章（[Model][5] 物件）
+- **prev** - 上頁頁碼
+- **prev_link** - 上頁連結
+- **next** - 下頁頁碼
+- **next_link** - 下頁連結
 
-#### archive
+**關閉分頁功能**：
 
-- 啟用分頁功能：[Paginator][6] 物件
-- 關閉分頁功能：[Taxonomy][5] 物件
+與 [集合（Collection）][4] 相同，為 [Model][5] 物件。
 
-以及以下變數：
+### 彙整（archive）
 
-- **archive** - 恆為`true`
+與 [首頁布局](#index) 相同，僅增加下列變數：
+
+- **archive** - 恆為 `true`
 - **year** - 彙整年份
 - **month** - 彙整月份
 
-#### category
+### 分類（category）
 
-- 啟用分頁功能：[Paginator][6] 物件
-- 關閉分頁功能：[Taxonomy][5] 物件
-
-以及以下變數：
+與 [首頁布局](#index) 相同，僅增加下列變數：
 
 - **category** - 分類名稱
 
-#### tag
+### 標籤（tag）
 
-- 啟用分頁功能：[Paginator][6] 物件
-- 關閉分頁功能：[Taxonomy][5] 物件
-
-以及以下變數：
+與 [首頁布局](#index) 相同，僅增加下列變數：
 
 - **tag** - 標籤名稱
 
 [1]: plugin-development.html#processor
 [2]: plugin-development.html#generator
 [3]: configure.html
-[4]: collection.html#collection
-[5]: collection.html#taxonomy
-[6]: collection.html#paginator
+[4]: collection.html
+[5]: collection.html#model
 [7]: http://momentjs.com/
-[8]: http://nodejs.org/api/fs.html#fs_class_fs_stats
 [9]: global-variables.html#i18n

@@ -16,7 +16,7 @@ date: 2012-11-01 18:13:30
 - [Console](#console) - 命令列介面（CLI）
 - [Migrator](#migrator) - 遷移工具
 
-<a id="generator"></a>
+<a name="generator"></a>
 ## Generator
 
 ### 語法
@@ -27,9 +27,10 @@ hexo.extend.generator.register(fn);
 
 - **fn(locals, render, callback)**
   - **locals** - [網站全域資料][1]
-  - **render(layout, locals)** - 渲染函數
+  - **render(layout, locals, callback)** - 渲染函數
     - **layout** - 要使用的樣板
     - **locals** - 傳入樣板的資料，即樣板中的`page`變數
+    - **callback** - 回傳函數
   - **callback** - 回傳函數
 
 ### 範例
@@ -39,13 +40,13 @@ hexo.extend.generator.register(fn);
 ``` js
 hexo.extend.generator.register(function(locals, render, callback){
   hexo.route.set('archive.html', function(func){
-    var result = render('archive', locals);
-    func(null, result);
+    render('archive', locals, func);
   });
+  callback();
 });
 ```
 
-<a id="renderer"></a>
+<a name="renderer"></a>
 ## Renderer
 
 ### 語法
@@ -59,34 +60,24 @@ hexo.extend.renderer.register(name, output, fn, [sync]);
 - **fn** - 見下方
 - **sync** - 同步模式，預設為`false`
 
-**同步模式**（當`sync`為`true`時）
+`fn(data[, options], callback)` - 當執行完成時，應使用`return`回傳結果
 
-`fn(path, content, [locals])` - 當執行完成時，應使用`return`回傳結果
-
-- **path** - 輸入檔案的路徑，僅在編譯（Compile）模式時有效
-- **content** - 輸入檔案的內容
-- **locals** - 自定變數
-
-**非同步模式**（當`sync`為`false`或未指定時）
-
-`fn(path, content, [locals], [callback])` - 當執行完成時，應透過`callback`回傳結果
-
-- **path** - 輸入檔案的路徑，僅在編譯（Compile）模式時有效
-- **content** - 輸入檔案的內容
-- **locals** - 自定變數
-- **callback** - 回傳函數
+- **data** - 輸入資料，包含以下內容
+  - **path** - 原始檔案路徑
+  - **text** - 檔案內容
+- **options** - 選項
+- **callback** - 回傳函數，僅限於非同步模式
 
 ### 範例
 
 #### 同步模式
 
 ``` js
-var ejs = require('ejs'),
-	_ = require('underscore');
+var ejs = require('ejs');
 
-hexo.extend.renderer.register('ejs', 'html', function(path, content, locals){
-	if (path) locals = _.extend(locals, {filename: path});
-	return ejs.render(content, locals);
+hexo.extend.renderer.register('ejs', 'html', function(data, options){
+  options.filename = data.path;
+	return ejs.render(data.text, options);
 }, true);
 ```
 
@@ -95,12 +86,12 @@ hexo.extend.renderer.register('ejs', 'html', function(path, content, locals){
 ``` js
 var stylus = require('stylus');
 
-hexo.extend.renderer.register('styl', 'css', function(path, content, callback){
-	stylus(content).set('filename', path).render(callback);
+hexo.extend.renderer.register('styl', 'css', function(data,  callback){
+	stylus(data.text).set('filename', data.path).render(callback);
 });
 ```
 
-<a id="helper"></a>
+<a name="helper"></a>
 ## Helper
 
 ### 語法
@@ -136,7 +127,7 @@ hexo.extend.helper.register('js', function(){
 <script type="text/javascript" src="script.js"></script>
 ```
 
-<a id="deployer"></a>
+<a name="deployer"></a>
 ## Deployer
 
 ### 語法
@@ -157,7 +148,7 @@ hexo.extend.deployer.register('github', function(args){
 });
 ```
 
-<a id="processor"></a>
+<a name="processor"></a>
 ## Processor
 
 ### 語法
@@ -184,7 +175,7 @@ hexo.extend.processor.register(function(locals, callback){
 });
 ```
 
-<a id="tag"></a>
+<a name="tag"></a>
 ## Tag
 
 ### 語法
@@ -219,7 +210,7 @@ hexo.extend.tag.register('pullquote', function(args, content){
 }, true);
 ```
 
-<a id="console"></a>
+<a name="console"></a>
 ## Console
 
 ### 語法
@@ -253,7 +244,7 @@ hexo.extend.console.register('config', 'Display configuration', function(args){
 });
 ```
 
-<a id="migrator"></a>
+<a name="migrator"></a>
 ## Migrator
 
 ### 語法

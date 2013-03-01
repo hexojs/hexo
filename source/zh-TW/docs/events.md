@@ -37,7 +37,15 @@ hexo.emit('event', [arg1], [arg2], [….]);
 
 ### generateAfter
 
-生成檔案完成後。
+檔案生成完成後。
+
+### processBefore
+
+開始處理原始檔案前。
+
+### processAfter
+
+原始檔案處理完畢後。
 
 ### new
 
@@ -47,9 +55,9 @@ hexo.emit('event', [arg1], [arg2], [….]);
 
 伺服器開啟後。
 
-### preview
+### exit
 
-預覽伺服器開啟後。
+程式結束時。
 
 [1]: global-variables.html
 [2]: http://nodejs.org/api/events.html#events_class_events_eventemitter

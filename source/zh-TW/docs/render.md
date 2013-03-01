@@ -7,42 +7,34 @@ date: 2012-11-01 18:13:30
 
 ## 使用
 
-渲染模組擁有兩種方法，**render** 和 **compile**，前者為輸入字串後渲染，後者為讀取檔案後渲染，兩種方法都有同步和非同步兩種模式。
+#### render(data, [options], callback)
 
-**render(string, engine, [locals], callback)**  
-**renderSync(string, engine, [locals])**
+- **data** - 輸入資料（至少要有`path`或`text`其一）
+  - **path** - 路徑
+  - **text** - 字串
+  - **engine** - 渲染引擎（預設為`path`的副檔名，或`path`未定義則此為必填項目）
+- **options** - Renderer選項
+- **callback** - 回呼函數
 
-- **string** - 輸入字串
-- **engine** - 渲染引擎
-- **locals** - 區域變數
-- **callback** - 回傳函數
-  - **err** - 錯誤內容
-  - **content** - 輸出內容
-  - **ext** - 輸出檔案的副檔名
+#### renderSync(data, [options])
 
-**compile(src, locals, callback)**  
-**compileSync(src, locals)**
+與`render`相同，差別僅在於此為同步模式。
 
-- **src** - 原始檔案路徑
-- **locals** - 區域變數
-- **callback** - 回傳函數
-  - **err** - 錯誤內容
-  - **content** - 輸出內容
-  - **ext** - 輸出檔案的副檔名
+#### renderFile(path, [options], callback)
+
+- **path** - 路徑
+- **options** - 選項
+  - **cache** - 快取
+  - **layout** - 布局
+- **callback** - 回呼函數
 
 ### 範例
 
-渲染Markdown字串。
-
-	hexo.render.render('**bold**', 'md', function(err, content, ext){
-		// …
-	});
-
-編譯EJS樣板。
-
-	hexo.render.compile('layout.ejs', {foo: 1, bar: 2}, function(err, content, ext){
-		// …
-	});
+``` js
+hexo.render.render({path: layout.ejs}, function(err, content){
+  // ...
+});
+```
 
 ## 內建渲染器
 

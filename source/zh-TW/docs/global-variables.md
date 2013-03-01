@@ -26,9 +26,10 @@ Hexo 在初始化時，會建立一個名為`hexo`的命名空間（Namespace）
 - **[util](#util)** - 工具程式
 - **[i18n](#i18n)** - 國際化（i18n）模組
 - **[route](#route)** - 路由模組
-- **[cache](#cache)** - 快取模組
+- **[call](#call)** - 呼叫其他 Console
+- **[db](#db)** - 資料庫
 
-<a id="extend"></a>
+<a name="extend"></a>
 ### extend
 
 extend是負責處理所有擴充套件的模組，每個物件都有兩種方法：**list** 和 **register**，前者可列出該物件所掌管的所有擴充套件，後者可掛載新的擴充套件到該物件上。
@@ -56,7 +57,7 @@ extend是負責處理所有擴充套件的模組，每個物件都有兩種方�
 #### processor
 
 - **list** - 返回一個陣列（Array）
-- **register(fn)** - 掛載擴充套件
+- **register(rule, fn)** - 掛載擴充套件。`rule`為路徑規則，可為字串（String）或正規表示式（RegExp）。
 
 #### helper
 
@@ -75,7 +76,7 @@ extend是負責處理所有擴充套件的模組，每個物件都有兩種方�
 
 更多資訊請參考 [外掛開發][2]。
 
-<a id="util"></a>
+<a name="util"></a>
 ### util
 
 util為工具程式，包含下列模組：
@@ -109,13 +110,13 @@ util為工具程式，包含下列模組：
 
 用以解析 [YAML Front Matter][3]，輸出一個物件（Object），本文存放於`_content`屬性。
 
-<a id="i18n"></a>
+<a name="i18n"></a>
 ### i18n
 
 i18n為處理國際化（Internationalization）的模組，使用方式如下：
 
 ``` js
-var i18n = new hexo.i18n();
+var i18n = new hexo.i18n.i18n();
 ```
 
 i18n物件擁有以下方法：
@@ -147,10 +148,8 @@ i18n物件擁有以下方法：
 
 自動載入語言檔案。`path`為放置語言檔案的資料夾，Hexo會根據`_config.yml`的`language`設定載入相對應的語言檔案，若找不到語言檔案的話，則會載入`default.yml`，因此資料夾內至少要有一個`default.yml`。
 
-<a id="route"></a>
+<a name="route"></a>
 ### route
-
-自從0.3版之後，Hexo開始引入路由模組處理網站的所有檔案路徑。
 
 #### get(path)
 
@@ -164,7 +163,7 @@ i18n物件擁有以下方法：
 
 處理路徑格式。若路徑為空或結尾為`/`，則在最後加入`index.html`。
 
-#### destroy(path)
+#### remove(path)
 
 刪除路徑。
 
@@ -172,24 +171,27 @@ i18n物件擁有以下方法：
 
 返回一個物件（Object）。
 
-<a id="cache"></a>
-### cache
+<a name="call"></a>
+### call
 
-#### list()
+#### call(name, [args], callback)
 
-列出所有快取內容。
+- **name** - Console 外掛名稱
+- **args** - 參數
+- **callback** - 回傳函數
 
-#### get(name)
+call 是用於呼叫其他 Console 外掛的函數，例如：
 
-取得指定快取。
+``` js
+hexo.call('generate', function(){
+  // ...
+});
+```
 
-#### set(name, value, [callback])
+<a name="db"></a>
+### db
 
-設定快取內容。
-
-#### destroy(name, [callback])
-
-刪除指定快取。
+資料庫。
 
 [1]: configure.html
 [2]: plugin-development.html

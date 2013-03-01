@@ -18,7 +18,7 @@ date: 2012-11-01 18:13:30
 ```
 var spawn = require('child_process').spawn;
 
-hexo.on('newPost', function(){
+hexo.on('new', function(){
   spawn('open', [target]);
 });
 ```

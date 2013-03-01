@@ -5,107 +5,118 @@ lang: zh-TW
 date: 2012-11-01 18:13:30
 ---
 
-<a id="collection"></a>
-## Collection
+自 1.0 版後，Hexo 採用 [Warehouse][1] 記錄所有資料，[Warehouse][1] 繼承了舊有的部份程式碼，並增加了搜尋功能，效能提昇，更為強大。
 
-Collection 類別用於一般的文章集合。
+[1]: https://github.com/tommy351/warehouse
+
+<a name="model>"></a>
+## Model
+
+Model 為資料的集合。
+
+#### get(id1[, id2, ..., idN])
+
+取得指定編號的資料。當 `id` 數量大於 1 時返回陣列。
 
 #### each(iterator)
 
-執行迴圈`iterator(item, i)`，`item`為迴圈目前的項目，`i`為迴圈執行的次數（從0開始）。
-	
-**別名**：forEach
-	
-#### map(iterator)
+遞迴 Model 內所有項目，執行 `iterator(data, id)`，`data` 為資料，`id` 為編號。
 
-執行迴圈`iterator(item, i)`，並用其回傳值代替原項目的值，`item`為迴圈目前的項目，`i`為迴圈執行的次數（從0開始）。
+#### toArray()
 
-#### filter(iterator)
+將 Model 轉換為陣列。
 
-執行迴圈`iterator(item, i)`，若其回傳值為真，則保留其值，`item`為迴圈目前的項目，`i`為迴圈執行的次數（從0開始）。
+#### count()
 
-**別名**：select
-	
-#### toArray
+返回 Model 的元素數量，相等於 `length`。
 
-將物件轉換為陣列（Array）。
+#### insert(data, callback)
 
-#### slice(start, [end])
+插入資料至 Model。`data` 可為物件（Object）或陣列（Array），插入完成後，執行回呼函數 `callback(data, id)`，`data` 為資料，`id` 為編號。
 
-取出物件中的特定部分。`start`, `end`的值可為負數。
+#### update([id, ]data)
 
-#### skip(num)
+更新資料。`id` 可為數字、陣列，當不指定時會更新 Model 內的所有資料。
 
-忽略物件中最前的指定段落。
+操作元：
+
+- **$push** - 對陣列插入元素
+- **$pull** - 從陣列移除元素
+- **$shift** - 刪除陣列前幾個元素
+- **$pop** - 刪除陣列後幾個元素
+- **$addToSet** - 對陣列插入元素（不重複）
+- **$inc** - 增加數字
+- **$dec** - 減少數字
+
+#### replace([id, ]data)
+
+取代資料。`id` 可為數字、陣列，當不指定時會取代 Model 內的所有資料。
+
+#### remove([id1, id2, ..., idN])
+
+移除資料。不指定 `id` 時會刪除 Model 內的所有資料。
+
+#### destroy()
+
+從資料庫刪除 Model 的所有資料。
+
+#### first()
+
+取得第一個物件。
+
+#### last()
+
+取得最後一個物件。
+
+#### eq(num)
+
+取得指定位置的資料。
+
+#### slice(start[, end])
+
+取得特定區段的資料。`start` 和 `end` 可為負數。
 
 #### limit(num)
 
-限制傳回的物件數量。
+限制物件數量。
 
-#### set(item)
+#### skip(num)
 
-在物件中新增項目。
+省略前幾個物件。
 
-**別名**：push
-	
-#### sort(orderby, [order])
-
-排列物件。`order`為`1`, `asc`時為升冪排列（預設），`-1`, `desc`時為降冪排列。
-
-#### reverse
+#### reverse()
 
 反轉物件順序。
 
-#### random
+#### sort(orderby[, order])
 
-隨機排列物件。
+排序物件。`order` 為 `-1` 或 `desc` 時為降冪排列，預設為升冪排列。
 
-**別名**：shuffle
+#### random()
 
-<a id="taxonomy"></a>
-## Taxonomy
+隨機排序 Model 內的資料。
 
-Taxonomy 類別用於文章分類集合，是 Collection 類別的繼承，與 Collection 類別的差別在於 Taxonomy 類別使用字串當作鍵值。
+#### find(query)
 
-#### get(name)
+尋找資料。
 
-取得物件中的指定項目。
-	
-#### set(name, item)
+操作元：
 
-在物件中新增一個名為`name`的項目。
+- **$lt** - 小於
+- **$lte** - 小於或等於
+- **$gt** - 大於
+- **$gte** - 大於或等於
+- **$length** - 陣列長度
+- **$in** - 陣列內含有指定元素
+- **$nin** - 陣列內不含有指定元素
+- **$all** - 陣列內含有所有指定元素
+- **$exists** - 物件存在
+- **$ne** - 不等於
 
-**別名**：push
-	
-#### each(iterator)
+#### findRaw(query)
 
-執行迴圈`iterator(value, key, i)`，`value`為迴圈目前的項目數值，`key`為迴圈目前的項目名稱，`i`為迴圈執行的次數（從0開始）。
-	
-**別名**：forEach
-	
-#### map(iterator)
+根據原始內容，尋找資料。
 
-執行迴圈`iterator(value, key, i)`，並用其回傳值代替原項目的值，`value`為迴圈目前的項目數值，`key`為迴圈目前的項目名稱，`i`為迴圈執行的次數（從0開始）。
+#### findOne(query)
 
-#### filter(iterator)
-
-執行迴圈`iterator(value, key, i)`，若其回傳值為真，則保留其值，`value`為迴圈目前的項目數值，`key`為迴圈目前的項目名稱，`i`為迴圈執行的次數（從0開始）。
-
-**別名**：select
-
-<a id="paginator"></a>
-## Paginator
-
-Paginator 類別是原類別的繼承，僅增加下列屬性。
-
-- **per_page** - 每頁顯示的文章數量
-- **total** - 文章總數量
-- **current** - 目前頁數
-- **current_url** - 目前頁數的網址
-- **posts** - [Collection 類別][1]
-- **prev** - 上一頁的頁數
-- **prev_link** - 上一頁的連結
-- **next** - 下一頁的頁數
-- **next_link** - 下一頁的連結
-
-[1]: #collection
+尋找資料，並只返回第一個物件。
