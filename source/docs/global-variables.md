@@ -25,9 +25,10 @@ Hexo creates a namespace `hexo` when initializing with the following read-only v
 - **[util](#util)** - Utilities
 - **[i18n](#i18n)** - Internationalization (i18n) module
 - **[route](#route)** - Route module
-- **[cache](#cache)** - Cache module
+- **[call](#call)** - Call other console
+- **[db](#db)** - Database
 
-<a id="extend"></a>
+<a name="extend"></a>
 ### extend
 
 **extend** is the module handling all extensions. Each extension has two method: **list** & **register**. The former lists all extensions that the object handling; the letter registers a new extension to the object.
@@ -74,7 +75,7 @@ Hexo creates a namespace `hexo` when initializing with the following read-only v
 
 Check [plugin development][2] for more info.
 
-<a id="util"></a>
+<a name="util"></a>
 ### util
 
 **util** is the utilities, including the following module:
@@ -108,7 +109,7 @@ Transforms a string into proper title capitalization.
 
 Parses [YAML Front Matter][3]. Exports an object. The content is `_content` property.
 
-<a id="i18n"></a>
+<a name="i18n"></a>
 ### i18n
 
 **i18n** is internationalization (i18n) module. Here's how to use:
@@ -146,7 +147,7 @@ Returns all elements of the object if `obj` undefined. Replaces the object with 
 
 Loads language files automatically. `path` is the language file directory. Hexo will based on `language` setting in `_config.yml`. If the language file is not found, it will load `default.yml` instead. So the directory must have `default.yml` at least.
 
-<a id="route"></a>
+<a name="route"></a>
 ### route
 
 Hexo has started using route module to handle all paths of the website since version 0.3.
@@ -185,24 +186,27 @@ Deletes a path.
 
 Returns an object.
 
-<a id="cache"></a>
-### cache
+<a name="call"></a>
+### call
 
-#### list()
+#### call(name, [args], callback)
 
-List all contents of cache.
+- **name** - Console name
+- **args** - Arguments
+- **callback** - Callback function
 
-#### get(name)
+`call` is used to call other console plugins. For example:
 
-Get the specific cache.
+``` js
+hexo.call('generate', function(){
+  // ...
+});
+```
 
-#### set(name, value, [callback])
+<a name="db"></a>
+### db
 
-Set the cache.
-
-#### destroy(name, [callback])
-
-Delete the specific cache.
+Database.
 
 [1]: configure.html
 [2]: plugin-development.html

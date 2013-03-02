@@ -180,7 +180,7 @@ i18n物件擁有以下方法：
 - **args** - 參數
 - **callback** - 回傳函數
 
-call 是用於呼叫其他 Console 外掛的函數，例如：
+`call` 是用於呼叫其他 Console 外掛的函數，例如：
 
 ``` js
 hexo.call('generate', function(){

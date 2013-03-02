@@ -9,16 +9,16 @@ date: 2012-11-01 18:13:30
 
 #### render(data, [options], callback)
 
-- **data** - 輸入資料（至少要有`path`或`text`其一）
+- **data** - 輸入資料
   - **path** - 路徑
   - **text** - 字串
-  - **engine** - 渲染引擎（預設為`path`的副檔名，或`path`未定義則此為必填項目）
-- **options** - Renderer選項
+  - **engine** - 渲染引擎（預設為`path`的副檔名，`path`未定義則此為必填項目）
+- **options** - 選項
 - **callback** - 回呼函數
 
 #### renderSync(data, [options])
 
-與`render`相同，差別僅在於此為同步模式。
+同步模式的 `render`.
 
 #### renderFile(path, [options], callback)
 

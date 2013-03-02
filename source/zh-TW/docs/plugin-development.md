@@ -60,7 +60,7 @@ hexo.extend.renderer.register(name, output, fn, [sync]);
 - **fn** - 見下方
 - **sync** - 同步模式，預設為`false`
 
-`fn(data[, options], callback)` - 當執行完成時，應使用`return`回傳結果
+`fn(data[, options], callback)`
 
 - **data** - 輸入資料，包含以下內容
   - **path** - 原始檔案路徑

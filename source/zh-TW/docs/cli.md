@@ -47,8 +47,6 @@ hexo server -p 12345
 
 ```
 hexo deploy
-hexo deploy --setup
-hexo deploy --generate
 ```
 
 安全模式，此模式下外掛不會被載入

@@ -10,7 +10,7 @@ Display current version of Hexo
 
 Setup website. If `folder` is not defined, Hexo will setup website at current directory.
 
-	hexo init <folder>
+	hexo init [folder]
 
 Create a new article
 
@@ -18,34 +18,21 @@ Create a new article
 
 Generate static files.
 
-- -t/--theme: Skip theme installation
 - -d/--deploy: Deploy automatically after generate
 - -w/--watch: Watch file changes
 
 ```
 hexo generate
-hexo generate -t/--theme
-hexo generate -d/--deploy
-hexo generate -w/--watch
 ```
 
 Start server. Press `Ctrl+C` to stop it.
 
 - -p/--port: Port setting
+- -s/--static: Only serve static files
 
 ```
 hexo server
 hexo server -p 12345
-```
-
-Preview. Press `Ctrl+C` to stop it.
-
-- -p/--port: Port setting
-- -w/--watch: Watch file changes
-
-```
-hexo preview
-hexo preview -p 12345
 ```
 
 Display configuration of the site
@@ -59,13 +46,7 @@ Deploy
 
 ```
 hexo deploy
-hexo deploy --setup
-hexo deploy --generate
 ```
-
-Render a file
-
-	hexo render <source> <destination>
 
 Safe mode. Plugins will not be loaded in this mode.
 

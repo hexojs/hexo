@@ -4,127 +4,118 @@ title: Collection
 date: 2012-11-01 18:13:30
 ---
 
-<a id="collection"></a>
-## Collection
+Since 1.0, Hexo records all data with [Warehouse][1]. [Warehouse][1] inherits some parts of old features and adds searching, improves performance, more powerful than before.
 
-Collection class is used for general article collection.
+<a name="model>"></a>
+## Model
+
+Model is a collection of data.
+
+#### get(id1[, id2, ..., idN])
+
+Gets data of specific id. Returns an array when multiple id.
 
 #### each(iterator)
 
-Iterates over the elements of the collection. The iterator has two arguments: `(item, i)`, `item` is the current item of the iterator, `i` is the times that the iterator has executed.
-	
-**Alias**：forEach
-	
-#### map(iterator)
+Iterates over all items in the model, executing `iterator(data, id)`.
 
-Produces a new collection by iterating over the elements of the collection and replacing the original value with the return value. The iterator has two arguments: `(item, i)`, `item` is the current item of the iterator, `i` is the times that the iterator has executed.
+#### toArray()
 
-#### filter(iterator)
+Transforms the model into an array.
 
-Iterates over the elements of the collection and returns a new collection of all the elements that pass a truth test (**iterator**). The iterator has two arguments: `(item, i)`, `item` is the current item of the iterator, `i` is the times that the iterator has executed.
+#### count()
 
-**Alias**：select
-	
-#### toArray
+Returns the number of elements. Equals to `length`.
 
-Converts the collection into an array.
+#### insert(data, callback)
 
-#### slice(start, [end])
+Inserts data to the model. `data` can be an object or an array. Once the insertion is complete, executing `callback(data, id)`.
 
-Returns a specific part of the collection. `start`, `end` can be a negative number.
+#### update([id, ]data)
 
-#### skip(num)
+Updates data. `id` can be a number or an array. If `id` is undefined, updates all items in the model.
 
-Skips the first specific elements of the collection.
+Operators:
 
-``` js
-collection.skip(10);
-```
+- **$push** - Appends elements to an array
+- **$pull** - Remove elements from an array
+- **$shift** - Removed the first elements from an array
+- **$pop** - Removed the last elements from an array
+- **$addToSet** - Appends elements to an array (only if the elements not exists)
+- **$inc** - Increase number
+- **$dec** - Decrease number
 
-Equals:
+#### replace([id, ]data)
 
-``` js
-collection.slice(10);
-```
+Replaces data. `id` can be a number or an array. If `id` is undefined, replaces all items in the model.
+
+#### remove([id1, id2, ..., idN])
+
+Removes data. If `id` is undefined, removes all items in the model.
+
+#### destroy()
+
+Removes all data of the model from the database.
+
+#### first()
+
+Gets the first item.
+
+#### last()
+
+Gets the last item.
+
+#### eq(num)
+
+Gets the specific position of the item.
+
+#### slice(start[, end])
+
+Gets the specific part of the model. `start` and `end` can be a negative number.
 
 #### limit(num)
 
-Limits the quantity of elements in the collection.
+Limits the number of items in the model.
 
-``` js
-collection.limit(10);
-```
+#### skip(num)
 
-Equals:
+Skips the first items of the model.
 
-``` js
-collection.slice(0, 10);
-```
+#### reverse()
 
-#### set(item)
+Reversed the order of the model.
 
-Adds a element to the collection.
+#### sort(orderby[, order])
 
-**Alias**：push
-	
-#### sort(orderby, [order])
+Sorts the items in the model. Descending when `order` equals to `1` or `desc`, otherwise ascending.
 
-Sorts the elements of the collection. Ascending when `order` equals `1` or `asc`, descending when `order` equals `-1` or `desc`.
+#### random()
 
-#### reverse
+Sorts data randomly.
 
-Returns a reversed copy of the collection.
+#### find(query)
 
-#### random
+Finds data.
 
-Returns a shuffled copy of the collection.
+Operators:
 
-**Alias**：shuffle
+- **$lt** - Less than
+- **$lte** - Less than equal
+- **$gt** - Greater than
+- **$gte** - Greater than equal
+- **$length** - Number of elements in an array
+- **$in** - An array contains the element
+- **$nin** - An array doesn't contain the element
+- **$all** - n array contains all elements
+- **$exists** - Item exists or not
+- **$ne** - Not equal
 
-<a id="taxonomy"></a>
-## Taxonomy
+#### findRaw(query)
 
-Taxonomy is used for taxonomy collection, the inheritance of Collection class. The difference between Collection class is that Taxonomy class uses a string as a key value.
+Finds data based on raw data.
 
-#### get(name)
+#### findOne(query)
 
-Gets the specific element of the collection.
-	
-#### set(name, item)
+Finds data and returns the first matched item.
 
-Added a element named `name` to the collection.
-
-**Alias**：push
-	
-#### each(iterator)
-
-Iterates over the elements of the collection. The iterator has three arguments: `(value, key, i)`, `value` is the value of the current item, `key` is the key value of the current item, `i` is the times that the iterator has executed.
-	
-**Alias**：forEach
-	
-#### map(iterator)
-
-Produces a new collection by iterating over the elements of the collection and replacing the original value with the return value. The iterator has three arguments: `(value, key, i)`, `value` is the value of the current item, `key` is the key value of the current item, `i` is the times that the iterator has executed.
-
-#### filter(iterator)
-
-Iterates over the elements of the collection and returns a new collection of all the elements that pass a truth test (**iterator**). The iterator has three arguments: `(value, key, i)`, `value` is the value of the current item, `key` is the key value of the current item, `i` is the times that the iterator has executed.
-
-**Alias**：select
-
-<a id="paginator"></a>
-## Paginator
-
-Paginator inherits the original class and adds the following properties.
-
-- **per_page** - Posts displayed per page
-- **total** - Amount of posts
-- **current** - Current page number
-- **current_url** - Link of current page
-- **posts** - [Collection class][1]
-- **prev** - Previous page number
-- **prev_link** - Link of previous page
-- **next** - Next page number
-- **next_link** - Link of next page
-
-[1]: #collection
+[1]: https://github.com/tommy351/warehouse

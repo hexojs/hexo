@@ -7,8 +7,6 @@ date: 2012-11-01 18:13:30
 
 自 1.0 版後，Hexo 採用 [Warehouse][1] 記錄所有資料，[Warehouse][1] 繼承了舊有的部份程式碼，並增加了搜尋功能，效能提昇，更為強大。
 
-[1]: https://github.com/tommy351/warehouse
-
 <a name="model>"></a>
 ## Model
 
@@ -20,7 +18,7 @@ Model 為資料的集合。
 
 #### each(iterator)
 
-遞迴 Model 內所有項目，執行 `iterator(data, id)`，`data` 為資料，`id` 為編號。
+遞迴 Model 內所有項目，執行 `iterator(data, id)`。
 
 #### toArray()
 
@@ -28,11 +26,11 @@ Model 為資料的集合。
 
 #### count()
 
-返回 Model 的元素數量，相等於 `length`。
+返回元素數量，相等於 `length`。
 
 #### insert(data, callback)
 
-插入資料至 Model。`data` 可為物件（Object）或陣列（Array），插入完成後，執行回呼函數 `callback(data, id)`，`data` 為資料，`id` 為編號。
+插入資料至 Model。`data` 可為物件（Object）或陣列（Array），插入完成後，執行回呼函數 `callback(data, id)`。
 
 #### update([id, ]data)
 
@@ -44,7 +42,7 @@ Model 為資料的集合。
 - **$pull** - 從陣列移除元素
 - **$shift** - 刪除陣列前幾個元素
 - **$pop** - 刪除陣列後幾個元素
-- **$addToSet** - 對陣列插入元素（不重複）
+- **$addToSet** - 對陣列插入元素（只在元素不存在時）
 - **$inc** - 增加數字
 - **$dec** - 減少數字
 
@@ -70,7 +68,7 @@ Model 為資料的集合。
 
 #### eq(num)
 
-取得指定位置的資料。
+取得指定位置的物件。
 
 #### slice(start[, end])
 
@@ -120,3 +118,5 @@ Model 為資料的集合。
 #### findOne(query)
 
 尋找資料，並只返回第一個物件。
+
+[1]: https://github.com/tommy351/warehouse

@@ -14,7 +14,12 @@ Edit `port` setting in `_config.yml` to configure the port of the server.
 port: 4000
 ```
 
-Execute the following command to start the server. Press `Ctrl+c` to stop it. Add `-p/--port` option to set the port.
+Execute the following command to start the server. Press `Ctrl+c` to stop it.
+
+**Options**:
+
+- **-p/--port**: Port
+- **-s/--static**: Only serve static files
 
 ``` bash
 hexo server

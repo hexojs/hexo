@@ -15,7 +15,7 @@ There're 8 sorts of plugins:
 - [Console](#console) - Command-line Interface (CLI)
 - [Migrator](#migrator) - Migrate tool
 
-<a id="generator"></a>
+<a name="generator"></a>
 ## Generator
 
 ### Syntax
@@ -26,9 +26,10 @@ hexo.extend.generator.register(fn);
 
 - **fn(locals, render, callback)**
   - **locals** - [Global site data][1]
-  - **render(layout, locals)** - Render function
+  - **render(layout, locals, callback)** - Render function
     - **layout** - The template to use
     - **locals** - Data passed to the template, the `page` variable in the template
+    - **callback** - Callback function
   - **callback** - Callback function
 
 ### Example
@@ -38,13 +39,13 @@ Generates archives at `public/archive.html`.
 ``` js
 hexo.extend.generator.register(function(locals, render, callback){
   hexo.route.set('archive.html', function(func){
-    var result = render('archive', locals);
-    func(null, result);
+    render('archive', locals, func);
   });
+  callback();
 });
 ```
 
-<a id="renderer"></a>
+<a name="renderer"></a>
 ## Renderer
 
 ### Syntax
@@ -56,36 +57,26 @@ hexo.extend.renderer.register(name, output, fn, [sync]);
 - **name** - Extension of input file (lowercase, `.` excluded)
 - **output** - Extension of output file (lowercase, `.` excluded)
 - **fn** - As below
-- **sync** - Sync mode (Default is `false`)
+- **sync** - Sync mode (`false` by default)
 
-**Sync mode**
+`fn(data[, options], callback)`
 
-`fn(path, content, [locals])` - Use `return` to passes the result when complete
-
-- **path** - Path of input file. Only available in compile mode
-- **content** - Content of input file
-- **locals** - Local variables
-
-**Async mode**
-
-`fn(path, content, [locals], callback)` - Use `callback` passes the result when complete
-
-- **path** - Path of input file. Only available in compile mode
-- **content** - Content of input file
-- **locals** - Local variables
-- **callback** - Callback function
+- **data** - Input data containing the following
+  - **path** - Source file path
+  - **text** - File content
+- **options** - Options
+- **callback** - Callback function (Only in async mode)
 
 ### Example
 
 #### Sync mode
 
 ``` js
-var ejs = require('ejs'),
-	_ = require('underscore');
+var ejs = require('ejs');
 
-hexo.extend.renderer.register('ejs', 'html', function(path, content, locals){
-	if (path) locals = _.extend(locals, {filename: path});
-	return ejs.render(content, locals);
+hexo.extend.renderer.register('ejs', 'html', function(data, options){
+  options.filename = data.path;
+  return ejs.render(data.text, options);
 }, true);
 ```
 
@@ -94,12 +85,12 @@ hexo.extend.renderer.register('ejs', 'html', function(path, content, locals){
 ``` js
 var stylus = require('stylus');
 
-hexo.extend.renderer.register('styl', 'css', function(path, content, callback){
-	stylus(content).set('filename', path).render(callback);
+hexo.extend.renderer.register('styl', 'css', function(data,  callback){
+  stylus(data.text).set('filename', data.path).render(callback);
 });
 ```
 
-<a id="helper"></a>
+<a name="helper"></a>
 ## Helper
 
 ### Syntax
@@ -135,7 +126,7 @@ Output:
 <script type="text/javascript" src="script.js"></script>
 ```
 
-<a id="deployer"></a>
+<a name="deployer"></a>
 ## Deployer
 
 ### Syntax
@@ -156,7 +147,7 @@ hexo.extend.deployer.register('github', {
 });
 ```
 
-<a id="processor"></a>
+<a name="processor"></a>
 ## Processor
 
 ### Syntax
@@ -183,7 +174,7 @@ hexo.extend.processor.register(function(locals, callback){
 });
 ```
 
-<a id="tag"></a>
+<a name="tag"></a>
 ## Tag
 
 ### Syntax
@@ -218,7 +209,7 @@ hexo.extend.tag.register('pullquote', function(args, content){
 }, true);
 ```
 
-<a id="console"></a>
+<a name="console"></a>
 ## Console
 
 ### Syntax
@@ -252,7 +243,7 @@ hexo.extend.console.register('config', 'Display configuration', function(args){
 });
 ```
 
-<a id="migrator"></a>
+<a name="migrator"></a>
 ## Migrator
 
 ### Syntax

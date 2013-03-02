@@ -38,6 +38,14 @@ Called before generating.
 
 Called after generating.
 
+### processBefore
+
+Called before processing.
+
+### processAfter
+
+Called after processing.
+
 ### new
 
 Called after a new article created. Return an argument `target` which means the absolute path of the new file.
@@ -46,9 +54,9 @@ Called after a new article created. Return an argument `target` which means the 
 
 Called after the server is on.
 
-### preview
+### Exit
 
-Called after the preview server is on.
+Called when process exits.
 
 [1]: global-variables.html
 [2]: http://nodejs.org/api/events.html#events_class_events_eventemitter

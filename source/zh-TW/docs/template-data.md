@@ -20,10 +20,10 @@ date: 2012-11-01 18:13:30
 
 網站全域資料，在沒有掛載其他擴充套件的情況下，**site** 擁有以下內容：
 
-- **posts** - 所有文章，根據發表日期降冪排列
-- **pages** - 所有分頁，根據發表日期降冪排列
-- **categories** - 所有分類，根據字母順序排列
-- **tags** - 所有標籤，根據字母順序排列
+- **posts** - 所有文章
+- **pages** - 所有分頁
+- **categories** - 所有分類
+- **tags** - 所有標籤
 
 <a name="page"></a>
 ## page
@@ -37,7 +37,7 @@ date: 2012-11-01 18:13:30
 - **updated** - 更新日期（[Moment.js][7] 物件）
 - **categories** - 分類（[Model][5] 物件）
 - **tags** - 標籤（[Model][5] 物件）
-- **comments** - 開啟此文章的留言功能
+- **comments** - 是否開啟留言功能
 - **layout** - 布局
 - **content** - 內文
 - **excerpt** - 摘要（內文中`<!--more-->`之前的內容）
@@ -48,7 +48,7 @@ date: 2012-11-01 18:13:30
 - **prev** - 前一篇文章
 - **next** - 後一篇文章
 
-以及使用者在文章設定中所設定的其他變數。page 和 post 的差別不大，僅在於 page 沒有 `categories`, `tags`, `prev` 和 `next` 變數。
+以及使用者在文章設定中所設定的其他變數。**page** 和 **post** 的差別不大，在於 **page** 沒有 `categories`, `tags`, `prev` 和 `next` 屬性。
 
 <a name="index"></a>
 ### 首頁（index）
@@ -67,7 +67,7 @@ date: 2012-11-01 18:13:30
 
 **關閉分頁功能**：
 
-與 [集合（Collection）][4] 相同，為 [Model][5] 物件。
+[Model][5] 物件。
 
 ### 彙整（archive）
 
@@ -89,10 +89,7 @@ date: 2012-11-01 18:13:30
 
 - **tag** - 標籤名稱
 
-[1]: plugin-development.html#processor
-[2]: plugin-development.html#generator
 [3]: configure.html
-[4]: collection.html
 [5]: collection.html#model
 [7]: http://momentjs.com/
 [9]: global-variables.html#i18n
