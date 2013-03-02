@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo - Render</title>
+  <title>Hexo - Contribute</title>
   <meta name="descripton" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
 
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
@@ -42,44 +42,41 @@
 
 <article class="page">
   <h1 class="title">Render</h1>
-  <small>Last updated: Jan 6, 2013</small>
+  <small>Last updated: Mar 2, 2013</small>
   <div class="entry"><h2>Usage</h2>
-<p>The render module has two method: <strong>render</strong> &amp; <strong>compile</strong>. The former renders a string; the letter renders a file. Both method have sync and async mode.</p>
-<p><strong>render(string, engine, [locals], callback)</strong><br><strong>renderSync(string, engine, [locals])</strong></p>
+<h4>render(data, [options], callback)</h4>
 <ul>
-<li><strong>string</strong> - Input string</li>
-<li><strong>engine</strong> - Render engine</li>
-<li><strong>locals</strong> - Local variables</li>
-<li><strong>callback</strong> - Callback function<ul>
-<li><strong>err</strong> - Error content</li>
-<li><strong>content</strong> - Output content</li>
-<li><strong>ext</strong> - Extension name of the output file</li>
+<li><strong>data</strong> - Input data<ul>
+<li><strong>path</strong> - Path</li>
+<li><strong>text</strong> - Text</li>
+<li><strong>engine</strong> - Render engine (Extension of <code>path</code> by default. Required if <code>path</code> undefined)</li>
 </ul>
 </li>
+<li><strong>options</strong> - Options</li>
+<li><strong>callback</strong> - Callback function</li>
 </ul>
-<p><strong>compile(src, locals, callback)</strong><br><strong>compileSync(src, locals)</strong></p>
+<h4>renderSync(data, [options])</h4>
+<p>Synchronous <code>render</code>.</p>
+<h4>renderFile(path, [options], callback)</h4>
 <ul>
-<li><strong>src</strong> - Source file path</li>
-<li><strong>locals</strong> - Local variables</li>
-<li><strong>callback</strong> - Callback function<ul>
-<li><strong>err</strong> - Error content</li>
-<li><strong>content</strong> - Output content</li>
-<li><strong>ext</strong> - Extension name of the output file</li>
+<li><strong>path</strong> - Path</li>
+<li><strong>options</strong> - Options<ul>
+<li><strong>cache</strong> - Cache</li>
+<li><strong>layout</strong> - Layout</li>
 </ul>
 </li>
+<li><strong>callback</strong> - Callback function</li>
 </ul>
 <h3>Example</h3>
-<p>Render a Markdown content.</p>
-<pre><code><div class="line"><span class="transposed_variable">hexo.</span><span class="transposed_variable">render.</span>render(<span class="string">'**bold**'</span>, <span class="string">'md'</span>, <span class="keyword">function</span>(err, content, ext)<span class="cell">{</div><div class="line">    // …</div><div class="line">}</span>);</div></code></pre>
-<p>Compile a EJS template.</p>
-<pre><code><div class="line"><span class="transposed_variable">hexo.</span><span class="transposed_variable">render.</span>compile(<span class="string">'layout.ejs'</span>, <span class="cell">{foo: <span class="number">1</span>, bar: <span class="number">2</span>}</span>, <span class="keyword">function</span>(err, content, ext)<span class="cell">{</div><div class="line">    // …</div><div class="line">}</span>);</div></code></pre>
+<pre><code><div class="line">hexo.render.render({path: layout.ejs}, <span class="keyword">function</span>(err, content){</div><div class="line">  // <span class="keyword">...</span></div><div class="line">});</div></code></pre>
+
 <h2>Built-in Renderer</h2>
 <h3>EJS</h3>
 <ul>
 <li>Input: ejs</li>
 <li>Output: html</li>
 </ul>
-<p>Reference: </p>
+<p>Reference:</p>
 <ul>
 <li><a href="https://github.com/visionmedia/ejs">EJS</a></li>
 </ul>
@@ -88,7 +85,7 @@
 <li>Input: md, markdown, mkd, mkdn, mdwn, mdtxt, mdtext</li>
 <li>Output: html</li>
 </ul>
-<p>Reference: </p>
+<p>Reference:</p>
 <ul>
 <li><a href="https://github.com/chjj/marked">Marked</a></li>
 <li><a href="http://daringfireball.net/projects/markdown/">Markdown</a></li>
@@ -98,7 +95,7 @@
 <li>Input: styl, stylus</li>
 <li>Output: css</li>
 </ul>
-<p>Reference: </p>
+<p>Reference:</p>
 <ul>
 <li><a href="http://learnboost.github.com/stylus/">Stylus</a></li>
 <li><a href="http://visionmedia.github.com/nib/">Nib</a></li>
@@ -108,7 +105,7 @@
 <li>Input: swig</li>
 <li>Output: html</li>
 </ul>
-<p>Reference: </p>
+<p>Reference:</p>
 <ul>
 <li><a href="http://paularmstrong.github.com/swig/">Swig</a></li>
 </ul>
@@ -117,7 +114,7 @@
 <li>Input: yml, yaml</li>
 <li>Output: json</li>
 </ul>
-<p>Reference: </p>
+<p>Reference:</p>
 <ul>
 <li><a href="https://github.com/jeremyfa/yaml.js">yamljs</a></li>
 <li><a href="http://www.yaml.org/">YAML</a></li>
@@ -125,14 +122,14 @@
 </div>
 </article>
       <footer id="footer"><div class="alignleft">
-  &copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
+  &copy; 2013 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
   Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>.
 </div>
 <div class="alignright">
   <select id="lang-select">
     <option value="" selected>English</option>
     
-      <option value="zh-TW">繁体中文</option>
+      <option value="zh-TW">正體中文</option>
     
       <option value="zh-CN">简体中文</option>
     

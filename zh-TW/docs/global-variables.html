@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo - 全域變數</title>
+  <title>Hexo - Contribute</title>
   <meta name="descripton" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
 
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
@@ -27,11 +27,11 @@
 <body>
   <div class="wrapper">
     <header id="header">
-<h1><a href="/hexo/zh-TW/">Hexo</a></h1>
+<h1><a href="/hexo/">Hexo</a></h1>
 <div class="clearfix"></div>
 <nav id="main-nav">
   <ul>
-    <li><a href="/hexo/zh-TW/docs/">Docs</a></li>
+    <li><a href="/hexo/docs/">Docs</a></li>
     <li><a href="https://github.com/tommy351/hexo/wiki/Plugins">Plugins</a></li>
     <li><a href="https://github.com/tommy351/hexo/wiki/Themes">Themes</a></li>
     <li><a href="https://github.com/tommy351/hexo">Source</a></li>
@@ -42,7 +42,7 @@
 
 <article class="page">
   <h1 class="title">全域變數</h1>
-  <small>Last updated: Jan 12, 2013</small>
+  <small>Last updated: Mar 2, 2013</small>
   <div class="entry"><p>Hexo 在初始化時，會建立一個名為<code>hexo</code>的命名空間（Namespace），此命名空間內擁有以下唯讀變數。</p>
 <ul>
 <li><strong>base_dir</strong> - 網站根目錄</li>
@@ -64,9 +64,10 @@
 <li><strong><a href="#util">util</a></strong> - 工具程式</li>
 <li><strong><a href="#i18n">i18n</a></strong> - 國際化（i18n）模組</li>
 <li><strong><a href="#route">route</a></strong> - 路由模組</li>
-<li><strong><a href="#cache">cache</a></strong> - 快取模組</li>
+<li><strong><a href="#call">call</a></strong> - 呼叫其他 Console</li>
+<li><strong><a href="#db">db</a></strong> - 資料庫</li>
 </ul>
-<p><a id="extend"></a></p>
+<p><a name="extend"></a></p>
 <h3>extend</h3>
 <p>extend 是負責處理所有擴充套件的模組，每個物件都有兩種方法：<strong>list</strong> 和 <strong>register</strong>，前者可列出該物件所掌管的所有擴充套件，後者可掛載新的擴充套件到該物件上。</p>
 <h4>generator</h4>
@@ -92,7 +93,7 @@
 <h4>processor</h4>
 <ul>
 <li><strong>list</strong> - 返回一個陣列（Array）</li>
-<li><strong>register(fn)</strong> - 掛載擴充套件</li>
+<li><strong>register(rule, fn)</strong> - 掛載擴充套件。<code>rule</code>為路徑規則，可為字串（String）或正規表示式（RegExp）。</li>
 </ul>
 <h4>helper</h4>
 <ul>
@@ -110,7 +111,7 @@
 <li><strong>register(name, fn)</strong> - 掛載擴充套件。<code>name</code>為擴充套件的名稱。</li>
 </ul>
 <p>更多資訊請參考 <a href="plugin-development.html">外掛開發</a>。</p>
-<p><a id="util"></a></p>
+<p><a name="util"></a></p>
 <h3>util</h3>
 <p>util 為工具程式，包含下列模組：</p>
 <h4>file</h4>
@@ -136,10 +137,10 @@
 <p>用以將字串轉為適合的標題大小寫。</p>
 <h4>yfm(string)</h4>
 <p>用以解析 <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front Matter</a>，輸出一個物件（Object），本文存放於<code>_content</code>屬性。</p>
-<p><a id="i18n"></a></p>
+<p><a name="i18n"></a></p>
 <h3>i18n</h3>
 <p>i18n 為處理國際化（Internationalization）的模組，使用方式如下：</p>
-<pre><code><div class="line"><span class="keyword">var</span> i18n = <span class="keyword">new</span> hexo.i18n();</div></code></pre>
+<pre><code><div class="line"><span class="keyword">var</span> i18n = <span class="keyword">new</span> hexo.i18n.i18n();</div></code></pre>
 
 <p>i18n 物件擁有以下方法：</p>
 <h4>get</h4>
@@ -167,40 +168,43 @@
 <p>若<code>obj</code>未定義，則傳回物件內的所有數值；若<code>obj</code>為一物件（Object），則將物件取代為傳入的引數。</p>
 <h4>load(path, callback)</h4>
 <p>自動載入語言檔案。<code>path</code>為放置語言檔案的資料夾，Hexo 會根據<code>_config.yml</code>的<code>language</code>設定載入相對應的語言檔案，若找不到語言檔案的話，則會載入<code>default.yml</code>，因此資料夾內至少要有一個<code>default.yml</code>。</p>
-<p><a id="route"></a></p>
+<p><a name="route"></a></p>
 <h3>route</h3>
-<p>自從 0.3 版之後，Hexo 開始引入路由模組處理網站的所有檔案路徑。</p>
 <h4>get(path)</h4>
 <p>取得路徑內容，傳回一個函數。</p>
 <h4>set(path, content)</h4>
 <p>設定路徑內容。<code>content</code>可為函數或其他內容，若為函數則必須使用<code>function(err, content)</code>格式。</p>
 <h4>format(path)</h4>
 <p>處理路徑格式。若路徑為空或結尾為<code>/</code>，則在最後加入<code>index.html</code>。</p>
-<h4>destroy(path)</h4>
+<h4>remove(path)</h4>
 <p>刪除路徑。</p>
 <h4>list()</h4>
 <p>返回一個物件（Object）。</p>
-<p><a id="cache"></a></p>
-<h3>cache</h3>
-<h4>list()</h4>
-<p>列出所有快取內容。</p>
-<h4>get(name)</h4>
-<p>取得指定快取。</p>
-<h4>set(name, value, [callback])</h4>
-<p>設定快取內容。</p>
-<h4>destroy(name, [callback])</h4>
-<p>刪除指定快取。</p>
+<p><a name="call"></a></p>
+<h3>call</h3>
+<h4>call(name, [args], callback)</h4>
+<ul>
+<li><strong>name</strong> - Console 外掛名稱</li>
+<li><strong>args</strong> - 參數</li>
+<li><strong>callback</strong> - 回傳函數</li>
+</ul>
+<p><code>call</code> 是用於呼叫其他 Console 外掛的函數，例如：</p>
+<pre><code><div class="line">hexo.call(<span class="string">'generate'</span>, <span class="keyword">function</span>(){</div><div class="line">  <span class="comment">// ...</span></div><div class="line">});</div></code></pre>
+
+<p><a name="db"></a></p>
+<h3>db</h3>
+<p>資料庫。</p>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">
-  &copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
+  &copy; 2013 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
   Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>.
 </div>
 <div class="alignright">
   <select id="lang-select">
-    <option value="">English</option>
+    <option value="" selected>English</option>
     
-      <option value="zh-TW" selected>繁体中文</option>
+      <option value="zh-TW">正體中文</option>
     
       <option value="zh-CN">简体中文</option>
     

@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo - 樣板資料</title>
+  <title>Hexo - Contribute</title>
   <meta name="descripton" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
 
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
@@ -27,11 +27,11 @@
 <body>
   <div class="wrapper">
     <header id="header">
-<h1><a href="/hexo/zh-TW/">Hexo</a></h1>
+<h1><a href="/hexo/">Hexo</a></h1>
 <div class="clearfix"></div>
 <nav id="main-nav">
   <ul>
-    <li><a href="/hexo/zh-TW/docs/">Docs</a></li>
+    <li><a href="/hexo/docs/">Docs</a></li>
     <li><a href="https://github.com/tommy351/hexo/wiki/Plugins">Plugins</a></li>
     <li><a href="https://github.com/tommy351/hexo/wiki/Themes">Themes</a></li>
     <li><a href="https://github.com/tommy351/hexo">Source</a></li>
@@ -42,90 +42,92 @@
 
 <article class="page">
   <h1 class="title">樣板資料</h1>
-  <small>Last updated: Dec 29, 2012</small>
+  <small>Last updated: Mar 2, 2013</small>
   <div class="entry"><h2>全域</h2>
 <ul>
-<li><strong><a href="#site">site</a></strong> - 網站全域資料，由 <a href="plugin-development.html#processor">Processor</a> 所控制</li>
-<li><strong><a href="#page">page</a></strong> - 目前頁面的資料，內容根據不同頁面而有所差異，由 <a href="plugin-development.html#generator">Generator</a> 所控制</li>
+<li><strong><a href="#site">site</a></strong> - 網站全域資料</li>
+<li><strong><a href="#page">page</a></strong> - 目前頁面的資料，內容根據不同頁面而有所差異</li>
 <li><strong>config</strong> - <a href="configure.html">全域設定</a>，即<code>_config.yml</code>的內容</li>
 <li><strong>theme</strong> - 主題設定，即主題資料夾內<code>_config.yml</code>的內容，根據不同主題而有所差異</li>
 <li><strong>__</strong>（雙底線） - 取得 <a href="global-variables.html#i18n">國際化（i18n）</a> 字串</li>
+<li><strong>layout</strong> - 布局</li>
+<li><strong>cache</strong> - 快取</li>
 </ul>
-<p><a id="site"></a></p>
+<p><a name="site"></a></p>
 <h2>site</h2>
-<p>網站全域資料，在沒有掛載其他擴充套件的情況下，<strong>site</strong>擁有以下內容：</p>
+<p>網站全域資料，在沒有掛載其他擴充套件的情況下，<strong>site</strong> 擁有以下內容：</p>
 <ul>
-<li><strong>posts</strong> - 所有文章，根據發表日期降冪排列</li>
-<li><strong>pages</strong> - 所有分頁，根據發表日期降冪排列</li>
-<li><strong>categories</strong> - 所有分類，根據字母順序排列</li>
-<li><strong>tags</strong> - 所有標籤，根據字母順序排列</li>
+<li><strong>posts</strong> - 所有文章</li>
+<li><strong>pages</strong> - 所有分頁</li>
+<li><strong>categories</strong> - 所有分類</li>
+<li><strong>tags</strong> - 所有標籤</li>
 </ul>
-<p><strong>posts</strong>, <strong>pages</strong> 為 <a href="collection.html#collection">Collection</a> 物件</p>
-<p><strong>categories</strong>, <strong>tags</strong> 為 <a href="collection.html#taxonomy">Taxonomy</a> 物件</p>
-<p><a id="page"></a></p>
+<p><a name="page"></a></p>
 <h2>page</h2>
-<p>目前頁面的資料，內容根據不同頁面而有所差異，以下僅列舉內建 Generator 所擁有的 page 內容。</p>
-<h4>page, post</h4>
+<p>目前頁面的資料，內容根據不同頁面而有所差異。</p>
+<h3>文章（post, page, …）</h3>
 <ul>
-<li><strong>layout</strong> - 文章佈局</li>
-<li><strong>title</strong> - 文章標題</li>
-<li><strong>date</strong> - 文章的發佈日期（<a href="http://momentjs.com/">Moment.js</a> 物件）</li>
-<li><strong>updated</strong> - 文章的更新日期（<a href="http://momentjs.com/">Moment.js</a> 物件）</li>
-<li><strong>comments</strong> - 開啟此文章的留言功能</li>
-<li><strong>permalink</strong> - 文章的永久連結</li>
-<li><strong>stats</strong> - 文章的檔案狀態（<a href="http://nodejs.org/api/fs.html#fs_class_fs_stats">fs.Stats</a> 類別）</li>
-<li><strong>content</strong> - 文章內文</li>
-<li><strong>excerpt</strong> - 文章摘要（內文中 <code>&lt;!-- more --&gt;</code> 之前的內容）</li>
-<li><strong>source</strong> - 原始檔案路徑</li>
-<li><strong>path</strong> - 文章的相對路徑</li>
+<li><strong>title</strong> - 標題</li>
+<li><strong>date</strong> - 發表日期（<a href="http://momentjs.com/">Moment.js</a> 物件）</li>
+<li><strong>updated</strong> - 更新日期（<a href="http://momentjs.com/">Moment.js</a> 物件）</li>
+<li><strong>categories</strong> - 分類（<a href="collection.html#model">Model</a> 物件）</li>
+<li><strong>tags</strong> - 標籤（<a href="collection.html#model">Model</a> 物件）</li>
+<li><strong>comments</strong> - 是否開啟留言功能</li>
+<li><strong>layout</strong> - 布局</li>
+<li><strong>content</strong> - 內文</li>
+<li><strong>excerpt</strong> - 摘要（內文中<code>&lt;!--more--&gt;</code>之前的內容）</li>
+<li><strong>source</strong> - 檔案原始位置</li>
+<li><strong>path</strong> - 路徑</li>
+<li><strong>ctime</strong> - 檔案建立時間（<a href="http://momentjs.com/">Moment.js</a> 物件）</li>
+<li><strong>mtime</strong> - 檔案修改時間（<a href="http://momentjs.com/">Moment.js</a> 物件）</li>
+<li><strong>prev</strong> - 前一篇文章</li>
+<li><strong>next</strong> - 後一篇文章</li>
 </ul>
-<p>以及使用者在文章設定中所設定的其他變數。</p>
-<p>page 和 post 的差別不大，僅在於 page 沒有<code>categories</code>和<code>tags</code>變數。</p>
-<h4>index</h4>
+<p>以及使用者在文章設定中所設定的其他變數。<strong>page</strong> 和 <strong>post</strong> 的差別不大，在於 <strong>page</strong> 沒有 <code>categories</code>, <code>tags</code>, <code>prev</code> 和 <code>next</code> 屬性。</p>
+<p><a name="index"></a></p>
+<h3>首頁（index）</h3>
+<p><strong>啟用分頁功能</strong>：</p>
 <ul>
-<li>啟用分頁功能：<a href="collection.html#paginator">Paginator</a> 物件</li>
-<li>關閉分頁功能：<a href="collection.html#taxonomy">Taxonomy</a> 物件</li>
+<li><strong>per_page</strong> - 每頁顯示的文章數量</li>
+<li><strong>total</strong> - 文章總數量</li>
+<li><strong>current</strong> - 目前頁碼</li>
+<li><strong>current_url</strong> - 目前頁的連結</li>
+<li><strong>posts</strong> - 文章（<a href="collection.html#model">Model</a> 物件）</li>
+<li><strong>prev</strong> - 上頁頁碼</li>
+<li><strong>prev_link</strong> - 上頁連結</li>
+<li><strong>next</strong> - 下頁頁碼</li>
+<li><strong>next_link</strong> - 下頁連結</li>
 </ul>
-<h4>archive</h4>
+<p><strong>關閉分頁功能</strong>：</p>
+<p><a href="collection.html#model">Model</a> 物件。</p>
+<h3>彙整（archive）</h3>
+<p>與 <a href="#index">首頁布局</a> 相同，僅增加下列變數：</p>
 <ul>
-<li>啟用分頁功能：<a href="collection.html#paginator">Paginator</a> 物件</li>
-<li>關閉分頁功能：<a href="collection.html#taxonomy">Taxonomy</a> 物件</li>
-</ul>
-<p>以及以下變數：</p>
-<ul>
-<li><strong>archive</strong> - 恆為<code>true</code></li>
+<li><strong>archive</strong> - 恆為 <code>true</code></li>
 <li><strong>year</strong> - 彙整年份</li>
 <li><strong>month</strong> - 彙整月份</li>
 </ul>
-<h4>category</h4>
-<ul>
-<li>啟用分頁功能：<a href="collection.html#paginator">Paginator</a> 物件</li>
-<li>關閉分頁功能：<a href="collection.html#taxonomy">Taxonomy</a> 物件</li>
-</ul>
-<p>以及以下變數：</p>
+<h3>分類（category）</h3>
+<p>與 <a href="#index">首頁布局</a> 相同，僅增加下列變數：</p>
 <ul>
 <li><strong>category</strong> - 分類名稱</li>
 </ul>
-<h4>tag</h4>
-<ul>
-<li>啟用分頁功能：<a href="collection.html#paginator">Paginator</a> 物件</li>
-<li>關閉分頁功能：<a href="collection.html#taxonomy">Taxonomy</a> 物件</li>
-</ul>
-<p>以及以下變數：</p>
+<h3>標籤（tag）</h3>
+<p>與 <a href="#index">首頁布局</a> 相同，僅增加下列變數：</p>
 <ul>
 <li><strong>tag</strong> - 標籤名稱</li>
 </ul>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">
-  &copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
+  &copy; 2013 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
   Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>.
 </div>
 <div class="alignright">
   <select id="lang-select">
-    <option value="">English</option>
+    <option value="" selected>English</option>
     
-      <option value="zh-TW" selected>繁体中文</option>
+      <option value="zh-TW">正體中文</option>
     
       <option value="zh-CN">简体中文</option>
     

@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo - Plugin Development</title>
+  <title>Hexo - Contribute</title>
   <meta name="descripton" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
 
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
@@ -42,7 +42,7 @@
 
 <article class="page">
   <h1 class="title">Plugin Development</h1>
-  <small>Last updated: Jan 12, 2013</small>
+  <small>Last updated: Mar 2, 2013</small>
   <div class="entry"><p>There&#39;re 8 sorts of plugins:</p>
 <ul>
 <li><a href="#generator">Generator</a> - Generates static files</li>
@@ -54,7 +54,7 @@
 <li><a href="#console">Console</a> - Command-line Interface (CLI)</li>
 <li><a href="#migrator">Migrator</a> - Migrate tool</li>
 </ul>
-<p><a id="generator"></a></p>
+<p><a name="generator"></a></p>
 <h2>Generator</h2>
 <h3>Syntax</h3>
 <pre><code><div class="line">hexo.extend.generator.register(fn);</div></code></pre>
@@ -62,9 +62,10 @@
 <ul>
 <li><strong>fn(locals, render, callback)</strong><ul>
 <li><strong>locals</strong> - <a href="template-data.html#site">Global site data</a></li>
-<li><strong>render(layout, locals)</strong> - Render function<ul>
+<li><strong>render(layout, locals, callback)</strong> - Render function<ul>
 <li><strong>layout</strong> - The template to use</li>
 <li><strong>locals</strong> - Data passed to the template, the <code>page</code> variable in the template</li>
+<li><strong>callback</strong> - Callback function</li>
 </ul>
 </li>
 <li><strong>callback</strong> - Callback function</li>
@@ -73,9 +74,9 @@
 </ul>
 <h3>Example</h3>
 <p>Generates archives at <code>public/archive.html</code>.</p>
-<pre><code><div class="line">hexo.extend.generator.register(<span class="keyword">function</span>(locals, render, callback){</div><div class="line">  hexo.route.set(<span class="string">'archive.html'</span>, <span class="keyword">function</span>(func){</div><div class="line">    <span class="keyword">var</span> result = render(<span class="string">'archive'</span>, locals);</div><div class="line">    func(<span class="literal">null</span>, result);</div><div class="line">  });</div><div class="line">});</div></code></pre>
+<pre><code><div class="line">hexo.extend.generator.register(<span class="keyword">function</span>(locals, render, callback){</div><div class="line">  hexo.route.set(<span class="string">'archive.html'</span>, <span class="keyword">function</span>(func){</div><div class="line">    render(<span class="string">'archive'</span>, locals, func);</div><div class="line">  });</div><div class="line">  callback();</div><div class="line">});</div></code></pre>
 
-<p><a id="renderer"></a></p>
+<p><a name="renderer"></a></p>
 <h2>Renderer</h2>
 <h3>Syntax</h3>
 <pre><code><div class="line">hexo.extend.renderer.register(name, output, fn, [sync]);</div></code></pre>
@@ -84,31 +85,26 @@
 <li><strong>name</strong> - Extension of input file (lowercase, <code>.</code> excluded)</li>
 <li><strong>output</strong> - Extension of output file (lowercase, <code>.</code> excluded)</li>
 <li><strong>fn</strong> - As below</li>
-<li><strong>sync</strong> - Sync mode (Default is <code>false</code>)</li>
+<li><strong>sync</strong> - Sync mode (<code>false</code> by default)</li>
 </ul>
-<p><strong>Sync mode</strong></p>
-<p><code>fn(path, content, [locals])</code> - Use <code>return</code> to passes the result when complete</p>
+<p><code>fn(data[, options], callback)</code></p>
 <ul>
-<li><strong>path</strong> - Path of input file. Only available in compile mode</li>
-<li><strong>content</strong> - Content of input file</li>
-<li><strong>locals</strong> - Local variables</li>
+<li><strong>data</strong> - Input data containing the following<ul>
+<li><strong>path</strong> - Source file path</li>
+<li><strong>text</strong> - File content</li>
 </ul>
-<p><strong>Async mode</strong></p>
-<p><code>fn(path, content, [locals], callback)</code> - Use <code>callback</code> passes the result when complete</p>
-<ul>
-<li><strong>path</strong> - Path of input file. Only available in compile mode</li>
-<li><strong>content</strong> - Content of input file</li>
-<li><strong>locals</strong> - Local variables</li>
-<li><strong>callback</strong> - Callback function</li>
+</li>
+<li><strong>options</strong> - Options</li>
+<li><strong>callback</strong> - Callback function (Only in async mode)</li>
 </ul>
 <h3>Example</h3>
 <h4>Sync mode</h4>
-<pre><code><div class="line"><span class="keyword">var</span> ejs = require(<span class="string">'ejs'</span>),</div><div class="line">  _ = require(<span class="string">'underscore'</span>);</div><br><div class="line">hexo.extend.renderer.register(<span class="string">'ejs'</span>, <span class="string">'html'</span>, <span class="keyword">function</span>(path, content, locals){</div><div class="line">  <span class="keyword">if</span> (path) locals = _.extend(locals, {filename: path});</div><div class="line">  <span class="keyword">return</span> ejs.render(content, locals);</div><div class="line">}, <span class="literal">true</span>);</div></code></pre>
+<pre><code><div class="line"><span class="keyword">var</span> ejs = require(<span class="string">'ejs'</span>);</div><br><div class="line">hexo.extend.renderer.register(<span class="string">'ejs'</span>, <span class="string">'html'</span>, <span class="keyword">function</span>(data, options){</div><div class="line">  options.filename = data.path;</div><div class="line">  <span class="keyword">return</span> ejs.render(data.text, options);</div><div class="line">}, <span class="literal">true</span>);</div></code></pre>
 
 <h4>Async mode</h4>
-<pre><code><div class="line"><span class="keyword">var</span> stylus = require(<span class="string">'stylus'</span>);</div><br><div class="line">hexo.extend.renderer.register(<span class="string">'styl'</span>, <span class="string">'css'</span>, <span class="keyword">function</span>(path, content, callback){</div><div class="line">  stylus(content).set(<span class="string">'filename'</span>, path).render(callback);</div><div class="line">});</div></code></pre>
+<pre><code><div class="line"><span class="keyword">var</span> stylus = require(<span class="string">'stylus'</span>);</div><br><div class="line">hexo.extend.renderer.register(<span class="string">'styl'</span>, <span class="string">'css'</span>, <span class="keyword">function</span>(data,  callback){</div><div class="line">  stylus(data.text).set(<span class="string">'filename'</span>, data.path).render(callback);</div><div class="line">});</div></code></pre>
 
-<p><a id="helper"></a></p>
+<p><a name="helper"></a></p>
 <h2>Helper</h2>
 <h3>Syntax</h3>
 <pre><code><div class="line">hexo.extend.helper.register(name, fn);</div></code></pre>
@@ -127,7 +123,7 @@
 <p>Output:</p>
 <pre><code><div class="line">&lt;script type="text/javascript" src="script.js"&gt;&lt;/script&gt;</div></code></pre>
 
-<p><a id="deployer"></a></p>
+<p><a name="deployer"></a></p>
 <h2>Deployer</h2>
 <h3>Syntax</h3>
 <pre><code><div class="line">hexo.extend.deployer.register(name, method);</div></code></pre>
@@ -142,7 +138,7 @@
 <h3>Example</h3>
 <pre><code><div class="line">hexo.extend.deployer.register(<span class="string">'github'</span>, {</div><div class="line">  <span class="comment">// ...</span></div><div class="line">});</div></code></pre>
 
-<p><a id="processor"></a></p>
+<p><a name="processor"></a></p>
 <h2>Processor</h2>
 <h3>Syntax</h3>
 <pre><code><div class="line">hexo.extend.processor.register(fn);</div></code></pre>
@@ -162,7 +158,7 @@
 <p>Sort articles by date descending.</p>
 <pre><code><div class="line">hexo.extend.processor.register(<span class="keyword">function</span>(locals, callback){</div><div class="line">  locals.posts = locals.posts.sort(<span class="string">'date'</span>, -<span class="number">1</span>);</div><div class="line">  locals.pages = locals.pages.sort(<span class="string">'date'</span>, -<span class="number">1</span>);</div><div class="line">  callback(<span class="literal">null</span>, locals);</div><div class="line">});</div></code></pre>
 
-<p><a id="tag"></a></p>
+<p><a name="tag"></a></p>
 <h2>Tag</h2>
 <h3>Syntax</h3>
 <pre><code><div class="line">hexo.extend.tag.register(name, fn, [ends]);</div></code></pre>
@@ -183,7 +179,7 @@
 <p>Inserts a pull quote.</p>
 <pre><code><div class="line">hexo.extend.tag.register(<span class="string">'pullquote'</span>, <span class="keyword">function</span>(args, content){</div><div class="line">  <span class="keyword">var</span> className = args.length ? <span class="string">' '</span> + args.join(<span class="string">' '</span>) : <span class="string">''</span>;</div><div class="line">  <span class="keyword">return</span> <span class="string">'&lt;blockquote class="pullquote'</span> + className + <span class="string">'"&gt;'</span> + content + <span class="string">'&lt;/blockquote&gt;'</span>;</div><div class="line">}, <span class="literal">true</span>);</div></code></pre>
 
-<p><a id="console"></a></p>
+<p><a name="console"></a></p>
 <h2>Console</h2>
 <h3>Syntax</h3>
 <pre><code><div class="line">hexo.extend.console.register(name, desc, [options], fn);</div></code></pre>
@@ -208,7 +204,7 @@
 
 <pre><code><div class="line">hexo.extend.console.register(<span class="string">'config'</span>, <span class="string">'Display configuration'</span>, <span class="keyword">function</span>(args){</div><div class="line">  console.log(hexo.config);</div><div class="line">});</div></code></pre>
 
-<p><a id="migrator"></a></p>
+<p><a name="migrator"></a></p>
 <h2>Migrator</h2>
 <h3>Syntax</h3>
 <pre><code><div class="line">hexo.extend.migrator.register(name, fn);</div></code></pre>
@@ -230,14 +226,14 @@
 </div>
 </article>
       <footer id="footer"><div class="alignleft">
-  &copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
+  &copy; 2013 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
   Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>.
 </div>
 <div class="alignright">
   <select id="lang-select">
     <option value="" selected>English</option>
     
-      <option value="zh-TW">繁体中文</option>
+      <option value="zh-TW">正體中文</option>
     
       <option value="zh-CN">简体中文</option>
     

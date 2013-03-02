@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo - Global Variables</title>
+  <title>Hexo - Contribute</title>
   <meta name="descripton" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
 
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
@@ -42,7 +42,7 @@
 
 <article class="page">
   <h1 class="title">Global Variables</h1>
-  <small>Last updated: Jan 12, 2013</small>
+  <small>Last updated: Mar 2, 2013</small>
   <div class="entry"><p>Hexo creates a namespace <code>hexo</code> when initializing with the following read-only variables.</p>
 <ul>
 <li><strong>base_dir</strong> - Root directory</li>
@@ -64,9 +64,10 @@
 <li><strong><a href="#util">util</a></strong> - Utilities</li>
 <li><strong><a href="#i18n">i18n</a></strong> - Internationalization (i18n) module</li>
 <li><strong><a href="#route">route</a></strong> - Route module</li>
-<li><strong><a href="#cache">cache</a></strong> - Cache module</li>
+<li><strong><a href="#call">call</a></strong> - Call other console</li>
+<li><strong><a href="#db">db</a></strong> - Database</li>
 </ul>
-<p><a id="extend"></a></p>
+<p><a name="extend"></a></p>
 <h3>extend</h3>
 <p><strong>extend</strong> is the module handling all extensions. Each extension has two method: <strong>list</strong> &amp; <strong>register</strong>. The former lists all extensions that the object handling; the letter registers a new extension to the object.</p>
 <h4>generator</h4>
@@ -110,7 +111,7 @@
 <li><strong>register(name, fn)</strong> - Registers a extension. <code>name</code> is the name of the extension.</li>
 </ul>
 <p>Check <a href="plugin-development.html">plugin development</a> for more info.</p>
-<p><a id="util"></a></p>
+<p><a name="util"></a></p>
 <h3>util</h3>
 <p><strong>util</strong> is the utilities, including the following module:</p>
 <h4>file</h4>
@@ -136,10 +137,11 @@
 <p>Transforms a string into proper title capitalization.</p>
 <h4>yfm(string)</h4>
 <p>Parses <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front Matter</a>. Exports an object. The content is <code>_content</code> property.</p>
-<p><a id="i18n"></a></p>
+<p><a name="i18n"></a></p>
 <h3>i18n</h3>
 <p><strong>i18n</strong> is internationalization (i18n) module. Here&#39;s how to use:</p>
-<pre><code><div class="line"><span class="keyword">var</span> i18n = <span class="keyword">new</span> hexo.i18n();</div></code></pre>
+<notextile><pre><code><span class="keyword">var</span> i18n = <span class="keyword">new</span> hexo.i18n();
+</code></pre></notextile>
 
 <p>A i18n object owns the following methods:</p>
 <h4>get</h4>
@@ -167,44 +169,59 @@
 <p>Returns all elements of the object if <code>obj</code> undefined. Replaces the object with the argument if <code>obj</code> is an object.</p>
 <h4>load(path, callback)</h4>
 <p>Loads language files automatically. <code>path</code> is the language file directory. Hexo will based on <code>language</code> setting in <code>_config.yml</code>. If the language file is not found, it will load <code>default.yml</code> instead. So the directory must have <code>default.yml</code> at least.</p>
-<p><a id="route"></a></p>
+<p><a name="route"></a></p>
 <h3>route</h3>
 <p>Hexo has started using route module to handle all paths of the website since version 0.3.</p>
 <h4>get(path)</h4>
 <p>Gets the content of the path.</p>
-<pre><code><div class="line">route.get(path, <span class="keyword">function</span>(err, result){</div><div class="line">  ...</div><div class="line">});</div></code></pre>
+<notextile><pre><code>route.get(path, <span class="keyword">function</span>(err, result){
+  ...
+});
+</code></pre></notextile>
 
 <h4>set(path, content)</h4>
 <p>Sets the content of the path. <code>content</code> can be a function or else. If it is a function, it must pass a callback with two arguments: <code>(err, result)</code>.</p>
-<pre><code><div class="line">route.set(path, content);</div><br><div class="line">route.set(path, <span class="keyword">function</span>(fn){</div><div class="line">  fn(<span class="literal">null</span>, <span class="string">'content'</span>);</div><div class="line">});</div></code></pre>
+<notextile><pre><code>route.set(path, content);
+
+route.set(path, <span class="keyword">function</span>(fn){
+  fn(<span class="literal">null</span>, <span class="string">&#39;content&#39;</span>);
+});
+</code></pre></notextile>
 
 <h4>format(path)</h4>
 <p>Formats the path. Adds <code>index.html</code> if the path is empty or ended with <code>/</code>.</p>
-<h4>destroy(path)</h4>
+<h4>remove(path)</h4>
 <p>Deletes a path.</p>
 <h4>list()</h4>
 <p>Returns an object.</p>
-<p><a id="cache"></a></p>
-<h3>cache</h3>
-<h4>list()</h4>
-<p>List all contents of cache.</p>
-<h4>get(name)</h4>
-<p>Get the specific cache.</p>
-<h4>set(name, value, [callback])</h4>
-<p>Set the cache.</p>
-<h4>destroy(name, [callback])</h4>
-<p>Delete the specific cache.</p>
+<p><a name="call"></a></p>
+<h3>call</h3>
+<h4>call(name, [args], callback)</h4>
+<ul>
+<li><strong>name</strong> - Console name</li>
+<li><strong>args</strong> - Arguments</li>
+<li><strong>callback</strong> - Callback function</li>
+</ul>
+<p><code>call</code> is used to call other console plugins. For example:</p>
+<notextile><pre><code>hexo.call(<span class="string">&#39;generate&#39;</span>, <span class="keyword">function</span>(){
+  <span class="comment">// ...</span>
+});
+</code></pre></notextile>
+
+<p><a name="db"></a></p>
+<h3>db</h3>
+<p>Database.</p>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">
-  &copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
+  &copy; 2013 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
   Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>.
 </div>
 <div class="alignright">
   <select id="lang-select">
     <option value="" selected>English</option>
     
-      <option value="zh-TW">繁体中文</option>
+      <option value="zh-TW">正體中文</option>
     
       <option value="zh-CN">简体中文</option>
     

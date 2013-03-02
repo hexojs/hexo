@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo - Events</title>
+  <title>Hexo - Contribute</title>
   <meta name="descripton" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
 
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
@@ -42,7 +42,7 @@
 
 <article class="page">
   <h1 class="title">Events</h1>
-  <small>Last updated: Jan 12, 2013</small>
+  <small>Last updated: Mar 2, 2013</small>
   <div class="entry"><p><a href="global-variables.html">Global variable</a> <code>hexo</code> itself is a <a href="http://nodejs.org/api/events.html#events_class_events_eventemitter">EventEmitter</a> object. You can listen or emit events.</p>
 <h2>Usage</h2>
 <p>Listen an event:</p>
@@ -59,23 +59,27 @@
 <p>Called before generating.</p>
 <h3>generateAfter</h3>
 <p>Called after generating.</p>
+<h3>processBefore</h3>
+<p>Called before processing.</p>
+<h3>processAfter</h3>
+<p>Called after processing.</p>
 <h3>new</h3>
 <p>Called after a new article created. Return an argument <code>target</code> which means the absolute path of the new file.</p>
 <h3>server</h3>
 <p>Called after the server is on.</p>
-<h3>preview</h3>
-<p>Called after the preview server is on.</p>
+<h3>Exit</h3>
+<p>Called when process exits.</p>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">
-  &copy; 2012 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
+  &copy; 2013 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>
   Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>.
 </div>
 <div class="alignright">
   <select id="lang-select">
     <option value="" selected>English</option>
     
-      <option value="zh-TW">繁体中文</option>
+      <option value="zh-TW">正體中文</option>
     
       <option value="zh-CN">简体中文</option>
     
