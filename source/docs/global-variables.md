@@ -178,7 +178,7 @@ route.set(path, function(fn){
 
 Formats the path. Adds `index.html` if the path is empty or ended with `/`.
 
-#### destroy(path)
+#### remove(path)
 
 Deletes a path.
 

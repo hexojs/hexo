@@ -70,9 +70,7 @@ git clone git://github.com/creationix/nvm.git ~/nvm
 之後即可使用 [nvm][4] 來安裝 Node.js 了，編譯可能需要花些時間，請耐心等候。
 
 ``` bash
-nvm install v0.8.14
-nvm use v0.8.14
-nvm alias default v0.8.14
+nvm install v0.8
 ```
 
 ### Hexo
@@ -119,9 +117,7 @@ git clone git://github.com/creationix/nvm.git ~/nvm
 之後即可使用 [nvm][4] 來安裝 Node.js 了，編譯可能需要花些時間，請耐心等候。
 
 ``` bash
-nvm install v0.8.14
-nvm use v0.8.14
-nvm alias default v0.8.14
+nvm install v0.8
 ```
 
 ### Hexo
