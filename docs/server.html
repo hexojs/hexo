@@ -46,7 +46,8 @@
   <div class="entry"><h2>Built-in Server</h2>
 <p>Hexo uses <a href="https://github.com/senchalabs/connect">Connect</a> to serve static files.</p>
 <p>Edit <code>port</code> setting in <code>_config.yml</code> to configure the port of the server.</p>
-<pre><code><div class="line"><span class="attribute">port</span>: <span class="string">4000</span></div></code></pre>
+<notextile><pre><code><span class="attribute">port</span>: <span class="string">4000</span>
+</code></pre></notextile>
 
 <p>Execute the following command to start the server. Press <code>Ctrl+c</code> to stop it.</p>
 <p><strong>Options</strong>:</p>
@@ -54,21 +55,28 @@
 <li><strong>-p/--port</strong>: Port</li>
 <li><strong>-s/--static</strong>: Only serve static files</li>
 </ul>
-<pre><code><div class="line">hexo server</div><div class="line">hexo server -p 12345</div></code></pre>
+<notextile><pre><code>hexo server
+hexo server -p 12345
+</code></pre></notextile>
 
 <h3>Logger</h3>
 <p>Edit <code>logger</code> in <code>_config.yml</code> to enable logger. Edit <code>logger_format</code> to adjust the content displayed. Check <a href="http://www.senchalabs.org/connect/logger.html">Connect</a> for more info.</p>
-<pre><code><div class="line"><span class="attribute">logger</span>: <span class="string">true</span></div><div class="line"><span class="attribute">logger_format:</div></code></pre>
+<notextile><pre><code><span class="attribute">logger</span>: <span class="string">true</span>
+<span class="attribute">logger_format:
+</code></pre></notextile>
 
 <h2>Pow</h2>
 <p><a href="http://pow.cx/">Pow</a> is a zero-config Rack server for Mac powered by Node.js and it can serve static files, too.</p>
 <h3>Install</h3>
 <p>Execute the following command.</p>
-<pre><code><div class="line">curl get.pow.cx | sh</div></code></pre>
+<notextile><pre><code>curl get.pow.cx | sh
+</code></pre></notextile>
 
 <h3>Usage</h3>
 <p>Create a symlink in <code>~/.pow</code> folder to use.</p>
-<pre><code><div class="line">cd ~/.pow</div><div class="line">ln -s /path/to/myapp</div></code></pre>
+<notextile><pre><code>cd ~/.pow
+ln -s /path/to/myapp
+</code></pre></notextile>
 
 <p>Your website will be up and running at <code>http://myapp.dev</code>. The URL is based on the name of the symlink.</p>
 <p>Check <a href="http://pow.cx/manual.html">Pow</a> for more info.</p>

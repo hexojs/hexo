@@ -57,7 +57,8 @@
 <p><a id="generator"></a></p>
 <h2>Generator</h2>
 <h3>语法</h3>
-<pre><code><div class="line">hexo.extend.generator.register(fn);</div></code></pre>
+<notextile><pre><code>hexo.extend.generator.register(fn);
+</code></pre></notextile>
 
 <ul>
 <li><strong>fn(locals, render, callback)</strong><ul>
@@ -73,12 +74,19 @@
 </ul>
 <h3>范例</h3>
 <p>在<code>public/archive.html</code>生成文章列表页面。</p>
-<pre><code><div class="line">hexo.extend.generator.register(<span class="keyword">function</span>(locals, render, callback){</div><div class="line">  hexo.route.set(<span class="string">'archive.html'</span>, <span class="keyword">function</span>(func){</div><div class="line">    <span class="keyword">var</span> result = render(<span class="string">'archive'</span>, locals);</div><div class="line">    func(<span class="literal">null</span>, result);</div><div class="line">  });</div><div class="line">});</div></code></pre>
+<notextile><pre><code>hexo.extend.generator.register(<span class="keyword">function</span>(locals, render, callback){
+  hexo.route.set(<span class="string">&#39;archive.html&#39;</span>, <span class="keyword">function</span>(func){
+    <span class="keyword">var</span> result = render(<span class="string">&#39;archive&#39;</span>, locals);
+    func(<span class="literal">null</span>, result);
+  });
+});
+</code></pre></notextile>
 
 <p><a id="renderer"></a></p>
 <h2>Renderer</h2>
 <h3>语法</h3>
-<pre><code><div class="line">hexo.extend.renderer.register(name, output, fn, [sync]);</div></code></pre>
+<notextile><pre><code>hexo.extend.renderer.register(name, output, fn, [sync]);
+</code></pre></notextile>
 
 <ul>
 <li><strong>name</strong> - 输入文件的扩展名（小写，不包含<code>.</code>）</li>
@@ -103,15 +111,28 @@
 </ul>
 <h3>范例</h3>
 <h4>同步模式</h4>
-<pre><code><div class="line"><span class="keyword">var</span> ejs = require(<span class="string">'ejs'</span>),</div><div class="line">  _ = require(<span class="string">'underscore'</span>);</div><br><div class="line">hexo.extend.renderer.register(<span class="string">'ejs'</span>, <span class="string">'html'</span>, <span class="keyword">function</span>(path, content, locals){</div><div class="line">  <span class="keyword">if</span> (path) locals = _.extend(locals, {filename: path});</div><div class="line">  <span class="keyword">return</span> ejs.render(content, locals);</div><div class="line">}, <span class="literal">true</span>);</div></code></pre>
+<notextile><pre><code><span class="keyword">var</span> ejs = require(<span class="string">&#39;ejs&#39;</span>),
+  <em> = require(<span class="string">&#39;underscore&#39;</span>);
+
+hexo.extend.renderer.register(<span class="string">&#39;ejs&#39;</span>, <span class="string">&#39;html&#39;</span>, <span class="keyword">function</span>(path, content, locals){
+  <span class="keyword">if</span> (path) locals = </em>.extend(locals, {filename: path});
+  <span class="keyword">return</span> ejs.render(content, locals);
+}, <span class="literal">true</span>);
+</code></pre></notextile>
 
 <h4>非同步模式</h4>
-<pre><code><div class="line"><span class="keyword">var</span> stylus = require(<span class="string">'stylus'</span>);</div><br><div class="line">hexo.extend.renderer.register(<span class="string">'styl'</span>, <span class="string">'css'</span>, <span class="keyword">function</span>(path, content, callback){</div><div class="line">  stylus(content).set(<span class="string">'filename'</span>, path).render(callback);</div><div class="line">});</div></code></pre>
+<notextile><pre><code><span class="keyword">var</span> stylus = require(<span class="string">&#39;stylus&#39;</span>);
+
+hexo.extend.renderer.register(<span class="string">&#39;styl&#39;</span>, <span class="string">&#39;css&#39;</span>, <span class="keyword">function</span>(path, content, callback){
+  stylus(content).set(<span class="string">&#39;filename&#39;</span>, path).render(callback);
+});
+</code></pre></notextile>
 
 <p><a id="helper"></a></p>
 <h2>Helper</h2>
 <h3>语法</h3>
-<pre><code><div class="line">hexo.extend.helper.register(name, fn);</div></code></pre>
+<notextile><pre><code>hexo.extend.helper.register(name, fn);
+</code></pre></notextile>
 
 <ul>
 <li><strong>name</strong> - 名称（小写）</li>
@@ -119,18 +140,26 @@
 </ul>
 <h3>举例</h3>
 <p>插入 JavaScript 文件。</p>
-<pre><code><div class="line">hexo.extend.helper.register(<span class="string">'js'</span>, <span class="keyword">function</span>(){</div><div class="line">  <span class="keyword">return</span> <span class="keyword">function</span>(path){</div><div class="line">    <span class="keyword">return</span> <span class="string">'&lt;script type="text/javascript" src="'</span> + path + <span class="string">'"&gt;&lt;/script&gt;'</span>;</div><div class="line">  }</div><div class="line">});</div></code></pre>
+<notextile><pre><code>hexo.extend.helper.register(<span class="string">&#39;js&#39;</span>, <span class="keyword">function</span>(){
+  <span class="keyword">return</span> <span class="keyword">function</span>(path){
+    <span class="keyword">return</span> <span class="string">&#39;&lt;script type=&quot;text/javascript&quot; src=&quot;&#39;</span> + path + <span class="string">&#39;&quot;&gt;&lt;/script&gt;&#39;</span>;
+  }
+});
+</code></pre></notextile>
 
 <p>输入：</p>
-<pre><code><div class="line">&lt;<span class="string">%- js('script.js') %&gt;</div></code></pre>
+<notextile><pre><code>&lt;%- js(<span class="string">&#39;script.js&#39;</span>) %&gt;
+</code></pre></notextile>
 
 <p>输出：</p>
-<pre><code><div class="line">&lt;script type="text/javascript" src="script.js"&gt;&lt;/script&gt;</div></code></pre>
+<notextile><pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;script.js&quot;&gt;&lt;/script&gt;
+</code></pre></notextile>
 
 <p><a id="deployer"></a></p>
 <h2>Deployer</h2>
 <h3>语法</h3>
-<pre><code><div class="line">hexo.extend.deployer.register(name, fn);</div></code></pre>
+<notextile><pre><code>hexo.extend.deployer.register(name, fn);
+</code></pre></notextile>
 
 <ul>
 <li><strong>name</strong> - 名称（小写）</li>
@@ -140,12 +169,16 @@
 </li>
 </ul>
 <h3>范例</h3>
-<pre><code><div class="line">hexo.extend.deployer.register(<span class="string">'github'</span>, <span class="keyword">function</span>(args){</div><div class="line">  <span class="comment">// ...</span></div><div class="line">});</div></code></pre>
+<notextile><pre><code>hexo.extend.deployer.register(<span class="string">&#39;github&#39;</span>, <span class="keyword">function</span>(args){
+  <span class="comment">// ...</span>
+});
+</code></pre></notextile>
 
 <p><a id="processor"></a></p>
 <h2>Processor</h2>
 <h3>语法</h3>
-<pre><code><div class="line">hexo.extend.processor.register(fn);</div></code></pre>
+<notextile><pre><code>hexo.extend.processor.register(fn);
+</code></pre></notextile>
 
 <ul>
 <li><strong>fn(locals, callback)</strong><ul>
@@ -160,12 +193,18 @@
 </ul>
 <h3>范例</h3>
 <p>根据日期升降排列文章。</p>
-<pre><code><div class="line">hexo.extend.processor.register(<span class="keyword">function</span>(locals, callback){</div><div class="line">  locals.posts = locals.posts.sort(<span class="string">'date'</span>, -<span class="number">1</span>);</div><div class="line">  locals.pages = locals.pages.sort(<span class="string">'date'</span>, -<span class="number">1</span>);</div><div class="line">  callback(<span class="literal">null</span>, locals);</div><div class="line">});</div></code></pre>
+<notextile><pre><code>hexo.extend.processor.register(<span class="keyword">function</span>(locals, callback){
+  locals.posts = locals.posts.sort(<span class="string">&#39;date&#39;</span>, -<span class="number">1</span>);
+  locals.pages = locals.pages.sort(<span class="string">&#39;date&#39;</span>, -<span class="number">1</span>);
+  callback(<span class="literal">null</span>, locals);
+});
+</code></pre></notextile>
 
 <p><a id="tag"></a></p>
 <h2>Tag</h2>
 <h3>语法</h3>
-<pre><code><div class="line">hexo.extend.tag.register(name, fn, [ends]);</div></code></pre>
+<notextile><pre><code>hexo.extend.tag.register(name, fn, [ends]);
+</code></pre></notextile>
 
 <ul>
 <li><strong>name</strong> - 名称（小写）</li>
@@ -178,15 +217,24 @@
 </ul>
 <h3>范例</h3>
 <p>插入 Youtube 影片。</p>
-<pre><code><div class="line">hexo.extend.tag.register(<span class="string">'youtube'</span>, <span class="keyword">function</span>(args, content){</div><div class="line">  <span class="keyword">var</span> id = args[<span class="number">0</span>];</div><div class="line">  <span class="keyword">return</span> <span class="string">'&lt;div class="video-container"&gt;&lt;iframe width="560" height="315" src="http://www.youtube.com/embed/'</span> + id + <span class="string">'" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;'</span>;</div><div class="line">});</div></code></pre>
+<notextile><pre><code>hexo.extend.tag.register(<span class="string">&#39;youtube&#39;</span>, <span class="keyword">function</span>(args, content){
+  <span class="keyword">var</span> id = args[<span class="number">0</span>];
+  <span class="keyword">return</span> <span class="string">&#39;&lt;div class=&quot;video-container&quot;&gt;&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;<a href="http://www.youtube.com/embed/">http://www.youtube.com/embed/</a>&#39;</span> + id + <span class="string">&#39;&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;&#39;</span>;
+});
+</code></pre></notextile>
 
 <p>插入 Pull Quote</p>
-<pre><code><div class="line">hexo.extend.tag.register(<span class="string">'pullquote'</span>, <span class="keyword">function</span>(args, content){</div><div class="line">  <span class="keyword">var</span> className = args.length ? <span class="string">' '</span> + args.join(<span class="string">' '</span>) : <span class="string">''</span>;</div><div class="line">  <span class="keyword">return</span> <span class="string">'&lt;blockquote class="pullquote'</span> + className + <span class="string">'"&gt;'</span> + content + <span class="string">'&lt;/blockquote&gt;'</span>;</div><div class="line">}, <span class="literal">true</span>);</div></code></pre>
+<notextile><pre><code>hexo.extend.tag.register(<span class="string">&#39;pullquote&#39;</span>, <span class="keyword">function</span>(args, content){
+  <span class="keyword">var</span> className = args.length ? <span class="string">&#39; &#39;</span> + args.join(<span class="string">&#39; &#39;</span>) : <span class="string">&#39;&#39;</span>;
+  <span class="keyword">return</span> <span class="string">&#39;&lt;blockquote class=&quot;pullquote&#39;</span> + className + <span class="string">&#39;&quot;&gt;&#39;</span> + content + <span class="string">&#39;&lt;/blockquote&gt;&#39;</span>;
+}, <span class="literal">true</span>);
+</code></pre></notextile>
 
 <p><a id="console"></a></p>
 <h2>Console</h2>
 <h3>语法</h3>
-<pre><code><div class="line">hexo.extend.console.register(name, desc, [options], fn);</div></code></pre>
+<notextile><pre><code>hexo.extend.console.register(name, desc, [options], fn);
+</code></pre></notextile>
 
 <ul>
 <li><strong>name</strong> - 名称（小写）</li>
@@ -204,14 +252,19 @@
 </ul>
 <h3>范例</h3>
 <p>执行以下指令时显示网站设定。</p>
-<pre><code><div class="line">hexo config</div></code></pre>
+<notextile><pre><code>hexo config
+</code></pre></notextile>
 
-<pre><code><div class="line">hexo.extend.console.register(<span class="string">'config'</span>, <span class="string">'Display configuration'</span>, <span class="keyword">function</span>(args){</div><div class="line">  console.log(hexo.config);</div><div class="line">});</div></code></pre>
+<notextile><pre><code>hexo.extend.console.register(<span class="string">&#39;config&#39;</span>, <span class="string">&#39;Display configuration&#39;</span>, <span class="keyword">function</span>(args){
+  console.log(hexo.config);
+});
+</code></pre></notextile>
 
 <p><a id="migrator"></a></p>
 <h2>Migrator</h2>
 <h3>语法</h3>
-<pre><code><div class="line">hexo.extend.migrator.register(name, fn);</div></code></pre>
+<notextile><pre><code>hexo.extend.migrator.register(name, fn);
+</code></pre></notextile>
 
 <ul>
 <li><strong>name</strong> - 名称（小写）</li>
@@ -223,7 +276,8 @@
 <h2>发布</h2>
 <p>在发布之前，别忘了先测试。将插件复制至<code>node_modules</code>资料夹内，安装相关模组后，试着实际使用，或进行单元测试。</p>
 <p>当一切测试结束后，执行以下指令，将插件发布至 NPM。</p>
-<pre><code><div class="line"><span class="title">npm</span> publish</div></code></pre>
+<notextile><pre><code>npm publish
+</code></pre></notextile>
 
 <h2>参考</h2>
 <p>你可参考 <a href="https://github.com/tommy351/hexo/tree/master/lib">内建模组</a> 和 <a href="https://github.com/tommy351/hexo-plugins">官方插件</a> 的原始码来制作插件。</p>

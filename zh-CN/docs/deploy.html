@@ -47,7 +47,11 @@
 <h2>GitHub</h2>
 <h3>设定</h3>
 <p>编辑<code>_config.yml</code>。</p>
-<pre><code><div class="line"><span class="method">deploy:</span></div><div class="line">  <span class="method">type:</span> github</div><div class="line">  <span class="method">repository:</span></div><div class="line">  <span class="method">branch:</span></div></code></pre>
+<notextile><pre><code><span class="method">deploy:</span>
+  <span class="method">type:</span> github
+  <span class="method">repository:</span>
+  <span class="method">branch:</span>
+</code></pre></notextile>
 
 <ul>
 <li><strong>repository</strong> - GitHub 的 Repository 网址</li>
@@ -55,15 +59,19 @@
 </ul>
 <h3>部署</h3>
 <p>静态文件生成后，执行下列指令即可完成部署，或可加入 <code>--generate</code> 选项，在部署前自动生成文件。</p>
-<pre><code><div class="line">hexo deploy</div><div class="line">hexo deploy --generate</div></code></pre>
+<notextile><pre><code>hexo deploy
+hexo deploy --generate
+</code></pre></notextile>
 
 <h3>移除</h3>
 <p>执行下列指令移除部署文件。</p>
-<pre><code><div class="line">rm -rf .deploy</div></code></pre>
+<notextile><pre><code>rm -rf .deploy
+</code></pre></notextile>
 
 <h3>自定域名</h3>
 <p>在<code>source</code>文件夹内建立名为<code>CNAME</code>的文件，其内容为：</p>
-<pre><code><div class="line"><span class="filename">example.com</div></code></pre>
+<notextile><pre><code>example.com
+</code></pre></notextile>
 
 <p>请根据你的域名类型设定 DNS。</p>
 <h4>顶级域名 (Top-level domain)</h4>
@@ -74,14 +82,19 @@
 <h2>Heroku</h2>
 <h3>设定</h3>
 <p>编辑 <code>_config.yml</code>。</p>
-<pre><code><div class="line"><span class="title">deploy</span>:</div><div class="line">  <span class="typedef"><span class="keyword">type</span>: heroku</span></div><div class="line">  repository:</div></code></pre>
+<notextile><pre><code><span class="title">deploy</span>:
+  <span class="typedef"><span class="keyword">type</span>: heroku</span>
+  repository:
+</code></pre></notextile>
 
 <ul>
 <li><strong>repository</strong> - Heroku 的 Repository</li>
 </ul>
 <h3>部署</h3>
 <p>静态文件生成后，执行下列指令即可完成部署，或可加入 <code>--generate</code> 选项，在部署前自动生成文件。</p>
-<pre><code><div class="line">hexo deploy</div><div class="line">hexo deploy --generate</div></code></pre>
+<notextile><pre><code>hexo deploy
+hexo deploy --generate
+</code></pre></notextile>
 
 <p>请参考 <a href="https://devcenter.heroku.com/">Heroku</a> 以取得更多资讯。</p>
 <h3>移除</h3>
@@ -89,7 +102,14 @@
 <h2>Rsync</h2>
 <h3>设定</h3>
 <p>编辑<code>_config.yml</code>文件。</p>
-<pre><code><div class="line"><span class="method">deploy:</span></div><div class="line">  <span class="method">type:</span> rsync</div><div class="line">  <span class="method">host:</span></div><div class="line">  <span class="method">user:</span></div><div class="line">  <span class="method">root:</span></div><div class="line">  <span class="method">port:</span></div><div class="line">  <span class="method">delete:</span></div></code></pre>
+<notextile><pre><code><span class="method">deploy:</span>
+  <span class="method">type:</span> rsync
+  <span class="method">host:</span>
+  <span class="method">user:</span>
+  <span class="method">root:</span>
+  <span class="method">port:</span>
+  <span class="method">delete:</span>
+</code></pre></notextile>
 
 <ul>
 <li><strong>host</strong> - 远端主机的位置</li>
@@ -100,7 +120,9 @@
 </ul>
 <h3>部署</h3>
 <p>静态文件生成后，执行下列指令即可完成部署，或可加入 <code>--generate</code> 选项，在部署前自动生成文件。</p>
-<pre><code><div class="line">hexo deploy</div><div class="line">hexo deploy --generate</div></code></pre>
+<notextile><pre><code>hexo deploy
+hexo deploy --generate
+</code></pre></notextile>
 
 </div>
 </article>

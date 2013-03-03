@@ -44,47 +44,65 @@
   <h1 class="title">命令 (CLI)</h1>
   <small>Last updated: Feb 20, 2013</small>
   <div class="entry"><p>显示 Hexo 目前的版本号</p>
-<pre><code><div class="line"><span class="title">hexo</span> version</div></code></pre>
+<pre><code><span class="title">hexo</span> version
+</code></pre>
 <p>建立网站，若<code>folder</code>未定义，则 Hexo 会在目前的资料夹建立网站</p>
-<pre><code><div class="line">hexo init <span class="tag">&lt;<span class="title">folder</span>&gt;</span></div></code></pre>
+<pre><code>hexo init <span class="tag">&lt;<span class="title">folder</span>&gt;</span>
+</code></pre>
 <p>建立新文章</p>
-<pre><code><div class="line">hexo new [layout] <span class="tag">&lt;<span class="title">title</span>&gt;</span></div></code></pre>
+<pre><code>hexo new [layout] <span class="tag">&lt;<span class="title">title</span>&gt;</span>
+</code></pre>
 <p>生成静态文件，使用<code>-t</code>或<code>--theme</code>以忽略主题安装</p>
 <ul>
 <li>-t/--theme：忽略主题安装</li>
 <li>-d/--deploy：生成后自动布局</li>
 <li>-w/--watch：监视文件变更</li>
 </ul>
-<pre><code><div class="line"><span class="title">hexo</span> generate</div><div class="line"><span class="title">hexo</span> generate -t/<span class="comment">--theme</span></div><div class="line"><span class="title">hexo</span> generate -d/<span class="comment">--deploy</span></div><div class="line"><span class="title">hexo</span> generate -w/<span class="comment">--watch</span></div></code></pre>
+<notextile><pre><code><span class="title">hexo</span> generate
+<span class="title">hexo</span> generate -t/<span class="comment">--theme</span>
+<span class="title">hexo</span> generate -d/<span class="comment">--deploy</span>
+<span class="title">hexo</span> generate -w/<span class="comment">--watch</span>
+</code></pre></notextile>
 
 <p>启动服务器，按下<code>Ctrl+C</code>停止服务器</p>
 <ul>
 <li>-p/--port：连接端口设定</li>
 </ul>
-<pre><code><div class="line"><span class="title">hexo</span> server</div><div class="line"><span class="title">hexo</span> server -p <span class="number">12345</span></div></code></pre>
+<notextile><pre><code><span class="title">hexo</span> server
+<span class="title">hexo</span> server -p <span class="number">12345</span>
+</code></pre></notextile>
 
 <p>预览，按下<code>Ctrl+C</code>停止服务器</p>
 <ul>
 <li>-p/--port：连接端口设定</li>
 <li>-w/--watch：监视文件变更</li>
 </ul>
-<pre><code><div class="line"><span class="title">hexo</span> preview</div><div class="line"><span class="title">hexo</span> preview -p <span class="number">12345</span></div></code></pre>
+<notextile><pre><code><span class="title">hexo</span> preview
+<span class="title">hexo</span> preview -p <span class="number">12345</span>
+</code></pre></notextile>
 
 <p>显示网站设定</p>
-<pre><code><div class="line"><span class="title">hexo</span> config</div></code></pre>
+<pre><code><span class="title">hexo</span> config
+</code></pre>
 <p>部署</p>
 <ul>
 <li>--setup：只设定不部署</li>
 <li>--generate：部署前先生成文件</li>
 </ul>
-<pre><code><div class="line"><span class="title">hexo</span> deploy</div><div class="line"><span class="title">hexo</span> deploy <span class="comment">--setup</span></div><div class="line"><span class="title">hexo</span> deploy <span class="comment">--generate</span></div></code></pre>
+<notextile><pre><code><span class="title">hexo</span> deploy
+<span class="title">hexo</span> deploy <span class="comment">--setup</span>
+<span class="title">hexo</span> deploy <span class="comment">--generate</span>
+</code></pre></notextile>
 
 <p>渲染文件</p>
-<pre><code><div class="line">hexo render <span class="tag">&lt;<span class="title">source</span>&gt;</span> <span class="tag">&lt;<span class="title">destination</span>&gt;</span></div></code></pre>
+<pre><code>hexo render <span class="tag">&lt;<span class="title">source</span>&gt;</span> <span class="tag">&lt;<span class="title">destination</span>&gt;</span>
+</code></pre>
 <p>安全模式，此模式下插件不会被载入</p>
-<pre><code><div class="line"><span class="comment">hexo</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">safe</div></code></pre>
+<pre><code><span class="comment">hexo</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">safe
+</code></pre>
 <p>调试模式</p>
-<pre><code><div class="line"><span class="title">hexo</span> --<span class="built_in">debug</span></div></code></pre>
+<pre><code><span class="title">hexo</span> --<span class="built_in">debug</span>
+</code></pre>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

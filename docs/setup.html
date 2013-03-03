@@ -44,16 +44,39 @@
   <h1 class="title">Setup</h1>
   <small>Last updated: Jan 12, 2013</small>
   <div class="entry"><p>After installed, execute the following command in the folder you want. Hexo will build all files you need in the target folder.</p>
-<pre><code><div class="line">hexo init &lt;folder&gt;</div></code></pre>
+<notextile><pre><code>hexo init &lt;folder&gt;
+</code></pre></notextile>
 
 <p>After built, here&#39;s how the folder looks like:</p>
-<pre><code><div class="line">|-- .gitignore</div><div class="line">|-- _config.yml</div><div class="line">|-- package.json</div><div class="line">|-- public</div><div class="line">|-- scaffolds</div><div class="line">|-- scripts</div><div class="line">|-- source</div><div class="line">|   |-- _posts</div><div class="line">        |-- hello-world.md</div><div class="line">|   |-- _drafts</div><div class="line">|-- themes</div><div class="line">    |-- light</div></code></pre>
+<notextile><pre><code>|-- .gitignore
+|-- _config.yml
+|-- package.json
+|-- public
+|-- scaffolds
+|-- scripts
+|-- source
+|   |-- _posts
+        |-- hello-world.md
+|   |-- _drafts
+|-- themes
+    |-- light
+</code></pre></notextile>
 
 <h3>_config.yml</h3>
 <p>Global configuration file.</p>
 <h3>package.json</h3>
 <p>Application data. <strong>Don&#39;t delete it.</strong> If you deleted it unfortunately, rebuild the file with the following content.</p>
-<pre><code><div class="line">{</div><div class="line">  "<span class="attribute">name</span>": <span class="value"><span class="string">"hexo"</span></span>,</div><div class="line">  "<span class="attribute">version</span>": <span class="value"><span class="string">"0.0.1"</span></span>,</div><div class="line">  "<span class="attribute">private</span>": <span class="value"><span class="literal">true</span></span>,</div><div class="line">  "<span class="attribute">engines</span>": <span class="value">{</div><div class="line">    "<span class="attribute">node</span>": <span class="value"><span class="string">"&gt;0.6.0"</span></span>,</div><div class="line">    "<span class="attribute">npm</span>": <span class="value"><span class="string">"&gt;1.1.0"</span></div><div class="line">  }</span></span>,</div><div class="line">  "<span class="attribute">dependencies</span>": <span class="value">{}</div><div class="line">}</span></div></code></pre>
+<notextile><pre><code>{
+  &quot;<span class="attribute">name</span>&quot;: <span class="value"><span class="string">&quot;hexo&quot;</span></span>,
+  &quot;<span class="attribute">version</span>&quot;: <span class="value"><span class="string">&quot;0.0.1&quot;</span></span>,
+  &quot;<span class="attribute">private</span>&quot;: <span class="value"><span class="literal">true</span></span>,
+  &quot;<span class="attribute">engines</span>&quot;: <span class="value">{
+    &quot;<span class="attribute">node</span>&quot;: <span class="value"><span class="string">&quot;&gt;0.6.0&quot;</span></span>,
+    &quot;<span class="attribute">npm</span>&quot;: <span class="value"><span class="string">&quot;&gt;1.1.0&quot;</span>
+  }</span></span>,
+  &quot;<span class="attribute">dependencies</span>&quot;: <span class="value">{}
+}</span>
+</code></pre></notextile>
 
 <h3>public</h3>
 <p>Static file folder.</p>

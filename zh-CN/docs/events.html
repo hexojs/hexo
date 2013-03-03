@@ -46,10 +46,14 @@
   <div class="entry"><p><a href="global-variables.html">全局变量</a> <code>hexo</code> 本身是一个 <a href="http://nodejs.org/api/events.html#events_class_events_eventemitter">EventEmitter</a> 对象，你可直接监听或触发事件。</p>
 <h2>使用</h2>
 <p>监听事件：</p>
-<pre><code><div class="line">hexo.on(<span class="string">'ready'</span>, <span class="keyword">function</span>(){</div><div class="line">  <span class="keyword">...</span></div><div class="line">});</div></code></pre>
+<notextile><pre><code>hexo.on(<span class="string">&#39;ready&#39;</span>, function(){
+  ...
+});
+</code></pre></notextile>
 
 <p>触发事件：</p>
-<pre><code><div class="line"><span class="transposed_variable">hexo.</span>emit(<span class="string">'event'</span>, <span class="matrix">[arg1]</span>, <span class="matrix">[arg2]</span>, <span class="matrix">[….]</span>);</div></code></pre>
+<notextile><pre><code>hexo.emit(<span class="string">&#39;event&#39;</span>, [arg1], [arg2], [….]);
+</code></pre></notextile>
 
 <p><a href="http://nodejs.org/api/events.html#events_class_events_eventemitter">参考</a></p>
 <h2>预设事件</h2>

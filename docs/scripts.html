@@ -48,7 +48,12 @@
 <p>Put a JavaScript file in <code>scripts</code> folder and it will be loaded automatically. File or folder whose name started with <code>.</code> (dot) or <code>_</code> (underscore) will be ignored.</p>
 <h2>Example</h2>
 <p>Open file after the post created.</p>
-<pre><code><div class="line">var spawn = require(<span class="comment">'child_process').spawn;</span></div><br><div class="line">hexo.<span class="keyword">on</span>(<span class="comment">'new', function(){</span></div><div class="line">  spawn(<span class="comment">'open', [target]);</span></div><div class="line">});</div></code></pre>
+<notextile><pre><code><span class="keyword">var</span> spawn = require(<span class="string">&#39;child_process&#39;</span>).spawn;
+
+hexo.on(<span class="string">&#39;new&#39;</span>, <span class="keyword">function</span>(){
+  spawn(<span class="string">&#39;open&#39;</span>, [target]);
+});
+</code></pre></notextile>
 
 <h2>Reference</h2>
 <ul>

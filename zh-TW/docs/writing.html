@@ -46,11 +46,15 @@
   <div class="entry"><h2>基礎</h2>
 <h3>建立</h3>
 <p>執行以下指令。</p>
-<pre><code><div class="line">hexo new [layout] &lt;title&gt;</div></code></pre>
+<notextile><pre><code>hexo new [layout] &lt;title&gt;
+</code></pre></notextile>
 
 <p><code>layout</code> 參數可忽略，預設為 <a href="configure.html">全域設定</a> 的 <code>default_layout</code> 設定。</p>
 <p>標題會被轉為小寫，空白會被轉為連字號，若目標檔名若重複則會在後面加上數字。例如：</p>
-<pre><code><div class="line">hexo <span class="keyword">new</span> <span class="string">"New Post"</span> -&gt; source<span class="regexp">/_posts/</span><span class="keyword">new</span>-post.md</div><div class="line">hexo <span class="keyword">new</span> page <span class="string">"New Page"</span> -&gt; source<span class="regexp">/new-page/i</span>ndex.md</div><div class="line">hexo <span class="keyword">new</span> draft <span class="string">"New Draft"</span> -&gt; source<span class="regexp">/_drafts/</span><span class="keyword">new</span>-draft.md</div></code></pre>
+<notextile><pre><code>hexo new <span class="string">&quot;New Post&quot;</span> -&gt; source/_posts/new-post.md
+hexo new page <span class="string">&quot;New Page&quot;</span> -&gt; source/new-page/index.md
+hexo new draft <span class="string">&quot;New Draft&quot;</span> -&gt; source/_drafts/new-draft.md
+</code></pre></notextile>
 
 <h3>檔案名稱</h3>
 <p>你可在 <a href="configure.html">全域設定</a> 的 <code>new_post_name</code> 設定調整新建檔案的名稱，預設為 <code>:title.md</code>。</p>
@@ -81,10 +85,30 @@
 <li><code>source/_posts/Fruits/Apple/title.md</code> - Fruit, Apple</li>
 </ul>
 <p>分類設定：</p>
-<pre><code><div class="line"><span class="preprocessor"># 單一分類</span></div><div class="line"><span class="label">categories:</span> Fruits</div><br><div class="line"><span class="preprocessor"># 多重分類</span></div><div class="line"><span class="label">categories:</span> Fruits/Apple</div><br><div class="line"><span class="label">categories:</span> [Fruits, Apple]</div><br><div class="line"><span class="label">categories:</span></div><div class="line">- Fruits</div><div class="line">- Apple</div></code></pre>
+<notextile><pre><code><span class="preprocessor"># 單一分類</span>
+<span class="label">categories:</span> Fruits
+
+<span class="preprocessor"># 多重分類</span>
+<span class="label">categories:</span> Fruits/Apple
+
+<span class="label">categories:</span> [Fruits, Apple]
+
+<span class="label">categories:</span>
+- Fruits
+- Apple
+</code></pre></notextile>
 
 <h3>標籤</h3>
-<pre><code><div class="line"><span class="preprocessor"># 單一標籤</span></div><div class="line"><span class="label">tags:</span> Apple</div><br><div class="line"><span class="preprocessor"># 多重標籤</span></div><div class="line"><span class="label">tags:</span> [Apple, Banana]</div><br><div class="line"><span class="label">tags:</span></div><div class="line">- Apple</div><div class="line">- Banana</div></code></pre>
+<notextile><pre><code><span class="preprocessor"># 單一標籤</span>
+<span class="label">tags:</span> Apple
+
+<span class="preprocessor"># 多重標籤</span>
+<span class="label">tags:</span> [Apple, Banana]
+
+<span class="label">tags:</span>
+- Apple
+- Banana
+</code></pre></notextile>
 
 <h2>骨架（Scaffold）</h2>
 <p>骨架（Scaffold）為文章的預設模版，新建文章時會根據骨架（Scaffold）內容建立文章。</p>
@@ -99,7 +123,8 @@ tags:
 
 
 <p>如此一來，輸入</p>
-<pre><code><div class="line"><span class="title">hexo</span> new photo <span class="string">"New Gallery"</span></div></code></pre>
+<notextile><pre><code><span class="title">hexo</span> new photo <span class="string">&quot;New Gallery&quot;</span>
+</code></pre></notextile>
 
 <p>就會根據上面的內容建立新檔案了。</p>
 <h3>使用</h3>

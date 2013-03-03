@@ -72,9 +72,15 @@
 </ul>
 <h3>范例</h3>
 <p>渲染 Markdown 字串。</p>
-<pre><code><div class="line"><span class="transposed_variable">hexo.</span><span class="transposed_variable">render.</span>render(<span class="string">'**bold**'</span>, <span class="string">'md'</span>, <span class="keyword">function</span>(err, content, ext)<span class="cell">{</div><div class="line">    // …</div><div class="line">}</span>);</div></code></pre>
+<pre><code><span class="transposed_variable">hexo.</span><span class="transposed_variable">render.</span>render(<span class="string">'**bold**'</span>, <span class="string">'md'</span>, <span class="keyword">function</span>(err, content, ext)<span class="cell">{
+    // …
+}</span>);
+</code></pre>
 <p>编译 EJS 样板。</p>
-<pre><code><div class="line"><span class="transposed_variable">hexo.</span><span class="transposed_variable">render.</span>compile(<span class="string">'layout.ejs'</span>, <span class="cell">{foo: <span class="number">1</span>, bar: <span class="number">2</span>}</span>, <span class="keyword">function</span>(err, content, ext)<span class="cell">{</div><div class="line">    // …</div><div class="line">}</span>);</div></code></pre>
+<pre><code><span class="transposed_variable">hexo.</span><span class="transposed_variable">render.</span>compile(<span class="string">'layout.ejs'</span>, <span class="cell">{foo: <span class="number">1</span>, bar: <span class="number">2</span>}</span>, <span class="keyword">function</span>(err, content, ext)<span class="cell">{
+    // …
+}</span>);
+</code></pre>
 <h2>内建渲染器</h2>
 <h3>EJS</h3>
 <ul>

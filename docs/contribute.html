@@ -46,7 +46,8 @@
   <div class="entry"><h2>Report Issues</h2>
 <p>You may have found some bugs when using Hexo, or have some questions and recommendations. Feel free to submit them on GitHub.</p>
 <p>You can clone the <strong>dev</strong> branch on GitHub to try the new features. It&#39;s updated everyday!</p>
-<pre><code><div class="line">npm install -g https://github<span class="preprocessor">.com</span>/tommy351/hexo/archive/dev<span class="preprocessor">.tar</span><span class="preprocessor">.gz</span></div></code></pre>
+<notextile><pre><code>npm install -g https:<span class="comment">//github.com/tommy351/hexo/archive/dev.tar.gz</span>
+</code></pre></notextile>
 
 <p><a href="https://github.com/tommy351/hexo/issues">Report an issue</a></p>
 <h2>Write Docs</h2>
@@ -58,10 +59,21 @@
 <li>Submit a pull request to <strong>site</strong> branch</li>
 </ol>
 <p>If you want to help translate the docs, create a new folder in <code>source</code> folder and copy source files into it. For example:</p>
-<pre><code><div class="line">zh-TW</div><div class="line">|-- docs</div><div class="line">|-- index.md</div><div class="line">|-- plugins</div><div class="line">|-- themes</div></code></pre>
+<notextile><pre><code>zh-TW
+|-- docs
+|-- index.md
+|-- plugins
+|-- themes
+</code></pre></notextile>
 
 <p>And add language setting in every posts like this:</p>
-<pre><code><div class="line">---</div><div class="line">layout: page</div><div class="line">title: 貢獻</div><div class="line">lang: zh-TW</div><div class="line">date: 2012-11-01 18:13:30</div><div class="line">---</div></code></pre>
+<notextile><pre><code>---
+layout: page
+title: 貢獻
+lang: zh-TW
+date: 2012-11-01 18:13:30
+---
+</code></pre></notextile>
 
 <p>Please follow the <a href="http://www.w3.org/International/articles/language-tags/">IETF format</a>.</p>
 <p><a href="https://github.com/tommy351/hexo/tree/site">Source code</a></p>

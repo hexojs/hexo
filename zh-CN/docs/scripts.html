@@ -48,12 +48,12 @@
 <p>将 JavaScript 文件放置于<code>scripts</code>文件夹，即会自动载入，文件或文件夹名称开头为<code>_</code>（点）或<code>.</code>（底线）的会被忽略。</p>
 <h2>范例</h2>
 <p>文章建立后，自动开启文件。</p>
-<notextile><pre><code><div class="line">var spawn = require(<span class="comment">&#39;child_process&#39;).spawn;</span>
-</div><div class="line">
-</div><div class="line">hexo.<span class="keyword">on</span>(<span class="comment">&#39;newPost&#39;, function(){</span>
-</div><div class="line">  spawn(<span class="comment">&#39;open&#39;, [target]);</span>
-</div><div class="line">});
-</div></code></pre></notextile>
+<notextile><pre><code>var spawn = require(<span class="comment">&#39;child_process&#39;).spawn;</span>
+
+hexo.<span class="keyword">on</span>(<span class="comment">&#39;newPost&#39;, function(){</span>
+  spawn(<span class="comment">&#39;open&#39;, [target]);</span>
+});
+</code></pre></notextile>
 
 <h2>参考</h2>
 <ul>

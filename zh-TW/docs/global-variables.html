@@ -140,7 +140,8 @@
 <p><a name="i18n"></a></p>
 <h3>i18n</h3>
 <p>i18n 為處理國際化（Internationalization）的模組，使用方式如下：</p>
-<pre><code><div class="line"><span class="keyword">var</span> i18n = <span class="keyword">new</span> hexo.i18n.i18n();</div></code></pre>
+<notextile><pre><code><span class="keyword">var</span> i18n = <span class="keyword">new</span> hexo.i18n.i18n();
+</code></pre></notextile>
 
 <p>i18n 物件擁有以下方法：</p>
 <h4>get</h4>
@@ -189,7 +190,10 @@
 <li><strong>callback</strong> - 回傳函數</li>
 </ul>
 <p><code>call</code> 是用於呼叫其他 Console 外掛的函數，例如：</p>
-<pre><code><div class="line">hexo.call(<span class="string">'generate'</span>, <span class="keyword">function</span>(){</div><div class="line">  <span class="comment">// ...</span></div><div class="line">});</div></code></pre>
+<notextile><pre><code>hexo.call(<span class="string">&#39;generate&#39;</span>, <span class="keyword">function</span>(){
+  <span class="comment">// ...</span>
+});
+</code></pre></notextile>
 
 <p><a name="db"></a></p>
 <h3>db</h3>

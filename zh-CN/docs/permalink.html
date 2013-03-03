@@ -45,7 +45,8 @@
   <small>Last updated: Feb 20, 2013</small>
   <div class="entry"><h2>设定</h2>
 <p>在<code>_config.yml</code>中的<code>permalink</code>栏位设定文章链接，预设值为：</p>
-<pre><code><div class="line">permalink: :year/:month/:day/:title/</div></code></pre>
+<notextile><pre><code>permalink: :year/:month/:day/:title/
+</code></pre></notextile>
 
 <p>在固定连接中可加入以下变量，变量名称前必须拥有<code>:</code>才有效。</p>
 <ul>
@@ -58,10 +59,20 @@
 <p><em>（日期以文章设定中的日期为基准）</em></p>
 <h2>举例</h2>
 <p>假设有一文章名为<code>title.md</code>，放置于<code>source/_posts/foo/bar</code>文件夹，内容为：</p>
-<pre><code><div class="line">---</div><div class="line">title: Post Title</div><div class="line">date: 2012-10-09 14:09:37</div><div class="line">tags:</div><div class="line">- Node.js</div><div class="line">- JavaScript</div><div class="line">---</div></code></pre>
+<notextile><pre><code>---
+title: Post Title
+date: 2012-10-09 14:09:37
+tags:
+- Node.js
+- JavaScript
+---
+</code></pre></notextile>
 
 <p>则结果会是：</p>
-<pre><code><div class="line">:year/:month/:day/:title/ =&gt; /2012/10/09/title/</div><div class="line">:year-:month-:day/:title/ =&gt; /2012-10-09/title/</div><div class="line">:category/:title/ =&gt; /foo/bar/title/</div></code></pre></div>
+<notextile><pre><code>:year/:month/:day/:title/ =&gt; /2012/10/09/title/
+:year-:month-:day/:title/ =&gt; /2012-10-09/title/
+:category/:title/ =&gt; /foo/bar/title/
+</code></pre></notextile></div>
 </article>
       <footer id="footer"><div class="alignleft">
   &copy; 2013 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>

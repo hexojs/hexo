@@ -47,7 +47,11 @@
 <h2>GitHub</h2>
 <h3>Configure</h3>
 <p>Edit <code>_config.yml</code>. Fill <code>repository</code> with GitHub repository. If repository is like <code>username.github.com</code>, fill <code>branch</code> with <code>master</code>, otherwise <code>gh-pages</code>.</p>
-<pre><code><div class="line"><span class="method">deploy:</span></div><div class="line">  <span class="method">type:</span> github</div><div class="line">  <span class="method">repository:</span></div><div class="line">  <span class="method">branch:</span></div></code></pre>
+<notextile><pre><code><span class="method">deploy:</span>
+  <span class="method">type:</span> github
+  <span class="method">repository:</span>
+  <span class="method">branch:</span>
+</code></pre></notextile>
 
 <ul>
 <li><strong>repository</strong> - GitHub repository</li>
@@ -55,15 +59,19 @@
 </ul>
 <h3>Deploy</h3>
 <p>After the static files are generated, execute the following to deploy. You can add <code>--generate</code> option to generate automatically before deploy.</p>
-<pre><code><div class="line">hexo deploy</div><div class="line">hexo deploy --generate</div></code></pre>
+<notextile><pre><code>hexo deploy
+hexo deploy --generate
+</code></pre></notextile>
 
 <h3>Remove</h3>
 <p>Execute the following command to remove deployment.</p>
-<pre><code><div class="line">rm -rf .deploy</div></code></pre>
+<notextile><pre><code>rm -rf .deploy
+</code></pre></notextile>
 
 <h3>Custom Domain</h3>
 <p>Create a file name <code>CNAME</code> in <code>source</code> folder with the following content.</p>
-<pre><code><div class="line"><span class="filename">example.com</div></code></pre>
+<notextile><pre><code>example.com
+</code></pre></notextile>
 
 <p>Configure DNS according to the type of domain.</p>
 <h4>Top-level Domain</h4>
@@ -74,14 +82,19 @@
 <h2>Heroku</h2>
 <h3>Configure</h3>
 <p>Edit <code>_config.yml</code>.</p>
-<pre><code><div class="line"><span class="title">deploy</span>:</div><div class="line">  <span class="typedef"><span class="keyword">type</span>: heroku</span></div><div class="line">  repository:</div></code></pre>
+<notextile><pre><code><span class="title">deploy</span>:
+  <span class="typedef"><span class="keyword">type</span>: heroku</span>
+  repository:
+</code></pre></notextile>
 
 <ul>
 <li><strong>repository</strong> - Heroku repository</li>
 </ul>
 <h3>Deploy</h3>
 <p>After the static files are generated, execute the following to deploy. You can add <code>--generate</code> option to generate automatically before deploy.</p>
-<pre><code><div class="line">hexo deploy</div><div class="line">hexo deploy --generate</div></code></pre>
+<notextile><pre><code>hexo deploy
+hexo deploy --generate
+</code></pre></notextile>
 
 <p>Check <a href="https://devcenter.heroku.com/">Heroku</a> for more info.</p>
 <h3>Remove</h3>
@@ -89,7 +102,14 @@
 <h2>Rsync</h2>
 <h3>Configure</h3>
 <p>Edit<code>_config.yml</code>.</p>
-<pre><code><div class="line"><span class="method">deploy:</span></div><div class="line">  <span class="method">type:</span> rsync</div><div class="line">  <span class="method">host:</span></div><div class="line">  <span class="method">user:</span></div><div class="line">  <span class="method">root:</span></div><div class="line">  <span class="method">port:</span></div><div class="line">  <span class="method">delete:</span></div></code></pre>
+<notextile><pre><code><span class="method">deploy:</span>
+  <span class="method">type:</span> rsync
+  <span class="method">host:</span>
+  <span class="method">user:</span>
+  <span class="method">root:</span>
+  <span class="method">port:</span>
+  <span class="method">delete:</span>
+</code></pre></notextile>
 
 <ul>
 <li><strong>host</strong> - Address of remote host</li>
@@ -100,7 +120,9 @@
 </ul>
 <h3>Deploy</h3>
 <p>After the static files are generated, execute the following to deploy. You can add <code>--generate</code> option to generate automatically before deploy.</p>
-<pre><code><div class="line">hexo deploy</div><div class="line">hexo deploy --generate</div></code></pre>
+<notextile><pre><code>hexo deploy
+hexo deploy --generate
+</code></pre></notextile>
 
 </div>
 </article>

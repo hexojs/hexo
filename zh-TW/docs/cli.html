@@ -44,38 +44,48 @@
   <h1 class="title">命令列介面 (CLI)</h1>
   <small>Last updated: Mar 2, 2013</small>
   <div class="entry"><p>顯示 Hexo 目前的版本號</p>
-<pre><code><div class="line"><span class="title">hexo</span> version</div></code></pre>
+<pre><code><span class="title">hexo</span> version
+</code></pre>
 <p>建立網站，若<code>folder</code>未定義，則 Hexo 會在目前的資料夾建立網站</p>
-<pre><code><div class="line"><span class="title">hexo</span> init [folder]</div></code></pre>
+<pre><code><span class="title">hexo</span> init [folder]
+</code></pre>
 <p>建立新文章</p>
-<pre><code><div class="line">hexo new [layout] <span class="tag">&lt;<span class="title">title</span>&gt;</span></div></code></pre>
+<pre><code>hexo new [layout] <span class="tag">&lt;<span class="title">title</span>&gt;</span>
+</code></pre>
 <p>生成靜態檔案，使用<code>-t</code>或<code>--theme</code>以忽略主題安裝</p>
 <ul>
 <li>-d/--deploy：生成後自動佈署</li>
 <li>-w/--watch：監視檔案變更</li>
 </ul>
-<pre><code><div class="line"><span class="title">hexo</span> generate</div></code></pre>
+<notextile><pre><code>hexo generate
+</code></pre></notextile>
 
 <p>啟動伺服器，按下<code>Ctrl+C</code>停止伺服器</p>
 <ul>
 <li>-p/--port：連接埠設定</li>
 <li>-s/--static：僅處理靜態檔案</li>
 </ul>
-<pre><code><div class="line"><span class="title">hexo</span> server</div><div class="line"><span class="title">hexo</span> server -p <span class="number">12345</span></div></code></pre>
+<notextile><pre><code>hexo server
+hexo server -p 12345
+</code></pre></notextile>
 
 <p>顯示網站設定</p>
-<pre><code><div class="line"><span class="title">hexo</span> config</div></code></pre>
+<pre><code><span class="title">hexo</span> config
+</code></pre>
 <p>佈署</p>
 <ul>
 <li>--setup：只設定不佈署</li>
 <li>--generate：佈署前先生成檔案</li>
 </ul>
-<pre><code><div class="line"><span class="title">hexo</span> deploy</div></code></pre>
+<notextile><pre><code>hexo deploy
+</code></pre></notextile>
 
 <p>安全模式，此模式下外掛不會被載入</p>
-<pre><code><div class="line"><span class="comment">hexo</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">safe</div></code></pre>
+<pre><code><span class="comment">hexo</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">safe
+</code></pre>
 <p>除錯模式</p>
-<pre><code><div class="line"><span class="title">hexo</span> --<span class="built_in">debug</span></div></code></pre>
+<pre><code><span class="title">hexo</span> --<span class="built_in">debug</span>
+</code></pre>
 </div>
 </article>
       <footer id="footer"><div class="alignleft">

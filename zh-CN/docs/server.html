@@ -46,24 +46,32 @@
   <div class="entry"><h2>内建服务器</h2>
 <p>Hexo 使用 <a href="https://github.com/senchalabs/connect">Connect</a> 作为静态文件的服务器。</p>
 <p>编辑<code>_config.yml</code>中的<code>port</code>栏位调整服务器的连接端口。</p>
-<pre><code><div class="line"><span class="attribute">port</span>: <span class="string">4000</span></div></code></pre>
+<notextile><pre><code><span class="attribute">port</span>: <span class="string">4000</span>
+</code></pre></notextile>
 
 <p>执行以下命令启动服务器，按下<code>Ctrl+C</code>关闭服务器。加入 <code>-p/--port</code> 选项设定连接端口。</p>
-<pre><code><div class="line">hexo server</div><div class="line">hexo server -p 12345</div></code></pre>
+<notextile><pre><code>hexo server
+hexo server -p 12345
+</code></pre></notextile>
 
 <h3>记录器</h3>
 <p>编辑<code>_config.yml</code>中的<code>logger</code>栏位启动记录器。编辑<code>logger_format</code>栏位可调整记录的显示内容，参考 <a href="http://www.senchalabs.org/connect/logger.html">Connect</a> 以获得更多资讯。</p>
-<pre><code><div class="line"><span class="attribute">logger</span>: <span class="string">true</span></div><div class="line"><span class="attribute">logger_format:</div></code></pre>
+<notextile><pre><code><span class="attribute">logger</span>: <span class="string">true</span>
+<span class="attribute">logger_format:
+</code></pre></notextile>
 
 <h2>Pow</h2>
 <p><a href="http://pow.cx/">Pow</a> 是由 Node.js 所建立的 Mac 环境专用的零配置 Rack 服务器，不过它也能用于处理一般的静态文件。</p>
 <h3>安装</h3>
 <p>执行以下命令即可完成安装。</p>
-<pre><code><div class="line">curl get.pow.cx | sh</div></code></pre>
+<notextile><pre><code>curl get.pow.cx | sh
+</code></pre></notextile>
 
 <h3>使用</h3>
 <p>在<code>~/.pow</code>建立链接即可使用。</p>
-<pre><code><div class="line">cd ~/.pow</div><div class="line">ln -s /path/to/myapp</div></code></pre>
+<notextile><pre><code>cd ~/.pow
+ln -s /path/to/myapp
+</code></pre></notextile>
 
 <p>完成后，网站即会出现在<code>http://myapp.dev</code>，网址根据链接名称而有所不同。</p>
 <p>参考 <a href="http://pow.cx/manual.html">Pow</a> 以获得更多资讯。</p>
