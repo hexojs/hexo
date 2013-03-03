@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo - Contribute</title>
+  <title>Hexo - Events</title>
   <meta name="descripton" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
 
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
@@ -46,13 +46,13 @@
   <div class="entry"><p><a href="global-variables.html">Global variable</a> <code>hexo</code> itself is a <a href="http://nodejs.org/api/events.html#events_class_events_eventemitter">EventEmitter</a> object. You can listen or emit events.</p>
 <h2>Usage</h2>
 <p>Listen an event:</p>
-<notextile><pre><code>hexo.on(<span class="string">&#39;ready&#39;</span>, function(){
+<notextile><pre><code>hexo.on(&#39;ready&#39;, function(){
   ...
 });
 </code></pre></notextile>
 
 <p>Emit an event:</p>
-<notextile><pre><code>hexo.emit(<span class="string">&#39;event&#39;</span>, [arg1], [arg2], [….]);
+<notextile><pre><code>hexo.emit(&#39;event&#39;, [arg1], [arg2], [….]);
 </code></pre></notextile>
 
 <p><a href="http://nodejs.org/api/events.html#events_class_events_eventemitter">Reference</a></p>

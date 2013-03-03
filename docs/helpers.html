@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo - Contribute</title>
+  <title>Hexo - Helpers</title>
   <meta name="descripton" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
 
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
@@ -42,7 +42,7 @@
 
 <article class="page">
   <h1 class="title">Helpers</h1>
-  <small>Last updated: Jan 7, 2013</small>
+  <small>Last updated: Mar 3, 2013</small>
   <div class="entry"><p>Helpers help you transform data into HTML string in templates, making it easier to develop a theme. The following is built-in helpers. (EJS syntax)</p>
 <h3>css</h3>
 <p>Loads a CSS file.</p>
@@ -74,15 +74,6 @@
 <notextile><pre><code>&lt;%- titlecase(string) %&gt;
 </code></pre></notextile>
 
-<h3>render</h3>
-<p>Uses a specific <a href="render.html">render engine</a> (<code>engine</code>) to render contents. Use <code>locals</code> to define local variables.</p>
-<notextile><pre><code>&lt;%- render(string, engine, [locals]) %&gt;
-</code></pre></notextile>
-
-<p>e.g. Render Markdown.</p>
-<notextile><pre><code>&lt;%- render(<span class="string">&#39;<strong>bold</strong>&#39;</span>, <span class="string">&#39;md&#39;</span>) %&gt;
-</code></pre></notextile>
-
 <h3>partial</h3>
 <p>Loads other template. Use <code>locals</code> to define local variables. (Same as <a href="https://github.com/publicclass/express-partials">express-partials</a>)</p>
 <notextile><pre><code>&lt;%- partial(layout, [locals]) %&gt;
@@ -106,9 +97,9 @@
 <notextile><pre><code>{
   min_font: 10,
   max_font: 20,
-  unit: <span class="string">&#39;px&#39;</span>,
+  unit: &#39;px&#39;,
   amount: 40,
-  orderby: <span class="string">&#39;name&#39;</span>,
+  orderby: &#39;name&#39;,
   order: 1
 }
 </code></pre></notextile>
@@ -134,17 +125,17 @@
 </ul>
 <p><strong>Default:</strong></p>
 <notextile><pre><code>{
-  base: <span class="string">&#39;/&#39;</span>,
-  format: <span class="string">&#39;page/%d/&#39;</span>,
+  base: &#39;/&#39;,
+  format: &#39;page/%d/&#39;,
   total: 1,
   current: 0,
-  prev_text: <span class="string">&#39;Prev&#39;</span>,
-  next_text: <span class="string">&#39;Next&#39;</span>,
-  space: <span class="string">&#39;&hellp;&#39;</span>,
-  prev_next: <span class="literal">true</span>,
+  prev_text: &#39;Prev&#39;,
+  next_text: &#39;Next&#39;,
+  space: &#39;&hellp;&#39;,
+  prev_next: true,
   end_size: 1,
   mid_size: 2,
-  show_all: <span class="literal">false</span>
+  show_all: false
 }
 </code></pre></notextile>
 

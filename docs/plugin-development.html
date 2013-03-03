@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo - Contribute</title>
+  <title>Hexo - Plugin Development</title>
   <meta name="descripton" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
 
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
@@ -42,7 +42,7 @@
 
 <article class="page">
   <h1 class="title">Plugin Development</h1>
-  <small>Last updated: Mar 2, 2013</small>
+  <small>Last updated: Mar 3, 2013</small>
   <div class="entry"><p>There&#39;re 8 sorts of plugins:</p>
 <ul>
 <li><a href="#generator">Generator</a> - Generates static files</li>
@@ -126,19 +126,13 @@ hexo.extend.renderer.register(<span class="string">&#39;styl&#39;</span>, <span 
 <p><a name="helper"></a></p>
 <h2>Helper</h2>
 <h3>Syntax</h3>
-<notextile><pre><code>hexo.extend.helper.register(name, fn);
+<notextile><pre><code>hexo.extend.helper.register();
 </code></pre></notextile>
 
-<ul>
-<li><strong>tag</strong> - Name (lowercase)</li>
-<li><strong>fn</strong> - Should return a function</li>
-</ul>
 <h3>Example</h3>
 <p>Inserts a JavaScript file.</p>
-<notextile><pre><code>hexo.extend.helper.register(<span class="string">&#39;js&#39;</span>, <span class="keyword">function</span>(){
-  <span class="keyword">return</span> <span class="keyword">function</span>(path){
-    <span class="keyword">return</span> <span class="string">&#39;&lt;script type=&quot;text/javascript&quot; src=&quot;&#39;</span> + path + <span class="string">&#39;&quot;&gt;&lt;/script&gt;&#39;</span>;
-  }
+<notextile><pre><code>hexo.extend.helper.register(<span class="string">&#39;js&#39;</span>, <span class="keyword">function</span>(path){
+  <span class="keyword">return</span> <span class="string">&#39;&lt;script type=&quot;text/javascript&quot; src=&quot;&#39;</span> + path + <span class="string">&#39;&quot;&gt;&lt;/script&gt;&#39;</span>;
 });
 </code></pre></notextile>
 

@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/plugin-development.html</loc>
+    <lastmod>2013-03-03T15:00:16.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/docs/plugin-development.html</loc>
+    <lastmod>2013-03-03T15:00:00.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/docs/helpers.html</loc>
+    <lastmod>2013-03-03T14:59:32.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-TW/docs/helpers.html</loc>
+    <lastmod>2013-03-03T14:59:19.000Z</lastmod>
+  </url>
+  <url>
     <loc>http://zespia.tw/hexo/zh-TW/docs/install.html</loc>
     <lastmod>2013-03-03T02:27:24.000Z</lastmod>
   </url>
@@ -35,14 +51,6 @@
   <url>
     <loc>http://zespia.tw/hexo/zh-TW/docs/render.html</loc>
     <lastmod>2013-03-01T17:55:31.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/docs/plugin-development.html</loc>
-    <lastmod>2013-03-01T17:51:31.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/plugin-development.html</loc>
-    <lastmod>2013-03-01T17:50:41.000Z</lastmod>
   </url>
   <url>
     <loc>http://zespia.tw/hexo/zh-TW/docs/global-variables.html</loc>
@@ -87,14 +95,6 @@
   <url>
     <loc>http://zespia.tw/hexo/zh-TW/docs/configure.html</loc>
     <lastmod>2013-02-28T14:44:42.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/zh-CN/docs/migrate.html</loc>
-    <lastmod>2013-02-20T14:55:34.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/zh-CN/docs/collection.html</loc>
-    <lastmod>2013-02-20T14:55:34.000Z</lastmod>
   </url>
   <url>
     <loc>http://zespia.tw/hexo/zh-CN/docs/configure.html</loc>
@@ -177,6 +177,14 @@
     <lastmod>2013-02-20T14:55:34.000Z</lastmod>
   </url>
   <url>
+    <loc>http://zespia.tw/hexo/zh-CN/docs/migrate.html</loc>
+    <lastmod>2013-02-20T14:55:34.000Z</lastmod>
+  </url>
+  <url>
+    <loc>http://zespia.tw/hexo/zh-CN/docs/collection.html</loc>
+    <lastmod>2013-02-20T14:55:34.000Z</lastmod>
+  </url>
+  <url>
     <loc>http://zespia.tw/hexo/docs/configure.html</loc>
     <lastmod>2013-02-07T02:22:19.000Z</lastmod>
   </url>
@@ -239,14 +247,6 @@
   <url>
     <loc>http://zespia.tw/hexo/index.html</loc>
     <lastmod>2013-01-12T03:54:10.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/zh-TW/docs/helpers.html</loc>
-    <lastmod>2013-01-07T13:59:25.000Z</lastmod>
-  </url>
-  <url>
-    <loc>http://zespia.tw/hexo/docs/helpers.html</loc>
-    <lastmod>2013-01-07T13:57:33.000Z</lastmod>
   </url>
   <url>
     <loc>http://zespia.tw/hexo/docs/tag-plugins.html</loc>

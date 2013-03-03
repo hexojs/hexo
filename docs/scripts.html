@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Hexo - Contribute</title>
+  <title>Hexo - Scripts</title>
   <meta name="descripton" content="A fast, simple &amp; powerful blog framework, powered by Node.js.">
 
   <link rel="stylesheet" href="/hexo/css/style.css" media="screen" type="text/css">
@@ -48,9 +48,9 @@
 <p>Put a JavaScript file in <code>scripts</code> folder and it will be loaded automatically. File or folder whose name started with <code>.</code> (dot) or <code>_</code> (underscore) will be ignored.</p>
 <h2>Example</h2>
 <p>Open file after the post created.</p>
-<notextile><pre><code><span class="keyword">var</span> spawn = require(<span class="string">&#39;child_process&#39;</span>).spawn;
+<notextile><pre><code>var spawn = require(<span class="string">&#39;child_process&#39;</span>).spawn;
 
-hexo.on(<span class="string">&#39;new&#39;</span>, <span class="keyword">function</span>(){
+hexo.on(<span class="string">&#39;new&#39;</span>, function(){
   spawn(<span class="string">&#39;open&#39;</span>, [target]);
 });
 </code></pre></notextile>
