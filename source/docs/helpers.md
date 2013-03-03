@@ -54,20 +54,6 @@ Transforms a string into proper title capitalization.
 <%- titlecase(string) %>
 ```
 
-### render
-
-Uses a specific [render engine][2] (`engine`) to render contents. Use `locals` to define local variables.
-
-```
-<%- render(string, engine, [locals]) %>
-```
-
-e.g. Render Markdown.
-
-```
-<%- render('**bold**', 'md') %>
-```
-
 ### partial
 
 Loads other template. Use `locals` to define local variables. (Same as [express-partials][1])

@@ -97,21 +97,16 @@ hexo.extend.renderer.register('styl', 'css', function(data,  callback){
 ### 語法
 
 ``` js
-hexo.extend.helper.register(name, fn);
+hexo.extend.helper.register();
 ```
-
-- **name** - 名稱（小寫）
-- **fn** - 應傳回一函數
 
 ### 舉例
 
 插入 JavaScript 檔案。
 
 ``` js
-hexo.extend.helper.register('js', function(){
-  return function(path){
-    return '<script type="text/javascript" src="' + path + '"></script>';
-  }
+hexo.extend.helper.register('js', function(path){
+  return '<script type="text/javascript" src="' + path + '"></script>';
 });
 ```
 

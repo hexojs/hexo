@@ -55,20 +55,6 @@ date: 2012-11-01 18:13:30
 <%- titlecase(string) %>
 ```
 
-### render
-
-使用指定的[渲染引擎][2]（`engine`）渲染內容，可使用`locals`指定區域變數。
-
-```
-<%- render(string, engine, [locals]) %>
-```
-
-例如：使用Markdown渲染。
-
-```
-<%- render('**bold**', 'md') %>
-```
-
 ### partial
 
 載入其他樣版。`layout`為樣版的相對路徑；可使用`locals`指定區域變數。（使用方法與 [express-partials][1] 相同）

@@ -96,21 +96,16 @@ hexo.extend.renderer.register('styl', 'css', function(data,  callback){
 ### Syntax
 
 ``` js
-hexo.extend.helper.register(name, fn);
+hexo.extend.helper.register();
 ```
-
-- **tag** - Name (lowercase)
-- **fn** - Should return a function
 
 ### Example
 
 Inserts a JavaScript file.
 
 ``` js
-hexo.extend.helper.register('js', function(){
-  return function(path){
-    return '<script type="text/javascript" src="' + path + '"></script>';
-  }
+hexo.extend.helper.register('js', function(path){
+  return '<script type="text/javascript" src="' + path + '"></script>';
 });
 ```
 
