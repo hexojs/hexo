@@ -69,7 +69,7 @@ After the installation is done, add the following content in `~/.bash_profile` o
 Then you can install Node.js with [nvm][4]. It takes time to compile. Be patiently.
 
 ``` bash
-nvm install v0.8
+nvm install 0.8
 ```
 
 ### Hexo
@@ -116,7 +116,7 @@ After the installation is done, add the following content in `~/.bash_profile` o
 Then you can install Node.js with [nvm][4]. It takes time to compile. Be patiently.
 
 ``` bash
-nvm install v0.8
+nvm install 0.8
 ```
 
 ### Hexo
