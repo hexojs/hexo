@@ -42,21 +42,17 @@ rm -rf .deploy
 
 ### 自定域名
 
-在`source`文件夹内建立名为`CNAME`的文件，其内容为：
-
-```
-example.com
-```
+在`source`文件夹内建立名为`CNAME`的文件。
 
 请根据你的域名类型设定DNS。
 
 #### 顶级域名 (Top-level domain)
 
-若域名类似`example.com`，则加入 **A 记录 (A record)** `204.232.175.78`。
+若域名类似`example.com`，则加入 **A 记录 (A record)** `204.232.175.78`。`CNAME`文件内容为`example.com`。
 
 #### 子域名 (Subdomain)
 
-若域名类似`username.example.com`，则加入 **CNAME 记录 (CNAME record)** `username.github.com`。
+若域名类似`username.example.com`，则加入 **CNAME 记录 (CNAME record)** `username.github.com`。`CNAME`文件内容为`username.example.com`。
 
 请参考 [GitHub Pages][1] 以取得更多资讯。
 
