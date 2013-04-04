@@ -53,7 +53,7 @@ exclude_generator:
 - archive
 
 # Enhancement
-auto_spacing: true
+auto_spacing: false
 titlecase: false
 highlight:
   enable: true
