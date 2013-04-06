@@ -42,51 +42,61 @@
 
 <article class="page">
   <h1 class="title">Command-line Interface (CLI)</h1>
-  <small>Last updated: Mar 2, 2013</small>
+  <small>Last updated: Apr 6, 2013</small>
   <div class="entry"><p>Display current version of Hexo</p>
-<pre><code><span class="title">hexo</span> version
+<pre><code>hexo version
 </code></pre>
+
 <p>Setup website. If <code>folder</code> is not defined, Hexo will setup website at current directory.</p>
-<pre><code><span class="title">hexo</span> init [folder]
+<pre><code>hexo init [folder]
 </code></pre>
+
 <p>Create a new article</p>
-<pre><code>hexo new [layout] <span class="tag">&lt;<span class="title">title</span>&gt;</span>
+<pre><code>hexo new [layout] &lt;title&gt;
 </code></pre>
+
 <p>Generate static files.</p>
 <ul>
 <li>-d/--deploy: Deploy automatically after generate</li>
 <li>-w/--watch: Watch file changes</li>
 </ul>
-<notextile><pre><code>hexo generate
-</code></pre></notextile>
+<pre><code>hexo generate
+</code></pre>
 
 <p>Start server. Press <code>Ctrl+C</code> to stop it.</p>
 <ul>
 <li>-p/--port: Port setting</li>
 <li>-s/--static: Only serve static files</li>
 </ul>
-<notextile><pre><code>hexo server
-hexo server -p 12345
-</code></pre></notextile>
+<pre><code>hexo server
+</code></pre>
 
 <p>Display configuration of the site</p>
-<pre><code><span class="title">hexo</span> config
+<pre><code>hexo config
 </code></pre>
+
 <p>Deploy</p>
 <ul>
 <li>--setup: Setup without deployment</li>
 <li>--generate: Generate before deployment</li>
 </ul>
-<notextile><pre><code>hexo deploy
-</code></pre></notextile>
+<pre><code>hexo deploy
+</code></pre>
+
+<p>Render</p>
+<ul>
+<li>-o/--output: Output path</li>
+</ul>
+<pre><code>hexo render
+</code></pre>
 
 <p>Safe mode. Plugins will not be loaded in this mode.</p>
-<pre><code><span class="comment">hexo</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">safe
+<pre><code>hexo --safe
 </code></pre>
+
 <p>Debug mode.</p>
-<pre><code><span class="title">hexo</span> --<span class="built_in">debug</span>
-</code></pre>
-</div>
+<pre><code>hexo --debug
+</code></pre></div>
 </article>
       <footer id="footer"><div class="alignleft">
   &copy; 2013 <a href="http://zespia.tw" target="_blank">SkyArrow</a><br>

@@ -42,59 +42,56 @@
 
 <article class="page">
   <h1 class="title">部署</h1>
-  <small>Last updated: Feb 20, 2013</small>
+  <small>Last updated: Apr 4, 2013</small>
   <div class="entry"><p>Hexo 的部署非常简单，仅需一个指令即可完成所有设定。</p>
 <h2>GitHub</h2>
 <h3>设定</h3>
 <p>编辑<code>_config.yml</code>。</p>
-<notextile><pre><code><span class="method">deploy:</span>
+<pre><code><span class="method">deploy:</span>
   <span class="method">type:</span> github
   <span class="method">repository:</span>
   <span class="method">branch:</span>
-</code></pre></notextile>
+</code></pre>
 
 <ul>
-<li><strong>repository</strong> - GitHub 的 Repository 网址</li>
-<li><strong>branch</strong> - 若 Repository 类似<code>username.github.com</code>，则填入<code>master</code>，否则填入<code>gh-pages</code></li>
+<li><strong>repository</strong> - GitHub的Repository网址</li>
+<li><strong>branch</strong> - 若 Repository类似<code>username.github.com</code>，则填入<code>master</code>，否则填入<code>gh-pages</code></li>
 </ul>
 <h3>部署</h3>
 <p>静态文件生成后，执行下列指令即可完成部署，或可加入 <code>--generate</code> 选项，在部署前自动生成文件。</p>
-<notextile><pre><code>hexo deploy
+<pre><code>hexo deploy
 hexo deploy --generate
-</code></pre></notextile>
+</code></pre>
 
 <h3>移除</h3>
 <p>执行下列指令移除部署文件。</p>
-<notextile><pre><code>rm -rf .deploy
-</code></pre></notextile>
+<pre><code>rm -rf .deploy
+</code></pre>
 
 <h3>自定域名</h3>
-<p>在<code>source</code>文件夹内建立名为<code>CNAME</code>的文件，其内容为：</p>
-<notextile><pre><code>example.com
-</code></pre></notextile>
-
-<p>请根据你的域名类型设定 DNS。</p>
+<p>在<code>source</code>文件夹内建立名为<code>CNAME</code>的文件。</p>
+<p>请根据你的域名类型设定DNS。</p>
 <h4>顶级域名 (Top-level domain)</h4>
-<p>若域名类似<code>example.com</code>，则加入 <strong>A 记录 (A record)</strong> <code>204.232.175.78</code>。</p>
+<p>若域名类似<code>example.com</code>，则加入 <strong>A 记录 (A record)</strong> <code>204.232.175.78</code>。<code>CNAME</code>文件内容为<code>example.com</code>。</p>
 <h4>子域名 (Subdomain)</h4>
-<p>若域名类似<code>username.example.com</code>，则加入 <strong>CNAME 记录 (CNAME record)</strong> <code>username.github.com</code>。</p>
+<p>若域名类似<code>username.example.com</code>，则加入 <strong>CNAME 记录 (CNAME record)</strong> <code>username.github.com</code>。<code>CNAME</code>文件内容为<code>username.example.com</code>。</p>
 <p>请参考 <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages">GitHub Pages</a> 以取得更多资讯。</p>
 <h2>Heroku</h2>
 <h3>设定</h3>
 <p>编辑 <code>_config.yml</code>。</p>
-<notextile><pre><code><span class="title">deploy</span>:
+<pre><code><span class="title">deploy</span>:
   <span class="typedef"><span class="keyword">type</span>: heroku</span>
   repository:
-</code></pre></notextile>
+</code></pre>
 
 <ul>
-<li><strong>repository</strong> - Heroku 的 Repository</li>
+<li><strong>repository</strong> - Heroku的Repository</li>
 </ul>
 <h3>部署</h3>
 <p>静态文件生成后，执行下列指令即可完成部署，或可加入 <code>--generate</code> 选项，在部署前自动生成文件。</p>
-<notextile><pre><code>hexo deploy
+<pre><code>hexo deploy
 hexo deploy --generate
-</code></pre></notextile>
+</code></pre>
 
 <p>请参考 <a href="https://devcenter.heroku.com/">Heroku</a> 以取得更多资讯。</p>
 <h3>移除</h3>
@@ -102,14 +99,14 @@ hexo deploy --generate
 <h2>Rsync</h2>
 <h3>设定</h3>
 <p>编辑<code>_config.yml</code>文件。</p>
-<notextile><pre><code><span class="method">deploy:</span>
+<pre><code><span class="method">deploy:</span>
   <span class="method">type:</span> rsync
   <span class="method">host:</span>
   <span class="method">user:</span>
   <span class="method">root:</span>
   <span class="method">port:</span>
   <span class="method">delete:</span>
-</code></pre></notextile>
+</code></pre>
 
 <ul>
 <li><strong>host</strong> - 远端主机的位置</li>
@@ -120,9 +117,9 @@ hexo deploy --generate
 </ul>
 <h3>部署</h3>
 <p>静态文件生成后，执行下列指令即可完成部署，或可加入 <code>--generate</code> 选项，在部署前自动生成文件。</p>
-<notextile><pre><code>hexo deploy
+<pre><code>hexo deploy
 hexo deploy --generate
-</code></pre></notextile>
+</code></pre>
 
 </div>
 </article>

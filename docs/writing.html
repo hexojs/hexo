@@ -42,21 +42,18 @@
 
 <article class="page">
   <h1 class="title">Writing</h1>
-  <small>Last updated: Jan 18, 2013</small>
-  <div class="entry"><h2>Basic</h2>
-<h3>Create</h3>
+  <small>Last updated: Apr 4, 2013</small>
+  <div class="entry"><h2>Create</h2>
 <p>Execute the following command.</p>
-<notextile><pre><code>hexo new [layout] &lt;title&gt;
-</code></pre></notextile>
-
+<pre><code>hexo new [layout] <span class="tag">&lt;<span class="title">title</span>&gt;</span>
+</code></pre>
 <p><code>layout</code> is optional. Default is <code>default_layout</code> setting in <a href="configure.html">global configuration</a>.</p>
-<p>The title will be transform into lower case. Spaces will be replaced with dash. If the target file exists, adding number after the filename. For example:</p>
-<notextile><pre><code>hexo new <span class="string">&quot;New Post&quot;</span> -&gt; source/_posts/new-post.md
-hexo new page <span class="string">&quot;New Page&quot;</span> -&gt; source/new-page/index.md
-hexo new draft <span class="string">&quot;New Draft&quot;</span> -&gt; source/_drafts/new-draft.md
-</code></pre></notextile>
+<pre><code>hexo new "New Post" -&gt; source/_posts/new-post.md
+hexo new page "New Page" -&gt; source/new-page/index.md
+hexo new draft "New Draft" -&gt; source/_drafts/new-draft.md
+</code></pre>
 
-<h3>Filename</h3>
+<h3>File name</h3>
 <p>You can configure the name of new files by editing <code>new_post_name</code> setting in <a href="configure.html">global configuration</a>. Default is <code>:title.md</code>.</p>
 <ul>
 <li><code>:title</code> - Article title (Default URL of the article)</li>
@@ -65,19 +62,19 @@ hexo new draft <span class="string">&quot;New Draft&quot;</span> -&gt; source/_d
 <li><code>:day</code> - Published date (2-digit)</li>
 </ul>
 <p>To make files sorted by date, you can set it to <code>:year-:month-:day-:title.md</code>.</p>
-<h3>Configure</h3>
+<h2>Configure</h2>
 <p>The beginning of article is a block wrapped with <code>---</code>, called <a href="https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter">YAML Front Matter</a>. You can use YAML to configure posts.</p>
 <ul>
 <li><strong>layout</strong> - Layout (Optional)</li>
 <li><strong>title</strong> - Title</li>
-<li><strong>date</strong> - Published date</li>
-<li><strong>updated</strong> - Last updated date (Optional)</li>
+<li><strong>date</strong> - Published date (Created date of the file by default)</li>
+<li><strong>updated</strong> - Last updated date (Optional. Last modified date of the file by default)</li>
 <li><strong>comments</strong> - Whether to enable comment (Optional. Enabled by default)</li>
 <li><strong>tags</strong> - Tags (Optional. Not availiable for page)</li>
 <li><strong>categories</strong> - Categories (Optional. Not availiable for page)</li>
 <li><strong>permalink</strong> - Override default URL (Optional)</li>
 </ul>
-<h3>Categories</h3>
+<h2>Categories</h2>
 <p>Category is the relative path to <code>source/_posts</code>. It&#39;s hierarchical. You can add <code>categories</code> property in the file. Its content will be added after the original categories. For example:</p>
 <p>For example:</p>
 <ul>
@@ -85,8 +82,7 @@ hexo new draft <span class="string">&quot;New Draft&quot;</span> -&gt; source/_d
 <li><code>source/_posts/Fruits/title.md</code> - Fruit</li>
 <li><code>source/_posts/Fruits/Apple/title.md</code> - Fruit, Apple</li>
 </ul>
-<p>Categories settings:</p>
-<notextile><pre><code><span class="preprocessor"># Single category</span>
+<pre><code><span class="preprocessor"># Single category</span>
 <span class="label">categories:</span> Fruits
 
 <span class="preprocessor"># Multiple categories</span>
@@ -97,10 +93,21 @@ hexo new draft <span class="string">&quot;New Draft&quot;</span> -&gt; source/_d
 <span class="label">categories:</span>
 - Fruits
 - Apple
-</code></pre></notextile>
+</code></pre>
 
-<h3>Tags</h3>
-<notextile><pre><code><span class="preprocessor"># Single tag</span>
+<h3>Category Slug</h3>
+<p>You can configure category slug by editing <code>categories_map</code> in <a href="configure.html">global configuration</a>. For example:</p>
+<ul>
+<li><code>categories/Games/</code> - categories/games/</li>
+<li><code>categories/Diary/</code> - categories/diary/</li>
+</ul>
+<pre><code><span class="title">categories_map</span>:
+  <span class="type">Games</span>: games
+  <span class="type">Diary</span>: diary
+</code></pre>
+
+<h2>Tags</h2>
+<pre><code><span class="preprocessor"># Single tag</span>
 <span class="label">tags:</span> Apple
 
 <span class="preprocessor"># Multiple tags</span>
@@ -109,7 +116,18 @@ hexo new draft <span class="string">&quot;New Draft&quot;</span> -&gt; source/_d
 <span class="label">tags:</span>
 - Apple
 - Banana
-</code></pre></notextile>
+</code></pre>
+
+<h3>Tag Slug</h3>
+<p>You can configure tag slug by editing <code>tags_map</code> in <a href="configure.html">global configuration</a>. For example:</p>
+<ul>
+<li><code>tags/Games/</code> - tags/games/</li>
+<li><code>tags/Diary/</code> - tags/diary/</li>
+</ul>
+<pre><code><span class="title">tags_map</span>:
+  <span class="type">Games</span>: games
+  <span class="type">Diary</span>: diary
+</code></pre>
 
 <h2>Scaffolds</h2>
 <p>A scaffold is the default template of articles. Hexo will create articles based on the scaffolds.</p>
@@ -124,8 +142,8 @@ tags:
 
 
 <p>And execute the following:</p>
-<notextile><pre><code><span class="title">hexo</span> new photo <span class="string">&quot;New Gallery&quot;</span>
-</code></pre></notextile>
+<pre><code><span class="title">hexo</span> new photo <span class="string">"New Gallery"</span>
+</code></pre>
 
 <p>Hexo will create a new file based on the content above.</p>
 <h3>Usage</h3>

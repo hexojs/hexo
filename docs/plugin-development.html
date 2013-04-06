@@ -42,7 +42,7 @@
 
 <article class="page">
   <h1 class="title">Plugin Development</h1>
-  <small>Last updated: Mar 3, 2013</small>
+  <small>Last updated: Apr 6, 2013</small>
   <div class="entry"><p>There&#39;re 8 sorts of plugins:</p>
 <ul>
 <li><a href="#generator">Generator</a> - Generates static files</li>
@@ -57,16 +57,16 @@
 <p><a name="generator"></a></p>
 <h2>Generator</h2>
 <h3>Syntax</h3>
-<notextile><pre><code>hexo.extend.generator.register(fn);
-</code></pre></notextile>
+<pre><code>hexo.extend.generator.register(fn);
+</code></pre>
 
 <ul>
 <li><strong>fn(locals, render, callback)</strong><ul>
 <li><strong>locals</strong> - <a href="template-data.html#site">Global site data</a></li>
 <li><strong>render(layout, locals, callback)</strong> - Render function<ul>
+<li><strong>path</strong> - Path</li>
 <li><strong>layout</strong> - The template to use</li>
 <li><strong>locals</strong> - Data passed to the template, the <code>page</code> variable in the template</li>
-<li><strong>callback</strong> - Callback function</li>
 </ul>
 </li>
 <li><strong>callback</strong> - Callback function</li>
@@ -75,19 +75,17 @@
 </ul>
 <h3>Example</h3>
 <p>Generates archives at <code>public/archive.html</code>.</p>
-<notextile><pre><code>hexo.extend.generator.register(<span class="keyword">function</span>(locals, render, callback){
-  hexo.route.set(<span class="string">&#39;archive.html&#39;</span>, <span class="keyword">function</span>(func){
-    render(<span class="string">&#39;archive&#39;</span>, locals, func);
-  });
+<pre><code>hexo.extend.generator.register(<span class="keyword">function</span>(locals, render, callback){
+  render(<span class="string">'archive.html'</span>, [<span class="string">'archive'</span>, <span class="string">'index'</span>], locals);
   callback();
 });
-</code></pre></notextile>
+</code></pre>
 
 <p><a name="renderer"></a></p>
 <h2>Renderer</h2>
 <h3>Syntax</h3>
-<notextile><pre><code>hexo.extend.renderer.register(name, output, fn, [sync]);
-</code></pre></notextile>
+<pre><code>hexo.extend.renderer.register(name, output, fn, [sync]);
+</code></pre>
 
 <ul>
 <li><strong>name</strong> - Extension of input file (lowercase, <code>.</code> excluded)</li>
@@ -107,48 +105,48 @@
 </ul>
 <h3>Example</h3>
 <h4>Sync mode</h4>
-<notextile><pre><code><span class="keyword">var</span> ejs = require(<span class="string">&#39;ejs&#39;</span>);
+<pre><code><span class="keyword">var</span> ejs = require(<span class="string">'ejs'</span>);
 
-hexo.extend.renderer.register(<span class="string">&#39;ejs&#39;</span>, <span class="string">&#39;html&#39;</span>, <span class="keyword">function</span>(data, options){
+hexo.extend.renderer.register(<span class="string">'ejs'</span>, <span class="string">'html'</span>, <span class="keyword">function</span>(data, options){
   options.filename = data.path;
   <span class="keyword">return</span> ejs.render(data.text, options);
 }, <span class="literal">true</span>);
-</code></pre></notextile>
+</code></pre>
 
 <h4>Async mode</h4>
-<notextile><pre><code><span class="keyword">var</span> stylus = require(<span class="string">&#39;stylus&#39;</span>);
+<pre><code><span class="keyword">var</span> stylus = require(<span class="string">'stylus'</span>);
 
-hexo.extend.renderer.register(<span class="string">&#39;styl&#39;</span>, <span class="string">&#39;css&#39;</span>, <span class="keyword">function</span>(data,  callback){
-  stylus(data.text).set(<span class="string">&#39;filename&#39;</span>, data.path).render(callback);
+hexo.extend.renderer.register(<span class="string">'styl'</span>, <span class="string">'css'</span>, <span class="keyword">function</span>(data,  callback){
+  stylus(data.text).set(<span class="string">'filename'</span>, data.path).render(callback);
 });
-</code></pre></notextile>
+</code></pre>
 
 <p><a name="helper"></a></p>
 <h2>Helper</h2>
 <h3>Syntax</h3>
-<notextile><pre><code>hexo.extend.helper.register();
-</code></pre></notextile>
+<pre><code>hexo.extend.helper.register();
+</code></pre>
 
 <h3>Example</h3>
 <p>Inserts a JavaScript file.</p>
-<notextile><pre><code>hexo.extend.helper.register(<span class="string">&#39;js&#39;</span>, <span class="keyword">function</span>(path){
-  <span class="keyword">return</span> <span class="string">&#39;&lt;script type=&quot;text/javascript&quot; src=&quot;&#39;</span> + path + <span class="string">&#39;&quot;&gt;&lt;/script&gt;&#39;</span>;
+<pre><code>hexo.extend.helper.register(<span class="string">'js'</span>, <span class="keyword">function</span>(path){
+  <span class="keyword">return</span> <span class="string">'&lt;script type="text/javascript" src="'</span> + path + <span class="string">'"&gt;&lt;/script&gt;'</span>;
 });
-</code></pre></notextile>
+</code></pre>
 
 <p>Input:</p>
-<notextile><pre><code>&lt;%- js(<span class="string">&#39;script.js&#39;</span>) %&gt;
-</code></pre></notextile>
+<pre><code>&lt;%- js(<span class="string">'script.js'</span>) %&gt;
+</code></pre>
 
 <p>Output:</p>
-<notextile><pre><code>&lt;script type=&quot;text/javascript&quot; src=&quot;script.js&quot;&gt;&lt;/script&gt;
-</code></pre></notextile>
+<pre><code>&lt;script type="text/javascript" src="script.js"&gt;&lt;/script&gt;
+</code></pre>
 
 <p><a name="deployer"></a></p>
 <h2>Deployer</h2>
 <h3>Syntax</h3>
-<notextile><pre><code>hexo.extend.deployer.register(name, method);
-</code></pre></notextile>
+<pre><code>hexo.extend.deployer.register(name, method);
+</code></pre>
 
 <ul>
 <li><strong>name</strong> - Name (lowercase)</li>
@@ -158,16 +156,16 @@ hexo.extend.renderer.register(<span class="string">&#39;styl&#39;</span>, <span 
 </li>
 </ul>
 <h3>Example</h3>
-<notextile><pre><code>hexo.extend.deployer.register(<span class="string">&#39;github&#39;</span>, {
+<pre><code>hexo.extend.deployer.register(<span class="string">'github'</span>, {
   <span class="comment">// ...</span>
 });
-</code></pre></notextile>
+</code></pre>
 
 <p><a name="processor"></a></p>
 <h2>Processor</h2>
 <h3>Syntax</h3>
-<notextile><pre><code>hexo.extend.processor.register(fn);
-</code></pre></notextile>
+<pre><code>hexo.extend.processor.register(fn);
+</code></pre>
 
 <ul>
 <li><strong>fn(locals, callback)</strong><ul>
@@ -182,18 +180,18 @@ hexo.extend.renderer.register(<span class="string">&#39;styl&#39;</span>, <span 
 </ul>
 <h3>Example</h3>
 <p>Sort articles by date descending.</p>
-<notextile><pre><code>hexo.extend.processor.register(<span class="keyword">function</span>(locals, callback){
-  locals.posts = locals.posts.sort(<span class="string">&#39;date&#39;</span>, -<span class="number">1</span>);
-  locals.pages = locals.pages.sort(<span class="string">&#39;date&#39;</span>, -<span class="number">1</span>);
+<pre><code>hexo.extend.processor.register(<span class="keyword">function</span>(locals, callback){
+  locals.posts = locals.posts.sort(<span class="string">'date'</span>, -<span class="number">1</span>);
+  locals.pages = locals.pages.sort(<span class="string">'date'</span>, -<span class="number">1</span>);
   callback(<span class="literal">null</span>, locals);
 });
-</code></pre></notextile>
+</code></pre>
 
 <p><a name="tag"></a></p>
 <h2>Tag</h2>
 <h3>Syntax</h3>
-<notextile><pre><code>hexo.extend.tag.register(name, fn, [ends]);
-</code></pre></notextile>
+<pre><code>hexo.extend.tag.register(name, fn, [ends]);
+</code></pre>
 
 <ul>
 <li><strong>name</strong> - Name (lowercase)</li>
@@ -206,24 +204,24 @@ hexo.extend.renderer.register(<span class="string">&#39;styl&#39;</span>, <span 
 </ul>
 <h3>Example</h3>
 <p>Inserts a Youtube video.</p>
-<notextile><pre><code>hexo.extend.tag.register(<span class="string">&#39;youtube&#39;</span>, <span class="keyword">function</span>(args, content){
+<pre><code>hexo.extend.tag.register(<span class="string">'youtube'</span>, <span class="keyword">function</span>(args, content){
   <span class="keyword">var</span> id = args[<span class="number">0</span>];
-  <span class="keyword">return</span> <span class="string">&#39;&lt;div class=&quot;video-container&quot;&gt;&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;<a href="http://www.youtube.com/embed/">http://www.youtube.com/embed/</a>&#39;</span> + id + <span class="string">&#39;&quot; frameborder=&quot;0&quot; allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;&#39;</span>;
+  <span class="keyword">return</span> <span class="string">'&lt;div class="video-container"&gt;&lt;iframe width="560" height="315" src="http://www.youtube.com/embed/'</span> + id + <span class="string">'" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;&lt;/div&gt;'</span>;
 });
-</code></pre></notextile>
+</code></pre>
 
 <p>Inserts a pull quote.</p>
-<notextile><pre><code>hexo.extend.tag.register(<span class="string">&#39;pullquote&#39;</span>, <span class="keyword">function</span>(args, content){
-  <span class="keyword">var</span> className = args.length ? <span class="string">&#39; &#39;</span> + args.join(<span class="string">&#39; &#39;</span>) : <span class="string">&#39;&#39;</span>;
-  <span class="keyword">return</span> <span class="string">&#39;&lt;blockquote class=&quot;pullquote&#39;</span> + className + <span class="string">&#39;&quot;&gt;&#39;</span> + content + <span class="string">&#39;&lt;/blockquote&gt;&#39;</span>;
+<pre><code>hexo.extend.tag.register(<span class="string">'pullquote'</span>, <span class="keyword">function</span>(args, content){
+  <span class="keyword">var</span> className = args.length ? <span class="string">' '</span> + args.join(<span class="string">' '</span>) : <span class="string">''</span>;
+  <span class="keyword">return</span> <span class="string">'&lt;blockquote class="pullquote'</span> + className + <span class="string">'"&gt;'</span> + content + <span class="string">'&lt;/blockquote&gt;'</span>;
 }, <span class="literal">true</span>);
-</code></pre></notextile>
+</code></pre>
 
 <p><a name="console"></a></p>
 <h2>Console</h2>
 <h3>Syntax</h3>
-<notextile><pre><code>hexo.extend.console.register(name, desc, [options], fn);
-</code></pre></notextile>
+<pre><code>hexo.extend.console.register(name, desc, [options], fn);
+</code></pre>
 
 <ul>
 <li><strong>name</strong> - Name (lowercase)</li>
@@ -241,19 +239,19 @@ hexo.extend.renderer.register(<span class="string">&#39;styl&#39;</span>, <span 
 </ul>
 <h3>Example</h3>
 <p>Display configuration when the following executed.</p>
-<notextile><pre><code>hexo config
-</code></pre></notextile>
+<pre><code>hexo config
+</code></pre>
 
-<notextile><pre><code>hexo.extend.console.register(<span class="string">&#39;config&#39;</span>, <span class="string">&#39;Display configuration&#39;</span>, <span class="keyword">function</span>(args){
+<pre><code>hexo.extend.console.register(<span class="string">'config'</span>, <span class="string">'Display configuration'</span>, <span class="keyword">function</span>(args){
   console.log(hexo.config);
 });
-</code></pre></notextile>
+</code></pre>
 
 <p><a name="migrator"></a></p>
 <h2>Migrator</h2>
 <h3>Syntax</h3>
-<notextile><pre><code>hexo.extend.migrator.register(name, fn);
-</code></pre></notextile>
+<pre><code>hexo.extend.migrator.register(name, fn);
+</code></pre>
 
 <ul>
 <li><strong>name</strong> - Name (lowercase)</li>
@@ -265,8 +263,8 @@ hexo.extend.renderer.register(<span class="string">&#39;styl&#39;</span>, <span 
 <h2>Publish</h2>
 <p>Don&#39;t forget to test before publishing. Copy your plugin into <code>node_modules</code> folder and install dependencies. Try to use or do unit tests.</p>
 <p>After all the tests done. Execute the following command to publish your plugins to NPM.</p>
-<notextile><pre><code>npm publish
-</code></pre></notextile>
+<pre><code>npm publish
+</code></pre>
 
 <h2>Reference</h2>
 <p>You can reference <a href="https://github.com/tommy351/hexo/tree/master/lib">built-in modules</a> and <a href="https://github.com/tommy351/hexo-plugins">official plugins</a> to develop your plugin.</p>
