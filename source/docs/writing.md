@@ -4,19 +4,13 @@ title: Writing
 date: 2012-11-01 18:13:30
 ---
 
-## Basic
-
-### Create
+## Create
 
 Execute the following command.
 
-``` bash
-hexo new [layout] <title>
-```
+	hexo new [layout] <title>
 
 `layout` is optional. Default is `default_layout` setting in [global configuration][2].
-
-The title will be transform into lower case. Spaces will be replaced with dash. If the target file exists, adding number after the filename. For example:
 
 ```
 hexo new "New Post" -> source/_posts/new-post.md
@@ -24,7 +18,7 @@ hexo new page "New Page" -> source/new-page/index.md
 hexo new draft "New Draft" -> source/_drafts/new-draft.md
 ```
 
-### Filename
+### File name
 
 You can configure the name of new files by editing `new_post_name` setting in [global configuration][2]. Default is `:title.md`.
 
@@ -35,20 +29,20 @@ You can configure the name of new files by editing `new_post_name` setting in [g
 
 To make files sorted by date, you can set it to `:year-:month-:day-:title.md`.
 
-### Configure
+## Configure
 
 The beginning of article is a block wrapped with `---`, called [YAML Front Matter][1]. You can use YAML to configure posts.
 
 - **layout** - Layout (Optional)
 - **title** - Title
-- **date** - Published date
-- **updated** - Last updated date (Optional)
+- **date** - Published date (Created date of the file by default)
+- **updated** - Last updated date (Optional. Last modified date of the file by default)
 - **comments** - Whether to enable comment (Optional. Enabled by default)
 - **tags** - Tags (Optional. Not availiable for page)
 - **categories** - Categories (Optional. Not availiable for page)
 - **permalink** - Override default URL (Optional)
 
-### Categories
+## Categories
 
 Category is the relative path to `source/_posts`. It's hierarchical. You can add `categories` property in the file. Its content will be added after the original categories. For example:
 
@@ -57,8 +51,6 @@ For example:
 - `source/_posts/title.md` - Uncategorized
 - `source/_posts/Fruits/title.md` - Fruit
 - `source/_posts/Fruits/Apple/title.md` - Fruit, Apple
-
-Categories settings:
 
 ``` yaml
 # Single category
@@ -74,7 +66,20 @@ categories:
 - Apple
 ```
 
-### Tags
+### Category Slug
+
+You can configure category slug by editing `categories_map` in [global configuration][2]. For example:
+
+- `categories/Games/` - categories/games/
+- `categories/Diary/` - categories/diary/
+
+``` yaml
+categories_map:
+	Games: games
+	Diary: diary
+```
+
+## Tags
 
 ``` yaml
 # Single tag
@@ -86,6 +91,19 @@ tags: [Apple, Banana]
 tags:
 - Apple
 - Banana
+```
+
+### Tag Slug
+
+You can configure tag slug by editing `tags_map` in [global configuration][2]. For example:
+
+- `tags/Games/` - tags/games/
+- `tags/Diary/` - tags/diary/
+
+``` yaml
+tags_map:
+	Games: games
+	Diary: diary
 ```
 
 ## Scaffolds

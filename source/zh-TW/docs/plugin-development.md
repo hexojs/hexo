@@ -27,10 +27,10 @@ hexo.extend.generator.register(fn);
 
 - **fn(locals, render, callback)**
   - **locals** - [網站全域資料][1]
-  - **render(layout, locals, callback)** - 渲染函數
+  - **render(path, layout, locals)** - 渲染函數
+    - **path** - 路徑
     - **layout** - 要使用的樣板
     - **locals** - 傳入樣板的資料，即樣板中的`page`變數
-    - **callback** - 回傳函數
   - **callback** - 回傳函數
 
 ### 範例
@@ -39,9 +39,7 @@ hexo.extend.generator.register(fn);
 
 ``` js
 hexo.extend.generator.register(function(locals, render, callback){
-  hexo.route.set('archive.html', function(func){
-    render('archive', locals, func);
-  });
+  render('archive.html', ['archive', 'index'], locals);
   callback();
 });
 ```

@@ -27,9 +27,9 @@ hexo.extend.generator.register(fn);
 - **fn(locals, render, callback)**
   - **locals** - [Global site data][1]
   - **render(layout, locals, callback)** - Render function
+    - **path** - Path
     - **layout** - The template to use
     - **locals** - Data passed to the template, the `page` variable in the template
-    - **callback** - Callback function
   - **callback** - Callback function
 
 ### Example
@@ -38,9 +38,7 @@ Generates archives at `public/archive.html`.
 
 ``` js
 hexo.extend.generator.register(function(locals, render, callback){
-  hexo.route.set('archive.html', function(func){
-    render('archive', locals, func);
-  });
+  render('archive.html', ['archive', 'index'], locals);
   callback();
 });
 ```
