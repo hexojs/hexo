@@ -10,7 +10,7 @@ It's easy to deploy with Hexo. It just needs 1 command to complete all the setti
 
 ### Configure
 
-Edit `_config.yml`. Fill `repository` with GitHub repository. If repository is like `username.github.com`, fill `branch` with `master`, otherwise `gh-pages`.
+Edit `_config.yml`. Fill `repository` with GitHub repository. If repository is like `username.github.io`, fill `branch` with `master`, otherwise `gh-pages`.
 
 ``` yaml
 deploy:
@@ -20,7 +20,7 @@ deploy:
 ```
 
 - **repository** - GitHub repository
-- **branch** - If repository is like `username.github.com`, fill it with `master`, otherwise `gh-pages`
+- **branch** - If repository is like `username.github.io`, fill it with `master`, otherwise `gh-pages`
 
 ### Deploy
 
@@ -55,7 +55,7 @@ If the domain is like `example.com`, add A record `204.232.175.78`.
 
 #### Subdomain
 
-If the domain is like `username.example.com`, add CNAME record `username.github.com`.
+If the domain is like `username.example.com`, add CNAME record `username.github.io`.
 
 Check [GitHub Pages][1] for more info.
 
