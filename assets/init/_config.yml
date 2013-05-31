@@ -29,7 +29,6 @@ max_open_file: 100
 filename_case: 0
 highlight:
   enable: true
-  backtick_code_block: true
   line_number: true
   tab_replace:
 
