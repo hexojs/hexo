@@ -1,0 +1,9 @@
+layout: ../layout
+title: Posts
+---
+
+<a href="<%- base %>posts/new">New Post</a>
+
+<% posts.each(function(post){ %>
+  <a href="<%- base %>posts/<%= post._id %>/edit"><%= post.title %></a>
+<% }); %>
