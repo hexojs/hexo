@@ -1,0 +1,39 @@
+@import variables
+
+$baseBorderRadius: 3px !default
+$borderRadiusSmall: 2px !default
+$btnBackground: $button-default !default
+$btnPrimaryBackground: $button-primary !default
+$btnInfoBackground: $button-info !default
+$btnSuccessBackground: $button-success !default
+$btnWarningBackground: $button-warning !default
+$btnDangerBackground: $button-danger !default
+$btnInverseBackground: $button-inverse !default
+
+@import bootstrap/variables
+@import bootstrap/mixins
+
+@mixin buttonBackground($startColor, $endColor, $textColor: #fff, $textShadow: 0 -1px 0 rgba(0,0,0,.25))
+  background: $startColor
+  color: #fff
+  border-width: 1px 0
+  border-color: lighten($startColor, 5%) transparent darken($startColor, 5%)
+  &:hover, &:focus, &:active, &.active, &.disabled, &[disabled]
+    color: #fff
+  &:hover
+    background: lighten($startColor, 5%)
+  &:active
+    background: darken($startColor, 5%)
+  &.disabled, &[disabled]
+    background: $startColor
+
+@import bootstrap/buttons
+
+.btn
+  padding: 8px 15px
+  line-height: 1
+  &:hover, &:focus
+    color: #fff
+  [class^="icon-"],
+  [class*=" icon-"]
+    padding-right: 10px

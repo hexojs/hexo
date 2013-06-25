@@ -1,1 +1,42 @@
-posts/edit
+<div id="post-edit" ng-show="post">
+  <div id="post-edit-fn">
+    <div id="post-edit-left">
+      <button class="btn btn-primary" ng-click="save()"><i class="icon-save"></i>Save</button>
+      <button class="btn btn-danger" ng-click="modal.open()"><i class="icon-trash"></i>Delete</button>
+      <span id="post-edit-status">{{ status }}</span>
+    </div>
+    <div id="post-edit-right">
+      <div class="post-edit-group">
+        <button class="post-edit-btn" ng-click="bold()"><i class="icon-bold" title="Bold"></i></button>
+        <button class="post-edit-btn" ng-click="italic()" title="Italic"><i class="icon-italic"></i></button>
+      </div>
+      <div class="post-edit-div"></div>
+      <div class="post-edit-group">
+        <button class="post-edit-btn" ng-click="link()" title="Add Link"><i class="icon-link"></i></button>
+        <button class="post-edit-btn" ng-click="picture()" title="Add Picture"><i class="icon-picture"></i></button>
+      </div>
+      <div class="post-edit-div"></div>
+      <div class="post-edit-group">
+        <button class="post-edit-btn" ng-hide="isFullscreen" ng-click="fullscreen()" title="Fullscreen"><i class="icon-resize-full"></i></button>
+        <button class="post-edit-btn" ng-show="isFullscreen" ng-click="fullscreen()" title="Exit Fullscreen"><i class="icon-resize-small"></i></button>
+      </div>
+    </div>
+  </div>
+  <div id="post-edit-area">
+    <div ng-model="post.content" ui-ace scope-instance="editor"></div>
+  </div>
+</div>
+
+<div modal="modal.show" close="modal.close()" options="modal.options">
+  <div class="modal-header">
+    <h4>Delete Post</h4>
+    <button class="close" ng-click="modal.close()">&times;</button>
+  </div>
+  <div class="modal-body">
+    <p>Do you want to delete this post?</p>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" ng-click="modal.close()">Cancel</button>
+    <button class="btn btn-danger" ng-click="modal.submit()">Delete</button>
+  </div>
+</div>

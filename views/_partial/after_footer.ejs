@@ -1,0 +1,21 @@
+<script src="<%- base %>js/lib/require.js"></script>
+<script>
+require.config({
+  baseUrl: '<%- base %>js/',
+  config: {
+    app: {
+      base: '<%- base %>',
+      version: '<%- version %>'
+    },
+    filters: {
+      config: {
+        language: '<%- config.language %>',
+        date_format: '<%- config.date_format %>',
+        time_format: '<%- config.time_format %>'
+      }
+    }
+  }
+});
+
+require(['main']);
+</script>

@@ -1,0 +1,37 @@
+@import variables
+
+@import bootstrap/variables
+@import bootstrap/component-animations
+@import bootstrap/modals
+
+.modal
+  +border-radius(3px)
+  color: $color-font
+
+.modal-header
+  border-bottom: none
+  padding: 10px 15px
+  position: relative
+  h4
+    text-align: center
+    font-size: 16px
+    font-weight: bold
+    margin: 0
+  .close
+    position: absolute
+    top: 2px
+    right: 10px
+    font-size: 20px
+    color: #999
+    background: none
+    border: none
+    &:hover
+      color: #444
+
+.modal-body
+  padding: 15px 25px
+
+.modal-footer
+  background: none
+  border-top: none
+  padding: 10px 15px

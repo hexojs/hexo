@@ -1,0 +1,121 @@
+/* line 6, ../../../assets/server/sass/posts/edit.sass */
+#post-edit {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+/* line 11, ../../../assets/server/sass/posts/edit.sass */
+#post-edit.fullscreen {
+  position: fixed;
+  z-index: 10000;
+  top: 0;
+  left: 0;
+}
+
+/* line 17, ../../../assets/server/sass/posts/edit.sass */
+#post-edit-fn {
+  overflow: hidden;
+  *zoom: 1;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.9);
+  z-index: 1;
+  border-bottom: 1px solid #eeeeee;
+}
+
+/* line 27, ../../../assets/server/sass/posts/edit.sass */
+#post-edit-left {
+  display: inline;
+  float: left;
+  padding: 10px 10px 10px 15px;
+}
+/* line 30, ../../../assets/server/sass/posts/edit.sass */
+#post-edit-left button {
+  display: inline;
+  float: left;
+  margin-right: 15px;
+}
+
+/* line 34, ../../../assets/server/sass/posts/edit.sass */
+#post-edit-status {
+  font-size: 0.85em;
+  line-height: 34px;
+  color: #999999;
+}
+
+/* line 39, ../../../assets/server/sass/posts/edit.sass */
+#post-edit-right {
+  display: inline;
+  float: right;
+  padding: 10px 5px 10px 0;
+}
+
+/* line 43, ../../../assets/server/sass/posts/edit.sass */
+.post-edit-group {
+  display: inline;
+  float: left;
+  padding: 0 5px;
+}
+
+/* line 47, ../../../assets/server/sass/posts/edit.sass */
+.post-edit-btn {
+  display: inline;
+  float: left;
+  -webkit-transition: 0.1s;
+  -moz-transition: 0.1s;
+  -o-transition: 0.1s;
+  transition: 0.1s;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
+  background: transparent;
+  border: 1px solid transparent;
+  width: 32px;
+  height: 32px;
+  color: #888888;
+}
+/* line 56, ../../../assets/server/sass/posts/edit.sass */
+.post-edit-btn:hover, .post-edit-btn:active {
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #ffffff), color-stop(100%, #f7f7f7));
+  background: -webkit-linear-gradient(top, #ffffff, #f7f7f7);
+  background: -moz-linear-gradient(top, #ffffff, #f7f7f7);
+  background: -o-linear-gradient(top, #ffffff, #f7f7f7);
+  background: linear-gradient(top, #ffffff, #f7f7f7);
+  border-color: #eeeeee;
+  color: #666666;
+}
+
+/* line 61, ../../../assets/server/sass/posts/edit.sass */
+.post-edit-div {
+  display: inline;
+  float: left;
+  height: 32px;
+  border-left: 1px solid #eeeeee;
+}
+
+/* line 66, ../../../assets/server/sass/posts/edit.sass */
+#post-edit-area {
+  position: relative;
+  height: 100%;
+  background: white;
+}
+
+/* line 71, ../../../assets/server/sass/posts/edit.sass */
+.ace_editor_wrapper {
+  position: absolute;
+  top: 52px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+/* line 78, ../../../assets/server/sass/posts/edit.sass */
+.ace_editor {
+  width: 100%;
+  height: 100%;
+}
