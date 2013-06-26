@@ -1,6 +1,6 @@
 define(function(require, exports, module){
   return ['$scope', 'sharedData', function($scope, sharedData){    
-    $scope.data = sharedData.store();
+    $scope.data = sharedData;
 
     $scope.menu = [
       {href: 'posts', title: 'Posts'},

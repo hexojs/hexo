@@ -11,6 +11,9 @@ require.config({
     'lib/moment': [
       'lib/moment/moment.min'
     ],
+    'lib/lodash': [
+      'lib/lodash.min'
+    ],
     'plugins/angular-ui-router': [
       'plugins/angular-ui-router.min'
     ],
@@ -41,7 +44,7 @@ require.config({
       deps: ['lib/angular', 'lib/ace/ace']
     },
     'plugins/restangular': {
-      deps: ['lib/angular']
+      deps: ['lib/angular', 'lib/lodash']
     }
   }
 });

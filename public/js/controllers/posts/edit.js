@@ -1,27 +1,11 @@
 define(function(require, exports, module){
   var $ = require('lib/jquery');
 
-  return ['$scope', '$http', '$state', '$stateParams', '$filter', 'loadCSS', 'apiBaseUrl', 'templateBaseUrl',
-    function($scope, $http, $state, $stateParams, $filter, loadCSS, apiBaseUrl, templateBaseUrl){
+  return ['$scope', '$http', '$state', '$stateParams', '$filter', 'apiBaseUrl', 'templateBaseUrl',
+    function($scope, $http, $state, $stateParams, $filter, apiBaseUrl, templateBaseUrl){
 
     var id = $stateParams.id,
       editor;
-    /*  editor = $scope.editor,
-      session = editor.getSession(),
-      renderer = editor.renderer;
-
-    loadCSS.load('posts/edit');
-
-    editor.setHighlightActiveLine(false);
-    editor.setFontSize(14);
-    editor.setTheme('ace/theme/tomorrow');
-    session.setMode('ace/mode/markdown');
-    session.setTabSize(2);
-    session.setUseSoftTabs(true);
-    session.setUseWrapMode(true);
-    renderer.setShowGutter(false);
-    renderer.setShowPrintMargin(false);*/
-    loadCSS.load('posts/edit');
 
     $scope.$parent.selected = id;
 
@@ -77,6 +61,7 @@ define(function(require, exports, module){
     };
 
     $scope.bold = function(){
+      //editor.replace('1234');
     };
 
     $scope.italic = function(){

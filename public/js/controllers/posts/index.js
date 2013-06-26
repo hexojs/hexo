@@ -1,12 +1,11 @@
 define(function(require, exports, module){
   var $ = require('lib/jquery');
 
-  return ['$scope', '$http', '$state', 'sharedData', 'loadCSS', 'apiBaseUrl', 'templateBaseUrl',
-    function($scope, $http, $state, sharedData, loadCSS, apiBaseUrl, templateBaseUrl){
+  return ['$scope', '$http', '$state', 'sharedData', 'apiBaseUrl', 'templateBaseUrl',
+    function($scope, $http, $state, sharedData, apiBaseUrl, templateBaseUrl){
 
-    sharedData.store().menu = 'posts';
-    sharedData.store().title = 'Posts | Hexo';
-    loadCSS.load('posts/index');
+    sharedData.set('menu', 'posts');
+    sharedData.set('title', 'Posts | Hexo');
 
     $scope.modal = {
       options: {
