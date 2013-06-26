@@ -1,7 +1,5 @@
 TESTS = test/*
 REPORTER = spec
-CSS_DIR = assets/css
-JS_DIR = assets/js
 
 test:
 	@./node_modules/.bin/mocha \
@@ -12,16 +10,6 @@ test:
 		$(TESTS)
 
 css:
-	@./node_modules/.bin/stylus \
-		--use ./node_modules/nib/lib/nib \
-		--out public/css \
-		--compress \
-		$(CSS_DIR)
+	compass compile -e production --force
 
-css-watch:
-	@./node_modules/.bin/stylus \
-		--use ./node_modules/nib/lib/nib \
-		--out public/css \
-		--watch $(CSS_DIR)
-
-.PHONY: test css js
+.PHONY: test
