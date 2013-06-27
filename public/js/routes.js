@@ -36,11 +36,8 @@ define(function(require, exports, module){
       })
       .state('files.show', {
         url: '/show/:path',
+        templateUrl: templateBaseUrl + 'files/show',
         controller: 'FileShowCtrl'
-      })
-      .state('files.edit', {
-        url: '/edit/:path',
-        controller: 'FileEditCtrl'
       });
 
     $urlRouterProvider.otherwise(baseUrl);

@@ -7,5 +7,6 @@ define(function(require, exports, module){
     .controller('HomeCtrl', require('controllers/home/index'))
     .controller('PostIndexCtrl', require('controllers/posts/index'))
     .controller('PostEditCtrl', require('controllers/posts/edit'))
-    .controller('FileIndexCtrl', require('controllers/files/index'));
+    .controller('FileIndexCtrl', require('controllers/files/index'))
+    .controller('FileShowCtrl', require('controllers/files/show'));
 });
