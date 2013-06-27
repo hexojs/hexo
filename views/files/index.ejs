@@ -1,14 +1,3 @@
-<div id="post-list">
-  <div class="page-header">
-    <h1 class="page-header-h1">Files</h1>
-  </div>
-  <div id="post-search-form" ng-click="search()">
-    <i id="post-search-icon" class="icon-search"></i>
-    <input type="search" id="post-search-input" placeholder="Search" ng-model="query">
-  </div>
-  <div class="post-item" ng-repeat="post in posts | orderBy: '-date' | filter: query" ng-click="edit(post.id)" ng-class="{current: selected == post.id}">
-    <div class="post-date">{{ post.date | date }}</div>
-    <strong class="post-title">{{ post.title }}</strong>
-  </div>
-</div>
-<div id="post-content" ui-view></div>
+<div id="file-main-nav"></div>
+<div id="file-sub-nav"></div>
+<ul id="file-list"></ul>

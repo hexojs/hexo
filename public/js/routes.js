@@ -28,6 +28,19 @@ define(function(require, exports, module){
         url: baseUrl + 'files',
         templateUrl: templateBaseUrl + 'files/index',
         controller: 'FileIndexCtrl'
+      })
+      .state('files.list', {
+        url: '/list/:path',
+        templateUrl: templateBaseUrl + 'files/index',
+        controller: 'FileIndexCtrl'
+      })
+      .state('files.show', {
+        url: '/show/:path',
+        controller: 'FileShowCtrl'
+      })
+      .state('files.edit', {
+        url: '/edit/:path',
+        controller: 'FileEditCtrl'
       });
 
     $urlRouterProvider.otherwise(baseUrl);
