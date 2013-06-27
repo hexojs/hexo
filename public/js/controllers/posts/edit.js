@@ -18,6 +18,9 @@ define(function(require, exports, module){
         },
         'Ctrl-S': function(){
           $scope.save();
+        },
+        Esc: function(){
+          if ($scope.isFullscreen) $scope.fullscreen();
         }
       }
     };
