@@ -3,8 +3,8 @@ define(function(require, exports, module){
 
   require(['codemirror/mode/markdown/markdown'])
 
-  return ['$scope', '$http', '$state', '$stateParams', '$filter', '$window', 'apiBaseUrl', 'templateBaseUrl',
-    function($scope, $http, $state, $stateParams, $filter, $window, apiBaseUrl, templateBaseUrl){
+  return ['$scope', '$http', '$state', '$stateParams', '$filter', '$window', 'rootUrl', 'apiBaseUrl', 'templateBaseUrl',
+    function($scope, $http, $state, $stateParams, $filter, $window, rootUrl, apiBaseUrl, templateBaseUrl){
 
     var id = $stateParams.id;
 
@@ -103,6 +103,10 @@ define(function(require, exports, module){
 
     $scope.picture = function(){
       insert('![', ']()');
+    };
+
+    $scope.preview = function(){
+      $window.open(rootUrl + $scope.post.path, '_blank');
     };
 
     $scope.fullscreen = function(){

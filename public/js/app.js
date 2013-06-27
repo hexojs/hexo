@@ -21,6 +21,7 @@ define([
   ]);
 
   app.constant('version', config.version)
+    .constant('rootUrl', config.root)
     .constant('baseUrl', base)
     .constant('apiBaseUrl', base + 'api/')
     .constant('templateBaseUrl', base + 'templates/');
