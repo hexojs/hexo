@@ -22,7 +22,7 @@
   top: 0;
   left: 0;
   background: rgba(255, 255, 255, 0.9);
-  z-index: 1;
+  z-index: 1000;
   border-bottom: 1px solid #eeeeee;
 }
 
@@ -106,16 +106,12 @@
 }
 
 /* line 71, ../../../assets/server/sass/posts/edit.sass */
-.ace_editor_wrapper {
+.CodeMirror {
   position: absolute;
   top: 52px;
   bottom: 0;
   left: 0;
   right: 0;
-}
-
-/* line 78, ../../../assets/server/sass/posts/edit.sass */
-.ace_editor {
-  width: 100%;
-  height: 100%;
+  font-family: Monaco, Menlo, Consolas, monospace;
+  line-height: 1.4;
 }

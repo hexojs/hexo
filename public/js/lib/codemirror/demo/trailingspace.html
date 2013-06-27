@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CodeMirror: Trailing Whitespace Demo</title>
+    <link rel="stylesheet" href="../lib/codemirror.css">
+    <script src="../lib/codemirror.js"></script>
+    <script src="../addon/edit/trailingspace.js"></script>
+    <link rel="stylesheet" href="../doc/docs.css">
+
+    <style type="text/css">
+      .CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}
+      .cm-trailingspace {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAACCAYAAAB/qH1jAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QUXCToH00Y1UgAAACFJREFUCNdjPMDBUc/AwNDAAAFMTAwMDA0OP34wQgX/AQBYgwYEx4f9lQAAAABJRU5ErkJggg==);
+        background-position: bottom left;
+        background-repeat: repeat-x;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CodeMirror: Trailing Whitespace Demo</h1>
+
+    <form><textarea id="code" name="code">This text  
+ has some	 
+trailing whitespace!</textarea></form>
+
+    <script>
+var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+  lineNumbers: true,
+  showTrailingSpace: true
+});
+</script>
+
+<p>Uses
+the <a href="../doc/manual.html#addon_trailingspace">trailingspace</a>
+addon to highlight trailing whitespace.</p>
+
+  </body>
+</html>

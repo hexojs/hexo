@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CodeMirror: Closebrackets Demo</title>
+    <link rel="stylesheet" href="../lib/codemirror.css">
+    <script src="../lib/codemirror.js"></script>
+    <script src="../addon/edit/closebrackets.js"></script>
+    <script src="../mode/javascript/javascript.js"></script>
+    <link rel="stylesheet" href="../doc/docs.css">
+    <style type="text/css">
+      .CodeMirror {border-top: 1px solid #888; border-bottom: 1px solid #888;}
+    </style>
+  </head>
+  <body>
+
+    <h1>CodeMirror: Closebrackets Demo</h1>
+
+    <p>Type a bracket like '[', '(', '{', '&quot;', or '''
+    and <a href="../doc/manual.html#addon_closebrackets">the addon</a>
+    will auto-close it. Type the closing variant when directly in
+    front of a matching character and it will overwrite it.</p>
+
+    <p>If you backspace over a starting bracket while inside empty brackets
+    (e.g. <code>{|}</code>), it will delete the closing bracket for you.</p>
+
+
+    <form><textarea id="code" name="code">(function() {
+  var DEFAULT_BRACKETS = "()[]{}''\"\"";
+
+  CodeMirror.defineOption("autoCloseBrackets", false, function(cm, val, old) {
+    var wasOn = old && old != CodeMirror.Init;
+    if (val && !wasOn)
+      cm.addKeyMap(buildKeymap(typeof val == "string" ? val : DEFAULT_BRACKETS));
+    else if (!val && wasOn)
+      cm.removeKeyMap("autoCloseBrackets");
+  });
+
+  function buildKeymap(pairs) {
+    var map = {name : "autoCloseBrackets"};
+    for (var i = 0; i < pairs.length; i += 2) (function(left, right) {
+      function maybeOverwrite(cm) {
+        var cur = cm.getCursor(), ahead = cm.getRange(cur, CodeMirror.Pos(cur.line, cur.ch + 1));
+        if (ahead != right) return CodeMirror.Pass;
+        else cm.execCommand("goCharRight");
+      }
+      map["'" + left + "'"] = function(cm) {
+        if (left == right && maybeOverwrite(cm) != CodeMirror.Pass) return;
+        var cur = cm.getCursor(), ahead = CodeMirror.Pos(cur.line, cur.ch + 1);
+        cm.replaceSelection(left + right, {head: ahead, anchor: ahead});
+      };
+      if (left != right) map["'" + right + "'"] = maybeOverwrite;
+    })(pairs.charAt(i), pairs.charAt(i + 1));
+    return map;
+  }
+})();
+</textarea></form>
+
+    <script type="text/javascript">
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {autoCloseBrackets: true});
+    </script>
+  </body>
+</html>

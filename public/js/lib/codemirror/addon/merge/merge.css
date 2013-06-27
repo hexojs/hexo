@@ -1,0 +1,82 @@
+.CodeMirror-diff {
+  position: relative;
+  border: 1px solid #ddd;
+}
+
+.CodeMirror-diff, .CodeMirror-diff .CodeMirror {
+  height: 350px;
+}
+
+.CodeMirror-diff-2pane .CodeMirror-diff-pane { width: 47%; }
+.CodeMirror-diff-2pane .CodeMirror-diff-gap { width: 6%; }
+.CodeMirror-diff-3pane .CodeMirror-diff-pane { width: 31%; }
+.CodeMirror-diff-3pane .CodeMirror-diff-gap { width: 3.5%; }
+
+.CodeMirror-diff-pane {
+  float: left;
+}
+
+.CodeMirror-diff-gap {
+  float: left;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  position: relative;
+  background: #f8f8f8;
+}
+
+.CodeMirror-diff-scrolllock-wrap {
+  position: absolute;
+  bottom: 0; left: 50%;
+}
+.CodeMirror-diff-scrolllock {
+  position: relative;
+  left: -50%;
+  cursor: pointer;
+  color: #555;
+  line-height: 1;
+}
+
+.CodeMirror-diff-copybuttons-left, .CodeMirror-diff-copybuttons-right {
+  position: absolute;
+  left: 0; top: 0;
+  right: 0; bottom: 0;
+  line-height: 1;
+}
+
+.CodeMirror-diff-copy {
+  position: absolute;
+  cursor: pointer;
+  color: #44c;
+}
+
+.CodeMirror-diff-copybuttons-left .CodeMirror-diff-copy { left: 2px; }
+.CodeMirror-diff-copybuttons-right .CodeMirror-diff-copy { right: 2px; }
+
+.CodeMirror-diff-r-inserted, .CodeMirror-diff-l-inserted {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAYAAACddGYaAAAAGUlEQVQI12MwuCXy3+CWyH8GBgYGJgYkAABZbAQ9ELXurwAAAABJRU5ErkJggg==);
+  background-position: bottom left;
+  background-repeat: repeat-x;
+}
+
+.CodeMirror-diff-r-deleted, .CodeMirror-diff-l-deleted {
+  background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAACCAYAAACddGYaAAAAGUlEQVQI12M4Kyb2/6yY2H8GBgYGJgYkAABURgPz6Ks7wQAAAABJRU5ErkJggg==);
+  background-position: bottom left;
+  background-repeat: repeat-x;
+}
+
+.CodeMirror-diff-r-chunk { background: #ffffe0; }
+.CodeMirror-diff-r-chunk-start { border-top: 1px solid #ee8; }
+.CodeMirror-diff-r-chunk-end { border-bottom: 1px solid #ee8; }
+.CodeMirror-diff-r-connect { fill: #ffffe0; stroke: #ee8; stroke-width: 1px; }
+
+.CodeMirror-diff-l-chunk { background: #eef; }
+.CodeMirror-diff-l-chunk-start { border-top: 1px solid #88e; }
+.CodeMirror-diff-l-chunk-end { border-bottom: 1px solid #88e; }
+.CodeMirror-diff-l-connect { fill: #eef; stroke: #88e; stroke-width: 1px; }
+
+.CodeMirror-diff-l-chunk.CodeMirror-diff-r-chunk { background: #dfd; }
+.CodeMirror-diff-l-chunk-start.CodeMirror-diff-r-chunk-start { border-top: 1px solid #4e4; }
+.CodeMirror-diff-l-chunk-end.CodeMirror-diff-r-chunk-end { border-bottom: 1px solid #4e4; }

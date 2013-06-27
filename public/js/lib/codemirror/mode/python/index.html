@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CodeMirror: Python mode</title>
+    <link rel="stylesheet" href="../../lib/codemirror.css">
+    <script src="../../lib/codemirror.js"></script>
+    <script src="../../addon/edit/matchbrackets.js"></script>
+    <script src="python.js"></script>
+    <link rel="stylesheet" href="../../doc/docs.css">
+    <style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+  </head>
+  <body>
+    <h1>CodeMirror: Python mode</h1>
+    
+    <div><textarea id="code" name="code">
+# Literals
+1234
+0.0e101
+.123
+0b01010011100
+0o01234567
+0x0987654321abcdef
+7
+2147483647
+3L
+79228162514264337593543950336L
+0x100000000L
+79228162514264337593543950336
+0xdeadbeef
+3.14j
+10.j
+10j
+.001j
+1e100j
+3.14e-10j
+
+
+# String Literals
+'For\''
+"God\""
+"""so loved
+the world"""
+'''that he gave
+his only begotten\' '''
+'that whosoever believeth \
+in him'
+''
+
+# Identifiers
+__a__
+a.b
+a.b.c
+
+# Operators
++ - * / % & | ^ ~ < >
+== != <= >= <> << >> // **
+and or not in is
+
+# Delimiters
+() [] {} , : ` = ; @ .  # Note that @ and . require the proper context.
++= -= *= /= %= &= |= ^=
+//= >>= <<= **=
+
+# Keywords
+as assert break class continue def del elif else except
+finally for from global if import lambda pass raise
+return try while with yield
+
+# Python 2 Keywords (otherwise Identifiers)
+exec print
+
+# Python 3 Keywords (otherwise Identifiers)
+nonlocal
+
+# Types
+bool classmethod complex dict enumerate float frozenset int list object
+property reversed set slice staticmethod str super tuple type
+
+# Python 2 Types (otherwise Identifiers)
+basestring buffer file long unicode xrange
+
+# Python 3 Types (otherwise Identifiers)
+bytearray bytes filter map memoryview open range zip
+
+# Some Example code
+import os
+from package import ParentClass
+
+@nonsenseDecorator
+def doesNothing():
+    pass
+
+class ExampleClass(ParentClass):
+    @staticmethod
+    def example(inputStr):
+        a = list(inputStr)
+        a.reverse()
+        return ''.join(a)
+
+    def __init__(self, mixin = 'Hello'):
+        self.mixin = mixin
+
+</textarea></div>
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        mode: {name: "python",
+               version: 2,
+               singleLineStringErrors: false},
+        lineNumbers: true,
+        indentUnit: 4,
+        tabMode: "shift",
+        matchBrackets: true
+      });
+    </script>
+    <h2>Configuration Options:</h2>
+    <ul>
+      <li>version - 2/3 - The version of Python to recognize.  Default is 2.</li>
+      <li>singleLineStringErrors - true/false - If you have a single-line string that is not terminated at the end of the line, this will show subsequent lines as errors if true, otherwise it will consider the newline as the end of the string. Default is false.</li>
+    </ul>
+    <h2>Advanced Configuration Options:</h2>
+    <p>Usefull for superset of python syntax like Enthought enaml, IPython magics and  questionmark help</p>
+    <ul>
+      <li>singleOperators - RegEx - Regular Expression for single operator matching,  default : <pre>^[\\+\\-\\*/%&amp;|\\^~&lt;&gt;!]</pre></li>
+      <li>singleDelimiters - RegEx - Regular Expression for single delimiter matching, default :  <pre>^[\\(\\)\\[\\]\\{\\}@,:`=;\\.]</pre></li>
+      <li>doubleOperators - RegEx - Regular Expression for double operators matching, default : <pre>^((==)|(!=)|(&lt;=)|(&gt;=)|(&lt;&gt;)|(&lt;&lt;)|(&gt;&gt;)|(//)|(\\*\\*))</pre></li>
+      <li>doubleDelimiters - RegEx - Regular Expressoin for double delimiters matching, default : <pre>^((\\+=)|(\\-=)|(\\*=)|(%=)|(/=)|(&amp;=)|(\\|=)|(\\^=))</pre></li>
+      <li>tripleDelimiters - RegEx - Regular Expression for triple delimiters matching, default : <pre>^((//=)|(&gt;&gt;=)|(&lt;&lt;=)|(\\*\\*=))</pre></li>
+      <li>identifiers - RegEx - Regular Expression for identifier, default : <pre>^[_A-Za-z][_A-Za-z0-9]*</pre></li>
+    </ul>
+
+
+    <p><strong>MIME types defined:</strong> <code>text/x-python</code>.</p>
+  </body>
+</html>

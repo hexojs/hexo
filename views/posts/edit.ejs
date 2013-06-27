@@ -1,7 +1,7 @@
 <div id="post-edit" ng-show="post">
   <div id="post-edit-fn">
     <div id="post-edit-left">
-      <button class="btn btn-primary" ng-click="save()"><i class="icon-save"></i>Save</button>
+      <button class="btn btn-primary" ng-click="save()" ng-class="{disabled: isSaving}"><i class="icon-save"></i>Save</button>
       <button class="btn btn-danger" ng-click="modal.open()"><i class="icon-trash"></i>Delete</button>
       <span id="post-edit-status">{{ status }}</span>
     </div>
@@ -23,7 +23,7 @@
     </div>
   </div>
   <div id="post-edit-area">
-    <div ng-model="post.content" ui-ace scope-instance="editor"></div>
+    <textarea codemirror="cmOptions" instance="editor" ng-model="post.content"></textarea>
   </div>
 </div>
 
@@ -41,4 +41,6 @@
   </div>
 </div>
 
+<link href="<%- base %>js/lib/codemirror/lib/codemirror.css" rel="stylesheet" type="text/css">
+<link href="<%- base %>js/lib/codemirror/theme/neat.css" rel="stylesheet" type="text/css">
 <link href="<%- base %>css/posts/edit.css" rel="stylesheet" type="text/css">

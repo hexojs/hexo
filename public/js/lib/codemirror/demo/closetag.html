@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CodeMirror: Close-Tag Demo</title>
+    <link rel="stylesheet" href="../lib/codemirror.css">
+    <script src="../lib/codemirror.js"></script>
+    <script src="../addon/edit/closetag.js"></script>
+    <script src="../mode/xml/xml.js"></script>
+    <script src="../mode/javascript/javascript.js"></script>
+    <script src="../mode/css/css.js"></script>
+    <script src="../mode/htmlmixed/htmlmixed.js"></script>
+    <link rel="stylesheet" href="../doc/docs.css">
+    <style type="text/css">
+      .CodeMirror {border-top: 1px solid #888; border-bottom: 1px solid #888;}
+    </style>
+  </head>
+  <body>
+    
+    <h1>Close-Tag Demo</h1>
+    <ul>
+      <li>Type an html tag.  When you type '>' or '/', the tag will auto-close/complete.  Block-level tags will indent.</li>
+      <li>There are options for disabling tag closing or customizing the list of tags to indent.</li>
+      <li>Works with "text/html" (based on htmlmixed.js or xml.js) mode.</li>
+      <li>View source for key binding details.</li>
+    </ul>
+
+    <form><textarea id="code" name="code"><html</textarea></form>
+
+    <script type="text/javascript">
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        mode: 'text/html',
+        autoCloseTags: true
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CodeMirror: RPM spec mode</title>
+    <link rel="stylesheet" href="../../../lib/codemirror.css">
+    <script src="../../../lib/codemirror.js"></script>
+    <script src="spec.js"></script>
+    <link rel="stylesheet" href="spec.css">
+    <link rel="stylesheet" href="../../../doc/docs.css">
+    <style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+  </head>
+  <body>
+    <h1>CodeMirror: RPM spec mode</h1>
+    
+    <div><textarea id="code" name="code">
+#
+# spec file for package minidlna
+#
+# Copyright (c) 2011, Sascha Peilicke <saschpe@gmx.de>
+#
+# All modifications and additions to the file contributed by third parties
+# remain the property of their copyright owners, unless otherwise agreed
+# upon. The license for this file, and modifications and additions to the
+# file, is the same license as for the pristine package itself (unless the
+# license for the pristine package is not an Open Source License, in which
+# case the license is the MIT License). An "Open Source License" is a
+# license that conforms to the Open Source Definition (Version 1.9)
+# published by the Open Source Initiative.
+
+
+Name:           libupnp6
+Version:        1.6.13
+Release:        0
+Summary:        Portable Universal Plug and Play (UPnP) SDK
+Group:          System/Libraries
+License:        BSD-3-Clause
+Url:            http://sourceforge.net/projects/pupnp/
+Source0:        http://downloads.sourceforge.net/pupnp/libupnp-%{version}.tar.bz2
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+
+%description
+The portable Universal Plug and Play (UPnP) SDK provides support for building
+UPnP-compliant control points, devices, and bridges on several operating
+systems.
+
+%package -n libupnp-devel
+Summary:        Portable Universal Plug and Play (UPnP) SDK
+Group:          Development/Libraries/C and C++
+Provides:       pkgconfig(libupnp)
+Requires:       %{name} = %{version}
+
+%description -n libupnp-devel
+The portable Universal Plug and Play (UPnP) SDK provides support for building
+UPnP-compliant control points, devices, and bridges on several operating
+systems.
+
+%prep
+%setup -n libupnp-%{version}
+
+%build
+%configure --disable-static
+make %{?_smp_mflags}
+
+%install
+%makeinstall
+find %{buildroot} -type f -name '*.la' -exec rm -f {} ';'
+
+%post -p /sbin/ldconfig
+
+%postun -p /sbin/ldconfig
+
+%files
+%defattr(-,root,root,-)
+%doc ChangeLog NEWS README TODO
+%{_libdir}/libixml.so.*
+%{_libdir}/libthreadutil.so.*
+%{_libdir}/libupnp.so.*
+
+%files -n libupnp-devel
+%defattr(-,root,root,-)
+%{_libdir}/pkgconfig/libupnp.pc
+%{_libdir}/libixml.so
+%{_libdir}/libthreadutil.so
+%{_libdir}/libupnp.so
+%{_includedir}/upnp/
+
+%changelog</textarea></div>
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        mode: {name: "spec"},
+        lineNumbers: true,
+        indentUnit: 4
+      });
+    </script>
+
+    <p><strong>MIME types defined:</strong> <code>text/x-rpm-spec</code>.</p>
+  </body>
+</html>

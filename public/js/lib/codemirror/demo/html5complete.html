@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CodeMirror: HTML completion demo</title>
+    <link rel="stylesheet" href="../lib/codemirror.css">
+    <script src="../lib/codemirror.js"></script>
+    <script src="../addon/hint/show-hint.js"></script>
+    <link rel="stylesheet" href="../addon/hint/show-hint.css">
+    <script src="../addon/hint/xml-hint.js"></script>
+    <script src="../addon/hint/html-hint.js"></script>
+    <script src="../mode/xml/xml.js"></script>
+    <script src="../mode/javascript/javascript.js"></script>
+    <script src="../mode/css/css.js"></script>
+    <script src="../mode/htmlmixed/htmlmixed.js"></script>
+        
+    <link rel="stylesheet" href="../doc/docs.css">
+    <style type="text/css">
+      .CodeMirror {border-top: 1px solid #888; border-bottom: 1px solid #888;}
+    </style>
+  </head>
+  <body>
+    
+    <h1>HTML completion demo</h1>
+    <p>Shows the <a href="xmlcomplete.html">XML completer</a>
+    parameterized with information about the tags in HTML.
+    Press <strong>ctrl-space</strong> to activate completion.</p>
+
+    <div id="code"></div>
+
+    <script type="text/javascript">
+      CodeMirror.commands.autocomplete = function(cm) {
+          CodeMirror.showHint(cm, CodeMirror.htmlHint);
+      }
+      window.onload = function() {
+        editor = CodeMirror(document.getElementById("code"), {
+          mode: "text/html",
+          extraKeys: {"Ctrl-Space": "autocomplete"},
+          value: "<!doctype html>\n<html>\n  " + document.documentElement.innerHTML + "\n</html>"
+        });
+      };
+    </script>
+  </body>
+</html>

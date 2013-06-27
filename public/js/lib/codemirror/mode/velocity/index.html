@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CodeMirror: Velocity mode</title>
+    <link rel="stylesheet" href="../../lib/codemirror.css">
+    <script src="../../lib/codemirror.js"></script>
+    <script src="velocity.js"></script>
+    <link rel="stylesheet" href="../../theme/night.css">
+    <style>.CodeMirror {border: 1px solid black;}</style>
+    <link rel="stylesheet" href="../../doc/docs.css">
+  </head>
+  <body>
+    <h1>CodeMirror: Velocity mode</h1>
+    <form><textarea id="code" name="code">
+## Velocity Code Demo
+#*
+   based on PL/SQL mode by Peter Raganitsch, adapted to Velocity by Steve O'Hara ( http://www.pivotal-solutions.co.uk )
+   August 2011
+*#
+
+#*
+   This is a multiline comment.
+   This is the second line
+*#
+
+#[[ hello steve
+   This has invalid syntax that would normally need "poor man's escaping" like:
+
+   #define()
+
+   ${blah
+]]#
+
+#include( "disclaimer.txt" "opinion.txt" )
+#include( $foo $bar )
+
+#parse( "lecorbusier.vm" )
+#parse( $foo )
+
+#evaluate( 'string with VTL #if(true)will be displayed#end' )
+
+#define( $hello ) Hello $who #end #set( $who = "World!") $hello ## displays Hello World!
+
+#foreach( $customer in $customerList )
+
+    $foreach.count $customer.Name
+
+    #if( $foo == ${bar})
+        it's true!
+        #break
+    #{else}
+        it's not!
+        #stop
+    #end
+
+    #if ($foreach.parent.hasNext)
+        $velocityCount
+    #end
+#end
+
+$someObject.getValues("this is a string split
+        across lines")
+
+#macro( tablerows $color $somelist )
+    #foreach( $something in $somelist )
+        <tr><td bgcolor=$color>$something</td></tr>
+    #end
+#end
+
+#tablerows("red" ["dadsdf","dsa"])
+
+   Variable reference: #set( $monkey = $bill )
+   String literal: #set( $monkey.Friend = 'monica' )
+   Property reference: #set( $monkey.Blame = $whitehouse.Leak )
+   Method reference: #set( $monkey.Plan = $spindoctor.weave($web) )
+   Number literal: #set( $monkey.Number = 123 )
+   Range operator: #set( $monkey.Numbers = [1..3] )
+   Object list: #set( $monkey.Say = ["Not", $my, "fault"] )
+   Object map: #set( $monkey.Map = {"banana" : "good", "roast beef" : "bad"})
+
+The RHS can also be a simple arithmetic expression, such as:
+Addition: #set( $value = $foo + 1 )
+   Subtraction: #set( $value = $bar - 1 )
+   Multiplication: #set( $value = $foo * $bar )
+   Division: #set( $value = $foo / $bar )
+   Remainder: #set( $value = $foo % $bar )
+
+</textarea></form>
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        tabMode: "indent",
+        theme: "night",
+        lineNumbers: true,
+        indentUnit: 4,
+        mode: "text/velocity"
+      });
+    </script>
+
+    <p><strong>MIME types defined:</strong> <code>text/velocity</code>.</p>
+
+  </body>
+</html>

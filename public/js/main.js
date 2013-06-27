@@ -14,6 +14,15 @@ require.config({
     'lib/lodash': [
       'lib/lodash.min'
     ],
+    'codemirror/addon': [
+      'lib/codemirror/addon'
+    ],
+    'codemirror/mode': [
+      'lib/codemirror/mode'
+    ],
+    'lib/codemirror': [
+      'lib/codemirror/lib/codemirror'
+    ],
     'plugins/angular-ui-router': [
       'plugins/angular-ui-router.min'
     ],
@@ -33,6 +42,15 @@ require.config({
     },
     'lib/jquery': {
       exports: 'jQuery'
+    },
+    'codemirror/addon': {
+      deps: ['lib/codemirror']
+    },
+    'codemirror/mode': {
+      deps: ['lib/codemirror']
+    },
+    'lib/codemirror': {
+      exports: 'CodeMirror'
     },
     'plugins/angular-ui-router': {
       deps: ['lib/angular']

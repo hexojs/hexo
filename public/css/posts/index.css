@@ -73,10 +73,7 @@
 
 /* line 61, ../../../assets/server/sass/posts/index.sass */
 .post-title {
-  -webkit-transition: 0.1s;
-  -moz-transition: 0.1s;
-  -o-transition: 0.1s;
-  transition: 0.1s;
   font-weight: bold;
   color: #444444;
+  line-height: 1.5;
 }

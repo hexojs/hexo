@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CodeMirror: Rust mode</title>
+    <link rel="stylesheet" href="../../lib/codemirror.css">
+    <script src="../../lib/codemirror.js"></script>
+    <script src="rust.js"></script>
+    <link rel="stylesheet" href="../../doc/docs.css">
+    <style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+  </head>
+  <body>
+    <h1>CodeMirror: Rust mode</h1>
+
+<div><textarea id="code" name="code">
+// Demo code.
+
+type foo<T> = int;
+enum bar {
+    some(int, foo<float>),
+    none
+}
+
+fn check_crate(x: int) {
+    let v = 10;
+    alt foo {
+      1 to 3 {
+        print_foo();
+        if x {
+            blah() + 10;
+        }
+      }
+      (x, y) { "bye" }
+      _ { "hi" }
+    }
+}
+</textarea></div>
+
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        lineNumbers: true,
+        tabMode: "indent"
+      });
+    </script>
+
+    <p><strong>MIME types defined:</strong> <code>text/x-rustsrc</code>.</p>
+  </body>
+</html>

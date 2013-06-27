@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CodeMirror: Lua mode</title>
+    <link rel="stylesheet" href="../../lib/codemirror.css">
+    <script src="../../addon/edit/matchbrackets.js"></script>
+    <script src="../../lib/codemirror.js"></script>
+    <script src="lua.js"></script>
+    <link rel="stylesheet" href="../../theme/neat.css">
+    <style>.CodeMirror {border: 1px solid black;}</style>
+    <link rel="stylesheet" href="../../doc/docs.css">
+  </head>
+  <body>
+    <h1>CodeMirror: Lua mode</h1>
+    <form><textarea id="code" name="code">
+--[[
+example useless code to show lua syntax highlighting
+this is multiline comment
+]]
+
+function blahblahblah(x)
+
+  local table = {
+    "asd" = 123,
+    "x" = 0.34,  
+  }
+  if x ~= 3 then
+    print( x )
+  elseif x == "string"
+    my_custom_function( 0x34 )
+  else
+    unknown_function( "some string" )
+  end
+
+  --single line comment
+  
+end
+
+function blablabla3()
+
+  for k,v in ipairs( table ) do
+    --abcde..
+    y=[=[
+  x=[[
+      x is a multi line string
+   ]]
+  but its definition is iside a highest level string!
+  ]=]
+    print(" \"\" ")
+
+    s = math.sin( x )
+  end
+
+end
+</textarea></form>
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        tabMode: "indent",
+        matchBrackets: true,
+        theme: "neat"
+      });
+    </script>
+
+    <p>Loosely based on Franciszek
+    Wawrzak's <a href="http://codemirror.net/1/contrib/lua">CodeMirror
+    1 mode</a>. One configuration parameter is
+    supported, <code>specials</code>, to which you can provide an
+    array of strings to have those identifiers highlighted with
+    the <code>lua-special</code> style.</p>
+    <p><strong>MIME types defined:</strong> <code>text/x-lua</code>.</p>
+
+  </body>
+</html>

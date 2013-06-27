@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CodeMirror: Jinja2 mode</title>
+    <link rel="stylesheet" href="../../lib/codemirror.css">
+    <script src="../../lib/codemirror.js"></script>
+    <script src="jinja2.js"></script>
+    <style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+    <link rel="stylesheet" href="../../doc/docs.css">
+  </head>
+  <body>
+    <h1>CodeMirror: Jinja2 mode</h1>
+    <form><textarea id="code" name="code">
+&lt;html style="color: green"&gt;
+  &lt;!-- this is a comment --&gt;
+  &lt;head&gt;
+    &lt;title&gt;Jinja2 Example&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;ul&gt;
+    {# this is a comment #}
+    {%- for item in li -%}
+      &lt;li&gt;
+        {{ item.label }}
+      &lt;/li&gt;
+    {% endfor -%}
+    &lt;/ul&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</textarea></form>
+    <script>
+      var editor =
+      CodeMirror.fromTextArea(document.getElementById("code"), {mode:
+        {name: "jinja2", htmlMode: true}});
+    </script>
+  </body>
+</html>

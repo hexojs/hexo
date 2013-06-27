@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CodeMirror: Pascal mode</title>
+    <link rel="stylesheet" href="../../lib/codemirror.css">
+    <script src="../../lib/codemirror.js"></script>
+    <script src="pascal.js"></script>
+    <link rel="stylesheet" href="../../doc/docs.css">
+    <style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+  </head>
+  <body>
+    <h1>CodeMirror: Pascal mode</h1>
+
+<div><textarea id="code" name="code">
+(* Example Pascal code *)
+
+while a <> b do writeln('Waiting');
+ 
+if a > b then 
+  writeln('Condition met')
+else 
+  writeln('Condition not met');
+ 
+for i := 1 to 10 do 
+  writeln('Iteration: ', i:1);
+ 
+repeat
+  a := a + 1
+until a = 10;
+ 
+case i of
+  0: write('zero');
+  1: write('one');
+  2: write('two')
+end;
+</textarea></div>
+
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        lineNumbers: true,
+        mode: "text/x-pascal"
+      });
+    </script>
+
+    <p><strong>MIME types defined:</strong> <code>text/x-pascal</code>.</p>
+  </body>
+</html>

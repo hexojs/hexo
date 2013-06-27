@@ -4,22 +4,20 @@ define([
   'controllers',
   'filters',
   'services',
-  //'plugins/restangular',
+  'directives',
   'plugins/angular-ui-router',
-  'plugins/angular-ui-bootstrap',
-  'plugins/angular-ui-ace'
+  'plugins/angular-ui-bootstrap'
 ], function(angular, module){
   var config = module.config(),
     base = config.base;
 
   var app = angular.module('hexo', [
     'ui.state',
-    //'restangular',
     'ui.bootstrap',
-    'ui.ace',
     'hexo.controllers',
     'hexo.filters',
-    'hexo.services'
+    'hexo.services',
+    'hexo.directives'
   ]);
 
   app.constant('version', config.version)

@@ -1,0 +1,147 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CodeMirror: Full Screen Editing</title>
+    <link rel="stylesheet" href="../lib/codemirror.css">
+    <script src="../lib/codemirror.js"></script>
+    <link rel="stylesheet" href="../theme/night.css">
+    <script src="../mode/xml/xml.js"></script>
+    <link rel="stylesheet" href="../doc/docs.css">
+
+    <style type="text/css">
+      .CodeMirror-fullscreen {
+        display: block;
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%;
+        z-index: 9999;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CodeMirror: Full Screen Editing</h1>
+
+    <form><textarea id="code" name="code" rows="5">
+  <dt id="option_indentWithTabs"><code>indentWithTabs (boolean)</code></dt>
+  <dd>Whether, when indenting, the first N*8 spaces should be
+  replaced by N tabs. Default is false.</dd>
+
+  <dt id="option_tabMode"><code>tabMode (string)</code></dt>
+  <dd>Determines what happens when the user presses the tab key.
+  Must be one of the following:
+    <dl>
+      <dt><code>"classic" (the default)</code></dt>
+      <dd>When nothing is selected, insert a tab. Otherwise,
+      behave like the <code>"shift"</code> mode. (When shift is
+      held, this behaves like the <code>"indent"</code> mode.)</dd>
+      <dt><code>"shift"</code></dt>
+      <dd>Indent all selected lines by
+      one <a href="#option_indentUnit"><code>indentUnit</code></a>.
+      If shift was held while pressing tab, un-indent all selected
+      lines one unit.</dd>
+      <dt><code>"indent"</code></dt>
+      <dd>Indent the line the 'correctly', based on its syntactic
+      context. Only works if the
+      mode <a href="#indent">supports</a> it.</dd>
+      <dt><code>"default"</code></dt>
+      <dd>Do not capture tab presses, let the browser apply its
+      default behaviour (which usually means it skips to the next
+      control).</dd>
+    </dl></dd>
+
+  <dt id="option_enterMode"><code>enterMode (string)</code></dt>
+  <dd>Determines whether and how new lines are indented when the
+  enter key is pressed. The following modes are supported:
+    <dl>
+      <dt><code>"indent" (the default)</code></dt>
+      <dd>Use the mode's indentation rules to give the new line
+      the correct indentation.</dd>
+      <dt><code>"keep"</code></dt>
+      <dd>Indent the line the same as the previous line.</dd>
+      <dt><code>"flat"</code></dt>
+      <dd>Do not indent the new line.</dd>
+    </dl></dd>
+
+  <dt id="option_enterMode"><code>enterMode (string)</code></dt>
+  <dd>Determines whether and how new lines are indented when the
+  enter key is pressed. The following modes are supported:
+    <dl>
+      <dt><code>"indent" (the default)</code></dt>
+      <dd>Use the mode's indentation rules to give the new line
+      the correct indentation.</dd>
+      <dt><code>"keep"</code></dt>
+      <dd>Indent the line the same as the previous line.</dd>
+      <dt><code>"flat"</code></dt>
+      <dd>Do not indent the new line.</dd>
+    </dl></dd>
+
+  <dt id="option_enterMode"><code>enterMode (string)</code></dt>
+  <dd>Determines whether and how new lines are indented when the
+  enter key is pressed. The following modes are supported:
+    <dl>
+      <dt><code>"indent" (the default)</code></dt>
+      <dd>Use the mode's indentation rules to give the new line
+      the correct indentation.</dd>
+      <dt><code>"keep"</code></dt>
+      <dd>Indent the line the same as the previous line.</dd>
+      <dt><code>"flat"</code></dt>
+      <dd>Do not indent the new line.</dd>
+    </dl></dd>
+
+  <dt id="option_enterMode"><code>enterMode (string)</code></dt>
+  <dd>Determines whether and how new lines are indented when the
+  enter key is pressed. The following modes are supported:
+    <dl>
+      <dt><code>"indent" (the default)</code></dt>
+      <dd>Use the mode's indentation rules to give the new line
+      the correct indentation.</dd>
+      <dt><code>"keep"</code></dt>
+      <dd>Indent the line the same as the previous line.</dd>
+      <dt><code>"flat"</code></dt>
+      <dd>Do not indent the new line.</dd>
+    </dl></dd>
+
+</textarea></form>
+  <script>
+    function isFullScreen(cm) {
+      return /\bCodeMirror-fullscreen\b/.test(cm.getWrapperElement().className);
+    }
+    function winHeight() {
+      return window.innerHeight || (document.documentElement || document.body).clientHeight;
+    }
+    function setFullScreen(cm, full) {
+      var wrap = cm.getWrapperElement();
+      if (full) {
+        wrap.className += " CodeMirror-fullscreen";
+        wrap.style.height = winHeight() + "px";
+        document.documentElement.style.overflow = "hidden";
+      } else {
+        wrap.className = wrap.className.replace(" CodeMirror-fullscreen", "");
+        wrap.style.height = "";
+        document.documentElement.style.overflow = "";
+      }
+      cm.refresh();
+    }
+    CodeMirror.on(window, "resize", function() {
+      var showing = document.body.getElementsByClassName("CodeMirror-fullscreen")[0];
+      if (!showing) return;
+      showing.CodeMirror.getWrapperElement().style.height = winHeight() + "px";
+    });
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      lineNumbers: true,
+      theme: "night",
+      extraKeys: {
+        "F11": function(cm) {
+          setFullScreen(cm, !isFullScreen(cm));
+        },
+        "Esc": function(cm) {
+          if (isFullScreen(cm)) setFullScreen(cm, false);
+        }
+      }
+    });
+  </script>
+
+    <p>Press <strong>F11</strong> when cursor is in the editor to toggle full screen editing. <strong>Esc</strong> can also be used to <i>exit</i> full screen editing.</p>
+  </body>
+</html>

@@ -1,18 +1,36 @@
 define(function(require, exports, module){
   var $ = require('lib/jquery');
 
-  return ['$scope', '$http', '$state', '$stateParams', '$filter', 'apiBaseUrl', 'templateBaseUrl',
-    function($scope, $http, $state, $stateParams, $filter, apiBaseUrl, templateBaseUrl){
+  require(['codemirror/mode/markdown/markdown'])
 
-    var id = $stateParams.id,
-      editor;
+  return ['$scope', '$http', '$state', '$stateParams', '$filter', '$window', 'apiBaseUrl', 'templateBaseUrl',
+    function($scope, $http, $state, $stateParams, $filter, $window, apiBaseUrl, templateBaseUrl){
+
+    var id = $stateParams.id;
+
+    $scope.cmOptions = {
+      lineWrapping: true,
+      theme: 'neat',
+      mode: 'markdown',
+      extraKeys: {
+        'Cmd-S': function(){
+          $scope.save();
+        },
+        'Ctrl-S': function(){
+          $scope.save();
+        }
+      }
+    };
 
     $scope.$parent.selected = id;
 
     $scope.save = function(){
+      if ($scope.isSaving) return;
+
       var post = $scope.post;
 
       $scope.status = 'Saving...';
+      $scope.isSaving = true;
 
       $http.put(apiBaseUrl + 'posts/' + id, {content: post.content})
         .success(function(data){
@@ -22,9 +40,12 @@ define(function(require, exports, module){
           parent.date = data.date;
 
           $scope.status = 'Saved';
+          $scope.post = data;
+          $scope.isSaving = false;
         })
         .error(function(){
           $scope.status = 'Save failed';
+          $scope.isSaving = false;
         });
     };
 
@@ -60,20 +81,28 @@ define(function(require, exports, module){
       }
     };
 
+    var insert = function(before, after){
+      var editor = $scope.editor,
+        selection = editor.getSelection(),
+        cursor = editor.getCursor();
+
+      editor.replaceSelection(before + selection + after);
+    };
+
     $scope.bold = function(){
-      //editor.replace('1234');
+      insert('**', '**');
     };
 
     $scope.italic = function(){
-      //
+      insert('*', '*');
     };
 
     $scope.link = function(){
-      //
+      insert('[', ']()');
     };
 
     $scope.picture = function(){
-      //
+      insert('![', ']()');
     };
 
     $scope.fullscreen = function(){
@@ -84,7 +113,6 @@ define(function(require, exports, module){
       }
 
       $scope.isFullscreen = !$scope.isFullscreen;
-      editor.resize();
     };
 
     $http.get(apiBaseUrl + 'posts/' + id)
@@ -94,22 +122,5 @@ define(function(require, exports, module){
       .error(function(){
         $state.transitionTo('posts');
       });
-
-    $scope.$on('$viewContentLoaded', function(){
-      editor = $scope.editor;
-
-      var session = editor.getSession(),
-        renderer = editor.renderer;
-
-      editor.setHighlightActiveLine(false);
-      editor.setFontSize(14);
-      editor.setTheme('ace/theme/tomorrow');
-      session.setMode('ace/mode/markdown');
-      session.setTabSize(2);
-      session.setUseSoftTabs(true);
-      session.setUseWrapMode(true);
-      renderer.setShowGutter(false);
-      renderer.setShowPrintMargin(false);
-    });
   }]
 });

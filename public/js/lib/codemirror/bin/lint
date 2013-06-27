@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+var lint = require("../test/lint/lint");
+
+if (process.argv.length > 2) {
+  lint.checkDir(process.argv[2]);
+} else {
+  process.chdir(__dirname.slice(0, __dirname.lastIndexOf("/")));
+  lint.checkDir("lib");
+  lint.checkDir("mode");
+  lint.checkDir("addon");
+  lint.checkDir("keymap");
+}
+
+process.exit(lint.success() ? 0 : 1);

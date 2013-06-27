@@ -1,0 +1,62 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>CodeMirror: Haskell mode</title>
+    <link rel="stylesheet" href="../../lib/codemirror.css">
+    <script src="../../lib/codemirror.js"></script>
+    <script src="../../addon/edit/matchbrackets.js"></script>
+    <script src="haskell.js"></script>
+    <link rel="stylesheet" href="../../theme/elegant.css">
+    <style type="text/css">.CodeMirror {border-top: 1px solid black; border-bottom: 1px solid black;}</style>
+    <link rel="stylesheet" href="../../doc/docs.css">
+  </head>
+  <body>
+    <h1>CodeMirror: Haskell mode</h1>
+
+<form><textarea id="code" name="code">
+module UniquePerms (
+    uniquePerms
+    )
+where
+
+-- | Find all unique permutations of a list where there might be duplicates.
+uniquePerms :: (Eq a) => [a] -> [[a]]
+uniquePerms = permBag . makeBag
+
+-- | An unordered collection where duplicate values are allowed,
+-- but represented with a single value and a count.
+type Bag a = [(a, Int)]
+
+makeBag :: (Eq a) => [a] -> Bag a
+makeBag [] = []
+makeBag (a:as) = mix a $ makeBag as
+  where
+    mix a []                        = [(a,1)]
+    mix a (bn@(b,n):bs) | a == b    = (b,n+1):bs
+                        | otherwise = bn : mix a bs
+
+permBag :: Bag a -> [[a]]
+permBag [] = [[]]
+permBag bs = concatMap (\(f,cs) -> map (f:) $ permBag cs) . oneOfEach $ bs
+  where
+    oneOfEach [] = []
+    oneOfEach (an@(a,n):bs) =
+        let bs' = if n == 1 then bs else (a,n-1):bs
+        in (a,bs') : mapSnd (an:) (oneOfEach bs)
+    
+    apSnd f (a,b) = (a, f b)
+    mapSnd = map . apSnd
+</textarea></form>
+
+    <script>
+      var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        lineNumbers: true,
+        matchBrackets: true,
+        theme: "elegant"
+      });
+    </script>
+
+    <p><strong>MIME types defined:</strong> <code>text/x-haskell</code>.</p>
+  </body>
+</html>

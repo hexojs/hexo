@@ -1,0 +1,10 @@
+.mt-output .mt-token {
+  border: 1px solid #ddd;
+  white-space: pre;
+  font-family: "Consolas", monospace;
+  text-align: center;
+}
+
+.mt-output .mt-style {
+  font-size: x-small;
+}
