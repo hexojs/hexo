@@ -5,9 +5,9 @@
       <button class="btn btn-info" ng-click="modal.open()"><i class="icon-plus"></i>New</button>
     </div>
   </div>
-  <div id="post-search-form" ng-click="search()">
-    <i id="post-search-icon" class="icon-search"></i>
+  <div id="post-search-form">
     <input type="search" id="post-search-input" placeholder="Search" ng-model="query">
+    <i id="post-search-icon" class="icon-search"></i>
   </div>
   <div class="post-item" ng-repeat="post in posts | orderBy: '-date' | filter: query" ng-click="edit(post.id)" ng-class="{current: selected == post.id}">
     <div class="post-date">{{ post.date | date }}</div>

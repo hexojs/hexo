@@ -15,10 +15,9 @@
   border-bottom: 1px solid #eeeeee;
   position: relative;
   height: 50px;
-  cursor: text;
 }
 
-/* line 23, ../../../assets/server/sass/posts/index.sass */
+/* line 22, ../../../assets/server/sass/posts/index.sass */
 #post-search-icon {
   color: #999999;
   position: absolute;
@@ -26,13 +25,14 @@
   left: 30px;
 }
 
-/* line 29, ../../../assets/server/sass/posts/index.sass */
+/* line 28, ../../../assets/server/sass/posts/index.sass */
 #post-search-input {
   border: none;
   position: absolute;
-  top: 15px;
-  left: 55px;
-  right: 30px;
+  top: 0;
+  left: 0;
+  padding: 16px 30px 16px 55px;
+  width: 365px;
 }
 
 /* line 36, ../../../assets/server/sass/posts/index.sass */
