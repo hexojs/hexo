@@ -1,13 +1,18 @@
 <div id="file-nav">
   <div id="file-nav-left">
+    <button class="btn btn-small btn-success" ng-click="download()"><i class="icon-download-alt"></i>Download</button>
+    <button class="btn btn-small" ng-click="copy()"><i class="icon-copy"></i>Copy</button>
+    <button class="btn btn-small" ng-click="move()"><i class="icon-share"></i>Move</button>
+    <button class="btn btn-small" ng-click="rename()"><i class="icon-edit"></i>Rename</button>
+    <button class="btn btn-small btn-danger" ng-click="destroy()"><i class="icon-trash"></i>Delete</button>
   </div>
   <div id="file-nav-search">
     <i id="file-nav-search-icon" class="icon-search"></i>
     <input id="file-nav-search-input" type="search" ng-model="query" placeholder="Search">
   </div>
   <div id="file-nav-right">
-    <button class="btn btn-info" ng-click="newFolder()"><i class="icon-plus"></i>New Folder</button>
-    <button class="btn btn-info" ng-click="upload()"><i class="icon-upload-alt"></i>Upload</button>
+    <button class="btn btn-small btn-info" ng-click="newFolder()"><i class="icon-plus"></i>New Folder</button>
+    <button class="btn btn-small btn-info" ng-click="upload()"><i class="icon-upload-alt"></i>Upload</button>
   </div>
 </div>
 <div id="file-table-wrap" ng-click="blur()">

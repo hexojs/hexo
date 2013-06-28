@@ -21,6 +21,7 @@ $breadcrumb-height: 40px
   padding: 0 15px
   border-right: 1px solid $color-border
   font-weight: bold
+  position: relative
   &:last-child
     color: #555
 
@@ -39,12 +40,14 @@ $breadcrumb-height: 40px
 #file-nav-left
   +float-left
   padding: 10px 15px
+  .btn
+    margin-right: 10px
 
 #file-nav-right
   +float-right
   padding: 10px 15px
   .btn
-    margin-right: 10px
+    margin-left: 10px
 
 #file-nav-search
   +float-right
@@ -53,22 +56,25 @@ $breadcrumb-height: 40px
 
 #file-nav-search-input
   +transition(0.3s)
-  padding: 18px 0 18px 55px
+  padding: 13px 0 13px 43px
   border: none
   width: 0
+  background: transparent
+  position: relative
+  z-index: 1
   &:focus
     width: 150px
-    padding-right: 20px
+    padding-right: 15px
 
 #file-nav-search-icon
   color: #999
   position: absolute
-  top: 20px
-  left: 20px
+  top: 14px
+  left: 14px
 
 #file-table-wrap
   position: absolute
-  top: $breadcrumb-height + 54px
+  top: $breadcrumb-height + 45px
   bottom: 0
   width: 100%
 
