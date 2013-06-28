@@ -3,8 +3,8 @@ define(function(require, exports, module){
 
   require(['codemirror/mode/markdown/markdown'])
 
-  return ['$scope', '$http', '$state', '$stateParams', '$filter', '$window', 'rootUrl', 'apiBaseUrl', 'templateBaseUrl',
-    function($scope, $http, $state, $stateParams, $filter, $window, rootUrl, apiBaseUrl, templateBaseUrl){
+  return ['$scope', '$http', '$state', '$stateParams', '$filter', '$window', 'rootUrl', 'apiBaseUrl',
+    function($scope, $http, $state, $stateParams, $filter, $window, rootUrl, apiBaseUrl){
 
     var id = $stateParams.id;
 

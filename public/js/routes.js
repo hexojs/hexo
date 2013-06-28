@@ -26,18 +26,27 @@ define(function(require, exports, module){
       })
       .state('files', {
         url: baseUrl + 'files',
+        abstract: true,
         templateUrl: templateBaseUrl + 'files/index',
         controller: 'FileIndexCtrl'
       })
       .state('files.list', {
         url: '/list/:path',
-        templateUrl: templateBaseUrl + 'files/index',
-        controller: 'FileIndexCtrl'
+        views: {
+          '': {
+            templateUrl: templateBaseUrl + 'files/list',
+            controller: 'FileListCtrl'
+          }
+        }
       })
       .state('files.show', {
         url: '/show/:path',
-        templateUrl: templateBaseUrl + 'files/show',
-        controller: 'FileShowCtrl'
+        views: {
+          '': {
+            templateUrl: templateBaseUrl + 'files/show',
+            controller: 'FileShowCtrl'
+          }
+        }
       });
 
     $urlRouterProvider.otherwise(baseUrl);

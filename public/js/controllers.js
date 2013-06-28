@@ -8,5 +8,6 @@ define(function(require, exports, module){
     .controller('PostIndexCtrl', require('controllers/posts/index'))
     .controller('PostEditCtrl', require('controllers/posts/edit'))
     .controller('FileIndexCtrl', require('controllers/files/index'))
+    .controller('FileListCtrl', require('controllers/files/list'))
     .controller('FileShowCtrl', require('controllers/files/show'));
 });
