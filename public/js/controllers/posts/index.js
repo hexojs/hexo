@@ -1,6 +1,4 @@
 define(function(require, exports, module){
-  var $ = require('lib/jquery');
-
   return ['$scope', '$http', '$state', 'sharedData', 'apiBaseUrl', 'templateBaseUrl',
     function($scope, $http, $state, sharedData, apiBaseUrl, templateBaseUrl){
 
@@ -40,10 +38,6 @@ define(function(require, exports, module){
 
     $scope.edit = function(id){
       $state.transitionTo('posts.edit', {id: id});
-    };
-
-    $scope.search = function(){
-      $('#post-search-input').focus();
     };
 
     $http.get(apiBaseUrl + 'posts').success(function(data){
