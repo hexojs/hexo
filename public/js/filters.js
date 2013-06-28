@@ -21,5 +21,19 @@ define(function(require, exports, module){
     })
     .filter('moment', function(){
       return moment;
+    })
+    .filter('size', function(){
+      var units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+        length = units.length;
+
+      return function(size){
+        for (var i = 0; i < length; i++){
+          if (size / 1024 < 1){
+            return size + ' ' + units[i];
+          } else {
+            size /= 1024;
+          }
+        }
+      }
     });
 });
