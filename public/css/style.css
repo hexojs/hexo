@@ -742,6 +742,16 @@ input[type="submit"].btn.btn-mini {
   padding-right: 10px;
 }
 
+/* line 41, ../../assets/server/sass/component/_buttons.sass */
+.btn-small {
+  padding: 4px 8px;
+}
+
+/* line 44, ../../assets/server/sass/component/_buttons.sass */
+.btn-large {
+  padding: 10px 20px;
+}
+
 /* line 1, ../../assets/server/sass/component/_header.sass */
 .page-header {
   *zoom: 1;
