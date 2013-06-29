@@ -1,5 +1,6 @@
 @import variables
 @import compass
+@import compass/css3/user-interface
 
 $breadcrumb-height: 40px
 
@@ -79,6 +80,7 @@ $breadcrumb-height: 40px
   width: 100%
 
 #file-table
+  +user-select(none)
   width: 100%
   color: #444
   thead
@@ -89,6 +91,8 @@ $breadcrumb-height: 40px
     cursor: pointer
   td
     padding: 10px 15px
+  tr
+    cursor: pointer
 
 .file-item-selected
   background: #f7f7f7

@@ -1,4 +1,4 @@
-/* line 6, ../../../assets/server/sass/files/index.sass */
+/* line 7, ../../../assets/server/sass/files/index.sass */
 #file-breadcrumb {
   position: absolute;
   top: 0;
@@ -9,7 +9,7 @@
   background: rgba(255, 255, 255, 0.85);
 }
 
-/* line 15, ../../../assets/server/sass/files/index.sass */
+/* line 16, ../../../assets/server/sass/files/index.sass */
 .file-breadcrumb-item {
   display: inline;
   float: left;
@@ -22,17 +22,17 @@
   font-weight: bold;
   position: relative;
 }
-/* line 25, ../../../assets/server/sass/files/index.sass */
+/* line 26, ../../../assets/server/sass/files/index.sass */
 .file-breadcrumb-item:last-child {
   color: #555555;
 }
 
-/* line 28, ../../../assets/server/sass/files/index.sass */
+/* line 29, ../../../assets/server/sass/files/index.sass */
 .file-breadcrumb-home {
   padding: 0 20px;
 }
 
-/* line 31, ../../../assets/server/sass/files/index.sass */
+/* line 32, ../../../assets/server/sass/files/index.sass */
 #file-nav {
   overflow: hidden;
   *zoom: 1;
@@ -44,29 +44,29 @@
   background: rgba(255, 255, 255, 0.85);
 }
 
-/* line 40, ../../../assets/server/sass/files/index.sass */
+/* line 41, ../../../assets/server/sass/files/index.sass */
 #file-nav-left {
   display: inline;
   float: left;
   padding: 10px 15px;
 }
-/* line 43, ../../../assets/server/sass/files/index.sass */
+/* line 44, ../../../assets/server/sass/files/index.sass */
 #file-nav-left .btn {
   margin-right: 10px;
 }
 
-/* line 46, ../../../assets/server/sass/files/index.sass */
+/* line 47, ../../../assets/server/sass/files/index.sass */
 #file-nav-right {
   display: inline;
   float: right;
   padding: 10px 15px;
 }
-/* line 49, ../../../assets/server/sass/files/index.sass */
+/* line 50, ../../../assets/server/sass/files/index.sass */
 #file-nav-right .btn {
   margin-left: 10px;
 }
 
-/* line 52, ../../../assets/server/sass/files/index.sass */
+/* line 53, ../../../assets/server/sass/files/index.sass */
 #file-nav-search {
   display: inline;
   float: right;
@@ -74,7 +74,7 @@
   position: relative;
 }
 
-/* line 57, ../../../assets/server/sass/files/index.sass */
+/* line 58, ../../../assets/server/sass/files/index.sass */
 #file-nav-search-input {
   -webkit-transition: 0.3s;
   -moz-transition: 0.3s;
@@ -87,13 +87,13 @@
   position: relative;
   z-index: 1;
 }
-/* line 65, ../../../assets/server/sass/files/index.sass */
+/* line 66, ../../../assets/server/sass/files/index.sass */
 #file-nav-search-input:focus {
   width: 150px;
   padding-right: 15px;
 }
 
-/* line 69, ../../../assets/server/sass/files/index.sass */
+/* line 70, ../../../assets/server/sass/files/index.sass */
 #file-nav-search-icon {
   color: #999999;
   position: absolute;
@@ -101,7 +101,7 @@
   left: 14px;
 }
 
-/* line 75, ../../../assets/server/sass/files/index.sass */
+/* line 76, ../../../assets/server/sass/files/index.sass */
 #file-table-wrap {
   position: absolute;
   top: 85px;
@@ -109,65 +109,72 @@
   width: 100%;
 }
 
-/* line 81, ../../../assets/server/sass/files/index.sass */
+/* line 82, ../../../assets/server/sass/files/index.sass */
 #file-table {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
   width: 100%;
   color: #444444;
 }
-/* line 84, ../../../assets/server/sass/files/index.sass */
+/* line 86, ../../../assets/server/sass/files/index.sass */
 #file-table thead {
   border-bottom: 1px solid #eeeeee;
 }
-/* line 86, ../../../assets/server/sass/files/index.sass */
+/* line 88, ../../../assets/server/sass/files/index.sass */
 #file-table th {
   text-align: left;
   padding: 10px 15px;
   cursor: pointer;
 }
-/* line 90, ../../../assets/server/sass/files/index.sass */
+/* line 92, ../../../assets/server/sass/files/index.sass */
 #file-table td {
   padding: 10px 15px;
 }
+/* line 94, ../../../assets/server/sass/files/index.sass */
+#file-table tr {
+  cursor: pointer;
+}
 
-/* line 93, ../../../assets/server/sass/files/index.sass */
+/* line 97, ../../../assets/server/sass/files/index.sass */
 .file-item-selected {
   background: #f7f7f7;
 }
 
-/* line 96, ../../../assets/server/sass/files/index.sass */
+/* line 100, ../../../assets/server/sass/files/index.sass */
 .file-sort-icon {
   padding-left: 10px;
   color: #999999;
 }
 
-/* line 100, ../../../assets/server/sass/files/index.sass */
+/* line 104, ../../../assets/server/sass/files/index.sass */
 .file-item-name {
   width: 55%;
 }
 
-/* line 103, ../../../assets/server/sass/files/index.sass */
+/* line 107, ../../../assets/server/sass/files/index.sass */
 .file-item-type,
 .file-item-size {
   width: 20%;
 }
 
-/* line 107, ../../../assets/server/sass/files/index.sass */
+/* line 111, ../../../assets/server/sass/files/index.sass */
 .file-item-icon {
   color: #999999;
   padding-right: 10px;
 }
 
-/* line 111, ../../../assets/server/sass/files/index.sass */
+/* line 115, ../../../assets/server/sass/files/index.sass */
 .file-item-link {
   color: #444444;
   text-decoration: none;
 }
-/* line 114, ../../../assets/server/sass/files/index.sass */
+/* line 118, ../../../assets/server/sass/files/index.sass */
 .file-item-link:hover {
   text-decoration: underline;
 }
 
-/* line 117, ../../../assets/server/sass/files/index.sass */
+/* line 121, ../../../assets/server/sass/files/index.sass */
 .file-item-ext {
   color: #999999;
   padding-left: 10px;
