@@ -1,10 +1,10 @@
 <div id="file-nav">
   <div id="file-nav-left">
-    <button class="btn btn-small btn-success" ng-click="download()"><i class="icon-download-alt"></i>Download</button>
-    <button class="btn btn-small" ng-click="copy()"><i class="icon-copy"></i>Copy</button>
-    <button class="btn btn-small" ng-click="move()"><i class="icon-share"></i>Move</button>
-    <button class="btn btn-small" ng-click="rename()"><i class="icon-edit"></i>Rename</button>
-    <button class="btn btn-small btn-danger" ng-click="destroy()"><i class="icon-trash"></i>Delete</button>
+    <button class="btn btn-small btn-success" ng-click="download()" ng-class="{disabled: !selected.length}"><i class="icon-download-alt"></i>Download</button>
+    <button class="btn btn-small" ng-click="copy()" ng-class="{disabled: !selected.length}"><i class="icon-copy"></i>Copy</button>
+    <button class="btn btn-small" ng-click="move()" ng-class="{disabled: !selected.length}"><i class="icon-share"></i>Move</button>
+    <button class="btn btn-small" ng-click="rename()" ng-class="{disabled: !selected.length}"><i class="icon-edit"></i>Rename</button>
+    <button class="btn btn-small btn-danger" ng-click="destroy()" ng-class="{disabled: !selected.length}"><i class="icon-trash"></i>Delete</button>
   </div>
   <div id="file-nav-search">
     <i id="file-nav-search-icon" class="icon-search"></i>
@@ -26,10 +26,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="file in files | orderBy: order | filter: query" ng-click="select(file, $event)" ng-dblclick="enter(file)" ng-class="{'file-item-selected': file.selected}">
+      <tr ng-repeat="file in files | orderBy: order | filter: query" ng-click="select(file, $event)" ng-dblclick="enter(file)" ng-class="{'file-item-selected': selected.indexOf(file) > -1}">
         <td>
           <i class="file-item-icon" ng-class="{'icon-folder-close': file.is_dir, 'icon-file': !file.is_dir}"></i>
-          <a class="file-item-link" ng-href="<%- base %>files/{{ file.link }}">
+          <a class="file-item-link" ng-href="<%- base %>files/{{ file.link }}" ng-click="enter(file, $event)">
             <strong>{{ file.name }}</strong>
           </a>
         </td>

@@ -42,7 +42,8 @@
     "graceful-fs": "1.2.1",
     "optimist": "0.5.0",
     "watchr": "2.4.3",
-    "warehouse": "0.0.5"
+    "warehouse": "0.0.5",
+    "mime": "1.2.9"
   },
   "devDependencies": {
     "mocha": "*",

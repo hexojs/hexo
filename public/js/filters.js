@@ -29,11 +29,40 @@ define(function(require, exports, module){
       return function(size){
         for (var i = 0; i < length; i++){
           if (size / 1024 < 1){
-            return size.toFixed(2) + ' ' + units[i];
+            return (i == 0 ? size : size.toFixed(2)) + ' ' + units[i];
           } else {
             size /= 1024;
           }
         }
+      }
+    })
+    .filter('mimeType', function(){
+      return function(type){
+        switch (type){
+          case 'text/html':
+          case 'text/css':
+          case 'application/json':
+          case 'application/javascript':
+            return 'Code';
+        }
+
+        var mimeType = type.split('/')[0];
+
+        switch (mimeType){
+          case 'image':
+            return 'Image';
+
+          case 'video':
+            return 'Video';
+
+          case 'audio':
+            return 'Audio';
+
+          case 'text':
+            return 'Text';
+        }
+
+        return 'File';
       }
     });
 });

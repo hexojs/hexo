@@ -18,8 +18,10 @@ define(function(require, exports, module){
 
     $scope.columnType = 0;
     $scope.order = 'name';
+    $scope.files = [];
+    $scope.selected = [];
 
-    $http.get(apiBaseUrl + 'files/' + path)
+    $http.get(apiBaseUrl + 'files/list/' + path)
       .success(function(data){
         for (var i = 0, len = data.length; i < len; i++){
           var item = data[i];
@@ -29,7 +31,7 @@ define(function(require, exports, module){
             item.size = '--';
             item.link = 'list/';
           } else {
-            item.type = 'File';
+            item.type = $filter('mimeType')(item.mime);
             item.ext = item.name.match(/\.(\w+)$/)[1];
             item.size = $filter('size')(item.size);
             item.link = 'show/';
@@ -46,19 +48,22 @@ define(function(require, exports, module){
 
     $scope.select = function(item, $event){
       $event.stopPropagation();
-      item.selected = !item.selected;
-    };
 
-    $scope.blur = function(){
-      var files = $scope.files;
-
-      for (var i = 0, len = files.length; i < len; i++){
-        files[i].selected = false;
+      if ($event.ctrlKey || $event.metaKey){
+        $scope.selected.push(item);
+      } else {
+        $scope.selected = [item];
       }
     };
 
-    $scope.enter = function(item){
+    $scope.blur = function(){
+      $scope.selected = [];
+    };
+
+    $scope.enter = function(item, $event){
       var target = item.path.replace('/', '$');
+
+      $event && $event.preventDefault();
 
       if (item.is_dir){
         $state.transitionTo('files.list', {path: target});
