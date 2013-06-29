@@ -29,7 +29,7 @@ define(function(require, exports, module){
       return function(size){
         for (var i = 0; i < length; i++){
           if (size / 1024 < 1){
-            return size + ' ' + units[i];
+            return size.toFixed(2) + ' ' + units[i];
           } else {
             size /= 1024;
           }
