@@ -29,15 +29,31 @@ define(function(require, exports, module){
           if (item.is_dir){
             item.type = 'Folder';
             item.size = '--';
-            item.link = 'list/';
+            item.link = 'files/list/' + item.path.replace('/', '$');
+            item.icon = 'icon-folder-close';
           } else {
             item.type = $filter('mimeType')(item.mime);
             item.ext = item.name.match(/\.(\w+)$/)[1];
             item.size = $filter('size')(item.size);
-            item.link = 'show/';
-          }
+            item.link = 'api/files/download/' + item.path;
 
-          item.link += item.path.replace('/', '$');
+            switch (item.type){
+              case 'Image':
+                item.icon = 'icon-picture';
+                break;
+
+              case 'Video':
+                item.icon = 'icon-film';
+                break;
+
+              case 'Audio':
+                item.icon = 'icon-music';
+                break;
+
+              default:
+                item.icon = 'icon-file';
+            }
+          }
         }
 
         $scope.files = data;
@@ -63,12 +79,21 @@ define(function(require, exports, module){
     $scope.enter = function(item, $event){
       var target = item.path.replace('/', '$');
 
-      $event && $event.preventDefault();
+      if ($event){
+        $event.preventDefault();
+        $event.stopPropagation();
+      }
 
       if (item.is_dir){
         $state.transitionTo('files.list', {path: target});
       } else {
-        $state.transitionTo('files.show', {path: target});
+        var isImage = item.type === 'Image';
+
+        if (item.type === 'Image'){
+          $state.transitionTo('files.list.image', {path: $stateParams.path, name: item.name});
+        } else {
+          $state.transitionTo('files.show', {path: target});
+        }
       }
     }
 

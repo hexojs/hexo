@@ -1,5 +1,5 @@
 define(function(require, exports, module){
-  return ['$scope', 'sharedData', function($scope, sharedData){    
-    $scope.data = sharedData;
+  return ['$scope', '$state', function($scope, $state){
+    $scope.$state = $state;
   }]
 });

@@ -1,0 +1,104 @@
+/* line 3, ../../../assets/server/sass/files/image.sass */
+#preview-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10000;
+  color: white;
+  font-weight: 300;
+}
+
+/* line 13, ../../../assets/server/sass/files/image.sass */
+#preview-modal-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+}
+
+/* line 21, ../../../assets/server/sass/files/image.sass */
+#preview-modal-close {
+  -webkit-transition: 0.1s;
+  -moz-transition: 0.1s;
+  -o-transition: 0.1s;
+  transition: 0.1s;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: white;
+  opacity: 0.7;
+  font-size: 25px;
+  line-height: 1;
+}
+/* line 32, ../../../assets/server/sass/files/image.sass */
+#preview-modal-close:hover, #preview-modal-close:active {
+  opacity: 1;
+}
+
+/* line 35, ../../../assets/server/sass/files/image.sass */
+#preview-modal-content {
+  position: absolute;
+  top: 47px;
+  bottom: 47px;
+  width: 100%;
+  text-align: center;
+}
+
+/* line 42, ../../../assets/server/sass/files/image.sass */
+#preview-modal-img {
+  max-width: 100%;
+  max-height: 100%;
+  vertical-align: middle;
+}
+
+/* line 47, ../../../assets/server/sass/files/image.sass */
+#preview-modal-menu {
+  overflow: hidden;
+  *zoom: 1;
+  position: absolute;
+  bottom: 15px;
+  line-height: 17px;
+  height: 17px;
+  left: 20px;
+  right: 20px;
+}
+
+/* line 56, ../../../assets/server/sass/files/image.sass */
+#preview-modal-menu-left {
+  display: inline;
+  float: left;
+}
+
+/* line 59, ../../../assets/server/sass/files/image.sass */
+#preview-modal-menu-right {
+  display: inline;
+  float: right;
+}
+
+/* line 62, ../../../assets/server/sass/files/image.sass */
+.preview-modal-btn {
+  display: inline;
+  float: left;
+  -webkit-transition: 0.1s;
+  -moz-transition: 0.1s;
+  -o-transition: 0.1s;
+  transition: 0.1s;
+  background: none;
+  border: none;
+  color: white;
+  opacity: 0.7;
+  margin-left: 20px;
+  width: 17px;
+  height: 17px;
+  padding: 0;
+}
+/* line 73, ../../../assets/server/sass/files/image.sass */
+.preview-modal-btn:hover, .preview-modal-btn:active {
+  opacity: 1;
+}

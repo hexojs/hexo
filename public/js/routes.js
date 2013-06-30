@@ -39,6 +39,15 @@ define(function(require, exports, module){
           }
         }
       })
+      .state('files.list.image', {
+        url: '/image/:name',
+        views: {
+          image: {
+            templateUrl: templateBaseUrl + 'files/image',
+            controller: 'FileImageCtrl'
+          }
+        }
+      })
       .state('files.show', {
         url: '/show/:path',
         views: {

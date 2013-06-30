@@ -4,8 +4,8 @@
   </h1>
   <ul id="main-nav-list">
     <li class="main-nav-item">
-      <a href="<%- base %>posts" class="main-nav-link" ng-class="{current: data.menu == 'posts'}">Posts</a>
-      <a href="<%- base %>files/list/" class="main-nav-link" ng-class="{current: data.menu == 'files'}">Files</a>
+      <a href="<%- base %>posts" class="main-nav-link" ng-class="{current: $state.includes('posts')}">Posts</a>
+      <a href="<%- base %>files/list/" class="main-nav-link" ng-class="{current: $state.includes('files')}">Files</a>
     </li>
   </ul>
 </div>

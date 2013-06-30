@@ -28,8 +28,8 @@
     <tbody>
       <tr ng-repeat="file in files | orderBy: order | filter: query" ng-click="select(file, $event)" ng-dblclick="enter(file)" ng-class="{'file-item-selected': selected.indexOf(file) > -1}">
         <td>
-          <i class="file-item-icon" ng-class="{'icon-folder-close': file.is_dir, 'icon-file': !file.is_dir}"></i>
-          <a class="file-item-link" ng-href="<%- base %>files/{{ file.link }}" ng-click="enter(file, $event)">
+          <i class="file-item-icon" ng-class="file.icon"></i>
+          <a class="file-item-link" ng-href="<%- base %>{{ file.link }}" ng-click="enter(file, $event)">
             <strong>{{ file.name }}</strong>
           </a>
         </td>
@@ -40,3 +40,6 @@
     </tbody>
   </table>
 </div>
+
+<div ui-view="image"></div>
+<link href="<%- base %>css/files/image.css" rel="stylesheet" type="text/css">

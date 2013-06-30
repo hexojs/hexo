@@ -23,14 +23,14 @@ require.config({
     'lib/codemirror': [
       'lib/codemirror/lib/codemirror'
     ],
+    'plugins/angular-ui': [
+      'plugins/angular-ui.min'
+    ],
     'plugins/angular-ui-router': [
       'plugins/angular-ui-router.min'
     ],
     'plugins/angular-ui-bootstrap': [
       'plugins/ui-bootstrap-tpls-0.4.0.min'
-    ],
-    'plugins/angular-ui-ace': [
-      'plugins/angular-ui-ace'
     ],
     'plugins/restangular': [
       'plugins/restangular.min'
@@ -57,9 +57,6 @@ require.config({
     },
     'plugins/angular-ui-bootstrap': {
       deps: ['lib/angular']
-    },
-    'plugins/angular-ui-ace': {
-      deps: ['lib/angular', 'lib/ace/ace']
     },
     'plugins/restangular': {
       deps: ['lib/angular', 'lib/lodash']
