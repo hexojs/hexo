@@ -2,3 +2,4 @@
 node_modules
 .sass-cache
 tmp
+public/css
