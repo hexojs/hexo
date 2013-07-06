@@ -1,6 +1,8 @@
 TESTS = test/*
 REPORTER = spec
 
+all: css
+
 test:
 	@./node_modules/.bin/mocha \
 		--require should \
@@ -9,7 +11,11 @@ test:
 		--slow 30000 \
 		$(TESTS)
 
+install:
+	npm install
+
 css:
 	compass compile -e production --force
 
-.PHONY: test
+css-watch:
+	compass watch
