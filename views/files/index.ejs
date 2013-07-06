@@ -1,0 +1,5 @@
+<div id="file-breadcrumb">
+  <a href="<%- base %>files/list/" class="file-breadcrumb-item file-breadcrumb-home" title="Home"><i class="icon-home"></i></a>
+  <a ng-href="<%- base %>files/list/{{ item.path }}" class="file-breadcrumb-item" ng-repeat="item in breadcrumbs">{{ item.name }}</a>
+</div>
+<div id="file-content" ui-view></div>

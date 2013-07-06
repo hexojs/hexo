@@ -1,0 +1,64 @@
+@import variables
+@import compass
+
+$sidebar-width: 450px
+$edit-fn-height: 52px
+
+#post-list
+  width: $sidebar-width
+  position: absolute
+  top: 0
+  bottom: 0
+  left: 0
+  overflow-x: hidden
+  overflow-y: auto
+
+#post-search-form
+  border-top: 1px solid $color-border
+  border-bottom: 1px solid $color-border
+  position: relative
+  height: 50px
+
+#post-search-icon
+  color: #999
+  position: absolute
+  top: 17px
+  left: 30px
+
+#post-search-input
+  border: none
+  position: absolute
+  top: 0
+  left: 0
+  padding: 16px 30px 16px 55px
+  width: 365px
+
+#post-content
+  position: absolute
+  top: 0
+  bottom: 0
+  left: $sidebar-width
+  right: 0
+  border-left: 1px solid $color-border
+  overflow-x: hidden
+  overflow-y: auto
+  background: #f7f7f7
+
+.post-item
+  +transition(0.1s)
+  border-bottom: 1px solid $color-border
+  padding: 15px 30px
+  cursor: pointer
+  position: relative
+  &.current
+    background: #f7f7f7
+
+.post-date
+  color: $color-meta
+  font-size: 0.85em
+  margin-bottom: 5px
+
+.post-title
+  font-weight: bold
+  color: $color-font
+  line-height: 1.5
