@@ -26,6 +26,7 @@ default_layout: post
 auto_spacing: false # Add spaces between asian characters and western characters
 titlecase: false # Transform title into titlecase
 max_open_file: 100
+multi_select: true
 filename_case: 0
 highlight:
   enable: true
