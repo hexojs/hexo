@@ -1,7 +1,7 @@
 TESTS = test/*
 REPORTER = spec
 
-all: css
+all: install css
 
 test:
 	@./node_modules/.bin/mocha \
@@ -13,6 +13,7 @@ test:
 
 install:
 	npm install
+	git submodule update --init
 
 css:
 	compass compile -e production --force
