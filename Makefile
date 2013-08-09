@@ -1,5 +1,5 @@
-TESTS = test/*.js
-REPORTER = spec
+TESTS = test/index.js
+REPORTER = dot
 
 all: install css
 
