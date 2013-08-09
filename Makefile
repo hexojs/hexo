@@ -1,4 +1,4 @@
-TESTS = test/*
+TESTS = test/*.js
 REPORTER = spec
 
 all: install css
@@ -7,8 +7,6 @@ test:
 	@./node_modules/.bin/mocha \
 		--require should \
 		--reporter $(REPORTER) \
-		--timeout 60000 \
-		--slow 30000 \
 		$(TESTS)
 
 install:
@@ -20,3 +18,5 @@ css:
 
 css-watch:
 	compass watch
+
+.PHONY: test css css-watch

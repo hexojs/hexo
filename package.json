@@ -42,7 +42,8 @@
     "swig": "0.14.0",
     "graceful-fs": "2.0.0",
     "optimist": "0.6.0",
-    "warehouse": "0.0.5"
+    "warehouse": "0.0.5",
+    "sprintf-js": "0.0.7"
   },
   "devDependencies": {
     "mocha": "1.12.0",
