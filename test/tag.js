@@ -25,7 +25,15 @@ describe('Tags', function(){
   });
 
   describe('code', function(){
-    //
+    var code = require('../lib/plugins/tag/code');
+
+    it('content', function(){
+      code([], '').should.be.eql('<figure class="highlight"><pre>\n</pre></figure>');
+    });
+
+    it('lang', function(){
+      code('lang:js'.split(' '), '').should.be.eql('<figure class="highlight lang-js"><pre>\n</pre></figure>');
+    });
   });
 
   describe('gist', function(){
@@ -96,6 +104,10 @@ describe('Tags', function(){
     });
   });
 
+  describe('include_code', function(){
+    //
+  });
+
   describe('jsfiddle', function(){
     var jsfiddle = require('../lib/plugins/tag/jsfiddle');
 
@@ -146,7 +158,16 @@ describe('Tags', function(){
   });
 
   describe('pullquote', function(){
-    //
+    var pullquote = require('../lib/plugins/tag/pullquote');
+
+    it('content', function(){
+      pullquote([], '123456**bold**').should.be.eql('<blockquote class="pullquote"><p>123456<strong>bold</strong></p>\n</blockquote>');
+    });
+
+    it('class', function(){
+      pullquote(['foo'], '123456**bold**').should.be.eql('<blockquote class="pullquote foo"><p>123456<strong>bold</strong></p>\n</blockquote>');
+      pullquote(['foo', 'bar'], '123456**bold**').should.be.eql('<blockquote class="pullquote foo bar"><p>123456<strong>bold</strong></p>\n</blockquote>');
+    });
   });
 
   describe('raw', function(){
