@@ -1,0 +1,70 @@
+#sidebar
+  width 270px
+  line-height 1.8em
+  @media screen and (max-width: 900px)
+    float none
+    width 100%
+  .widget
+    background #fff
+    box-shadow 1px 2px 3px #ddd
+    margin-bottom 30px
+    word-wrap break-word
+    .title
+      padding 15px 20px
+      font-size 1em
+      border-bottom 1px solid color-border
+      font-weight normal
+
+    .entry
+      font-size 0.9em
+      padding 15px 20px
+
+    ul, ol, dl
+      list-style none
+      ul, ol, dl
+        list-style disc
+        margin-left 20px
+
+  .search
+    margin-bottom 30px
+    input
+      background #fff
+      font-family font-title
+      font-style italic
+      font-size 1em
+      padding 10px 15px
+      border 1px solid color-border
+      width 100%
+      box-sizing border-box
+      color color-meta
+      &:focus
+        color color-font
+
+  .tag
+    small
+      margin-left 15px
+      color color-meta
+      &:before
+        content '('
+      &:after
+        content ')'
+
+  .twitter
+    li
+      border-bottom 1px solid color-border
+      padding 15px 20px
+      font-size 0.9em
+      &:last-of-type
+        border-bottom none
+    small
+      display block
+      margin-top 10px
+      color color-meta
+      line-height 1
+
+  .tagcloud
+    .entry
+      padding-right 5px
+    a
+      margin-right 10px
+      display inline-block
