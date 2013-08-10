@@ -93,9 +93,13 @@ describe('Log', function(){
   });
 
   it('_toString()', function(){
+    var newLog = new Log({format: ':date'});
+
     log.store.forEach(function(item){
-      log._toString(item).should.be.eql(item.level + ' ' + moment(item.date).format('YYYY-MM-DD HH:mm:ss') + ' ' + item.message);
-      log._toString.call({format: ':date'}, item).should.be.eql(item.date.toISOString());
+      var level = item.level;
+
+      log._toString(item).should.be.eql(item.level.toUpperCase()[log.color[level]] + ' ' + moment(item.date).format('YYYY-MM-DD HH:mm:ss') + ' ' + item.message);
+      newLog._toString(item).should.be.eql(item.date.toISOString());
     });
   });
 
