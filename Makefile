@@ -1,13 +1,9 @@
-TESTS = test/index.js
-REPORTER = dot
+REPORTER ?= dot
 
 all: install css
 
 test:
-	@./node_modules/.bin/mocha \
-		--require should \
-		--reporter $(REPORTER) \
-		$(TESTS)
+	node test --reporter $(REPORTER)
 
 install:
 	npm install

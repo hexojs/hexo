@@ -7,7 +7,7 @@
     "hexo": "./bin/hexo"
   },
   "scripts": {
-    "test": "make test"
+    "test": "node test"
   },
   "directories": {
     "lib": "./lib",

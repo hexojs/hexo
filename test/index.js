@@ -1,9 +1,24 @@
-var path = require('path');
+var Mocha = require('mocha'),
+  path = require('path'),
+  argv = require('optimist').argv;
 
-require('../lib/init')(path.join(__dirname, 'blog'), {_: [], test: true});
+var tests = [
+  'i18n',
+  'log',
+  'router',
+  'tag'
+];
 
-require('./i18n');
-require('./log');
-require('./router');
-require('./tag');
-require('./util');
+var mocha = new Mocha({
+  reporter: argv.reporter || 'dot'
+});
+
+require('../lib/init')(path.join(__dirname, 'blog'), {_: [], test: true}, function(){
+  tests.forEach(function(item){
+    mocha.addFile(path.join(__dirname, item + '.js'));
+  });
+
+  mocha.run(function(failures){
+    process.exit(failures);
+  });
+});

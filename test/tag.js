@@ -1,3 +1,5 @@
+var should = require('should');
+
 describe('Tags', function(){
   describe('blockquote', function(){
     var blockquote = require('../lib/plugins/tag/blockquote');
