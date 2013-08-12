@@ -3,6 +3,7 @@ var Mocha = require('mocha'),
   argv = require('optimist').argv;
 
 var tests = [
+  'helper',
   'i18n',
   'log',
   'router',
