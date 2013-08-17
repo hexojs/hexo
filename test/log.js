@@ -92,14 +92,14 @@ describe('Log', function(){
     log.store[1].should.include({level: 'info', message: 'test 123 string'});
   });
 
-  it('_toString()', function(){
+  it('toString()', function(){
     var newLog = new Log({format: ':date'});
 
     log.store.forEach(function(item){
       var level = item.level;
 
-      log._toString(item).should.be.eql(item.level.toUpperCase()[log.color[level]] + ' ' + moment(item.date).format('YYYY-MM-DD HH:mm:ss') + ' ' + item.message);
-      newLog._toString(item).should.be.eql(item.date.toISOString());
+      log.toString(item).should.be.eql(item.level.toUpperCase()[log.color[level]] + ' ' + moment(item.date).format('YYYY-MM-DD HH:mm:ss') + ' ' + item.message);
+      newLog.toString(item).should.be.eql(item.date.toISOString());
     });
   });
 
@@ -118,34 +118,5 @@ describe('Log', function(){
         date: store[i].date
       });
     }
-  });
-
-  it('save()', function(done){
-    var dest = path.join(__dirname, 'test.log'),
-      json = log.toJSON();
-
-    log.save(dest, function(err){
-      should.not.exist(err);
-
-      log.store.should.be.eql([]);
-
-      fs.readFile(dest, 'utf8', function(err, content){
-        should.not.exist(err);
-
-        var str = '';
-
-        json.forEach(function(item){
-          str += '[' + item.level.toUpperCase() + '] ' + item.date.toISOString() + '\n' + item.message + '\n\n';
-        });
-
-        content.should.be.eql(str);
-
-        done();
-      });
-    });
-  });
-
-  after(function(){
-    fs.unlink(path.join(__dirname, 'test.log'));
   });
 });
