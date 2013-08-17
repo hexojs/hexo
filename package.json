@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "async": "0.2.9",
-    "express": "3.3.4",
+    "express": "3.3.5",
     "ejs": "0.8.4",
     "stylus": "0.36.1",
     "nib": "0.9.2",
