@@ -31,7 +31,7 @@ multi_thread: true
 filename_case: 0
 highlight:
   enable: true
-  line_number: false
+  line_number: true
   tab_replace:
 
 # Category & Tag

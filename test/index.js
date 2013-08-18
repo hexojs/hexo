@@ -1,25 +1,24 @@
 var Mocha = require('mocha'),
   path = require('path'),
+  fs = require('graceful-fs'),
   argv = require('optimist').argv;
-
-var tests = [
-  'helper',
-  'i18n',
-  'log',
-  'router',
-  'tag'
-];
 
 var mocha = new Mocha({
   reporter: argv.reporter || 'dot'
 });
 
-require('../lib/init')(path.join(__dirname, 'blog'), {_: [], test: true}, function(){
-  tests.forEach(function(item){
-    mocha.addFile(path.join(__dirname, item + '.js'));
+var rFilename = /\.test\.js$/;
+
+fs.readdir(__dirname, function(err, files){
+  files.forEach(function(item){
+    if (rFilename.test(item)){
+      mocha.addFile(path.join(__dirname, item));
+    }
   });
 
-  mocha.run(function(failures){
-    process.exit(failures);
+  require('../lib/init')(path.join(__dirname, 'blog'), {_: [], _test: true}, function(){
+    mocha.run(function(failures){
+      process.exit(failures);
+    });
   });
 });
