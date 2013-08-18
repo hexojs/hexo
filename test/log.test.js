@@ -103,8 +103,8 @@ describe('Log', function(){
     });
   });
 
-  it('_trim()', function(){
-    log._trim('123'.red).should.be.eql('123');
+  it('trim()', function(){
+    log.trim('123'.red).should.be.eql('123');
   });
 
   it('toJSON()', function(){
@@ -114,7 +114,7 @@ describe('Log', function(){
     for (var i = 0, len = json.length; i < len; i++){
       json[i].should.be.eql({
         level: store[i].level,
-        message: log._trim(store[i].message),
+        message: log.trim(store[i].message),
         date: store[i].date
       });
     }
