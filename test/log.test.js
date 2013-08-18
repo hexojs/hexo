@@ -1,4 +1,4 @@
-var term = require('term'),
+var colors = require('colors'),
   moment = require('moment'),
   path = require('path'),
   should = require('should'),
@@ -22,7 +22,7 @@ describe('Log', function(){
       error: 'red',
       warn: 'yellow',
       info: 'green',
-      debug: 'blackBright'
+      debug: 'grey'
     });
 
     log.alias.should.be.eql({
