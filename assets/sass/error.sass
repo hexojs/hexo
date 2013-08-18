@@ -1,0 +1,68 @@
+@import compass
+@import variables
+@import compass/reset
+
+$page-width: 700px
+
+body
+  font: 14px $font-sans
+  color: $color-font
+  background: #eee
+  text-shadow: 0 1px #fff
+
+#content
+  width: 700px
+  margin: 0 auto
+  margin: 100px auto 100px
+
+#error-title
+  font-weight: bold
+  font-size: 100px
+  text-align: center
+  line-height: 1
+
+#error-subtitle
+  font-size: 24px
+  text-align: center
+  line-height: 1
+  padding-top: 10px
+
+#error-message-wrap
+  +border-radius(5px)
+  margin-top: 15px
+  border: 1px solid #ddd
+  overflow: hidden
+
+#error-message-title
+  display: block
+  text-align: center
+  padding: 8px
+  background: #f7f7f7
+
+#error-message
+  +box-shadow(0 0 5px #111 inset)
+  font-family: $font-mono
+  font-size: 12px
+  padding: 25px 30px
+  line-height: 1.6
+  background: #333
+  color: #ccc
+  text-shadow: none
+  overflow: auto
+
+#error-btn-wrap
+  text-align: center
+  padding: 30px 0
+
+#error-btn
+  +inline-block
+  +border-radius(4px)
+  padding: 10px 20px
+  font-size: 16px
+  color: #ddd
+  background: #333
+  text-decoration: none
+  text-shadow: 0 1px #000
+  border: 1px solid #fff
+  &:hover
+    background: #111
