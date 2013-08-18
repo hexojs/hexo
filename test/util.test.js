@@ -32,16 +32,16 @@ describe('Utils', function(){
   describe('titlecase', function(){
     var titlecase = util.titlecase;
 
-    it('All upper case', function(){
+    it('normal', function(){
+      titlecase('Today is a beatuiful day').should.eql('Today Is a Beatuiful Day');
+    });
+
+    it('all upper case', function(){
       titlecase('TODAY IS A BEATUIFUL DAY').should.eql('Today Is a Beatuiful Day');
     });
 
-    it('All lower case', function(){
+    it('all lower case', function(){
       titlecase('today is a beatuiful day').should.eql('Today Is a Beatuiful Day');
-    });
-
-    it('Normal sentence', function(){
-      titlecase('Today is a beatuiful day').should.eql('Today Is a Beatuiful Day');
     });
   });
 
