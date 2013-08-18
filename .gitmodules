@@ -1,6 +1,3 @@
 [submodule "assets/themes/light"]
 	path = assets/themes/light
 	url = https://github.com/tommy351/hexo-theme-light.git
-[submodule "public/js/lib/codemirror"]
-	path = public/js/lib/codemirror
-	url = https://github.com/marijnh/CodeMirror.git

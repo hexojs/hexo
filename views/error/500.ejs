@@ -1,0 +1,9 @@
+<div id="error-btn-wrap">
+  <a id="error-btn" href="http://zespia.tw/hexo/" target="_blank">Troubleshooting</a>
+</div>
+<div id="error-message-wrap">
+  <strong id="error-message-title"><%= err.name %>: <%= err.message %></strong>
+  <div id="error-message">
+    <%- err.stack.replace(/\n/g, '<br>').replace(/\s/g, '&nbsp;') %>
+  </div>
+</div>

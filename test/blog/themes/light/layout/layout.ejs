@@ -1,0 +1,13 @@
+<%- partial('_partial/head') %>
+
+<body>
+  <header id="header" class="inner"><%- partial('_partial/header') %></header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><%- body %></div></div>
+    <aside id="sidebar" class="alignright"><%- partial('_partial/sidebar') %></aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><%- partial('_partial/footer') %></footer>
+  <%- partial('_partial/after_footer') %>
+</body>
+</html>
