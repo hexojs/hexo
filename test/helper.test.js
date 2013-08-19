@@ -3,7 +3,7 @@ var moment = require('moment'),
   crypto = require('crypto'),
   marked = require('marked');
 
-describe('Helper', function(){
+describe('Helpers', function(){
   var config = hexo.config;
 
   describe('css', function(){
