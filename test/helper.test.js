@@ -1,6 +1,7 @@
 var moment = require('moment'),
   should = require('should'),
-  crypto = require('crypto');
+  crypto = require('crypto'),
+  marked = require('marked');
 
 describe('Helper', function(){
   var config = hexo.config;
@@ -182,6 +183,89 @@ describe('Helper', function(){
       it('button', function(){
         search_form({button: true}).should.be.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="text" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="Search" class="search-form-submit"><input type="hidden" name="q" value="site:http://yoursite.com"></form>');
         search_form({button: 'Button'}).should.be.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="text" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="Button" class="search-form-submit"><input type="hidden" name="q" value="site:http://yoursite.com"></form>');
+      });
+    });
+  });
+
+  describe('format', function(){
+    var format = require('../lib/plugins/helper/format');
+
+    it('strip_html', function(){
+      format.strip_html('<a href="">link</a>123456789<strong>bold text</strong>').should.be.eql('link123456789bold text');
+    });
+
+    it('trim', function(){
+      var str = '  123456  789   ';
+
+      format.trim(str).should.be.eql(str.trim());
+    });
+
+    describe('titlecase', function(){
+      it('normal', function(){
+        format.titlecase('Today is a beatuiful day').should.eql('Today Is a Beatuiful Day');
+      });
+
+      it('all upper case', function(){
+        format.titlecase('TODAY IS A BEATUIFUL DAY').should.eql('Today Is a Beatuiful Day');
+      });
+
+      it('all lower case', function(){
+        format.titlecase('today is a beatuiful day').should.eql('Today Is a Beatuiful Day');
+      });
+    });
+
+    it('markdown', function(){
+      var raw = '123456 **bold** and *italic*',
+        parsed = marked(raw);
+
+      format.markdown(raw).should.be.eql(parsed);
+    });
+
+    it('word_wrap', function(){
+      var txt = 'Lorem ipsum dolor sit amet,' +
+        'consectetur adipiscing elit.' +
+        'Aliquam in ultricies erat.' +
+        'Etiam dictum tellus id imperdiet vulputate.' +
+        'Integer pulvinar interdum elit a sodales.' +
+        'Morbi aliquam lobortis gravida.' +
+        'Ut malesuada luctus enim at euismod.' +
+        'Integer mollis erat vitae elit sodales viverra.' +
+        'Proin varius tristique consectetur.' +
+        'Donec at purus non dolor dictum volutpat.';
+
+      var arr = [];
+
+      for (var i = 0, len = txt.length; i < len; i += 80){
+        arr.push(txt.substr(i, 80));
+      }
+
+      format.word_wrap(txt).should.be.eql(arr.join('\n'));
+
+      var arr = [];
+
+      for (var i = 0, len = txt.length; i < len; i += 20){
+        arr.push(txt.substr(i, 20));
+      }
+
+      format.word_wrap(txt, 20).should.be.eql(arr.join('\n'));
+    });
+
+    describe('truncate', function(){
+      it('default', function(){
+        format.truncate('Once upon a time in a world far far away').should.be.eql('Once upon a time in a world...');
+      });
+
+      it('length', function(){
+        format.truncate('Once upon a time in a world far far away', 17).should.be.eql('Once upon a ti...');
+        format.truncate('Once upon a time in a world far far away', {length: 17}).should.be.eql('Once upon a ti...');
+      });
+
+      it('omission', function(){
+        format.truncate('And they found that many people were sleeping better.', {length: 25, omission: '... (continued)'}).should.be.eql('And they f... (continued)');
+      });
+
+      it('separator', function(){
+        format.truncate('Once upon a time in a world far far away', {length: 17, separator: ' '}).should.be.eql('Once upon a...');
       });
     });
   });
@@ -371,5 +455,17 @@ describe('Helper', function(){
         number.number_format(1234.567, {separator: '*'}).should.be.eql('1,234*567');
       });
     });
+  });
+
+  describe('paginator', function(){
+    // body...
+  });
+
+  describe('partial', function(){
+    // body...
+  });
+
+  describe('tagcloud', function(){
+    // body...
   });
 });
