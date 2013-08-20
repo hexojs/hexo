@@ -17,7 +17,7 @@ if (page.archive){
   <%- partial('pagination') %>
 <% } else { %>
   <div class="archive">
-    <% page.each(function(item){ %>
+    <% page.posts.each(function(item){ %>
       <article class="<%= item.layout %>">
         <div class="post-content">
           <header>
