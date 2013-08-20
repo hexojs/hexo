@@ -71,6 +71,10 @@ describe('Utils', function(){
       yfm(str + '\n---\ncontent').should.be.eql(_.extend({_content: 'content'}, obj));
     });
 
+    it('empty content', function(){
+      yfm(str + '\n---').should.be.eql(_.extend({_content: ''}, obj));
+    });
+
     it('stringify', function(){
       var txt = yfm.stringify(_.extend({_content: 'content'}, obj));
 
