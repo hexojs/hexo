@@ -471,10 +471,6 @@ describe('Utils', function(){
         });
       });
     });
-
-    describe('watch', function(){
-      //
-    });
   });
 
   describe('html_tag', function(){
