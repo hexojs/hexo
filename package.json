@@ -46,8 +46,8 @@
     "sprintf-js": "0.0.7"
   },
   "devDependencies": {
-    "mocha": "1.12.0",
-    "should": "1.2.2",
-    "cheerio": "0.12.1"
+    "mocha": "*",
+    "should": "*",
+    "cheerio": "*"
   }
 }
