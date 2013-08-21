@@ -358,6 +358,8 @@ describe('Utils', function(){
     });
 
     describe('emptyDir', function(){
+      var src = path.join(__dirname, uid(12));
+
       var srcFiles = [
         uid(12) + '.txt',
         path.join('.hiddendir', uid(12) + '.txt'),
@@ -370,63 +372,55 @@ describe('Utils', function(){
         '.hiddenfile'
       ];
 
-      // Use same folder may cause error, so generate a random folder for each test
-      var fn = function(options, arr, callback){
-        var dest = path.join(__dirname, uid(12));
+      before(function(done){
+        fs.mkdir(src, done);
+      });
 
-        async.series([
-          function(next){
-            fs.mkdir(dest, next);
-          },
-          function(next){
-            async.forEach(srcFiles, function(item, next){
-              file.writeFile(path.join(dest, item), '', next);
-            }, next);
-          },
-          function(next){
-            file.emptyDir(dest, options, function(err, removed){
-              if (err) throw err;
+      beforeEach(function(done){
+        async.forEach(srcFiles, function(item, next){
+          file.writeFile(path.join(src, item), '', next);
+        }, done);
+      });
+      
+      var defer = function(arr, callback){
+        return function(err, removed){
+          if (err) throw err;
 
-              srcFiles.forEach(function(item, i){
-                if (arr.indexOf(i) > -1){
-                  removed.should.include(item);
-                } else {
-                  removed.should.not.include(item);
-                }
-              });
+          srcFiles.forEach(function(item, i){
+            if (arr.indexOf(i) > -1){
+              removed.should.include(item);
+            } else {
+              removed.should.not.include(item);
+            }
+          });
 
-              var i = 0;
+          var i = 0;
 
-              async.forEach(srcFiles, function(item, next){
-                fs.exists(path.join(dest, item), function(exist){
-                  if (arr.indexOf(i) > -1){
-                    exist.should.be.false;
-                  } else {
-                    exist.should.be.true;
-                  }
+          async.forEachSeries(srcFiles, function(item, next){
+            fs.exists(path.join(src, item), function(exist){
+              if (arr.indexOf(i) > -1){
+                exist.should.be.false;
+              } else {
+                exist.should.be.true;
+              }
 
-                  i++;
-                  next();
-                });
-              }, next);
+              i++;
+              next();
             });
-          },
-          function(next){
-            file.rmdir(dest, next);
-          }
-        ], callback);
+          }, callback);
+        }
       };
 
       it('normal', function(done){
-        fn({}, [0, 4, 5, 6, 7], done);
+        file.emptyDir(src, defer([0, 4, 5, 6, 7], done));
       });
 
       it('ignoreHidden disabled', function(done){
-        fn({ignoreHidden: false}, [0, 1, 2, 3, 4, 5, 6, 7, 8], done);
+        file.emptyDir(src, {ignoreHidden: false}, defer([0, 1, 2, 3, 4, 5, 6, 7, 8], done));
       });
 
       it('ignorePattern', function(done){
-        fn({ignorePattern: /\.js$/}, [0, 4, 6], done);
+        file.emptyDir(src, {ignorePattern: /\.js$/}, defer([0, 4, 6], done));
       });
 
       it('exclude', function(done){
@@ -434,7 +428,11 @@ describe('Utils', function(){
           exclude: [srcFiles[4], srcFiles[6]]
         };
 
-        fn(options, [0, 5, 7], done);
+        file.emptyDir(src, options, defer([0, 5, 7], done));
+      });
+
+      after(function(done){
+        file.rmdir(src, done);
       });
     });
 
