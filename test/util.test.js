@@ -440,11 +440,11 @@ describe('Utils', function(){
       var src = path.join(__dirname, uid(12));
 
       var srcFiles = [
-        path.join(src, uid(12)),
-        path.join(src, uid(12)),
-        path.join(src, 'dir', uid(12)),
-        path.join(src, 'dir', uid(12)),
-        path.join(src, 'dir', 'chlid', uid(12))
+        uid(12),
+        uid(12),
+        path.join('dir', uid(12)),
+        path.join('dir', uid(12)),
+        path.join('dir', 'chlid', uid(12))
       ];
 
       beforeEach(function(done){
