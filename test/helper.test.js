@@ -22,35 +22,35 @@ describe('Helpers', function(){
     it('a string', function(){
       var result = genResult(['/style']);
 
-      css('style').should.be.eql(result);
-      css('style.css').should.be.eql(result);
+      css('style').should.eql(result);
+      css('style.css').should.eql(result);
 
-      css('http://zespia.tw/style.css').should.be.eql(genResult(['http://zespia.tw/style']));
-      css('//zespia.tw/style.css').should.be.eql(genResult(['//zespia.tw/style']));
+      css('http://zespia.tw/style.css').should.eql(genResult(['http://zespia.tw/style']));
+      css('//zespia.tw/style.css').should.eql(genResult(['//zespia.tw/style']));
     });
 
     it('an array', function(){
       var result = genResult(['/foo', '/bar', '/baz']);
 
-      css(['foo', 'bar', 'baz']).should.be.eql(result);
+      css(['foo', 'bar', 'baz']).should.eql(result);
     });
 
     it('multiple strings', function(){
       var result = genResult(['/foo', '/bar', '/baz']);
 
-      css('foo', 'bar', 'baz').should.be.eql(result);
+      css('foo', 'bar', 'baz').should.eql(result);
     });
 
     it('multiple arrays', function(){
       var result = genResult(['/s1', '/s2', '/s3', '/s4', '/s5', '/s6']);
 
-      css(['s1', 's2', 's3'], ['s4', 's5'], ['s6']).should.be.eql(result);
+      css(['s1', 's2', 's3'], ['s4', 's5'], ['s6']).should.eql(result);
     });
 
     it('mixed', function(){
       var result = genResult(['/s1', '/s2', '/s3', '/s4', '/s5', '/s6']);
 
-      css(['s1', 's2'], 's3', 's4', ['s5'], 's6').should.be.eql(result);
+      css(['s1', 's2'], 's3', 's4', ['s5'], 's6').should.eql(result);
     });
   });
 
@@ -76,29 +76,29 @@ describe('Helpers', function(){
       moment(date.date(), format).isValid().should.be.true;
 
       var nowDate = new Date();
-      date.date(nowDate).should.be.eql(moment(nowDate).format(format));
-      date.date(nowDate, custom).should.be.eql(moment(nowDate).format(custom));
+      date.date(nowDate).should.eql(moment(nowDate).format(format));
+      date.date(nowDate, custom).should.eql(moment(nowDate).format(custom));
 
       var nowMoment = moment();
-      date.date(nowMoment).should.be.eql(nowMoment.format(format));
-      date.date(nowMoment, custom).should.be.eql(nowMoment.format(custom));
+      date.date(nowMoment).should.eql(nowMoment.format(format));
+      date.date(nowMoment, custom).should.eql(nowMoment.format(custom));
 
       var nowMs = Date.now();
-      date.date(nowMs).should.be.eql(moment(nowMs).format(format));
-      date.date(nowMs, custom).should.be.eql(moment(nowMs).format(custom));
+      date.date(nowMs).should.eql(moment(nowMs).format(format));
+      date.date(nowMs, custom).should.eql(moment(nowMs).format(custom));
     });
 
     it('date_xml', function(){
       date.date_xml().should.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/);
 
       var nowDate = new Date();
-      date.date_xml(nowDate).should.be.eql(nowDate.toISOString());
+      date.date_xml(nowDate).should.eql(nowDate.toISOString());
 
       var nowMoment = moment();
-      date.date_xml(nowMoment).should.be.eql(nowMoment.toDate().toISOString());
+      date.date_xml(nowMoment).should.eql(nowMoment.toDate().toISOString());
 
       var nowMs = Date.now();
-      date.date_xml(nowMs).should.be.eql(new Date(nowMs).toISOString());
+      date.date_xml(nowMs).should.eql(new Date(nowMs).toISOString());
     });
 
     it('time', function(){
@@ -108,16 +108,16 @@ describe('Helpers', function(){
       moment(date.time(), format).isValid().should.be.true;
 
       var nowDate = new Date();
-      date.time(nowDate).should.be.eql(moment(nowDate).format(format));
-      date.time(nowDate, custom).should.be.eql(moment(nowDate).format(custom));
+      date.time(nowDate).should.eql(moment(nowDate).format(format));
+      date.time(nowDate, custom).should.eql(moment(nowDate).format(custom));
 
       var nowMoment = moment();
-      date.time(nowMoment).should.be.eql(nowMoment.format(format));
-      date.time(nowMoment, custom).should.be.eql(nowMoment.format(custom));
+      date.time(nowMoment).should.eql(nowMoment.format(format));
+      date.time(nowMoment, custom).should.eql(nowMoment.format(custom));
 
       var nowMs = Date.now();
-      date.time(nowMs).should.be.eql(moment(nowMs).format(format));
-      date.time(nowMs, custom).should.be.eql(moment(nowMs).format(custom));
+      date.time(nowMs).should.eql(moment(nowMs).format(format));
+      date.time(nowMs, custom).should.eql(moment(nowMs).format(custom));
 
     });
 
@@ -128,16 +128,16 @@ describe('Helpers', function(){
       moment(date.full_date(), format).isValid().should.be.true;
 
       var nowDate = new Date();
-      date.full_date(nowDate).should.be.eql(moment(nowDate).format(format));
-      date.full_date(nowDate, custom).should.be.eql(moment(nowDate).format(custom));
+      date.full_date(nowDate).should.eql(moment(nowDate).format(format));
+      date.full_date(nowDate, custom).should.eql(moment(nowDate).format(custom));
 
       var nowMoment = moment();
-      date.full_date(nowMoment).should.be.eql(nowMoment.format(format));
-      date.full_date(nowMoment, custom).should.be.eql(nowMoment.format(custom));
+      date.full_date(nowMoment).should.eql(nowMoment.format(format));
+      date.full_date(nowMoment, custom).should.eql(nowMoment.format(custom));
 
       var nowMs = Date.now();
-      date.full_date(nowMs).should.be.eql(moment(nowMs).format(format));
-      date.full_date(nowMs, custom).should.be.eql(moment(nowMs).format(custom));
+      date.full_date(nowMs).should.eql(moment(nowMs).format(format));
+      date.full_date(nowMs, custom).should.eql(moment(nowMs).format(custom));
     });
 
     it('time_tag', function(){
@@ -145,16 +145,16 @@ describe('Helpers', function(){
         custom = 'YYYY-MM-DD';
 
       var nowDate = new Date();
-      date.time_tag(nowDate).should.be.eql(genTimeTag(nowDate, format));
-      date.time_tag(nowDate, custom).should.be.eql(genTimeTag(nowDate, custom));
+      date.time_tag(nowDate).should.eql(genTimeTag(nowDate, format));
+      date.time_tag(nowDate, custom).should.eql(genTimeTag(nowDate, custom));
 
       var nowMoment = moment();
-      date.time_tag(nowMoment).should.be.eql(genTimeTag(nowMoment, format));
-      date.time_tag(nowMoment, custom).should.be.eql(genTimeTag(nowMoment, custom));
+      date.time_tag(nowMoment).should.eql(genTimeTag(nowMoment, format));
+      date.time_tag(nowMoment, custom).should.eql(genTimeTag(nowMoment, custom));
 
       var nowMs = Date.now();
-      date.time_tag(nowMs).should.be.eql(genTimeTag(nowMs, format));
-      date.time_tag(nowMs, custom).should.be.eql(genTimeTag(nowMs, custom));
+      date.time_tag(nowMs).should.eql(genTimeTag(nowMs, format));
+      date.time_tag(nowMs, custom).should.eql(genTimeTag(nowMs, custom));
     });
 
     it('moment', function(){
@@ -169,20 +169,20 @@ describe('Helpers', function(){
       var search_form = form.search_form;
 
       it('default', function(){
-        search_form().should.be.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="text" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="q" value="site:' + config.url + '"></form>');
+        search_form().should.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="text" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="q" value="site:' + config.url + '"></form>');
       });
 
       it('class', function(){
-        search_form({class: 'custom'}).should.be.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="custom"><input type="text" name="q" results="0" class="custom-input" placeholder="Search"><input type="hidden" name="q" value="site:http://yoursite.com"></form>');
+        search_form({class: 'custom'}).should.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="custom"><input type="text" name="q" results="0" class="custom-input" placeholder="Search"><input type="hidden" name="q" value="site:http://yoursite.com"></form>');
       });
 
       it('text', function(){
-        search_form({text: 'Search...'}).should.be.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="text" name="q" results="0" class="search-form-input" placeholder="Search..."><input type="hidden" name="q" value="site:http://yoursite.com"></form>');
+        search_form({text: 'Search...'}).should.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="text" name="q" results="0" class="search-form-input" placeholder="Search..."><input type="hidden" name="q" value="site:http://yoursite.com"></form>');
       });
 
       it('button', function(){
-        search_form({button: true}).should.be.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="text" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="Search" class="search-form-submit"><input type="hidden" name="q" value="site:http://yoursite.com"></form>');
-        search_form({button: 'Button'}).should.be.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="text" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="Button" class="search-form-submit"><input type="hidden" name="q" value="site:http://yoursite.com"></form>');
+        search_form({button: true}).should.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="text" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="Search" class="search-form-submit"><input type="hidden" name="q" value="site:http://yoursite.com"></form>');
+        search_form({button: 'Button'}).should.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="text" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="Button" class="search-form-submit"><input type="hidden" name="q" value="site:http://yoursite.com"></form>');
       });
     });
   });
@@ -191,13 +191,13 @@ describe('Helpers', function(){
     var format = require('../lib/plugins/helper/format');
 
     it('strip_html', function(){
-      format.strip_html('<a href="">link</a>123456789<strong>bold text</strong>').should.be.eql('link123456789bold text');
+      format.strip_html('<a href="">link</a>123456789<strong>bold text</strong>').should.eql('link123456789bold text');
     });
 
     it('trim', function(){
       var str = '  123456  789   ';
 
-      format.trim(str).should.be.eql(str.trim());
+      format.trim(str).should.eql(str.trim());
     });
 
     describe('titlecase', function(){
@@ -218,7 +218,7 @@ describe('Helpers', function(){
       var raw = '123456 **bold** and *italic*',
         parsed = marked(raw);
 
-      format.markdown(raw).should.be.eql(parsed);
+      format.markdown(raw).should.eql(parsed);
     });
 
     it('word_wrap', function(){
@@ -239,7 +239,7 @@ describe('Helpers', function(){
         arr.push(txt.substr(i, 80));
       }
 
-      format.word_wrap(txt).should.be.eql(arr.join('\n'));
+      format.word_wrap(txt).should.eql(arr.join('\n'));
 
       var arr = [];
 
@@ -247,25 +247,25 @@ describe('Helpers', function(){
         arr.push(txt.substr(i, 20));
       }
 
-      format.word_wrap(txt, 20).should.be.eql(arr.join('\n'));
+      format.word_wrap(txt, 20).should.eql(arr.join('\n'));
     });
 
     describe('truncate', function(){
       it('default', function(){
-        format.truncate('Once upon a time in a world far far away').should.be.eql('Once upon a time in a world...');
+        format.truncate('Once upon a time in a world far far away').should.eql('Once upon a time in a world...');
       });
 
       it('length', function(){
-        format.truncate('Once upon a time in a world far far away', 17).should.be.eql('Once upon a ti...');
-        format.truncate('Once upon a time in a world far far away', {length: 17}).should.be.eql('Once upon a ti...');
+        format.truncate('Once upon a time in a world far far away', 17).should.eql('Once upon a ti...');
+        format.truncate('Once upon a time in a world far far away', {length: 17}).should.eql('Once upon a ti...');
       });
 
       it('omission', function(){
-        format.truncate('And they found that many people were sleeping better.', {length: 25, omission: '... (continued)'}).should.be.eql('And they f... (continued)');
+        format.truncate('And they found that many people were sleeping better.', {length: 25, omission: '... (continued)'}).should.eql('And they f... (continued)');
       });
 
       it('separator', function(){
-        format.truncate('Once upon a time in a world far far away', {length: 17, separator: ' '}).should.be.eql('Once upon a...');
+        format.truncate('Once upon a time in a world far far away', {length: 17, separator: ' '}).should.eql('Once upon a...');
       });
     });
   });
@@ -281,11 +281,11 @@ describe('Helpers', function(){
       hash = md5(email);
 
     it('default', function(){
-      gravatar(email).should.be.eql('http://www.gravatar.com/avatar/' + hash);
+      gravatar(email).should.eql('http://www.gravatar.com/avatar/' + hash);
     });
 
     it('size', function(){
-      gravatar(email, 100).should.be.eql('http://www.gravatar.com/avatar/' + hash + '?s=100');
+      gravatar(email, 100).should.eql('http://www.gravatar.com/avatar/' + hash + '?s=100');
     });
 
     it('options', function(){
@@ -293,7 +293,7 @@ describe('Helpers', function(){
         s: 200,
         r: 'pg',
         d: 'mm'
-      }).should.be.eql('http://www.gravatar.com/avatar/' + hash + '?s=200&r=pg&d=mm');
+      }).should.eql('http://www.gravatar.com/avatar/' + hash + '?s=200&r=pg&d=mm');
     });
   });
 
@@ -362,35 +362,35 @@ describe('Helpers', function(){
     it('a string', function(){
       var result = genResult(['/script']);
 
-      js('script').should.be.eql(result);
-      js('script.js').should.be.eql(result);
+      js('script').should.eql(result);
+      js('script.js').should.eql(result);
 
-      js('http://code.jquery.com/jquery-2.0.3.min.js').should.be.eql(genResult(['http://code.jquery.com/jquery-2.0.3.min']));
-      js('//code.jquery.com/jquery-2.0.3.min.js').should.be.eql(genResult(['//code.jquery.com/jquery-2.0.3.min']));
+      js('http://code.jquery.com/jquery-2.0.3.min.js').should.eql(genResult(['http://code.jquery.com/jquery-2.0.3.min']));
+      js('//code.jquery.com/jquery-2.0.3.min.js').should.eql(genResult(['//code.jquery.com/jquery-2.0.3.min']));
     });
 
     it('an array', function(){
       var result = genResult(['/foo', '/bar', '/baz']);
 
-      js(['foo', 'bar', 'baz']).should.be.eql(result);
+      js(['foo', 'bar', 'baz']).should.eql(result);
     });
 
     it('multiple strings', function(){
       var result = genResult(['/foo', '/bar', '/baz']);
 
-      js('foo', 'bar', 'baz').should.be.eql(result);
+      js('foo', 'bar', 'baz').should.eql(result);
     });
 
     it('multiple arrays', function(){
       var result = genResult(['/s1', '/s2', '/s3', '/s4', '/s5', '/s6']);
 
-      js(['s1', 's2', 's3'], ['s4', 's5'], ['s6']).should.be.eql(result);
+      js(['s1', 's2', 's3'], ['s4', 's5'], ['s6']).should.eql(result);
     });
 
     it('mixed', function(){
       var result = genResult(['/s1', '/s2', '/s3', '/s4', '/s5', '/s6']);
 
-      js(['s1', 's2'], 's3', 's4', ['s5'], 's6').should.be.eql(result);
+      js(['s1', 's2'], 's3', 's4', ['s5'], 's6').should.eql(result);
     });
   });
 
@@ -403,15 +403,15 @@ describe('Helpers', function(){
         text = 'Zespia';
 
       it('path', function(){
-        link_to(url).should.be.eql('<a href="' + url + '" title="' + url + '">' + url + '</a>');
+        link_to(url).should.eql('<a href="' + url + '" title="' + url + '">' + url + '</a>');
       });
 
       it('text', function(){
-        link_to(url, text).should.be.eql('<a href="' + url + '" title="' + text + '">' + text + '</a>');
+        link_to(url, text).should.eql('<a href="' + url + '" title="' + text + '">' + text + '</a>');
       });
 
       it('external', function(){
-        link_to(url, text, true).should.be.eql('<a href="' + url + '" title="' + text + '" target="_blank" rel="external">' + text + '</a>');
+        link_to(url, text, true).should.eql('<a href="' + url + '" title="' + text + '" target="_blank" rel="external">' + text + '</a>');
       });
     });
 
@@ -421,11 +421,11 @@ describe('Helpers', function(){
         text = 'Email';
 
       it('path', function(){
-        mail_to(url).should.be.eql('<a href="mailto:' + url + '" title="' + url + '">' + url + '</a>');
+        mail_to(url).should.eql('<a href="mailto:' + url + '" title="' + url + '">' + url + '</a>');
       });
 
       it('text', function(){
-        mail_to(url, text).should.be.eql('<a href="mailto:' + url + '" title="' + text + '">' + text + '</a>');
+        mail_to(url, text).should.eql('<a href="mailto:' + url + '" title="' + text + '">' + text + '</a>');
       });
     });
   });
@@ -435,24 +435,24 @@ describe('Helpers', function(){
 
     describe('number_format', function(){
       it('default', function(){
-        number.number_format(1234.567).should.be.eql('1,234.567');
+        number.number_format(1234.567).should.eql('1,234.567');
       });
 
       it('precision', function(){
-        number.number_format(1234.567, {precision: false}).should.be.eql('1,234.567');
-        number.number_format(1234.567, {precision: 0}).should.be.eql('1,234');
-        number.number_format(1234.567, {precision: 1}).should.be.eql('1,234.6');
-        number.number_format(1234.567, {precision: 2}).should.be.eql('1,234.57');
-        number.number_format(1234.567, {precision: 3}).should.be.eql('1,234.567');
-        number.number_format(1234.567, {precision: 4}).should.be.eql('1,234.5670');
+        number.number_format(1234.567, {precision: false}).should.eql('1,234.567');
+        number.number_format(1234.567, {precision: 0}).should.eql('1,234');
+        number.number_format(1234.567, {precision: 1}).should.eql('1,234.6');
+        number.number_format(1234.567, {precision: 2}).should.eql('1,234.57');
+        number.number_format(1234.567, {precision: 3}).should.eql('1,234.567');
+        number.number_format(1234.567, {precision: 4}).should.eql('1,234.5670');
       });
 
       it('delimiter', function(){
-        number.number_format(1234.567, {delimiter: ' '}).should.be.eql('1 234.567');
+        number.number_format(1234.567, {delimiter: ' '}).should.eql('1 234.567');
       });
 
       it('separator', function(){
-        number.number_format(1234.567, {separator: '*'}).should.be.eql('1,234*567');
+        number.number_format(1234.567, {separator: '*'}).should.eql('1,234*567');
       });
     });
   });

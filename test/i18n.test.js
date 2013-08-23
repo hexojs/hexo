@@ -32,7 +32,7 @@ describe('i18n', function(){
       var store = i18n.store;
 
       for (var i in store){
-        store[i].should.be.eql(lang[i]);
+        store[i].should.eql(lang[i]);
       }
 
       done();
@@ -40,28 +40,28 @@ describe('i18n', function(){
   });
 
   it('_getCode()', function(){
-    i18n._getCode('zh-tw').should.be.eql('zh-tw');
-    i18n._getCode('zh').should.be.eql('zh-tw');
-    i18n._getCode('zh-hk').should.be.eql('zh-tw');
-    i18n._getCode('en').should.be.eql('default');
+    i18n._getCode('zh-tw').should.eql('zh-tw');
+    i18n._getCode('zh').should.eql('zh-tw');
+    i18n._getCode('zh-hk').should.eql('zh-tw');
+    i18n._getCode('en').should.eql('default');
   });
 
   it('get()', function(){
     var get = i18n.get();
 
-    get('index.title').should.be.eql(lang.default.index.title);
-    get('index.add').should.be.eql(lang.default.index.add);
+    get('index.title').should.eql(lang.default.index.title);
+    get('index.add').should.eql(lang.default.index.add);
 
     var tw = i18n.get('zh-tw');
-    tw('index.title').should.be.eql(lang['zh-tw'].index.title);
-    tw('index.add').should.be.eql(lang['zh-tw'].index.add);
+    tw('index.title').should.eql(lang['zh-tw'].index.title);
+    tw('index.add').should.eql(lang['zh-tw'].index.add);
   });
 
   it('plural()', function(){
     var plural = i18n.plural();
 
-    plural('index.video.singular', 'index.video.plural', 0).should.be.eql('0 videos');
-    plural('index.video.singular', 'index.video.plural', 1).should.be.eql('1 video');
-    plural('index.video.singular', 'index.video.plural', 2).should.be.eql('2 videos');
+    plural('index.video.singular', 'index.video.plural', 0).should.eql('0 videos');
+    plural('index.video.singular', 'index.video.plural', 1).should.eql('1 video');
+    plural('index.video.singular', 'index.video.plural', 2).should.eql('2 videos');
   });
 });

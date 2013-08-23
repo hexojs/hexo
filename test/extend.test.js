@@ -16,26 +16,26 @@ describe('Extend', function(){
       // name, desc, options, fn
       extend.console.register('foo', 'foo desc', {}, function(){});
       should.exist(extend.console.store.foo);
-      extend.console.store.foo.desc.should.be.eql('foo desc');
-      extend.console.store.foo.options.should.be.eql({});
+      extend.console.store.foo.desc.should.eql('foo desc');
+      extend.console.store.foo.options.should.eql({});
 
       // name, desc, fn
       extend.console.register('bar', 'bar desc', function(){});
       should.exist(extend.console.store.bar);
-      extend.console.store.bar.desc.should.be.eql('bar desc');
-      extend.console.store.bar.options.should.be.eql({});
+      extend.console.store.bar.desc.should.eql('bar desc');
+      extend.console.store.bar.options.should.eql({});
 
       // name, options, fn
       extend.console.register('abc', {}, function(){});
       should.exist(extend.console.store.abc);
-      extend.console.store.abc.desc.should.be.eql('');
-      extend.console.store.abc.options.should.be.eql({});
+      extend.console.store.abc.desc.should.eql('');
+      extend.console.store.abc.options.should.eql({});
 
       // name, fn
       extend.console.register('baz', function(){});
       should.exist(extend.console.store.baz);
-      extend.console.store.baz.desc.should.be.eql('');
-      extend.console.store.baz.options.should.be.eql({});
+      extend.console.store.baz.desc.should.eql('');
+      extend.console.store.baz.options.should.eql({});
     });
 
     it('register error', function(){
@@ -57,11 +57,11 @@ describe('Extend', function(){
 
     it('alias', function(){
       extend.console.register('version', {alias: 'v'}, function(){});
-      extend.console.alias.v.should.be.eql(extend.console.store.version);
+      extend.console.alias.v.should.eql(extend.console.store.version);
     });
 
     it('list', function(){
-      extend.console.list().should.be.eql(extend.console.store);
+      extend.console.list().should.eql(extend.console.store);
     });
 
     it('get', function(){
@@ -99,7 +99,7 @@ describe('Extend', function(){
     });
 
     it('list', function(){
-      extend.deployer.list().should.be.eql(extend.deployer.store);
+      extend.deployer.list().should.eql(extend.deployer.store);
     });
   });
 
@@ -137,7 +137,7 @@ describe('Extend', function(){
     });
 
     it('list', function(){
-      extend.filter.list().should.be.eql(extend.filter.store);
+      extend.filter.list().should.eql(extend.filter.store);
     });
   });
 
@@ -161,7 +161,7 @@ describe('Extend', function(){
     });
 
     it('list', function(){
-      extend.generator.list().should.be.eql(extend.generator.store);
+      extend.generator.list().should.eql(extend.generator.store);
     });
   });
 
@@ -185,7 +185,7 @@ describe('Extend', function(){
     });
 
     it('list', function(){
-      extend.helper.list().should.be.eql(extend.helper.store);
+      extend.helper.list().should.eql(extend.helper.store);
     });
   });
 
@@ -209,7 +209,7 @@ describe('Extend', function(){
     });
 
     it('list', function(){
-      extend.migrator.list().should.be.eql(extend.migrator.store);
+      extend.migrator.list().should.eql(extend.migrator.store);
     });
   });
 
@@ -225,15 +225,15 @@ describe('Extend', function(){
       // rule, fn
       extend.processor.register(/posts\/(.*)/, function(){});
       should.exist(extend.processor.store[0]);
-      extend.processor.store[0].pattern.should.be.eql(/posts\/(.*)/);
-      extend.processor.store[0].params.should.be.eql([]);
+      extend.processor.store[0].pattern.should.eql(/posts\/(.*)/);
+      extend.processor.store[0].params.should.eql([]);
       should.exist(extend.processor.store[0].fn);
 
       // fn
       extend.processor.register(function(){});
       should.exist(extend.processor.store[1]);
-      extend.processor.store[1].pattern.should.be.eql(/(.*)/);
-      extend.processor.store[1].params.should.be.eql([]);
+      extend.processor.store[1].pattern.should.eql(/(.*)/);
+      extend.processor.store[1].params.should.eql([]);
       should.exist(extend.processor.store[1].fn);
     });
 
@@ -244,34 +244,34 @@ describe('Extend', function(){
     });
 
     it('list', function(){
-      extend.processor.list().should.be.eql(extend.processor.store);
+      extend.processor.list().should.eql(extend.processor.store);
     });
 
     it('format', function(){
       // posts/:id
       var obj = extend.processor.format('posts/:id');
-      obj.pattern.should.be.eql(/^posts\/([^\/]+)$/);
-      obj.params.should.be.eql(['id']);
+      obj.pattern.should.eql(/^posts\/([^\/]+)$/);
+      obj.params.should.eql(['id']);
 
       var match = 'posts/123'.match(obj.pattern);
-      match[1].should.be.eql('123');
+      match[1].should.eql('123');
 
       // users/:user_id/posts/:post_id
       var obj = extend.processor.format('users/:user_id/posts/:post_id');
-      obj.pattern.should.be.eql(/^users\/([^\/]+)\/posts\/([^\/]+)$/);
-      obj.params.should.be.eql(['user_id', 'post_id']);
+      obj.pattern.should.eql(/^users\/([^\/]+)\/posts\/([^\/]+)$/);
+      obj.params.should.eql(['user_id', 'post_id']);
 
       var match = 'users/foo/posts/bar'.match(obj.pattern);
-      match[1].should.be.eql('foo');
-      match[2].should.be.eql('bar');
+      match[1].should.eql('foo');
+      match[2].should.eql('bar');
 
       // files/*path
       var obj = extend.processor.format('files/*path');
-      obj.pattern.should.be.eql(/^files\/(.*?)$/);
-      obj.params.should.be.eql(['path']);
+      obj.pattern.should.eql(/^files\/(.*?)$/);
+      obj.params.should.eql(['path']);
 
       var match = 'files/assets/test.jpg'.match(obj.pattern);
-      match[1].should.be.eql('assets/test.jpg');
+      match[1].should.eql('assets/test.jpg');
     });
   });
 
@@ -286,15 +286,15 @@ describe('Extend', function(){
     it('register', function(){
       extend.renderer.register('foo', 'bar', function(){});
       should.exist(extend.renderer.store.foo);
-      extend.renderer.store.foo.output.should.be.eql('bar');
+      extend.renderer.store.foo.output.should.eql('bar');
     });
 
     it('register sync', function(){
       extend.renderer.register('baz', 'foo', function(){}, true);
       should.exist(extend.renderer.store.baz);
       should.exist(extend.renderer.storeSync.baz);
-      extend.renderer.store.baz.output.should.be.eql('foo');
-      extend.renderer.storeSync.baz.output.should.be.eql('foo');
+      extend.renderer.store.baz.output.should.eql('foo');
+      extend.renderer.storeSync.baz.output.should.eql('foo');
     });
 
     it('register error', function(){
@@ -304,11 +304,11 @@ describe('Extend', function(){
     });
 
     it('list', function(){
-      extend.renderer.list().should.be.eql(extend.renderer.store);
+      extend.renderer.list().should.eql(extend.renderer.store);
     });
 
     it('list sync', function(){
-      extend.renderer.list(true).should.be.eql(extend.renderer.storeSync);
+      extend.renderer.list(true).should.eql(extend.renderer.storeSync);
     });
   });
 
@@ -336,7 +336,7 @@ describe('Extend', function(){
     });
 
     it('list', function(){
-      extend.swig.list().should.be.eql(extend.swig.store);
+      extend.swig.list().should.eql(extend.swig.store);
     });
   });
 
@@ -364,7 +364,7 @@ describe('Extend', function(){
     });
 
     it('list', function(){
-      extend.tag.list().should.be.eql(extend.tag.store);
+      extend.tag.list().should.eql(extend.tag.store);
     });
   });
 });

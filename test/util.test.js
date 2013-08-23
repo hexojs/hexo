@@ -56,7 +56,7 @@ describe('Utils', function(){
             fs.readFile(dest, 'utf8', function(err, result){
               if (err) throw err;
 
-              result.should.be.eql(content);
+              result.should.eql(content);
               next();
             });
           },
@@ -74,7 +74,7 @@ describe('Utils', function(){
           content = uid(48);
 
         file.writeFile(dest, content, {checkParent: false}, function(err){
-          err.code.should.be.eql('ENOENT');
+          err.code.should.eql('ENOENT');
           done();
         });
       });
@@ -99,7 +99,7 @@ describe('Utils', function(){
             fs.readFile(dest, 'utf8', function(err, result){
               if (err) throw err;
 
-              result.should.be.eql(content);
+              result.should.eql(content);
               next();
             });
           },
@@ -116,7 +116,7 @@ describe('Utils', function(){
         var dest = path.join(__dirname, uid(12), uid(12));
 
         file.copyFile(src, dest, {checkParent: false}, function(err){
-          err.code.should.be.eql('ENOENT');
+          err.code.should.eql('ENOENT');
           done();
         });
       });
@@ -308,7 +308,7 @@ describe('Utils', function(){
         file.readFile(src, function(err, result){
           if (err) throw err;
 
-          result.should.be.eql(content);
+          result.should.eql(content);
           done();
         });
       });
@@ -318,7 +318,7 @@ describe('Utils', function(){
           if (err) throw err;
 
           result.should.be.instanceof(Buffer);
-          result.toString('utf8').should.be.eql(content);
+          result.toString('utf8').should.eql(content);
           done();
         });
       });
@@ -339,7 +339,7 @@ describe('Utils', function(){
       it('normal', function(done){
         var result = file.readFileSync(src);
 
-        result.should.be.eql(content);
+        result.should.eql(content);
         done();
       });
 
@@ -347,7 +347,7 @@ describe('Utils', function(){
         var result = file.readFileSync(src, {encoding: null});
 
         result.should.be.instanceof(Buffer);
-        result.toString('utf8').should.be.eql(content);
+        result.toString('utf8').should.eql(content);
 
         done();
       });
@@ -477,25 +477,25 @@ describe('Utils', function(){
     var html_tag = util.html_tag;
 
     it('tag', function(){
-      html_tag('hr').should.be.eql('<hr>');
+      html_tag('hr').should.eql('<hr>');
     });
 
     it('tag + attrs', function(){
       html_tag('img', {
         src: 'http://placekitten.com/200/300'
-      }).should.be.eql('<img src="http://placekitten.com/200/300">');
+      }).should.eql('<img src="http://placekitten.com/200/300">');
 
       html_tag('img', {
         src: 'http://placekitten.com/200/300',
         width: 200,
         height: 300
-      }).should.be.eql('<img src="http://placekitten.com/200/300" width="200" height="300">');
+      }).should.eql('<img src="http://placekitten.com/200/300" width="200" height="300">');
     });
 
     it('tag + attrs + text', function(){
       html_tag('a', {
         href: 'http://zespia.tw'
-      }, 'My blog').should.be.eql('<a href="http://zespia.tw">My blog</a>');
+      }, 'My blog').should.eql('<a href="http://zespia.tw">My blog</a>');
     });
   });
 
@@ -534,21 +534,21 @@ describe('Utils', function(){
     var obj = yaml.parse(str);
 
     it('normal format', function(){
-      yfm('---\n' + str + '\n---\ncontent').should.be.eql(_.extend({_content: 'content'}, obj));
+      yfm('---\n' + str + '\n---\ncontent').should.eql(_.extend({_content: 'content'}, obj));
     });
 
     it('simplified format', function(){
-      yfm(str + '\n---\ncontent').should.be.eql(_.extend({_content: 'content'}, obj));
+      yfm(str + '\n---\ncontent').should.eql(_.extend({_content: 'content'}, obj));
     });
 
     it('empty content', function(){
-      yfm(str + '\n---').should.be.eql(_.extend({_content: ''}, obj));
+      yfm(str + '\n---').should.eql(_.extend({_content: ''}, obj));
     });
 
     it('stringify', function(){
       var txt = yfm.stringify(_.extend({_content: 'content'}, obj));
 
-      yfm(txt).should.be.eql(_.extend({_content: 'content'}, obj));
+      yfm(txt).should.eql(_.extend({_content: 'content'}, obj));
     });
   });
 });

@@ -5,9 +5,9 @@ describe('Router', function(){
   var router = new Router();
 
   it('format()', function(){
-    router.format('/foo/bar').should.be.eql('foo/bar');
-    router.format('foo/bar/').should.be.eql('foo/bar/index.html');
-    router.format('').should.be.eql('index.html');
+    router.format('/foo/bar').should.eql('foo/bar');
+    router.format('foo/bar/').should.eql('foo/bar/index.html');
+    router.format('').should.eql('index.html');
   });
 
   it('set() - string', function(){
@@ -28,7 +28,7 @@ describe('Router', function(){
     router.get('foo')(function(err, result){
       should.not.exist(err);
 
-      result.should.be.eql('string');
+      result.should.eql('string');
     });
 
     var route = router.get('bar');
@@ -38,7 +38,7 @@ describe('Router', function(){
     route(function(err, result){
       should.not.exist(err);
 
-      result.should.be.eql('string');
+      result.should.eql('string');
     });
   });
 

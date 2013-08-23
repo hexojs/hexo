@@ -13,7 +13,7 @@ describe('Filters', function(){
         content: '中文abc'
       }, function(err, data){
         should.not.exist(err);
-        data.content.should.be.eql('中文 abc');
+        data.content.should.eql('中文 abc');
       });
     });
 
@@ -22,7 +22,7 @@ describe('Filters', function(){
         content: 'abc中文'
       }, function(err, data){
         should.not.exist(err);
-        data.content.should.be.eql('abc 中文');
+        data.content.should.eql('abc 中文');
       });
     });
 
@@ -31,7 +31,7 @@ describe('Filters', function(){
         content: '中文"abc"中文'
       }, function(err, data){
         should.not.exist(err);
-        data.content.should.be.eql('中文 "abc" 中文');
+        data.content.should.eql('中文 "abc" 中文');
       });
     });
 
@@ -52,8 +52,8 @@ describe('Filters', function(){
         content: '12345<!-- more -->67890'
       }, function(err, data){
         should.not.exist(err);
-        data.content.should.be.eql('12345<a id="more"></a>67890');
-        data.excerpt.should.be.eql('12345');
+        data.content.should.eql('12345<a id="more"></a>67890');
+        data.excerpt.should.eql('12345');
       });
     });
 
@@ -62,8 +62,8 @@ describe('Filters', function(){
         content: '1234567890'
       }, function(err, data){
         should.not.exist(err);
-        data.content.should.be.eql('1234567890');
-        data.excerpt.should.be.eql('');
+        data.content.should.eql('1234567890');
+        data.excerpt.should.eql('');
       });
     });
   });
@@ -76,7 +76,7 @@ describe('Filters', function(){
         content: '<a href="foo.html">foo</a>'
       }, function(err, data){
         should.not.exist(err);
-        data.content.should.be.eql('<a href="foo.html">foo</a>');
+        data.content.should.eql('<a href="foo.html">foo</a>');
       });
     });
 
@@ -85,7 +85,7 @@ describe('Filters', function(){
         content: '<a href="http://zespia.tw">Zespia</a>'
       }, function(err, data){
         should.not.exist(err);
-        data.content.should.be.eql('<a href="http://zespia.tw" target="_blank">Zespia</a>');
+        data.content.should.eql('<a href="http://zespia.tw" target="_blank">Zespia</a>');
       });
     });
 
@@ -94,7 +94,7 @@ describe('Filters', function(){
         content: '<a href="http://zespia.tw" target="_blank">Zespia</a>'
       }, function(err, data){
         should.not.exist(err);
-        data.content.should.be.eql('<a href="http://zespia.tw" target="_blank">Zespia</a>');
+        data.content.should.eql('<a href="http://zespia.tw" target="_blank">Zespia</a>');
       });
     });
   });
@@ -111,7 +111,7 @@ describe('Filters', function(){
         title: 'Today is a beatuiful day'
       }, function(err, data){
         should.not.exist(err);
-        data.title.should.be.eql('Today Is a Beatuiful Day')
+        data.title.should.eql('Today Is a Beatuiful Day')
       });
     });
 
@@ -120,7 +120,7 @@ describe('Filters', function(){
         title: 'TODAY IS A BEATUIFUL DAY'
       }, function(err, data){
         should.not.exist(err);
-        data.title.should.be.eql('Today Is a Beatuiful Day')
+        data.title.should.eql('Today Is a Beatuiful Day')
       });
     });
 
@@ -129,7 +129,7 @@ describe('Filters', function(){
         title: 'today is a beatuiful day'
       }, function(err, data){
         should.not.exist(err);
-        data.title.should.be.eql('Today Is a Beatuiful Day')
+        data.title.should.eql('Today Is a Beatuiful Day')
       });
     });
 
