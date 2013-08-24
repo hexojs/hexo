@@ -188,6 +188,24 @@ This plugin helps you insert an image in posts with specified size.
 </pre></figure>
 {% endraw %}
 
+## Link
+
+This plugin helps you insert a link with `target="_blank"` attribute.
+
+{% raw %}
+<figure class="highlight"><pre>{% link text url [external] [title] %}
+</pre></figure>
+{% endraw %}
+
+## Include Code
+
+This plugins helps you insert code snippets in `source` folder.
+
+{% raw %}
+<figure class="highlight"><pre>{% include_code [title] [lang:language] path/to/file %}
+</pre></figure>
+{% endraw %}
+
 ## Youtube
 
 This plugin helps you insert a Youtube video in posts.

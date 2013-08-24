@@ -1,10 +1,48 @@
 title: Contributing
 prev: troubleshooting
 ---
-It's great to hear you'd like to make Hexo more awesome! When modifying JavaScript code, please keep the following in your mind.
+It's great to hear you'd like to make Hexo more awesome! When modifying files, please keep the following in your mind.
 
-- Please follow the [Google JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml).
-- Comment in [JSDoc](http://usejsdoc.org/) format.
+**JavaScript:**
+
+- Follow [Google JavaScript Style Guide](http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml).
+- Use soft-tabs with a two space indent.
+- Don't put commas first.
+
+Example:
+
+``` js
+var fs = require('fs'),
+  path = require('path');
+  
+var doSomething = function(callback){
+  callback();
+};
+```
+
+
+**CSS:**
+
+- Use soft-tabs with a two space indent.
+- Put spaces after `:` in property declarations.
+- Put mixin first.
+- Always use double quotations.
+- Flat structure.
+
+Example:
+
+``` css
+#foo
+  clearfix()
+  color: #444
+  background: url("background.png")
+```
+
+**HTML:**
+
+- Use soft-tabs with a two space indent.
+- Use double quotations unless in `<% code %>` tag.
+- Use HTML5 doctype.
 
 ## Development
 

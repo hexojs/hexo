@@ -48,7 +48,7 @@ Conditional tags help you check the status of current page.
 
 Helper | Description
 --- | ---
-`is_current(path)` | Checks if `path` matches the URL of current page
+`is_current(path, strict)` | Checks if `path` matches the URL of current page.
 `is_home()` | Checks if the home page is being displayed
 `is_post()` | Checks if posts are being displayed
 `is_archive()` | Checks if archive pages are being displayed

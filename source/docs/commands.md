@@ -8,7 +8,7 @@ next: migration
 $ hexo init [folder]
 ```
 
-Setup a website. If `folder` isn't defined, Hexo will setup the website at the current directory.
+Setups a website. If `folder` isn't defined, Hexo will setup the website at the current directory.
 
 ## new
 
@@ -16,7 +16,7 @@ Setup a website. If `folder` isn't defined, Hexo will setup the website at the c
 $ hexo new [layout] <title>
 ```
 
-Create a new article. If `layout` isn't defined, it'll be `default_layout` setting. If the title is more than one word, wrap it with quotation marks.
+Creates a new article. If `layout` isn't defined, it'll be `default_layout` setting. If the title is more than one word, wrap it with quotation marks.
 
 ## generate
 
@@ -24,7 +24,7 @@ Create a new article. If `layout` isn't defined, it'll be `default_layout` setti
 $ hexo generate
 ```
 
-Generate static files.
+Generates static files.
 
 Option | Description
 --- | ---
@@ -37,7 +37,7 @@ Option | Description
 $ hexo server
 ```
 
-Start server.
+Starts server.
 
 Option | Description
 --- | ---
@@ -51,7 +51,7 @@ Option | Description
 $ hexo deploy
 ```
 
-Deploy your website.
+Deploys your website.
 
 Option | Description
 --- | ---
@@ -64,6 +64,8 @@ Option | Description
 $ hexo render <file1> [file2] ...
 ```
 
+Renders files.
+
 Option | Description
 --- | ---
 `-o`<br>`--output` | Output destination
@@ -74,7 +76,7 @@ Option | Description
 $ hexo migrate <type>
 ```
 
-Migrate from other blog systems.
+Migrates from other blog systems.
 
 ## clean
 
@@ -82,7 +84,7 @@ Migrate from other blog systems.
 $ hexo clean
 ```
 
-Clean the cache file (`db.json`).
+Cleans the cache file (`db.json`) and generated files (`public`).
 
 ## list
 
@@ -90,7 +92,7 @@ Clean the cache file (`db.json`).
 $ hexo list <type>
 ```
 
-List all categories/pages/posts/routes/tags.
+Lists all routes.
 
 ## version
 
@@ -98,9 +100,9 @@ List all categories/pages/posts/routes/tags.
 $ hexo version
 ```
 
-Display version information.
+Displays version information.
 
-## Others
+## Options
 
 ### Safe mode
 
@@ -116,4 +118,4 @@ Plugins and scripts won't be loaded in safe mode. You can try this when you enco
 $ hexo --debug
 ```
 
-Display verbose messages in console directly. When you encounter some problems, run Hexo again in the debug mode and submit the messages on GitHub.
+Displays verbose messages in terminal and saves log in `debug.log`. When you get some problems, try to run Hexo again in debug mode and submit the messages to GitHub.

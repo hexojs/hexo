@@ -12,6 +12,8 @@ Variable | Description
 `theme` | Theme configuration. Inherits from site configuration.
 `_` (single underscore) | [Lodash](http://lodash.com/) library
 `__` (double underscores) | Internationalization (i18n) utility. See below for detail.
+`path` | Path of current page
+`url` | Full URL of current page
 
 {% note tip Custom Variables %}
 You can also use front-matter in layouts just like writing posts!
@@ -44,20 +46,18 @@ Variable | Description
 `page.content` | The full processed content of the article
 `page.excerpt` | The processed excerpt of the article
 `page.source` | The path of the source file
-`page.full_path` | Full path of the source file
+`page.full_source` | Full path of the source file
 `page.path` | The URL of the article without root URL. We usually use `config.root + page.path` in theme.
 `page.permalink` | Full URL of the article
-`page.ctime` | File created time ([Moment.js] object)
-`page.mtime` | File modified time ([Moment.js] object)
 `page.prev` | The previous post. `null` if the post is the first post.
 `page.next` | The next post. `null` if the post is the last post.
-`page.original_content` | The raw data of the article
+`page.raw` | The raw data of the article
 
 {% note info Custom front-matter %}
-The front-matter in posts will be available under `page`.
+The front-matter in posts will be available in `page`.
 {% endnote %}
 
-**Home (index):** If pagination is disabled, page variables will be a [Data Model]. If not, they'll be the following variables.
+**Home (index)**
 
 Variable | Description
 --- | ---

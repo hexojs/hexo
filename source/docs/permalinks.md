@@ -13,22 +13,22 @@ Variable | Description
 `:day` | Published day of posts (2-digit)
 `:title` | Filename
 `:id` | Post ID
-`:category` | Relative path to `source/_posts`. If the post is uncategorized, it'll be `category_dir` setting.
+`:category` | Categories. If the post is uncategorized, it'll be `category_dir` setting.
 
 ### Examples
 
-Given a post named `hello-world.md` in `source/_posts/foo` folder with   the following content.
+Given a post named `hello-world.md` in `source/_posts` folder with   the following content.
 
 ``` yaml
 title: Hello World
 date: 2013-07-14 17:01:34
 categories: 
+- foo
 - bar
-- baz
 ```
 
 Setting | Result
 --- | ---
 `:year/:month/:day/:title/` | 2013/07/14/hello-world
 `:year-:month-:day-:title.html` | 2013-07-14-hello-world.html
-`:category/:title` | foo/bar/baz/hello-world
+`:category/:title` | foo/bar/hello-world

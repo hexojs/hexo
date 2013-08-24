@@ -19,12 +19,10 @@ Name | Description
 `content` | The full processed content of the post
 `excerpt` | The processed excerpt of the post
 `source` | The path of the source file
-`full_path` | Full path of the source file
+`full_source` | Full path of the source file
 `path` | The URL of the post without root URL
 `permalink` | Full URL of the post
-`crime` | File created time ([Moment.js] object)
-`mtime` | File modified time ([Moment.js] object)
-`original_content` | The raw data of the post
+`raw` | The raw data of the post
 
 ### Page
 
@@ -41,9 +39,7 @@ Name | Description
 `full_path` | Full path of the source file
 `path` | The URL of the page without root URL
 `permalink` | Full URL of the page
-`crime` | File created time ([Moment.js] object)
-`mtime` | File modified time ([Moment.js] object)
-`original_content` | The raw data of the page
+`raw` | The raw data of the page
 
 ### Category
 
@@ -55,6 +51,7 @@ Name | Description
 `path` | The URL of the category without root URL
 `permalink` | Full URL of the category
 `length` | Total number of posts in the category
+`parent` | Parent category
 
 ### Tag
 

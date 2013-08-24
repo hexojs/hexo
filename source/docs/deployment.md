@@ -16,13 +16,11 @@ Edit `_config.yml`.
 deploy:
   type: github
   repository:
-  branch:
 ```
 
 Option | Description
 --- | ---
-`repository` | GitHub repository URL (It's better to use HTTPS)
-`branch` | Target branch. If your repository name is `username.github.io` or `username.github.com`, this value will be `master`, `gh-pages` otherwise.
+`repo`<br>`repository` | GitHub repository URL (Better to use HTTPS)
 
 ### Remove
 
@@ -57,7 +55,7 @@ deploy:
 
 Option | Description
 --- | ---
-`repository` | Heroku repository URL
+`repo`<br>`repository` | Heroku repository URL
 
 ### Remove
 
