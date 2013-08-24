@@ -42,7 +42,7 @@
     "swig": "0.14.0",
     "graceful-fs": "2.0.0",
     "optimist": "0.6.0",
-    "warehouse": "0.1.7",
+    "warehouse": "0.1.9",
     "sprintf-js": "0.0.7",
     "watch": "0.8.0"
   },
