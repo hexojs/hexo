@@ -1,0 +1,21 @@
+<% var base = config.root + (page.lang ? page.lang + '/' : '') %>
+<div id="copyright">&copy; <%= moment().year() %> <a href="http://zespia.tw/" class="footer-link">SkyArrow</a></div>
+<nav id="footer-nav">
+  <ul>
+    <li class="footer-nav-item">
+      <a href="<%- base %>" class="footer-link">Home</a>
+    </li>
+    <li class="footer-nav-item">
+      <a href="<%- base %>docs/" class="footer-link">Docs</a>
+    </li>
+    <li class="footer-nav-item">
+      <a href="https://github.com/tommy351/hexo/wiki/Plugins" class="footer-link">Plugins</a>
+    </li>
+    <li class="footer-nav-item">
+      <a href="https://github.com/tommy351/hexo/wiki/Themes" class="footer-link">Themes</a>
+    </li>
+    <li class="footer-nav-item">
+      <a href="https://github.com/tommy351/hexo" class="footer-link">Source</a>
+    </li>
+  </ul>
+</nav>

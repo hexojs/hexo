@@ -1,129 +1,218 @@
----
-layout: page
 title: Tag Plugins
-date: 2012-11-01 18:13:30
+prev: generating
+next: server
 ---
-
-Tag plugins are different from tags in posts. Tag plugins are used for inserting specific contents in posts.
+Tag plugins are different from tags in posts. They're ported from Octopress and can help you insert specific contents in posts quickly.
 
 ## Block Quote
 
-Insert a block quote.
+This plugin helps you insert quotes with author, source and title in posts.
+
+**Alias:** quote
 
 {% raw %}
-<pre><code>{% blockquote [author[, source]] [link] [source_link_title] %}
+<figure class="highlight"><pre>{% blockquote [author[, source]] [link] [source_link_title] %}
 content
 {% endblockquote %}
-</code></pre>
+</pre></figure>
 {% endraw %}
 
-**Alias:**`quote`
+### Example
 
-[Reference][1]
+**No arguments given. Only output plain blockquote**
+
+{% raw %}
+<figure class="highlight"><pre>{% blockquote %}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque hendrerit lacus ut purus iaculis feugiat. Sed nec tempor elit, quis aliquam neque. Curabitur sed diam eget dolor fermentum semper at eu lorem. 
+{% endblockquote %}
+</pre></figure>
+{% endraw %}
+
+{% blockquote %}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque hendrerit lacus ut purus iaculis feugiat. Sed nec tempor elit, quis aliquam neque. Curabitur sed diam eget dolor fermentum semper at eu lorem. 
+{% endblockquote %}
+
+**Quote from a book**
+
+{% raw %}
+<figure class="highlight"><pre>{% blockquote David Levithan, Wide Awake %}
+Do not just seek happiness for yourself. Seek happiness for all. Through kindness. Through mercy.
+{% endblockquote %}
+</pre></figure>
+{% endraw %}
+
+{% blockquote David Levithan, Wide Awake %}
+Do not just seek happiness for yourself. Seek happiness for all. Through kindness. Through mercy.
+{% endblockquote %}
+
+**Quote from Twitter**
+
+{% raw %}
+<figure class="highlight"><pre>{% blockquote @DevDocs https://twitter.com/devdocs/status/356095192085962752 %}
+NEW: DevDocs now comes with syntax highlighting. http://devdocs.io
+{% endblockquote %}
+</pre></figure>
+{% endraw %}
+
+{% blockquote @DevDocs https://twitter.com/devdocs/status/356095192085962752 %}
+NEW: DevDocs now comes with syntax highlighting. http://devdocs.io
+{% endblockquote %}
+
+**Quote from an article on the web**
+
+{% raw %}
+<figure class="highlight"><pre>{% blockquote Seth Godin http://sethgodin.typepad.com/seths_blog/2009/07/welcome-to-island-marketing.html Welcome to Island Marketing %}
+Every interaction is both precious and an opportunity to delight.
+{% endblockquote %}
+</pre></figure>
+{% endraw %}
+
+{% blockquote Seth Godin http://sethgodin.typepad.com/seths_blog/2009/07/welcome-to-island-marketing.html Welcome to Island Marketing %}
+Every interaction is both precious and an opportunity to delight.
+{% endblockquote %}
 
 ## Code Block
 
-Inserts a code block.
+This plugins helps you insert code snippets in posts.
+
+**Alias:** code
 
 {% raw %}
-<pre><code>{% codeblock [title] [lang:language] [url] [link text] %}
-content
+<figure class="highlight"><pre>{% codeblock [title] [lang:language] [url] [link text] %}
+code snippet
 {% endcodeblock %}
-</code></pre>
+</pre></figure>
 {% endraw %}
 
-**Alias:**`code`
+### Example
 
-[Reference][2]
+**A normal code block**
+
+{% raw %}
+<figure class="highlight"><pre>{% codeblock %}
+alert('Hello World!');
+{% endcodeblock %}
+</pre></figure>
+{% endraw %}
+
+{% codeblock %}
+alert('Hello World!');
+{% endcodeblock %}
+
+**Specify language**
+
+{% raw %}
+<figure class="highlight"><pre>{% codeblock lang:objc %}
+[rectangle setX: 10 y: 10 width: 20 height: 20];
+{% endcodeblock %}
+</pre></figure>
+{% endraw %}
+
+{% codeblock lang:objc %}
+[rectangle setX: 10 y: 10 width: 20 height: 20];
+{% endcodeblock %}
+
+**Add caption to code block**
+
+{% raw %}
+<figure class="highlight"><pre>{% codeblock Array.map %}
+array.map(callback[, thisArg])
+{% endcodeblock %}
+</pre></figure>
+{% endraw %}
+
+{% codeblock Array.map %}
+array.map(callback[, thisArg])
+{% endcodeblock %}
+
+**Add caption with an optional URL**
+
+{% raw %}
+<figure class="highlight"><pre>{% codeblock _.compact http://underscorejs.org/#compact Underscore.js %}
+_.compact([0, 1, false, 2, '', 3]);
+=> [1, 2, 3]
+{% endcodeblock %}
+</pre></figure>
+{% endraw %}
+
+{% codeblock _.compact http://underscorejs.org/#compact Underscore.js %}
+_.compact([0, 1, false, 2, '', 3]);
+=> [1, 2, 3]
+{% endcodeblock %}
 
 ## Backtick Code Block
 
-Inserts a code block.
+This plugin is same as code block, but in backtick style.
 
-	``` [language] [title] [url] [link text]
-	content
-	```
-
-[Reference][3]
+{% code %}
+``` [language] [title] [url] [link text]
+code snippet
+```
+{% endcode %}
 
 ## Pull Quote
 
-Inserts a pull quote.
+This plugin helps you insert a pull quote in posts.
 
 {% raw %}
-<pre><code>{% pullquote [class_name] %}
+<figure class="highlight"><pre>{% pullquote [class] %}
 content
 {% endpullquote %}
-</code></pre>
+</pre></figure>
 {% endraw %}
-
-[Reference][4]
 
 ## jsFiddle
 
-Embeds jsFiddle.
+This plugin helps you embed jsFiddle snippets in posts.
 
 {% raw %}
-<pre><code>{% jsfiddle shorttag [tabs] [skin] [width] [height] %}
-</code></pre>
+<figure class="highlight"><pre>{% jsfiddle shorttag [tabs] [skin] [width] [height] %}
+</pre></figure>
 {% endraw %}
-
-[Reference][5]
 
 ## Gist
 
-Embeds Gist.
+This plugin helps you embed Gist snippets in posts.
 
 {% raw %}
-<pre><code>{% gist gist_id [filename] %}
-</code></pre>
+<figure class="highlight"><pre>{% gist gist_id [filename] %}
+</pre></figure>
 {% endraw %}
 
-[Reference][6]
+## Image
 
-## Image Tag
-
-Inserts a picture.
+This plugin helps you insert an image in posts with specified size.
 
 {% raw %}
-<pre><code>{% img [class names] /path/to/image [width] [height] [title text [alt text]] %}
-</code></pre>
+<figure class="highlight"><pre>{% img [class names] /path/to/image [width] [height] [title text [alt text]] %}
+</pre></figure>
 {% endraw %}
-
-[Reference][7]
 
 ## Youtube
 
-Inserts a Youtube video.
+This plugin helps you insert a Youtube video in posts.
 
 {% raw %}
-<pre><code>{% youtube video_id %}
-</code></pre>
+<figure class="highlight"><pre>{% youtube video_id %}
+</pre></figure>
 {% endraw %}
 
 ## Vimeo
 
-Inserts a Vimeo video.
+This plugin helps you insert a Vimeo video in posts.
 
 {% raw %}
-<pre><code>{% vimeo video_id %}
-</code></pre>
+<figure class="highlight"><pre>{% vimeo video_id %}
+</pre></figure>
 {% endraw %}
 
 ## Raw
 
-Escapes contents. (Please delete the backslash)
+If there're some contents can't be processed in posts, you can wrapped it with `raw` tag.
 
 {% raw %}
-<pre><code>{% raw %}
+<figure class="highlight"><pre>{% raw %}
+content
 {% endraw /%}
-</code></pre>
+</pre></figure>
 {% endraw %}
-
-[1]: http://octopress.org/docs/plugins/blockquote/
-[2]: http://octopress.org/docs/plugins/codeblock/
-[3]: http://octopress.org/docs/plugins/backtick-codeblock/
-[4]: http://octopress.org/docs/plugins/pullquote/
-[5]: http://octopress.org/docs/plugins/jsfiddle-tag/
-[6]: http://octopress.org/docs/plugins/gist-tag/
-[7]: http://octopress.org/docs/plugins/image-tag/

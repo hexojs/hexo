@@ -1,73 +1,56 @@
----
-layout: page
 title: Setup
-date: 2012-11-01 18:13:30
+prev: installation
+next: configuration
 ---
-
-After installed, execute the following command in the folder you want. Hexo will build all files you need in the target folder.
+Once Hexo is installed, run the following command and hexo will build all files you need in the target folder.
 
 ``` bash
-hexo init <folder>
+$ hexo init <folder>
 ```
 
-After built, here's how the folder looks like:
+After build, here's how the folder looks like:
 
 ``` plain
-|-- .gitignore
-|-- _config.yml
-|-- package.json
-|-- public
-|-- scaffolds
-|-- scripts
-|-- source
-|   |-- _posts
-        |-- hello-world.md
-|   |-- _drafts
-|-- themes
-    |-- light
+.
+├── _config.yml
+├── package.json
+├── scaffolds
+├── scripts
+├── source
+|   ├── _drafts
+|   └── _posts
+└── themes
 ```
 
 ### _config.yml
 
-Global configuration file.
+Site [configuration](configuration.html) file. You can configure most of options here.
 
 ### package.json
 
-Application data. **Don't delete it.** If you deleted it unfortunately, rebuild the file with the following content.
+Application data. If you deleted it unfortunately, rebuild the file with the following content.
 
 ``` json
 {
   "name": "hexo",
   "version": "0.0.1",
   "private": true,
-  "engines": {
-    "node": ">0.6.0",
-    "npm": ">1.1.0"
-  },
   "dependencies": {}
 }
 ```
 
-### public
-
-Static file folder.
-
 ### scaffolds
 
-[Scaffold][2] folder.
+[Scaffold](scaffolds.html) folder. When you create a new post, Hexo will build the file based on the scaffold.
 
 ### scripts
 
-[Script][3] folder.
+[Script](scripts.html) folder. Script is the easiest way to extend Hexo. JavaScript files in this folder will be executed automatically.
 
 ### source
 
-Files in this folder will be processed and saved in `public` folder. File or folder whose name started with `.` (dot) or `_` (underscore) will be ignored except `_posts` folder.
+Source folder is where you can put your content in. File or folder whose name is prefixed with `_` (underscore) and hidden files will be ignore except `_posts` folder. Markdown, HTML files will be processed and put into `public` folder, while other files will be copied.
 
 ### themes
 
-Theme folder. The default theme of Hexo is [Light][1]。
-
-[1]: https://github.com/tommy351/hexo-theme-light
-[2]: writing.html
-[3]: scripts.html
+[Theme](themes.html) folder. Hexo will generate files based on the theme.

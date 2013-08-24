@@ -1,0 +1,85 @@
+css: index
+---
+
+<%- partial('_partial/head') %>
+
+<body class="index">
+  <div id="banner-wrap">
+    <header id="header" class="inner">
+      <%- partial('_partial/header') %>
+    </header>
+    <div id="banner" class="inner">
+      <div id="banner-text"><%= page.subtitle %></div>
+      <div id="banner-entry">
+        <a href="<%- config.root %>docs/" id="banner-button">Get Started</a>
+        <div id="banner-share">
+          <%- partial('_partial/share') %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="content">
+    <section class="section-wrap">
+      <div class="section inner">
+        <h2 class="section-title">Features</h2>
+        <div class="section-entry">
+          <div class="feature-block">
+            <div class="feature-block-img">
+              <img src="<%- config.root %>css/images/home/incredibly-fast.jpg" alt="Incredibly Fast">
+            </div>
+            <strong class="feature-block-title">Incredibly Fast</strong>
+            <div class="feature-block-entry">With V8 engine, Hexo is much faster than any other static file generators.</div>
+          </div>
+          <div class="feature-block">
+            <div class="feature-block-img">
+              <img src="<%- config.root %>css/images/home/markdown-support.jpg" alt="Markdown Support">
+            </div>
+            <strong class="feature-block-title">Markdown Support</strong>
+            <div class="feature-block-entry">Markdown is easy-to-read &amp; easy-to-write. You only need to focus on your contents.</div>
+          </div>
+          <div class="feature-block">
+            <div class="feature-block-img">
+              <img src="<%- config.root %>css/images/home/fast-deploy.jpg" alt="Fast Deploy">
+            </div>
+            <strong class="feature-block-title">Fast Deploy</strong>
+            <div class="feature-block-entry">You can deploy your site to GitHub/Heroku with only one command.</div>
+          </div>
+          <div class="feature-block">
+            <div class="feature-block-img">
+              <img src="<%- config.root %>css/images/home/easy-migrate.jpg" alt="Easy Migrate">
+            </div>
+            <strong class="feature-block-title">Easy Migrate</strong>
+            <div class="feature-block-entry">Plugins for Octopress are ported to Hexo. You can migrate from Jekyll/Octopress to Hexo easliy.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section-wrap">
+      <div class="section inner">
+        <div id="get-started-entry">
+          <h2 class="section-title">Getting Started</h2>
+          <div class="section-entry">
+            <p>It's easy as cake to install Hexo on your computer.</p>
+            <p>Before installing Hexo, you should install Git &amp; Node.js first. For more info, check the link below.</p>
+          </div>
+          <a href="<%- config.root %>docs/" id="more-info">More info</a>
+        </div>
+        <div id="get-started-code">
+          <div class="line"><span class="prompt">$</span> npm install hexo -g</div>
+          <div class="line"><span class="prompt">$</span> hexo init blog</div>
+          <div class="line"><span class="prompt">$</span> cd blog</div>
+          <div class="comment"># Create new post</div>
+          <div class="line"><span class="prompt">$</span> hexo new "New Post"</div>
+          <div class="comment"># Generate</div>
+          <div class="line"><span class="prompt">$</span> hexo generate</div>
+          <div class="comment"># Server</div>
+          <div class="line"><span class="prompt">$</span> hexo server</div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <footer id="footer" class="inner">
+    <%- partial('_partial/footer') %>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,27 @@
+css: page
+---
+
+<%- partial('_partial/head') %>
+
+<body class="page">
+  <div id="header-wrap">
+    <header id="header" class="inner">
+      <%- partial('_partial/header') %>
+    </header>
+  </div>
+  <div id="content" class="inner">
+    <article id="main-col">
+      <header id="article-header">
+        <h1 id="article-title"><%- page.title %></h1>
+      </header>
+      <div id="article-entry"><%- page.content %></div>
+    </article>
+    <aside id="sidebar">
+      <%- partial('_partial/sidebar') %>
+    </aside>
+  </div>
+  <footer id="footer" class="inner">
+    <%- partial('_partial/footer') %>
+  </footer>
+</body>
+</html>

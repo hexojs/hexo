@@ -1,0 +1,17 @@
+index: false
+---
+
+<div class="inner">
+  <article class="page">
+    <% if (!page.hide_title){ %>
+      <h1 class="page-title"><%= page.title %></h1>
+    <% } %>
+    <div class="page-entry"><%- page.content %></div>
+    <footer id="section-nav">
+      <time datetime="<%= date_xml(page.updated) %>" id="last-updated">Last updated: <%= date(page.updated) %></time>
+      <% if (page.prev){ %><a href="<%- config.root %>docs/<%= page.prev %>.html" id="section-nav-prev" class="section-nav-link"><i class="icon-chevron-left"></i>Prev</a><% } %>
+      <% if (page.next){ %><a href="<%- config.root %>docs/<%= page.next %>.html" id="section-nav-next" class="section-nav-link">Next<i class="icon-chevron-right"></i></a><% } %>
+    </footer>
+  </article>
+  <%- partial('_partial/sidebar') %>
+</div>

@@ -1,34 +1,45 @@
----
-layout: page
 title: Events
-date: 2012-11-01 18:13:30
+prev: models
+next: plugins
 ---
+Hexo inherits EventEmitter of Node.js. You can subscribe or publish specified events. For example:
 
-[Global variable][1] `hexo` itself is a [EventEmitter][2] object. You can listen or emit events.
-
-## Usage
-
-Listen an event:
-
-```
+``` js
 hexo.on('ready', function(){
-  ...
+  console.log('Hexo is ready to go!');
 });
 ```
 
-Emit an event:
+## Methods
 
-```
-hexo.emit('event', [arg1], [arg2], [….]);
-```
+All methods except `emit` returns the emitter itself, so calls can be chained.
 
-[Reference][2]
+### addListener(event, listener)
+### on(event, listener)
 
-## Default events
+Listens to the specific event.
+
+### once(event, listener)
+
+Listens to the specified event **only once**. After the event is fired, the listener will be removed.
+
+### removeListener(event, listener)
+
+Removes a listener from the specified event.
+
+### removeAllListeners([event])
+
+Removes all listeners.
+
+### emit(event, [arg1], [arg2], […])
+
+Fires the specified event. Returns `true` if event had listener, `false` otherwise.
+
+## Events
 
 ### ready
 
-Called after all configurations and plugins loaded completely.
+Called once Hexo is initialized.
 
 ### generateBefore
 
@@ -48,15 +59,16 @@ Called after processing.
 
 ### new
 
-Called after a new article created. Return an argument `target` which means the absolute path of the new file.
+Called after a new post file is created.
+
+Argument | Description
+--- | ---
+`target` | Absolute path of the post file
 
 ### server
 
-Called after the server is on.
+Called after server is on.
 
-### Exit
+### exit
 
-Called when process exits.
-
-[1]: global-variables.html
-[2]: http://nodejs.org/api/events.html#events_class_events_eventemitter
+Called when Hexo exits.

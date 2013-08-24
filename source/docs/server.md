@@ -1,66 +1,94 @@
----
-layout: page
 title: Server
-date: 2012-11-01 18:13:30
+prev: tag-plugins
+next: deployment
 ---
+## Express
 
-## Built-in Server
-
-Hexo uses [Connect][1] to serve static files.
-
-Edit `port` setting in `_config.yml` to configure the port of the server.
-
-``` yaml
-port: 4000
-```
-
-Execute the following command to start the server. Press `Ctrl+c` to stop it.
-
-**Options**:
-
-- **-p/--port**: Port
-- **-s/--static**: Only serve static files
+To start server, run the following command:
 
 ``` bash
-hexo server
-hexo server -p 12345
+$ hexo server
+```
+
+Your website will running at `http://localhost:4000`. You can edit the server port in `_config.yml` or use flags to override the default port. For example:
+
+``` bash
+$ hexo server -p 5000
+```
+
+Server will watch for file changes and update automatically. However, server won't update files in `public` folder. You should run `hexo generate` instead.
+
+{% note info Restart Hexo after configuration changed %}
+Hexo doesn't watch for configuration file changes. You have to restart Hexo to make the new configurations take effects.
+{% endnote %}
+
+### Static Mode
+
+In static mode, only files in `public` folder will be served and file watching is disabled. You have to run `hexo generate` before starting the server. Usually used in production.
+
+``` bash
+$ hexo server -s
 ```
 
 ### Logger
 
-Edit `logger` in `_config.yml` to enable logger. Edit `logger_format` to adjust the content displayed. Check [Connect][4] for more info.
+To log requests of server, you can enable logger in `_config.yml`. Logger is always enabled in debug mode.
 
 ``` yaml
 logger: true
-logger_format:
+logger_format: default
 ```
+
+Or use flags to override default settings. For example:
+
+``` bash
+$ hexo server -l default
+```
+
+**Pre-defined formats:**
+
+Format | Description
+--- | ---
+`default` | :remote-addr - - [:date] ":method :url HTTP/:http-version" :status :res[content-length] ":referrer" ":user-agent"
+`short` | :remote-addr - :method :url HTTP/:http-version :status :res[content-length] - :response-time ms
+`tiny` | :method :url :status :res[content-length] - :response-time ms
+`dev` | concise output colored by response status for development use
+
+**Tokens:**
+
+Token | Description
+--- | ---
+`:req[header]` | Request header (e.g. `:req[Accept]`)
+`:res[header]` | Response header (e.g. `:res[Content-Length]`)
+`:http-version` | HTTP version
+`:response-time` | Response time
+`:remote-addr` | Remote IP address
+`:date` | Request date
+`:method` | Method
+`:url` | Request URL
+`:referrer` | Referrer
+`:user-agent` | User agent
+`:status` | Status
 
 ## Pow
 
-[Pow][2] is a zero-config Rack server for Mac powered by Node.js and it can serve static files, too.
+[Pow](http://pow.cx/) is a zero-config Rack server for Mac powered by Node.js.
 
-### Install
+### Insall
 
-Execute the following command.
-
-``` bash
-curl get.pow.cx | sh
-```
-
-### Usage
-
-Create a symlink in `~/.pow` folder to use.
+Run the following command:
 
 ``` bash
-cd ~/.pow
-ln -s /path/to/myapp
+$ curl get.pow.cx | sh
 ```
 
-Your website will be up and running at `http://myapp.dev`. The URL is based on the name of the symlink.
+### Setup
 
-Check [Pow][3] for more info.
+Symlink the folder into `~/.pow`
 
-[1]: https://github.com/senchalabs/connect
-[2]: http://pow.cx/
-[3]: http://pow.cx/manual.html
-[4]: http://www.senchalabs.org/connect/logger.html
+``` bash
+$ cd ~/.pow
+$ ln -s /path/to/myapp
+```
+
+Your website will be up and running at `http://myapp.dev`. The URL is based on the name of symlink.

@@ -1,0 +1,96 @@
+// https://github.com/chriskempson/tomorrow-theme
+highlight-background = #fff
+highlight-current-line = #efefef
+highlight-selection = #d6d6d6
+highlight-foreground = #4d4d4c
+highlight-comment = #8e908c
+highlight-red = #c82829
+highlight-orange = #f5871f
+highlight-yellow = #eab700
+highlight-green = #718c00
+highlight-aqua = #3e999f
+highlight-blue = #4271ae
+highlight-purple = #8959a8
+
+.page-entry
+  code, pre
+    font-family: font-mono
+    color: highlight-foreground
+    background: #eee
+    border-radius: 4px
+    border: 1px solid color-border
+  code
+    margin: 0 3px
+    font-size: 0.85em
+    padding: 2px 5px
+  pre
+    padding: 10px 15px
+
+figure.highlight
+  background: #eee
+  border: 1px solid color-border
+  border-radius: 4px
+  padding: 10px 15px
+  color: highlight-foreground
+  overflow: auto
+  figcaption
+    clearfix()
+    margin: -10px -15px 0
+    background: linear-gradient(top, color-border, #eee)
+    font-size: 0.85em
+    padding: 5px 15px
+    color: color-grey
+    a
+      float: right
+  pre
+    padding: 0
+    border: none
+    background: none
+  .comment
+  .title
+    color: highlight-comment
+  .variable
+  .attribute
+  .tag
+  .regexp
+  .ruby .constant
+  .xml .tag .title
+  .xml .pi
+  .xml .doctype
+  .html .doctype
+  .css .id
+  .css .class
+  .css .pseudo
+    color: highlight-red
+  .number
+  .preprocessor
+  .built_in
+  .literal
+  .params
+  .constant
+    color: highlight-orange
+  .class
+  .ruby .class .title
+  .css .rules .attribute
+    color: highlight-green
+  .string
+  .value
+  .inheritance
+  .header
+  .ruby .symbol
+  .xml .cdata
+    color: highlight-green
+  .css .hexcolor
+    color: highlight-aqua
+  .function
+  .python .decorator
+  .python .title
+  .ruby .function .title
+  .ruby .title .keyword
+  .perl .sub
+  .javascript .title
+  .coffeescript .title
+    color: highlight-blue
+  .keyword
+  .javascript .function
+    color: highlight-purple

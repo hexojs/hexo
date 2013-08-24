@@ -1,0 +1,204 @@
+page-title = 35px
+line-height = 1.6em
+sidebar-width = 150px
+sidebar-margin = 30px
+
+note-tip = hsl(40, 100%, 50%)
+note-info = hsl(200, 100%, 50%)
+note-warn = hsl(0, 100%, 50%)
+
+.page
+  float: left
+  width: body-width - sidebar-width - (sidebar-margin * 2)
+  border-right: 1px solid color-border
+  padding: 50px sidebar-margin 50px 0
+
+.page-title
+  font-family: font-title
+  font-weight: 300
+  font-size: page-title
+  margin-bottom: 40px
+  line-height: page-title
+  color: color-main
+
+.page-entry
+  line-height: line-height
+  p, ol, ul, dl, table, blockquote, iframe, .highlight
+    margin: line-height 0
+  h1
+    font-size: 2em
+  h2
+    font-size: 1.5em
+  h3
+    font-size: 1.3em
+  h1, h2, h3, h4, h5, h6
+    line-height: 1em
+    margin: 1em 0
+    font-family: font-title
+    font-weight: bold
+  h1, h2
+    padding-top: 1em
+    border-top: 1px solid color-border
+  a
+    color: color-link
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+  strong
+    font-weight: bold
+  em
+    font-style: italic
+  ul, ol, dl
+    margin-left: 20px
+    ul, ol, dl
+      margin-top: 0
+      margin-bottom: 0
+    p
+      margin: 0
+    figure.highlight
+      margin: 1em 0
+  ul
+    list-style: disc
+  ol
+    list-style: decimal
+  dl
+    list-style: square
+  li
+    margin-bottom: 0.5em
+  blockquote
+    border: 1px solid color-border
+    border-left: 4px solid color-border
+    padding: 0 20px
+    position: relative
+    margin-left: 45px
+    &:before
+      content: "\f10d"
+      position: absolute
+      left: -45px
+      top: 21px
+      font-size: 25px
+      font-family: font-icon
+      width: 25px
+      height: 25px
+      text-align: center
+      color: color-border
+    footer
+      margin: 1em 0
+      font-style: italic
+      cite
+        &:before
+          content: "—"
+          padding: 0 0.3em
+        a
+          color: color-grey
+  .note
+    &:before
+      top: 14px
+    &.tip
+      border-left-color: note-tip
+      &:before
+        content: "\f0eb"
+        color: note-tip
+    &.info
+      border-left-color: note-info
+      &:before
+        content: "\f05a"
+        color: note-info
+    &.warn
+      border-left-color: note-warn
+      &:before
+        content: "\f06a"
+        color: note-warn
+  .note-title
+    margin: 1em 0
+    display: block
+    font-family: font-title
+    line-height: 1em
+    font-size: 1.3em
+  table
+    width: 100%
+    border: 1px solid color-border
+    th
+      font-weight: bold
+    th, td
+      padding: 5px 15px
+    tr
+      &:nth-child(2n)
+        background: #eee
+
+#section-nav
+  clearfix()
+  border-top: 1px solid color-border
+  padding-top: line-height
+  margin-top: line-height * 2
+  position: relative
+
+.section-nav-link
+  color: color-main
+  font-family: font-title
+  text-decoration: none
+  text-transform: uppercase
+  font-weight: bold
+  position: relative
+
+#section-nav-prev
+  float: left
+  .icon-chevron-left
+    padding-right: 10px
+
+#section-nav-next
+  float: right
+  .icon-chevron-right
+    padding-left: 10px
+
+#last-updated
+  position: absolute
+  top: 24px
+  left: 0
+  width: 100%
+  text-align: center
+  font-size: 0.8em
+  color: color-grey
+
+#sidebar
+  float: right
+  width: sidebar-width + sidebar-margin - 1px
+  border-left: 1px solid color-border
+  margin-left: -1px
+  padding-bottom: 50px
+  font-family: font-title
+
+.sidebar-title
+  font-weight: bold
+  display: block
+  padding: 0 0 10px sidebar-margin - 1px
+  margin-top: 50px
+  margin-bottom: 10px
+  text-transform: uppercase
+  border-bottom: 1px solid color-border
+  color: color-main
+
+.sidebar-link
+  display: block
+  text-decoration: none
+  color: color-sub
+  padding: 10px 0 10px sidebar-margin - 1px
+  position: relative
+  &:hover
+    color: color-link
+  &.current
+    font-weight: bold
+    position: relative
+    &:before, &:after
+      content: ""
+  &:before, &:after
+    position: absolute
+    top: 12px
+    border-style: solid
+    border-width: 8px
+    border-color: transparent transparent transparent color-border
+  &:before
+    left: 0
+  &:after
+    left: -1px
+    border-left-color: #fff

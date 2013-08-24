@@ -1,55 +1,68 @@
----
-layout: page
 title: Helpers
-date: 2012-11-01 18:13:30
+prev: pagination
+next: i18n
 ---
-
-Helpers help you transform data into HTML string in templates, making it easier to develop a theme. The following is built-in helpers.
+Helpers help you inserts specified content in theme or processes contents in theme quickly.
 
 ### css
 
-Loads CSS file. `path` can be an array or a string.
+Loads CSS files. `path` can be an array or a string. If `path` isn't prefixed with `/` or any protocol, it'll be prefixed with root URL. If you didn't add extension name `.css` after `path`, it'll be added.
 
-```
-<%- css(path) %>
+``` js
+<%- css(path, [path1], [path2], [...]) %>
 ```
 
 **Examples:**
 
 ``` js
 <%- css('style.css') %>
-// <link rel="stylesheet" href="style.css" type="text/css">
+// <link rel="stylesheet" href="/style.css" type="text/css">
 
 <%- css(['style.css', 'screen.css']) %>
-// <link rel="stylesheet" href="style.css" type="text/css">
-// <link rel="stylesheet" href="screen.css" type="text/css">
+// <link rel="stylesheet" href="/style.css" type="text/css">
+// <link rel="stylesheet" href="/screen.css" type="text/css">
 ```
 
 ### js
 
-Loads JavaScript file. `path` can be an array or a string.
+Loads JavaScript files. `path` can be an array or a string. If `path` isn't prefixed with `/` or any protocol, it'll be prefixed with root URL. If you didn't add extension name `.js` after `path`, it'll be added.
 
-```
-<%- js(path) %>
+``` js
+<%- js(path, [path1], [path2], [...]) %>
 ```
 
 **Examples:**
 
 ``` js
 <%- js('script.js') %>
-// <script type="text/javascript" src="script.js"></script>
+// <script type="text/javascript" src="/script.js"></script>
 
 <%- js(['script.js', 'gallery.js']) %>
-// <script type="text/javascript" src="script.js"></script>
-// <script type="text/javascript" src="gallery.js"></script>
+// <script type="text/javascript" src="/script.js"></script>
+// <script type="text/javascript" src="/gallery.js"></script>
 ```
+
+### Conditional Tags
+
+Conditional tags help you check the status of current page.
+
+Helper | Description
+--- | ---
+`is_current(path)` | Checks if `path` matches the URL of current page
+`is_home()` | Checks if the home page is being displayed
+`is_post()` | Checks if posts are being displayed
+`is_archive()` | Checks if archive pages are being displayed
+`is_year()` | Checks if yearly archive pages are being displayed
+`is_month()` | Checks if monthly archive pages are being displayed
+`is_category()` | Checks if category pages are being displayed
+`is_tag()` | Checks if tag pages are being displayed
 
 ### gravatar
 
-Loads Gravatar.
+Inserts a Gravatar image.
 
-```
-<%- gravatar(email, [size]) %>
+``` js
+<%- gravatar(email, [size]);
 ```
 
 **Examples:**
@@ -66,15 +79,15 @@ Loads Gravatar.
 
 Clears all spaces in a string.
 
-```
+``` js
 <%- trim(string) %>
 ```
 
 ### strip_html
 
-Clears all HTML tags in a string.
+Sanitizes all HTML tags in a string.
 
-```
+``` js
 <%- strip_html(string) %>
 ```
 
@@ -87,9 +100,9 @@ Clears all HTML tags in a string.
 
 ### titlecase
 
-Transforms a string into proper title capitalization.
+Transforms a string into proper title caps.
 
-```
+``` js
 <%- titlecase(string) %>
 ```
 
@@ -102,138 +115,107 @@ Transforms a string into proper title capitalization.
 
 ### partial
 
-Loads other template. Use `locals` to define local variables. (Same as [express-partials][1])
+Loads other template files. You can define local variables in `local`.
 
-```
+``` js
 <%- partial(layout, [locals]) %>
 ```
 
 ### tagcloud
 
-Inserts tag cloud. Input `tags` with [template data][3]. The following is `options`.
+Inserts a tag cloud.
 
+``` js
+<%- tagcloud([tags], [options]) %>
 ```
-<%- tagcloud(tags, [options]) %>
-```
 
-**Options:**
-
-- **min_font** - Minimal font size
-- **max_font** - Maximum font size
-- **unit** - Unit of font size
-- **amount** - Amount of tags
-- **orderby** - Order of tags
-- **order** - Sort order. `1`, `asc` as ascending; `-1`, `desc` as descending.
-
-**Default:**
-
-``` json
-{
-  "min_font": 10,
-  "max_font": 20,
-  "unit": "px",
-  "amount": 40,
-  "orderby": "name",
-  "order": 1
-}
-```
+Option | Description | Default
+--- | --- | ---
+`min_font` | Minimal font size | 10
+`max_font` | Maximum font size | 20
+`unit` | Unit of font size | px
+`amount` | Total amount of tags | 40
+`orderby` | Order of tags | name
+`order` | Sort order. `1`, `sac` as ascending; `-1`, `desc` as descending | 1
 
 ### paginator
 
-Inserts paginator. The following is `options`.
+Inserts a paginator.
 
-```
+``` js
 <%- paginator(options) %>
 ```
 
-**Options:**
-
-- **base** - Base URL
-- **format** - URL format
-- **total** - The total amount of pages
-- **current** - Current page number
-- **prev_text** - The previous page text
-- **next_text** - The next page text
-- **space** - The space text
-- **prev_next** - Display previous and next links
-- **end_size** - Number of pages displayed on the start and the end side
-- **mid_size** - Number of pages displayed between current page, but not including current page
-- **show_all** - Display all pages
-
-**Default:**
-
-``` json
-{
-  "base": "/",
-  "format": "page/%d/",
-  "total": 1,
-  "current": 0,
-  "prev_text": "Prev",
-  "next_text": "Next",
-  "space": "&hellp;",
-  "prev_next": true,
-  "end_size": 1,
-  "mid_size": 2,
-  "show_all": false
-}
-```
+Option | Description | Default
+--- | --- | ---
+`base` | Base URL | /
+`format` | URL format | page/%d/
+`total` | Total amount of pages | 1
+`current` | Current page number | 0
+`prev_text` | The link text of previous page. Works only if `prev_next` is set to true. | Prev
+`next_text` | The link text of next page. Works only if `prev_next` is set to true. | Next
+`space` | The space text | &hellp;
+`prev_next` | Display previous and next links | true
+`end_size` | The number of pages displayed on the start and the end side | 1
+`mid_size` | The number of pages displayed between current page, but not including current page | 2
+`show_all` | Display all pages. If this is set true, `end_size` and `mid_size` will not works. | false
 
 ### date
 
-Displays date. `date` is a date object. `format` is the output format ([Moment.js][5]), `date_format` in [global configuration][4] by default.
+Inserts formatted date. `date` can be unix time, ISO string, date object, or moment.js object. `format` is `date_format` setting by default.
 
-```
+``` js
 <%- date(date, [format]) %>
 ```
 
 **Examples:**
 
 ``` js
-<%- date(new Date()) %>
+<%- date(Date.now()) %>
 // Jan 1, 2013
 
-<%- date(new Date(), 'YYYY/M/D') %>
+<%- date(Date.now(), 'YYYY/M/D') %>
 // 2013/1/1
 ```
 
 ### date_xml
 
-Displays date in XML format. `date` is a date object.
+Inserts date in XML format. `date` can be unix time, ISO string, date object, or moment.js object. `format` is `date_format` setting by default.
 
-```
+``` js
 <%- date_xml(date) %>
 ```
 
 **Examples:**
 
 ``` js
-<%- date_xml(new Date()) %>
+<%- date_xml(Date.now()) %>
 // 2013-01-01T00:00:00.000Z
 ```
 
 ### time
 
-Displays time. `date` is a date object. `format` is the output format  ([Moment.js][5]), `time_format` in [global configuration][4] by default.
+Inserts formatted time. `date` can be unix time, ISO string, date object, or moment.js object. `format` is `time_format` setting by default.
 
-```
-<%- time(date, [format]) %>
+``` js
+<%- date(date, [format]) %>
 ```
 
 **Examples:**
 
 ``` js
-<%- time(new Date()) %>
+<%- time(Date.now()) %>
 // 13:05:12
 
-<%- time(new Date(), 'h:mm:ss a') %>
+<%- time(Date.now(), 'h:mm:ss a') %>
 // 1:05:12 pm
 ```
 
 ### full_date
 
-Displays full date. `date` is a date object. `format` is the output format  ([Moment.js][5]), `date_format` plus `time_format` in [global configuration][4] by default.
+Inserts formatted date and time. `date` can be unix time, ISO string, date object, or moment.js object. `format` is `date_format + time_format` setting by default.
 
-```
+``` js
 <%- full_date(date, [format]) %>
 ```
 
@@ -249,37 +231,27 @@ Displays full date. `date` is a date object. `format` is the output format  ([Mo
 
 ### moment
 
-[Moment.js](http://momentjs.com/)
+[Moment.js] library.
 
-### search_form
+### searh_form
 
-Returns a Google search form. The following is `options`.
+Inserts a Google search form.
 
-```
+``` js
 <%- search_form(options) %>
 ```
 
-**Options:**
-
-- **class** - Form class name
-- **text** - Search hint word
-- **button** - Whether to display search button. The value can be a boolean or a string.
-
-**Defaults:**
-
-``` json
-{
-  "class": "search-form",
-  "text": "Search",
-  "button": false
-}
-```
+Option | Description | Default
+--- | --- | ---
+`class` | The class name of form | search-form
+`text` | Search hint word | Search
+`button` | Display search button. The value can be a boolean or a string. When the value is a string, it'll be the text of the button. | false
 
 ### markdown
 
-Renders string with Markdown.
+Renders a string with Markdown.
 
-```
+``` js
 <%- markdown(str) %>
 ```
 
@@ -292,24 +264,24 @@ Renders string with Markdown.
 
 ### word_wrap
 
-Wraps the text into lines no longer than `length`. `length` is 80 by default。
+Wraps text into lines no longer than `length`. `length` is 80 by default.
 
-```
+``` js
 <%- word_wrap(str, [length]) %>
 ```
 
 **Examples:**
 
-```
+``` js
 <%- word_wrap('Once upon a time', 8) %>
 // Once upon\n a time
 ```
 
 ### truncate
 
-Truncates a given `text` after a given `length`.
+Truncates text after `length`.
 
-```
+``` js
 <%- truncate(text, length) %>
 ```
 
@@ -322,9 +294,9 @@ Truncates a given `text` after a given `length`.
 
 ### truncate_words
 
-Truncates words of a given `text` after a given `length`.
+Truncates words after `length`.
 
-```
+``` js
 <%- truncate_words(text, length) %>
 ```
 
@@ -335,75 +307,11 @@ Truncates words of a given `text` after a given `length`.
 // Once upon a time
 ```
 
-### is_current
-
-Checks if `path` is being displayed.
-
-```
-<%- is_current(path) %>
-```
-
-### is_home
-
-Check if the home page is being displayed
-
-```
-<%- is_home() %>
-```
-
-### is_post
-
-Check if the post is being displayed.
-
-```
-<%- is_post() %>
-```
-
-### is_archive
-
-Check if the archives is being displayed.
-
-```
-<%- is_archive() %>
-```
-
-### is_year
-
-Check if the yearly archives is being displayed.
-
-```
-<%- is_year() %>
-```
-
-### is_month
-
-Check if the monthly archives is being displayed.
-
-```
-<%- is_month() %>
-```
-
-### is_category
-
-Check if the category page is being displayed.
-
-```
-<%- is_category() %>
-```
-
-### is_tag
-
-Check if the tag page is being displayed.
-
-```
-<%- is_tag() %>
-```
-
 ### link_to
 
-Inserts a link. `path` is the link destination. `text` is the link text. `external` is whether the link is opened in a new window.
+Inserts a link.
 
-```
+``` js
 <%- link_to(path, [text], [external]) %>
 ```
 
@@ -422,9 +330,9 @@ Inserts a link. `path` is the link destination. `text` is the link text. `extern
 
 ### mail_to
 
-Inserts a mail link. `path` is the link destination. `text` is the link text.
+Inserts a mail link.
 
-```
+``` js
 <%- mail_to(path, [text]) %>
 ```
 
@@ -440,99 +348,60 @@ Inserts a mail link. `path` is the link destination. `text` is the link text.
 
 ### list_categories
 
-Inserts a list of categories. The following is `options`.
+Inserts a list of all categories.
 
-```
+``` js
 <%- list_categories([options]) %>
 ```
 
-**Options:**
-
-- **orderby** - Order of tags
-- **order** - Sort of order. `1`, `asc` as ascending; `-1`, `desc` as descending.
-- **show_count** - Whether to show the number of posts
-
-**Defaults:**
-
-``` json
-{
-  "orderby": "name",
-  "order": 1,
-  "show_count": true
-}
-```
+Option | Description | Default
+--- | --- | ---
+`orderby` | Order of categories | name
+`order` | Sort of order. `1`, `sac` as ascending; `-1`, `desc` as descending | 1
+`show_count` | Display the total amount of posts for each category | true
 
 ### list_tags
 
-Inserts a list of tags. The following is `options`.
+Inserts a list of all categories.
 
-```
+``` js
 <%- list_tags([options]) %>
 ```
 
-**Options:**
-
-- **orderby** - Order of tags
-- **order** - Sort of order. `1`, `asc` as ascending; `-1`, `desc` as descending.
-- **show_count** - Whether to show the number of posts
-
-**Defaults:**
-
-``` json
-{
-  "orderby": "name",
-  "order": 1,
-  "show_count": true
-}
-```
+Option | Description | Default
+--- | --- | ---
+`orderby` | Order of categories | name
+`order` | Sort of order. `1`, `sac` as ascending; `-1`, `desc` as descending | 1
+`show_count` | Display the total amount of posts for each tag | true
 
 ### list_archives
 
-Inserts a list of archives. The following is `options`.
+Inserts a list of archives.
 
+``` js
+<%- list_archive([options]) %>
 ```
-<%- list_archives([options]) %>
-```
 
-**Options:**
-
-- **type** - Type. `yearly` as yearly archives; `monthly` as monthly archives (default).
-- **order** - Sort of order. `1`, `asc` as ascending; `-1`, `desc` as descending.
-- **show_count** - Whether to show the number of posts
-- **format** - Date format. `MMMM YYYY` by default. ([Moment.js][5])
-
-**Defaults:**
-
-``` json
-{
-  "type": "monthly",
-  "order": 1,
-  "show_count": true,
-  "format": "MMMM YYYY"
-}
-```
+Option | Description | Default
+--- | --- | ---
+`type` | Type. This value can be `yearly` or `monthly`. | monthly
+`order` | Sort of order. `1`, `sac` as ascending; `-1`, `desc` as descending | 1
+`show_count` | Display the total amount of posts for each tag | true
+`format` | Date format | MMMM YYYY
 
 ### number_format
 
-Formats a `number`. The following is `options`.
+Formats a number.
 
+``` js
 <%- number_format(number, options) %>
-
-**Options:**
-
-- **precision** - The precision of the number. The value can be `false` or nonnegative integer.
-- **delimiter** - The thousands delimiter.
-- **separator** - The sperator between the fractional and integer digits.
-
-**Defaults:**
-
-``` json
-{
-  "precision": false,
-  "delimiter": ",",
-  "separator": "."
-}
 ```
+
+Option | Description | Default
+--- | ---
+`precision` | The precision of number. The value can be `false` or a nonnegative integer. | false
+`delimiter` | The thousands delimiter | ,
+`separator` | The separator between the fractional and integer digits. | .
 
 **Examples:**
 
@@ -552,9 +421,3 @@ Formats a `number`. The following is `options`.
 <%- number_format(12345.67, {separator: '/'}) %>
 // 12,345/67
 ```
-
-[1]: https://github.com/publicclass/express-partials
-[2]: render.html
-[3]: template-data.html
-[4]: configure.html
-[5]: http://momentjs.com/docs/#/displaying/format/

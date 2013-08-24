@@ -1,0 +1,62 @@
+header-height = 60px
+
+#header
+  clearfix()
+  background: linear-gradient(top, lighten(color-main, 5%), color-main)
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3)
+  font-family: font-title
+  &.normal
+    background: linear-gradient(top, lighten(color-main, 10%), color-main)
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3)
+    border-bottom: 1px solid darken(color-main, 10%)
+
+#logo-wrap
+  float: left
+
+#logo
+  font-size: 30px
+  line-height: header-height
+  font-weight: bold
+  color: #fff
+  text-decoration: none
+  text-transform: lowercase
+
+#main-nav
+  float: left
+  margin-left: 50px
+
+.main-nav-link
+  float: left
+  padding: 0 20px
+  color: #fff
+  text-decoration: none
+  font-weight: 300
+  line-height: header-height
+  font-size: 15px
+  &:hover
+    background: linear-gradient(top, darken(color-main, 10%), color-main)
+
+#fork-github-wrap
+  display: block
+  float: right
+  height: header-height
+  text-decoration: none
+  color: #fff
+  &:hover
+    #fork-github
+      background: linear-gradient(top, lighten(color-main, 25%), lighten(color-main, 10%))
+  &:active
+    #fork-github
+      background: linear-gradient(top, color-main, lighten(color-main, 5%))
+      box-shadow: 0 0 3px rgba(0, 0, 0, 0.2) inset
+
+#fork-github
+  padding: 6px 15px
+  line-height: 1em
+  margin-top: (header-height / 2) - 14px
+  border: 1px solid darken(color-main, 10%)
+  background: linear-gradient(top, lighten(color-main, 15%), lighten(color-main, 8%))
+  border-radius: 3px
+  font-weight: 300
+  .icon-code-fork
+    padding-right: 10px

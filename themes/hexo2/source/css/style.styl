@@ -1,0 +1,35 @@
+@import "nib"
+
+global-reset()
+
+// Color
+color-default = #444
+color-sub = #666
+color-main = hsl(273, 35%, 50%)
+color-grey = #999
+color-border = #ddd
+color-link = #0088cc
+
+// Font
+font-default = "Helvetica Neue", Helvetica, Arial, sans-serif
+font-mono = Monaco, Menlo, Consolas, monospace
+font-title = Lato, font-default
+font-icon = FontAwesome
+
+// Variable
+body-width = 1000px
+
+body
+  color: color-default
+  font: 14px font-default
+
+.inner
+  clearfix()
+  width: body-width
+  margin: 0 auto
+
+@import "_partial/header"
+@import "_partial/index"
+@import "_partial/page"
+@import "_partial/footer"
+@import "_partial/highlight"

@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title><%= config.title %> - <% if (page.title){ %><%= page.title %><% } %></title>
+  <meta name="descripton" content="<%= config.description %>">
+
+  <link rel="stylesheet" href="<%- config.root %>css/<%- css %>.css" media="screen" type="text/css">
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:300,400,700">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0/jquery.min.js"></script>
+  <%- partial('google_analytics') %>
+</head>

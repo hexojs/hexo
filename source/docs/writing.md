@@ -1,143 +1,143 @@
----
-layout: page
 title: Writing
-date: 2012-11-01 18:13:30
+prev: migration
+next: generating
 ---
+## Create a New Post
 
-## Create
+You can create a new post by yourself or run the following command. If `layout` isn't defined, it'll be the `default_layout` setting. If there're spaces or other special characters in `title`, wrap it with quotation marks.
 
-Execute the following command.
-
-	hexo new [layout] <title>
-
-`layout` is optional. Default is `default_layout` setting in [global configuration][2].
-
-```
-hexo new "New Post" -> source/_posts/new-post.md
-hexo new page "New Page" -> source/new-page/index.md
-hexo new draft "New Draft" -> source/_drafts/new-draft.md
+``` bash
+$ hexo new [layout] <title>
 ```
 
-### File name
+### Layout
 
-You can configure the name of new files by editing `new_post_name` setting in [global configuration][2]. Default is `:title.md`.
+Hexo has 3 default layouts: `post`, `page` and `draft`. Other layouts will be saved in `source/_posts` by default.
 
-- `:title` - Article title (Default URL of the article)
-- `:year` - Published year (4-digit)
-- `:month` - Published month (2-digit)
-- `:day` - Published date (2-digit)
+Layout | Destination
+--- | ---
+`post` (Default) | source/_posts
+`page` | source
+`draft` | source/_drafts
 
-To make files sorted by date, you can set it to `:year-:month-:day-:title.md`.
-
-## Configure
-
-The beginning of article is a block wrapped with `---`, called [YAML Front Matter][1]. You can use YAML to configure posts.
-
-- **layout** - Layout (Optional)
-- **title** - Title
-- **date** - Published date (Created date of the file by default)
-- **updated** - Last updated date (Optional. Last modified date of the file by default)
-- **comments** - Whether to enable comment (Optional. Enabled by default)
-- **tags** - Tags (Optional. Not availiable for page)
-- **categories** - Categories (Optional. Not availiable for page)
-- **permalink** - Override default URL (Optional)
-
-## Categories
-
-Category is the relative path to `source/_posts`. It's hierarchical. You can add `categories` property in the file. Its content will be added after the original categories. For example:
-
-For example:
-
-- `source/_posts/title.md` - Uncategorized
-- `source/_posts/Fruits/title.md` - Fruit
-- `source/_posts/Fruits/Apple/title.md` - Fruit, Apple
-
-``` yaml
-# Single category
-categories: Fruits
-
-# Multiple categories
-categories: Fruits/Apple
-
-categories: [Fruits, Apple]
-
-categories:
-- Fruits
-- Apple
-```
-
-### Category Slug
-
-You can configure category slug by editing `categories_map` in [global configuration][2]. For example:
-
-- `categories/Games/` - categories/games/
-- `categories/Diary/` - categories/diary/
-
-``` yaml
-categories_map:
-	Games: games
-	Diary: diary
-```
-
-## Tags
-
-``` yaml
-# Single tag
-tags: Apple
-
-# Multiple tags
-tags: [Apple, Banana]
-
-tags:
-- Apple
-- Banana
-```
-
-### Tag Slug
-
-You can configure tag slug by editing `tags_map` in [global configuration][2]. For example:
-
-- `tags/Games/` - tags/games/
-- `tags/Diary/` - tags/diary/
-
-``` yaml
-tags_map:
-	Games: games
-	Diary: diary
-```
-
-## Scaffolds
-
-A scaffold is the default template of articles. Hexo will create articles based on the scaffolds.
+{% note tip Don't process my posts! %}
+If you don't want your posts processed. You can set `layout: false` in front-matter.
+{% endnote %}
 
 ### Example
 
-Create `photo.md` in `scaffolds` folder.
+``` bash
+$ hexo new "New Post"
+# => The file will be created at source/_posts/new-post.md
+
+$ hexo new page "New Page"
+# => The file will be created at source/new-page/index.html
+
+$ hexo new draft "New Draft"
+# => The file will be created at source/_drafts/new-draft.md
+```
+
+### Filename
+
+You can modify the name of files created by Hexo in `new_post_name` setting.
+
+Variable | Description
+--- | ---
+`:title` | Escaped title (lower case and replace spaces with dash)
+`:year` | Created year (4-digit)
+`:month` | Created month (2-digit)
+`:day` | Created day (2-digit)
+
+{% note tip Organize your posts by date %}
+You can set `new_post_name` as `:year-:month-:day-:title.md` to make your posts ordered by date.
+{% endnote %}
+
+## Front-matter
+
+Front-matter is a block wrapped with `---` in front of the file. For example:
+
+``` yaml
+title: Hello World
+date: 2013/7/13 20:46:25
+---
+```
+
+You can configure all post configuration in the front-matter. The following is predefined settings.
+
+Setting | Description | Default
+--- | --- | ---
+`layout` | Layout | post/page
+`title` | Title | 
+`date` | Published date | File created date
+`updated` | Last updated date | File last updated date
+`comments` | Enables comment feature for the post | true
+`tags` | Tags (Not available for pages) | 
+`categories` | Categories (Not available for pages) | 
+`permalink` | Overrides the default permalink of the post | Filename
+
+{% note warn YAML front-matter %}
+Write the front-matter in YAML format. Don't use tabs in the front-matter, use spaces instead. Also, add a space after colons.
+{% endnote %}
+
+## Excerpts
+
+You can hide parts of your post by adding `<!-- more -->` in the content. Index page will only show the post from the first to the first occurrence of `<!-- more -->`.
+
+``` markdown
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur libero est, vulputate nec nibh sit amet, luctus placerat diam. Aliquam sit amet est arcu.
+
+<!-- more -->
+
+Aenean sit amet mi tristique, luctus diam sit amet, pharetra justo. Quisque ac faucibus tellus, non viverra augue. Phasellus justo ligula, pharetra adipiscing vulputate eget, fringilla sit amet urna. Nunc aliquam fermentum est ac fringilla.
+```
+
+## Code Highlighting
+
+There're 2 ways for you to highlight your code snippets in your posts: **Backtick code block** and **Swig code block**. Both are ported from Octopress.
+
+### Backtick Code Block
+
+{% code %}
+``` [language] [title] [url] [link text]
+code snippet
+```
+{% endcode %}
+
+### Swig Code Block
 
 {% raw %}
-<pre><code>layout: {{ layout }}
-title: {{ title }}
-date: {{ date }}
-tags:
----
-</code></pre>
+<figure class="highlight"><pre>{% code [title] [lang:language] [url] [link text] %}
+code snippet
+{% endcode %}
+</pre></figure>
 {% endraw %}
 
-And execute the following:
+## Scaffold
 
+Hexo will create a new post based on the correspond scaffold. For example:
+
+``` bash
+$ hexo new photo "My Gallery"
+# => The file will be created at source/_posts/my-gallery.md
 ```
-hexo new photo "New Gallery"
-```
 
-Hexo will create a new file based on the content above.
+Hexo will find the scaffold file named `photo` in the `scaffolds` folder. If the scaffold not exists, use the post scaffold instead.
 
-### Usage
+### Example
 
-A scaffold is processed by Swig. Variables are wrapped by double curly brackets. The following are the variables:
+Variables are wrapped by double curly brackets. For example:
 
-- **layout** - Layout name
-- **title** - Article title
-- **date** - Published date
+{% code %}
+layout: {% raw %}{{ layout }}{% endraw %}
+title: {% raw %}{{ title }}{% endraw %}
+date: {% raw %}{{ date }}{% endraw %}
+---
+{% endcode %}
 
-[1]: https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter
-[2]: configure.html
+### Variables
+
+Variable | Description
+--- | ---
+`layout` | Layout name
+`title` | Post title
+`date` | File created date

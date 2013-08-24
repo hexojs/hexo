@@ -43,8 +43,7 @@ disqus_shortname:
 
 # Extensions
 plugins:
-- hexo-generator-sitemap
-theme: hexo
+theme: hexo2
 exclude_generator:
 - category
 - tag
@@ -57,7 +56,6 @@ auto_spacing: false
 titlecase: false
 highlight:
   enable: true
-  backtick_code_block: true
   line_number: false
   tab_replace: '  '
 

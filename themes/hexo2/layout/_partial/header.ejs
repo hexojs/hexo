@@ -1,0 +1,11 @@
+<h1 id="logo-wrap">
+  <a href="<%- config.root %>" id="logo">Hexo</a>
+</h1>
+<nav id="main-nav">
+  <% _.each(theme.menu, function(menu, title){ %>
+    <a href="<%= /^([a-z]+:)?\/{1,2}/.test(menu) ? '' : config.root %><%= menu %>" class="main-nav-link"><%= title %></a>
+  <% }) %>
+</nav>
+<a href="https://github.com/tommy351/hexo" id="fork-github-wrap" target="_blank">
+  <div id="fork-github"><i class="icon-code-fork"></i>Fork</div>
+</a>

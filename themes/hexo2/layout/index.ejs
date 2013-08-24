@@ -1,0 +1,36 @@
+index: true
+---
+
+<div id="hero">
+  <div class="inner">
+    <h2 id="hero-title">A fast, simple &amp; powerful blog framework<br>powered by Node.js</h2>
+    <a href="<%- config.root %>docs/" id="hero-button">Getting Started</a>
+    <div id="hero-share">
+      <%- partial('_partial/share') %>
+    </div>
+  </div>
+</div>
+
+<div id="intro-wrap">
+  <div class="inner">
+    <div class="intro">
+      <h4 class="intro-title">Blazing fast</h4>
+      <div class="intro-desc">Hexo is powered by Node.js and supports multi-thread generating. Hundreds of files take only less than a minute to generate.</div>
+    </div>
+    <div class="intro">
+      <h4 class="intro-title">Easy writing</h4>
+      <div class="intro-desc">Hexo supports GitHub Flavored Markdown and all Octopress plugins and highly Jekyll/Octopress compatible.</div>
+    </div>
+    <div class="intro">
+      <h4 class="intro-title">High extensibility</h4>
+      <div class="intro-desc">Hexo supports EJS, Swig &amp; Stylus. You can install more plugins for Haml, Jade, Less supports.</div>
+    </div>
+  </div>
+</div>
+
+<div id="install-wrap">
+  <div class="inner">
+    <pre id="install-command"><span class="dollar">$</span> npm install -g hexo</pre>
+    <a id="install-button" href="<%- config.root %>docs/installation.html">Install now</a>
+  </div>
+</div>

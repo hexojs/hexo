@@ -1,0 +1,99 @@
+intro-margin = 50px
+intro-column = 3
+intro-width = (body-width - (intro-margin * (intro-column - 1))) / intro-column
+
+#hero
+  background: linear-gradient(top, color-main, darken(color-main, 25%))
+  padding: 40px 0
+  color: #fff
+  font-family: font-title
+  text-align: center
+
+#hero-title
+  font-weight: 300
+  font-size: 50px
+  line-height: 1.25em
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3)
+
+#hero-button
+  margin-top: 30px
+  padding: 10px 30px
+  font-weight: bold
+  border: 2px solid #fff
+  border-radius: 4px
+  display: inline-block
+  text-transform: uppercase
+  color: color-main
+  text-decoration: none
+  background: linear-gradient(top, #fff, #eee)
+  text-shadow: 0 1px 1px #fff
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3)
+  &:hover
+    background: #fff
+  &:active
+    background: linear-gradient(top, #ddd, #eee)
+
+#hero-share
+  margin-top: 50px
+
+#version-badge
+  margin-right: 20px
+
+#intro-wrap
+  clearfix()
+  padding: 50px 0
+
+.intro
+  float: left
+  margin-left: intro-margin
+  width: intro-width
+  &:nth-child({intro-column}n + 1)
+    margin-left: 0
+
+.intro-title
+  font-family: font-title
+  font-weight: 300
+  font-size: 25px
+
+.intro-desc
+  font-size: 16px
+  margin-top: 1.5em
+  line-height: 1.5em
+  color: color-sub
+  a
+    color: color-link
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+
+#install-wrap
+  clearfix()
+  padding: 30px 0
+  border-top: 1px solid color-border
+
+#install-command
+  float: left
+  font-size: 20px
+  font-family: font-mono
+  line-height: 39px
+  .dollar
+    color: color-main
+
+#install-button
+  float: right
+  text-decoration: none
+  color: #fff
+  background: linear-gradient(top, lighten(color-main, 10%), color-main)
+  font-family: font-title
+  font-weight: bold
+  text-transform: uppercase
+  padding: 10px 30px
+  border-radius: 4px
+  display: block
+  border: 1px solid color-main
+  text-shadow: 0 1px 2px darken(color-main, 10%)
+  &:hover
+    background: linear-gradient(top, lighten(color-main, 15%), lighten(color-main, 5%))
+  &:active
+    background: linear-gradient(top, color-main, darken(color-main, 10%))
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3) inset

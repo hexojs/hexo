@@ -1,0 +1,18 @@
+<%- partial('_partial/head') %>
+<body>
+  <header id="header"<% if (!index){ %> class="normal"<% } %>>
+    <div class="inner">
+      <%- partial('_partial/header') %>
+    </div>
+  </header>
+  <div id="content">
+    <%- body %>
+  </div>
+  <footer id="footer">
+    <div class="inner">
+      <%- partial('_partial/footer') %>
+    </div>
+  </footer>
+  <%- partial('_partial/after-footer') %>
+</body>
+</html>
