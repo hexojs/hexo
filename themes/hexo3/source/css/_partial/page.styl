@@ -1,0 +1,180 @@
+page-title = 35px
+line-height = 1.6em
+sidebar-width = 200px
+sidebar-margin = 50px
+
+note-tip = hsl(40, 100%, 50%)
+note-info = hsl(200, 100%, 50%)
+note-warn = hsl(0, 100%, 50%)
+
+#page-banner
+  background: url("images/shattered.png")
+  padding: 40px 0
+
+.page-title
+  color: #555
+  font: 300 page-title font-title
+  text-shadow: 1px 0 #eee
+
+#page-inner
+  clearfix()
+
+.page-content
+  float: right
+  width: page-width - sidebar-width - sidebar-margin
+  padding: 40px 0
+
+.page-entry
+  line-height: line-height
+  p, ol, ul, dl, table, blockquote, iframe, .highlight
+    margin: line-height 0
+  h1
+    font-size: 2em
+  h2
+    font-size: 1.5em
+  h3
+    font-size: 1.3em
+  h1, h2, h3, h4, h5, h6
+    line-height: 1em
+    margin: 1em 0
+    font-family: font-title
+    font-weight: bold
+  a
+    color: color-blue
+    text-decoration: none
+    &:hover
+      text-decoration: underline
+  strong
+    font-weight: bold
+  em
+    font-style: italic
+  ul, ol, dl
+    margin-left: 20px
+    ul, ol, dl
+      margin-top: 0
+      margin-bottom: 0
+  ul
+    list-style: disc
+  ol
+    list-style: decimal
+  dl
+    list-style: square
+  blockquote
+    border: 1px solid color-border
+    border-left: 4px solid color-border
+    padding: 0 20px
+    position: relative
+    margin-left: 45px
+    &:before
+      content: "\f10d"
+      position: absolute
+      left: -45px
+      top: 21px
+      font-size: 25px
+      font-family: font-icon
+      width: 25px
+      height: 25px
+      text-align: center
+      color: color-border
+    footer
+      margin: 1em 0
+      font-style: italic
+      cite
+        &:before
+          content: "—"
+          padding: 0 0.3em
+        a
+          color: color-grey
+  .note
+    &:before
+      top: 14px
+    &.tip
+      border-left-color: note-tip
+      &:before
+        content: "\f0eb"
+        color: note-tip
+    &.info
+      border-left-color: note-info
+      &:before
+        content: "\f05a"
+        color: note-info
+    &.warn
+      border-left-color: note-warn
+      &:before
+        content: "\f06a"
+        color: note-warn
+  .note-title
+    margin: 1em 0
+    display: block
+    font-family: font-title
+    line-height: 1em
+    font-size: 1.3em
+    font-weight: bold
+  table
+    width: 100%
+    border: 1px solid color-border
+    th
+      font-weight: bold
+    th, td
+      padding: 5px 15px
+    tr
+      &:nth-child(2n)
+        background: #eee
+
+#page-footer
+  clearfix()
+  border-top: 1px solid color-border
+  color: color-grey
+  padding-top: 1em
+  text-align: center
+
+#page-footer-updated
+  font-size: 0.9em
+
+.page-footer-link
+  font-family: font-title
+  font-size: 1em
+  color: color-blue
+  font-weight: bold
+  text-transform: uppercase
+  text-decoration: none
+
+#page-footer-prev
+  float: left
+  &:before
+    content: "\f053"
+    padding-right: 10px
+    font-family: font-icon
+
+#page-footer-next
+  float: right
+  &:after
+    content: "\f054"
+    padding-left: 10px
+    font-family: font-icon
+
+#sidebar
+  float: left
+  width: sidebar-width
+  font-family: font-title
+  padding: 0 0 40px
+
+.sidebar-title
+  display: block
+  margin: 40px 0 15px
+  padding: 0 0 10px
+  color: color-blue
+  text-transform: uppercase
+  border-bottom: 1px solid color-border
+  font-weight: bold
+
+.sidebar-link
+  color: #666
+  text-decoration: none
+  display: block
+  font-weight: 300
+  margin: 10px 0
+  &:hover, &.current
+    color: color-blue
+  &.current
+    font-weight: bold

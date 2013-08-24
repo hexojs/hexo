@@ -43,7 +43,7 @@ disqus_shortname:
 
 # Extensions
 plugins:
-theme: hexo2
+theme: hexo3
 exclude_generator:
 - category
 - tag

@@ -1,0 +1,12 @@
+<header id="header">
+  <div id="header-inner" class="inner">
+    <h1 id="logo-wrap">
+      <a href="<%- config.root %>" id="logo">Hexo</a>
+    </h1>
+    <nav id="main-nav">
+      <% _.each(theme.menu, function(menu, title){ %>
+        <a href="<%= /^([a-z]+:)?\/{1,2}/.test(menu) ? '' : config.root %><%= menu %>" class="main-nav-link<% if(is_current(menu)){ %> current<% } %>"><%= title %></a>
+      <% }); %>
+    </nav>
+  </div>
+</header>

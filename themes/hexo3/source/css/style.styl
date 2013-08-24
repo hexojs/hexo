@@ -1,0 +1,45 @@
+@import "nib"
+
+global-reset()
+
+// Colors
+color-default = #444
+color-grey = #999
+color-border = #ddd
+color-blue = #0e83cd
+
+// Fonts
+font-sans = "Helvetica Neue", Helvetica, Arial, sans-serif
+font-title = Lato, font-sans
+font-serif = Garamond, Georgia, "Times New Roman", serif
+font-mono = Monaco, Menlo, Consolas, monospace
+
+font-icon = FontAwesome
+font-icon-path = "fonts/fontawesome-webfont"
+font-icon-version = "3.2.1"
+
+@font-face
+  font-family: FontAwesome
+  font-style: normal
+  font-weight: normal
+  src: url(font-icon-path + ".eot?v=#" + font-icon-version)
+  src: url(font-icon-path + ".eot?#iefix&v=#" + font-icon-version) format("embedded-opentype"),
+       url(font-icon-path + ".woff?v=#" + font-icon-version) format("woff"),
+       url(font-icon-path + ".ttf?v=#" + font-icon-version) format("truetype"),
+       url(font-icon-path + ".svg#fontawesomeregular?v=#" + font-icon-version) format("svg")
+
+// Variables
+page-width = 1100px
+
+body
+  font: 14px font-sans
+
+.inner
+  width: page-width
+  margin: 0 auto
+
+@import "_partial/header"
+@import "_partial/index"
+@import "_partial/page"
+@import "_partial/footer"
+@import "_partial/highlight"

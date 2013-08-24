@@ -1,0 +1,37 @@
+menu:
+  Docs: docs/
+  #API: api/
+  Plugins: https://github.com/tommy351/hexo/wiki/Plugins
+  Themes: https://github.com/tommy351/hexo/wiki/Themes
+  Source: https://github.com/tommy351/hexo
+  #Blog: blog/
+
+doc_sidebar:
+  Getting Started:
+    Installation: installation.html
+    Setup: setup.html
+    Configuration: configuration.html
+    Commands: commands.html
+    Migration: migration.html
+  Basic Usage:
+    Writing: writing.html
+    Generating: generating.html
+    Tag Plugins: tag-plugins.html
+    Server: server.html
+    Deployment: deployment.html
+  Customization:
+    Permalinks: permalinks.html
+    Themes: themes.html
+    Variables: variables.html
+    Pagination: pagination.html
+    Helpers: helpers.html
+    i18n: i18n.html
+  Advanced:
+    Models: models.html
+    Events: events.html
+    Plugins: plugins.html
+  Miscellaneous:
+    Troubleshooting: troubleshooting.html
+    Contributing: contributing.html
+
+google_analytics: UA-4910098-7
