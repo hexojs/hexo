@@ -18,6 +18,8 @@ $ hexo new [layout] <title>
 
 Creates a new article. If `layout` isn't defined, it'll be `default_layout` setting. If the title is more than one word, wrap it with quotation marks.
 
+**Alias:** n
+
 ## generate
 
 ``` bash
@@ -25,6 +27,8 @@ $ hexo generate
 ```
 
 Generates static files.
+
+**Alias**: g
 
 Option | Description
 --- | ---
@@ -39,6 +43,8 @@ $ hexo server
 
 Starts server.
 
+**Alias:** s
+
 Option | Description
 --- | ---
 `-p`<br>`--port` | Override default port
@@ -52,6 +58,8 @@ $ hexo deploy
 ```
 
 Deploys your website.
+
+**Alias:** d
 
 Option | Description
 --- | ---
