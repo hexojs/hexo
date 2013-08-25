@@ -9,7 +9,8 @@ body.index
   background: url("images/shattered.png")
 
 #banner
-  padding: 150px 0 50px
+  padding-top: 150px
+  padding-bottom: 50px
 
 #banner-title
   color: #555
@@ -59,29 +60,30 @@ body.index
 #banner-share
   padding: 100px 0 0
 
+
 .intro-wrap
   background: #fff
   padding: 40px 0
 
 .intro-title
+  column(12)
   font-size: 30px
   font-weight: 300
   font-family: font-title
   color: color-default
   padding-bottom: 20px
 
-.intro-feature-wrap
-  clearfix()
-  margin-right: intro-feature-margin * -1
-
 .intro-feature
-  float: left
-  padding-right: intro-feature-margin
+  column(4)
   padding-top: 30px
-  width: ((page-width + intro-feature-margin) / intro-feature-column) - intro-feature-margin
+  @media screen and (max-width: 768px)
+    column(12)
 
 .intro-quick-start
-  width: ((page-width + intro-quick-start-column) / intro-quick-start-column) - intro-feature-margin
+  column(6)
+  padding-top: 30px
+  @media screen and (max-width: 768px)
+    column(12)
 
 .intro-feature-title
   font-size: 18px

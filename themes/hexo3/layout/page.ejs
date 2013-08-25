@@ -1,10 +1,13 @@
 <article class="page">
   <header id="page-banner">
-    <div class="inner">
-      <h1 class="page-title"><%= page.title %></h1>
+    <div class="outer">
+      <div class="inner">
+        <h1 class="page-title"><%= page.title %></h1>
+      </div>
     </div>
   </header>
-  <div id="page-inner" class="inner">
+  <div class="outer">
+    <%- partial('_partial/mobile-menu') %>
     <div class="page-content">
       <div class="page-entry">
         <%- page.content %>

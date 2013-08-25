@@ -1,0 +1,12 @@
+<div class="inner">
+  <select id="page-mobile-menu">
+    <option value="">Navigate...</option>
+    <% _.each(theme.doc_sidebar, function(menu, title){ %>
+      <optgroup label="<%= title %>">
+        <% _.each(menu, function(link, text){ %>
+          <option value="<%- config.root %>docs/<%= link %>"><%= text %></option>
+        <% }) %>
+      </optgroup>
+    <% }) %>
+  </select>
+</div>

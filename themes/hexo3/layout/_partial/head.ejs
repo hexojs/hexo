@@ -3,8 +3,9 @@
 <head>
   <meta charset="utf-8">
   <title><% if (page.title){ %><%= page.title %> | Hexo<% } else { %>Hexo - <%= config.subtitle %><% } %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="<%- config.root %>css/style.css">
   <link href="//fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet" type="text/css">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  <%- partial('google_analytics') %>
+  <%- partial('google-analytics') %>
 </head>

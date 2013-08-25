@@ -4,13 +4,14 @@ logo-size = 35px
   background: #fff
   border-bottom: 1px solid #ccc
   font-family: font-title
-  padding: 30px 0
-
-#header-inner
-  clearfix()
+  padding-top: 30px
+  padding-bottom: 30px
 
 #logo-wrap
   float: left
+  @media screen and (max-width: 768px)
+    float: none
+    text-align: center
 
 #logo
   color: color-blue
@@ -21,17 +22,26 @@ logo-size = 35px
 
 #main-nav
   float: right
+  @media screen and (max-width: 768px)
+    float: none
+    margin-top: 20px
+
+.main-nav-item
+  float: left
+  padding-left: 50px
+  padding-top: 13px
+  text-align: center
+  @media screen and (max-width: 768px)
+    column(3)
+    padding-left: 0
 
 .main-nav-link
-  float: left
-  margin-left: 50px
   color: color-default
   font-weight: 300
   text-transform: uppercase
   text-decoration: none
-  padding-top: 13px
   border-bottom: 2px solid transparent
-  display: block
+  display: inline-block
   transition: 0.2s
   &:hover, &.current
     padding-bottom: 5px

@@ -1,7 +1,4 @@
-page-title = 35px
 line-height = 1.6em
-sidebar-width = 200px
-sidebar-margin = 50px
 
 note-tip = hsl(40, 100%, 50%)
 note-info = hsl(200, 100%, 50%)
@@ -10,19 +7,20 @@ note-warn = hsl(0, 100%, 50%)
 #page-banner
   background: url("images/shattered.png")
   padding: 40px 0
+  @media screen and (max-width: 768px)
+    padding: 30px 0
 
 .page-title
   color: #555
-  font: 300 page-title font-title
+  font: 300 35px font-title
   text-shadow: 1px 0 #eee
 
-#page-inner
-  clearfix()
-
 .page-content
+  column(9)
   float: right
-  width: page-width - sidebar-width - sidebar-margin
-  padding: 40px 0
+  padding: 20px 0
+  @media screen and (max-width: 768px)
+    column(12)
 
 .page-entry
   line-height: line-height
@@ -37,7 +35,6 @@ note-warn = hsl(0, 100%, 50%)
   h1, h2, h3, h4, h5, h6
     line-height: 1em
     margin: 1em 0
-    font-family: font-title
     font-weight: bold
   a
     color: color-blue
@@ -59,6 +56,11 @@ note-warn = hsl(0, 100%, 50%)
     list-style: decimal
   dl
     list-style: square
+  li
+    p:first-child
+      margin: 0
+    table, blockquote, iframe, .highlight
+      margin: 1em 0
   blockquote
     border: 1px solid color-border
     border-left: 4px solid color-border
@@ -69,7 +71,7 @@ note-warn = hsl(0, 100%, 50%)
       content: "\f10d"
       position: absolute
       left: -45px
-      top: 21px
+      top: 20px
       font-size: 25px
       font-family: font-icon
       width: 25px
@@ -86,8 +88,6 @@ note-warn = hsl(0, 100%, 50%)
         a
           color: color-grey
   .note
-    &:before
-      top: 14px
     &.tip
       border-left-color: note-tip
       &:before
@@ -106,8 +106,6 @@ note-warn = hsl(0, 100%, 50%)
   .note-title
     margin: 1em 0
     display: block
-    font-family: font-title
-    line-height: 1em
     font-size: 1.3em
     font-weight: bold
   table
@@ -125,7 +123,7 @@ note-warn = hsl(0, 100%, 50%)
   clearfix()
   border-top: 1px solid color-border
   color: color-grey
-  padding-top: 1em
+  padding: 1em 0 30px
   text-align: center
 
 #page-footer-updated
@@ -154,10 +152,11 @@ note-warn = hsl(0, 100%, 50%)
     font-family: font-icon
 
 #sidebar
-  float: left
-  width: sidebar-width
+  column(3)
   font-family: font-title
   padding: 0 0 40px
+  @media screen and (max-width: 768px)
+    display: none
 
 .sidebar-title
   display: block
@@ -190,3 +189,10 @@ note-warn = hsl(0, 100%, 50%)
   &.current
     font-weight: bold
     border-left-color: color-blue
+
+#page-mobile-menu
+  width: 100%
+  margin: 30px 0 0
+  display: none
+  @media screen and (max-width: 768px)
+    display: block

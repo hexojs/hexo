@@ -28,18 +28,22 @@ font-icon-version = "3.2.1"
        url(font-icon-path + ".ttf?v=#" + font-icon-version) format("truetype"),
        url(font-icon-path + ".svg#fontawesomeregular?v=#" + font-icon-version) format("svg")
 
-// Variables
-page-width = 1100px
+@import "_util/grid"
 
 body
   font: 14px font-sans
 
-.inner
-  width: page-width
+.outer
+  clearfix()
+  max-width: (column-width + gutter-width) * columns + gutter-width
   margin: 0 auto
+  padding: 0 gutter-width
+
+.inner
+  column(12)
 
 @import "_partial/header"
-@import "_partial/index"
 @import "_partial/page"
+@import "_partial/index"
 @import "_partial/footer"
 @import "_partial/highlight"
