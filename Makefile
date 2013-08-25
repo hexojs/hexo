@@ -1,6 +1,6 @@
 REPORTER ?= dot
 
-all: install css
+build: install css
 
 test:
 	node test --reporter $(REPORTER)
@@ -10,9 +10,6 @@ install:
 	git submodule update --init
 
 css:
-	compass compile -e production --force
+	node build/css
 
-css-watch:
-	compass watch
-
-.PHONY: test css css-watch
+.PHONY: test css

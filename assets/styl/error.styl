@@ -1,12 +1,13 @@
-@import compass
-@import variables
-@import compass/reset
+@import "nib"
+@import "_variables"
 
-$page-width: 700px
+global-reset()
+
+page-width = 700px
 
 body
-  font: 14px $font-sans
-  color: $color-font
+  font: 14px font-sans
+  color: color-default
   background: #eee
   text-shadow: 0 1px #fff
 
@@ -28,7 +29,7 @@ body
   padding-top: 10px
 
 #error-message-wrap
-  +border-radius(5px)
+  border-radius: 5px
   margin-top: 15px
   border: 1px solid #ddd
   overflow: hidden
@@ -40,8 +41,8 @@ body
   background: #f7f7f7
 
 #error-message
-  +box-shadow(0 0 5px #111 inset)
-  font-family: $font-mono
+  box-shadow: 0 0 5px #111 inset
+  font-family: font-mono
   font-size: 12px
   padding: 25px 30px
   line-height: 1.6
@@ -55,8 +56,6 @@ body
   padding: 30px 0
 
 #error-btn
-  +inline-block
-  +border-radius(4px)
   padding: 10px 20px
   font-size: 16px
   color: #ddd
@@ -64,5 +63,7 @@ body
   text-decoration: none
   text-shadow: 0 1px #000
   border: 1px solid #fff
+  display: inline-block
+  border-radius: 4px
   &:hover
     background: #111
