@@ -41,11 +41,11 @@ Application data. If you deleted it unfortunately, rebuild the file with the fol
 
 ### scaffolds
 
-[Scaffold](scaffolds.html) folder. When you create a new post, Hexo will build the file based on the scaffold.
+[Scaffold](writing.html) folder. When you create a new post, Hexo will build the file based on the scaffold.
 
 ### scripts
 
-[Script](scripts.html) folder. Script is the easiest way to extend Hexo. JavaScript files in this folder will be executed automatically.
+[Script](plugins.html) folder. Script is the easiest way to extend Hexo. JavaScript files in this folder will be executed automatically.
 
 ### source
 

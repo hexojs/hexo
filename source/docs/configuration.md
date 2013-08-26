@@ -100,7 +100,7 @@ Setting | Description
 `theme` | Current theme
 `exclude_generator` | Disabled generators (archive, category, home, page, post, tag)
 
-{% note warn Configuration files is YAML files %}
+{% note warn YAML format %}
 Don't use tabs in configuration files, use spaces instead. Also, add a space after colons. Configuration files parsing error may cause Hexo can't run properly.
 {% endnote %}
 
