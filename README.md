@@ -2,59 +2,59 @@
 
 A fast, simple & powerful blog framework, powered by [Node.js](http://nodejs.org).
 
+- [Docs](http://zespia.tw/hexo/docs/)
+- [Plugins](https://github.com/tommy351/hexo/wiki/Plugins)
+- [Themes](https://github.com/tommy351/hexo/wiki/Themes)
+
 ## Features
 
-- Incredibly fast - generate static files in a glance
-- [Markdown] support
-- Deploy to [GitHub Pages] & [Heroku] with only one command
-- Ported [Octopress] plugins
-- High extendibility & customizability
-- Compatible with Windows, Mac & Linux
+### Blazing Fast
 
-## Install
+Hexo is powered by Node.js and supports multi-thread generating. Hundreds of files take only seconds to generate.
 
-``` bash
-npm install -g hexo
-```
+### Easy Write
 
-## Update
+Hexo supports GitHub Flavored Markdown and all Octopress plugins and highly Jekyll/Octopress compatible.
 
-``` bash
-npm update -g
-```
-  
-## Getting Started
+### Extensibility
 
-Setup a project:
+Hexo supports EJS, Swig & Stylus. You can install more plugins for Haml, Jade, Less supports.
 
-``` bash
-hexo init project
-cd project
-```
-  
-Create a new article:
+## Quick Start
 
-``` bash
-hexo new "New Post"
-```
-  
-Generate static files:
+1. Install
 
-``` bash
-hexo generate
-```
-  
-Start the server:
+	```
+	$ npm install hexo -g
+	```
+	
+2. Setup
 
-``` bash
-hexo server
-```
-  
-## Next Step
+	```
+	$ hexo init blog && cd blog
+	```
+	
 
-Interested? Check the [documentation](http://zespia.tw/hexo/) for more info!
+3. Generate
 
-[Markdown]: http://daringfireball.net/projects/markdown/
-[GitHub Pages]: http://pages.github.com/
-[Heroku]: http://heroku.com/
-[Octopress]: http://octopress.org/
+	```
+	$ hexo generate
+	```
+
+4. Server
+
+	```
+	$ hexo server
+	```
+
+## License
+
+(The MIT License)
+
+Copyright (c) 2012 Tommy Chen
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

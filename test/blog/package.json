@@ -1,0 +1,6 @@
+{
+  "name": "hexo",
+  "version": "2.0.0-rc3",
+  "private": true,
+  "dependencies": {}
+}

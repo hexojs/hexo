@@ -1,0 +1,16 @@
+layout: layout/error
+title: 500
+subtitle: Internal server error
+---
+
+<div id="error-btn-wrap">
+  <a id="error-btn" href="http://zespia.tw/hexo/" target="_blank">Troubleshooting</a>
+</div>
+<% if (typeof err !== 'undefined'){ %>
+<div id="error-message-wrap">
+  <strong id="error-message-title"><%= err.name %>: <%= err.message %></strong>
+  <div id="error-message">
+    <%- err.stack.replace(/\n/g, '<br>').replace(/\s/g, '&nbsp;') %>
+  </div>
+</div>
+<% } %>

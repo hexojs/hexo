@@ -1,5 +1,5 @@
 title: Hello World
-date: %date%
+date: %(date)s
 tags:
 ---
 
