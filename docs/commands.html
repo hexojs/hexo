@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Events | Hexo</title>
+  <title>Commands | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="/hexo/css/style.css">
   <link href="//fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet" type="text/css">
@@ -57,7 +57,7 @@
   <header id="page-banner">
     <div class="outer">
       <div class="inner">
-        <h1 class="page-title">Events</h1>
+        <h1 class="page-title">Commands</h1>
       </div>
     </div>
   </header>
@@ -132,62 +132,149 @@
 </div>
     <div class="page-content">
       <div class="page-entry">
-        <p>Hexo inherits EventEmitter of Node.js. You can subscribe or publish specified events. For example:</p>
-<figure class="highlight lang-js"><pre>hexo.on(<span class="string">'ready'</span>, <span class="keyword">function</span>(){
-  console.log(<span class="string">'Hexo is ready to go!'</span>);
-});
+        <h2>init</h2>
+<figure class="highlight lang-bash"><pre>$ hexo init [folder]
 </pre></figure>
 
-<h2>Methods</h2>
-<p>All methods except <code>emit</code> returns the emitter itself, so calls can be chained.</p>
-<h3>addListener(event, listener)</h3>
-<h3>on(event, listener)</h3>
-<p>Listens to the specific event.</p>
-<h3>once(event, listener)</h3>
-<p>Listens to the specified event <strong>only once</strong>. After the event is fired, the listener will be removed.</p>
-<h3>removeListener(event, listener)</h3>
-<p>Removes a listener from the specified event.</p>
-<h3>removeAllListeners([event])</h3>
-<p>Removes all listeners.</p>
-<h3>emit(event, [arg1], [arg2], […])</h3>
-<p>Fires the specified event. Returns <code>true</code> if event had listener, <code>false</code> otherwise.</p>
-<h2>Events</h2>
-<h3>ready</h3>
-<p>Called once Hexo is initialized.</p>
-<h3>generateBefore</h3>
-<p>Called before generating.</p>
-<h3>generateAfter</h3>
-<p>Called after generating.</p>
-<h3>processBefore</h3>
-<p>Called before processing.</p>
-<h3>processAfter</h3>
-<p>Called after processing.</p>
-<h3>new</h3>
-<p>Called after a new post file is created.</p>
+<p>Setups a website. If <code>folder</code> isn&#39;t defined, Hexo will setup the website at the current directory.</p>
+<h2>new</h2>
+<figure class="highlight lang-bash"><pre>$ hexo new [layout] &lt;title&gt;
+</pre></figure>
+
+<p>Creates a new article. If <code>layout</code> isn‘t defined, it’ll be <code>default_layout</code> setting. If the title is more than one word, wrap it with quotation marks.</p>
+<p><strong>Alias:</strong> n</p>
+<h2>generate</h2>
+<figure class="highlight lang-bash"><pre>$ hexo generate
+</pre></figure>
+
+<p>Generates static files.</p>
+<p><strong>Alias</strong>: g</p>
 <table>
 <thead>
 <tr>
-<th>Argument</th>
+<th>Option</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>target</code></td>
-<td>Absolute path of the post file</td>
+<td><code>-d</code><br><code>--deploy</code></td>
+<td>Deploy after generate done</td>
+</tr>
+<tr>
+<td><code>-w</code><br><code>--watch</code></td>
+<td>Watch file changes</td>
 </tr>
 </tbody>
 </table>
-<h3>server</h3>
-<p>Called after server is on.</p>
-<h3>exit</h3>
-<p>Called when Hexo exits.</p>
+<h2>server</h2>
+<figure class="highlight lang-bash"><pre>$ hexo server
+</pre></figure>
+
+<p>Starts server.</p>
+<p><strong>Alias:</strong> s</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-p</code><br><code>--port</code></td>
+<td>Override default port</td>
+</tr>
+<tr>
+<td><code>-s</code><br><code>--static</code></td>
+<td>Only serve static files</td>
+</tr>
+<tr>
+<td><code>-l</code><br><code>--log</code></td>
+<td>Enable logger. Override logger format.</td>
+</tr>
+</tbody>
+</table>
+<h2>deploy</h2>
+<figure class="highlight lang-bash"><pre>$ hexo deploy
+</pre></figure>
+
+<p>Deploys your website.</p>
+<p><strong>Alias:</strong> d</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--setup</code></td>
+<td>Setup without deployment</td>
+</tr>
+<tr>
+<td><code>--generate</code></td>
+<td>Generate before deployment</td>
+</tr>
+</tbody>
+</table>
+<h2>render</h2>
+<figure class="highlight lang-bash"><pre>$ hexo render &lt;file1&gt; [file2] ...
+</pre></figure>
+
+<p>Renders files.</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>-o</code><br><code>--output</code></td>
+<td>Output destination</td>
+</tr>
+</tbody>
+</table>
+<h2>migrate</h2>
+<figure class="highlight lang-bash"><pre>$ hexo migrate &lt;type&gt;
+</pre></figure>
+
+<p>Migrates from other blog systems.</p>
+<h2>clean</h2>
+<figure class="highlight lang-bash"><pre>$ hexo clean
+</pre></figure>
+
+<p>Cleans the cache file (<code>db.json</code>) and generated files (<code>public</code>).</p>
+<h2>list</h2>
+<figure class="highlight lang-bash"><pre>$ hexo list &lt;type&gt;
+</pre></figure>
+
+<p>Lists all routes.</p>
+<h2>version</h2>
+<figure class="highlight lang-bash"><pre>$ hexo version
+</pre></figure>
+
+<p>Displays version information.</p>
+<h2>Options</h2>
+<h3>Safe mode</h3>
+<figure class="highlight lang-bash"><pre>$ hexo --safe
+</pre></figure>
+
+<p>Plugins and scripts won&#39;t be loaded in safe mode. You can try this when you encounter some problems after installing a new plugin.</p>
+<h3>Debug mode</h3>
+<figure class="highlight lang-bash"><pre>$ hexo --debug
+</pre></figure>
+
+<p>Displays verbose messages in terminal and saves log in <code>debug.log</code>. When you get some problems, try to run Hexo again in debug mode and submit the messages to GitHub.</p>
 
       </div>
       <footer id="page-footer">
-        <time id="page-footer-updated" datetime="2013-07-19T15:32:20.000Z">Last updated: Jul 19, 2013</time>
-        <a href="/hexo/docs/models.html" id="page-footer-prev" class="page-footer-link">Prev</a>
-        <a href="/hexo/docs/plugins.html" id="page-footer-next" class="page-footer-link">Next</a>
+        <time id="page-footer-updated" datetime="2013-08-25T15:00:54.000Z">Last updated: Aug 25, 2013</time>
+        <a href="/hexo/docs/configuration.html" id="page-footer-prev" class="page-footer-link">Prev</a>
+        <a href="/hexo/docs/migration.html" id="page-footer-next" class="page-footer-link">Next</a>
       </footer>
     </div>
     <aside id="sidebar">
@@ -200,7 +287,7 @@
     
       <a href="/hexo/docs/configuration.html" class="sidebar-link">Configuration</a>
     
-      <a href="/hexo/docs/commands.html" class="sidebar-link">Commands</a>
+      <a href="/hexo/docs/commands.html" class="sidebar-link current">Commands</a>
     
       <a href="/hexo/docs/migration.html" class="sidebar-link">Migration</a>
     
@@ -237,7 +324,7 @@
     
       <a href="/hexo/docs/models.html" class="sidebar-link">Models</a>
     
-      <a href="/hexo/docs/events.html" class="sidebar-link current">Events</a>
+      <a href="/hexo/docs/events.html" class="sidebar-link">Events</a>
     
       <a href="/hexo/docs/plugins.html" class="sidebar-link">Plugins</a>
     

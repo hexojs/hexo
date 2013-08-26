@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Events | Hexo</title>
+  <title>Models | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="/hexo/css/style.css">
   <link href="//fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet" type="text/css">
@@ -57,7 +57,7 @@
   <header id="page-banner">
     <div class="outer">
       <div class="inner">
-        <h1 class="page-title">Events</h1>
+        <h1 class="page-title">Models</h1>
       </div>
     </div>
   </header>
@@ -132,62 +132,217 @@
 </div>
     <div class="page-content">
       <div class="page-entry">
-        <p>Hexo inherits EventEmitter of Node.js. You can subscribe or publish specified events. For example:</p>
-<figure class="highlight lang-js"><pre>hexo.on(<span class="string">'ready'</span>, <span class="keyword">function</span>(){
-  console.log(<span class="string">'Hexo is ready to go!'</span>);
-});
-</pre></figure>
-
-<h2>Methods</h2>
-<p>All methods except <code>emit</code> returns the emitter itself, so calls can be chained.</p>
-<h3>addListener(event, listener)</h3>
-<h3>on(event, listener)</h3>
-<p>Listens to the specific event.</p>
-<h3>once(event, listener)</h3>
-<p>Listens to the specified event <strong>only once</strong>. After the event is fired, the listener will be removed.</p>
-<h3>removeListener(event, listener)</h3>
-<p>Removes a listener from the specified event.</p>
-<h3>removeAllListeners([event])</h3>
-<p>Removes all listeners.</p>
-<h3>emit(event, [arg1], [arg2], […])</h3>
-<p>Fires the specified event. Returns <code>true</code> if event had listener, <code>false</code> otherwise.</p>
-<h2>Events</h2>
-<h3>ready</h3>
-<p>Called once Hexo is initialized.</p>
-<h3>generateBefore</h3>
-<p>Called before generating.</p>
-<h3>generateAfter</h3>
-<p>Called after generating.</p>
-<h3>processBefore</h3>
-<p>Called before processing.</p>
-<h3>processAfter</h3>
-<p>Called after processing.</p>
-<h3>new</h3>
-<p>Called after a new post file is created.</p>
+        <p>Hexo store everything in data model. It‘s very important for you to know what’s inside the data model.</p>
+<h3>Post</h3>
 <table>
 <thead>
 <tr>
-<th>Argument</th>
+<th>Name</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>target</code></td>
-<td>Absolute path of the post file</td>
+<td><code>id</code></td>
+<td>Post ID (Set by user)</td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>Post title</td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td>Post date (<a href="http://momentjs.com/" target="_blank">Moment.js</a> object)</td>
+</tr>
+<tr>
+<td><code>updated</code></td>
+<td>Post last updated date (<a href="http://momentjs.com/" target="_blank">Moment.js</a> object)</td>
+</tr>
+<tr>
+<td><code>categories</code></td>
+<td>All categories of the post</td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>All tags of the post</td>
+</tr>
+<tr>
+<td><code>comments</code></td>
+<td>Comment enabled or not</td>
+</tr>
+<tr>
+<td><code>layout</code></td>
+<td>Layout name</td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td>The full processed content of the post</td>
+</tr>
+<tr>
+<td><code>excerpt</code></td>
+<td>The processed excerpt of the post</td>
+</tr>
+<tr>
+<td><code>source</code></td>
+<td>The path of the source file</td>
+</tr>
+<tr>
+<td><code>full_source</code></td>
+<td>Full path of the source file</td>
+</tr>
+<tr>
+<td><code>path</code></td>
+<td>The URL of the post without root URL</td>
+</tr>
+<tr>
+<td><code>permalink</code></td>
+<td>Full URL of the post</td>
+</tr>
+<tr>
+<td><code>raw</code></td>
+<td>The raw data of the post</td>
 </tr>
 </tbody>
 </table>
-<h3>server</h3>
-<p>Called after server is on.</p>
-<h3>exit</h3>
-<p>Called when Hexo exits.</p>
+<h3>Page</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>Page title</td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td>Page date (<a href="http://momentjs.com/" target="_blank">Moment.js</a> object)</td>
+</tr>
+<tr>
+<td><code>updated</code></td>
+<td>Page last updated date (<a href="http://momentjs.com/" target="_blank">Moment.js</a> object)</td>
+</tr>
+<tr>
+<td><code>comments</code></td>
+<td>Comment enabled or not</td>
+</tr>
+<tr>
+<td><code>layout</code></td>
+<td>Layout name</td>
+</tr>
+<tr>
+<td><code>content</code></td>
+<td>The full processed content of the page</td>
+</tr>
+<tr>
+<td><code>excerpt</code></td>
+<td>The processed excerpt of the page</td>
+</tr>
+<tr>
+<td><code>source</code></td>
+<td>The path of the source file</td>
+</tr>
+<tr>
+<td><code>full_path</code></td>
+<td>Full path of the source file</td>
+</tr>
+<tr>
+<td><code>path</code></td>
+<td>The URL of the page without root URL</td>
+</tr>
+<tr>
+<td><code>permalink</code></td>
+<td>Full URL of the page</td>
+</tr>
+<tr>
+<td><code>raw</code></td>
+<td>The raw data of the page</td>
+</tr>
+</tbody>
+</table>
+<h3>Category</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Category name</td>
+</tr>
+<tr>
+<td><code>slug</code></td>
+<td>Category slug</td>
+</tr>
+<tr>
+<td><code>posts</code></td>
+<td>All posts in the category</td>
+</tr>
+<tr>
+<td><code>path</code></td>
+<td>The URL of the category without root URL</td>
+</tr>
+<tr>
+<td><code>permalink</code></td>
+<td>Full URL of the category</td>
+</tr>
+<tr>
+<td><code>length</code></td>
+<td>Total number of posts in the category</td>
+</tr>
+<tr>
+<td><code>parent</code></td>
+<td>Parent category</td>
+</tr>
+</tbody>
+</table>
+<h3>Tag</h3>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td>Tag name</td>
+</tr>
+<tr>
+<td><code>slug</code></td>
+<td>Tag slug</td>
+</tr>
+<tr>
+<td><code>posts</code></td>
+<td>All posts in the tag</td>
+</tr>
+<tr>
+<td><code>path</code></td>
+<td>The URL of the tag without root URL</td>
+</tr>
+<tr>
+<td><code>permalink</code></td>
+<td>Full URL of the tag</td>
+</tr>
+<tr>
+<td><code>length</code></td>
+<td>Total number of posts in the tag</td>
+</tr>
+</tbody>
+</table>
 
       </div>
       <footer id="page-footer">
-        <time id="page-footer-updated" datetime="2013-07-19T15:32:20.000Z">Last updated: Jul 19, 2013</time>
-        <a href="/hexo/docs/models.html" id="page-footer-prev" class="page-footer-link">Prev</a>
-        <a href="/hexo/docs/plugins.html" id="page-footer-next" class="page-footer-link">Next</a>
+        <time id="page-footer-updated" datetime="2013-08-24T17:33:05.000Z">Last updated: Aug 25, 2013</time>
+        <a href="/hexo/docs/i18n.html" id="page-footer-prev" class="page-footer-link">Prev</a>
+        <a href="/hexo/docs/events.html" id="page-footer-next" class="page-footer-link">Next</a>
       </footer>
     </div>
     <aside id="sidebar">
@@ -235,9 +390,9 @@
   
     <strong class="sidebar-title">Advanced</strong>
     
-      <a href="/hexo/docs/models.html" class="sidebar-link">Models</a>
+      <a href="/hexo/docs/models.html" class="sidebar-link current">Models</a>
     
-      <a href="/hexo/docs/events.html" class="sidebar-link current">Events</a>
+      <a href="/hexo/docs/events.html" class="sidebar-link">Events</a>
     
       <a href="/hexo/docs/plugins.html" class="sidebar-link">Plugins</a>
     

@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Events | Hexo</title>
+  <title>Internationalization (i18n) | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="/hexo/css/style.css">
   <link href="//fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet" type="text/css">
@@ -57,7 +57,7 @@
   <header id="page-banner">
     <div class="outer">
       <div class="inner">
-        <h1 class="page-title">Events</h1>
+        <h1 class="page-title">Internationalization (i18n)</h1>
       </div>
     </div>
   </header>
@@ -132,62 +132,39 @@
 </div>
     <div class="page-content">
       <div class="page-entry">
-        <p>Hexo inherits EventEmitter of Node.js. You can subscribe or publish specified events. For example:</p>
-<figure class="highlight lang-js"><pre>hexo.on(<span class="string">'ready'</span>, <span class="keyword">function</span>(){
-  console.log(<span class="string">'Hexo is ready to go!'</span>);
-});
+        <p>Hexo has a simple i18n module built-in, which means you can make Hexo says your language!</p>
+<p>To enable i18n for Hexo, edit <code>language</code> setting. The language code must be written in <a href="http://www.w3.org/International/articles/language-tags/" target="_blank">IETF format</a>. For example: Traditional Chinese is <code>zh-TW</code>.</p>
+<figure class="highlight lang-yaml"><pre><span class="attribute">language</span>: <span class="string">zh-TW</span>
 </pre></figure>
 
-<h2>Methods</h2>
-<p>All methods except <code>emit</code> returns the emitter itself, so calls can be chained.</p>
-<h3>addListener(event, listener)</h3>
-<h3>on(event, listener)</h3>
-<p>Listens to the specific event.</p>
-<h3>once(event, listener)</h3>
-<p>Listens to the specified event <strong>only once</strong>. After the event is fired, the listener will be removed.</p>
-<h3>removeListener(event, listener)</h3>
-<p>Removes a listener from the specified event.</p>
-<h3>removeAllListeners([event])</h3>
-<p>Removes all listeners.</p>
-<h3>emit(event, [arg1], [arg2], […])</h3>
-<p>Fires the specified event. Returns <code>true</code> if event had listener, <code>false</code> otherwise.</p>
-<h2>Events</h2>
-<h3>ready</h3>
-<p>Called once Hexo is initialized.</p>
-<h3>generateBefore</h3>
-<p>Called before generating.</p>
-<h3>generateAfter</h3>
-<p>Called after generating.</p>
-<h3>processBefore</h3>
-<p>Called before processing.</p>
-<h3>processAfter</h3>
-<p>Called after processing.</p>
-<h3>new</h3>
-<p>Called after a new post file is created.</p>
-<table>
-<thead>
-<tr>
-<th>Argument</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>target</code></td>
-<td>Absolute path of the post file</td>
-</tr>
-</tbody>
-</table>
-<h3>server</h3>
-<p>Called after server is on.</p>
-<h3>exit</h3>
-<p>Called when Hexo exits.</p>
+<h2>Structure</h2>
+<figure class="highlight lang-plain"><pre>.
+├── default.yml
+└── zh-TW.yml
+</pre></figure>
+
+<p>All language files must put into <code>languages</code> folder and be written in YAML format. All <code>languages</code> folder must have <code>default.yml</code> at least.</p>
+<blockquote class="note warn"><strong class="note-title">Write language files in YAML format</strong><p>Don&#39;t use tabs in language files, use spaces instead. Also, add a space after colons.</p>
+</blockquote>
+
+
+<h2>i18n in Theme</h2>
+<p>To use i18n in the theme. Use <code>__</code> (double underscores) with the key you set in language files.</p>
+<figure class="highlight lang-js"><pre>&lt;%= __(<span class="string">'key'</span>) %&gt;
+</pre></figure>
+
+<p>You can even pass more than one arguments:</p>
+<figure class="highlight lang-js"><pre>&lt;%= __(<span class="string">'Hello %s!'</span>, <span class="string">'World'</span>) %&gt;
+<span class="comment">// =&gt; Hello World!</span>
+</pre></figure>
+
+<p><code>%s</code> in the first string will be replaced with the second string. The result will be <code>Hello World!</code>.</p>
 
       </div>
       <footer id="page-footer">
-        <time id="page-footer-updated" datetime="2013-07-19T15:32:20.000Z">Last updated: Jul 19, 2013</time>
-        <a href="/hexo/docs/models.html" id="page-footer-prev" class="page-footer-link">Prev</a>
-        <a href="/hexo/docs/plugins.html" id="page-footer-next" class="page-footer-link">Next</a>
+        <time id="page-footer-updated" datetime="2013-07-20T03:00:12.000Z">Last updated: Jul 20, 2013</time>
+        <a href="/hexo/docs/helpers.html" id="page-footer-prev" class="page-footer-link">Prev</a>
+        <a href="/hexo/docs/models.html" id="page-footer-next" class="page-footer-link">Next</a>
       </footer>
     </div>
     <aside id="sidebar">
@@ -230,14 +207,14 @@
     
       <a href="/hexo/docs/helpers.html" class="sidebar-link">Helpers</a>
     
-      <a href="/hexo/docs/i18n.html" class="sidebar-link">i18n</a>
+      <a href="/hexo/docs/i18n.html" class="sidebar-link current">i18n</a>
     
   
     <strong class="sidebar-title">Advanced</strong>
     
       <a href="/hexo/docs/models.html" class="sidebar-link">Models</a>
     
-      <a href="/hexo/docs/events.html" class="sidebar-link current">Events</a>
+      <a href="/hexo/docs/events.html" class="sidebar-link">Events</a>
     
       <a href="/hexo/docs/plugins.html" class="sidebar-link">Plugins</a>
     

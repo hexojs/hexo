@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Events | Hexo</title>
+  <title>Themes | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="/hexo/css/style.css">
   <link href="//fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet" type="text/css">
@@ -57,7 +57,7 @@
   <header id="page-banner">
     <div class="outer">
       <div class="inner">
-        <h1 class="page-title">Events</h1>
+        <h1 class="page-title">Themes</h1>
       </div>
     </div>
   </header>
@@ -132,62 +132,89 @@
 </div>
     <div class="page-content">
       <div class="page-entry">
-        <p>Hexo inherits EventEmitter of Node.js. You can subscribe or publish specified events. For example:</p>
-<figure class="highlight lang-js"><pre>hexo.on(<span class="string">'ready'</span>, <span class="keyword">function</span>(){
-  console.log(<span class="string">'Hexo is ready to go!'</span>);
-});
+        <p>Hexo uses <a href="https://github.com/visionmedia/ejs" target="_blank">EJS</a> to process theme layout by default. You can use <a href="helpers.html">helpers</a> to insert specified content quickly. It&#39;s recommended to enable debug mode in development. All layouts and source files will be updated automatically in debug mode.</p>
+<figure class="highlight lang-bash"><pre>$ hexo server --debug
 </pre></figure>
 
-<h2>Methods</h2>
-<p>All methods except <code>emit</code> returns the emitter itself, so calls can be chained.</p>
-<h3>addListener(event, listener)</h3>
-<h3>on(event, listener)</h3>
-<p>Listens to the specific event.</p>
-<h3>once(event, listener)</h3>
-<p>Listens to the specified event <strong>only once</strong>. After the event is fired, the listener will be removed.</p>
-<h3>removeListener(event, listener)</h3>
-<p>Removes a listener from the specified event.</p>
-<h3>removeAllListeners([event])</h3>
-<p>Removes all listeners.</p>
-<h3>emit(event, [arg1], [arg2], […])</h3>
-<p>Fires the specified event. Returns <code>true</code> if event had listener, <code>false</code> otherwise.</p>
-<h2>Events</h2>
-<h3>ready</h3>
-<p>Called once Hexo is initialized.</p>
-<h3>generateBefore</h3>
-<p>Called before generating.</p>
-<h3>generateAfter</h3>
-<p>Called after generating.</p>
-<h3>processBefore</h3>
-<p>Called before processing.</p>
-<h3>processAfter</h3>
-<p>Called after processing.</p>
-<h3>new</h3>
-<p>Called after a new post file is created.</p>
+<h2>Structure</h2>
+<figure class="highlight lang-plain"><pre>.
+├── _config.yml
+├── languages
+├── layout
+└── source
+</pre></figure>
+
+<h3>_config.yml</h3>
+<p>Theme configuration file.</p>
+<h3>languages</h3>
+<p>Folder of language files.</p>
+<h3>layout</h3>
+<p>Layout folder. File or folder whose name is prefixed with <code>_</code> (underscore) and hidden files will be ignored.</p>
+<p>Hexo provides <a href="https://github.com/visionmedia/ejs" target="_blank">EJS</a> and <a href="http://paularmstrong.github.com/swig/" target="_blank">Swig</a> template engine. You can install other template engines such as Haml, Jade. Hexo chooses template engines based on the extension name of files. For example:</p>
+<figure class="highlight lang-plain"><pre>EJS: layout.ejs
+Swig: layout.swig
+</pre></figure>
+
+<p>Every theme should at least has <code>index</code> layout.</p>
 <table>
 <thead>
 <tr>
-<th>Argument</th>
+<th>Layout</th>
 <th>Description</th>
+<th>Fallback</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>target</code></td>
-<td>Absolute path of the post file</td>
+<td><code>index</code></td>
+<td>Index layout</td>
+<td></td>
+</tr>
+<tr>
+<td><code>post</code></td>
+<td>Post layout</td>
+<td><code>index</code></td>
+</tr>
+<tr>
+<td><code>page</code></td>
+<td>Page layout</td>
+<td><code>index</code></td>
+</tr>
+<tr>
+<td><code>archive</code></td>
+<td>Archives layout</td>
+<td><code>index</code></td>
+</tr>
+<tr>
+<td><code>category</code></td>
+<td>Category archives layout</td>
+<td><code>archive</code></td>
+</tr>
+<tr>
+<td><code>tag</code></td>
+<td>Tag archives layout</td>
+<td><code>archive</code></td>
 </tr>
 </tbody>
 </table>
-<h3>server</h3>
-<p>Called after server is on.</p>
-<h3>exit</h3>
-<p>Called when Hexo exits.</p>
+<p>Hexo supports <strong>Layout</strong> and <strong>Partials</strong>. Every template file use <code>layout.ejs</code> as layout by default. You can set <code>layout: false</code> in front-matter or delete <code>layout.ejs</code> to disable the layout.</p>
+<blockquote class="note info"><strong class="note-title">Custom layout</strong><p>If you set a custom for your posts. You have to add a new layout file in <code>layout</code> folder or it&#39;ll fallback to <code>post</code> layout. Page variables in the custom layout is same as <code>post</code> layout.</p>
+</blockquote>
+
+
+<h3>source</h3>
+<p>Source folder. Asset files like CSS and Javascript files should be placed in this folder. File or folder whose name is prefixed with <code>_</code> (underscore) and hidden files will be ignored. Stylus files will be processed and put into <code>public</code> folder, while other files will be copied.</p>
+<p>Hexo supports <a href="http://learnboost.github.com/stylus/" target="_blank">Stylus</a> and <a href="http://visionmedia.github.com/nib/" target="_blank">nib</a>. You can install other plugins such as Less, CoffeeScript.</p>
+<blockquote class="note info"><strong class="note-title">Get config in Stylus File</strong><p>You can get global and theme configuration by using <code>hexo-config(key)</code> in stylus file.</p>
+</blockquote>
+
+
 
       </div>
       <footer id="page-footer">
-        <time id="page-footer-updated" datetime="2013-07-19T15:32:20.000Z">Last updated: Jul 19, 2013</time>
-        <a href="/hexo/docs/models.html" id="page-footer-prev" class="page-footer-link">Prev</a>
-        <a href="/hexo/docs/plugins.html" id="page-footer-next" class="page-footer-link">Next</a>
+        <time id="page-footer-updated" datetime="2013-08-25T02:06:10.000Z">Last updated: Aug 25, 2013</time>
+        <a href="/hexo/docs/permalinks.html" id="page-footer-prev" class="page-footer-link">Prev</a>
+        <a href="/hexo/docs/variables.html" id="page-footer-next" class="page-footer-link">Next</a>
       </footer>
     </div>
     <aside id="sidebar">
@@ -222,7 +249,7 @@
     
       <a href="/hexo/docs/permalinks.html" class="sidebar-link">Permalinks</a>
     
-      <a href="/hexo/docs/themes.html" class="sidebar-link">Themes</a>
+      <a href="/hexo/docs/themes.html" class="sidebar-link current">Themes</a>
     
       <a href="/hexo/docs/variables.html" class="sidebar-link">Variables</a>
     
@@ -237,7 +264,7 @@
     
       <a href="/hexo/docs/models.html" class="sidebar-link">Models</a>
     
-      <a href="/hexo/docs/events.html" class="sidebar-link current">Events</a>
+      <a href="/hexo/docs/events.html" class="sidebar-link">Events</a>
     
       <a href="/hexo/docs/plugins.html" class="sidebar-link">Plugins</a>
     

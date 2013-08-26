@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Events | Hexo</title>
+  <title>Generating | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="/hexo/css/style.css">
   <link href="//fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet" type="text/css">
@@ -57,7 +57,7 @@
   <header id="page-banner">
     <div class="outer">
       <div class="inner">
-        <h1 class="page-title">Events</h1>
+        <h1 class="page-title">Generating</h1>
       </div>
     </div>
   </header>
@@ -132,62 +132,37 @@
 </div>
     <div class="page-content">
       <div class="page-entry">
-        <p>Hexo inherits EventEmitter of Node.js. You can subscribe or publish specified events. For example:</p>
-<figure class="highlight lang-js"><pre>hexo.on(<span class="string">'ready'</span>, <span class="keyword">function</span>(){
-  console.log(<span class="string">'Hexo is ready to go!'</span>);
-});
+        <p>Generate static files with Hexo is quite easy and fast.</p>
+<figure class="highlight lang-bash"><pre>$ hexo generate
 </pre></figure>
 
-<h2>Methods</h2>
-<p>All methods except <code>emit</code> returns the emitter itself, so calls can be chained.</p>
-<h3>addListener(event, listener)</h3>
-<h3>on(event, listener)</h3>
-<p>Listens to the specific event.</p>
-<h3>once(event, listener)</h3>
-<p>Listens to the specified event <strong>only once</strong>. After the event is fired, the listener will be removed.</p>
-<h3>removeListener(event, listener)</h3>
-<p>Removes a listener from the specified event.</p>
-<h3>removeAllListeners([event])</h3>
-<p>Removes all listeners.</p>
-<h3>emit(event, [arg1], [arg2], […])</h3>
-<p>Fires the specified event. Returns <code>true</code> if event had listener, <code>false</code> otherwise.</p>
-<h2>Events</h2>
-<h3>ready</h3>
-<p>Called once Hexo is initialized.</p>
-<h3>generateBefore</h3>
-<p>Called before generating.</p>
-<h3>generateAfter</h3>
-<p>Called after generating.</p>
-<h3>processBefore</h3>
-<p>Called before processing.</p>
-<h3>processAfter</h3>
-<p>Called after processing.</p>
-<h3>new</h3>
-<p>Called after a new post file is created.</p>
-<table>
-<thead>
-<tr>
-<th>Argument</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>target</code></td>
-<td>Absolute path of the post file</td>
-</tr>
-</tbody>
-</table>
-<h3>server</h3>
-<p>Called after server is on.</p>
-<h3>exit</h3>
-<p>Called when Hexo exits.</p>
+<h3>Watch for File Changes</h3>
+<p>Hexo can watch for file changes and regenerate files immediately. </p>
+<figure class="highlight lang-bash"><pre>$ hexo generate --watch
+</pre></figure>
+
+<blockquote class="note info"><strong class="note-title">Restart Hexo after configuration changed</strong><p>Hexo doesn&#39;t watch for configuration file changes. You have to restart Hexo to make the new configurations take effects.</p>
+</blockquote>
+
+
+<h3>Multi-thread Generating</h3>
+<p>Hexo supports multi-thread generating since 2.0. To enable this feature, edit <code>_config.yml</code>.</p>
+<figure class="highlight lang-yaml"><pre><span class="attribute">multi_thread</span>: <span class="string">true</span>
+</pre></figure>
+
+<p>You can change how many threads to use. Just edit <code>multi_thread</code> with the number of threads. The number of threads is the number of CPU cores by default. It&#39;s not recommended to set any value higher than it.</p>
+<h3>Deploy After Generating</h3>
+<p>To deploy after generating, you can run one of the following commands. Both of them are equaled.</p>
+<figure class="highlight lang-bash"><pre>$ hexo generate --deploy
+$ hexo deploy --generate
+</pre></figure>
+
 
       </div>
       <footer id="page-footer">
-        <time id="page-footer-updated" datetime="2013-07-19T15:32:20.000Z">Last updated: Jul 19, 2013</time>
-        <a href="/hexo/docs/models.html" id="page-footer-prev" class="page-footer-link">Prev</a>
-        <a href="/hexo/docs/plugins.html" id="page-footer-next" class="page-footer-link">Next</a>
+        <time id="page-footer-updated" datetime="2013-07-20T02:58:38.000Z">Last updated: Jul 20, 2013</time>
+        <a href="/hexo/docs/writing.html" id="page-footer-prev" class="page-footer-link">Prev</a>
+        <a href="/hexo/docs/tag-plugins.html" id="page-footer-next" class="page-footer-link">Next</a>
       </footer>
     </div>
     <aside id="sidebar">
@@ -209,7 +184,7 @@
     
       <a href="/hexo/docs/writing.html" class="sidebar-link">Writing</a>
     
-      <a href="/hexo/docs/generating.html" class="sidebar-link">Generating</a>
+      <a href="/hexo/docs/generating.html" class="sidebar-link current">Generating</a>
     
       <a href="/hexo/docs/tag-plugins.html" class="sidebar-link">Tag Plugins</a>
     
@@ -237,7 +212,7 @@
     
       <a href="/hexo/docs/models.html" class="sidebar-link">Models</a>
     
-      <a href="/hexo/docs/events.html" class="sidebar-link current">Events</a>
+      <a href="/hexo/docs/events.html" class="sidebar-link">Events</a>
     
       <a href="/hexo/docs/plugins.html" class="sidebar-link">Plugins</a>
     

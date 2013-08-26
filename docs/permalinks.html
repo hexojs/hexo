@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Events | Hexo</title>
+  <title>Permalinks | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="/hexo/css/style.css">
   <link href="//fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet" type="text/css">
@@ -57,7 +57,7 @@
   <header id="page-banner">
     <div class="outer">
       <div class="inner">
-        <h1 class="page-title">Events</h1>
+        <h1 class="page-title">Permalinks</h1>
       </div>
     </div>
   </header>
@@ -132,62 +132,79 @@
 </div>
     <div class="page-content">
       <div class="page-entry">
-        <p>Hexo inherits EventEmitter of Node.js. You can subscribe or publish specified events. For example:</p>
-<figure class="highlight lang-js"><pre>hexo.on(<span class="string">'ready'</span>, <span class="keyword">function</span>(){
-  console.log(<span class="string">'Hexo is ready to go!'</span>);
-});
-</pre></figure>
-
-<h2>Methods</h2>
-<p>All methods except <code>emit</code> returns the emitter itself, so calls can be chained.</p>
-<h3>addListener(event, listener)</h3>
-<h3>on(event, listener)</h3>
-<p>Listens to the specific event.</p>
-<h3>once(event, listener)</h3>
-<p>Listens to the specified event <strong>only once</strong>. After the event is fired, the listener will be removed.</p>
-<h3>removeListener(event, listener)</h3>
-<p>Removes a listener from the specified event.</p>
-<h3>removeAllListeners([event])</h3>
-<p>Removes all listeners.</p>
-<h3>emit(event, [arg1], [arg2], […])</h3>
-<p>Fires the specified event. Returns <code>true</code> if event had listener, <code>false</code> otherwise.</p>
-<h2>Events</h2>
-<h3>ready</h3>
-<p>Called once Hexo is initialized.</p>
-<h3>generateBefore</h3>
-<p>Called before generating.</p>
-<h3>generateAfter</h3>
-<p>Called after generating.</p>
-<h3>processBefore</h3>
-<p>Called before processing.</p>
-<h3>processAfter</h3>
-<p>Called after processing.</p>
-<h3>new</h3>
-<p>Called after a new post file is created.</p>
+        <p>You can specify the permalinks for your site in <code>_config.yml</code> or in the front-matter for each post.</p>
+<h3>Variables</h3>
 <table>
 <thead>
 <tr>
-<th>Argument</th>
+<th>Variable</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>target</code></td>
-<td>Absolute path of the post file</td>
+<td><code>:year</code></td>
+<td>Published year of posts (4-digit)</td>
+</tr>
+<tr>
+<td><code>:month</code></td>
+<td>Published month of posts (2-digit)</td>
+</tr>
+<tr>
+<td><code>:day</code></td>
+<td>Published day of posts (2-digit)</td>
+</tr>
+<tr>
+<td><code>:title</code></td>
+<td>Filename</td>
+</tr>
+<tr>
+<td><code>:id</code></td>
+<td>Post ID</td>
+</tr>
+<tr>
+<td><code>:category</code></td>
+<td>Categories. If the post is uncategorized, it&#39;ll be <code>category_dir</code> setting.</td>
 </tr>
 </tbody>
 </table>
-<h3>server</h3>
-<p>Called after server is on.</p>
-<h3>exit</h3>
-<p>Called when Hexo exits.</p>
+<h3>Examples</h3>
+<p>Given a post named <code>hello-world.md</code> in <code>source/_posts</code> folder with   the following content.</p>
+<figure class="highlight lang-yaml"><pre><span class="title">title</span>: <span class="type">Hello</span> <span class="type">World</span>
+<span class="title">date</span>: <span class="number">2013</span>-<span class="number">07</span>-<span class="number">14</span> <span class="number">17</span>:<span class="number">01</span>:<span class="number">34</span>
+<span class="title">categories</span>: 
+- foo
+- bar
+</pre></figure>
+
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>:year/:month/:day/:title/</code></td>
+<td>2013/07/14/hello-world</td>
+</tr>
+<tr>
+<td><code>:year-:month-:day-:title.html</code></td>
+<td>2013-07-14-hello-world.html</td>
+</tr>
+<tr>
+<td><code>:category/:title</code></td>
+<td>foo/bar/hello-world</td>
+</tr>
+</tbody>
+</table>
 
       </div>
       <footer id="page-footer">
-        <time id="page-footer-updated" datetime="2013-07-19T15:32:20.000Z">Last updated: Jul 19, 2013</time>
-        <a href="/hexo/docs/models.html" id="page-footer-prev" class="page-footer-link">Prev</a>
-        <a href="/hexo/docs/plugins.html" id="page-footer-next" class="page-footer-link">Next</a>
+        <time id="page-footer-updated" datetime="2013-08-24T17:27:53.000Z">Last updated: Aug 25, 2013</time>
+        <a href="/hexo/docs/deployment.html" id="page-footer-prev" class="page-footer-link">Prev</a>
+        <a href="/hexo/docs/themes.html" id="page-footer-next" class="page-footer-link">Next</a>
       </footer>
     </div>
     <aside id="sidebar">
@@ -220,7 +237,7 @@
   
     <strong class="sidebar-title">Customization</strong>
     
-      <a href="/hexo/docs/permalinks.html" class="sidebar-link">Permalinks</a>
+      <a href="/hexo/docs/permalinks.html" class="sidebar-link current">Permalinks</a>
     
       <a href="/hexo/docs/themes.html" class="sidebar-link">Themes</a>
     
@@ -237,7 +254,7 @@
     
       <a href="/hexo/docs/models.html" class="sidebar-link">Models</a>
     
-      <a href="/hexo/docs/events.html" class="sidebar-link current">Events</a>
+      <a href="/hexo/docs/events.html" class="sidebar-link">Events</a>
     
       <a href="/hexo/docs/plugins.html" class="sidebar-link">Plugins</a>
     

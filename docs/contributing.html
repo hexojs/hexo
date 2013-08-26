@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Events | Hexo</title>
+  <title>Contributing | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="/hexo/css/style.css">
   <link href="//fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet" type="text/css">
@@ -57,7 +57,7 @@
   <header id="page-banner">
     <div class="outer">
       <div class="inner">
-        <h1 class="page-title">Events</h1>
+        <h1 class="page-title">Contributing</h1>
       </div>
     </div>
   </header>
@@ -132,62 +132,90 @@
 </div>
     <div class="page-content">
       <div class="page-entry">
-        <p>Hexo inherits EventEmitter of Node.js. You can subscribe or publish specified events. For example:</p>
-<figure class="highlight lang-js"><pre>hexo.on(<span class="string">'ready'</span>, <span class="keyword">function</span>(){
-  console.log(<span class="string">'Hexo is ready to go!'</span>);
-});
+        <p>It‘s great to hear you’d like to make Hexo more awesome! When modifying files, please keep the following in your mind.</p>
+<p><strong>JavaScript:</strong></p>
+<ul>
+<li>Follow <a href="http://google-styleguide.googlecode.com/svn/trunk/javascriptguide.xml" target="_blank">Google JavaScript Style Guide</a>.</li>
+<li>Use soft-tabs with a two space indent.</li>
+<li>Don&#39;t put commas first.</li>
+</ul>
+<p>Example:</p>
+<figure class="highlight lang-js"><pre><span class="keyword">var</span> fs = require(<span class="string">'fs'</span>),
+  path = require(<span class="string">'path'</span>);
+  
+<span class="keyword">var</span> doSomething = <span class="keyword">function</span>(callback){
+  callback();
+};
 </pre></figure>
 
-<h2>Methods</h2>
-<p>All methods except <code>emit</code> returns the emitter itself, so calls can be chained.</p>
-<h3>addListener(event, listener)</h3>
-<h3>on(event, listener)</h3>
-<p>Listens to the specific event.</p>
-<h3>once(event, listener)</h3>
-<p>Listens to the specified event <strong>only once</strong>. After the event is fired, the listener will be removed.</p>
-<h3>removeListener(event, listener)</h3>
-<p>Removes a listener from the specified event.</p>
-<h3>removeAllListeners([event])</h3>
-<p>Removes all listeners.</p>
-<h3>emit(event, [arg1], [arg2], […])</h3>
-<p>Fires the specified event. Returns <code>true</code> if event had listener, <code>false</code> otherwise.</p>
-<h2>Events</h2>
-<h3>ready</h3>
-<p>Called once Hexo is initialized.</p>
-<h3>generateBefore</h3>
-<p>Called before generating.</p>
-<h3>generateAfter</h3>
-<p>Called after generating.</p>
-<h3>processBefore</h3>
-<p>Called before processing.</p>
-<h3>processAfter</h3>
-<p>Called after processing.</p>
-<h3>new</h3>
-<p>Called after a new post file is created.</p>
-<table>
-<thead>
-<tr>
-<th>Argument</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>target</code></td>
-<td>Absolute path of the post file</td>
-</tr>
-</tbody>
-</table>
-<h3>server</h3>
-<p>Called after server is on.</p>
-<h3>exit</h3>
-<p>Called when Hexo exits.</p>
+<p><strong>CSS:</strong></p>
+<ul>
+<li>Use soft-tabs with a two space indent.</li>
+<li>Put spaces after <code>:</code> in property declarations.</li>
+<li>Put mixin first.</li>
+<li>Always use double quotations.</li>
+<li>Flat structure.</li>
+</ul>
+<p>Example:</p>
+<figure class="highlight lang-css"><pre><span class="id">#foo</span>
+  <span class="tag">clearfix</span>()
+  <span class="tag">color</span>: <span class="id">#444</span>
+  <span class="tag">background</span>: <span class="tag">url</span>("<span class="tag">background</span><span class="class">.png</span>")
+</pre></figure>
+
+<p><strong>HTML:</strong></p>
+<ul>
+<li>Use soft-tabs with a two space indent.</li>
+<li>Use double quotations unless in <code>&lt;% code %&gt;</code> tag.</li>
+<li>Use HTML5 doctype.</li>
+</ul>
+<h2>Development</h2>
+<ol>
+<li>Fork the Hexo repository.</li>
+<li><p>Clone the repository to your computer.</p>
+ <figure class="highlight lang-bash"><pre>$ git clone git://github.com/&lt;username&gt;/hexo.git
+</pre></figure>
+</li>
+<li><p>Install dependencies.</p>
+ <figure class="highlight lang-bash"><pre>$ make install
+</pre></figure>
+</li>
+<li><p>Create a new branch and start hacking.</p>
+</li>
+<li>Push the branch.</li>
+<li>Create a pull request on GitHub.</li>
+</ol>
+<blockquote class="note warn"><strong class="note-title">Don't change version in package.json</strong><p>When making changes on Hexo, don&#39;t change version number in <code>package.json</code>.</p>
+</blockquote>
+
+
+<h2>Updating Documentation</h2>
+<p>The Hexo documentation is open-source and you can find it on <code>site</code> branch of Hexo repository. Here&#39;s how you can make the documentation better:</p>
+<ol>
+<li>Fork the Hexo repository.</li>
+<li><p>Clone the repository to your computer.</p>
+ <figure class="highlight lang-bash"><pre>$ git clone -b site git://github.com/&lt;username&gt;/hexo.git
+</pre></figure>
+</li>
+<li><p>Create a new branch and start editing.</p>
+</li>
+<li>See live changes with <code>hexo server</code>.</li>
+<li>Push the branch.</li>
+<li>Create a pull request on GitHub.</li>
+</ol>
+<h2>Reporting an Issue</h2>
+<p>When you come across problems, try to find the solution <a href="troubleshooting.html">here</a>. If the problem still exists, please do the following:</p>
+<ol>
+<li>Run it again in debug mode.</li>
+<li>Run <code>hexo version</code> to check the version info</li>
+<li>Post both debug message and version info on GitHub.</li>
+</ol>
 
       </div>
       <footer id="page-footer">
-        <time id="page-footer-updated" datetime="2013-07-19T15:32:20.000Z">Last updated: Jul 19, 2013</time>
-        <a href="/hexo/docs/models.html" id="page-footer-prev" class="page-footer-link">Prev</a>
-        <a href="/hexo/docs/plugins.html" id="page-footer-next" class="page-footer-link">Next</a>
+        <time id="page-footer-updated" datetime="2013-08-24T17:47:33.000Z">Last updated: Aug 25, 2013</time>
+        <a href="/hexo/docs/troubleshooting.html" id="page-footer-prev" class="page-footer-link">Prev</a>
+        
       </footer>
     </div>
     <aside id="sidebar">
@@ -237,7 +265,7 @@
     
       <a href="/hexo/docs/models.html" class="sidebar-link">Models</a>
     
-      <a href="/hexo/docs/events.html" class="sidebar-link current">Events</a>
+      <a href="/hexo/docs/events.html" class="sidebar-link">Events</a>
     
       <a href="/hexo/docs/plugins.html" class="sidebar-link">Plugins</a>
     
@@ -246,7 +274,7 @@
     
       <a href="/hexo/docs/troubleshooting.html" class="sidebar-link">Troubleshooting</a>
     
-      <a href="/hexo/docs/contributing.html" class="sidebar-link">Contributing</a>
+      <a href="/hexo/docs/contributing.html" class="sidebar-link current">Contributing</a>
     
   
 </aside>

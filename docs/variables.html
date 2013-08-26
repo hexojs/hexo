@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Events | Hexo</title>
+  <title>Variables | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="/hexo/css/style.css">
   <link href="//fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet" type="text/css">
@@ -57,7 +57,7 @@
   <header id="page-banner">
     <div class="outer">
       <div class="inner">
-        <h1 class="page-title">Events</h1>
+        <h1 class="page-title">Variables</h1>
       </div>
     </div>
   </header>
@@ -132,62 +132,271 @@
 </div>
     <div class="page-content">
       <div class="page-entry">
-        <p>Hexo inherits EventEmitter of Node.js. You can subscribe or publish specified events. For example:</p>
-<figure class="highlight lang-js"><pre>hexo.on(<span class="string">'ready'</span>, <span class="keyword">function</span>(){
-  console.log(<span class="string">'Hexo is ready to go!'</span>);
-});
-</pre></figure>
-
-<h2>Methods</h2>
-<p>All methods except <code>emit</code> returns the emitter itself, so calls can be chained.</p>
-<h3>addListener(event, listener)</h3>
-<h3>on(event, listener)</h3>
-<p>Listens to the specific event.</p>
-<h3>once(event, listener)</h3>
-<p>Listens to the specified event <strong>only once</strong>. After the event is fired, the listener will be removed.</p>
-<h3>removeListener(event, listener)</h3>
-<p>Removes a listener from the specified event.</p>
-<h3>removeAllListeners([event])</h3>
-<p>Removes all listeners.</p>
-<h3>emit(event, [arg1], [arg2], […])</h3>
-<p>Fires the specified event. Returns <code>true</code> if event had listener, <code>false</code> otherwise.</p>
-<h2>Events</h2>
-<h3>ready</h3>
-<p>Called once Hexo is initialized.</p>
-<h3>generateBefore</h3>
-<p>Called before generating.</p>
-<h3>generateAfter</h3>
-<p>Called after generating.</p>
-<h3>processBefore</h3>
-<p>Called before processing.</p>
-<h3>processAfter</h3>
-<p>Called after processing.</p>
-<h3>new</h3>
-<p>Called after a new post file is created.</p>
+        <h3>Global Variables</h3>
 <table>
 <thead>
 <tr>
-<th>Argument</th>
+<th>Variable</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>target</code></td>
-<td>Absolute path of the post file</td>
+<td><code>site</code></td>
+<td>Sitewide information.</td>
+</tr>
+<tr>
+<td><code>page</code></td>
+<td>Page specific information and custom variables set in front-matter.</td>
+</tr>
+<tr>
+<td><code>config</code></td>
+<td>Site configuration</td>
+</tr>
+<tr>
+<td><code>theme</code></td>
+<td>Theme configuration. Inherits from site configuration.</td>
+</tr>
+<tr>
+<td><code>_</code> (single underscore)</td>
+<td><a href="http://lodash.com/" target="_blank">Lodash</a> library</td>
+</tr>
+<tr>
+<td><code>__</code> (double underscores)</td>
+<td>Internationalization (i18n) utility. See below for detail.</td>
+</tr>
+<tr>
+<td><code>path</code></td>
+<td>Path of current page</td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td>Full URL of current page</td>
 </tr>
 </tbody>
 </table>
-<h3>server</h3>
-<p>Called after server is on.</p>
-<h3>exit</h3>
-<p>Called when Hexo exits.</p>
+<blockquote class="note tip"><strong class="note-title">Custom Variables</strong><p>You can also use front-matter in layouts just like writing posts!</p>
+</blockquote>
+
+
+<h3>Site Variables</h3>
+<p>All of the following variables are [Data Model].</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>site.posts</code></td>
+<td>All posts</td>
+</tr>
+<tr>
+<td><code>site.pages</code></td>
+<td>All pages</td>
+</tr>
+<tr>
+<td><code>site.categories</code></td>
+<td>All categories</td>
+</tr>
+<tr>
+<td><code>site.tags</code></td>
+<td>All tags</td>
+</tr>
+</tbody>
+</table>
+<h3>Page Vairables</h3>
+<p><strong>Article (post, page, …)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>page.title</code></td>
+<td>Article title</td>
+</tr>
+<tr>
+<td><code>page.date</code></td>
+<td>Article created date (<a href="http://momentjs.com/" target="_blank">Moment.js</a> object)</td>
+</tr>
+<tr>
+<td><code>page.updated</code></td>
+<td>Article last updated date (<a href="http://momentjs.com/" target="_blank">Moment.js</a> object)</td>
+</tr>
+<tr>
+<td><code>page.categories</code></td>
+<td>All categories of the article</td>
+</tr>
+<tr>
+<td><code>page.tags</code></td>
+<td>All tags of the article</td>
+</tr>
+<tr>
+<td><code>page.comments</code></td>
+<td>Comment enabled or not</td>
+</tr>
+<tr>
+<td><code>page.layout</code></td>
+<td>Layout name.</td>
+</tr>
+<tr>
+<td><code>page.content</code></td>
+<td>The full processed content of the article</td>
+</tr>
+<tr>
+<td><code>page.excerpt</code></td>
+<td>The processed excerpt of the article</td>
+</tr>
+<tr>
+<td><code>page.source</code></td>
+<td>The path of the source file</td>
+</tr>
+<tr>
+<td><code>page.full_source</code></td>
+<td>Full path of the source file</td>
+</tr>
+<tr>
+<td><code>page.path</code></td>
+<td>The URL of the article without root URL. We usually use <code>config.root + page.path</code> in theme.</td>
+</tr>
+<tr>
+<td><code>page.permalink</code></td>
+<td>Full URL of the article</td>
+</tr>
+<tr>
+<td><code>page.prev</code></td>
+<td>The previous post. <code>null</code> if the post is the first post.</td>
+</tr>
+<tr>
+<td><code>page.next</code></td>
+<td>The next post. <code>null</code> if the post is the last post.</td>
+</tr>
+<tr>
+<td><code>page.raw</code></td>
+<td>The raw data of the article</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="note info"><strong class="note-title">Custom front-matter</strong><p>The front-matter in posts will be available in <code>page</code>.</p>
+</blockquote>
+
+
+<p><strong>Home (index)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>page.per_page</code></td>
+<td>Posts displayed per page</td>
+</tr>
+<tr>
+<td><code>page.total</code></td>
+<td>Total number of posts</td>
+</tr>
+<tr>
+<td><code>page.current</code></td>
+<td>Current page number</td>
+</tr>
+<tr>
+<td><code>page.current_url</code></td>
+<td>The URL of current page</td>
+</tr>
+<tr>
+<td><code>page.posts</code></td>
+<td>Posts in this page ([Data Model])</td>
+</tr>
+<tr>
+<td><code>page.prev</code></td>
+<td>Previous page number. <code>0</code> if the current page is the first.</td>
+</tr>
+<tr>
+<td><code>page.prev_link</code></td>
+<td>The URL of previous page. <code>&#39;&#39;</code> if the current page is the first.</td>
+</tr>
+<tr>
+<td><code>page.next</code></td>
+<td>Next page number. <code>0</code> if the current page is the last.</td>
+</tr>
+<tr>
+<td><code>page.next_link</code></td>
+<td>The URL of next page. <code>&#39;&#39;</code> if the current page is the first.</td>
+</tr>
+<tr>
+<td><code>page.path</code></td>
+<td>The URL of current page without root URL. We usually use <code>config.root + page.path</code> in theme.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Archive (archive):</strong> Same as <code>index</code> layout but add the following variables.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>archive</code></td>
+<td>Equals <code>true</code></td>
+</tr>
+<tr>
+<td><code>year</code></td>
+<td>Archive year (4-digit)</td>
+</tr>
+<tr>
+<td><code>month</code></td>
+<td>Archive month (2-digit without leading zeros)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Category (category):</strong> Same as <code>index</code> layout but add the following variables.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>category</code></td>
+<td>Category name</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tag (tag):</strong> Same as <code>index</code> layout but add the following variables.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tag</code></td>
+<td>Tag name</td>
+</tr>
+</tbody>
+</table>
 
       </div>
       <footer id="page-footer">
-        <time id="page-footer-updated" datetime="2013-07-19T15:32:20.000Z">Last updated: Jul 19, 2013</time>
-        <a href="/hexo/docs/models.html" id="page-footer-prev" class="page-footer-link">Prev</a>
-        <a href="/hexo/docs/plugins.html" id="page-footer-next" class="page-footer-link">Next</a>
+        <time id="page-footer-updated" datetime="2013-08-24T17:30:50.000Z">Last updated: Aug 25, 2013</time>
+        <a href="/hexo/docs/themes.html" id="page-footer-prev" class="page-footer-link">Prev</a>
+        <a href="/hexo/docs/pagination.html" id="page-footer-next" class="page-footer-link">Next</a>
       </footer>
     </div>
     <aside id="sidebar">
@@ -224,7 +433,7 @@
     
       <a href="/hexo/docs/themes.html" class="sidebar-link">Themes</a>
     
-      <a href="/hexo/docs/variables.html" class="sidebar-link">Variables</a>
+      <a href="/hexo/docs/variables.html" class="sidebar-link current">Variables</a>
     
       <a href="/hexo/docs/pagination.html" class="sidebar-link">Pagination</a>
     
@@ -237,7 +446,7 @@
     
       <a href="/hexo/docs/models.html" class="sidebar-link">Models</a>
     
-      <a href="/hexo/docs/events.html" class="sidebar-link current">Events</a>
+      <a href="/hexo/docs/events.html" class="sidebar-link">Events</a>
     
       <a href="/hexo/docs/plugins.html" class="sidebar-link">Plugins</a>
     

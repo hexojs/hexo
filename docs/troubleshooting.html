@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Events | Hexo</title>
+  <title>Troubleshooting | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="stylesheet" href="/hexo/css/style.css">
   <link href="//fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet" type="text/css">
@@ -57,7 +57,7 @@
   <header id="page-banner">
     <div class="outer">
       <div class="inner">
-        <h1 class="page-title">Events</h1>
+        <h1 class="page-title">Troubleshooting</h1>
       </div>
     </div>
   </header>
@@ -132,62 +132,56 @@
 </div>
     <div class="page-content">
       <div class="page-entry">
-        <p>Hexo inherits EventEmitter of Node.js. You can subscribe or publish specified events. For example:</p>
-<figure class="highlight lang-js"><pre>hexo.on(<span class="string">'ready'</span>, <span class="keyword">function</span>(){
-  console.log(<span class="string">'Hexo is ready to go!'</span>);
-});
+        <p>You may encounter some problems when using Hexo. The following are the solutions to the problems that people frequently asked. If you can&#39;t find the answer here, run again in debug mode and <a href="https://github.com/tommy351/hexo/issues/new" target="_blank">report an issue</a> on GitHub.</p>
+<h2>YAML Parsing Error</h2>
+<figure class="highlight lang-bash"><pre>/usr/local/lib/node_modules/hexo/node_modules/yamljs/bin/yaml.js:1219
+throw new YamlParseException(<span class="string">'Unable to parse.'</span>, this.getRealCurrentLineNb
+^
+YamlParseException: Unable to parse.
 </pre></figure>
 
-<h2>Methods</h2>
-<p>All methods except <code>emit</code> returns the emitter itself, so calls can be chained.</p>
-<h3>addListener(event, listener)</h3>
-<h3>on(event, listener)</h3>
-<p>Listens to the specific event.</p>
-<h3>once(event, listener)</h3>
-<p>Listens to the specified event <strong>only once</strong>. After the event is fired, the listener will be removed.</p>
-<h3>removeListener(event, listener)</h3>
-<p>Removes a listener from the specified event.</p>
-<h3>removeAllListeners([event])</h3>
-<p>Removes all listeners.</p>
-<h3>emit(event, [arg1], [arg2], […])</h3>
-<p>Fires the specified event. Returns <code>true</code> if event had listener, <code>false</code> otherwise.</p>
-<h2>Events</h2>
-<h3>ready</h3>
-<p>Called once Hexo is initialized.</p>
-<h3>generateBefore</h3>
-<p>Called before generating.</p>
-<h3>generateAfter</h3>
-<p>Called after generating.</p>
-<h3>processBefore</h3>
-<p>Called before processing.</p>
-<h3>processAfter</h3>
-<p>Called after processing.</p>
-<h3>new</h3>
-<p>Called after a new post file is created.</p>
-<table>
-<thead>
-<tr>
-<th>Argument</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>target</code></td>
-<td>Absolute path of the post file</td>
-</tr>
-</tbody>
-</table>
-<h3>server</h3>
-<p>Called after server is on.</p>
-<h3>exit</h3>
-<p>Called when Hexo exits.</p>
+<p>When you encounter <code>YamlParseException</code>, check your configuration and front-matter in the post files. Make sure they are written in correct YAML format: use spaces instead of tabs and add a space before colons. For example:</p>
+<figure class="highlight lang-yaml"><pre><span class="method">foo:</span> <span class="number">1</span>
+<span class="method">bar:</span>
+  <span class="method">baz:</span> <span class="number">2</span>
+</pre></figure>
+
+<h2>EMFILE Error</h2>
+<figure class="highlight lang-bash"><pre>Error: EMFILE, too many open files
+</pre></figure>
+
+<p>Though Node.js has non-blocking I/O, the number of synchronous I/O is still limited by system. You may come across EMFILE error when trying to generate a large number of files. You can try to run the following command to increase the number of synchronous I/O.</p>
+<figure class="highlight lang-bash"><pre>$ ulimit -n 10000
+</pre></figure>
+
+<h2>GitHub Deployment Problems</h2>
+<figure class="highlight lang-bash"><pre>fatal: <span class="string">'username.github.io'</span> does not appear to be a git repository
+</pre></figure>
+
+<p>Make sure you have <a href="https://help.github.com/articles/set-up-git" target="_blank">set up git</a> on your computer and try to use HTTPS repository URL instead.</p>
+<h2>Server Problems</h2>
+<figure class="highlight lang-bash"><pre>Error: listen EADDRINUSE
+</pre></figure>
+
+<p>You may open Hexo server twice or there&#39;s other applications using the same port. Try to edit <code>port</code> setting or start Hexo server with <code>-p</code> flag.</p>
+<figure class="highlight lang-bash"><pre>$ hexo server -p 5000
+</pre></figure>
+
+<h2>Plugin Installation Problems</h2>
+<figure class="highlight lang-bash"><pre>npm WARN package.json plugin-name@0.0.1 No read me data.
+</pre></figure>
+
+<p>This error comes out when you install a plugin which doesn‘t provide read me file. Don’t be scared. This error won&#39;t cause any problems.</p>
+<figure class="highlight lang-bash"><pre>npm ERR! node-waf configure build
+</pre></figure>
+
+<p>This error may occurred when you trying to install a plugin written in C, C++ or other non-JavaScript language. Make sure you have installed compiler on your computer.</p>
 
       </div>
       <footer id="page-footer">
-        <time id="page-footer-updated" datetime="2013-07-19T15:32:20.000Z">Last updated: Jul 19, 2013</time>
-        <a href="/hexo/docs/models.html" id="page-footer-prev" class="page-footer-link">Prev</a>
-        <a href="/hexo/docs/plugins.html" id="page-footer-next" class="page-footer-link">Next</a>
+        <time id="page-footer-updated" datetime="2013-07-21T02:06:34.000Z">Last updated: Jul 21, 2013</time>
+        <a href="/hexo/docs/plugins.html" id="page-footer-prev" class="page-footer-link">Prev</a>
+        <a href="/hexo/docs/contributing.html" id="page-footer-next" class="page-footer-link">Next</a>
       </footer>
     </div>
     <aside id="sidebar">
@@ -237,14 +231,14 @@
     
       <a href="/hexo/docs/models.html" class="sidebar-link">Models</a>
     
-      <a href="/hexo/docs/events.html" class="sidebar-link current">Events</a>
+      <a href="/hexo/docs/events.html" class="sidebar-link">Events</a>
     
       <a href="/hexo/docs/plugins.html" class="sidebar-link">Plugins</a>
     
   
     <strong class="sidebar-title">Miscellaneous</strong>
     
-      <a href="/hexo/docs/troubleshooting.html" class="sidebar-link">Troubleshooting</a>
+      <a href="/hexo/docs/troubleshooting.html" class="sidebar-link current">Troubleshooting</a>
     
       <a href="/hexo/docs/contributing.html" class="sidebar-link">Contributing</a>
     
