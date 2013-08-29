@@ -7,6 +7,7 @@
     "hexo": "./bin/hexo"
   },
   "scripts": {
+    "prepublish": "make build",
     "test": "node test"
   },
   "directories": {
