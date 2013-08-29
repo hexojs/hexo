@@ -226,11 +226,11 @@ This plugin helps you insert a Vimeo video in posts.
 
 ## Raw
 
-If there're some contents can't be processed in posts, you can wrapped it with `raw` tag.
+If there're some contents can't be processed in posts, you can wrapped it with `rawblock` tag.
 
 {% raw %}
-<figure class="highlight"><pre>{% raw %}
+<figure class="highlight"><pre>{% rawblock %}
 content
-{% endraw /%}
+{% endrawblock /%}
 </pre></figure>
 {% endraw %}
