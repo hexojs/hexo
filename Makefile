@@ -1,6 +1,6 @@
 REPORTER ?= dot
 
-build: install css
+build: css
 
 test:
 	node test --reporter $(REPORTER)
