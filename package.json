@@ -1,12 +1,13 @@
 {
   "name": "hexo",
-  "version": "2.0.1",
+  "version": "2.0.6",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
   "preferGlobal": true,
   "bin": {
     "hexo": "./bin/hexo"
   },
   "scripts": {
+    "prepublish": "make build",
     "test": "node test"
   },
   "directories": {
