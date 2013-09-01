@@ -1,0 +1,26 @@
+input-success = hsl(100, 40%, 50%)
+input-warning = hsl(40, 80%, 60%)
+input-error = hsl(0, 70%, 75%)
+input-border = #ddd
+
+.input
+  border: 2px solid input-border
+  height: 30px
+  line-height: @height - 5px * 2
+  padding: 5px 10px
+  width: 100%
+  outline: none
+  font: 14px font-sans
+  color: #444
+  &:focus
+    border-color: darken(input-border, 15%)
+  &.disabled, &:disabled
+    background: #eee
+    color: color-grey
+    cursor: not-allowed
+  &.success
+    border-color: input-success
+  &.warning
+    border-color: input-warning
+  &.error
+    border-color: input-error
