@@ -1,6 +1,6 @@
 REPORTER ?= dot
 
-build: css
+build: css js
 
 test:
 	node test --reporter $(REPORTER)
@@ -11,5 +11,10 @@ install:
 
 css:
 	node build/css
+
+js: bower
+
+bower:
+	./node_modules/.bin/bower install
 
 .PHONY: test css

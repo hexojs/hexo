@@ -50,6 +50,7 @@
   "devDependencies": {
     "mocha": "*",
     "should": "*",
-    "cheerio": "*"
+    "cheerio": "*",
+    "bower": "*"
   }
 }
