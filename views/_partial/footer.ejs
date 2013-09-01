@@ -1,3 +1,16 @@
+<script src="<%- base %>js/lib/script.js/dist/script.min.js"></script>
 <script>
   var __auth_token = '<%= auth_token %>';
+  $script.path('<%- base %>js/');
+  $script([
+    'lib/angular/angular.min',
+    'lib/angular-ui-router/release/angular-ui-router.min',
+    'app',
+    'services',
+    'controllers',
+    'filters',
+    'directives'
+  ], function(){
+    angular.bootstrap(document, ['hexo']);
+  });
 </script>

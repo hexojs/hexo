@@ -1,0 +1,1 @@
+angular.module('hexo', ['ui.router', 'hexo.services', 'hexo.controllers', 'hexo.filters', 'hexo.directives']);
