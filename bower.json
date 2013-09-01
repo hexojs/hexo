@@ -4,6 +4,6 @@
   "dependencies": {
     "angular": "1.0.x",
     "angular-ui-router": "0.0.1",
-    "script.js": "*"
+    "requirejs": "*"
   }
 }

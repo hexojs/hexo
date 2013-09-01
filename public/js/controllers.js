@@ -1,1 +1,5 @@
-angular.module('hexo.controllers', []);
+define([
+  'angular'
+], function(angular){
+  return angular.module('hexo.controllers', []);
+});

@@ -1,1 +1,5 @@
-angular.module('hexo.services', []);
+define([
+  'angular'
+], function(angular){
+  return angular.module('hexo.services', []);
+});

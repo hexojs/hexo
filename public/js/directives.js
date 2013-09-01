@@ -1,1 +1,5 @@
-angular.module('hexo.directives', []);
+define([
+  'angular'
+], function(angular){
+  return angular.module('hexo.directives', []);
+});

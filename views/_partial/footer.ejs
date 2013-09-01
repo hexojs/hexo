@@ -1,16 +1,23 @@
-<script src="<%- base %>js/lib/script.js/dist/script.min.js"></script>
+<script src="<%- base %>js/lib/requirejs/require.js"></script>
 <script>
-  var __auth_token = '<%= auth_token %>';
-  $script.path('<%- base %>js/');
-  $script([
-    'lib/angular/angular.min',
-    'lib/angular-ui-router/release/angular-ui-router.min',
-    'app',
-    'services',
-    'controllers',
-    'filters',
-    'directives'
-  ], function(){
+  require.config({
+    baseUrl: '<%- base %>js/',
+    paths: {
+      angular: 'lib/angular/angular.min'
+    },
+    shim: {
+      angular: {
+        exports: 'angular'
+      }
+    },
+    config: {
+      app: {
+        auth_token: '<%= auth_token %>'
+      }
+    }
+  });
+
+  require(['angular', 'app'], function(angular){
     angular.bootstrap(document, ['hexo']);
   });
 </script>
