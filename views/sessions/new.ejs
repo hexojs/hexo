@@ -1,0 +1,18 @@
+layout: layout/plain
+title: Login
+style: sessions
+---
+
+<div class="modal">
+  <div class="modal-dialog">
+    <div class="modal-content-wrap">
+      <div id="login-form-wrap">
+        <form method="POST" accept-charset="utf-8" id="login-form">
+          <input type="password" name="password" class="input<% if (invalid){ %> error<% } %>" placeholder="Password">
+          <input type="submit" value="Log in" class="btn btn-default btn-full" id="login-submit-btn">
+          <input type="hidden" value="<%= _csrf %>" name="_csrf">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

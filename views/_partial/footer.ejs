@@ -1,0 +1,23 @@
+<script src="<%- base %>js/lib/requirejs/require.js"></script>
+<script>
+  require.config({
+    baseUrl: '<%- base %>js/',
+    paths: {
+      angular: 'lib/angular/angular.min'
+    },
+    shim: {
+      angular: {
+        exports: 'angular'
+      }
+    },
+    config: {
+      app: {
+        auth_token: '<%= auth_token %>'
+      }
+    }
+  });
+
+  require(['angular', 'app'], function(angular){
+    angular.bootstrap(document, ['hexo']);
+  });
+</script>

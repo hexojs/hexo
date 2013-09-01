@@ -1,0 +1,43 @@
+#header
+  padding: 40px 0
+
+#main-nav
+  text-transform: uppercase
+  font-family: font-title
+  font-size: 18px
+  line-height: @font-size
+  font-weight: bold
+  position: relative
+
+#main-nav-current
+  text-shadow: 0 1px #eee
+  position: relative
+  padding-right: 20px
+  cursor: pointer
+  &:before
+    content: ""
+    border-style: solid
+    border-width: 5px
+    border-color: #666 transparent transparent
+    position: absolute
+    right: 0
+    top: 8px
+
+#main-nav-list
+  position: absolute
+  top: -16px
+  left: -16px
+  background: #fff
+  border: 1px solid #ccc
+  padding: 5px 0
+  display: none
+
+.main-nav-link
+  padding: 10px 15px
+  display: block
+  &:hover
+    background: #ddd
+
+.main-nav-sep
+  border-top: 1px solid color-border
+  margin: 5px 0

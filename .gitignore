@@ -2,5 +2,6 @@
 node_modules
 .sass-cache
 tmp
-public/css
+public/css/*.css
+public/js/lib
 debug.log

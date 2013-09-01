@@ -4,13 +4,11 @@
   <meta charset="utf-8">
   <title><%= title %></title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <link rel="stylesheet" href="<%- base %>css/app.css">
+  <link rel="stylesheet" href="<%- base %>css/<%= style %>.css">
   <link href="//fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet" type="text/css">
   <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 <body>
-  <%- partial('_partial/header') %>
   <%- body %>
-  <%- partial('_partial/footer') %>
 </body>
 </html>

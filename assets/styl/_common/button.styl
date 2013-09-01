@@ -1,0 +1,80 @@
+button-default = #ddd
+button-primary = hsl(203, 80%, 65%)
+button-danger = hsl(0, 70%, 65%)
+button-warning = hsl(40, 80%, 60%)
+button-success = hsl(100, 60%, 50%)
+
+.btn
+  cursor: pointer
+  font-size: 14px
+  font-family: font-title
+  font-weight: 300
+  user-select: none
+  white-space: nowrap
+  margin: 0
+  padding: 0 15px
+  height: 30px
+  line-height: @height
+  box-sizing: border-box
+  outline: none
+  border: none
+  position: relative
+  border-style: solid
+  border-width: 0 0 2px
+  text-transform: uppercase
+  &:active
+    top: 2px
+    border-bottom-color: transparent
+  &.disabled, &:disabled
+    opacity: 0.8
+    pointer-events: none
+
+.btn-default
+  background: button-default
+  border-bottom-color: darken(@background, 10%)
+  color: #777
+  &:hover
+    background: darken(@background, 5%)
+
+.btn-primary
+  background: button-primary
+  border-bottom-color: darken(@background, 15%)
+  color: #fff
+  &:hover
+    background: darken(@background, 10%)
+
+.btn-danger
+  background: button-danger
+  border-bottom-color: darken(@background, 15%)
+  color: #fff
+  &:hover
+    background: darken(@background, 10%)
+
+.btn-warning
+  background: button-warning
+  border-bottom-color: darken(@background, 15%)
+  color: #fff
+  &:hover
+    background: darken(@background, 10%)
+
+.btn-success
+  background: button-success
+  border-bottom-color: darken(@background, 15%)
+  color: #fff
+  &:hover
+    background: darken(@background, 10%)
+
+.btn-full
+  width: 100%
+
+.btn-small
+  font-size: 12px
+  height: 25px
+  line-height: @height
+  padding: 0 10px
+
+.btn-large
+  font-size: 18px
+  height: 40px
+  line-height: @height
+  padding: 0 20px
