@@ -1,5 +1,7 @@
 # Hexo
 
+[![Build Status](https://travis-ci.org/tommy351/hexo.png?branch=master)](https://travis-ci.org/tommy351/hexo)  [![NPM version](https://badge.fury.io/js/hexo.png)](http://badge.fury.io/js/hexo)
+
 A fast, simple & powerful blog framework, powered by [Node.js](http://nodejs.org).
 
 - [Docs](http://zespia.tw/hexo/docs/)
