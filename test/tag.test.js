@@ -400,8 +400,6 @@ describe('Tags', function(){
 
       $('.video-container').html().should.be.ok;
       $('iframe').attr('src').should.eql('http://player.vimeo.com/video/foo');
-      $('iframe').attr('width').should.eql('560');
-      $('iframe').attr('height').should.eql('315');
       $('iframe').attr('frameborder').should.eql('0');
       $('iframe').attr('allowfullscreen').should.eql('');
     });
@@ -415,8 +413,6 @@ describe('Tags', function(){
 
       $('.video-container').html().should.be.ok;
       $('iframe').attr('src').should.eql('http://www.youtube.com/embed/foo');
-      $('iframe').attr('width').should.eql('560');
-      $('iframe').attr('height').should.eql('315');
       $('iframe').attr('frameborder').should.eql('0');
       $('iframe').attr('allowfullscreen').should.eql('');
     });
