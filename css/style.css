@@ -98,7 +98,7 @@ a img {
 }
 body {
   width: 100%;
-  *zoom: 1;
+  zoom: 1;
 }
 body:before,
 body:after {
@@ -112,7 +112,7 @@ body {
   font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .outer {
-  *zoom: 1;
+  zoom: 1;
   max-width: 1045px;
   margin: 0 auto;
   padding: 0 25px;
@@ -128,11 +128,8 @@ body {
 .inner {
   display: inline;
   float: left;
-  overflow: hidden;
   width: 97.54901960784314%;
   margin: 0 1.2254901960784315%;
-  *width: 97.54901960784314% -correction;
-  *margin: 0 1.2254901960784315% -correction;
 }
 #header {
   background: #fff;
@@ -176,11 +173,8 @@ body {
   .main-nav-item {
     display: inline;
     float: left;
-    overflow: hidden;
     width: 22.54901960784314%;
     margin: 0 1.2254901960784315%;
-    *width: 22.54901960784314% -correction;
-    *margin: 0 1.2254901960784315% -correction;
     padding-left: 0;
   }
 }
@@ -219,11 +213,8 @@ body {
 .page-content {
   display: inline;
   float: left;
-  overflow: hidden;
   width: 72.54901960784314%;
   margin: 0 1.2254901960784315%;
-  *width: 72.54901960784314% -correction;
-  *margin: 0 1.2254901960784315% -correction;
   float: right;
   padding: 20px 0;
 }
@@ -231,11 +222,8 @@ body {
   .page-content {
     display: inline;
     float: left;
-    overflow: hidden;
     width: 97.54901960784314%;
     margin: 0 1.2254901960784315%;
-    *width: 97.54901960784314% -correction;
-    *margin: 0 1.2254901960784315% -correction;
   }
 }
 .page-entry {
@@ -390,7 +378,7 @@ body {
   background: #eee;
 }
 #page-footer {
-  *zoom: 1;
+  zoom: 1;
   border-top: 1px solid #ddd;
   color: #999;
   padding: 1em 0 30px;
@@ -434,11 +422,8 @@ body {
 #sidebar {
   display: inline;
   float: left;
-  overflow: hidden;
   width: 22.54901960784314%;
   margin: 0 1.2254901960784315%;
-  *width: 22.54901960784314% -correction;
-  *margin: 0 1.2254901960784315% -correction;
   font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
   padding: 0 0 40px;
 }
@@ -508,7 +493,7 @@ body.index {
   line-height: 1.3;
 }
 #banner-getting-started {
-  *zoom: 1;
+  zoom: 1;
   padding: 30px 0;
 }
 #banner-getting-started:before,
@@ -565,11 +550,8 @@ body.index {
 .intro-title {
   display: inline;
   float: left;
-  overflow: hidden;
   width: 97.54901960784314%;
   margin: 0 1.2254901960784315%;
-  *width: 97.54901960784314% -correction;
-  *margin: 0 1.2254901960784315% -correction;
   font-size: 30px;
   font-weight: 300;
   font-family: Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -579,43 +561,31 @@ body.index {
 .intro-feature {
   display: inline;
   float: left;
-  overflow: hidden;
   width: 30.88235294117647%;
   margin: 0 1.2254901960784315%;
-  *width: 30.88235294117647% -correction;
-  *margin: 0 1.2254901960784315% -correction;
   padding-top: 30px;
 }
 @media screen and (max-width: 768px) {
   .intro-feature {
     display: inline;
     float: left;
-    overflow: hidden;
     width: 97.54901960784314%;
     margin: 0 1.2254901960784315%;
-    *width: 97.54901960784314% -correction;
-    *margin: 0 1.2254901960784315% -correction;
   }
 }
 .intro-quick-start {
   display: inline;
   float: left;
-  overflow: hidden;
   width: 47.549019607843135%;
   margin: 0 1.2254901960784315%;
-  *width: 47.549019607843135% -correction;
-  *margin: 0 1.2254901960784315% -correction;
   padding-top: 30px;
 }
 @media screen and (max-width: 768px) {
   .intro-quick-start {
     display: inline;
     float: left;
-    overflow: hidden;
     width: 97.54901960784314%;
     margin: 0 1.2254901960784315%;
-    *width: 97.54901960784314% -correction;
-    *margin: 0 1.2254901960784315% -correction;
   }
 }
 .intro-feature-title {
@@ -679,7 +649,7 @@ pre code {
   margin: 0;
 }
 .highlight figcaption {
-  *zoom: 1;
+  zoom: 1;
   margin: -5px 0 5px;
   font-size: 0.9em;
   color: #999;
