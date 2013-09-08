@@ -169,20 +169,20 @@ describe('Helpers', function(){
       var search_form = form.search_form;
 
       it('default', function(){
-        search_form().should.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="text" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="q" value="site:' + config.url + '"></form>');
+        search_form().should.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="hidden" name="q" value="site:' + config.url + '"></form>');
       });
 
       it('class', function(){
-        search_form({class: 'custom'}).should.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="custom"><input type="text" name="q" results="0" class="custom-input" placeholder="Search"><input type="hidden" name="q" value="site:http://yoursite.com"></form>');
+        search_form({class: 'custom'}).should.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="custom"><input type="search" name="q" results="0" class="custom-input" placeholder="Search"><input type="hidden" name="q" value="site:' + config.url + '"></form>');
       });
 
       it('text', function(){
-        search_form({text: 'Search...'}).should.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="text" name="q" results="0" class="search-form-input" placeholder="Search..."><input type="hidden" name="q" value="site:http://yoursite.com"></form>');
+        search_form({text: 'Search...'}).should.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search..."><input type="hidden" name="q" value="site:' + config.url + '"></form>');
       });
 
       it('button', function(){
-        search_form({button: true}).should.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="text" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="Search" class="search-form-submit"><input type="hidden" name="q" value="site:http://yoursite.com"></form>');
-        search_form({button: 'Button'}).should.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="text" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="Button" class="search-form-submit"><input type="hidden" name="q" value="site:http://yoursite.com"></form>');
+        search_form({button: true}).should.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="Search" class="search-form-submit"><input type="hidden" name="q" value="site:' + config.url + '"></form>');
+        search_form({button: 'Button'}).should.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><input type="submit" value="Button" class="search-form-submit"><input type="hidden" name="q" value="site:' + config.url + '"></form>');
       });
     });
   });
