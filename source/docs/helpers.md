@@ -357,12 +357,16 @@ Inserts a list of all categories.
 Option | Description | Default
 --- | --- | ---
 `orderby` | Order of categories | name
-`order` | Sort of order. `1`, `sac` as ascending; `-1`, `desc` as descending | 1
+`order` | Sort of order. `1`, `asc` as ascending; `-1`, `desc` as descending | 1
 `show_count` | Display the total amount of posts for each category | true
+`style` | Style to display the categories list. `list` displays categories in an unordered list.  | list
+`separator` | Separator between categories. (Only works if `style` is `none`) | , 
+`depth` | Levels of categories to be displayed. `0` displays all categories and child categories; `-1` is same as `0` but displayed in flat; `1` displays only top level categories. | 0
+`class` | Class name of categories list. | category
 
 ### list_tags
 
-Inserts a list of all categories.
+Inserts a list of all tags.
 
 ``` js
 <%- list_tags([options]) %>
@@ -371,8 +375,11 @@ Inserts a list of all categories.
 Option | Description | Default
 --- | --- | ---
 `orderby` | Order of categories | name
-`order` | Sort of order. `1`, `sac` as ascending; `-1`, `desc` as descending | 1
+`order` | Sort of order. `1`, `asc` as ascending; `-1`, `desc` as descending | 1
 `show_count` | Display the total amount of posts for each tag | true
+`style` | Style to display the tags list. `list` displays tags in an unordered list.  | list
+`separator` | Separator between tags. (Only works if `style` is `none`) | , 
+`class` | Class name of tags list. | tag
 
 ### list_archives
 
@@ -385,9 +392,12 @@ Inserts a list of archives.
 Option | Description | Default
 --- | --- | ---
 `type` | Type. This value can be `yearly` or `monthly`. | monthly
-`order` | Sort of order. `1`, `sac` as ascending; `-1`, `desc` as descending | 1
-`show_count` | Display the total amount of posts for each tag | true
+`order` | Sort of order. `1`, `asc` as ascending; `-1`, `desc` as descending | 1
+`show_count` | Display the total amount of posts for each archive | true
 `format` | Date format | MMMM YYYY
+`style` | Style to display the archives list. `list` displays archives in an unordered list.  | list
+`separator` | Separator between archives. (Only works if `style` is `none`) | , 
+`class` | Class name of archives list. | category
 
 ### number_format
 
