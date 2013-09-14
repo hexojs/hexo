@@ -29,7 +29,7 @@ describe('Tags', function(){
       var $ = cheerio.load(blockquote('John Doe, A book'.split(' '), raw));
 
       $('blockquote footer strong').html().should.eql('John Doe');
-      $('blockquote footer cite').html().should.eql('a Book');
+      $('blockquote footer cite').html().should.eql('A book');
     });
 
     it('author + link', function(){
