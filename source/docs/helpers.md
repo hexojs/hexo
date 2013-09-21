@@ -137,6 +137,9 @@ Option | Description | Default
 `amount` | Total amount of tags | 40
 `orderby` | Order of tags | name
 `order` | Sort order. `1`, `sac` as ascending; `-1`, `desc` as descending | 1
+`color` | Colorizes the tag cloud | false
+`start_color` | Start color. You can use hex (`#b700ff`), rgba (`rgba(183, 0, 255, 1)`), hsla (`hsla(283, 100%, 50%, 1)`) or [color keywords]. This option only works when `color` is true. | 
+`end_color` | End color. You can use hex (`#b700ff`), rgba (`rgba(183, 0, 255, 1)`), hsla (`hsla(283, 100%, 50%, 1)`) or [color keywords]. This option only works when `color` is true. |
 
 ### paginator
 
@@ -431,3 +434,5 @@ Option | Description | Default
 <%- number_format(12345.67, {separator: '/'}) %>
 // 12,345/67
 ```
+
+[color keywords]: http://www.w3.org/TR/css3-color/#svg-color
