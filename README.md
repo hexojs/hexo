@@ -24,30 +24,41 @@ Hexo supports EJS, Swig & Stylus. You can install more plugins for Haml, Jade, L
 
 ## Quick Start
 
-1. Install
+**Install**
 
-	```
-	$ npm install hexo -g
-	```
-	
-2. Setup
+```
+$ npm install hexo -g
+```
 
-	```
-	$ hexo init blog && cd blog
-	```
-	
+**Update**
 
-3. Generate
+```
+$ npm update hexo -g
+```
 
-	```
-	$ hexo generate
-	```
+**Setup**
 
-4. Server
+```
+$ hexo init blog && cd blog
+```
 
-	```
-	$ hexo server
-	```
+**Create a new post**
+
+```
+$ hexo new "Hello World"
+```
+
+**Generate**
+
+```
+$ hexo generate
+```
+
+**Server**
+
+```
+$ hexo server
+```
 
 ## License
 
