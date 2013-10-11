@@ -399,7 +399,7 @@ describe('Tags', function(){
       var $ = cheerio.load(vimeo(['foo']));
 
       $('.video-container').html().should.be.ok;
-      $('iframe').attr('src').should.eql('http://player.vimeo.com/video/foo');
+      $('iframe').attr('src').should.eql('//player.vimeo.com/video/foo');
       $('iframe').attr('frameborder').should.eql('0');
       $('iframe').attr('allowfullscreen').should.eql('');
     });
@@ -412,7 +412,7 @@ describe('Tags', function(){
       var $ = cheerio.load(youtube(['foo']));
 
       $('.video-container').html().should.be.ok;
-      $('iframe').attr('src').should.eql('http://www.youtube.com/embed/foo');
+      $('iframe').attr('src').should.eql('//www.youtube.com/embed/foo');
       $('iframe').attr('frameborder').should.eql('0');
       $('iframe').attr('allowfullscreen').should.eql('');
     });
