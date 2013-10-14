@@ -74,7 +74,7 @@ Token | Description
 
 [Pow](http://pow.cx/) is a zero-config Rack server for Mac powered by Node.js.
 
-### Insall
+### Install
 
 Run the following command:
 
