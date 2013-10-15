@@ -12,7 +12,7 @@ Setting | Description
 --- | ---
 `title` | The title of your website
 `subtitle` | The subtitle of your website
-`desciprtion` | The description of your website
+`description` | The description of your website
 `author` | Your name
 `email` | Your email address
 `language` | The language used in your website. Use [IETF format](http://www.w3.org/International/articles/language-tags/). (e.g. Traditional Chinese: `zh-TW`)
