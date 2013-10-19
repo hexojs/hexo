@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Deployment | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/hexo/css/style.css">
+  <link href="//fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4910098-7']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body class="page">
+  <header id="header">
+  <div class="outer">
+    <div class="inner">
+      <h1 id="logo-wrap">
+        <a href="/hexo/" id="logo">Hexo</a>
+      </h1>
+      <nav id="main-nav">
+        <ul>
+          
+            <li class="main-nav-item">
+              <a href="/hexo/docs/" class="main-nav-link current">Docs</a>
+            </li>
+          
+            <li class="main-nav-item">
+              <a href="https://github.com/tommy351/hexo/wiki/Plugins" class="main-nav-link">Plugins</a>
+            </li>
+          
+            <li class="main-nav-item">
+              <a href="https://github.com/tommy351/hexo/wiki/Themes" class="main-nav-link">Themes</a>
+            </li>
+          
+            <li class="main-nav-item">
+              <a href="https://github.com/tommy351/hexo" class="main-nav-link">Source</a>
+            </li>
+          
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+  <article class="page">
+  <header id="page-banner">
+    <div class="outer">
+      <div class="inner">
+        <h1 class="page-title">Deployment</h1>
+      </div>
+    </div>
+  </header>
+  <div class="outer">
+    <div class="inner">
+  <select id="page-mobile-menu">
+    <option value="">Navigate...</option>
+    
+      <optgroup label="Getting Started">
+        
+          <option value="/hexo/docs/index.html">Overview</option>
+        
+          <option value="/hexo/docs/setup.html">Setup</option>
+        
+          <option value="/hexo/docs/configuration.html">Configuration</option>
+        
+          <option value="/hexo/docs/commands.html">Commands</option>
+        
+          <option value="/hexo/docs/migration.html">Migration</option>
+        
+      </optgroup>
+    
+      <optgroup label="Basic Usage">
+        
+          <option value="/hexo/docs/writing.html">Writing</option>
+        
+          <option value="/hexo/docs/generating.html">Generating</option>
+        
+          <option value="/hexo/docs/tag-plugins.html">Tag Plugins</option>
+        
+          <option value="/hexo/docs/server.html">Server</option>
+        
+          <option value="/hexo/docs/deployment.html">Deployment</option>
+        
+      </optgroup>
+    
+      <optgroup label="Customization">
+        
+          <option value="/hexo/docs/permalinks.html">Permalinks</option>
+        
+          <option value="/hexo/docs/themes.html">Themes</option>
+        
+          <option value="/hexo/docs/variables.html">Variables</option>
+        
+          <option value="/hexo/docs/pagination.html">Pagination</option>
+        
+          <option value="/hexo/docs/helpers.html">Helpers</option>
+        
+          <option value="/hexo/docs/i18n.html">i18n</option>
+        
+      </optgroup>
+    
+      <optgroup label="Advanced">
+        
+          <option value="/hexo/docs/models.html">Models</option>
+        
+          <option value="/hexo/docs/events.html">Events</option>
+        
+          <option value="/hexo/docs/plugins.html">Plugins</option>
+        
+      </optgroup>
+    
+      <optgroup label="Miscellaneous">
+        
+          <option value="/hexo/docs/troubleshooting.html">Troubleshooting</option>
+        
+          <option value="/hexo/docs/contributing.html">Contributing</option>
+        
+      </optgroup>
+    
+  </select>
+</div>
+    <div class="page-content">
+      <div class="page-entry">
+        <p>To deploy your site with Hexo, you only need one command.</p>
+<figure class="highlight lang-bash"><pre>$ hexo deploy
+</pre></figure>
+
+<h2>GitHub</h2>
+<p>Edit <code>_config.yml</code>.</p>
+<figure class="highlight lang-yaml"><pre><span class="title">deploy</span>:
+  <span class="typedef"><span class="keyword">type</span>: github</span>
+  repository:
+</pre></figure>
+
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>repo</code><br><code>repository</code></td>
+<td>GitHub repository URL (Better to use HTTPS)</td>
+</tr>
+</tbody>
+</table>
+<h3>Remove</h3>
+<p>Remove <code>.deploy</code> folder.</p>
+<figure class="highlight lang-bash"><pre>$ rm -rf .deploy
+</pre></figure>
+
+<h3>Custom Domain</h3>
+<p>Create a file named <code>CNAME</code> in <code>source</code> folder with the following content.</p>
+<figure class="highlight"><pre><span class="filename">example.com
+</pre></figure>
+
+<ul>
+<li><strong>Top-level Domain:</strong> Add A record <code>204.232.175.78</code></li>
+<li><strong>Subdomain</strong>: Add CNAME record <code>blog.example.com</code>.</li>
+</ul>
+<p>Check <a href="https://help.github.com/articles/setting-up-a-custom-domain-with-pages" target="_blank">GitHub Pages</a> for more info.</p>
+<h2>Heroku</h2>
+<p>Edit <code>_config.yml</code>.</p>
+<figure class="highlight lang-yaml"><pre><span class="title">deploy</span>:
+  <span class="typedef"><span class="keyword">type</span>: heroku</span>
+  repository:
+</pre></figure>
+
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>repo</code><br><code>repository</code></td>
+<td>Heroku repository URL</td>
+</tr>
+</tbody>
+</table>
+<h3>Remove</h3>
+<p>Remove <code>.git</code>, <code>app.js</code> &amp; <code>Procfile</code>.</p>
+<h2>Rsync</h2>
+<p>Edit <code>_config.yml</code>.</p>
+<figure class="highlight lang-yaml"><pre><span class="method">deploy:</span>
+  <span class="method">type:</span> rsync
+  <span class="method">host:</span>
+  <span class="method">user:</span>
+  <span class="method">root:</span>
+  <span class="method">port:</span>
+  <span class="method">delete:</span>
+</pre></figure>
+
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>host</code></td>
+<td>Address of remote host</td>
+<td></td>
+</tr>
+<tr>
+<td><code>user</code></td>
+<td>Username</td>
+<td></td>
+</tr>
+<tr>
+<td><code>root</code></td>
+<td>Root directory of remote host</td>
+<td></td>
+</tr>
+<tr>
+<td><code>port</code></td>
+<td>Port</td>
+<td>22</td>
+</tr>
+<tr>
+<td><code>delete</code></td>
+<td>Delete old files on remote host</td>
+<td>true</td>
+</tr>
+</tbody>
+</table>
+<h2>Other Methods</h2>
+<p>All generated files are saved in <code>public</code> folder. You can copy it to wherever you like.</p>
+
+      </div>
+      <footer id="page-footer">
+        <time id="page-footer-updated" datetime="2013-08-24T17:26:50.000Z">Last updated: Aug 25, 2013</time>
+        <a href="/hexo/docs/server.html" id="page-footer-prev" class="page-footer-link">Prev</a>
+        <a href="/hexo/docs/permalinks.html" id="page-footer-next" class="page-footer-link">Next</a>
+      </footer>
+    </div>
+    <aside id="sidebar">
+  
+    <strong class="sidebar-title">Getting Started</strong>
+    
+      <a href="/hexo/docs/index.html" class="sidebar-link">Overview</a>
+    
+      <a href="/hexo/docs/setup.html" class="sidebar-link">Setup</a>
+    
+      <a href="/hexo/docs/configuration.html" class="sidebar-link">Configuration</a>
+    
+      <a href="/hexo/docs/commands.html" class="sidebar-link">Commands</a>
+    
+      <a href="/hexo/docs/migration.html" class="sidebar-link">Migration</a>
+    
+  
+    <strong class="sidebar-title">Basic Usage</strong>
+    
+      <a href="/hexo/docs/writing.html" class="sidebar-link">Writing</a>
+    
+      <a href="/hexo/docs/generating.html" class="sidebar-link">Generating</a>
+    
+      <a href="/hexo/docs/tag-plugins.html" class="sidebar-link">Tag Plugins</a>
+    
+      <a href="/hexo/docs/server.html" class="sidebar-link">Server</a>
+    
+      <a href="/hexo/docs/deployment.html" class="sidebar-link current">Deployment</a>
+    
+  
+    <strong class="sidebar-title">Customization</strong>
+    
+      <a href="/hexo/docs/permalinks.html" class="sidebar-link">Permalinks</a>
+    
+      <a href="/hexo/docs/themes.html" class="sidebar-link">Themes</a>
+    
+      <a href="/hexo/docs/variables.html" class="sidebar-link">Variables</a>
+    
+      <a href="/hexo/docs/pagination.html" class="sidebar-link">Pagination</a>
+    
+      <a href="/hexo/docs/helpers.html" class="sidebar-link">Helpers</a>
+    
+      <a href="/hexo/docs/i18n.html" class="sidebar-link">i18n</a>
+    
+  
+    <strong class="sidebar-title">Advanced</strong>
+    
+      <a href="/hexo/docs/models.html" class="sidebar-link">Models</a>
+    
+      <a href="/hexo/docs/events.html" class="sidebar-link">Events</a>
+    
+      <a href="/hexo/docs/plugins.html" class="sidebar-link">Plugins</a>
+    
+  
+    <strong class="sidebar-title">Miscellaneous</strong>
+    
+      <a href="/hexo/docs/troubleshooting.html" class="sidebar-link">Troubleshooting</a>
+    
+      <a href="/hexo/docs/contributing.html" class="sidebar-link">Contributing</a>
+    
+  
+</aside>
+  </div>
+</article>
+  <footer id="footer">
+  <div class="outer">
+    <div class="inner">
+      &copy; 2013 <a href="http://zespia.tw">SkyArrow</a><br>
+      Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>
+    </div>
+  </div>
+</footer>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/hexo/js/script.js"></script>
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+</body>
+</html>

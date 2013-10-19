@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Documentation | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/hexo/css/style.css">
+  <link href="//fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4910098-7']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body class="page">
+  <header id="header">
+  <div class="outer">
+    <div class="inner">
+      <h1 id="logo-wrap">
+        <a href="/hexo/" id="logo">Hexo</a>
+      </h1>
+      <nav id="main-nav">
+        <ul>
+          
+            <li class="main-nav-item">
+              <a href="/hexo/docs/" class="main-nav-link current">Docs</a>
+            </li>
+          
+            <li class="main-nav-item">
+              <a href="https://github.com/tommy351/hexo/wiki/Plugins" class="main-nav-link">Plugins</a>
+            </li>
+          
+            <li class="main-nav-item">
+              <a href="https://github.com/tommy351/hexo/wiki/Themes" class="main-nav-link">Themes</a>
+            </li>
+          
+            <li class="main-nav-item">
+              <a href="https://github.com/tommy351/hexo" class="main-nav-link">Source</a>
+            </li>
+          
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+  <article class="page">
+  <header id="page-banner">
+    <div class="outer">
+      <div class="inner">
+        <h1 class="page-title">Documentation</h1>
+      </div>
+    </div>
+  </header>
+  <div class="outer">
+    <div class="inner">
+  <select id="page-mobile-menu">
+    <option value="">Navigate...</option>
+    
+      <optgroup label="Getting Started">
+        
+          <option value="/hexo/docs/index.html">Overview</option>
+        
+          <option value="/hexo/docs/setup.html">Setup</option>
+        
+          <option value="/hexo/docs/configuration.html">Configuration</option>
+        
+          <option value="/hexo/docs/commands.html">Commands</option>
+        
+          <option value="/hexo/docs/migration.html">Migration</option>
+        
+      </optgroup>
+    
+      <optgroup label="Basic Usage">
+        
+          <option value="/hexo/docs/writing.html">Writing</option>
+        
+          <option value="/hexo/docs/generating.html">Generating</option>
+        
+          <option value="/hexo/docs/tag-plugins.html">Tag Plugins</option>
+        
+          <option value="/hexo/docs/server.html">Server</option>
+        
+          <option value="/hexo/docs/deployment.html">Deployment</option>
+        
+      </optgroup>
+    
+      <optgroup label="Customization">
+        
+          <option value="/hexo/docs/permalinks.html">Permalinks</option>
+        
+          <option value="/hexo/docs/themes.html">Themes</option>
+        
+          <option value="/hexo/docs/variables.html">Variables</option>
+        
+          <option value="/hexo/docs/pagination.html">Pagination</option>
+        
+          <option value="/hexo/docs/helpers.html">Helpers</option>
+        
+          <option value="/hexo/docs/i18n.html">i18n</option>
+        
+      </optgroup>
+    
+      <optgroup label="Advanced">
+        
+          <option value="/hexo/docs/models.html">Models</option>
+        
+          <option value="/hexo/docs/events.html">Events</option>
+        
+          <option value="/hexo/docs/plugins.html">Plugins</option>
+        
+      </optgroup>
+    
+      <optgroup label="Miscellaneous">
+        
+          <option value="/hexo/docs/troubleshooting.html">Troubleshooting</option>
+        
+          <option value="/hexo/docs/contributing.html">Contributing</option>
+        
+      </optgroup>
+    
+  </select>
+</div>
+    <div class="page-content">
+      <div class="page-entry">
+        <p>Welcome to the Hexo&#39;s documentation. This documentation will help you get started fast. If you get any problems when using Hexo, you can find the answer in <a href="troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/tommy351/hexo/issues" target="_blank">GitHub</a>.</p>
+<h2>What&#39;s Hexo?</h2>
+<p>Hexo is a fast, simple and powerful blog framework. It parses your posts with <a href="http://daringfireball.net/projects/markdown/" target="_blank">Markdown</a> or other render engine and generates static files with the beautiful theme. All of these just take seconds.</p>
+<h2>Installation</h2>
+<p>It only takes few minutes for you to get Hexo ready. If you encounter any problems on installation and you can&#39;t find the solution here. Please <a href="https://github.com/tommy351/hexo/issues" target="_blank">submit an issue</a> and I&#39;ll try to solve your problems.</p>
+<h3>Requirements</h3>
+<p>Installing Hexo is quite easy. However, there&#39;re something required before you get started.</p>
+<ul>
+<li><a href="http://nodejs.org/" target="_blank">Node.js</a></li>
+<li><a href="http://git-scm.com/" target="_blank">Git</a></li>
+</ul>
+<p>If your computer has been installed the requirements above already. Congratulations! Just install Hexo with npm.</p>
+<figure class="highlight lang-bash"><pre>$ npm install -g hexo
+</pre></figure>
+
+<p>If not, please follow the following instructions to install all the requirements.</p>
+<blockquote class="note warn"><strong class="note-title">For Mac users</strong><p>You may encounter some problems when compiling. Please install Xcode from App Store first. After Xcode is installed, open Xcode and go to <strong>Preferences -&gt; Download -&gt; Command Line Tools -&gt; Install</strong> to install command line tools.</p>
+</blockquote>
+
+
+<h3>1. Install Git</h3>
+<ul>
+<li>Windows: Download &amp; install <a href="http://code.google.com/p/msysgit/" target="_blank">msysgit</a>.</li>
+<li>Mac: Install it with <a href="http://mxcl.github.com/homebrew/" target="_blank">Homebrew</a>, <a href="http://www.macports.org/" target="_blank">MacPorts</a> or <a href="http://code.google.com/p/git-osx-installer/" target="_blank">installer</a>.</li>
+<li>Linux (Ubuntu, Debian): <code>sudo apt-get install git-core</code></li>
+<li>Linux (Fedora, Red Hat, CentOS): <code>sudo yum install git-core</code></li>
+</ul>
+<h3>2. Install Node.js</h3>
+<p>The best way to install Node.js is installing with <a href="https://github.com/creationix/nvm" target="_blank">nvm</a>.</p>
+<p>cURL:</p>
+<figure class="highlight lang-bash"><pre>$ curl https://raw.github.com/creationix/nvm/master/install.sh | sh
+</pre></figure>
+
+<p>Wget:</p>
+<figure class="highlight lang-bash"><pre>$ wget -qO- https://raw.github.com/creationix/nvm/master/install.sh | sh
+</pre></figure>
+
+<p>Once installed, restart the terminal and run the following command to install Node.js.</p>
+<figure class="highlight lang-bash"><pre>$ nvm install 0.10
+</pre></figure>
+
+
+<p>Or you can download the <a href="http://nodejs.org/" target="_blank">installer</a> and install it.</p>
+<h3>3. Install Hexo</h3>
+<p>Once all the requirements are installed, you can install Hexo with npm.</p>
+<figure class="highlight lang-bash"><pre>$ npm install -g hexo
+</pre></figure>
+
+
+      </div>
+      <footer id="page-footer">
+        <time id="page-footer-updated" datetime="2013-08-25T04:51:30.000Z">Last updated: Aug 25, 2013</time>
+        
+        <a href="/hexo/docs/setup.html" id="page-footer-next" class="page-footer-link">Next</a>
+      </footer>
+    </div>
+    <aside id="sidebar">
+  
+    <strong class="sidebar-title">Getting Started</strong>
+    
+      <a href="/hexo/docs/index.html" class="sidebar-link current">Overview</a>
+    
+      <a href="/hexo/docs/setup.html" class="sidebar-link">Setup</a>
+    
+      <a href="/hexo/docs/configuration.html" class="sidebar-link">Configuration</a>
+    
+      <a href="/hexo/docs/commands.html" class="sidebar-link">Commands</a>
+    
+      <a href="/hexo/docs/migration.html" class="sidebar-link">Migration</a>
+    
+  
+    <strong class="sidebar-title">Basic Usage</strong>
+    
+      <a href="/hexo/docs/writing.html" class="sidebar-link">Writing</a>
+    
+      <a href="/hexo/docs/generating.html" class="sidebar-link">Generating</a>
+    
+      <a href="/hexo/docs/tag-plugins.html" class="sidebar-link">Tag Plugins</a>
+    
+      <a href="/hexo/docs/server.html" class="sidebar-link">Server</a>
+    
+      <a href="/hexo/docs/deployment.html" class="sidebar-link">Deployment</a>
+    
+  
+    <strong class="sidebar-title">Customization</strong>
+    
+      <a href="/hexo/docs/permalinks.html" class="sidebar-link">Permalinks</a>
+    
+      <a href="/hexo/docs/themes.html" class="sidebar-link">Themes</a>
+    
+      <a href="/hexo/docs/variables.html" class="sidebar-link">Variables</a>
+    
+      <a href="/hexo/docs/pagination.html" class="sidebar-link">Pagination</a>
+    
+      <a href="/hexo/docs/helpers.html" class="sidebar-link">Helpers</a>
+    
+      <a href="/hexo/docs/i18n.html" class="sidebar-link">i18n</a>
+    
+  
+    <strong class="sidebar-title">Advanced</strong>
+    
+      <a href="/hexo/docs/models.html" class="sidebar-link">Models</a>
+    
+      <a href="/hexo/docs/events.html" class="sidebar-link">Events</a>
+    
+      <a href="/hexo/docs/plugins.html" class="sidebar-link">Plugins</a>
+    
+  
+    <strong class="sidebar-title">Miscellaneous</strong>
+    
+      <a href="/hexo/docs/troubleshooting.html" class="sidebar-link">Troubleshooting</a>
+    
+      <a href="/hexo/docs/contributing.html" class="sidebar-link">Contributing</a>
+    
+  
+</aside>
+  </div>
+</article>
+  <footer id="footer">
+  <div class="outer">
+    <div class="inner">
+      &copy; 2013 <a href="http://zespia.tw">SkyArrow</a><br>
+      Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>
+    </div>
+  </div>
+</footer>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/hexo/js/script.js"></script>
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+</body>
+</html>
