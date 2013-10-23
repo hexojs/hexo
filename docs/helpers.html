@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Helpers | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/hexo/css/style.css">
+  <link href="//fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4910098-7']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body class="page">
+  <header id="header">
+  <div class="outer">
+    <div class="inner">
+      <h1 id="logo-wrap">
+        <a href="/hexo/" id="logo">Hexo</a>
+      </h1>
+      <nav id="main-nav">
+        <ul>
+          
+            <li class="main-nav-item">
+              <a href="/hexo/docs/" class="main-nav-link current">Docs</a>
+            </li>
+          
+            <li class="main-nav-item">
+              <a href="https://github.com/tommy351/hexo/wiki/Plugins" class="main-nav-link">Plugins</a>
+            </li>
+          
+            <li class="main-nav-item">
+              <a href="https://github.com/tommy351/hexo/wiki/Themes" class="main-nav-link">Themes</a>
+            </li>
+          
+            <li class="main-nav-item">
+              <a href="https://github.com/tommy351/hexo" class="main-nav-link">Source</a>
+            </li>
+          
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+  <article class="page">
+  <header id="page-banner">
+    <div class="outer">
+      <div class="inner">
+        <h1 class="page-title">Helpers</h1>
+      </div>
+    </div>
+  </header>
+  <div class="outer">
+    <div class="inner">
+  <select id="page-mobile-menu">
+    <option value="">Navigate...</option>
+    
+      <optgroup label="Getting Started">
+        
+          <option value="/hexo/docs/index.html">Overview</option>
+        
+          <option value="/hexo/docs/setup.html">Setup</option>
+        
+          <option value="/hexo/docs/configuration.html">Configuration</option>
+        
+          <option value="/hexo/docs/commands.html">Commands</option>
+        
+          <option value="/hexo/docs/migration.html">Migration</option>
+        
+      </optgroup>
+    
+      <optgroup label="Basic Usage">
+        
+          <option value="/hexo/docs/writing.html">Writing</option>
+        
+          <option value="/hexo/docs/generating.html">Generating</option>
+        
+          <option value="/hexo/docs/tag-plugins.html">Tag Plugins</option>
+        
+          <option value="/hexo/docs/server.html">Server</option>
+        
+          <option value="/hexo/docs/deployment.html">Deployment</option>
+        
+      </optgroup>
+    
+      <optgroup label="Customization">
+        
+          <option value="/hexo/docs/permalinks.html">Permalinks</option>
+        
+          <option value="/hexo/docs/themes.html">Themes</option>
+        
+          <option value="/hexo/docs/variables.html">Variables</option>
+        
+          <option value="/hexo/docs/pagination.html">Pagination</option>
+        
+          <option value="/hexo/docs/helpers.html">Helpers</option>
+        
+          <option value="/hexo/docs/i18n.html">i18n</option>
+        
+      </optgroup>
+    
+      <optgroup label="Advanced">
+        
+          <option value="/hexo/docs/models.html">Models</option>
+        
+          <option value="/hexo/docs/events.html">Events</option>
+        
+          <option value="/hexo/docs/plugins.html">Plugins</option>
+        
+      </optgroup>
+    
+      <optgroup label="Miscellaneous">
+        
+          <option value="/hexo/docs/troubleshooting.html">Troubleshooting</option>
+        
+          <option value="/hexo/docs/contributing.html">Contributing</option>
+        
+      </optgroup>
+    
+  </select>
+</div>
+    <div class="page-content">
+      <div class="page-entry">
+        <p>Helpers help you inserts specified content in theme or processes contents in theme quickly.</p>
+<h3>css</h3>
+<p>Loads CSS files. <code>path</code> can be an array or a string. If <code>path</code> isn&#39;t prefixed with <code>/</code> or any protocol, it‘ll be prefixed with root URL. If you didn’t add extension name <code>.css</code> after <code>path</code>, it&#39;ll be added.</p>
+<figure class="highlight lang-js"><pre>&lt;%- css(path, [path1], [path2], [...]) %&gt;
+</pre></figure>
+
+<p><strong>Examples:</strong></p>
+<figure class="highlight lang-js"><pre>&lt;%- css(<span class="string">'style.css'</span>) %&gt;
+<span class="comment">// &lt;link rel="stylesheet" href="/style.css" type="text/css"&gt;</span>
+
+&lt;%- css([<span class="string">'style.css'</span>, <span class="string">'screen.css'</span>]) %&gt;
+<span class="comment">// &lt;link rel="stylesheet" href="/style.css" type="text/css"&gt;</span>
+<span class="comment">// &lt;link rel="stylesheet" href="/screen.css" type="text/css"&gt;</span>
+</pre></figure>
+
+<h3>js</h3>
+<p>Loads JavaScript files. <code>path</code> can be an array or a string. If <code>path</code> isn&#39;t prefixed with <code>/</code> or any protocol, it‘ll be prefixed with root URL. If you didn’t add extension name <code>.js</code> after <code>path</code>, it&#39;ll be added.</p>
+<figure class="highlight lang-js"><pre>&lt;%- js(path, [path1], [path2], [...]) %&gt;
+</pre></figure>
+
+<p><strong>Examples:</strong></p>
+<figure class="highlight lang-js"><pre>&lt;%- js(<span class="string">'script.js'</span>) %&gt;
+<span class="comment">// &lt;script type="text/javascript" src="/script.js"&gt;&lt;/script&gt;</span>
+
+&lt;%- js([<span class="string">'script.js'</span>, <span class="string">'gallery.js'</span>]) %&gt;
+<span class="comment">// &lt;script type="text/javascript" src="/script.js"&gt;&lt;/script&gt;</span>
+<span class="comment">// &lt;script type="text/javascript" src="/gallery.js"&gt;&lt;/script&gt;</span>
+</pre></figure>
+
+<h3>Conditional Tags</h3>
+<p>Conditional tags help you check the status of current page.</p>
+<table>
+<thead>
+<tr>
+<th>Helper</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>is_current(path, strict)</code></td>
+<td>Checks if <code>path</code> matches the URL of current page.</td>
+</tr>
+<tr>
+<td><code>is_home()</code></td>
+<td>Checks if the home page is being displayed</td>
+</tr>
+<tr>
+<td><code>is_post()</code></td>
+<td>Checks if posts are being displayed</td>
+</tr>
+<tr>
+<td><code>is_archive()</code></td>
+<td>Checks if archive pages are being displayed</td>
+</tr>
+<tr>
+<td><code>is_year()</code></td>
+<td>Checks if yearly archive pages are being displayed</td>
+</tr>
+<tr>
+<td><code>is_month()</code></td>
+<td>Checks if monthly archive pages are being displayed</td>
+</tr>
+<tr>
+<td><code>is_category()</code></td>
+<td>Checks if category pages are being displayed</td>
+</tr>
+<tr>
+<td><code>is_tag()</code></td>
+<td>Checks if tag pages are being displayed</td>
+</tr>
+</tbody>
+</table>
+<h3>gravatar</h3>
+<p>Inserts a Gravatar image.</p>
+<figure class="highlight lang-js"><pre>&lt;%- gravatar(email, [size]);
+</pre></figure>
+
+<p><strong>Examples:</strong></p>
+<figure class="highlight lang-js"><pre>&lt;%- gravatar(<span class="string">'a@abc.com'</span>) %&gt;
+<span class="comment">// http://www.gravatar.com/avatar/b9b00e66c6b8a70f88c73cb6bdb06787</span>
+
+&lt;%- gravatar(<span class="string">'a@abc.com'</span>, <span class="number">40</span>) %&gt;
+<span class="comment">// http://www.gravatar.com/avatar/b9b00e66c6b8a70f88c73cb6bdb06787?s=40</span>
+</pre></figure>
+
+<h3>trim</h3>
+<p>Clears all spaces in a string.</p>
+<figure class="highlight lang-js"><pre>&lt;%- trim(string) %&gt;
+</pre></figure>
+
+<h3>strip_html</h3>
+<p>Sanitizes all HTML tags in a string.</p>
+<figure class="highlight lang-js"><pre>&lt;%- strip_html(string) %&gt;
+</pre></figure>
+
+<p><strong>Examples:</strong></p>
+<figure class="highlight lang-js"><pre>&lt;%- strip_html('It's not &lt;b&gt;important&lt;/b&gt; anymore!') %&gt;
+// It's not important anymore!
+</pre></figure>
+
+<h3>titlecase</h3>
+<p>Transforms a string into proper title caps.</p>
+<figure class="highlight lang-js"><pre>&lt;%- titlecase(string) %&gt;
+</pre></figure>
+
+<p><strong>Examples:</strong></p>
+<figure class="highlight lang-js"><pre>&lt;%- titlecase(<span class="string">'this is an apple'</span>) %&gt;
+# This is an Apple
+</pre></figure>
+
+<h3>partial</h3>
+<p>Loads other template files. You can define local variables in <code>local</code>.</p>
+<figure class="highlight lang-js"><pre>&lt;%- partial(layout, [locals]) %&gt;
+</pre></figure>
+
+<h3>tagcloud</h3>
+<p>Inserts a tag cloud.</p>
+<figure class="highlight lang-js"><pre>&lt;%- tagcloud([tags], [options]) %&gt;
+</pre></figure>
+
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>min_font</code></td>
+<td>Minimal font size</td>
+<td>10</td>
+</tr>
+<tr>
+<td><code>max_font</code></td>
+<td>Maximum font size</td>
+<td>20</td>
+</tr>
+<tr>
+<td><code>unit</code></td>
+<td>Unit of font size</td>
+<td>px</td>
+</tr>
+<tr>
+<td><code>amount</code></td>
+<td>Total amount of tags</td>
+<td>40</td>
+</tr>
+<tr>
+<td><code>orderby</code></td>
+<td>Order of tags</td>
+<td>name</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>Sort order. <code>1</code>, <code>sac</code> as ascending; <code>-1</code>, <code>desc</code> as descending</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>color</code></td>
+<td>Colorizes the tag cloud</td>
+<td>false</td>
+</tr>
+<tr>
+<td><code>start_color</code></td>
+<td>Start color. You can use hex (<code>#b700ff</code>), rgba (<code>rgba(183, 0, 255, 1)</code>), hsla (<code>hsla(283, 100%, 50%, 1)</code>) or <a href="http://www.w3.org/TR/css3-color/#svg-color" target="_blank">color keywords</a>. This option only works when <code>color</code> is true.</td>
+<td></td>
+</tr>
+<tr>
+<td><code>end_color</code></td>
+<td>End color. You can use hex (<code>#b700ff</code>), rgba (<code>rgba(183, 0, 255, 1)</code>), hsla (<code>hsla(283, 100%, 50%, 1)</code>) or <a href="http://www.w3.org/TR/css3-color/#svg-color" target="_blank">color keywords</a>. This option only works when <code>color</code> is true.</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h3>paginator</h3>
+<p>Inserts a paginator.</p>
+<figure class="highlight lang-js"><pre>&lt;%- paginator(options) %&gt;
+</pre></figure>
+
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>base</code></td>
+<td>Base URL</td>
+<td>/</td>
+</tr>
+<tr>
+<td><code>format</code></td>
+<td>URL format</td>
+<td>page/%d/</td>
+</tr>
+<tr>
+<td><code>total</code></td>
+<td>Total amount of pages</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>current</code></td>
+<td>Current page number</td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>prev_text</code></td>
+<td>The link text of previous page. Works only if <code>prev_next</code> is set to true.</td>
+<td>Prev</td>
+</tr>
+<tr>
+<td><code>next_text</code></td>
+<td>The link text of next page. Works only if <code>prev_next</code> is set to true.</td>
+<td>Next</td>
+</tr>
+<tr>
+<td><code>space</code></td>
+<td>The space text</td>
+<td>&hellp;</td>
+</tr>
+<tr>
+<td><code>prev_next</code></td>
+<td>Display previous and next links</td>
+<td>true</td>
+</tr>
+<tr>
+<td><code>end_size</code></td>
+<td>The number of pages displayed on the start and the end side</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>mid_size</code></td>
+<td>The number of pages displayed between current page, but not including current page</td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>show_all</code></td>
+<td>Display all pages. If this is set true, <code>end_size</code> and <code>mid_size</code> will not works.</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h3>date</h3>
+<p>Inserts formatted date. <code>date</code> can be unix time, ISO string, date object, or moment.js object. <code>format</code> is <code>date_format</code> setting by default.</p>
+<figure class="highlight lang-js"><pre>&lt;%- date(date, [format]) %&gt;
+</pre></figure>
+
+<p><strong>Examples:</strong></p>
+<figure class="highlight lang-js"><pre>&lt;%- date(Date.now()) %&gt;
+<span class="comment">// Jan 1, 2013</span>
+
+&lt;%- date(Date.now(), <span class="string">'YYYY/M/D'</span>) %&gt;
+<span class="comment">// 2013/1/1</span>
+</pre></figure>
+
+<h3>date_xml</h3>
+<p>Inserts date in XML format. <code>date</code> can be unix time, ISO string, date object, or moment.js object. <code>format</code> is <code>date_format</code> setting by default.</p>
+<figure class="highlight lang-js"><pre>&lt;%- date_xml(date) %&gt;
+</pre></figure>
+
+<p><strong>Examples:</strong></p>
+<figure class="highlight lang-js"><pre>&lt;%- date_xml(Date.now()) %&gt;
+<span class="comment">// 2013-01-01T00:00:00.000Z</span>
+</pre></figure>
+
+<h3>time</h3>
+<p>Inserts formatted time. <code>date</code> can be unix time, ISO string, date object, or moment.js object. <code>format</code> is <code>time_format</code> setting by default.</p>
+<figure class="highlight lang-js"><pre>&lt;%- date(date, [format]) %&gt;
+</pre></figure>
+
+<p><strong>Examples:</strong></p>
+<figure class="highlight lang-js"><pre>&lt;%- time(Date.now()) %&gt;
+<span class="comment">// 13:05:12</span>
+
+&lt;%- time(Date.now(), <span class="string">'h:mm:ss a'</span>) %&gt;
+<span class="comment">// 1:05:12 pm</span>
+</pre></figure>
+
+<h3>full_date</h3>
+<p>Inserts formatted date and time. <code>date</code> can be unix time, ISO string, date object, or moment.js object. <code>format</code> is <code>date_format + time_format</code> setting by default.</p>
+<figure class="highlight lang-js"><pre>&lt;%- full_date(date, [format]) %&gt;
+</pre></figure>
+
+<p><strong>Examples:</strong></p>
+<figure class="highlight lang-js"><pre>&lt;%- full_date(<span class="keyword">new</span> Date()) %&gt;
+<span class="comment">// Jan 1, 2013 0:00:00</span>
+
+&lt;%- full_date(<span class="keyword">new</span> Date(), <span class="string">'dddd, MMMM Do YYYY, h:mm:ss a'</span>) %&gt;
+<span class="comment">// Tuesday, January 1st 2013, 12:00:00 am</span>
+</pre></figure>
+
+<h3>moment</h3>
+<p>[Moment.js] library.</p>
+<h3>searh_form</h3>
+<p>Inserts a Google search form.</p>
+<figure class="highlight lang-js"><pre>&lt;%- search_form(options) %&gt;
+</pre></figure>
+
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>class</code></td>
+<td>The class name of form</td>
+<td>search-form</td>
+</tr>
+<tr>
+<td><code>text</code></td>
+<td>Search hint word</td>
+<td>Search</td>
+</tr>
+<tr>
+<td><code>button</code></td>
+<td>Display search button. The value can be a boolean or a string. When the value is a string, it&#39;ll be the text of the button.</td>
+<td>false</td>
+</tr>
+</tbody>
+</table>
+<h3>markdown</h3>
+<p>Renders a string with Markdown.</p>
+<figure class="highlight lang-js"><pre>&lt;%- markdown(str) %&gt;
+</pre></figure>
+
+<p><strong>Examples:</strong></p>
+<figure class="highlight lang-js"><pre>&lt;%- markdown(<span class="string">'make me **strong**'</span>) %&gt;
+<span class="comment">// make me &lt;strong&gt;strong&lt;/strong&gt;</span>
+</pre></figure>
+
+<h3>word_wrap</h3>
+<p>Wraps text into lines no longer than <code>length</code>. <code>length</code> is 80 by default.</p>
+<figure class="highlight lang-js"><pre>&lt;%- word_wrap(str, [length]) %&gt;
+</pre></figure>
+
+<p><strong>Examples:</strong></p>
+<figure class="highlight lang-js"><pre>&lt;%- word_wrap(<span class="string">'Once upon a time'</span>, <span class="number">8</span>) %&gt;
+<span class="comment">// Once upon\n a time</span>
+</pre></figure>
+
+<h3>truncate</h3>
+<p>Truncates text after <code>length</code>.</p>
+<figure class="highlight lang-js"><pre>&lt;%- truncate(text, length) %&gt;
+</pre></figure>
+
+<p><strong>Examples:</strong></p>
+<figure class="highlight lang-js"><pre>&lt;%- truncate(<span class="string">'Once upon a time in a world far far away'</span>, <span class="number">16</span>) %&gt;
+<span class="comment">// Once upon a time</span>
+</pre></figure>
+
+<h3>truncate_words</h3>
+<p>Truncates words after <code>length</code>.</p>
+<figure class="highlight lang-js"><pre>&lt;%- truncate_words(text, length) %&gt;
+</pre></figure>
+
+<p><strong>Examples:</strong></p>
+<figure class="highlight lang-js"><pre>&lt;%- truncate_words(<span class="string">'Once upon a time in a world far far away'</span>, <span class="number">4</span>) %&gt;
+<span class="comment">// Once upon a time</span>
+</pre></figure>
+
+<h3>link_to</h3>
+<p>Inserts a link.</p>
+<figure class="highlight lang-js"><pre>&lt;%- link_to(path, [text], [external]) %&gt;
+</pre></figure>
+
+<p><strong>Examples:</strong></p>
+<figure class="highlight lang-js"><pre>&lt;%- link_to(<span class="string">'http://www.google.com'</span>) %&gt;
+<span class="comment">// &lt;a href="http://www.google.com" title="http://www.google.com"&gt;http://www.google.com&lt;/a&gt;</span>
+
+&lt;%- link_to(<span class="string">'http://www.google.com'</span>, <span class="string">'Google'</span>) %&gt;
+<span class="comment">// &lt;a href="http://www.google.com" title="Google"&gt;Google&lt;/a&gt;</span>
+
+&lt;%- link_to(<span class="string">'http://www.google.com'</span>, <span class="string">'Google'</span>, <span class="literal">true</span>) %&gt;
+<span class="comment">// &lt;a href="http://www.google.com" title="Google" target="_blank" rel="external"&gt;Google&lt;/a&gt;</span>
+</pre></figure>
+
+<h3>mail_to</h3>
+<p>Inserts a mail link.</p>
+<figure class="highlight lang-js"><pre>&lt;%- mail_to(path, [text]) %&gt;
+</pre></figure>
+
+<p><strong>Examples:</strong></p>
+<figure class="highlight lang-js"><pre>&lt;%- mail_to(<span class="string">'a@abc.com'</span>) %&gt;
+<span class="comment">// &lt;a href="mailto:a@abc.com" title="a@abc.com"&gt;a@abc.com&lt;/a&gt;</span>
+
+&lt;%- mail_to(<span class="string">'a@abc.com'</span>, <span class="string">'Email'</span>) %&gt;
+<span class="comment">// &lt;a href="mailto:a@abc.com" title="Email"&gt;Email&lt;/a&gt;</span>
+</pre></figure>
+
+<h3>list_categories</h3>
+<p>Inserts a list of all categories.</p>
+<figure class="highlight lang-js"><pre>&lt;%- list_categories([options]) %&gt;
+</pre></figure>
+
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>orderby</code></td>
+<td>Order of categories</td>
+<td>name</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>Sort of order. <code>1</code>, <code>asc</code> as ascending; <code>-1</code>, <code>desc</code> as descending</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>show_count</code></td>
+<td>Display the total amount of posts for each category</td>
+<td>true</td>
+</tr>
+<tr>
+<td><code>style</code></td>
+<td>Style to display the categories list. <code>list</code> displays categories in an unordered list.</td>
+<td>list</td>
+</tr>
+<tr>
+<td><code>separator</code></td>
+<td>Separator between categories. (Only works if <code>style</code> is <code>none</code>)</td>
+<td>, </td>
+</tr>
+<tr>
+<td><code>depth</code></td>
+<td>Levels of categories to be displayed. <code>0</code> displays all categories and child categories; <code>-1</code> is same as <code>0</code> but displayed in flat; <code>1</code> displays only top level categories.</td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>class</code></td>
+<td>Class name of categories list.</td>
+<td>category</td>
+</tr>
+</tbody>
+</table>
+<h3>list_tags</h3>
+<p>Inserts a list of all tags.</p>
+<figure class="highlight lang-js"><pre>&lt;%- list_tags([options]) %&gt;
+</pre></figure>
+
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>orderby</code></td>
+<td>Order of categories</td>
+<td>name</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>Sort of order. <code>1</code>, <code>asc</code> as ascending; <code>-1</code>, <code>desc</code> as descending</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>show_count</code></td>
+<td>Display the total amount of posts for each tag</td>
+<td>true</td>
+</tr>
+<tr>
+<td><code>style</code></td>
+<td>Style to display the tags list. <code>list</code> displays tags in an unordered list.</td>
+<td>list</td>
+</tr>
+<tr>
+<td><code>separator</code></td>
+<td>Separator between tags. (Only works if <code>style</code> is <code>none</code>)</td>
+<td>, </td>
+</tr>
+<tr>
+<td><code>class</code></td>
+<td>Class name of tags list.</td>
+<td>tag</td>
+</tr>
+</tbody>
+</table>
+<h3>list_archives</h3>
+<p>Inserts a list of archives.</p>
+<figure class="highlight lang-js"><pre>&lt;%- list_archive([options]) %&gt;
+</pre></figure>
+
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>type</code></td>
+<td>Type. This value can be <code>yearly</code> or <code>monthly</code>.</td>
+<td>monthly</td>
+</tr>
+<tr>
+<td><code>order</code></td>
+<td>Sort of order. <code>1</code>, <code>asc</code> as ascending; <code>-1</code>, <code>desc</code> as descending</td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>show_count</code></td>
+<td>Display the total amount of posts for each archive</td>
+<td>true</td>
+</tr>
+<tr>
+<td><code>format</code></td>
+<td>Date format</td>
+<td>MMMM YYYY</td>
+</tr>
+<tr>
+<td><code>style</code></td>
+<td>Style to display the archives list. <code>list</code> displays archives in an unordered list.</td>
+<td>list</td>
+</tr>
+<tr>
+<td><code>separator</code></td>
+<td>Separator between archives. (Only works if <code>style</code> is <code>none</code>)</td>
+<td>, </td>
+</tr>
+<tr>
+<td><code>class</code></td>
+<td>Class name of archives list.</td>
+<td>category</td>
+</tr>
+</tbody>
+</table>
+<h3>number_format</h3>
+<p>Formats a number.</p>
+<figure class="highlight lang-js"><pre>&lt;%- number_format(number, options) %&gt;
+</pre></figure>
+
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>precision</code></td>
+<td>The precision of number. The value can be <code>false</code> or a nonnegative integer.</td>
+<td>false</td>
+</tr>
+<tr>
+<td><code>delimiter</code></td>
+<td>The thousands delimiter</td>
+<td>,</td>
+</tr>
+<tr>
+<td><code>separator</code></td>
+<td>The separator between the fractional and integer digits.</td>
+<td>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Examples:</strong></p>
+<figure class="highlight lang-js"><pre>&lt;%- number_format(<span class="number">12345.67</span>, {precision: <span class="number">1</span>}) %&gt;
+<span class="comment">// 12,345.68</span>
+
+&lt;%- number_format(<span class="number">12345.67</span>, {precision: <span class="number">4</span>}) %&gt;
+<span class="comment">// 12,345.6700</span>
+
+&lt;%- number_format(<span class="number">12345.67</span>, {precision: <span class="number">0</span>}) %&gt;
+<span class="comment">// 12,345</span>
+
+&lt;%- number_format(<span class="number">12345.67</span>, {delimiter: <span class="string">''</span>}) %&gt;
+<span class="comment">// 12345.67</span>
+
+&lt;%- number_format(<span class="number">12345.67</span>, {separator: <span class="string">'/'</span>}) %&gt;
+<span class="comment">// 12,345/67</span>
+</pre></figure>
+
+
+      </div>
+      <footer id="page-footer">
+        <time id="page-footer-updated" datetime="2013-09-21T07:52:26.000Z">Last updated: Sep 21, 2013</time>
+        <a href="/hexo/docs/pagination.html" id="page-footer-prev" class="page-footer-link">Prev</a>
+        <a href="/hexo/docs/i18n.html" id="page-footer-next" class="page-footer-link">Next</a>
+      </footer>
+    </div>
+    <aside id="sidebar">
+  
+    <strong class="sidebar-title">Getting Started</strong>
+    
+      <a href="/hexo/docs/index.html" class="sidebar-link">Overview</a>
+    
+      <a href="/hexo/docs/setup.html" class="sidebar-link">Setup</a>
+    
+      <a href="/hexo/docs/configuration.html" class="sidebar-link">Configuration</a>
+    
+      <a href="/hexo/docs/commands.html" class="sidebar-link">Commands</a>
+    
+      <a href="/hexo/docs/migration.html" class="sidebar-link">Migration</a>
+    
+  
+    <strong class="sidebar-title">Basic Usage</strong>
+    
+      <a href="/hexo/docs/writing.html" class="sidebar-link">Writing</a>
+    
+      <a href="/hexo/docs/generating.html" class="sidebar-link">Generating</a>
+    
+      <a href="/hexo/docs/tag-plugins.html" class="sidebar-link">Tag Plugins</a>
+    
+      <a href="/hexo/docs/server.html" class="sidebar-link">Server</a>
+    
+      <a href="/hexo/docs/deployment.html" class="sidebar-link">Deployment</a>
+    
+  
+    <strong class="sidebar-title">Customization</strong>
+    
+      <a href="/hexo/docs/permalinks.html" class="sidebar-link">Permalinks</a>
+    
+      <a href="/hexo/docs/themes.html" class="sidebar-link">Themes</a>
+    
+      <a href="/hexo/docs/variables.html" class="sidebar-link">Variables</a>
+    
+      <a href="/hexo/docs/pagination.html" class="sidebar-link">Pagination</a>
+    
+      <a href="/hexo/docs/helpers.html" class="sidebar-link current">Helpers</a>
+    
+      <a href="/hexo/docs/i18n.html" class="sidebar-link">i18n</a>
+    
+  
+    <strong class="sidebar-title">Advanced</strong>
+    
+      <a href="/hexo/docs/models.html" class="sidebar-link">Models</a>
+    
+      <a href="/hexo/docs/events.html" class="sidebar-link">Events</a>
+    
+      <a href="/hexo/docs/plugins.html" class="sidebar-link">Plugins</a>
+    
+  
+    <strong class="sidebar-title">Miscellaneous</strong>
+    
+      <a href="/hexo/docs/troubleshooting.html" class="sidebar-link">Troubleshooting</a>
+    
+      <a href="/hexo/docs/contributing.html" class="sidebar-link">Contributing</a>
+    
+  
+</aside>
+  </div>
+</article>
+  <footer id="footer">
+  <div class="outer">
+    <div class="inner">
+      &copy; 2013 <a href="http://zespia.tw">SkyArrow</a><br>
+      Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>
+    </div>
+  </div>
+</footer>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/hexo/js/script.js"></script>
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+</body>
+</html>

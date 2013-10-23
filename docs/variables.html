@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Variables | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <link rel="stylesheet" href="/hexo/css/style.css">
+  <link href="//fonts.googleapis.com/css?family=Lato:300,700" rel="stylesheet" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-4910098-7']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+
+<body class="page">
+  <header id="header">
+  <div class="outer">
+    <div class="inner">
+      <h1 id="logo-wrap">
+        <a href="/hexo/" id="logo">Hexo</a>
+      </h1>
+      <nav id="main-nav">
+        <ul>
+          
+            <li class="main-nav-item">
+              <a href="/hexo/docs/" class="main-nav-link current">Docs</a>
+            </li>
+          
+            <li class="main-nav-item">
+              <a href="https://github.com/tommy351/hexo/wiki/Plugins" class="main-nav-link">Plugins</a>
+            </li>
+          
+            <li class="main-nav-item">
+              <a href="https://github.com/tommy351/hexo/wiki/Themes" class="main-nav-link">Themes</a>
+            </li>
+          
+            <li class="main-nav-item">
+              <a href="https://github.com/tommy351/hexo" class="main-nav-link">Source</a>
+            </li>
+          
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+  <article class="page">
+  <header id="page-banner">
+    <div class="outer">
+      <div class="inner">
+        <h1 class="page-title">Variables</h1>
+      </div>
+    </div>
+  </header>
+  <div class="outer">
+    <div class="inner">
+  <select id="page-mobile-menu">
+    <option value="">Navigate...</option>
+    
+      <optgroup label="Getting Started">
+        
+          <option value="/hexo/docs/index.html">Overview</option>
+        
+          <option value="/hexo/docs/setup.html">Setup</option>
+        
+          <option value="/hexo/docs/configuration.html">Configuration</option>
+        
+          <option value="/hexo/docs/commands.html">Commands</option>
+        
+          <option value="/hexo/docs/migration.html">Migration</option>
+        
+      </optgroup>
+    
+      <optgroup label="Basic Usage">
+        
+          <option value="/hexo/docs/writing.html">Writing</option>
+        
+          <option value="/hexo/docs/generating.html">Generating</option>
+        
+          <option value="/hexo/docs/tag-plugins.html">Tag Plugins</option>
+        
+          <option value="/hexo/docs/server.html">Server</option>
+        
+          <option value="/hexo/docs/deployment.html">Deployment</option>
+        
+      </optgroup>
+    
+      <optgroup label="Customization">
+        
+          <option value="/hexo/docs/permalinks.html">Permalinks</option>
+        
+          <option value="/hexo/docs/themes.html">Themes</option>
+        
+          <option value="/hexo/docs/variables.html">Variables</option>
+        
+          <option value="/hexo/docs/pagination.html">Pagination</option>
+        
+          <option value="/hexo/docs/helpers.html">Helpers</option>
+        
+          <option value="/hexo/docs/i18n.html">i18n</option>
+        
+      </optgroup>
+    
+      <optgroup label="Advanced">
+        
+          <option value="/hexo/docs/models.html">Models</option>
+        
+          <option value="/hexo/docs/events.html">Events</option>
+        
+          <option value="/hexo/docs/plugins.html">Plugins</option>
+        
+      </optgroup>
+    
+      <optgroup label="Miscellaneous">
+        
+          <option value="/hexo/docs/troubleshooting.html">Troubleshooting</option>
+        
+          <option value="/hexo/docs/contributing.html">Contributing</option>
+        
+      </optgroup>
+    
+  </select>
+</div>
+    <div class="page-content">
+      <div class="page-entry">
+        <h3>Global Variables</h3>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>site</code></td>
+<td>Sitewide information.</td>
+</tr>
+<tr>
+<td><code>page</code></td>
+<td>Page specific information and custom variables set in front-matter.</td>
+</tr>
+<tr>
+<td><code>config</code></td>
+<td>Site configuration</td>
+</tr>
+<tr>
+<td><code>theme</code></td>
+<td>Theme configuration. Inherits from site configuration.</td>
+</tr>
+<tr>
+<td><code>_</code> (single underscore)</td>
+<td><a href="http://lodash.com/" target="_blank">Lodash</a> library</td>
+</tr>
+<tr>
+<td><code>__</code> (double underscores)</td>
+<td>Internationalization (i18n) utility. See below for detail.</td>
+</tr>
+<tr>
+<td><code>path</code></td>
+<td>Path of current page</td>
+</tr>
+<tr>
+<td><code>url</code></td>
+<td>Full URL of current page</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="note tip"><strong class="note-title">Custom Variables</strong><p>You can also use front-matter in layouts just like writing posts!</p>
+</blockquote>
+
+
+<h3>Site Variables</h3>
+<p>All of the following variables are [Data Model].</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>site.posts</code></td>
+<td>All posts</td>
+</tr>
+<tr>
+<td><code>site.pages</code></td>
+<td>All pages</td>
+</tr>
+<tr>
+<td><code>site.categories</code></td>
+<td>All categories</td>
+</tr>
+<tr>
+<td><code>site.tags</code></td>
+<td>All tags</td>
+</tr>
+</tbody>
+</table>
+<h3>Page Vairables</h3>
+<p><strong>Article (post, page, …)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>page.title</code></td>
+<td>Article title</td>
+</tr>
+<tr>
+<td><code>page.date</code></td>
+<td>Article created date (<a href="http://momentjs.com/" target="_blank">Moment.js</a> object)</td>
+</tr>
+<tr>
+<td><code>page.updated</code></td>
+<td>Article last updated date (<a href="http://momentjs.com/" target="_blank">Moment.js</a> object)</td>
+</tr>
+<tr>
+<td><code>page.categories</code></td>
+<td>All categories of the article</td>
+</tr>
+<tr>
+<td><code>page.tags</code></td>
+<td>All tags of the article</td>
+</tr>
+<tr>
+<td><code>page.comments</code></td>
+<td>Comment enabled or not</td>
+</tr>
+<tr>
+<td><code>page.layout</code></td>
+<td>Layout name.</td>
+</tr>
+<tr>
+<td><code>page.content</code></td>
+<td>The full processed content of the article</td>
+</tr>
+<tr>
+<td><code>page.excerpt</code></td>
+<td>The processed excerpt of the article</td>
+</tr>
+<tr>
+<td><code>page.source</code></td>
+<td>The path of the source file</td>
+</tr>
+<tr>
+<td><code>page.full_source</code></td>
+<td>Full path of the source file</td>
+</tr>
+<tr>
+<td><code>page.path</code></td>
+<td>The URL of the article without root URL. We usually use <code>config.root + page.path</code> in theme.</td>
+</tr>
+<tr>
+<td><code>page.permalink</code></td>
+<td>Full URL of the article</td>
+</tr>
+<tr>
+<td><code>page.prev</code></td>
+<td>The previous post. <code>null</code> if the post is the first post.</td>
+</tr>
+<tr>
+<td><code>page.next</code></td>
+<td>The next post. <code>null</code> if the post is the last post.</td>
+</tr>
+<tr>
+<td><code>page.raw</code></td>
+<td>The raw data of the article</td>
+</tr>
+</tbody>
+</table>
+<blockquote class="note info"><strong class="note-title">Custom front-matter</strong><p>The front-matter in posts will be available in <code>page</code>.</p>
+</blockquote>
+
+
+<p><strong>Home (index)</strong></p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>page.per_page</code></td>
+<td>Posts displayed per page</td>
+</tr>
+<tr>
+<td><code>page.total</code></td>
+<td>Total number of posts</td>
+</tr>
+<tr>
+<td><code>page.current</code></td>
+<td>Current page number</td>
+</tr>
+<tr>
+<td><code>page.current_url</code></td>
+<td>The URL of current page</td>
+</tr>
+<tr>
+<td><code>page.posts</code></td>
+<td>Posts in this page ([Data Model])</td>
+</tr>
+<tr>
+<td><code>page.prev</code></td>
+<td>Previous page number. <code>0</code> if the current page is the first.</td>
+</tr>
+<tr>
+<td><code>page.prev_link</code></td>
+<td>The URL of previous page. <code>&#39;&#39;</code> if the current page is the first.</td>
+</tr>
+<tr>
+<td><code>page.next</code></td>
+<td>Next page number. <code>0</code> if the current page is the last.</td>
+</tr>
+<tr>
+<td><code>page.next_link</code></td>
+<td>The URL of next page. <code>&#39;&#39;</code> if the current page is the first.</td>
+</tr>
+<tr>
+<td><code>page.path</code></td>
+<td>The URL of current page without root URL. We usually use <code>config.root + page.path</code> in theme.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Archive (archive):</strong> Same as <code>index</code> layout but add the following variables.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>archive</code></td>
+<td>Equals <code>true</code></td>
+</tr>
+<tr>
+<td><code>year</code></td>
+<td>Archive year (4-digit)</td>
+</tr>
+<tr>
+<td><code>month</code></td>
+<td>Archive month (2-digit without leading zeros)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Category (category):</strong> Same as <code>index</code> layout but add the following variables.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>category</code></td>
+<td>Category name</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tag (tag):</strong> Same as <code>index</code> layout but add the following variables.</p>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tag</code></td>
+<td>Tag name</td>
+</tr>
+</tbody>
+</table>
+
+      </div>
+      <footer id="page-footer">
+        <time id="page-footer-updated" datetime="2013-08-24T17:30:50.000Z">Last updated: Aug 25, 2013</time>
+        <a href="/hexo/docs/themes.html" id="page-footer-prev" class="page-footer-link">Prev</a>
+        <a href="/hexo/docs/pagination.html" id="page-footer-next" class="page-footer-link">Next</a>
+      </footer>
+    </div>
+    <aside id="sidebar">
+  
+    <strong class="sidebar-title">Getting Started</strong>
+    
+      <a href="/hexo/docs/index.html" class="sidebar-link">Overview</a>
+    
+      <a href="/hexo/docs/setup.html" class="sidebar-link">Setup</a>
+    
+      <a href="/hexo/docs/configuration.html" class="sidebar-link">Configuration</a>
+    
+      <a href="/hexo/docs/commands.html" class="sidebar-link">Commands</a>
+    
+      <a href="/hexo/docs/migration.html" class="sidebar-link">Migration</a>
+    
+  
+    <strong class="sidebar-title">Basic Usage</strong>
+    
+      <a href="/hexo/docs/writing.html" class="sidebar-link">Writing</a>
+    
+      <a href="/hexo/docs/generating.html" class="sidebar-link">Generating</a>
+    
+      <a href="/hexo/docs/tag-plugins.html" class="sidebar-link">Tag Plugins</a>
+    
+      <a href="/hexo/docs/server.html" class="sidebar-link">Server</a>
+    
+      <a href="/hexo/docs/deployment.html" class="sidebar-link">Deployment</a>
+    
+  
+    <strong class="sidebar-title">Customization</strong>
+    
+      <a href="/hexo/docs/permalinks.html" class="sidebar-link">Permalinks</a>
+    
+      <a href="/hexo/docs/themes.html" class="sidebar-link">Themes</a>
+    
+      <a href="/hexo/docs/variables.html" class="sidebar-link current">Variables</a>
+    
+      <a href="/hexo/docs/pagination.html" class="sidebar-link">Pagination</a>
+    
+      <a href="/hexo/docs/helpers.html" class="sidebar-link">Helpers</a>
+    
+      <a href="/hexo/docs/i18n.html" class="sidebar-link">i18n</a>
+    
+  
+    <strong class="sidebar-title">Advanced</strong>
+    
+      <a href="/hexo/docs/models.html" class="sidebar-link">Models</a>
+    
+      <a href="/hexo/docs/events.html" class="sidebar-link">Events</a>
+    
+      <a href="/hexo/docs/plugins.html" class="sidebar-link">Plugins</a>
+    
+  
+    <strong class="sidebar-title">Miscellaneous</strong>
+    
+      <a href="/hexo/docs/troubleshooting.html" class="sidebar-link">Troubleshooting</a>
+    
+      <a href="/hexo/docs/contributing.html" class="sidebar-link">Contributing</a>
+    
+  
+</aside>
+  </div>
+</article>
+  <footer id="footer">
+  <div class="outer">
+    <div class="inner">
+      &copy; 2013 <a href="http://zespia.tw">SkyArrow</a><br>
+      Background: <a href="http://subtlepatterns.com/shattered/" target="_blank">Shattered</a> by <a href="http://luukvanbaars.com/" target="_blank">Luuk van Baars</a>
+    </div>
+  </div>
+</footer>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+<script src="/hexo/js/script.js"></script>
+<script type="text/javascript" src="https://apis.google.com/js/plusone.js"></script>
+</body>
+</html>
