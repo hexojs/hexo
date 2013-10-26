@@ -29,6 +29,7 @@ external_link: true # Open external links in new tab
 max_open_file: 100
 multi_thread: true
 filename_case: 0
+render_drafts: false
 highlight:
   enable: true
   line_number: true
