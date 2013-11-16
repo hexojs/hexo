@@ -1,5 +1,5 @@
 # Hexo Configuration
-## Docs: http://zespia.tw/hexo/docs/configure.html
+## Docs: http://zespia.tw/hexo/docs/configuration.html
 ## Source: https://github.com/tommy351/hexo/
 
 # Site
@@ -78,6 +78,6 @@ theme: light
 exclude_generator:
 
 # Deployment
-## Docs: http://zespia.tw/hexo/docs/deploy.html
+## Docs: http://zespia.tw/hexo/docs/deployment.html
 deploy:
   type:
