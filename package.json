@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "async": "0.2.9",
-    "express": "3.4.3",
+    "express": "3.4.4",
     "ejs": "0.8.4",
     "stylus": "0.38.0",
     "nib": "1.0.1",
@@ -45,7 +45,7 @@
     "optimist": "0.6.0",
     "warehouse": "0.1.12",
     "sprintf-js": "0.0.7",
-    "watch": "0.8.0"
+    "chokidar": "0.7.1"
   },
   "devDependencies": {
     "mocha": "*",
