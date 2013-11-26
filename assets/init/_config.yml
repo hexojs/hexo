@@ -20,6 +20,10 @@ archive_dir: archives
 category_dir: categories
 code_dir: downloads/code
 
+# Directory
+source_dir: source
+public_dir: public
+
 # Writing
 new_post_name: :title.md # File name of new posts
 default_layout: post
