@@ -77,6 +77,17 @@ disqus_shortname:
 theme: light
 exclude_generator:
 
+# Markdown
+## https://github.com/chjj/marked
+markdown:
+  gfm: true
+  pedantic: false
+  sanitize: false
+  tables: true
+  breaks: true
+  smartLists: true
+  smartypants: true
+
 # Deployment
 ## Docs: http://zespia.tw/hexo/docs/deployment.html
 deploy:
