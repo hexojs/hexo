@@ -30,22 +30,22 @@
   },
   "dependencies": {
     "async": "0.2.9",
-    "express": "3.4.3",
+    "express": "3.4.4",
     "ejs": "0.8.4",
-    "stylus": "0.38.0",
+    "stylus": "0.40.3",
     "nib": "1.0.1",
-    "marked": "0.2.9",
+    "marked": "0.2.10",
     "moment": "2.3.1",
     "colors": "0.6.2",
-    "highlight.js": "7.3.0",
+    "highlight.js": "7.4.0",
     "yamljs": "0.1.4",
-    "lodash": "2.2.1",
+    "lodash": "2.3.0",
     "swig": "0.14.0",
     "graceful-fs": "2.0.1",
     "optimist": "0.6.0",
     "warehouse": "0.1.12",
     "sprintf-js": "0.0.7",
-    "watch": "0.8.0"
+    "chokidar": "0.7.1"
   },
   "devDependencies": {
     "mocha": "*",

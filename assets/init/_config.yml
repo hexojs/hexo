@@ -20,6 +20,10 @@ archive_dir: archives
 category_dir: categories
 code_dir: downloads/code
 
+# Directory
+source_dir: source
+public_dir: public
+
 # Writing
 new_post_name: :title.md # File name of new posts
 default_layout: post
@@ -30,6 +34,7 @@ max_open_file: 100
 multi_thread: true
 filename_case: 0
 render_drafts: false
+post_asset_folder: false
 highlight:
   enable: true
   line_number: true
@@ -76,6 +81,17 @@ disqus_shortname:
 ## Themes: https://github.com/tommy351/hexo/wiki/Themes
 theme: light
 exclude_generator:
+
+# Markdown
+## https://github.com/chjj/marked
+markdown:
+  gfm: true
+  pedantic: false
+  sanitize: false
+  tables: true
+  breaks: true
+  smartLists: true
+  smartypants: true
 
 # Deployment
 ## Docs: http://zespia.tw/hexo/docs/deployment.html
