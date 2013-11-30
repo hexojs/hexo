@@ -201,7 +201,7 @@ Inserts date in XML format. `date` can be unix time, ISO string, date object, or
 Inserts formatted time. `date` can be unix time, ISO string, date object, or moment.js object. `format` is `time_format` setting by default.
 
 ``` js
-<%- date(date, [format]) %>
+<%- time(date, [format]) %>
 ```
 
 **Examples:**
@@ -236,7 +236,7 @@ Inserts formatted date and time. `date` can be unix time, ISO string, date objec
 
 [Moment.js] library.
 
-### searh_form
+### search_form
 
 Inserts a Google search form.
 
