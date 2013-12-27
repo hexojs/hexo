@@ -7,7 +7,6 @@
     "hexo": "./bin/hexo"
   },
   "scripts": {
-    "prepublish": "make build",
     "test": "node test"
   },
   "directories": {
@@ -22,7 +21,13 @@
     "url": "https://github.com/tommy351/hexo/issues"
   },
   "homepage": "http://zespia.tw/hexo/",
-  "keywords": ["website", "blog", "cms", "framework", "hexo"],
+  "keywords": [
+    "website",
+    "blog",
+    "cms",
+    "framework",
+    "hexo"
+  ],
   "author": "Tommy Chen <tommy351@gmail.com> (http://zespia.tw)",
   "license": {
     "type": "MIT",
@@ -50,6 +55,9 @@
   "devDependencies": {
     "mocha": "*",
     "should": "*",
-    "cheerio": "*"
+    "cheerio": "*",
+    "grunt": "~0.4.2",
+    "load-grunt-tasks": "~0.2.1",
+    "grunt-contrib-stylus": "~0.11.0"
   }
 }

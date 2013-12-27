@@ -3,3 +3,4 @@
 test/
 .sass-cache
 tmp
+debug.log
