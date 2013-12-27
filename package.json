@@ -30,14 +30,14 @@
   },
   "dependencies": {
     "async": "0.2.9",
-    "express": "3.4.4",
-    "ejs": "0.8.4",
-    "stylus": "0.40.3",
+    "express": "3.4.7",
+    "ejs": "0.8.5",
+    "stylus": "0.41.3",
     "nib": "1.0.1",
     "marked": "0.2.10",
-    "moment": "2.3.1",
+    "moment": "2.5.0",
     "colors": "0.6.2",
-    "highlight.js": "7.4.0",
+    "highlight.js": "7.5.0",
     "yamljs": "0.1.4",
     "lodash": "2.3.0",
     "swig": "0.14.0",
@@ -45,7 +45,7 @@
     "optimist": "0.6.0",
     "warehouse": "0.1.12",
     "sprintf-js": "0.0.7",
-    "chokidar": "0.7.1"
+    "chokidar": "0.8.1"
   },
   "devDependencies": {
     "mocha": "*",
