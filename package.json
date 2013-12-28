@@ -45,7 +45,7 @@
     "highlight.js": "7.5.0",
     "yamljs": "0.1.4",
     "lodash": "2.3.0",
-    "swig": "0.14.0",
+    "swig": "1.2.2",
     "graceful-fs": "2.0.1",
     "optimist": "0.6.0",
     "warehouse": "0.1.12",
