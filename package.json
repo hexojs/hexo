@@ -39,7 +39,7 @@
     "ejs": "0.8.5",
     "stylus": "0.41.3",
     "nib": "1.0.1",
-    "marked": "0.2.10",
+    "marked": "0.3.0",
     "moment": "2.5.0",
     "colors": "0.6.2",
     "highlight.js": "7.5.0",
