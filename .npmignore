@@ -1,6 +1,5 @@
 .git*
 .DS_Store
 test/
-.sass-cache
 tmp
 debug.log

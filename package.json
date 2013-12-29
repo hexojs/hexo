@@ -55,9 +55,6 @@
   "devDependencies": {
     "mocha": "*",
     "should": "*",
-    "cheerio": "*",
-    "grunt": "~0.4.2",
-    "load-grunt-tasks": "~0.2.1",
-    "grunt-contrib-stylus": "~0.11.0"
+    "cheerio": "*"
   }
 }
