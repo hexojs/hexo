@@ -1,7 +1,4 @@
 .DS_Store
 node_modules
-.sass-cache
 tmp
-public/css
-public/js/lib
 debug.log
