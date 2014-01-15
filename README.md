@@ -2,6 +2,9 @@
 
 [![Build Status](https://travis-ci.org/tommy351/hexo.png?branch=master)](https://travis-ci.org/tommy351/hexo)  [![NPM version](https://badge.fury.io/js/hexo.png)](http://badge.fury.io/js/hexo)
 
+[![Clone in Koding](http://learn.koding.com/btn/clone_d.png)][koding]
+[koding]: https://koding.com/Teamwork?import=https://github.com/tommy351/hexo/archive/master.zip&c=git3
+
 A fast, simple & powerful blog framework, powered by [Node.js](http://nodejs.org).
 
 - [Docs](http://zespia.tw/hexo/docs/)
