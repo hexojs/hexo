@@ -1,34 +1,24 @@
 var path = require('path'),
-  Core = require('../lib/core'),
-  Router = require('../lib/router'),
-  Extend = require('../lib/extend'),
-  Logger = require('../lib/logger');
+  should = require('chai').should();
 
-describe('core', function(){
-  var baseDir = path.join(__dirname, 'blog');
-
-  it('constructor', function(){
-    hexo.should.be.instanceof(Core);
-  });
+describe('Core', function(){
+  var baseDir = path.join(__dirname, 'blog') + path.sep,
+    coreDir = path.dirname(__dirname) + path.sep;
 
   it('core_dir', function(){
-    hexo.core_dir.should.eql(path.dirname(__dirname) + path.sep);
+    hexo.core_dir.should.eql(coreDir);
   });
 
   it('lib_dir', function(){
-    hexo.lib_dir.should.eql(path.resolve(__dirname, '../lib') + path.sep);
+    hexo.lib_dir.should.eql(path.join(coreDir, 'lib') + path.sep);
   });
 
   it('version', function(){
     hexo.version.should.eql(require('../package.json').version);
   });
 
-  it('util', function(){
-    hexo.util.should.eql(require('../lib/util'));
-  });
-
   it('base_dir', function(){
-    hexo.base_dir.should.eql(baseDir + path.sep);
+    hexo.base_dir.should.eql(baseDir);
   });
 
   it('public_dir', function(){
@@ -51,30 +41,12 @@ describe('core', function(){
     hexo.scaffold_dir.should.eql(path.join(baseDir, 'scaffolds') + path.sep);
   });
 
-  it('route', function(){
-    hexo.route.should.be.instanceof(Router);
-  });
-
-  it('extend', function(){
-    hexo.extend.should.be.instanceof(Extend);
-
-    [
-      'console',
-      'deployer',
-      'filter',
-      'generator',
-      'helper',
-      'migrator',
-      'processor',
-      'renderer',
-      'swig',
-      'tag'
-    ].forEach(function(item){
-      hexo.extend[item].should.be.instanceof(require('../lib/extend/' + item));
-    });
-  });
-
-  it('log', function(){
-    hexo.log.should.be.instanceof(Logger);
+  it('env', function(){
+    hexo.env.debug.should.be.true;
+    hexo.env.safe.should.be.false;
+    hexo.env.silent.should.be.true;
+    hexo.env.env.should.eql('development');
+    hexo.env.version.should.eql(require('../package.json').version);
+    hexo.env.init.should.be.true;
   });
 });

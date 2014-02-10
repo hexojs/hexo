@@ -7,7 +7,7 @@
     "hexo": "./bin/hexo"
   },
   "scripts": {
-    "test": "node test"
+    "test": "grunt test"
   },
   "directories": {
     "lib": "./lib",
@@ -54,7 +54,10 @@
   },
   "devDependencies": {
     "mocha": "*",
-    "should": "*",
-    "cheerio": "*"
+    "chai": "*",
+    "cheerio": "*",
+    "load-grunt-tasks": "~0.3.0",
+    "grunt": "~0.4.2",
+    "grunt-contrib-watch": "~0.5.3"
   }
 }

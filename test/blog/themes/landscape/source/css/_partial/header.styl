@@ -1,0 +1,165 @@
+#header
+  height: banner-height
+  position: relative
+  border-bottom: 1px solid color-border
+  &:before, &:after
+    content: ""
+    position: absolute
+    left: 0
+    right: 0
+    height: 40px
+  &:before
+    top: 0
+    background: linear-gradient(rgba(0, 0, 0, 0.2), transparent)
+  &:after
+    bottom: 0
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.2))
+
+#header-outer
+  height: 100%
+  position: relative
+
+#header-inner
+  position: relative
+  overflow: hidden
+
+#banner
+  position: absolute
+  top: 0
+  left: 0
+  width: 100%
+  height: 100%
+  background: url(banner-url) center #000
+  background-size: cover
+  z-index: -1
+
+#header-title
+  text-align: center
+  height: logo-size
+  position: absolute
+  top: 50%
+  left: 0
+  margin-top: logo-size * -0.5
+
+$logo-text
+  text-decoration: none
+  color: #fff
+  font-weight: 300
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3)
+
+#logo
+  @extend $logo-text
+  font-size: logo-size
+  line-height: logo-size
+  letter-spacing: 2px
+
+#subtitle
+  @extend $logo-text
+  font-size: subtitle-size
+  line-height: subtitle-size
+  letter-spacing: 1px
+
+#subtitle-wrap
+  margin-top: subtitle-size
+
+#main-nav
+  float: left
+  margin-left: -15px
+
+$nav-link
+  float: left
+  color: #fff
+  opacity: 0.6
+  text-decoration: none
+  text-shadow: 0 1px rgba(0, 0, 0, 0.2)
+  transition: opacity 0.2s
+  display: block
+  padding: 20px 15px
+  &:hover
+    opacity: 1
+
+.nav-icon
+  @extend $nav-link
+  font-family: font-icon
+  text-align: center
+  font-size: font-size
+  width: font-size
+  height: font-size
+  padding: 20px 15px
+  position: relative
+  cursor: pointer
+
+.main-nav-link
+  @extend $nav-link
+  font-weight: 300
+  letter-spacing: 1px
+  @media mq-mobile
+    display: none
+
+#main-nav-toggle
+  display: none
+  &:before
+    content: "\f0c9"
+  @media mq-mobile
+    display: block
+
+#sub-nav
+  float: right
+  margin-right: -15px
+
+#nav-rss-link
+  &:before
+    content: "\f09e"
+
+#nav-search-btn
+  &:before
+    content: "\f002"
+
+#search-form-wrap
+  position: absolute
+  top: 15px
+  width: 150px
+  height: 30px
+  right: -150px
+  opacity: 0
+  transition: 0.2s ease-out
+  &.on
+    opacity: 1
+    right: 0
+  @media mq-mobile
+    width: 100%
+    right: -100%
+
+.search-form
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  background: #fff
+  padding: 5px 15px
+  border-radius: 15px
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3)
+
+.search-form-input
+  border: none
+  background: none
+  color: color-default
+  width: 100%
+  font: 13px font-sans
+  outline: none
+  &::-webkit-search-results-decoration
+  &::-webkit-search-cancel-button
+    -webkit-appearance: none
+
+.search-form-submit
+  position: absolute
+  top: 50%
+  right: 10px
+  margin-top: -7px
+  font: 13px font-icon
+  border: none
+  background: none
+  color: #bbb
+  cursor: pointer
+  &:hover, &:focus
+    color: #777
