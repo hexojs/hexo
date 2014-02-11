@@ -2,7 +2,7 @@ var Mocha = require('mocha'),
   path = require('path');
 
 module.exports = function(grunt){
-  grunt.registerMultiTask('test', function(){
+  grunt.registerMultiTask('mocha', function(){
     var done = this.async(),
       options = this.options();
 
