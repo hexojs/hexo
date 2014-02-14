@@ -1,7 +1,7 @@
 module.exports = function(grunt){
   grunt.initConfig({
-    test: {
-      app: {
+    mocha: {
+      lib: {
         options: {
           reporter: 'dot'
         },
@@ -9,15 +9,26 @@ module.exports = function(grunt){
       }
     },
     watch: {
-      test: {
+      mocha: {
         files: ['lib/**/*.js', 'test/**/*.test.js'],
-        tasks: ['test:app']
+        tasks: ['mocha:lib']
+      },
+      jshint: {
+        files: ['lib/**/*.js'],
+        tasks: ['jshint:lib']
       }
+    },
+    jshint: {
+      options: {
+        '-W103': true
+      },
+      lib: ['lib/**/*.js']
     }
   });
 
   require('load-grunt-tasks')(grunt);
   grunt.loadTasks('tasks');
 
+  grunt.registerTask('test', ['mocha', 'jshint']);
   grunt.registerTask('dev', ['watch']);
 };
