@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  <%
+  var title = [];
+  if (page.current > 1) title.push(__('page', page.current));
+  if (page.title) title.push(page.title);
+  if (page.category) title.push(page.category);
+  if (page.tag) title.push(page.tag);
+  if (page.archive){
+    if (page.year) title.push(__('archive_b', page.year + (page.month ? '/' + page.month : '')));
+    else title.push(__('archive_a'));
+  }
+  title.push(config.title);
+  %>
+  <title><%= title.join(' | ') %></title>
+  <% if (config.author){ %><meta name="author" content="<%= config.author %>"><% } %>
+  <% if (page.description){ %>
+  <meta name="description" content="<%= page.description %>">
+  <% } else if (config.description){ %>
+  <meta name="description" content="<%= config.description %>">
+  <% } else if (page.excerpt){ %>
+  <meta name="description" content="<%= strip_html(page.excerpt).replace(/^\s*/, '').replace(/\s*$/, '') %>">
+  <% } else if (page.content){ %>
+  <meta name="description" content="<%= strip_html(page.content).replace(/^\s*/, '').replace(/\s*$/, '').substring(0, 150) %>">
+  <% } %>
+  <% if (page.keywords){ %><meta name="keywords" content="<%= page.keywords %>"><% } %>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <% if (page.title){ %><meta property="og:title" content="<%= page.title %>"/><% } %>
+  <meta property="og:site_name" content="<%= config.title %>"/>
+
+  <% if(page.cover) { %>
+    <meta property="og:image" content="<%= page.cover %>" />
+  <% } else { %>
+    <meta property="og:image" content="<%= config.cover %>"/>
+  <% } %>
+
+  <link href="<%- config.root %>favicon.png" rel="icon">
+  <link rel="alternate" href="<% if (theme.rss){ %><%- theme.rss %><% } else { %><%- config.root %>atom.xml<% } %>" title="<%= config.title %>" type="application/atom+xml">
+  <link rel="stylesheet" href="<%- config.root %>css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  <%- partial('google_analytics') %>
+</head>
