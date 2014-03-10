@@ -35,11 +35,11 @@
   },
   "dependencies": {
     "async": "0.2.10",
-    "express": "3.4.8",
+    "express": "3.5.0",
     "ejs": "0.8.5",
     "stylus": "0.42.2",
     "nib": "1.0.2",
-    "marked": "0.3.1",
+    "marked": "0.3.2",
     "moment": "2.5.1",
     "colors": "0.6.2",
     "highlight.js": "8.0.0",
