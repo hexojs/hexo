@@ -7,7 +7,7 @@
 
 A fast, simple & powerful blog framework, powered by [Node.js](http://nodejs.org).
 
-- [Docs](http://zespia.tw/hexo/docs/)
+- [Docs](http://hexo.io/docs/)
 - [Plugins](https://github.com/tommy351/hexo/wiki/Plugins)
 - [Themes](https://github.com/tommy351/hexo/wiki/Themes)
 
