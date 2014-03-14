@@ -1,0 +1,31 @@
+// http://www.zeldman.com/2012/03/01/replacing-the-9999px-hack-new-image-replacement/
+hide-text()
+  text-indent: 100%
+  white-space: nowrap
+  overflow: hidden
+
+// http://codepen.io/shshaw/full/gEiDt
+absolute-center(width, height = width)
+  // margin: auto
+  // position: absolute
+  // top: 50%
+  // top: 0
+  // left: 0
+  // bottom: 0
+  // right: 0
+  // width: width
+  // height: height
+  // overflow: auto
+  width: width
+  height: height
+  position: absolute
+  top: 50%
+  left: 50%
+  margin-top: width * -0.5
+  margin-left: height * -0.5
+
+avoid-column-break()
+  vendor("column-break-inside", avoid, only: webkit)
+  page-break-inside: avoid // for firefox
+  overflow: hidden // fix for firefox
+  break-inside: avoid-column

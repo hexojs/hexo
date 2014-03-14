@@ -58,7 +58,7 @@ tag: 2
 ## You can customize the logger format as defined in
 ## http://www.senchalabs.org/connect/logger.html
 port: 4000
-server_ip: 0.0.0.0 # bind to all ip address by default
+server_ip: 0.0.0.0
 logger: false
 logger_format:
 
@@ -93,6 +93,10 @@ markdown:
   breaks: true
   smartLists: true
   smartypants: true
+
+# Stylus
+stylus:
+  compress: false
 
 # Deployment
 ## Docs: http://zespia.tw/hexo/docs/deployment.html
