@@ -1,17 +1,15 @@
-var marked = require('marked'),
-  cheerio = require('cheerio'),
+var cheerio = require('cheerio'),
   should = require('chai').should();
 
 describe('Tag - blockquote', function(){
   var blockquote = require('../../lib/plugins/tag/blockquote');
 
-  var raw = '123456 **bold** and *italic*',
-    parsed = marked(raw);
+  var raw = '123456 **bold** and *italic*';
 
   it('content', function(){
     var $ = cheerio.load(blockquote([], raw));
 
-    $('blockquote').html().should.eql(parsed);
+    $('blockquote').html().should.eql('<p>' + raw + '</p>');
   });
 
   it('author', function(){
