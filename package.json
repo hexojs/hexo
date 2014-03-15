@@ -53,7 +53,8 @@
     "connect": "3.x",
     "serve-static": "1.0.2",
     "morgan": "1.0.0",
-    "compression": "1.0.1"
+    "compression": "1.0.1",
+    "mime": "1.2.11"
   },
   "devDependencies": {
     "mocha": "*",
