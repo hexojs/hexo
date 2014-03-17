@@ -5,36 +5,153 @@ var yaml = require('yamljs'),
 describe('Util - yfm', function(){
   var yfm = require('../../lib/util/yfm');
 
-  var str = [
-    'layout: post',
-    'title: Today is a beatuiful day',
-    'date: 2013-08-18 23:46:27',
-    'comments: true',
-    'tags:',
-    '- Foo',
-    '- Bar',
-    'categories:',
-    '  foo: 1',
-    '  bar: 2'
-  ].join('\n');
+  describe('parse', function(){
+    it('only content', function(){
+      var str = [
+        'foo',
+        'bar'
+      ].join('\n');
 
-  var obj = yaml.parse(str);
+      var data = yfm.parse(str);
+      data._content.should.eql(str);
+    });
 
-  it('normal format', function(){
-    yfm('---\n' + str + '\n---\ncontent').should.eql(_.extend({_content: 'content'}, obj));
+    it('only content (with ---)', function(){
+      var str = [
+        'foo',
+        '---',
+        'str'
+      ].join('\n');
+
+      var data = yfm.parse(str);
+      data._content.should.eql(str);
+    });
+
+    it('new style', function(){
+      var str = [
+        'layout: post',
+        '---',
+        '123'
+      ].join('\n');
+
+      var data = yfm.parse(str);
+      data.layout.should.eql('post');
+      data._content.should.eql('123');
+    });
+
+    it('new style (without content)', function(){
+      var str = [
+        'layout: post',
+        '---'
+      ].join('\n');
+
+      var data = yfm.parse(str);
+      data.layout.should.eql('post');
+      data._content.should.eql('');
+    });
+
+    it('new style (trim)', function(){
+      var str = [
+        '',
+        'layout: post',
+        '',
+        '---',
+        '',
+        '',
+        '',
+        '123'
+      ].join('\n');
+
+      var data = yfm.parse(str);
+      data.layout.should.eql('post');
+      data._content.should.eql('123');
+    });
+
+    it('new style (more than 3 dashes)', function(){
+      var str = [
+        'layout: post',
+        '------',
+        '123'
+      ].join('\n');
+
+      var data = yfm.parse(str);
+      data.layout.should.eql('post');
+      data._content.should.eql('123');
+    });
+
+    it('old style', function(){
+      var str = [
+        '---',
+        'layout: post',
+        '---',
+        '123'
+      ].join('\n');
+
+      var data = yfm.parse(str);
+      data.layout.should.eql('post');
+      data._content.should.eql('123');
+    });
+
+    it('old style (without content)', function(){
+      var str = [
+        '---',
+        'layout: post',
+        '---'
+      ].join('\n');
+
+      var data = yfm.parse(str);
+      data.layout.should.eql('post');
+      data._content.should.eql('');
+    });
+
+    it('old style (trim)', function(){
+      var str = [
+        '---',
+        '',
+        'layout: post',
+        '',
+        '---',
+        '',
+        '',
+        '',
+        '123'
+      ].join('\n');
+
+      var data = yfm.parse(str);
+      data.layout.should.eql('post');
+      data._content.should.eql('123');
+    });
+
+    it('old style (more than 3 dashes)', function(){
+      var str = [
+        '----',
+        'layout: post',
+        '------',
+        '123'
+      ].join('\n');
+
+      var data = yfm.parse(str);
+      data.layout.should.eql('post');
+      data._content.should.eql('123');
+    });
   });
 
-  it('simplified format', function(){
-    yfm(str + '\n---\ncontent').should.eql(_.extend({_content: 'content'}, obj));
-  });
+  describe('stringify', function(){
+    it('with data', function(){
+      var data = {
+        layout: 'post',
+        _content: '123'
+      };
 
-  it('empty content', function(){
-    yfm(str + '\n---').should.eql(_.extend({_content: ''}, obj));
-  });
+      yfm.stringify(data).should.eql('layout: post\n\n---\n123');
+    });
 
-  it('stringify', function(){
-    var txt = yfm.stringify(_.extend({_content: 'content'}, obj));
+    it('without data', function(){
+      var data = {
+        _content: '123'
+      };
 
-    yfm(txt).should.eql(_.extend({_content: 'content'}, obj));
+      yfm.stringify(data).should.eql('123');
+    });
   });
 });
