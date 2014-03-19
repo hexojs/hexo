@@ -10,7 +10,6 @@ describe('pullquote', function(){
     var $ = cheerio.load(pullquote([], raw));
 
     $('blockquote').attr('class').should.eql('pullquote');
-    $('blockquote').html().should.eql('<p>' + raw + '</p>');
   });
 
   it('class', function(){

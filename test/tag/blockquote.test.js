@@ -6,12 +6,6 @@ describe('Tag - blockquote', function(){
 
   var raw = '123456 **bold** and *italic*';
 
-  it('content', function(){
-    var $ = cheerio.load(blockquote([], raw));
-
-    $('blockquote').html().should.eql('<p>' + raw + '</p>');
-  });
-
   it('author', function(){
     var $ = cheerio.load(blockquote('John Doe'.split(' '), raw));
 
