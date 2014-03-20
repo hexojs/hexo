@@ -1,5 +1,5 @@
 # Hexo Configuration
-## Docs: http://zespia.tw/hexo/docs/configuration.html
+## Docs: http://hexo.io/docs/configuration.html
 ## Source: https://github.com/tommy351/hexo/
 
 # Site
@@ -99,6 +99,6 @@ stylus:
   compress: false
 
 # Deployment
-## Docs: http://zespia.tw/hexo/docs/deployment.html
+## Docs: http://hexo.io/docs/deployment.html
 deploy:
   type:
