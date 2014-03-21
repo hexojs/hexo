@@ -13,6 +13,9 @@
     "lib": "./lib",
     "bin": "./bin"
   },
+  "engines": {
+    "node": ">= 0.8"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/tommy351/hexo.git"
