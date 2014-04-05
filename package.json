@@ -50,7 +50,7 @@
     "lodash": "2.4.1",
     "swig": "1.3.2",
     "graceful-fs": "2.0.2",
-    "warehouse": "0.1.14",
+    "warehouse": "0.2.1",
     "sprintf-js": "0.0.7",
     "chokidar": "0.8.1",
     "minimist": "0.0.8"
