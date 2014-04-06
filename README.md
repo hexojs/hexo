@@ -63,11 +63,12 @@ $ hexo generate
 $ hexo server
 ```
 
-**Clean the build** - (if you modify settings in a theme, eg. banner image, etc.)
+**Clean generated content and styles**
 
 ```
 $ hexo clean
 ```
+
 
 ## License
 
