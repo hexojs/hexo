@@ -64,6 +64,7 @@ $ hexo server
 ```
 
 **Clean the build** - (if you modify settings in a theme, eg. banner image, etc.)
+
 ```
 $ hexo clean
 ```
