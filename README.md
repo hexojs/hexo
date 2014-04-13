@@ -1,6 +1,6 @@
 # Hexo
 
-[![Build Status](https://travis-ci.org/tommy351/hexo.png?branch=master)](https://travis-ci.org/tommy351/hexo)  [![NPM version](https://badge.fury.io/js/hexo.png)](http://badge.fury.io/js/hexo)
+[![Build Status](https://travis-ci.org/tommy351/hexo.svg?branch=master)](https://travis-ci.org/tommy351/hexo)  [![NPM version](https://badge.fury.io/js/hexo.svg)](http://badge.fury.io/js/hexo)
 
 [![Clone in Koding](http://learn.koding.com/btn/clone_d.png)][koding]
 [koding]: https://koding.com/Teamwork?import=https://github.com/tommy351/hexo/archive/master.zip&c=git3
@@ -74,7 +74,3 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/tommy351/hexo/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
