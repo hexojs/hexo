@@ -12,6 +12,7 @@ describe('include_code', function(){
     file.readFile(path.join(hexo.source_dir, 'downloads', 'code', 'test.js'), function(err, result){
       if (err) throw err;
 
+      result = result.replace(/\n$/, '');
       content = cheerio.load(highlight(result))('table').html();
       done();
     });
