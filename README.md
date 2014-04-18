@@ -67,7 +67,6 @@ $ hexo server
 
 ```
 $ hexo clean
-
 ```
 
 
