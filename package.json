@@ -7,7 +7,7 @@
     "hexo": "./bin/hexo"
   },
   "scripts": {
-    "test": "grunt test"
+    "test": "gulp test"
   },
   "directories": {
     "lib": "./lib",
@@ -59,9 +59,9 @@
     "mocha": "*",
     "chai": "*",
     "cheerio": "*",
-    "load-grunt-tasks": "~0.3.0",
-    "grunt": "~0.4.2",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt-contrib-jshint": "~0.8.0"
+    "gulp": "^3.6.2",
+    "gulp-jshint": "^1.5.5",
+    "gulp-mocha": "^0.4.1",
+    "jshint-stylish": "^0.1.5"
   }
 }
