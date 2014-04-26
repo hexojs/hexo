@@ -4,7 +4,12 @@ var gulp = require('gulp'),
   path = require('path');
 
 var lib = 'lib/**/*.js',
-  test = 'test/**/*.test.js';
+  test = 'test/scripts/**/*.js';
+
+var handleError = function(err){
+  console.error(err.stack);
+  this.emit('end');
+}
 
 gulp.task('hexo', function(callback){
   require('./lib/init')(path.join(__dirname, 'test', 'blog'), {
@@ -19,7 +24,7 @@ gulp.task('mocha', ['hexo'], function(){
     .pipe(mocha({
       reporter: 'dot',
       ignoreLeaks: true
-    }));
+    }).on('error', handleError));
 });
 
 gulp.task('jshint', function(){
