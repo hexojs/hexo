@@ -1,5 +1,6 @@
 var yaml = require('yamljs'),
   _ = require('lodash'),
+  moment = require('moment'),
   should = require('chai').should();
 
 describe('Util - yfm', function(){
@@ -138,12 +139,24 @@ describe('Util - yfm', function(){
 
   describe('stringify', function(){
     it('with data', function(){
+      var now = new Date();
+
       var data = {
         layout: 'post',
+        created: now,
+        moment: moment(now),
+        blank: null,
         _content: '123'
       };
 
-      yfm.stringify(data).should.eql('layout: post\n\n---\n123');
+      yfm.stringify(data).should.eql([
+        'layout: post',
+        'created: ' + moment(now).format('YYYY-MM-DD HH:mm:ss'),
+        'moment: ' + moment(now).format('YYYY-MM-DD HH:mm:ss'),
+        'blank:',
+        '---',
+        '123'
+      ].join('\n'));
     });
 
     it('without data', function(){
