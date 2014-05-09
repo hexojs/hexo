@@ -37,8 +37,8 @@
     "url": "https://raw.github.com/tommy351/hexo/master/LICENSE"
   },
   "dependencies": {
-    "async": "0.7.0",
-    "express": "3.5.0",
+    "async": "0.8.0",
+    "express": "3.x",
     "ejs": "1.0.0",
     "stylus": "0.43.1",
     "nib": "1.0.2",
