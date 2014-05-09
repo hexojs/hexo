@@ -94,10 +94,6 @@ markdown:
   smartLists: true
   smartypants: true
 
-# Stylus
-stylus:
-  compress: false
-
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
