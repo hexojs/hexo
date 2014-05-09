@@ -39,9 +39,6 @@
   "dependencies": {
     "async": "0.8.0",
     "express": "3.x",
-    "ejs": "1.0.0",
-    "stylus": "0.43.1",
-    "nib": "1.0.2",
     "marked": "0.3.2",
     "moment": "2.6.0",
     "colors": "0.6.2",
