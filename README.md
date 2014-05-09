@@ -10,6 +10,7 @@ A fast, simple & powerful blog framework, powered by [Node.js](http://nodejs.org
 - [Docs](http://hexo.io/docs/)
 - [Plugins](https://github.com/tommy351/hexo/wiki/Plugins)
 - [Themes](https://github.com/tommy351/hexo/wiki/Themes)
+- [Google Group](https://groups.google.com/group/hexo)
 
 ## Features
 
