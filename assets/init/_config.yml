@@ -83,17 +83,6 @@ disqus_shortname:
 theme: landscape
 exclude_generator:
 
-# Markdown
-## https://github.com/chjj/marked
-markdown:
-  gfm: true
-  pedantic: false
-  sanitize: false
-  tables: true
-  breaks: true
-  smartLists: true
-  smartypants: true
-
 # Deployment
 ## Docs: http://hexo.io/docs/deployment.html
 deploy:
