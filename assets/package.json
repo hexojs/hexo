@@ -1,0 +1,10 @@
+{
+  "name": "hexo-site",
+  "version": "",
+  "private": true,
+  "dependencies": {
+    "hexo-renderer-ejs": "*",
+    "hexo-renderer-stylus": "*",
+    "hexo-renderer-marked": "*"
+  }
+}

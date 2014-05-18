@@ -7,71 +7,55 @@
 
 A fast, simple & powerful blog framework, powered by [Node.js](http://nodejs.org).
 
-- [Docs](http://hexo.io/docs/)
-- [Plugins](https://github.com/tommy351/hexo/wiki/Plugins)
-- [Themes](https://github.com/tommy351/hexo/wiki/Themes)
-- [Google Group](https://groups.google.com/group/hexo)
-
 ## Features
 
-### Blazing Fast
+- Blazing fast generating
+- Support for GitHub Flavored Markdown and most Octopress plugins
+- One-command deploy to GitHub Pages, Heroku, etc.
+- Powerful plugin system
 
-Hexo is powered by Node.js and supports multi-thread generating. Hundreds of files take only seconds to generate.
+## Installation
 
-### Easy Write
-
-Hexo supports GitHub Flavored Markdown and all Octopress plugins and highly Jekyll/Octopress compatible.
-
-### Extensibility
-
-Hexo supports EJS, Swig & Stylus. You can install more plugins for Haml, Jade, Less supports.
-
-## Quick Start
-
-**Install**
-
-```
+``` bash
 $ npm install hexo -g
 ```
 
-**Update**
+## Quick Start
 
-```
-$ npm update hexo -g
+**Setup your blog**
+
+``` bash
+$ hexo init blog
+$ cd blog
+$ npm install
 ```
 
-**Setup**
+**Start the server**
 
-```
-$ hexo init blog && cd blog
+``` bash
+$ hexo server
 ```
 
 **Create a new post**
 
-```
-$ hexo new "Hello World"
+``` bash
+$ hexo new "Hello Hexo"
 ```
 
-**Generate**
+**Generate static files**
 
-```
+``` bash
 $ hexo generate
 ```
 
-**Server**
+## More Information
 
-```
-$ hexo server
-```
+- Read the [documentation](http://hexo.io/)
+- Find solutions in [troubleshooting](http://hexo.io/docs/troubleshooting.html)
+- Join discussion on [Google Group](https://groups.google.com/group/hexo)
+- See the [plugin list](https://github.com/tommy351/hexo/wiki/Plugins) and the [theme list](https://github.com/tommy351/hexo/wiki/Themes) on wiki
+- Follow [@hexojs](https://twitter.com/hexojs) for latest news
 
 ## License
 
-(The MIT License)
-
-Copyright (c) 2012 Tommy Chen
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+MIT

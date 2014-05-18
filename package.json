@@ -1,6 +1,6 @@
 {
   "name": "hexo",
-  "version": "2.5.7",
+  "version": "2.6.0",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
   "main": "lib/hexo",
   "bin": {
@@ -14,7 +14,7 @@
     "bin": "./bin"
   },
   "engines": {
-    "node": ">= 0.8"
+    "node": ">= 0.10.0"
   },
   "repository": {
     "type": "git",
@@ -32,17 +32,10 @@
     "hexo"
   ],
   "author": "Tommy Chen <tommy351@gmail.com> (http://zespia.tw)",
-  "license": {
-    "type": "MIT",
-    "url": "https://raw.github.com/tommy351/hexo/master/LICENSE"
-  },
+  "license": "MIT",
   "dependencies": {
     "async": "0.8.0",
     "express": "3.x",
-    "ejs": "1.0.0",
-    "stylus": "0.43.1",
-    "nib": "1.0.2",
-    "marked": "0.3.2",
     "moment": "2.6.0",
     "colors": "0.6.2",
     "highlight.js": "8.0.0",
