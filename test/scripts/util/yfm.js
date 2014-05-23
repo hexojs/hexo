@@ -135,6 +135,20 @@ describe('Util - yfm', function(){
       data.layout.should.eql('post');
       data._content.should.eql('123');
     });
+
+    it('with inline separator', function(){
+      var str = [
+        'layout: post',
+        'title: This title including --------',
+        '---',
+        '123'
+      ].join('\n');
+
+      var data = yfm.parse(str);
+      data.layout.should.eql('post');
+      data.title.should.eql('This title including --------');
+      data._content.should.eql('123');
+    });
   });
 
   describe('stringify', function(){
