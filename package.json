@@ -46,7 +46,8 @@
     "warehouse": "0.1.14",
     "sprintf-js": "0.0.7",
     "chokidar": "0.8.2",
-    "minimist": "0.0.8"
+    "minimist": "0.0.8",
+    "pangunode": "0.0.6"
   },
   "devDependencies": {
     "mocha": "^1.18.2",
