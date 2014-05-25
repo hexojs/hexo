@@ -47,12 +47,12 @@
     "sprintf-js": "0.0.7",
     "chokidar": "0.8.2",
     "minimist": "0.0.8",
-    "pangunode": "0.0.6"
+    "pangunode": "0.0.6",
+    "cheerio": "0.16.0"
   },
   "devDependencies": {
     "mocha": "^1.18.2",
     "chai": "^1.9.1",
-    "cheerio": "^0.15.0",
     "gulp": "^3.6.2",
     "gulp-jshint": "^1.5.5",
     "gulp-mocha": "^0.4.1",
