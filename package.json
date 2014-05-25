@@ -34,7 +34,7 @@
   "author": "Tommy Chen <tommy351@gmail.com> (http://zespia.tw)",
   "license": "MIT",
   "dependencies": {
-    "async": "0.8.0",
+    "async": "0.9.0",
     "express": "3.x",
     "moment": "2.6.0",
     "colors": "0.6.2",
@@ -46,7 +46,7 @@
     "warehouse": "0.1.14",
     "sprintf-js": "0.0.7",
     "chokidar": "0.8.2",
-    "minimist": "0.0.8",
+    "minimist": "0.1.0",
     "pangunode": "0.0.6",
     "cheerio": "0.16.0"
   },
