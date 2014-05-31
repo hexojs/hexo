@@ -4,4 +4,5 @@ describe('Helper', function(){
   require('./is');
   require('./number');
   require('./tag');
+  require('./url');
 });

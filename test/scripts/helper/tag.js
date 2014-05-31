@@ -1,11 +1,17 @@
-var qs = require('querystring'),
+var should = require('chai').should(),
+  qs = require('querystring'),
   htmlTag = require('../../../lib/util/html_tag');
 
 describe('tag', function(){
-  var tag = require('../../../lib/plugins/helper/tag');
+  var tag = require('../../../lib/plugins/helper/tag'),
+    url_for = require('../../../lib/plugins/helper/url').url_for;
+
+  var context = {
+    url_for: url_for
+  };
 
   describe('css', function(){
-    var css = tag.css;
+    var css = tag.css.bind(context);
 
     var genResult = function(arr){
       var result = [];
@@ -53,7 +59,7 @@ describe('tag', function(){
   });
 
   describe('js', function(){
-    var js = tag.js;
+    var js = tag.js.bind(context);
 
     var genResult = function(arr){
       var result = [];
@@ -101,7 +107,7 @@ describe('tag', function(){
   });
 
   describe('link_to', function(){
-    var link_to = tag.link_to,
+    var link_to = tag.link_to.bind(context),
       url = 'http://zespia.tw/',
       text = 'Zespia';
 
@@ -165,7 +171,7 @@ describe('tag', function(){
   });
 
   describe('mail_to', function(){
-    var mail_to = tag.mail_to,
+    var mail_to = tag.mail_to.bind(context),
       url = 'abc@abc.com',
       text = 'Email';
 
@@ -273,7 +279,7 @@ describe('tag', function(){
   });
 
   describe('image_tag', function(){
-    var image_tag = tag.image_tag,
+    var image_tag = tag.image_tag.bind(context),
       url = 'http://haha.com/some_img.jpg',
       text = 'An image';
 
@@ -327,8 +333,8 @@ describe('tag', function(){
   });
 
   describe('favicon_tag', function(){
-    var favicon_tag = tag.favicon_tag,
-      path = 'atom.xml';
+    var favicon_tag = tag.favicon_tag.bind(context),
+      path = '/favicon.ico';
 
     it('path', function(){
       favicon_tag(path).should.eql(htmlTag('link', {
@@ -339,8 +345,8 @@ describe('tag', function(){
   });
 
   describe('feed_tag', function(){
-    var feed_tag = tag.feed_tag,
-      url = 'atom.xml',
+    var feed_tag = tag.feed_tag.bind(context),
+      url = '/atom.xml',
       text = 'Feed Title';
 
     var attrs = {
