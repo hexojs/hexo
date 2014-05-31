@@ -1,6 +1,6 @@
 {
   "name": "hexo",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
   "main": "lib/hexo",
   "bin": {
@@ -34,8 +34,7 @@
   "author": "Tommy Chen <tommy351@gmail.com> (http://zespia.tw)",
   "license": "MIT",
   "dependencies": {
-    "async": "0.8.0",
-    "express": "3.x",
+    "async": "0.9.0",
     "moment": "2.6.0",
     "colors": "0.6.2",
     "highlight.js": "8.0.0",
@@ -46,12 +45,18 @@
     "warehouse": "0.1.14",
     "sprintf-js": "0.0.7",
     "chokidar": "0.8.2",
-    "minimist": "0.0.8"
+    "minimist": "0.1.0",
+    "pangunode": "0.0.6",
+    "cheerio": "0.16.0",
+    "connect": "3.x",
+    "serve-static": "1.2.0",
+    "morgan": "1.1.1",
+    "compression": "1.0.3",
+    "mime": "1.2.11"
   },
   "devDependencies": {
     "mocha": "^1.18.2",
     "chai": "^1.9.1",
-    "cheerio": "^0.15.0",
     "gulp": "^3.6.2",
     "gulp-jshint": "^1.5.5",
     "gulp-mocha": "^0.4.1",
