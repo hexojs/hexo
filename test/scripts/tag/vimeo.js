@@ -1,7 +1,7 @@
 var cheerio = require('cheerio'),
   should = require('chai').should();
 
-describe('Tag - vimeo', function(){
+describe('vimeo', function(){
   var vimeo = require('../../../lib/plugins/tag/vimeo');
 
   it('id', function(){

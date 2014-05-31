@@ -1,4 +1,4 @@
-describe('Util - html_tag', function(){
+describe('html_tag', function(){
   var html_tag = require('../../../lib/util/html_tag');
 
   it('tag', function(){

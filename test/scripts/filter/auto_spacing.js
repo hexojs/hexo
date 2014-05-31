@@ -1,6 +1,6 @@
 var should = require('chai').should();
 
-describe('Filter - auto_spacing', function(){
+describe('auto_spacing', function(){
   var auto_spacing = require('../../../lib/plugins/filter/auto_spacing');
 
   before(function(){

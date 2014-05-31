@@ -1,6 +1,6 @@
 var should = require('chai').should();
 
-describe('Filter - external_link', function(){
+describe('external_link', function(){
   var external_link = require('../../../lib/plugins/filter/external_link');
 
   it('internal link', function(){
@@ -17,7 +17,7 @@ describe('Filter - external_link', function(){
       content: '<a href="http://zespia.tw">Zespia</a>'
     }, function(err, data){
       should.not.exist(err);
-      data.content.should.eql('<a href="http://zespia.tw" target="_blank">Zespia</a>');
+      data.content.should.eql('<a href="http://zespia.tw" target="_blank" rel="external">Zespia</a>');
     });
   });
 
