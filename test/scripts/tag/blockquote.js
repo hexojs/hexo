@@ -32,7 +32,7 @@ describe('Tag - blockquote', function(){
     var $ = cheerio.load(bq('John Doe http://zespia.tw/this/is/a/fucking/long/url'));
 
     $('blockquote footer strong').html().should.eql('John Doe');
-    $('blockquote footer cite').html().should.eql('<a href="http://zespia.tw/this/is/a/fucking/long/url">zespia.tw/this/is/a/fucking/&hellip;</a>');
+    $('blockquote footer cite').html().should.eql('<a href="http://zespia.tw/this/is/a/fucking/long/url">zespia.tw/this/is/a/fucking/&#x2026;</a>');
   });
 
   it('author + link + title', function(){

@@ -149,6 +149,20 @@ describe('Util - yfm', function(){
       data.title.should.eql('This title including --------');
       data._content.should.eql('123');
     });
+
+    it('with another separator', function(){
+      var str = [
+        'title: Hello World',
+        '---',
+        '',
+        'Hello',
+        '-----------------------------------'
+      ].join('\n');
+
+      var data = yfm.parse(str);
+      data.title.should.eql('Hello World');
+      data._content.should.eql('Hello\n-----------------------------------');
+    });
   });
 
   describe('stringify', function(){
