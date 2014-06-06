@@ -17,7 +17,7 @@ describe('Filter - external_link', function(){
       content: '<a href="http://zespia.tw">Zespia</a>'
     }, function(err, data){
       should.not.exist(err);
-      data.content.should.eql('<a href="http://zespia.tw" target="_blank">Zespia</a>');
+      data.content.should.eql('<a href="http://zespia.tw" target="_blank" rel="external">Zespia</a>');
     });
   });
 

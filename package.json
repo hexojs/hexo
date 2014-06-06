@@ -1,6 +1,6 @@
 {
   "name": "hexo",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
   "main": "lib/hexo",
   "bin": {
@@ -52,7 +52,8 @@
     "serve-static": "1.2.0",
     "morgan": "1.1.1",
     "compression": "1.0.3",
-    "mime": "1.2.11"
+    "mime": "1.2.11",
+    "dom-serializer": "0.0.1"
   },
   "devDependencies": {
     "mocha": "^1.18.2",
