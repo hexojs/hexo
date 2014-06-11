@@ -2,7 +2,7 @@ var path = require('path'),
   fs = require('graceful-fs'),
   async = require('async');
 
-describe('Util - file2', function(){
+describe('file2', function(){
   var file = require('../../../lib/util/file2');
 
   var uid = function(length){

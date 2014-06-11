@@ -2,7 +2,7 @@ var cheerio = require('cheerio'),
   should = require('chai').should(),
   highlight = require('../../../lib/util/highlight');
 
-describe('Tag - code', function(){
+describe('code', function(){
   var code = require('../../../lib/plugins/tag/code');
 
   var dummy = [

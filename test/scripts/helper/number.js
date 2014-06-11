@@ -1,6 +1,6 @@
 var should = require('chai').should();
 
-describe('Helper - number', function(){
+describe('number', function(){
   var number = require('../../../lib/plugins/helper/number');
 
   describe('number_format', function(){

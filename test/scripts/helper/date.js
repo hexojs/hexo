@@ -1,9 +1,8 @@
 var moment = require('moment'),
   should = require('chai').should();
 
-describe('Helper - date', function(){
-  var date = require('../../../lib/plugins/helper/date'),
-    config = hexo.config;
+describe('date', function(){
+  var date = require('../../../lib/plugins/helper/date');
 
   var genTimeTag = function(date, format){
     if (!(date instanceof Date)){
@@ -18,7 +17,7 @@ describe('Helper - date', function(){
   };
 
   it('date', function(){
-    var format = config.date_format,
+    var format = hexo.config.date_format,
       custom = 'YYYY-MM-DD';
 
     moment(date.date(), format).isValid().should.be.true;
@@ -50,7 +49,7 @@ describe('Helper - date', function(){
   });
 
   it('time', function(){
-    var format = config.time_format,
+    var format = hexo.config.time_format,
       custom = 'H:mm';
 
     moment(date.time(), format).isValid().should.be.true;
@@ -70,7 +69,7 @@ describe('Helper - date', function(){
   });
 
   it('full_date', function(){
-    var format = config.date_format + ' ' + config.time_format,
+    var format = hexo.config.date_format + ' ' + hexo.config.time_format,
       custom = 'YYYY-MM-DD H:mm';
 
     moment(date.full_date(), format).isValid().should.be.true;
@@ -89,7 +88,7 @@ describe('Helper - date', function(){
   });
 
   it('time_tag', function(){
-    var format = config.date_format,
+    var format = hexo.config.date_format,
       custom = 'YYYY-MM-DD';
 
     var nowDate = new Date();

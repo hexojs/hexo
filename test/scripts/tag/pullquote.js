@@ -17,7 +17,7 @@ describe('pullquote', function(){
 
     $('blockquote').attr('class').should.eql('pullquote foo');
 
-     var $ = cheerio.load(pullquote(['foo', 'bar'], raw));
+    $ = cheerio.load(pullquote(['foo', 'bar'], raw));
 
     $('blockquote').attr('class').should.eql('pullquote foo bar');
   });

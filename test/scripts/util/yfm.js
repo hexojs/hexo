@@ -3,7 +3,7 @@ var yaml = require('yamljs'),
   moment = require('moment'),
   should = require('chai').should();
 
-describe('Util - yfm', function(){
+describe('yfm', function(){
   var yfm = require('../../../lib/util/yfm');
 
   describe('parse', function(){

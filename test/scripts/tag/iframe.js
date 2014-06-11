@@ -1,7 +1,7 @@
 var cheerio = require('cheerio'),
   should = require('chai').should();
 
-describe('Tag - iframe', function(){
+describe('iframe', function(){
   var iframe = require('../../../lib/plugins/tag/iframe');
 
   it('url', function(){

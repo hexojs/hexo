@@ -1,7 +1,7 @@
 var cheerio = require('cheerio'),
   should = require('chai').should();
 
-describe('Tag - img', function(){
+describe('img', function(){
   var img = require('../../../lib/plugins/tag/img');
 
   it('src', function(){
