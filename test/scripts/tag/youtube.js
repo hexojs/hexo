@@ -1,7 +1,7 @@
 var cheerio = require('cheerio'),
   should = require('chai').should();
 
-describe('Tag - youtube', function(){
+describe('youtube', function(){
   var youtube = require('../../../lib/plugins/tag/youtube');
 
   it('id', function(){

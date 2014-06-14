@@ -1,7 +1,7 @@
 var cheerio = require('cheerio'),
   should = require('chai').should();
 
-describe('Tag - gist', function(){
+describe('gist', function(){
   var gist = require('../../../lib/plugins/tag/gist');
 
   it('id', function(){
@@ -14,5 +14,5 @@ describe('Tag - gist', function(){
     var $ = cheerio.load(gist(['foo', 'bar']));
 
     $('script').attr('src').should.eql('https://gist.github.com/foo.js?file=bar');
-  })
+  });
 });

@@ -1,6 +1,6 @@
 var should = require('chai').should();
 
-describe('Filter - external_link', function(){
+describe('external_link', function(){
   var external_link = require('../../../lib/plugins/filter/external_link');
 
   it('internal link', function(){

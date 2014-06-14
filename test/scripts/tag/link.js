@@ -1,7 +1,7 @@
 var cheerio = require('cheerio'),
   should = require('chai').should();
 
-describe('Tag - link', function(){
+describe('link', function(){
   var link = require('../../../lib/plugins/tag/link');
 
   it('text + url', function(){
@@ -18,7 +18,7 @@ describe('Tag - link', function(){
     $('a').html().should.eql('Click here to Google');
     $('a').attr('target').should.eql('_blank');
 
-    var $ = cheerio.load(link('Click here to Google http://google.com false'.split(' ')));
+    $ = cheerio.load(link('Click here to Google http://google.com false'.split(' ')));
 
     $('a').attr('href').should.eql('http://google.com');
     $('a').html().should.eql('Click here to Google');
@@ -41,7 +41,7 @@ describe('Tag - link', function(){
     $('a').attr('target').should.eql('_blank');
     $('a').attr('title').should.eql('Google link');
 
-    var $ = cheerio.load(link('Click here to Google http://google.com false Google link'.split(' ')));
+    $ = cheerio.load(link('Click here to Google http://google.com false Google link'.split(' ')));
 
     $('a').attr('href').should.eql('http://google.com');
     $('a').html().should.eql('Click here to Google');

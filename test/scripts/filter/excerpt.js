@@ -1,6 +1,6 @@
 var should = require('chai').should();
 
-describe('Filter - excerpt', function(){
+describe('excerpt', function(){
   var excerpt = require('../../../lib/plugins/filter/excerpt');
 
   it('with tag', function(){

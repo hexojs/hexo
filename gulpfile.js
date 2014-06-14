@@ -9,20 +9,12 @@ var lib = 'lib/**/*.js',
 var handleError = function(err){
   console.error(err.stack);
   this.emit('end');
-}
+};
 
-gulp.task('hexo', function(callback){
-  require('./lib/init')(path.join(__dirname, 'test', 'blog'), {
-    _: [],
-    silent: true,
-    debug: true
-  }, callback);
-});
-
-gulp.task('mocha', ['hexo'], function(){
-  return gulp.src(test)
+gulp.task('mocha', function(){
+  return gulp.src('test/scripts/index.js')
     .pipe(mocha({
-      reporter: 'dot',
+      reporter: 'spec',
       ignoreLeaks: true
     }).on('error', handleError));
 });
