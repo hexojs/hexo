@@ -1,4 +1,5 @@
 {
   "-W103": true,
-  "eqnull": true
+  "eqnull": true,
+  "expr": true
 }
