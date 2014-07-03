@@ -1,5 +1,6 @@
 {
   "-W103": true,
   "eqnull": true,
-  "expr": true
+  "expr": true,
+  "indent": 2
 }
