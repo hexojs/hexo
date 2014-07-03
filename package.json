@@ -18,10 +18,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/tommy351/hexo.git"
+    "url": "git://github.com/hexojs/hexo.git"
   },
   "bugs": {
-    "url": "https://github.com/tommy351/hexo/issues"
+    "url": "https://github.com/hexojs/hexo/issues"
   },
   "homepage": "http://hexo.io/",
   "keywords": [
@@ -52,7 +52,8 @@
     "serve-static": "^1.2.0",
     "morgan": "^1.1.1",
     "compression": "^1.0.3",
-    "mime": "^1.2.11"
+    "mime": "^1.2.11",
+    "hexo-front-matter": "0.0.2"
   },
   "devDependencies": {
     "mocha": "^1.18.2",
