@@ -1,7 +1,7 @@
 var should = require('chai').should(),
   _ = require('lodash');
 
-describe.only('toc', function(){
+describe('toc', function(){
   var toc = require('../../../lib/plugins/helper/toc');
 
   var html = [

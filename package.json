@@ -18,10 +18,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/tommy351/hexo.git"
+    "url": "git://github.com/hexojs/hexo.git"
   },
   "bugs": {
-    "url": "https://github.com/tommy351/hexo/issues"
+    "url": "https://github.com/hexojs/hexo/issues"
   },
   "homepage": "http://hexo.io/",
   "keywords": [
@@ -42,7 +42,7 @@
     "lodash": "^2.4.1",
     "swig": "1.3.2",
     "graceful-fs": "^3.0.2",
-    "warehouse": "0.1.14",
+    "warehouse": "0.2.2",
     "sprintf-js": "0.0.7",
     "chokidar": "0.8.2",
     "minimist": "0.1.0",
@@ -52,7 +52,8 @@
     "serve-static": "^1.2.0",
     "morgan": "^1.1.1",
     "compression": "^1.0.3",
-    "mime": "^1.2.11"
+    "mime": "^1.2.11",
+    "hexo-front-matter": "0.0.2"
   },
   "devDependencies": {
     "mocha": "^1.18.2",

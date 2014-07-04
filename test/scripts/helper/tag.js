@@ -4,23 +4,19 @@ var should = require('chai').should(),
 
 describe('tag', function(){
   var tag = require('../../../lib/plugins/helper/tag'),
-    url_for = require('../../../lib/plugins/helper/url').url_for;
-
-  var context = {
-    url_for: url_for
-  };
+    context = require('../../../lib/plugins/helper/url');
 
   describe('css', function(){
     var css = tag.css.bind(context);
 
     var genResult = function(arr){
-      var result = [];
+      var result = '';
 
       arr.forEach(function(item){
-        result.push(htmlTag('link', {rel: 'stylesheet', href: item + '.css', type: 'text/css'}));
+        result += htmlTag('link', {rel: 'stylesheet', href: item + '.css', type: 'text/css'}) + '\n';
       });
 
-      return result.join('\n');
+      return result;
     };
 
     it('a string', function(){
@@ -62,13 +58,13 @@ describe('tag', function(){
     var js = tag.js.bind(context);
 
     var genResult = function(arr){
-      var result = [];
+      var result = '';
 
       arr.forEach(function(item){
-        result.push(htmlTag('script', {src: item + '.js', type: 'text/javascript'}, ''));
+        result += htmlTag('script', {src: item + '.js', type: 'text/javascript'}, '') + '\n';
       });
 
-      return result.join('\n');
+      return result;
     };
 
     it('a string', function(){
