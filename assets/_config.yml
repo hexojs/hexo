@@ -31,8 +31,6 @@ default_layout: post
 auto_spacing: false # Add spaces between asian characters and western characters
 titlecase: false # Transform title into titlecase
 external_link: true # Open external links in new tab
-max_open_file: 100
-multi_thread: true
 filename_case: 0
 render_drafts: false
 post_asset_folder: false
