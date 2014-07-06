@@ -50,7 +50,7 @@ $ hexo generate
 - Read the [documentation](http://hexo.io/)
 - Find solutions in [troubleshooting](http://hexo.io/docs/troubleshooting.html)
 - Join discussion on [Google Group](https://groups.google.com/group/hexo)
-- See the [plugin list](https://github.com/tommy351/hexo/wiki/Plugins) and the [theme list](https://github.com/tommy351/hexo/wiki/Themes) on wiki
+- See the [plugin list](https://github.com/hexojs/hexo/wiki/Plugins) and the [theme list](https://github.com/hexojs/hexo/wiki/Themes) on wiki
 - Follow [@hexojs](https://twitter.com/hexojs) for latest news
 
 ## License

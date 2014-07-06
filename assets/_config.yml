@@ -1,6 +1,6 @@
 # Hexo Configuration
 ## Docs: http://hexo.io/docs/configuration.html
-## Source: https://github.com/tommy351/hexo/
+## Source: https://github.com/hexojs/hexo/
 
 # Site
 title: Hexo
@@ -78,8 +78,8 @@ pagination_dir: page
 disqus_shortname:
 
 # Extensions
-## Plugins: https://github.com/tommy351/hexo/wiki/Plugins
-## Themes: https://github.com/tommy351/hexo/wiki/Themes
+## Plugins: https://github.com/hexojs/hexo/wiki/Plugins
+## Themes: https://github.com/hexojs/hexo/wiki/Themes
 theme: landscape
 exclude_generator:
 
