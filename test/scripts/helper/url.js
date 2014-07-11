@@ -37,13 +37,13 @@ describe('url_for', function(){
       config: {root: '/', relative_link: true},
       path: '',
       relative_url: relative_url
-    }, 'index.html').should.eql('');
+    }, 'index.html').should.eql('index.html');
 
     url_for.call({
       config: {root: '/', relative_link: true},
       path: 'foo/bar/',
       relative_url: relative_url
-    }, 'index.html').should.eql('../..');
+    }, 'index.html').should.eql('../../index.html');
   });
 
   it('external url', function(){
