@@ -4,7 +4,3 @@ node_js:
   - "0.11"
 before_script:
   - npm install -g gulp
-matrix:
-  allow_failures:
-    - node_js: "0.11"
-  fast_finish: true

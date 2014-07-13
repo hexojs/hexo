@@ -1,9 +1,6 @@
 # Hexo
 
-[![Build Status](https://travis-ci.org/tommy351/hexo.svg?branch=master)](https://travis-ci.org/tommy351/hexo)  [![NPM version](https://badge.fury.io/js/hexo.svg)](http://badge.fury.io/js/hexo)
-
-[![Clone in Koding](http://learn.koding.com/btn/clone_d.png)][koding]
-[koding]: https://koding.com/Teamwork?import=https://github.com/tommy351/hexo/archive/master.zip&c=git3
+[![Build Status](https://travis-ci.org/hexojs/hexo.svg?branch=master)](https://travis-ci.org/hexojs/hexo)  [![NPM version](https://badge.fury.io/js/hexo.svg)](http://badge.fury.io/js/hexo)
 
 A fast, simple & powerful blog framework, powered by [Node.js](http://nodejs.org).
 
@@ -53,7 +50,7 @@ $ hexo generate
 - Read the [documentation](http://hexo.io/)
 - Find solutions in [troubleshooting](http://hexo.io/docs/troubleshooting.html)
 - Join discussion on [Google Group](https://groups.google.com/group/hexo)
-- See the [plugin list](https://github.com/tommy351/hexo/wiki/Plugins) and the [theme list](https://github.com/tommy351/hexo/wiki/Themes) on wiki
+- See the [plugin list](https://github.com/hexojs/hexo/wiki/Plugins) and the [theme list](https://github.com/hexojs/hexo/wiki/Themes) on wiki
 - Follow [@hexojs](https://twitter.com/hexojs) for latest news
 
 ## License

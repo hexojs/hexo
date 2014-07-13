@@ -1,4 +1,5 @@
 var file = require('../../lib/util/file2'),
+  fs = require('graceful-fs'),
   pathFn = require('path');
 
 describe('Hexo test', function(){
@@ -10,6 +11,14 @@ describe('Hexo test', function(){
   require('./tag');
 
   after(function(done){
-    file.rmdir(pathFn.join(__dirname, '../blog'), done);
+    var blogDir = pathFn.join(pathFn.dirname(__dirname), 'blog');
+
+    fs.exists(blogDir, function(exist){
+      if (exist){
+        file.rmdir(blogDir, done);
+      } else {
+        done();
+      }
+    });
   });
 });

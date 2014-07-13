@@ -1,7 +1,7 @@
 var crypto = require('crypto'),
   should = require('chai').should();
 
-describe('Helper - gravatar', function(){
+describe('gravatar', function(){
   var gravatar = require('../../../lib/plugins/helper/gravatar');
 
   var md5 = function(str){
