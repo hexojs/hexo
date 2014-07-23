@@ -37,14 +37,14 @@
     "async": "^0.9.0",
     "moment": "^2.7.0",
     "colors": "0.6.2",
-    "highlight.js": "8.0.0",
+    "highlight.js": "8.1.0",
     "lodash": "^2.4.1",
-    "swig": "1.3.2",
+    "swig": "1.4.1",
     "graceful-fs": "^3.0.2",
     "warehouse": "0.2.2",
     "sprintf-js": "0.0.7",
     "chokidar": "0.8.2",
-    "minimist": "0.1.0",
+    "minimist": "0.2.0",
     "pangunode": "0.0.6",
     "cheerio": "0.17.0",
     "connect": "3.x",
@@ -60,7 +60,7 @@
     "chai": "^1.9.1",
     "gulp": "^3.6.2",
     "gulp-jshint": "^1.5.5",
-    "gulp-mocha": "^0.4.1",
-    "jshint-stylish": "^0.1.5"
+    "gulp-mocha": "^0.5.1",
+    "jshint-stylish": "^0.4.0"
   }
 }
