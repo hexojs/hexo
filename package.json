@@ -52,7 +52,7 @@
     "morgan": "^1.1.1",
     "compression": "^1.0.3",
     "mime": "^1.2.11",
-    "hexo-front-matter": "0.0.3",
+    "hexo-front-matter": "0.0.4",
     "js-yaml": "^3.1.0"
   },
   "devDependencies": {
