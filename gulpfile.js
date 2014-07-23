@@ -12,7 +12,7 @@ var handleError = function(err){
 };
 
 gulp.task('mocha', function(){
-  return gulp.src('test/scripts/index.js')
+  return gulp.src('test/index.js')
     .pipe(mocha({
       reporter: 'spec',
       ignoreLeaks: true
@@ -28,7 +28,7 @@ gulp.task('jshint', function(){
 
 gulp.task('watch', function(){
   gulp.watch(lib, ['mocha', 'jshint']);
-  gulp.watch(test, ['mocha']);
+  gulp.watch(['test/index.js', test], ['mocha']);
 });
 
 gulp.task('test', ['mocha', 'jshint']);
