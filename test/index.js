@@ -3,7 +3,8 @@ var file = require('../lib/util/file2'),
   pathFn = require('path');
 
 describe('Hexo test', function(){
-  require('./scripts/init');
+  before(require('./scripts/init'));
+
   require('./scripts/util');
   require('./scripts/i18n');
   require('./scripts/filter');
