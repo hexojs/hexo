@@ -1,7 +1,40 @@
 var should = require('chai').should(),
   fs = require('graceful-fs'),
   async = require('async'),
-  pathFn = require('path');
+  pathFn = require('path'),
+  file = require('../../../lib/util/file2');
+
+var check = function(args, results, callback){
+  args.push(function(err, path, content){
+    if (err) return callback(err);
+
+    async.parallel([
+      // Check the content of post
+      function(next){
+        fs.readFile(results.path, 'utf8', function(err, post){
+          if (err) return next(err);
+
+          post.should.eql(content);
+          next();
+        });
+      },
+      // Check whether the draft was deleted
+      function(next){
+        fs.exists(path, function(exist){
+          exist.should.be.false;
+          next();
+        });
+      }
+    ], function(err){
+      callback(err, {
+        path: path,
+        content: content
+      });
+    });
+  });
+
+  hexo.post.publish.apply(hexo, args);
+};
 
 describe('publish', function(){
   var posts = [];
@@ -15,40 +48,34 @@ describe('publish', function(){
   });
 
   it('normal', function(done){
-    posts.push(pathFn.join(hexo.source_dir, '_posts', 'draft-test.md'));
+    var data = {
+      slug: 'draft-test'
+    };
 
-    hexo.post.publish({slug: 'draft-test'}, function(err, path, content){
-      if (err) return done(err);
+    var results = {
+      path: pathFn.join(hexo.source_dir, '_posts', 'draft-test.md')
+    };
 
-      path.should.eql(pathFn.join(hexo.source_dir, '_drafts', 'draft-test.md'));
-
-      fs.readFile(posts[0], 'utf8', function(err, post){
-        if (err) return done(err);
-
-        post.should.eql(content);
-        done();
-      });
-    });
+    posts.push(results.path);
+    check([data], results, done);
   });
 
   it('custom layout', function(done){
-    posts.push(pathFn.join(hexo.source_dir, '_posts', 'draft-test.md'));
-
-    hexo.post.publish({
+    var data = {
       slug: 'draft-test',
       layout: 'photo'
-    }, function(err, path, content){
+    };
+
+    var results = {
+      path: pathFn.join(hexo.source_dir, '_posts', 'draft-test.md')
+    };
+
+    posts.push(results.path);
+    check([data], results, function(err, data){
       if (err) return done(err);
 
-      path.should.eql(pathFn.join(hexo.source_dir, '_drafts', 'draft-test.md'));
-      hexo.util.yfm(content).layout.should.eql('photo');
-
-      fs.readFile(posts[0], 'utf8', function(err, post){
-        if (err) return done(err);
-
-        post.should.eql(content);
-        done();
-      });
+      hexo.util.yfm(data.content).layout.should.eql('photo');
+      done();
     });
   });
 
@@ -63,19 +90,16 @@ describe('publish', function(){
         });
       },
       function(next){
-        hexo.post.publish({slug: 'draft-test'}, function(err, path, content){
-          if (err) return next(err);
+        var data = {
+          slug: 'draft-test'
+        };
 
-          path.should.eql(pathFn.join(hexo.source_dir, '_drafts', 'draft-test.md'));
-          posts.push(pathFn.join(hexo.source_dir, '_posts', 'draft-test-1.md'));
+        var results = {
+          path: pathFn.join(hexo.source_dir, '_posts', 'draft-test-1.md')
+        };
 
-          fs.readFile(posts[1], 'utf8', function(err, post){
-            if (err) return done(err);
-
-            post.should.eql(content);
-            next();
-          });
-        });
+        posts.push(results.path);
+        check([data], results, next);
       }
     ], done);
   });
@@ -91,18 +115,68 @@ describe('publish', function(){
         });
       },
       function(next){
-        hexo.post.publish({slug: 'draft-test'}, true, function(err, path, content){
+        var data = {
+          slug: 'draft-test'
+        };
+
+        var results = {
+          path: pathFn.join(hexo.source_dir, '_posts', 'draft-test.md')
+        };
+
+        check([data, true], results, next);
+      }
+    ], done);
+  });
+
+  it('asset folder', function(done){
+    hexo.config.post_asset_folder = true;
+
+    var fixtureDir = pathFn.join(__dirname, 'assets'),
+      fixtureList = [];
+
+    async.series([
+      function(next){
+        file.list(fixtureDir, function(err, files){
           if (err) return next(err);
 
-          path.should.eql(pathFn.join(hexo.source_dir, '_drafts', 'draft-test.md'));
+          var assetDir = pathFn.join(hexo.source_dir, '_drafts', 'draft-test');
+          fixtureList = files;
 
-          fs.readFile(posts[0], 'utf8', function(err, post){
-            if (err) return done(err);
+          async.each(files, function(item, next){
+            file.copyFile(pathFn.join(fixtureDir, item), pathFn.join(assetDir, item), next);
+          }, next);
+        });
+      },
+      // Publish the draft
+      function(next){
+        var data = {
+          slug: 'draft-test'
+        };
 
-            post.should.eql(content);
+        var results = {
+          path: pathFn.join(hexo.source_dir, '_posts', 'draft-test.md')
+        };
+
+        posts.push(results.path);
+        check([data], results, next);
+      },
+      // Check assets
+      function(next){
+        var assetDir = pathFn.join(hexo.source_dir, '_posts', 'draft-test');
+        hexo.config.post_asset_folder = false;
+
+        async.each(fixtureList, function(item, next){
+          async.map([
+            pathFn.join(fixtureDir, item),
+            pathFn.join(assetDir, item)
+          ], fs.readFile, function(err, results){
+            if (err) return next(err);
+
+            results[0].should.eql(results[1]);
+            posts.push(pathFn.join(assetDir, item));
             next();
           });
-        });
+        }, next);
       }
     ], done);
   });

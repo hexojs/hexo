@@ -314,6 +314,31 @@ describe('create', function(){
     ], done);
   });
 
+  it('asset folder', function(done){
+    hexo.config.post_asset_folder = true;
+
+    var data = {
+      title: 'Test Post'
+    };
+
+    var results = {
+      path: pathFn.join(hexo.source_dir, '_posts', 'Test-Post.md')
+    };
+
+    posts.push(results.path);
+    check([data], results, function(err, data){
+      if (err) return done(err);
+
+      var assetFolder = data.path.substring(0, data.path.length - pathFn.extname(data.path).length);
+
+      fs.exists(assetFolder, function(exist){
+        hexo.config.post_asset_folder = false;
+        exist.should.be.true;
+        done();
+      });
+    });
+  });
+
   afterEach(function(done){
     async.each(posts, function(post, next){
       fs.unlink(post, next);
