@@ -5,6 +5,7 @@ var file = require('../lib/util/file2'),
 describe('Hexo test', function(){
   before(require('./scripts/init'));
 
+  require('./scripts/core');
   require('./scripts/util');
   require('./scripts/i18n');
   require('./scripts/filter');
