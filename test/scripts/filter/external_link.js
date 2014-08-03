@@ -3,6 +3,10 @@ var should = require('chai').should();
 describe('external_link', function(){
   var external_link = require('../../../lib/plugins/filter/external_link');
 
+  before(function(){
+    hexo.config.external_link = true;
+  });
+
   it('internal link', function(){
     external_link({
       content: '<a href="foo.html">foo</a>'
@@ -28,5 +32,9 @@ describe('external_link', function(){
       should.not.exist(err);
       data.content.should.eql('<a href="http://zespia.tw" target="_blank">Zespia</a>');
     });
+  });
+
+  after(function(){
+    hexo.config.external_link = false;
   });
 });

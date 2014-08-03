@@ -3,12 +3,16 @@ var file = require('../lib/util/file2'),
   pathFn = require('path');
 
 describe('Hexo test', function(){
-  require('./scripts/init');
+  before(require('./scripts/init'));
+
+  require('./scripts/core');
   require('./scripts/util');
   require('./scripts/i18n');
   require('./scripts/filter');
   require('./scripts/helper');
   require('./scripts/tag');
+  require('./scripts/post');
+  require('./scripts/scaffold');
 
   after(function(done){
     var blogDir = pathFn.join(__dirname, 'blog');

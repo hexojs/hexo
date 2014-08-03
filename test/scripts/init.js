@@ -1,5 +1,6 @@
 var pathFn = require('path'),
   async = require('async'),
+  should = require('chai').should(),
   spawn = require('child_process').spawn,
   file = require('../../lib/util/file2');
 
@@ -22,41 +23,39 @@ var compareFile = function(a, b, callback){
   });
 };
 
-describe('init', function(){
-  it('init', function(done){
-    var cmd = spawn('./bin/hexo', ['init', 'test/blog'], {
-      cwd: pathFn.join(__dirname, '../..')
-    });
+module.exports = function(callback){
+  var hexo = require('../../lib/hexo');
 
-    cmd.on('close', function(){
-      done();
-    });
-  });
+  async.series([
+    function(next){
+      var cmd = spawn('./bin/hexo', ['init', 'test/blog'], {
+        cwd: pathFn.join(__dirname, '../..')
+      });
 
-  it('check contents', function(done){
-    var blogDir = pathFn.join(__dirname, '../blog'),
-      assetDir = pathFn.join(__dirname, '../../assets');
+      cmd.on('close', next);
+    },
+    function(next){
+      var blogDir = pathFn.join(__dirname, '../blog'),
+        assetDir = pathFn.join(__dirname, '../../assets');
 
-    async.parallel([
-      function(next){
-        file.list(blogDir, function(err, files){
-          async.each(files, function(file, next){
-            compareFile(pathFn.join(blogDir, file), pathFn.join(assetDir, file), next);
-          }, next);
-        });
-      },
-      function(next){
-        compareFile(pathFn.join(blogDir, '.gitignore'), pathFn.join(assetDir, 'gitignore'), next);
-      }
-    ], done);
-  });
-
-  after(function(done){
-    var hexo = require('../../lib/hexo');
-
-    hexo.init({
-      cwd: pathFn.join(__dirname, '../blog'),
-      silent: true
-    }, done);
-  });
-});
+      async.parallel([
+        function(next){
+          file.list(blogDir, function(err, files){
+            async.each(files, function(file, next){
+              compareFile(pathFn.join(blogDir, file), pathFn.join(assetDir, file), next);
+            }, next);
+          });
+        },
+        function(next){
+          compareFile(pathFn.join(blogDir, '.gitignore'), pathFn.join(assetDir, 'gitignore'), next);
+        }
+      ], next);
+    },
+    function(next){
+      hexo.init({
+        cwd: pathFn.join(__dirname, '../blog'),
+        silent: true
+      }, next);
+    }
+  ], callback);
+};
