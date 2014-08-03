@@ -49,7 +49,6 @@
     "minimist": "0.2.0",
     "moment": "^2.8.1",
     "morgan": "^1.1.1",
-    "pangunode": "^0.1.0",
     "serve-static": "^1.2.0",
     "sprintf-js": "0.0.7",
     "strip-indent": "^0.1.3",
