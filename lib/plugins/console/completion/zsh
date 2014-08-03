@@ -9,7 +9,7 @@
 
 # Usage:
 #
-# To enable zsh <tab> completion for gulp, add the following line (minus the
+# To enable zsh <tab> completion for hexo, add the following line (minus the
 # leading #, which is the zsh comment character) to your ~/.zshrc file:
 #
 # eval "$(hexo _completion zsh)"
