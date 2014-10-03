@@ -1,6 +1,5 @@
 var gulp = require('gulp'),
-  jshint = require('gulp-jshint'),
-  mocha = require('gulp-mocha'),
+  $ = require('gulp-load-plugins')(),
   path = require('path');
 
 var lib = 'lib/**/*.js',
@@ -8,7 +7,7 @@ var lib = 'lib/**/*.js',
 
 gulp.task('mocha', function(){
   return gulp.src('test/index.js')
-    .pipe(mocha({
+    .pipe($.mocha({
       reporter: 'spec',
       ignoreLeaks: true
     }));
@@ -16,9 +15,9 @@ gulp.task('mocha', function(){
 
 gulp.task('jshint', function(){
   return gulp.src(lib)
-    .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'))
-    .pipe(jshint.reporter('fail'));
+    .pipe($.jshint())
+    .pipe($.jshint.reporter('jshint-stylish'))
+    .pipe($.jshint.reporter('fail'));
 });
 
 gulp.task('watch', function(){

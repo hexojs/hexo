@@ -1,6 +1,9 @@
 {
-  "-W103": true,
+  "proto": true,
   "eqnull": true,
   "expr": true,
-  "indent": 2
+  "indent": 2,
+  "node": true,
+  "trailing": true,
+  "quotmark": "single"
 }
