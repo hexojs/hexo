@@ -6,17 +6,12 @@ var gulp = require('gulp'),
 var lib = 'lib/**/*.js',
   test = 'test/scripts/**/*.js';
 
-var handleError = function(err){
-  console.error(err.stack);
-  this.emit('end');
-};
-
 gulp.task('mocha', function(){
   return gulp.src('test/index.js')
     .pipe(mocha({
       reporter: 'spec',
       ignoreLeaks: true
-    }).on('error', handleError));
+    }));
 });
 
 gulp.task('jshint', function(){
