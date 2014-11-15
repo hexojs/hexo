@@ -1,0 +1,9 @@
+name:
+  first: John
+  last: Doe
+
+age: 23
+
+list:
+- Apple
+- Banana
