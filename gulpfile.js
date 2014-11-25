@@ -1,16 +1,25 @@
-var gulp = require('gulp'),
-  $ = require('gulp-load-plugins')(),
-  path = require('path');
+var gulp = require('gulp');
+var $ = require('gulp-load-plugins')();
+var del = require('del');
 
-var lib = 'lib/**/*.js',
-  test = 'test/scripts/**/*.js';
+var lib = 'lib/**/*.js';
+var test = 'test/scripts/**/*.js';
 
-gulp.task('mocha', function(){
+gulp.task('coverage', function(){
+  return gulp.src(lib)
+    .pipe($.istanbul());
+});
+
+gulp.task('coverage:clean', function(callback){
+  del(['coverage/**/*'], callback);
+});
+
+gulp.task('mocha', ['coverage'], function(){
   return gulp.src('test/index.js')
     .pipe($.mocha({
-      reporter: 'spec',
-      ignoreLeaks: true
-    }));
+      reporter: 'spec'
+    }))
+    .pipe($.istanbul.writeReports());
 });
 
 gulp.task('jshint', function(){
@@ -21,7 +30,7 @@ gulp.task('jshint', function(){
 });
 
 gulp.task('watch', function(){
-  gulp.watch(lib, ['mocha', 'jshint']);
+  gulp.watch(lib, e['mocha', 'jshint']);
   gulp.watch(['test/index.js', test], ['mocha']);
 });
 

@@ -1,8 +1,8 @@
 var should = require('chai').should();
 
-describe('permalink', function(){
-  var Permalink = require('../../../lib/util/permalink'),
-    permalink;
+describe('Permalink', function(){
+  var Permalink = require('../../../lib/util/permalink');
+  var permalink;
 
   it('constructor', function(){
     permalink = new Permalink(':year/:month/:day/:title');
@@ -24,12 +24,12 @@ describe('permalink', function(){
     permalink.params.should.eql(['year', 'month', 'day', 'title']);
   });
 
-  it('test', function(){
+  it('test()', function(){
     permalink.test('2014/01/31/test').should.be.true;
     permalink.test('foweirojwoier').should.be.false;
   });
 
-  it('parse', function(){
+  it('parse()', function(){
     permalink.parse('2014/01/31/test').should.eql({
       year: '2014',
       month: '01',
@@ -38,7 +38,7 @@ describe('permalink', function(){
     });
   });
 
-  it('stringify', function(){
+  it('stringify()', function(){
     permalink.stringify({
       year: '2014',
       month: '01',
