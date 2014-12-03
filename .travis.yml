@@ -4,4 +4,6 @@ node_js:
   - "0.11"
 before_script:
   - npm install -g gulp
+script:
+  - gulp test
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
