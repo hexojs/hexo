@@ -11,7 +11,7 @@ email:
 language:
 
 # URL
-## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
+## If your site is put in a 'child' subdirectory, set url as 'http://yoursite.com' and root as '/child/'
 url: http://yoursite.com
 root: /
 permalink: :year/:month/:day/:title/
