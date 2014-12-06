@@ -1,7 +1,7 @@
-var should = require('chai').should(),
-  pathFn = require('path'),
-  Promise = require('bluebird'),
-  fs = require('../../../lib/util').fs;
+var should = require('chai').should();
+var pathFn = require('path');
+var Promise = require('bluebird');
+var fs = require('../../../lib/util').fs;
 
 function createDummyFolder(path){
   // TODO nested dummy files

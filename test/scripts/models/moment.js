@@ -22,11 +22,7 @@ describe('SchemaTypeMoment', function(){
   }
 
   it('validate()', function(){
-    type.validate(moment(1e8)).valueOf().should.eql(1e8);
-    // shouldThrowError('foo');
-    // shouldThrowError([]);
-    // shouldThrowError(true);
-    // shouldThrowError({});
+    type.validate(moment('2014-11-03T07:45:41.237Z')).should.eql('2014-11-03T07:45:41.237Z');
     shouldThrowError(moment.invalid());
   });
 

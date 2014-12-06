@@ -20,6 +20,7 @@ describe('Page', function(){
       data.layout.should.eql('page');
       data.content.should.eql('');
       data.excerpt.should.eql('');
+      data.more.should.eql('');
       data.raw.should.eql('');
 
       return Page.removeById(data._id);

@@ -5,10 +5,9 @@ var pathFn = require('path');
 var fixtureDir = pathFn.join(__dirname, '../../fixtures');
 
 describe('Render', function(){
-  var hexo;
+  var hexo = new Hexo(__dirname);
 
   before(function(){
-    hexo = new Hexo(__dirname);
     return hexo.init();
   });
 

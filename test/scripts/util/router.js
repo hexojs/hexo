@@ -64,6 +64,12 @@ describe('Router', function(){
   });
 
   it('remove()', function(){
-    //
+    router.once('remove', function(source){
+      source.should.eql('foo');
+    });
+
+    router.set('foo', 'bar');
+    router.remove('foo');
+    should.not.exist(router.get('foo'));
   });
 });
