@@ -46,6 +46,30 @@ describe('url_for', function(){
     }, 'index.html').should.eql('../../index.html');
   });
 
+  it('internal url (absolute)', function(){
+    url_for.call({
+      config: {url: 'http://hexo.io', root: '/'},
+      relative_url: relative_url
+    }, 'index.html', {absolute:true}).should.eql('http://hexo.io/index.html');
+
+    url_for.call({
+      config: {url: 'http://hexo.io', root: '/blog/'},
+      relative_url: relative_url
+    }, 'index.html', {absolute:true}).should.eql('http://hexo.io/blog/index.html');
+
+    url_for.call({
+      config: {url: 'http://hexo.io', root: '/', relative_link: true},
+      path: '',
+      relative_url: relative_url
+    }, 'index.html', {absolute:true}).should.eql('http://hexo.io/index.html');
+
+    url_for.call({
+      config: {url: 'http://hexo.io', root: '/', relative_link: true},
+      path: 'foo/bar/',
+      relative_url: relative_url
+    }, 'index.html', {absolute:true}).should.eql('http://hexo.io/index.html');
+  });
+
   it('external url', function(){
     [
       'http://zespia.tw/',
