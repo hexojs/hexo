@@ -6,3 +6,4 @@ coverage/
 .travis.yml
 gulpfile.js
 .idea/
+appveyor.yml

@@ -1,0 +1,37 @@
+# Reference: https://github.com/gruntjs/grunt/blob/master/appveyor.yml
+# http://www.appveyor.com/docs/appveyor-yml
+
+# Fix line endings in Windows. (runs before repo cloning)
+init:
+  - git config --global core.autocrlf input
+
+
+# Test against these versions of Node.js.
+environment:
+  matrix:
+    - nodejs_version: "0.10"
+    - nodejs_version: "0.11"
+
+# Install scripts. (runs after repo cloning)
+install:
+  # Get the latest stable version of Node 0.STABLE.latest
+  - ps: Install-Product node $env:nodejs_version
+  # Typical npm stuff.
+  - npm install
+  - npm install gulp -g
+
+# Post-install test scripts.
+test_script:
+  # Output useful info for debugging.
+  - node --version
+  - npm --version
+  # We test multiple Windows shells because of prior stdout buffering issues
+  # filed against Grunt. https://github.com/joyent/node/issues/3584
+  - ps: "npm test # PowerShell" # Pass comment to PS for easier debugging
+  - cmd: npm test
+
+# Don't actually build.
+build: off
+
+# Set build version format here instead of in the admin panel.
+version: "{build}"
