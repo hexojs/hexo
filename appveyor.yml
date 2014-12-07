@@ -1,10 +1,9 @@
-# Reference: https://github.com/gruntjs/grunt/blob/master/appveyor.yml
+# Based on https://github.com/gruntjs/grunt/blob/master/appveyor.yml
 # http://www.appveyor.com/docs/appveyor-yml
 
 # Fix line endings in Windows. (runs before repo cloning)
 init:
   - git config --global core.autocrlf input
-
 
 # Test against these versions of Node.js.
 environment:
@@ -18,7 +17,6 @@ install:
   - ps: Install-Product node $env:nodejs_version
   # Typical npm stuff.
   - npm install
-  - npm install gulp -g
 
 # Post-install test scripts.
 test_script:

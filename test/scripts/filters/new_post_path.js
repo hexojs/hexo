@@ -121,7 +121,7 @@ describe('new_post_path', function(){
     });
   });
 
-  it('replace existed files', function(){
+  it('replace existing files', function(){
     var filename = 'test.md';
     var path = pathFn.join(postDir, filename);
 

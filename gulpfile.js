@@ -7,7 +7,8 @@ var test = 'test/scripts/**/*.js';
 
 gulp.task('coverage', function(){
   return gulp.src(lib)
-    .pipe($.istanbul());
+    .pipe($.istanbul())
+    .pipe($.istanbul.hookRequire());
 });
 
 gulp.task('coverage:clean', function(callback){
@@ -30,7 +31,7 @@ gulp.task('jshint', function(){
 });
 
 gulp.task('watch', function(){
-  gulp.watch(lib, e['mocha', 'jshint']);
+  gulp.watch(lib, ['mocha', 'jshint']);
   gulp.watch(['test/index.js', test], ['mocha']);
 });
 

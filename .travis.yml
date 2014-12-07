@@ -1,9 +1,16 @@
 language: node_js
+
 node_js:
   - "0.10"
   - "0.11"
-before_script:
-  - npm install -g gulp
+
 script:
-  - gulp test
+  - npm test
+
+after_script:
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
+  - cat ./coverage/lcov.info | ./node_modules/codeclimate-test-reporter/bin/codeclimate.js
+
+addons:
+  code_climate:
+    repo_token: 161a304c89a989fd09844b22ad0b3af84a930cea8915350b82ecd8fa12c92985

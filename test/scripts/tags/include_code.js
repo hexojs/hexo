@@ -1,7 +1,7 @@
 var cheerio = require('cheerio');
 var path = require('path');
 var should = require('chai').should();
-var fs = require('../../../lib/util/fs');
+var fs = require('../../../lib/util').fs;
 var highlight = require('../../../lib/util/highlight');
 
 // Fixture
