@@ -1,8 +1,7 @@
 var should = require('chai').should();
 var pathFn = require('path');
 var Promise = require('bluebird');
-var util = require('../../../lib/util');
-var fs = util.fs;
+var fs = require('hexo-fs');
 
 describe('Scaffold', function(){
   var Hexo = require('../../../lib/hexo');
@@ -25,7 +24,7 @@ describe('Scaffold', function(){
   });
 
   after(function(){
-    return fs.unlink(testPath);
+    return fs.rmdir(scaffoldDir);
   });
 
   it('get() - file exists', function(){

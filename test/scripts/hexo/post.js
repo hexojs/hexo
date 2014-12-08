@@ -2,8 +2,7 @@ var should = require('chai').should();
 var pathFn = require('path');
 var moment = require('moment');
 var Promise = require('bluebird');
-var util = require('../../../lib/util');
-var fs = util.fs;
+var fs = require('hexo-fs');
 
 describe('Post', function(){
   var Hexo = require('../../../lib/hexo');
@@ -12,6 +11,10 @@ describe('Post', function(){
 
   before(function(){
     return hexo.init();
+  });
+
+  after(function(){
+    return fs.rmdir(hexo.source_dir);
   });
 
   it('create()', function(){

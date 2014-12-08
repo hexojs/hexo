@@ -2,8 +2,7 @@ var should = require('chai').should();
 var pathFn = require('path');
 var Hexo = require('../../../lib/hexo');
 var Box = require('../../../lib/box');
-var util = Hexo.util;
-var fs = util.fs;
+var fs = require('hexo-fs');
 
 describe('Box', function(){
   var hexo = new Hexo(__dirname, {});

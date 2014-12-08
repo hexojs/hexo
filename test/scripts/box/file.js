@@ -1,15 +1,19 @@
 var should = require('chai').should();
 var pathFn = require('path');
 var Promise = require('bluebird');
-var File = require('../../../lib/box/file');
-var util = require('../../../lib/util');
-var fs = util.fs;
+var fs = require('hexo-fs');
+var yaml = require('js-yaml');
 
 describe('File', function(){
+  var Hexo = require('../../../lib/hexo');
+  var hexo = new Hexo();
+  var Box = require('../../../lib/box');
+  var box = new Box(hexo, __dirname);
   var target = pathFn.join(__dirname, '../../fixtures/test.yml');
   var body;
+  var obj;
 
-  var file = new File({
+  var file = new box.File({
     source: target,
     path: target,
     type: 'create',
@@ -19,6 +23,8 @@ describe('File', function(){
   before(function(){
     return fs.readFile(target).then(function(result){
       body = result;
+      obj = yaml.load(result);
+      return hexo.init();
     });
   });
 
@@ -47,7 +53,13 @@ describe('File', function(){
     });
   });
 
-  it.skip('render()');
+  it('render()', function(){
+    return file.render().then(function(data){
+      data.should.eql(obj);
+    });
+  });
 
-  it.skip('renderSync()');
+  it('renderSync()', function(){
+    file.renderSync().should.eql(obj);
+  });
 });

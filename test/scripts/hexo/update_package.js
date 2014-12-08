@@ -1,7 +1,6 @@
 var should = require('chai').should();
 var pathFn = require('path');
-var util = require('../../../lib/util');
-var fs = util.fs;
+var fs = require('hexo-fs');
 
 describe('Update package.json', function(){
   var Hexo = require('../../../lib/hexo');

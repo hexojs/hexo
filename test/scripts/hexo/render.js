@@ -1,6 +1,5 @@
 var Hexo = require('../../../lib/hexo');
-var util = Hexo.util;
-var fs = util.fs;
+var fs = require('hexo-fs');
 var pathFn = require('path');
 var fixtureDir = pathFn.join(__dirname, '../../fixtures');
 

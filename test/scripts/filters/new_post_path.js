@@ -2,8 +2,7 @@ var should = require('chai').should();
 var pathFn = require('path');
 var moment = require('moment');
 var Promise = require('bluebird');
-var util = require('../../../lib/util');
-var fs = util.fs;
+var fs = require('hexo-fs');
 
 var NEW_POST_NAME = ':title.md';
 
