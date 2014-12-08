@@ -1,4 +1,4 @@
-describe('Hexo', function(){
+describe('Core', function(){
   require('./hexo');
   require('./load_config');
   require('./post');
