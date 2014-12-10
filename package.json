@@ -7,7 +7,7 @@
     "hexo": "./bin/hexo"
   },
   "scripts": {
-    "test": "./node_modules/.bin/gulp test"
+    "test": "gulp test"
   },
   "directories": {
     "lib": "./lib",
@@ -38,22 +38,17 @@
     "bluebird": "^2.3.11",
     "bunyan": "^1.2.1",
     "cheerio": "0.17.0",
-    "chokidar": "0.11.1",
+    "chokidar": "0.12.0",
     "colors": "1.0.3",
-    "compression": "^1.0.3",
-    "connect": "3.x",
     "hexo-front-matter": "0.0.4",
     "hexo-fs": "0.0.4",
     "highlight.js": "8.4.0",
     "inflection": "^1.5.1",
     "js-yaml": "^3.1.0",
     "lodash": "^2.4.1",
-    "mime": "^1.2.11",
     "minimist": "1.1.0",
     "moment": "^2.8.4",
-    "morgan": "^1.1.1",
     "pretty-hrtime": "^0.2.2",
-    "serve-static": "^1.2.0",
     "sprintf-js": "0.0.7",
     "strip-indent": "^0.1.3",
     "swig": "1.4.2",
