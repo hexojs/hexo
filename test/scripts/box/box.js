@@ -107,7 +107,7 @@ describe('Box', function(){
     return fs.writeFile(path, 'a').then(function(){
       return box._loadFiles();
     }).then(function(files){
-      var cacheId = pathFn.join('test', 'a.txt');
+      var cacheId = 'test/a.txt';
 
       files.should.eql([
         {path: 'a.txt', type: 'create'}
@@ -124,7 +124,7 @@ describe('Box', function(){
   it('_loadFiles() - update', function(){
     var box = newBox('test');
     var path = pathFn.join(box.base, 'a.txt');
-    var cacheId = pathFn.join('test', 'a.txt');
+    var cacheId = 'test/a.txt';
     var Cache = box.Cache;
 
     return Promise.all([
@@ -148,7 +148,7 @@ describe('Box', function(){
   it('_loadFiles() - skip', function(){
     var box = newBox('test');
     var path = pathFn.join(box.base, 'a.txt');
-    var cacheId = pathFn.join('test', 'a.txt');
+    var cacheId = 'test/a.txt';
     var hash = checksum('a');
     var Cache = box.Cache;
 
@@ -172,7 +172,7 @@ describe('Box', function(){
 
   it('_loadFiles() - delete', function(){
     var box = newBox('test');
-    var cacheId = pathFn.join('test', 'a.txt');
+    var cacheId = 'test/a.txt';
     var Cache = box.Cache;
 
     return Cache.insert({
@@ -187,10 +187,6 @@ describe('Box', function(){
 
       should.not.exist(Cache.findById(cacheId));
     });
-  });
-
-  it.skip('_loadFiles() - escape backslash', function(){
-
   });
 
   it('_dispatch()', function(){
@@ -291,23 +287,28 @@ describe('Box', function(){
     });
   });
 
+  // NEED FIX: Timeout on Windows
   it('watch() - update', function(callback){
     var box = newBox('test');
     var path = 'a.txt';
     var src = pathFn.join(box.base, path);
+    var cacheId = 'test/' + path;
+    var Cache = box.Cache;
 
-    box.watch().then(function(){
-      return fs.writeFile(src, 'a');
+    Promise.all([
+      fs.writeFile(src, 'a'),
+      Cache.insert({_id: cacheId, checksum: 'a'})
+    ]).then(function(){
+      return box.watch();
     }).then(function(){
-      // Wait for 200ms because chokidar uses polling
-      return wait(200);
+      return wait(300);
     }).then(function(){
       box.addProcessor(function(file){
         file.source.should.eql(src);
         file.path.should.eql(path);
         file.type.should.eql('update');
         file.params.should.eql({});
-        file.content.toString().should.eql('a');
+        file.content.should.eql(new Buffer('ab'));
 
         box.unwatch();
         fs.rmdir(box.base, callback);
@@ -321,13 +322,18 @@ describe('Box', function(){
     var box = newBox('test');
     var path = 'a.txt';
     var src = pathFn.join(box.base, path);
+    var cacheId = 'test/' + path;
+    var Cache = box.Cache;
 
-    fs.writeFile(src, 'a').then(function(){
+    Promise.all([
+      fs.writeFile(src, 'a'),
+      Cache.insert({_id: cacheId, checksum: 'a'})
+    ]).then(function(){
       return box.watch();
     }).then(function(){
-      // Wait for 200ms because chokidar uses polling
-      return wait(200);
+      return wait(300);
     }).then(function(){
+
       box.addProcessor(function(file){
         file.source.should.eql(src);
         file.path.should.eql(path);
