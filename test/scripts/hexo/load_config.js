@@ -34,6 +34,8 @@ describe('Load config', function(){
     }).then(function(){
       hexo.env.init.should.be.true;
       hexo.config.foo.should.eql(1);
+      hexo.theme_dir.should.eql(pathFn.resolve(hexo.base_dir, 'themes', 'landscape') + pathFn.sep);
+      hexo.theme_script_dir.should.eql(pathFn.resolve(hexo.theme_dir, 'scripts') + pathFn.sep);
 
       reset();
       return fs.unlink(configPath);
@@ -104,8 +106,7 @@ describe('Load config', function(){
     return fs.writeFile(hexo.config_path, 'public_dir: foo').then(function(){
       return loadConfig(hexo);
     }).then(function(){
-      hexo.config.public_dir = pathFn.resolve(hexo.base_dir, 'foo') + pathFn.sep;
-
+      hexo.public_dir.should.eql(pathFn.resolve(hexo.base_dir, 'foo') + pathFn.sep);
       reset();
       return fs.unlink(hexo.config_path);
     });
@@ -115,8 +116,7 @@ describe('Load config', function(){
     return fs.writeFile(hexo.config_path, 'source_dir: bar').then(function(){
       return loadConfig(hexo);
     }).then(function(){
-      hexo.config.source_dir = pathFn.resolve(hexo.base_dir, 'bar') + pathFn.sep;
-
+      hexo.source_dir.should.eql(pathFn.resolve(hexo.base_dir, 'bar') + pathFn.sep);
       reset();
       return fs.unlink(hexo.config_path);
     });
