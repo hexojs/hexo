@@ -1,13 +1,35 @@
 var Hexo = require('../../../lib/hexo');
 var fs = require('hexo-fs');
 var pathFn = require('path');
-var fixtureDir = pathFn.join(__dirname, '../../fixtures');
+var Promise = require('bluebird');
+var yaml = require('js-yaml');
 
 describe('Render', function(){
-  var hexo = new Hexo(__dirname);
+  var hexo = new Hexo(pathFn.join(__dirname, 'render_test'));
+
+  var body = [
+    'name:',
+    '  first: John',
+    '  last: Doe',
+    '',
+    'age: 23',
+    '',
+    'list:',
+    '- Apple',
+    '- Banana'
+  ].join('\n');
+
+  var obj = yaml.load(body);
+  var path = pathFn.join(hexo.base_dir, 'test.yml');
 
   before(function(){
-    return hexo.init();
+    return fs.writeFile(path, body).then(function(){
+      return hexo.init();
+    });
+  });
+
+  after(function(){
+    return fs.rmdir(hexo.base_dir);
   });
 
   it('isRenderable()', function(){
@@ -56,51 +78,20 @@ describe('Render', function(){
   });
 
   it('render() - path', function(){
-    return hexo.render.render({
-      path: pathFn.join(fixtureDir, 'test.yml')
-    }).then(function(result){
-      result.should.eql({
-        name: {
-          first: 'John',
-          last: 'Doe'
-        },
-        age: 23,
-        list: ['Apple', 'Banana']
-      });
+    return hexo.render.render({path: path}).then(function(result){
+      result.should.eql(obj);
     });
   });
 
   it('render() - text (without engine)', function(){
-    var path = pathFn.join(fixtureDir, 'test.yml');
-    var content;
-
-    return fs.readFile(path).then(function(raw){
-      content = raw;
-      return hexo.render.render({
-        text: raw
-      });
-    }).then(function(result){
-      result.should.eql(content);
+    return hexo.render.render({text: body}).then(function(result){
+      result.should.eql(body);
     });
   });
 
   it('render() - text (with engine)', function(){
-    var path = pathFn.join(fixtureDir, 'test.yml');
-
-    return fs.readFile(path).then(function(raw){
-      return hexo.render.render({
-        text: raw,
-        engine: 'yaml'
-      });
-    }).then(function(result){
-      result.should.eql({
-        name: {
-          first: 'John',
-          last: 'Doe'
-        },
-        age: 23,
-        list: ['Apple', 'Banana']
-      });
+    return hexo.render.render({text: body, engine: 'yaml'}).then(function(result){
+      result.should.eql(obj);
     });
   });
 
@@ -129,43 +120,18 @@ describe('Render', function(){
   });
 
   it('renderSync() - path', function(){
-    var result = hexo.render.renderSync({
-      path: pathFn.join(fixtureDir, 'test.yml')
-    });
-
-    result.should.eql({
-      name: {
-        first: 'John',
-        last: 'Doe'
-      },
-      age: 23,
-      list: ['Apple', 'Banana']
-    });
+    var result = hexo.render.renderSync({path: path});
+    result.should.eql(obj);
   });
 
   it('renderSync() - text (without engine)', function(){
-    var path = pathFn.join(fixtureDir, 'test.yml');
-
-    return fs.readFile(path).then(function(raw){
-      hexo.render.renderSync({text: raw}).should.eql(raw);
-    });
+    var result = hexo.render.renderSync({text: body});
+    result.should.eql(body);
   });
 
   it('renderSync() - text (with engine)', function(){
-    var path = pathFn.join(fixtureDir, 'test.yml');
-
-    return fs.readFile(path).then(function(raw){
-      var result = hexo.render.renderSync({text: raw, engine: 'yaml'});
-
-      result.should.eql({
-        name: {
-          first: 'John',
-          last: 'Doe'
-        },
-        age: 23,
-        list: ['Apple', 'Banana']
-      });
-    });
+    var result = hexo.render.renderSync({text: body, engine: 'yaml'});
+    result.should.eql(obj);
   });
 
   it('renderSync() - no path and text', function(){
