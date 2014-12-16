@@ -9,5 +9,7 @@ describe('Hexo', function(){
   require('./scripts/processors');
   require('./scripts/renderers');
   require('./scripts/tags');
+  require('./scripts/theme');
+  require('./scripts/theme_processors')
   require('./scripts/util');
 });

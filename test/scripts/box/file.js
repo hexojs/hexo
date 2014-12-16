@@ -187,7 +187,11 @@ describe('File', function(){
     });
   });
 
+  it('render() - use cache');
+
   it('renderSync()', function(){
     file.renderSync().should.eql(obj);
   });
+
+  it('renderSync() - use cache');
 });
