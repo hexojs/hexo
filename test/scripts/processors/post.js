@@ -127,6 +127,7 @@ describe('post', function(){
     }).then(function(post){
       return PostAsset.insert({
         _id: id,
+        slug: file.path,
         modified: false,
         post: post._id
       });
@@ -163,6 +164,7 @@ describe('post', function(){
     }).then(function(post){
       return PostAsset.insert({
         _id: id,
+        slug: file.path,
         modified: false,
         post: post._id
       });
@@ -202,6 +204,7 @@ describe('post', function(){
 
       return PostAsset.insert({
         _id: id,
+        slug: file.path,
         modified: false,
         post: postId
       });
@@ -243,7 +246,10 @@ describe('post', function(){
 
     var id = 'source/' + file.path;
 
-    return PostAsset.insert({_id: id}).then(function(){
+    return PostAsset.insert({
+      _id: id,
+      slug: file.path
+    }).then(function(){
       return process(file);
     }).then(function(){
       hexo.config.post_asset_folder = false;
