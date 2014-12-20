@@ -42,7 +42,6 @@
     "hexo-front-matter": "0.0.4",
     "hexo-fs": "0.0.7",
     "hexo-util": "0.0.1",
-    "highlight.js": "8.4.0",
     "js-yaml": "^3.1.0",
     "lodash": "^2.4.1",
     "minimist": "1.1.0",
