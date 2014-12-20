@@ -1,6 +1,6 @@
 var cheerio = require('cheerio'),
   should = require('chai').should(),
-  highlight = require('../../../lib/util/highlight');
+  highlight = require('hexo-util').highlight;
 
 describe.skip('code', function(){
   var code = require('../../../lib/plugins/tag/code');

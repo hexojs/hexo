@@ -1,5 +1,5 @@
 var should = require('chai').should();
-var util = require('../../../lib/util');
+var util = require('hexo-util');
 var highlight = util.highlight;
 
 describe.skip('Backtick code block', function(){

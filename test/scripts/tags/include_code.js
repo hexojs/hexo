@@ -2,7 +2,7 @@ var cheerio = require('cheerio');
 var path = require('path');
 var should = require('chai').should();
 var fs = require('hexo-fs');
-var highlight = require('../../../lib/util/highlight');
+var highlight = require('hexo-util').highlight;
 
 // Fixture
 function unique(arr){

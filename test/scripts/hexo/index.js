@@ -5,6 +5,7 @@ describe('Core', function(){
   require('./load_plugins');
   require('./post');
   require('./render');
+  require('./router');
   require('./scaffold');
   require('./update_package')
 });

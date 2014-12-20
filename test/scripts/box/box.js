@@ -287,7 +287,6 @@ describe('Box', function(){
     });
   });
 
-  // NEED FIX: Timeout on Windows
   it('watch() - update', function(callback){
     var box = newBox('test');
     var path = 'a.txt';
@@ -389,4 +388,6 @@ describe('Box', function(){
       err.should.have.property('message', 'Watcher hasn\'t started yet.');
     }
   });
+
+  it('processBefore & processAfter events');
 });

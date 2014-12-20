@@ -1,7 +1,7 @@
 var should = require('chai').should();
 
 describe('Router', function(){
-  var Router = require('../../../lib/util/router');
+  var Router = require('../../../lib/hexo/router');
   var router = new Router();
 
   it('format()', function(){

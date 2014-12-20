@@ -1,6 +1,6 @@
 var should = require('chai').should();
 var qs = require('querystring');
-var htmlTag = require('../../../lib/util/html_tag');
+var htmlTag = require('hexo-util').htmlTag;
 
 describe.skip('tag', function(){
   var tag = require('../../../lib/plugins/helper/tag');

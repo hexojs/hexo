@@ -5,7 +5,7 @@ describe('open_graph', function(){
   var hexo = new Hexo();
   var openGraph = require('../../../lib/plugins/helper/open_graph');
   var isPost = require('../../../lib/plugins/helper/is').is_post;
-  var tag = require('../../../lib/util/html_tag');
+  var tag = require('hexo-util').htmlTag;
 
   function meta(options){
     return tag('meta', options);
