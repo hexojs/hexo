@@ -1,5 +1,7 @@
 var file = require('../lib/util/file2'),
   fs = require('graceful-fs'),
+  should = require('chai').should(),
+  hexo = require('../lib/hexo'),
   pathFn = require('path');
 
 describe('Hexo test', function(){
@@ -13,6 +15,13 @@ describe('Hexo test', function(){
   require('./scripts/tag');
   require('./scripts/post');
   require('./scripts/scaffold');
+
+  describe('init', function() {
+    it('should work with a command argument', function() {
+      var rv = hexo.init({command: {one: 'one'}});
+      rv.env.args.command.one.should.eql('one');
+    });
+  });
 
   after(function(done){
     var blogDir = pathFn.join(__dirname, 'blog');
