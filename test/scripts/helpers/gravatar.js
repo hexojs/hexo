@@ -1,5 +1,5 @@
-var crypto = require('crypto'),
-  should = require('chai').should();
+var crypto = require('crypto');
+var should = require('chai').should();
 
 describe('gravatar', function(){
   var gravatar = require('../../../lib/plugins/helper/gravatar');
