@@ -9,7 +9,7 @@ describe('SchemaTypeMoment', function(){
     type.cast(1e8).should.eql(moment(1e8));
     type.cast(new Date(2014, 1, 1)).should.eql(moment(new Date(2014, 1, 1)));
     type.cast('2014-11-03T07:45:41.237Z').should.eql(moment('2014-11-03T07:45:41.237Z'));
-    type.cast(moment(1e8)).should.eql(moment(1e8));
+    type.cast(moment(1e8)).valueOf().should.eql(1e8);
   });
 
   it('cast() - default', function(){
@@ -22,7 +22,7 @@ describe('SchemaTypeMoment', function(){
   }
 
   it('validate()', function(){
-    type.validate(moment('2014-11-03T07:45:41.237Z')).should.eql('2014-11-03T07:45:41.237Z');
+    type.validate(moment(1e8)).valueOf().should.eql(1e8)
     shouldThrowError(moment.invalid());
   });
 

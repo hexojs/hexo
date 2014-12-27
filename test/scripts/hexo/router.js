@@ -1,8 +1,17 @@
 var should = require('chai').should();
+var Promise = require('bluebird');
+var Readable = require('stream').Readable;
+var testUtil = require('../../util');
 
 describe('Router', function(){
   var Router = require('../../../lib/hexo/router');
   var router = new Router();
+
+  function checkStream(stream, expected){
+    return testUtil.stream.read(stream).then(function(data){
+      data.should.eql(expected);
+    });
+  }
 
   it('format()', function(){
     router.format('foo').should.eql('foo');
@@ -26,50 +35,155 @@ describe('Router', function(){
     router.format('foo?a=1&b=2').should.eql('foo');
   });
 
+  it('format() - path must be a string', function(){
+    try {
+      router.format();
+    } catch (err){
+      err.should.have.property('message', 'path must be a string!');
+    }
+  })
+
   it('set() - string', function(){
-    router.once('update', function(source, route){
-      source.should.eql('foo');
-
-      route(function(err, content){
-        should.not.exist(err);
-        content.should.eql('bar');
-      });
+    router.once('update', function(path){
+      path.should.eql('test');
     });
 
-    router.set('foo', 'bar');
-    router.get('foo', function(err, content){
-      should.not.exist(err);
-      content.should.eql('bar');
-    });
+    router.set('test', 'foo');
+    var data = router.get('test');
+
+    data.modified.should.be.true;
+    return checkStream(data, 'foo');
   });
 
   it('set() - function', function(){
-    router.once('update', function(source, route){
-      source.should.eql('hello');
-
-      route(function(err, content){
-        should.not.exist(err);
-        content.should.eql('world');
-      });
+    router.set('test', function(){
+      return 'foo';
     });
 
-    router.set('hello', function(fn){
-      fn(null, 'world');
+    return checkStream(router.get('test'), 'foo');
+  });
+
+  it('set() - function (callback style)', function(){
+    router.set('test', function(callback){
+      callback(null, 'foo');
     });
 
-    router.get('hello', function(err, content){
-      should.not.exist(err);
-      content.should.eql('world');
+    return checkStream(router.get('test'), 'foo');
+  });
+
+  it('set() - readable stream', function(){
+    // Prepare a readable stream
+    var stream = new Readable();
+    stream.push('foo');
+    stream.push(null);
+
+    router.set('test', function(){
+      return stream;
+    });
+
+    return checkStream(router.get('test'), 'foo');
+  });
+
+  it('set() - modified', function(){
+    var fn = function(){};
+    fn.modified = false;
+
+    router.set('test', fn);
+    router.isModified('test').should.be.false;
+  });
+
+  it('set() - path must be a string', function(){
+    try {
+      router.set();
+    } catch (err){
+      err.should.have.property('message', 'path must be a string!');
+    }
+  });
+
+  it('set() - data is required', function(){
+    try {
+      router.set('test');
+    } catch (err){
+      err.should.have.property('message', 'data is required!');
+    }
+  });
+
+  it('get() - error handling', function(){
+    router.set('test', function(){
+      throw new Error('error test');
+    });
+
+    return testUtil.stream.read(router.get('test')).catch(function(err){
+      err.should.have.property('message', 'error test');
     });
   });
 
-  it('remove()', function(){
-    router.once('remove', function(source){
-      source.should.eql('foo');
+  it('get() - no data', function(){
+    router.set('test', function(){
+      return;
     });
 
-    router.set('foo', 'bar');
-    router.remove('foo');
-    should.not.exist(router.get('foo'));
+    return checkStream(router.get('test'), '');
+  });
+
+  it('get() - empty readable stream', function(){
+    var stream = new Readable();
+    stream.push(null);
+
+    router.set('test', function(){
+      return stream;
+    });
+
+    return checkStream(router.get('test'), '');
+  });
+
+  it('get() - path must be a string', function(){
+    try {
+      router.get();
+    } catch (err){
+      err.should.have.property('message', 'path must be a string!');
+    }
+  });
+
+  it('list()', function(){
+    var router = new Router();
+
+    router.set('foo', 'foo');
+    router.set('bar', 'bar');
+    router.set('baz', 'baz');
+    router.remove('bar');
+
+    router.list().should.eql(['foo', 'baz']);
+  });
+
+  it('isModified()', function(){
+    router.set('test', 'foo');
+    router.isModified('test').should.be.true;
+  });
+
+  it('isModified() - path must be a string', function(){
+    try {
+      router.isModified();
+    } catch (err){
+      err.should.have.property('message', 'path must be a string!');
+    }
+  });
+
+  it('remove()', function(){
+    router.once('remove', function(path){
+      path.should.eql('test');
+    });
+
+    router.set('test', 'foo');
+    router.remove('test');
+    should.not.exist(router.get('test'));
+  });
+
+  it('remove() - path must be a string', function(){
+    try {
+      router.remove();
+    } catch (err){
+      err.should.have.property('message', 'path must be a string!');
+    }
   });
 });

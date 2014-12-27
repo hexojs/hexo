@@ -53,9 +53,7 @@ describe('Box', function(){
     var p = box.processors[0];
 
     p.pattern.match('').should.eql({});
-    p.process().then(function(data){
-      data.should.eql('test');
-    });
+    p.process().should.eql('test');
   });
 
   it('addProcessor() - with regex', function(){
@@ -69,9 +67,7 @@ describe('Box', function(){
 
     p.pattern.match('foobar').should.be.ok;
     p.pattern.should.be.an.instanceof(Pattern);
-    p.process().then(function(data){
-      data.should.eql('test');
-    });
+    p.process().should.eql('test');
   });
 
   it('addProcessor() - with pattern', function(){
@@ -85,9 +81,7 @@ describe('Box', function(){
 
     p.pattern.match('foobar').should.be.ok;
     p.pattern.should.be.an.instanceof(Pattern);
-    p.process().then(function(data){
-      data.should.eql('test');
-    });
+    p.process().should.eql('test');
   });
 
   it('addProcessor() - no fn', function(){
