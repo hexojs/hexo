@@ -3,18 +3,24 @@ var pathFn = require('path');
 var moment = require('moment');
 var Promise = require('bluebird');
 var fs = require('hexo-fs');
+var util = require('hexo-util');
 
 describe('Post', function(){
   var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
+  var hexo = new Hexo(pathFn.join(__dirname, 'post_test'));
   var post = hexo.post;
 
   before(function(){
-    return hexo.init();
+    return fs.mkdirs(hexo.base_dir, function(){
+      return hexo.init();
+    }).then(function(){
+      // Load marked renderer for testing
+      return hexo.loadPlugin(require.resolve('hexo-renderer-marked'));
+    });
   });
 
   after(function(){
-    return fs.rmdir(hexo.source_dir);
+    return fs.rmdir(hexo.base_dir);
   });
 
   it('create()', function(){
@@ -343,5 +349,51 @@ describe('Post', function(){
     });
   });
 
-  it.skip('render()');
+  it('render()', function(){
+    var code = [
+      'if (tired && night){',
+      '  sleep();',
+      '}',
+    ].join('\n');
+
+    var content = [
+      '# Title',
+      '``` js',
+      code,
+      '```',
+      'some content',
+      '',
+      '## Another title',
+      '{% blockquote %}',
+      'quote content',
+      '{% endblockquote %}',
+    ].join('\n');
+
+    return post.render(null, {
+      content: content,
+      engine: 'markdown'
+    }).then(function(data){
+      data.content.should.eql([
+        '<h1 id="Title">Title</h1>',
+        util.highlight(code, {lang: 'js'}),
+        '<p>some content</p>',
+        '<h2 id="Another_title">Another title</h2>',
+        '{% blockquote %}',
+        'quote content',
+        '{% endblockquote %}'
+      ].join('\n') + '\n');
+    });
+  });
+
+  it('render() - file', function(){
+    var content = '**file test**';
+    var path = pathFn.join(hexo.base_dir, 'render_test.md');
+
+    return fs.writeFile(path, content).then(function(){
+      return post.render(path);
+    }).then(function(data){
+      data.content.should.eql('<p><strong>file test</strong></p>\n');
+      return fs.unlink(path);
+    });
+  });
 });

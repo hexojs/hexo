@@ -1,50 +1,60 @@
-var cheerio = require('cheerio'),
-  should = require('chai').should(),
-  highlight = require('hexo-util').highlight;
+var should = require('chai').should();
+var highlight = require('hexo-util').highlight;
 
-describe.skip('code', function(){
-  var code = require('../../../lib/plugins/tag/code');
+describe('code', function(){
+  var Hexo = require('../../../lib/hexo');
+  var hexo = new Hexo();
+  var codeTag = require('../../../lib/plugins/tag/code')(hexo);
 
-  var dummy = [
-    'var dummy = function(){',
-    '  alert("dummy");',
-    '});'
+  var fixture = [
+    'if (tired && night){',
+    '  sleep();',
+    '}'
   ].join('\n');
 
-  var content = cheerio.load(highlight(dummy))('table').html();
+  function code(args, content){
+    return codeTag(args.split(' '), content);
+  }
 
-  it('content', function(){
-    var $ = cheerio.load(code([], dummy));
-
-    $('figure').attr('class').should.eql('highlight');
-    $('figure table').html().should.eql(content);
+  it('default', function(){
+    var result = code('', fixture);
+    result.should.eql(highlight(fixture));
   });
 
   it('lang', function(){
-    var $ = cheerio.load(code('lang:js'.split(' '), ''));
-
-    $('figure').attr('class').should.eql('highlight js');
+    var result = code('lang:js', fixture);
+    result.should.eql(highlight(fixture, {lang: 'js'}));
   });
 
   it('title', function(){
-    var $ = cheerio.load(code('Code block test'.split(' '), ''));
-
-    $('figcaption span').html().should.eql('Code block test');
+    var result = code('Hello world', fixture);
+    result.should.eql(highlight(fixture, {caption: '<span>Hello world</span>'}));
   });
 
-  it('title + url', function(){
-    var $ = cheerio.load(code('Code block test http://zespia.tw'.split(' '), ''));
+  it('link', function(){
+    var result = code('Hello world http://hexo.io/', fixture);
+    var expected = highlight(fixture, {
+      caption: '<span>Hello world</span><a href="http://hexo.io/">link</a>'
+    });
 
-    $('figcaption span').html().should.eql('Code block test');
-    $('figcaption a').attr('href').should.eql('http://zespia.tw');
-    $('figcaption a').html().should.eql('link');
+    result.should.eql(expected);
   });
 
-  it('title + url + link', function(){
-    var $ = cheerio.load(code('Code block test http://zespia.tw My blog'.split(' '), ''));
+  it('link text', function(){
+    var result = code('Hello world http://hexo.io/ Hexo', fixture);
+    var expected = highlight(fixture, {
+      caption: '<span>Hello world</span><a href="http://hexo.io/">Hexo</a>'
+    });
 
-    $('figcaption span').html().should.eql('Code block test');
-    $('figcaption a').attr('href').should.eql('http://zespia.tw');
-    $('figcaption a').html().should.eql('My blog');
+    result.should.eql(expected);
+  });
+
+  it('disabled', function(){
+    hexo.config.highlight.enable = false;
+
+    var result = code('', fixture);
+    result.should.eql('<pre><code>' + fixture + '</code></pre>');
+
+    hexo.config.highlight.enable = true;
   });
 });

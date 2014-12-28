@@ -1,50 +1,73 @@
-var cheerio = require('cheerio');
-var path = require('path');
+var pathFn = require('path');
 var should = require('chai').should();
 var fs = require('hexo-fs');
 var highlight = require('hexo-util').highlight;
 
-// Fixture
-function unique(arr){
-  var a = [],
-    l = arr.length;
+describe('include_code', function(){
+  var Hexo = require('../../../lib/hexo');
+  var hexo = new Hexo(pathFn.join(__dirname, 'include_code_test'));
+  var includeCode = require('../../../lib/plugins/tag/include_code')(hexo);
+  var path = pathFn.join(hexo.source_dir, hexo.config.code_dir, 'test.js');
 
-  for (var i = 0; i < l; i++){
-    for (var j = i + 1; j < l; j++){
-      if (arr[i] === arr[j]) j = ++i;
-    }
+  var fixture = [
+    'if (tired && night){',
+    '  sleep();',
+    '}'
+  ].join('\n');
 
-    a.push(arr[i]);
+  function code(args){
+    return includeCode(args.split(' '));
   }
 
-  return a;
-}
-
-describe.skip('include_code', function(){
-  var include_code = require('../../../lib/plugins/tag/include_code'),
-    raw = unique.toString(),
-    content = cheerio.load(highlight(raw))('table').html();
-
-  before(function(done){
-    file.writeFile(path.join(hexo.source_dir, 'downloads', 'code', 'test.js'), raw, done);
+  before(function(){
+    return fs.writeFile(path, fixture);
   });
 
-  it('file', function(){
-    var $ = cheerio.load(include_code('test.js'.split(' ')));
+  after(function(){
+    return fs.rmdir(hexo.base_dir);
+  });
 
-    $('figure').attr('class').should.eql('highlight js');
-    $('figure table').html().should.eql(content);
+  it('default', function(){
+    var result = code('test.js');
+    var expected = highlight(fixture, {
+      lang: 'js',
+      caption: '<span>test.js</span><a href="/downloads/code/test.js">view raw</a>'
+    });
+
+    result.should.eql(expected);
   });
 
   it('title', function(){
-    var $ = cheerio.load(include_code('Code block title test.js'.split(' ')));
+    var result = code('Hello world test.js');
+    var expected = highlight(fixture, {
+      lang: 'js',
+      caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
+    });
 
-    $('figcaption span').html().should.eql('Code block title');
+    result.should.eql(expected);
   });
 
   it('lang', function(){
-    var $ = cheerio.load(include_code('lang:javascript test.js'.split(' ')));
+    var result = code('Hello world lang:js test.js');
+    var expected = highlight(fixture, {
+      lang: 'js',
+      caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
+    });
 
-    $('figure').attr('class').should.eql('highlight javascript');
+    result.should.eql(expected);
+  });
+
+  it('file not found', function(){
+    var result = code('nothing');
+    should.not.exist(result);
+  });
+
+  it('disabled', function(){
+    hexo.config.highlight.enable = false;
+
+    var result = code('test.js');
+    result.should.eql('<pre><code>' + fixture + '</code></pre>');
+
+    hexo.config.highlight.enable = true;
   });
 });

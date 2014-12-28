@@ -1,44 +1,51 @@
-var cheerio = require('cheerio'),
-  should = require('chai').should();
+var should = require('chai').should();
 
-describe.skip('blockquote', function(){
-  var blockquote = require('../../../lib/plugins/tag/blockquote');
+describe('blockquote', function(){
+  var Hexo = require('../../../lib/hexo');
+  var hexo = new Hexo(__dirname);
+  var blockquote = require('../../../lib/plugins/tag/blockquote')(hexo);
 
-  var bq = function(args){
-    var result = blockquote(args.split(' '), '123456 **bold** and *italic*');
+  before(function(){
+    return hexo.init().then(function(){
+      return hexo.loadPlugin(require.resolve('hexo-renderer-marked'));
+    });
+  });
 
-    return result.replace(/<escape>(.*?)<\/escape>/g, '$1');
+  var bq = function(args, content){
+    return blockquote(args.split(' '), content);
   };
 
+  it('default', function(){
+    var result = bq('', '123456 **bold** and *italic*');
+    result.should.eql('<blockquote><p>123456 <strong>bold</strong> and <em>italic</em></p>\n</blockquote>');
+  });
+
   it('author', function(){
-    var $ = cheerio.load(bq('John Doe'));
-
-    $('blockquote footer strong').html().should.eql('John Doe');
+    var result = bq('John Doe', '');
+    result.should.eql('<blockquote><footer><strong>John Doe</strong></footer></blockquote>');
   });
 
-  it('author + source', function(){
-    var $ = cheerio.load(bq('John Doe, A book'));
-
-    $('blockquote footer strong').html().should.eql('John Doe');
-    $('blockquote footer cite').html().should.eql('A book');
+  it('source', function(){
+    var result = bq('Jane Austen, Pride and Prejudice');
+    result.should.eql('<blockquote><footer><strong>Jane Austen</strong><cite>Pride and Prejudice</cite></footer></blockquote>');
   });
 
-  it('author + link', function(){
-    var $ = cheerio.load(bq('John Doe http://zespia.tw'));
-
-    $('blockquote footer strong').html().should.eql('John Doe');
-    $('blockquote footer cite').html().should.eql('<a href="http://zespia.tw">zespia.tw/</a>');
-
-    $ = cheerio.load(bq('John Doe http://zespia.tw/this/is/a/fucking/long/url'));
-
-    $('blockquote footer strong').html().should.eql('John Doe');
-    $('blockquote footer cite').html().should.eql('<a href="http://zespia.tw/this/is/a/fucking/long/url">zespia.tw/this/is/a/fucking/&#x2026;</a>');
+  it('link', function(){
+    var result = bq('John Doe http://hexo.io/');
+    result.should.eql('<blockquote><footer><strong>John Doe</strong><cite><a href="http://hexo.io/">hexo.io</a></cite></footer></blockquote>');
   });
 
-  it('author + link + title', function(){
-    var $ = cheerio.load(bq('John Doe http://zespia.tw My Blog'));
+  it('link title', function(){
+    var result = bq('John Doe http://hexo.io/ Hexo');
+    result.should.eql('<blockquote><footer><strong>John Doe</strong><cite><a href="http://hexo.io/">Hexo</a></cite></footer></blockquote>');
+  });
 
-    $('blockquote footer strong').html().should.eql('John Doe');
-    $('blockquote footer cite').html().should.eql('<a href="http://zespia.tw">My Blog</a>');
+  it('titlecase', function(){
+    hexo.config.titlecase = true;
+
+    var result = bq('Jane Austen, pride and prejudice');
+    result.should.eql('<blockquote><footer><strong>Jane Austen</strong><cite>Pride and Prejudice</cite></footer></blockquote>');
+
+    hexo.config.titlecase = false;
   });
 });
