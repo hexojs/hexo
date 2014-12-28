@@ -281,12 +281,11 @@ describe('post', function(){
       post.title.should.eql('Hello world');
       post.date.format(dateFormat).should.eql('2006-01-02 15:04:05');
       post.updated.format(dateFormat).should.eql('2014-12-13 01:02:03');
-      post.content.should.eql('The quick brown fox jumps over the lazy dog');
+      post._content.should.eql('The quick brown fox jumps over the lazy dog');
       post.source.should.eql(file.path);
       post.raw.should.eql(body);
       post.slug.should.eql('foo');
       post.published.should.be.true;
-      should.not.exist(post._content);
 
       return Promise.all([
         post.remove(),

@@ -1,24 +1,23 @@
-var cheerio = require('cheerio');
 var should = require('chai').should();
 
 describe('pullquote', function(){
-  var pullquote = require('../../../lib/plugins/tag/pullquote');
+  var Hexo = require('../../../lib/hexo');
+  var hexo = new Hexo(__dirname);
+  var pullquote = require('../../../lib/plugins/tag/pullquote')(hexo);
 
-  var raw = '123456 **bold** and *italic*';
+  before(function(){
+    return hexo.init().then(function(){
+      return hexo.loadPlugin(require.resolve('hexo-renderer-marked'));
+    });
+  });
 
-  it('content', function(){
-    var $ = cheerio.load(pullquote([], raw));
-
-    $('blockquote').attr('class').should.eql('pullquote');
+  it('default', function(){
+    var result = pullquote([], '123456 **bold** and *italic*');
+    result.should.eql('<blockquote class="pullquote"><p>123456 <strong>bold</strong> and <em>italic</em></p>\n</blockquote>');
   });
 
   it('class', function(){
-    var $ = cheerio.load(pullquote(['foo'], raw));
-
-    $('blockquote').attr('class').should.eql('pullquote foo');
-
-    $ = cheerio.load(pullquote(['foo', 'bar'], raw));
-
-    $('blockquote').attr('class').should.eql('pullquote foo bar');
+    var result = pullquote(['foo', 'bar'], '');
+    result.should.eql('<blockquote class="pullquote foo bar"></blockquote>');
   });
 });

@@ -140,12 +140,11 @@ describe('asset', function(){
       page.title.should.eql('Hello world');
       page.date.format(dateFormat).should.eql('2006-01-02 15:04:05');
       page.updated.format(dateFormat).should.eql('2014-12-13 01:02:03');
-      page.content.should.eql('The quick brown fox jumps over the lazy dog');
+      page._content.should.eql('The quick brown fox jumps over the lazy dog');
       page.source.should.eql(file.path);
       page.raw.should.eql(body);
       page.path.should.eql('hello.html');
       page.layout.should.eql('page');
-      should.not.exist(page._content);
 
       return Promise.all([
         page.remove(),

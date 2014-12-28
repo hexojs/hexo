@@ -18,8 +18,6 @@ describe('Excerpt', function(){
 
     excerpt(data);
     data.content.should.eql(content);
-    data.excerpt.should.eql('');
-    data.more.should.eql(content);
   });
 
   it('with <!-- more -->', function(){
@@ -42,15 +40,6 @@ describe('Excerpt', function(){
       '<a id="more"></a>',
       'baz'
     ].join('\n'));
-
-    data.excerpt.should.eql([
-      'foo',
-      'bar',
-    ].join('\n'));
-
-    data.more.should.eql([
-      'baz'
-    ].join('\n'));
   });
 
   it('multiple <!-- more -->', function(){
@@ -71,16 +60,6 @@ describe('Excerpt', function(){
     data.content.should.eql([
       'foo',
       '<a id="more"></a>',
-      'bar',
-      '<!-- more -->',
-      'baz'
-    ].join('\n'));
-
-    data.excerpt.should.eql([
-      'foo'
-    ].join('\n'));
-
-    data.more.should.eql([
       'bar',
       '<!-- more -->',
       'baz'
