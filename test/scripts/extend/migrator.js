@@ -44,6 +44,21 @@ describe('Migrator', function(){
     });
   });
 
+  it('register() - Promise.method', function(){
+    var d = new Migrator();
+
+    d.register('test', function(args){
+      args.should.eql({foo: 'bar'});
+      return 'foo';
+    });
+
+    d.get('test')({
+      foo: 'bar'
+    }).then(function(result){
+      result.should.eql('foo');
+    });
+  });
+
   it('list()', function(){
     var d = new Migrator();
 
