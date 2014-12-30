@@ -1,6 +1,9 @@
 var should = require('chai').should();
 var Promise = require('bluebird');
 var Readable = require('stream').Readable;
+var pathFn = require('path');
+var crypto = require('crypto');
+var fs = require('hexo-fs');
 var testUtil = require('../../util');
 
 describe('Router', function(){
@@ -10,6 +13,22 @@ describe('Router', function(){
   function checkStream(stream, expected){
     return testUtil.stream.read(stream).then(function(data){
       data.should.eql(expected);
+    });
+  }
+
+  function checksum(stream){
+    return new Promise(function(resolve, reject){
+      var hash = crypto.createHash('sha1');
+
+      stream.on('readable', function(){
+        var chunk;
+
+        while ((chunk = stream.read()) !== null){
+          hash.update(chunk);
+        }
+      }).on('end', function(){
+        resolve(hash.digest('hex'));
+      }).on('error', reject);
     });
   }
 
@@ -135,6 +154,21 @@ describe('Router', function(){
     });
 
     return checkStream(router.get('test'), '');
+  });
+
+  it('get() - large readable stream (more than 65535 bits)', function(){
+    var path = pathFn.join(__dirname, '../../fixtures/banner.jpg');
+
+    router.set('test', function(){
+      return fs.createReadStream(path);
+    });
+
+    return Promise.all([
+      checksum(router.get('test')),
+      checksum(fs.createReadStream(path))
+    ]).then(function(data){
+      data[0].should.eql(data[1]);
+    });
   });
 
   it('get() - path must be a string', function(){

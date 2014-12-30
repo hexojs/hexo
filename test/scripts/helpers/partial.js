@@ -67,6 +67,14 @@ describe('partial', function(){
     partial('test', {bar: 'bar'}, {only: true}).should.eql('bar');
   });
 
+  it('a partial in another partial', function(){
+    hexo.theme.setView('partial/a.swig', '{{ partial("b") }}');
+    hexo.theme.setView('partial/b.swig', '{{ partial("c") }}');
+    hexo.theme.setView('partial/c.swig', 'c');
+
+    partial('partial/a').should.eql('c');
+  });
+
   it('name must be a string', function(){
     try {
       partial();

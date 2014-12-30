@@ -35,6 +35,7 @@
   "license": "MIT",
   "dependencies": {
     "abbrev": "^1.0.5",
+    "archy": "^1.0.0",
     "bluebird": "^2.3.11",
     "bunyan": "^1.2.1",
     "chalk": "^0.5.1",

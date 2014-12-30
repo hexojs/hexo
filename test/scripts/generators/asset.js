@@ -17,14 +17,41 @@ describe('asset', function(){
   }
 
   before(function(){
-    return fs.mkdirs(hexo.base_dir);
+    return fs.mkdirs(hexo.base_dir).then(function(){
+      return hexo.init();
+    });
   });
 
   after(function(){
     return fs.rmdir(hexo.base_dir);
   });
 
-  it('Asset', function(){
+  it('renderable', function(){
+    var path = 'test.yml';
+    var source = pathFn.join(hexo.base_dir, path);
+    var content = 'foo: bar';
+
+    return Promise.all([
+      Asset.insert({_id: path, path: path}),
+      fs.writeFile(source, content)
+    ]).then(function(){
+      return generator(hexo.locals);
+    }).then(function(data){
+      data[0].path.should.eql('test.json');
+      data[0].data.modified.should.be.true;
+
+      return data[0].data().then(function(result){
+        result.should.eql({foo: 'bar'});
+      });
+    }).then(function(){
+      return Promise.all([
+        Asset.removeById(path),
+        fs.unlink(source)
+      ]);
+    });
+  });
+
+  it('not renderable', function(){
     var path = 'test.txt';
     var source = pathFn.join(hexo.base_dir, path);
     var content = 'test content';
@@ -46,8 +73,6 @@ describe('asset', function(){
       ]);
     })
   });
-
-  it('PostAsset');
 
   it('remove assets which does not exist', function(){
     var path = 'test.txt';
