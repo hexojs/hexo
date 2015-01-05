@@ -109,7 +109,7 @@ describe('Post', function(){
     });
   });
 
-  it('excerpt / more - virtual', function(){
+  it('excerpt / more - virtual (with more tag)', function(){
     var content = [
       '123456',
       '<a id="more"></a>',
@@ -123,6 +123,20 @@ describe('Post', function(){
     }).then(function(post){
       post.excerpt.should.eql('123456');
       post.more.should.eql('789012')
+      return Post.removeById(post._id);
+    });
+  });
+
+  it('excerpt / more - virtual (without more tag)', function(){
+    var content = '123456';
+
+    return Post.insert({
+      source: 'foo.md',
+      slug: 'bar',
+      _content: content
+    }).then(function(post){
+      post.excerpt.should.eql('');
+      post.more.should.eql('123456')
       return Post.removeById(post._id);
     });
   });
