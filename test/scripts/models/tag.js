@@ -96,9 +96,9 @@ describe('Tag', function(){
 
   it('posts - virtual', function(){
     return Post.insert([
-      {source: 'foo.md', slug: 'foo'},
-      {source: 'bar.md', slug: 'bar'},
-      {source: 'baz.md', slug: 'baz'}
+      {source: 'foo.md', slug: 'foo', published: true},
+      {source: 'bar.md', slug: 'bar', published: false},
+      {source: 'baz.md', slug: 'baz', published: true}
     ]).then(function(posts){
       return Promise.map(posts, function(post){
         return post.setTags(['foo']).thenReturn(post);
@@ -106,12 +106,20 @@ describe('Tag', function(){
     }).then(function(posts){
       var tag = Tag.findOne({name: 'foo'});
 
-      function mapper(post){
-        return post._id;
+      tag.posts.eq(0)._id.should.eql(posts[0]._id);
+      tag.posts.eq(1)._id.should.eql(posts[2]._id);
+      tag.length.should.eql(2);
+
+      // draft visible
+      hexo.config.render_drafts = true;
+      tag = Tag.findOne({name: 'foo'});
+
+      for (var i = 0, len = posts.length; i < len; i++){
+        tag.posts.eq(i)._id.should.eql(posts[i]._id);
       }
 
-      tag.posts.map(mapper).should.eql(posts.map(mapper));
       tag.length.should.eql(posts.length);
+      hexo.config.render_drafts = false;
 
       return Tag.removeById(tag._id).thenReturn(posts);
     }).map(function(post){

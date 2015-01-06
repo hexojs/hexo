@@ -7,6 +7,7 @@ describe('Hexo', function(){
   var hexo = new Hexo(__dirname);
   var coreDir = pathFn.join(__dirname, '../../..');
   var version = require('../../../package.json').version;
+  var Post = hexo.model('Post');
 
   hexo.extend.console.register('test', function(args){
     return args;
@@ -58,4 +59,38 @@ describe('Hexo', function(){
   it('init()');
 
   it('model()');
+
+  it('_showDrafts()', function(){
+    hexo._showDrafts().should.be.false;
+
+    hexo.env.args.draft = true;
+    hexo._showDrafts().should.be.true;
+    hexo.env.args.draft = false;
+
+    hexo.env.args.drafts = true;
+    hexo._showDrafts().should.be.true;
+    hexo.env.args.drafts = false;
+
+    hexo.config.render_drafts = true;
+    hexo._showDrafts().should.be.true;
+    hexo.config.render_drafts = false;
+  });
+
+  it('draft visibility', function(){
+    return Post.insert([
+      {source: 'foo', slug: 'foo', published: true},
+      {source: 'bar', slug: 'bar', published: false}
+    ]).then(function(posts){
+      hexo.locals.posts.toArray().should.eql(posts.slice(0, 1));
+
+      // draft visible
+      hexo.config.render_drafts = true;
+      hexo.locals.posts.toArray().should.eql(posts);
+      hexo.config.render_drafts = false;
+
+      return posts;
+    }).map(function(post){
+      return Post.removeById(post._id);
+    });
+  });
 });

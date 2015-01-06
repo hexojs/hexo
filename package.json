@@ -41,7 +41,7 @@
     "chalk": "^0.5.1",
     "cheerio": "0.18.0",
     "hexo-front-matter": "0.0.4",
-    "hexo-fs": "0.0.7",
+    "hexo-fs": "0.0.8",
     "hexo-util": "0.0.2",
     "js-yaml": "^3.2.5",
     "lodash": "^2.4.1",

@@ -114,9 +114,9 @@ describe('Category', function(){
 
   it('posts - virtual', function(){
     return Post.insert([
-      {source: 'foo.md', slug: 'foo'},
-      {source: 'bar.md', slug: 'bar'},
-      {source: 'baz.md', slug: 'baz'}
+      {source: 'foo.md', slug: 'foo', published: true},
+      {source: 'bar.md', slug: 'bar', published: false},
+      {source: 'baz.md', slug: 'baz', published: true}
     ]).then(function(posts){
       return Promise.map(posts, function(post){
         return post.setCategories(['foo']).thenReturn(post);
@@ -124,12 +124,20 @@ describe('Category', function(){
     }).then(function(posts){
       var cat = Category.findOne({name: 'foo'});
 
-      function mapper(post){
-        return post._id;
+      cat.posts.eq(0)._id.should.eql(posts[0]._id);
+      cat.posts.eq(1)._id.should.eql(posts[2]._id);
+      cat.length.should.eql(2);
+
+      // draft visible
+      hexo.config.render_drafts = true;
+      cat = Category.findOne({name: 'foo'});
+
+      for (var i = 0, len = posts.length; i < len; i++){
+        cat.posts.eq(i)._id.should.eql(posts[i]._id);
       }
 
-      cat.posts.map(mapper).should.eql(posts.map(mapper));
       cat.length.should.eql(posts.length);
+      hexo.config.render_drafts = false;
 
       return Category.removeById(cat._id).thenReturn(posts);
     }).map(function(post){
