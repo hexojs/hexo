@@ -3,8 +3,13 @@
   "version": "",
   "private": true,
   "dependencies": {
+    "hexo-generator-archive": "*",
+    "hexo-generator-category": "*",
+    "hexo-generator-index": "*",
+    "hexo-generator-tag": "*",
     "hexo-renderer-ejs": "*",
     "hexo-renderer-stylus": "*",
-    "hexo-renderer-marked": "*"
+    "hexo-renderer-marked": "*",
+    "hexo-server": "*"
   }
 }
