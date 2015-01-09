@@ -93,4 +93,29 @@ describe('Hexo', function(){
       return Post.removeById(post._id);
     });
   });
+
+  it('future posts', function(){
+    return Post.insert([
+      {source: 'foo', slug: 'foo', date: Date.now() - 3600},
+      {source: 'bar', slug: 'bar', date: Date.now() + 3600}
+    ]).then(function(posts){
+      function mapper(post){
+        return post._id;
+      }
+
+      // future on
+      hexo.config.future = true;
+      hexo.locals.posts.map(mapper).should.eql(posts.map(mapper));
+
+      // future off
+      hexo.config.future = false;
+      hexo.locals.posts.map(mapper).should.eql([posts[0]._id]);
+
+      return posts;
+    }).map(function(post){
+      return Post.removeById(post._id);
+    });
+  });
+
+  it('future pages');
 });

@@ -96,34 +96,90 @@ describe('Tag', function(){
 
   it('posts - virtual', function(){
     return Post.insert([
-      {source: 'foo.md', slug: 'foo', published: true},
-      {source: 'bar.md', slug: 'bar', published: false},
-      {source: 'baz.md', slug: 'baz', published: true}
-    ]).then(function(posts){
-      return Promise.map(posts, function(post){
-        return post.setTags(['foo']).thenReturn(post);
-      }, {concurrency: 1}); // One item a time
+      {source: 'foo.md', slug: 'foo'},
+      {source: 'bar.md', slug: 'bar'},
+      {source: 'baz.md', slug: 'baz'}
+    ]).each(function(post){
+      return post.setTags(['foo']);
     }).then(function(posts){
       var tag = Tag.findOne({name: 'foo'});
 
+      function mapper(post){
+        return post._id;
+      }
+
+      tag.posts.map(mapper).should.eql(posts.map(mapper));
+      tag.length.should.eql(posts.length);
+
+      return tag.remove().thenReturn(posts);
+    }).map(function(post){
+      return post.remove();
+    });
+  });
+
+  it('posts - draft', function(){
+    return Post.insert([
+      {source: 'foo.md', slug: 'foo', published: true},
+      {source: 'bar.md', slug: 'bar', published: false},
+      {source: 'baz.md', slug: 'baz', published: true}
+    ]).each(function(post){
+      return post.setTags(['foo']);
+    }).then(function(posts){
+      var tag = Tag.findOne({name: 'foo'});
+
+      function mapper(post){
+        return post._id;
+      }
+
+      // draft off
       tag.posts.eq(0)._id.should.eql(posts[0]._id);
       tag.posts.eq(1)._id.should.eql(posts[2]._id);
       tag.length.should.eql(2);
 
-      // draft visible
+      // draft on
       hexo.config.render_drafts = true;
       tag = Tag.findOne({name: 'foo'});
-
-      for (var i = 0, len = posts.length; i < len; i++){
-        tag.posts.eq(i)._id.should.eql(posts[i]._id);
-      }
-
+      tag.posts.map(mapper).should.eql(posts.map(mapper));
       tag.length.should.eql(posts.length);
       hexo.config.render_drafts = false;
 
-      return Tag.removeById(tag._id).thenReturn(posts);
+      return tag.remove().thenReturn(posts);
     }).map(function(post){
-      return Post.removeById(post._id);
+      return post.remove();
+    });
+  });
+
+  it('posts - future', function(){
+    var now = Date.now();
+
+    return Post.insert([
+      {source: 'foo.md', slug: 'foo', date: now - 3600},
+      {source: 'bar.md', slug: 'bar', date: now + 3600},
+      {source: 'baz.md', slug: 'baz', date: now}
+    ]).each(function(post){
+      return post.setTags(['foo']);
+    }).then(function(posts){
+      var tag = Tag.findOne({name: 'foo'});
+
+      function mapper(post){
+        return post._id;
+      }
+
+      // future on
+      hexo.config.future = true;
+      tag.posts.map(mapper).should.eql(posts.map(mapper));
+      tag.length.should.eql(posts.length);
+
+      // future off
+      hexo.config.future = false;
+      tag = Tag.findOne({name: 'foo'});
+      tag.posts.eq(0)._id.should.eql(posts[0]._id);
+      tag.posts.eq(1)._id.should.eql(posts[2]._id);
+      tag.length.should.eql(2);
+
+      return tag.remove().thenReturn(posts);
+    }).map(function(post){
+      return post.remove();
     });
   });
 
