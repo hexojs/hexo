@@ -142,6 +142,8 @@ describe('Theme', function(){
     });
   });
 
+  it('generate() - validate locals');
+
   it('generateBefore & generateAfter events');
 
   it('getView()', function(){

@@ -6,7 +6,7 @@ describe('Titlecase', function(){
   var titlecase = require('../../../lib/plugins/filter/before_post_render/titlecase').bind(hexo);
 
   it('disabled', function(){
-    var title = 'toDAy IS A gOOd DaY';
+    var title = 'Today is a good day';
     var data = {title: title};
     hexo.config.titlecase = false;
 
@@ -15,7 +15,7 @@ describe('Titlecase', function(){
   });
 
   it('enabled', function(){
-    var title = 'toDAy IS A gOOd DaY';
+    var title = 'Today is a good day';
     var data = {title: title};
     hexo.config.titlecase = true;
 

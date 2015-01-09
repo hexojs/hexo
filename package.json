@@ -35,8 +35,9 @@
     "chalk": "^0.5.1",
     "cheerio": "0.18.0",
     "hexo-front-matter": "^0.1.0",
-    "hexo-fs": "0.0.8",
-    "hexo-util": "0.0.2",
+    "hexo-fs": "^0.1.0",
+    "hexo-i18n": "^0.1.0",
+    "hexo-util": "^0.1.0",
     "js-yaml": "^3.2.5",
     "lodash": "^2.4.1",
     "minimist": "^1.1.0",
@@ -45,6 +46,7 @@
     "strip-indent": "^1.0.0",
     "swig": "1.4.2",
     "tildify": "^1.0.0",
+    "titlecase": "^1.0.2",
     "warehouse": "1.0.0-rc.3"
   },
   "devDependencies": {
@@ -56,7 +58,7 @@
     "gulp-jshint": "^1.8.6",
     "gulp-load-plugins": "^0.8.0",
     "gulp-mocha": "^2.0.0",
-    "hexo-renderer-marked": "^0.1.0",
+    "hexo-renderer-marked": "^0.2.3",
     "jshint-stylish": "^1.0.0",
     "mocha": "^2.0.1"
   }
