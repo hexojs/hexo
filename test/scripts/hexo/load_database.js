@@ -26,6 +26,10 @@ describe('Load database', function(){
     return fs.mkdir(hexo.base_dir);
   });
 
+  beforeEach(function(){
+    hexo._dbLoaded = false;
+  });
+
   after(function(){
     return fs.rmdir(hexo.base_dir);
   });
@@ -38,8 +42,10 @@ describe('Load database', function(){
     return fs.writeFile(dbPath, JSON.stringify(fixture)).then(function(){
       return loadDatabase(hexo);
     }).then(function(){
+      hexo._dbLoaded.should.be.true;
       hexo.model('Test').toArray({lean: true}).should.eql(fixture.models.Test);
       hexo.model('Test').destroy();
+
       return fs.unlink(dbPath);
     });
   });
@@ -48,9 +54,21 @@ describe('Load database', function(){
     return fs.writeFile(dbPath, '{1423432: 324').then(function(){
       return loadDatabase(hexo);
     }).then(function(){
+      hexo._dbLoaded.should.be.false;
       return fs.exists(dbPath);
     }).then(function(exist){
       exist.should.be.false;
+    });
+  });
+
+  it('don\'t load database if loaded', function(){
+    hexo._dbLoaded = true;
+
+    return fs.writeFile(dbPath, JSON.stringify(fixture)).then(function(){
+      return loadDatabase(hexo);
+    }).then(function(){
+      hexo.model('Test').length.should.eql(0);
+      return fs.unlink(dbPath);
     });
   });
 });

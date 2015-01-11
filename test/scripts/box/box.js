@@ -3,14 +3,9 @@ var pathFn = require('path');
 var fs = require('hexo-fs');
 var Promise = require('bluebird');
 var crypto = require('crypto');
-
-function wait(ms){
-  return new Promise(function(resolve, reject){
-    setTimeout(function(){
-      resolve();
-    }, ms);
-  });
-}
+var util = require('hexo-util');
+var Pattern = util.Pattern;
+var testUtil = require('../../util');
 
 function checksum(content){
   var hash = crypto.createHash('sha1');
@@ -22,7 +17,6 @@ describe('Box', function(){
   var Hexo = require('../../../lib/hexo');
   var baseDir = pathFn.join(__dirname, 'box_tmp');
   var Box = require('../../../lib/box');
-  var Pattern = Box.Pattern;
 
   function newBox(path){
     var hexo = new Hexo(baseDir, {silent: true});
@@ -257,13 +251,19 @@ describe('Box', function(){
     });
   });
 
+  it('process() - do nothing if target does not exist', function(){
+    var box = newBox('test');
+
+    return box.process();
+  });
+
   it('watch() - create', function(callback){
     var box = newBox('test');
     var path = 'a.txt';
     var src = pathFn.join(box.base, path);
 
     box.watch().then(function(){
-      box.watcher.should.exist;
+      box.isWatching().should.be.true;
 
       box.addProcessor(function(file){
         file.source.should.eql(src);
@@ -273,7 +273,6 @@ describe('Box', function(){
         file.content.toString().should.eql('a');
 
         box.unwatch();
-
         fs.rmdir(box.base, callback);
       });
 
@@ -294,7 +293,7 @@ describe('Box', function(){
     ]).then(function(){
       return box.watch();
     }).then(function(){
-      return wait(300);
+      return testUtil.wait(300);
     }).then(function(){
       box.addProcessor(function(file){
         file.source.should.eql(src);
@@ -324,7 +323,7 @@ describe('Box', function(){
     ]).then(function(){
       return box.watch();
     }).then(function(){
-      return wait(300);
+      return testUtil.wait(300);
     }).then(function(){
 
       box.addProcessor(function(file){
@@ -342,7 +341,7 @@ describe('Box', function(){
     });
   });
 
-  it('watch() - watcher has started', function(callback){
+  it.skip('watch() - watcher has started', function(callback){
     var box = newBox();
 
     box.watch().then(function(){
@@ -351,6 +350,27 @@ describe('Box', function(){
         box.unwatch();
         callback();
       });
+    });
+  });
+
+  it('watch() - run process() before start watching', function(){
+    var box = newBox('test');
+    var data = [];
+
+    box.addProcessor(function(file){
+      data.push(file.path);
+    });
+
+    return Promise.all([
+      fs.writeFile(pathFn.join(box.base, 'a.txt'), 'a'),
+      fs.writeFile(pathFn.join(box.base, 'b', 'c.js'), 'c')
+    ]).then(function(){
+      return box.watch();
+    }).then(function(){
+      data.should.have.members(['a.txt', 'b/c.js']);
+      box.unwatch();
+
+      return fs.rmdir(box.base);
     });
   });
 
@@ -381,6 +401,17 @@ describe('Box', function(){
     } catch (err){
       err.should.have.property('message', 'Watcher hasn\'t started yet.');
     }
+  });
+
+  it.skip('isWatching()', function(){
+    var box = newBox();
+
+    return box.watch().then(function(){
+      box.isWatching().should.be.true;
+      return box.unwatch();
+    }).then(function(){
+      box.isWatching().should.be.false;
+    });
   });
 
   it('processBefore & processAfter events');

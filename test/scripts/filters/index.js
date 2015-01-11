@@ -4,5 +4,7 @@ describe('Filters', function(){
   require('./external_link');
   require('./new_post_path');
   require('./post_permalink');
+  require('./save_database');
+  require('./stop_watcher');
   require('./titlecase');
 });

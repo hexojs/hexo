@@ -210,8 +210,6 @@ describe('Post', function(){
     });
   });
 
-  it.skip('load()');
-
   it('publish()', function(){
     var draftPath = '';
     var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
