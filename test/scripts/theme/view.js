@@ -97,7 +97,8 @@ describe('View', function(){
     var view = newView('index.swig', body);
 
     return view.render({
-      config: hexo.config
+      config: hexo.config,
+      page: {}
     }).then(function(content){
       content.should.eql(moment().format(hexo.config.date_format));
     });
@@ -191,7 +192,8 @@ describe('View', function(){
     var view = newView('index.swig', body);
 
     view.renderSync({
-      config: hexo.config
+      config: hexo.config,
+      page: {}
     }).should.eql(moment().format(hexo.config.date_format));
   });
 

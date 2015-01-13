@@ -156,7 +156,7 @@ describe('Hexo', function(){
       return checkStream(route.get('test.txt'), newBody);
     }).then(function(){
       // Stop watching
-      return hexo.exit();
+      return hexo.unwatch();
     }).then(function(){
       // Delete the file
       return fs.unlink(target);
@@ -170,6 +170,8 @@ describe('Hexo', function(){
   it('watch() - theme', function(){
     return testWatch(pathFn.join(hexo.theme_dir, 'source'));
   });
+
+  it('unwatch()');
 
   it('exit()', function(){
     var executed = 0;
@@ -261,6 +263,8 @@ describe('Hexo', function(){
   });
 
   it('_generate()', function(){
+    var executed = 0;
+
     // object
     hexo.extend.generator.register('test_obj', function(locals){
       return {
@@ -277,8 +281,18 @@ describe('Hexo', function(){
       ];
     });
 
+    hexo.once('generateBefore', function(){
+      executed++;
+    });
+
+    hexo.once('generateAfter', function(){
+      executed++;
+    });
+
     return hexo._generate().then(function(){
       route.list().should.eql(['foo', 'bar', 'baz']);
+
+      executed.should.eql(2);
 
       return Promise.all([
         checkStream(route.get('foo'), 'foo'),
@@ -369,6 +383,4 @@ describe('Hexo', function(){
   it('_generate() - validate locals');
 
   it('_generate() - do nothing if it\'s generating');
-
-  it('generateBefore & generateAfter events');
 });
