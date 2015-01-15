@@ -1,5 +1,6 @@
 describe('Console', function(){
   require('./clean');
+  require('./config');
   require('./deploy');
   require('./generate');
   require('./init');

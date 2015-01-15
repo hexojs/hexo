@@ -122,26 +122,6 @@ describe('Load config', function(){
     });
   });
 
-  it('theme has not been set', function(){
-    return fs.writeFile(hexo.config_path, 'theme: ""').then(function(){
-      return loadConfig(hexo);
-    }).catch(function(err){
-      err.should.have.property('message', 'Theme has not been set. Please set the theme in _config.yml.');
-      reset();
-      return fs.unlink(hexo.config_path);
-    });
-  });
-
-  it('theme does not exist', function(){
-    return fs.writeFile(hexo.config_path, 'theme: yooo').then(function(){
-      return loadConfig(hexo);
-    }).catch(function(err){
-      err.should.have.property('message', 'Theme "yooo" does not exist.');
-      reset();
-      return fs.unlink(hexo.config_path);
-    });
-  });
-
   after(function(){
     return fs.rmdir(hexo.base_dir);
   });

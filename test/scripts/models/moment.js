@@ -1,5 +1,5 @@
 var should = require('chai').should();
-var moment = require('moment');
+var moment = require('moment-timezone');
 
 describe('SchemaTypeMoment', function(){
   var SchemaTypeMoment = require('../../../lib/models/types/moment');
@@ -15,6 +15,24 @@ describe('SchemaTypeMoment', function(){
   it('cast() - default', function(){
     var type = new SchemaTypeMoment('test', {default: moment});
     moment.isMoment(type.cast()).should.be.true;
+  });
+
+  it('cast() - language', function(){
+    var lang = 'zh-tw';
+    var format = 'LLLL';
+    var type = new SchemaTypeMoment('test', {language: lang});
+    var now = Date.now();
+
+    type.cast(now).format(format).should.eql(moment(now).locale(lang).format(format));
+  });
+
+  it('cast() - timezone', function(){
+    var timezone = 'Etc/UTC';
+    var format = 'LLLL';
+    var type = new SchemaTypeMoment('test', {timezone: timezone});
+    var now = Date.now();
+
+    type.cast(now).format(format).should.eql(moment(now).tz(timezone).format(format));
   });
 
   function shouldThrowError(value){

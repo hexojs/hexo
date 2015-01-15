@@ -157,12 +157,80 @@ describe('open_graph', function(){
     ].join('\n') + '\n');
   });
 
-  it.skip('images - page', function(){
-    //
+  it('images - content', function(){
+    var result = openGraph.call({
+      page: {
+        content: [
+          '<p>123456789</p>',
+          '<img src="http://hexo.io/test.jpg">'
+        ].join('')
+      },
+      config: hexo.config,
+      is_post: isPost
+    });
+
+    result.should.eql([
+      meta({name: 'description', content: '123456789'}),
+      meta({property: 'og:type', content: 'website'}),
+      meta({property: 'og:title', content: hexo.config.title}),
+      meta({property: 'og:url'}),
+      meta({property: 'og:site_name', content: hexo.config.title}),
+      meta({property: 'og:description', content: '123456789'}),
+      meta({property: 'og:image', content: 'http://hexo.io/test.jpg'}),
+      meta({name: 'twitter:card', content: 'summary'}),
+      meta({name: 'twitter:title', content: hexo.config.title}),
+      meta({name: 'twitter:description', content: '123456789'})
+    ].join('\n') + '\n');
   });
 
-  it.skip('images - options', function(){
-    //
+  it('images - string', function(){
+    var result = openGraph.call({
+      page: {
+        photos: 'http://hexo.io/test.jpg'
+      },
+      config: hexo.config,
+      is_post: isPost
+    });
+
+    result.should.eql([
+      meta({name: 'description'}),
+      meta({property: 'og:type', content: 'website'}),
+      meta({property: 'og:title', content: hexo.config.title}),
+      meta({property: 'og:url'}),
+      meta({property: 'og:site_name', content: hexo.config.title}),
+      meta({property: 'og:description'}),
+      meta({property: 'og:image', content: 'http://hexo.io/test.jpg'}),
+      meta({name: 'twitter:card', content: 'summary'}),
+      meta({name: 'twitter:title', content: hexo.config.title}),
+      meta({name: 'twitter:description'})
+    ].join('\n') + '\n');
+  });
+
+  it('images - array', function(){
+    var result = openGraph.call({
+      page: {
+        photos: [
+          'http://hexo.io/foo.jpg',
+          'http://hexo.io/bar.jpg'
+        ]
+      },
+      config: hexo.config,
+      is_post: isPost
+    });
+
+    result.should.eql([
+      meta({name: 'description'}),
+      meta({property: 'og:type', content: 'website'}),
+      meta({property: 'og:title', content: hexo.config.title}),
+      meta({property: 'og:url'}),
+      meta({property: 'og:site_name', content: hexo.config.title}),
+      meta({property: 'og:description'}),
+      meta({property: 'og:image', content: 'http://hexo.io/foo.jpg'}),
+      meta({property: 'og:image', content: 'http://hexo.io/bar.jpg'}),
+      meta({name: 'twitter:card', content: 'summary'}),
+      meta({name: 'twitter:title', content: hexo.config.title}),
+      meta({name: 'twitter:description'})
+    ].join('\n') + '\n');
   });
 
   it('site_name - options', function(){

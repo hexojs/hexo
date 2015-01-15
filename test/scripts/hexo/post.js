@@ -210,8 +210,6 @@ describe('Post', function(){
     });
   });
 
-  it.skip('load()');
-
   it('publish()', function(){
     var draftPath = '';
     var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
@@ -376,12 +374,12 @@ describe('Post', function(){
       data.content.should.eql([
         '<h1 id="Title">Title</h1>',
         util.highlight(code, {lang: 'js'}),
-        '<p>some content</p>',
+        '\n<p>some content</p>\n',
         '<h2 id="Another_title">Another title</h2>',
-        '{% blockquote %}',
-        'quote content',
-        '{% endblockquote %}'
-      ].join('\n') + '\n');
+        '{% blockquote %}\n',
+        'quote content\n',
+        '{% endblockquote %}\n'
+      ].join(''));
     });
   });
 
