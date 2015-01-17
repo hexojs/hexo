@@ -341,7 +341,7 @@ describe('Box', function(){
     });
   });
 
-  it('watch() - watcher has started', function(callback){
+  it.skip('watch() - watcher has started', function(callback){
     var box = newBox();
 
     box.watch().then(function(){
@@ -374,7 +374,7 @@ describe('Box', function(){
     });
   });
 
-  it('unwatch()', function(callback){
+  it.skip('unwatch()', function(callback){
     var box = newBox('test');
 
     box.watch().then(function(){
@@ -403,7 +403,7 @@ describe('Box', function(){
     }
   });
 
-  it('isWatching()', function(){
+  it.skip('isWatching()', function(){
     var box = newBox();
 
     return box.watch().then(function(){
