@@ -394,4 +394,15 @@ describe('Post', function(){
       return fs.unlink(path);
     });
   });
+
+  it('render() - toString', function(){
+    var content = 'foo: 1';
+
+    return post.render(null, {
+      content: content,
+      engine: 'yaml'
+    }).then(function(data){
+      data.content.should.eql('{"foo":1}');
+    });
+  });
 });

@@ -306,4 +306,56 @@ describe('asset', function(){
       ]);
     });
   });
+
+  it('page - set layout to false if output is not html', function(){
+    var body = 'foo: 1';
+
+    var file = newFile({
+      path: 'test.yml',
+      type: 'create',
+      content: new Buffer(body)
+    });
+
+    return fs.writeFile(file.source, body).then(function(){
+      return process(file);
+    }).then(function(){
+      var page = Page.findOne({source: file.path});
+
+      page.content.should.eql('{"foo":1}');
+      page.layout.should.eql('false');
+
+      return Promise.all([
+        page.remove(),
+        fs.unlink(file.source)
+      ]);
+    });
+  });
+
+  it('page - don\'t set layout to false if layout is set but output is not html', function(){
+    var body = [
+      'layout: something',
+      '---',
+      'foo: 1'
+    ].join('\n');
+
+    var file = newFile({
+      path: 'test.yml',
+      type: 'create',
+      content: new Buffer(body)
+    });
+
+    return fs.writeFile(file.source, body).then(function(){
+      return process(file);
+    }).then(function(){
+      var page = Page.findOne({source: file.path});
+
+      page.content.should.eql('{"foo":1}');
+      page.layout.should.eql('something');
+
+      return Promise.all([
+        page.remove(),
+        fs.unlink(file.source)
+      ]);
+    });
+  });
 });
