@@ -3,7 +3,6 @@ var should = require('chai').should();
 describe('paginator', function(){
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(__dirname);
-  var urlHelper = require('../../../lib/plugins/helper/url');
 
   var ctx = {
     page: {
@@ -14,7 +13,7 @@ describe('paginator', function(){
     config: hexo.config
   };
 
-  ctx.url_for = urlHelper.url_for.bind(ctx);
+  ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
 
   var paginator = require('../../../lib/plugins/helper/paginator').bind(ctx);
 

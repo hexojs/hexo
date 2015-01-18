@@ -6,14 +6,13 @@ describe('list_categories', function(){
   var hexo = new Hexo(__dirname);
   var Post = hexo.model('Post');
   var Category = hexo.model('Category');
-  var urlHelper = require('../../../lib/plugins/helper/url');
 
   var ctx = {
     site: hexo.locals,
     config: hexo.config
   };
 
-  ctx.url_for = urlHelper.url_for.bind(ctx);
+  ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
 
   var listCategories = require('../../../lib/plugins/helper/list_categories').bind(ctx);
 

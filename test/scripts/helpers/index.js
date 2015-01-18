@@ -19,9 +19,10 @@ describe('Helpers', function(){
   require('./open_graph');
   require('./paginator');
   require('./partial');
+  require('./relative_url');
   require('./render');
   require('./search_form');
   require('./tagcloud');
   require('./toc');
-  require('./url');
+  require('./url_for');
 });

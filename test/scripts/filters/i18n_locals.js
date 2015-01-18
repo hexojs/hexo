@@ -19,7 +19,7 @@ describe('i18n locals', function(){
     Home: '首頁'
   });
 
-  it('page.lang', function(){
+  it('page.lang set', function(){
     var locals = {
       config: hexo.config,
       page: {
@@ -32,7 +32,7 @@ describe('i18n locals', function(){
     locals.__('Home').should.eql('首頁');
   });
 
-  it('page.language', function(){
+  it('page.language set', function(){
     var locals = {
       config: hexo.config,
       page: {
@@ -45,7 +45,7 @@ describe('i18n locals', function(){
     locals.__('Home').should.eql('首頁');
   });
 
-  it('path', function(){
+  it('detect by path (lang found)', function(){
     var locals = {
       config: hexo.config,
       page: {},
@@ -54,11 +54,26 @@ describe('i18n locals', function(){
 
     i18nFilter(locals);
 
-    locals.page.lang = 'zh-tw';
+    locals.page.lang.should.eql('zh-tw');
+    locals.page.canonical_path.should.eql('index.html');
     locals.__('Home').should.eql('首頁');
   });
 
-  it('config', function(){
+  it('detect by path (lang not found)', function(){
+    var locals = {
+      config: hexo.config,
+      page: {},
+      path: 'news/index.html'
+    };
+
+    i18nFilter(locals);
+
+    locals.page.lang.should.eql('en');
+    locals.page.canonical_path.should.eql('news/index.html');
+    locals.__('Home').should.eql('Home');
+  });
+
+  it('use config by default', function(){
     var locals = {
       config: hexo.config,
       page: {},
@@ -67,6 +82,8 @@ describe('i18n locals', function(){
 
     i18nFilter(locals);
 
+    locals.page.lang.should.eql('en');
+    locals.page.canonical_path.should.eql('index.html');
     locals.__('Home').should.eql('Home');
   });
 });

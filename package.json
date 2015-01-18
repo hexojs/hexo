@@ -36,7 +36,7 @@
     "cheerio": "^0.18.0",
     "hexo-front-matter": "^0.1.0",
     "hexo-fs": "^0.1.0",
-    "hexo-i18n": "^0.1.0",
+    "hexo-i18n": "^0.2.0",
     "hexo-util": "^0.1.0",
     "js-yaml": "^3.2.5",
     "lodash": "^2.4.1",

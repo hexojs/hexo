@@ -4,14 +4,13 @@ describe('list_posts', function(){
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(__dirname);
   var Post = hexo.model('Post');
-  var urlHelper = require('../../../lib/plugins/helper/url');
 
   var ctx = {
     site: hexo.locals,
     config: hexo.config
   };
 
-  ctx.url_for = urlHelper.url_for.bind(ctx);
+  ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
 
   var listPosts = require('../../../lib/plugins/helper/list_posts').bind(ctx);
 
