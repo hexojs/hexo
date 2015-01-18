@@ -365,6 +365,10 @@ describe('Post', function(){
       '{% blockquote %}',
       'quote content',
       '{% endblockquote %}',
+      '',
+      '{% quote Hello World %}',
+      'quote content',
+      '{% endquote %}'
     ].join('\n');
 
     return post.render(null, {
@@ -378,7 +382,10 @@ describe('Post', function(){
         '<h2 id="Another_title">Another title</h2>',
         '{% blockquote %}\n',
         'quote content\n',
-        '{% endblockquote %}\n'
+        '{% endblockquote %}\n',
+        '{% quote Hello World %}\n',
+        'quote content\n',
+        '{% endquote %}\n'
       ].join(''));
     });
   });
