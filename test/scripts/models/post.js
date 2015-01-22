@@ -33,6 +33,9 @@ describe('Post', function(){
       data.link.should.eql('');
       data.raw.should.eql('');
       data.published.should.be.true;
+      data.content.should.eql('');
+      data.excerpt.should.eql('');
+      data.more.should.eql('');
 
       return Post.removeById(data._id);
     });
@@ -89,55 +92,6 @@ describe('Post', function(){
     }).then(function(data){
       data.asset_dir.should.eql(pathFn.join(hexo.source_dir, 'foo') + pathFn.sep);
       return Post.removeById(data._id);
-    });
-  });
-
-  it('content - virtual', function(){
-    var content = [
-      '{% raw %}',
-      '123456',
-      '{% endraw %}'
-    ].join('\n');
-
-    return Post.insert({
-      source: 'foo.md',
-      slug: 'bar',
-      _content: content
-    }).then(function(post){
-      post.content.should.eql('123456');
-      return Post.removeById(post._id);
-    });
-  });
-
-  it('excerpt / more - virtual (with more tag)', function(){
-    var content = [
-      '123456',
-      '<a id="more"></a>',
-      '789012'
-    ].join('\n');
-
-    return Post.insert({
-      source: 'foo.md',
-      slug: 'bar',
-      _content: content
-    }).then(function(post){
-      post.excerpt.should.eql('123456');
-      post.more.should.eql('789012')
-      return Post.removeById(post._id);
-    });
-  });
-
-  it('excerpt / more - virtual (without more tag)', function(){
-    var content = '123456';
-
-    return Post.insert({
-      source: 'foo.md',
-      slug: 'bar',
-      _content: content
-    }).then(function(post){
-      post.excerpt.should.eql('');
-      post.more.should.eql('123456')
-      return Post.removeById(post._id);
     });
   });
 

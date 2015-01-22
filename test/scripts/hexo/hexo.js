@@ -62,7 +62,7 @@ describe('Hexo', function(){
       debug: false,
       safe: false,
       silent: false,
-      env: 'development',
+      env: process.env.NODE_ENV || 'development',
       version: version,
       init: false
     });
@@ -90,7 +90,18 @@ describe('Hexo', function(){
     });
   });
 
-  it('init()');
+  it('init()', function(){
+    var hexo = new Hexo(pathFn.join(__dirname, 'hexo_test'), {silent: true});
+    var executed = 0;
+
+    hexo.extend.filter.register('after_init', function(){
+      executed++;
+    });
+
+    return hexo.init().then(function(){
+      executed.should.eql(1);
+    });
+  });
 
   it('model()');
 
@@ -267,6 +278,8 @@ describe('Hexo', function(){
 
     // object
     hexo.extend.generator.register('test_obj', function(locals){
+      locals.test.should.eql('foo');
+
       return {
         path: 'foo',
         data: 'foo'
@@ -275,6 +288,8 @@ describe('Hexo', function(){
 
     // array
     hexo.extend.generator.register('test_arr', function(locals){
+      locals.test.should.eql('foo');
+
       return [
         {path: 'bar', data: 'bar'},
         {path: 'baz', data: 'baz'}
@@ -289,10 +304,19 @@ describe('Hexo', function(){
       executed++;
     });
 
+    hexo.extend.filter.register('before_generate', function(){
+      hexo.locals.test = 'foo';
+      executed++;
+    });
+
+    hexo.extend.filter.register('after_generate', function(){
+      executed++;
+    });
+
     return hexo._generate().then(function(){
       route.list().should.eql(['foo', 'bar', 'baz']);
 
-      executed.should.eql(2);
+      executed.should.eql(4);
 
       return Promise.all([
         checkStream(route.get('foo'), 'foo'),
@@ -383,4 +407,24 @@ describe('Hexo', function(){
   it('_generate() - validate locals');
 
   it('_generate() - do nothing if it\'s generating');
+
+  it('execFilter()', function(){
+    hexo.extend.filter.register('exec_test', function(data){
+      data.should.eql('');
+      return data + 'foo';
+    });
+
+    return hexo.execFilter('exec_test', '').then(function(result){
+      result.should.eql('foo');
+    });
+  });
+
+  it('execFilterSync()', function(){
+    hexo.extend.filter.register('exec_sync_test', function(data){
+      data.should.eql('');
+      return data + 'foo';
+    });
+
+    hexo.execFilterSync('exec_sync_test', '').should.eql('foo');
+  });
 });

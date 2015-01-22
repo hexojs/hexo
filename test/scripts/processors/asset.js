@@ -321,7 +321,6 @@ describe('asset', function(){
     }).then(function(){
       var page = Page.findOne({source: file.path});
 
-      page.content.should.eql('{"foo":1}');
       page.layout.should.eql('false');
 
       return Promise.all([
@@ -349,8 +348,68 @@ describe('asset', function(){
     }).then(function(){
       var page = Page.findOne({source: file.path});
 
-      page.content.should.eql('{"foo":1}');
       page.layout.should.eql('something');
+
+      return Promise.all([
+        page.remove(),
+        fs.unlink(file.source)
+      ]);
+    });
+  });
+
+  it('page - parse date', function(){
+    var body = [
+      'title: "Hello world"',
+      'date: Apr 24 2014',
+      'updated: May 5 2015',
+      '---'
+    ].join('\n');
+
+    var file = newFile({
+      path: 'hello.swig',
+      type: 'create',
+      content: new Buffer(body)
+    });
+
+    return fs.writeFile(file.source, body).then(function(){
+      return process(file);
+    }).then(function(){
+      var page = Page.findOne({source: file.path});
+
+      page.date.format(dateFormat).should.eql('2014-04-24 00:00:00');
+      page.updated.format(dateFormat).should.eql('2015-05-05 00:00:00');
+
+      return Promise.all([
+        page.remove(),
+        fs.unlink(file.source)
+      ]);
+    });
+  });
+
+  it('page - use file stats instead if date is invalid', function(){
+    var body = [
+      'title: "Hello world"',
+      'date: yomama',
+      'updated: isfat',
+      '---'
+    ].join('\n');
+
+    var file = newFile({
+      path: 'hello.swig',
+      type: 'create',
+      content: new Buffer(body)
+    });
+
+    return fs.writeFile(file.source, body).then(function(){
+      return Promise.all([
+        file.stat(),
+        process(file)
+      ]);
+    }).spread(function(stats){
+      var page = Page.findOne({source: file.path});
+
+      page.date.toDate().should.eql(stats.ctime);
+      page.updated.toDate().should.eql(stats.mtime);
 
       return Promise.all([
         page.remove(),
