@@ -211,6 +211,58 @@ describe('Post', function(){
     });
   });
 
+  it('create() - follow the separator style in the scaffold', function(){
+    var scaffold = [
+      '---',
+      'title: {{ title }}',
+      '---'
+    ].join('\n');
+
+    return hexo.scaffold.set('test', scaffold).then(function(){
+      return post.create({
+        title: 'Hello World',
+        layout: 'test'
+      });
+    }).then(function(post){
+      post.content.should.eql([
+        '---',
+        'title: "Hello World"',
+        '---'
+      ].join('\n') + '\n');
+
+      return Promise.all([
+        fs.unlink(post.path),
+        hexo.scaffold.remove('test')
+      ]);
+    });
+  });
+
+  it('create() - JSON front-matter', function(){
+    var scaffold = [
+      '"title": {{ title }}',
+      ';;;'
+    ].join('\n');
+
+    return hexo.scaffold.set('test', scaffold).then(function(){
+      return post.create({
+        title: 'Hello World',
+        layout: 'test',
+        lang: 'en'
+      });
+    }).then(function(post){
+      post.content.should.eql([
+        '"title": "Hello World",',
+        '"lang": "en"',
+        ';;;'
+      ].join('\n') + '\n');
+
+      return Promise.all([
+        fs.unlink(post.path),
+        hexo.scaffold.remove('test')
+      ]);
+    });
+  });
+
   it('publish()', function(){
     var draftPath = '';
     var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
