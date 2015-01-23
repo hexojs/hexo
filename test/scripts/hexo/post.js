@@ -4,6 +4,7 @@ var moment = require('moment');
 var Promise = require('bluebird');
 var fs = require('hexo-fs');
 var util = require('hexo-util');
+var fixture = require('../../fixtures/post_render');
 
 describe('Post', function(){
   var Hexo = require('../../../lib/hexo');
@@ -348,38 +349,24 @@ describe('Post', function(){
   });
 
   it('render()', function(){
-    var code = [
-      'if (tired && night){',
-      '  sleep();',
-      '}',
-    ].join('\n');
+    var executed = 0;
 
-    var content = [
-      '# Title',
-      '``` js',
-      code,
-      '```',
-      'some content',
-      '',
-      '## Another title',
-      '{% blockquote %}',
-      'quote content',
-      '{% endblockquote %}',
-    ].join('\n');
+    hexo.extend.filter.register('before_post_render', function(data){
+      // TODO: validate data
+      executed++;
+    });
+
+    hexo.extend.filter.register('after_post_render', function(data){
+      // TODO: validate data
+      executed++;
+    });
 
     return post.render(null, {
-      content: content,
+      content: fixture.content,
       engine: 'markdown'
     }).then(function(data){
-      data.content.should.eql([
-        '<h1 id="Title">Title</h1>',
-        util.highlight(code, {lang: 'js'}),
-        '\n<p>some content</p>\n',
-        '<h2 id="Another_title">Another title</h2>',
-        '{% blockquote %}\n',
-        'quote content\n',
-        '{% endblockquote %}\n'
-      ].join(''));
+      data.content.should.eql(fixture.expected);
+      executed.should.eql(2);
     });
   });
 
@@ -390,8 +377,37 @@ describe('Post', function(){
     return fs.writeFile(path, content).then(function(){
       return post.render(path);
     }).then(function(data){
-      data.content.should.eql('<p><strong>file test</strong></p>\n');
+      data.content.should.eql('<p><strong>file test</strong></p>');
       return fs.unlink(path);
+    });
+  });
+
+  it('render() - toString', function(){
+    var content = 'foo: 1';
+
+    return post.render(null, {
+      content: content,
+      engine: 'yaml'
+    }).then(function(data){
+      data.content.should.eql('{"foo":1}');
+    });
+  });
+
+  it('render() - skip render phase if it\'s swig file', function(){
+    var content = [
+      '{% quote Hello World %}',
+      'quote content',
+      '{% endquote %}'
+    ].join('\n');
+
+    return post.render(null, {
+      content: content,
+      engine: 'swig'
+    }).then(function(data){
+      data.content.should.eql([
+        '<blockquote><p>quote content</p>\n',
+        '<footer><strong>Hello World</strong></footer></blockquote>'
+      ].join(''));
     });
   });
 });

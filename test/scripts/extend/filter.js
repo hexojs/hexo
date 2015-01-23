@@ -79,7 +79,7 @@ describe('Filter', function(){
       return data + 'bar';
     });
 
-    f.exec('test', '').then(function(data){
+    return f.exec('test', '').then(function(data){
       data.should.eql('foobar');
     });
   });
@@ -97,7 +97,7 @@ describe('Filter', function(){
       data.bar = 2;
     });
 
-    f.exec('test', {}).then(function(data){
+    return f.exec('test', {}).then(function(data){
       data.should.eql({foo: 1, bar: 2});
     });
   });
@@ -115,7 +115,7 @@ describe('Filter', function(){
       arg2.should.eql(2);
     });
 
-    f.exec('test', {}, {
+    return f.exec('test', {}, {
       args: [1, 2]
     });
   });
@@ -132,7 +132,7 @@ describe('Filter', function(){
       this.should.eql(ctx);
     });
 
-    f.exec('test', {}, {context: ctx});
+    return f.exec('test', {}, {context: ctx});
   });
 
   it('execSync()', function(){

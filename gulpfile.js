@@ -15,12 +15,20 @@ gulp.task('coverage:clean', function(callback){
   del(['coverage/**/*'], callback);
 });
 
-gulp.task('mocha', ['coverage'], function(){
+function mochaStream(){
   return gulp.src('test/index.js')
     .pipe($.mocha({
       reporter: 'spec'
-    }))
+    }));
+}
+
+gulp.task('mocha', ['coverage'], function(){
+  return mochaStream()
     .pipe($.istanbul.writeReports());
+});
+
+gulp.task('mocha:nocov', function(){
+  return mochaStream();
 });
 
 gulp.task('jshint', function(){

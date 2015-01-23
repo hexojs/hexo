@@ -20,6 +20,9 @@ describe('Page', function(){
       data.layout.should.eql('page');
       data._content.should.eql('');
       data.raw.should.eql('');
+      data.content.should.eql('');
+      data.excerpt.should.eql('');
+      data.more.should.eql('');
 
       return Page.removeById(data._id);
     });
@@ -55,55 +58,6 @@ describe('Page', function(){
       path: 'bar'
     }).then(function(data){
       data.full_source.should.eql(pathFn.join(hexo.source_dir, data.source));
-      return Page.removeById(data._id);
-    });
-  });
-
-  it('content - virtual', function(){
-    var content = [
-      '{% raw %}',
-      '123456',
-      '{% endraw %}'
-    ].join('\n');
-
-    return Page.insert({
-      source: 'foo',
-      path: 'bar',
-      _content: content
-    }).then(function(data){
-      data.content.should.eql('123456');
-      return Page.removeById(data._id);
-    });
-  });
-
-  it('excerpt / more - virtual (with more tag)', function(){
-    var content = [
-      '123456',
-      '<a id="more"></a>',
-      '789012'
-    ].join('\n');
-
-    return Page.insert({
-      source: 'foo',
-      path: 'bar',
-      _content: content
-    }).then(function(data){
-      data.excerpt.should.eql('123456');
-      data.more.should.eql('789012');
-      return Page.removeById(data._id);
-    });
-  });
-
-  it('excerpt / more - virtual (without more tag)', function(){
-    var content = '123456';
-
-    return Page.insert({
-      source: 'foo',
-      path: 'bar',
-      _content: content
-    }).then(function(data){
-      data.excerpt.should.eql('');
-      data.more.should.eql('123456');
       return Page.removeById(data._id);
     });
   });

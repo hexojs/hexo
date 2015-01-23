@@ -179,6 +179,16 @@ describe('Router', function(){
     }
   });
 
+  it('get() - export stringified JSON object', function(){
+    var obj = {foo: 1, bar: 2};
+
+    router.set('test', function(){
+      return obj;
+    });
+
+    return checkStream(router.get('test'), JSON.stringify(obj));
+  });
+
   it('list()', function(){
     var router = new Router();
 

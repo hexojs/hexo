@@ -5,6 +5,7 @@ describe('Filters', function(){
   require('./i18n_locals');
   require('./new_post_path');
   require('./post_permalink');
+  require('./render_post');
   require('./save_database');
   require('./stop_watcher');
   require('./titlecase');

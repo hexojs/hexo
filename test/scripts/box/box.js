@@ -7,7 +7,7 @@ var util = require('hexo-util');
 var Pattern = util.Pattern;
 var testUtil = require('../../util');
 
-function checksum(content){
+function shasum(content){
   var hash = crypto.createHash('sha1');
   hash.update(content);
   return hash.digest('hex');
@@ -93,8 +93,11 @@ describe('Box', function(){
     var path = pathFn.join(box.base, 'a.txt');
 
     return fs.writeFile(path, 'a').then(function(){
-      return box._loadFiles();
-    }).then(function(files){
+      return Promise.all([
+        box._loadFiles(),
+        fs.stat(path)
+      ]);
+    }).spread(function(files, stats){
       var cacheId = 'test/a.txt';
 
       files.should.eql([
@@ -102,7 +105,7 @@ describe('Box', function(){
       ]);
 
       box.Cache.toArray({lean: true}).should.eql([
-        {_id: cacheId, checksum: checksum('a')}
+        {_id: cacheId, shasum: shasum('a'), modified: stats.mtime.getTime()}
       ]);
 
       return fs.rmdir(box.base);
@@ -117,16 +120,19 @@ describe('Box', function(){
 
     return Promise.all([
       fs.writeFile(path, 'a'),
-      Cache.insert({_id: cacheId, checksum: 'a'})
+      Cache.insert({_id: cacheId, shasum: 'a'})
     ]).then(function(){
-      return box._loadFiles();
-    }).then(function(files){
+      return Promise.all([
+        box._loadFiles(),
+        fs.stat(path)
+      ]);
+    }).spread(function(files, stats){
       files.should.eql([
         {path: 'a.txt', type: 'update'}
       ]);
 
       Cache.toArray({lean: true}).should.eql([
-        {_id: cacheId, checksum: checksum('a')}
+        {_id: cacheId, shasum: shasum('a'), modified: stats.mtime.getTime()}
       ]);
 
       return fs.rmdir(box.base);
@@ -137,12 +143,13 @@ describe('Box', function(){
     var box = newBox('test');
     var path = pathFn.join(box.base, 'a.txt');
     var cacheId = 'test/a.txt';
-    var hash = checksum('a');
+    var hash = shasum('a');
     var Cache = box.Cache;
+    var mtime = Date.now()
 
     return Promise.all([
       fs.writeFile(path, 'a'),
-      Cache.insert({_id: cacheId, checksum: hash})
+      Cache.insert({_id: cacheId, shasum: hash, modified: mtime})
     ]).then(function(){
       return box._loadFiles();
     }).then(function(files){
@@ -151,7 +158,7 @@ describe('Box', function(){
       ]);
 
       Cache.toArray({lean: true}).should.eql([
-        {_id: cacheId, checksum: hash}
+        {_id: cacheId, shasum: hash, modified: mtime}
       ]);
 
       return fs.rmdir(box.base);
@@ -165,7 +172,7 @@ describe('Box', function(){
 
     return Cache.insert({
       _id: cacheId,
-      checksum: 'a'
+      shasum: 'a'
     }).then(function(){
       return box._loadFiles();
     }).then(function(files){
@@ -289,7 +296,7 @@ describe('Box', function(){
 
     Promise.all([
       fs.writeFile(src, 'a'),
-      Cache.insert({_id: cacheId, checksum: 'a'})
+      Cache.insert({_id: cacheId, shasum: 'a'})
     ]).then(function(){
       return box.watch();
     }).then(function(){
@@ -319,7 +326,7 @@ describe('Box', function(){
 
     Promise.all([
       fs.writeFile(src, 'a'),
-      Cache.insert({_id: cacheId, checksum: 'a'})
+      Cache.insert({_id: cacheId, shasum: 'a'})
     ]).then(function(){
       return box.watch();
     }).then(function(){

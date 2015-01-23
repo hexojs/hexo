@@ -96,13 +96,13 @@ describe('Render', function(){
   });
 
   it('render() - no path and text', function(){
-    hexo.render.render().catch(function(err){
+    return hexo.render.render().catch(function(err){
       err.should.have.property('message', 'No input file or string!');
     });
   });
 
   it('render() - options', function(){
-    hexo.render.render({
+    return hexo.render.render({
       text: [
         '<title>{{ title }}</title>',
         '<body>{{ content }}</body>'
@@ -116,6 +116,28 @@ describe('Render', function(){
         '<title>Hello world</title>',
         '<body>foobar</body>'
       ].join('\n'));
+    });
+  });
+
+  it('render() - toString', function(){
+    return hexo.render.render({
+      text: body,
+      engine: 'yaml',
+      toString: true
+    }).then(function(content){
+      content.should.eql(JSON.stringify(obj));
+    });
+  });
+
+  it('render() - custom toString method', function(){
+    return hexo.render.render({
+      text: body,
+      engine: 'yaml',
+      toString: function(data){
+        return JSON.stringify(data, null, '  ');
+      }
+    }).then(function(content){
+      content.should.eql(JSON.stringify(obj, null, '  '));
     });
   });
 
@@ -158,5 +180,27 @@ describe('Render', function(){
       '<title>Hello world</title>',
       '<body>foobar</body>'
     ].join('\n'));
+  });
+
+  it('renderSync() - toString', function(){
+    var result = hexo.render.renderSync({
+      text: body,
+      engine: 'yaml',
+      toString: true
+    });
+
+    result.should.eql(JSON.stringify(obj));
+  });
+
+  it('renderSync() - custom toString method', function(){
+    var result = hexo.render.renderSync({
+      text: body,
+      engine: 'yaml',
+      toString: function(data){
+        return JSON.stringify(data, null, '  ');
+      }
+    });
+
+    result.should.eql(JSON.stringify(obj, null, '  '));
   });
 });

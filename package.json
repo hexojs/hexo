@@ -1,6 +1,6 @@
 {
   "name": "hexo",
-  "version": "3.0.0-beta.2",
+  "version": "3.0.0-beta.3",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
   "main": "lib/hexo",
   "bin": {
@@ -30,13 +30,13 @@
   "dependencies": {
     "abbrev": "^1.0.5",
     "archy": "^1.0.0",
-    "bluebird": "^2.6.1",
+    "bluebird": "^2.8.2",
     "bunyan": "^1.2.3",
     "chalk": "^0.5.1",
-    "cheerio": "0.18.0",
+    "cheerio": "^0.18.0",
     "hexo-front-matter": "^0.1.0",
     "hexo-fs": "^0.1.0",
-    "hexo-i18n": "^0.1.0",
+    "hexo-i18n": "^0.2.0",
     "hexo-util": "^0.1.0",
     "js-yaml": "^3.2.5",
     "lodash": "^2.4.1",
@@ -44,11 +44,12 @@
     "moment": "2.9.0",
     "moment-timezone": "^0.3.0",
     "pretty-hrtime": "^1.0.0",
+    "strip-ansi": "^2.0.1",
     "strip-indent": "^1.0.0",
     "swig": "1.4.2",
     "tildify": "^1.0.0",
     "titlecase": "^1.0.2",
-    "warehouse": "1.0.0-rc.3"
+    "warehouse": "1.0.0-rc.4"
   },
   "devDependencies": {
     "chai": "^1.9.1",

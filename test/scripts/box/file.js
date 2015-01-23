@@ -31,7 +31,8 @@ describe('File', function(){
     path: path,
     type: 'create',
     params: {foo: 'bar'},
-    content: new Buffer(body)
+    content: new Buffer(body),
+    stats: {}
   });
 
   before(function(){
@@ -148,28 +149,35 @@ describe('File', function(){
   });
 
   it('stat()', function(){
-    return Promise.all([
-      fs.stat(file.source),
-      file.stat()
-    ]).then(function(stats){
-      stats[0].should.eql(stats[1]);
+    return file.stat().then(function(stats){
+      stats.should.eql({});
     });
   });
 
   it('stat() - callback', function(callback){
     file.stat(function(err, stats){
       should.not.exist(err);
+      stats.should.eql({});
+      callback();
+    });
+  });
 
-      fs.stat(file.source, function(err, realStats){
-        stats.should.eql(realStats);
-        callback();
-      });
+  it('stat() - cache off', function(){
+    return Promise.all([
+      fs.stat(file.source),
+      file.stat({cache: false})
+    ]).then(function(stats){
+      stats[0].should.eql(stats[1]);
     });
   });
 
   it('statSync()', function(){
+    file.statSync().should.eql({});
+  });
+
+  it('statSync() - cache off', function(){
     return fs.stat(file.source).then(function(stats){
-      file.statSync().should.eql(stats);
+      file.statSync({cache: false}).should.eql(stats);
     });
   });
 

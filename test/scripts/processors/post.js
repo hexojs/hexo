@@ -800,4 +800,65 @@ describe('post', function(){
       ]);
     });
   });
+
+  it('post - parse date', function(){
+    var body = [
+      'title: "Hello world"',
+      'date: Apr 24 2014',
+      'updated: May 5 2015',
+      '---'
+    ].join('\n');
+
+    var file = newFile({
+      path: 'foo.html',
+      published: true,
+      type: 'create'
+    });
+
+    return fs.writeFile(file.source, body).then(function(){
+      return process(file);
+    }).then(function(){
+      var post = Post.findOne({source: file.path});
+
+      post.date.format(dateFormat).should.eql('2014-04-24 00:00:00');
+      post.updated.format(dateFormat).should.eql('2015-05-05 00:00:00');
+
+      return Promise.all([
+        post.remove(),
+        fs.unlink(file.source)
+      ]);
+    });
+  });
+
+  it('post - use file stats instead if date is invalid', function(){
+    var body = [
+      'title: "Hello world"',
+      'date: yomama',
+      'updated: isfat',
+      '---'
+    ].join('\n');
+
+    var file = newFile({
+      path: 'foo.html',
+      published: true,
+      type: 'create'
+    });
+
+    return fs.writeFile(file.source, body).then(function(){
+      return Promise.all([
+        file.stat(),
+        process(file)
+      ]);
+    }).spread(function(stats){
+      var post = Post.findOne({source: file.path});
+
+      post.date.toDate().should.eql(stats.ctime);
+      post.updated.toDate().should.eql(stats.mtime);
+
+      return Promise.all([
+        post.remove(),
+        fs.unlink(file.source)
+      ]);
+    });
+  });
 });

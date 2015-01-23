@@ -6,14 +6,13 @@ describe('tagcloud', function(){
   var hexo = new Hexo(__dirname);
   var Post = hexo.model('Post');
   var Tag = hexo.model('Tag');
-  var urlHelper = require('../../../lib/plugins/helper/url');
 
   var ctx = {
     site: hexo.locals,
     config: hexo.config
   };
 
-  ctx.url_for = urlHelper.url_for.bind(ctx);
+  ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
 
   var tagcloud = require('../../../lib/plugins/helper/tagcloud').bind(ctx);
 
