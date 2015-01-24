@@ -404,6 +404,23 @@ describe('Hexo', function(){
     });
   });
 
+  it('_generate() - return nothing in generator', function(){
+    hexo.extend.generator.register('test_nothing', function(){
+      //
+    });
+
+    hexo.extend.generator.register('test_normal', function(){
+      return {
+        path: 'bar',
+        data: 'bar'
+      };
+    });
+
+    return hexo._generate().then(function(){
+      return checkStream(route.get('bar'), 'bar');
+    });
+  });
+
   it('_generate() - validate locals');
 
   it('_generate() - do nothing if it\'s generating');
