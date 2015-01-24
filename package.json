@@ -49,7 +49,7 @@
     "swig": "1.4.2",
     "tildify": "^1.0.0",
     "titlecase": "^1.0.2",
-    "warehouse": "1.0.0-rc.4"
+    "warehouse": "1.0.0-rc.5"
   },
   "devDependencies": {
     "chai": "^1.9.1",
