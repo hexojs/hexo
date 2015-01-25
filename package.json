@@ -47,6 +47,7 @@
     "strip-ansi": "^2.0.1",
     "strip-indent": "^1.0.0",
     "swig": "1.4.2",
+    "text-table": "^0.2.0",
     "tildify": "^1.0.0",
     "titlecase": "^1.0.2",
     "warehouse": "1.0.0-rc.5"
