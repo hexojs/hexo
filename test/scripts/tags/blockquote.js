@@ -12,7 +12,7 @@ describe('blockquote', function(){
   });
 
   var bq = function(args, content){
-    return blockquote(args.split(' '), content);
+    return blockquote(args.split(' '), content || '');
   };
 
   it('default', function(){

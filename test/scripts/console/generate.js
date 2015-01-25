@@ -2,6 +2,7 @@ var should = require('chai').should();
 var pathFn = require('path');
 var fs = require('hexo-fs');
 var Promise = require('bluebird');
+var sinon = require('sinon');
 var testUtil = require('../../util');
 
 describe('generate', function(){
@@ -85,18 +86,16 @@ describe('generate', function(){
   });
 
   it('deploy', function(){
-    var executed = false;
+    var deployer = sinon.spy();
 
-    hexo.extend.deployer.register('test', function(){
-      executed = true;
-    });
+    hexo.extend.deployer.register('test', deployer);
 
     hexo.config.deploy = {
       type: 'test'
     };
 
     return generate({deploy: true}).then(function(){
-      executed.should.be.true;
+      deployer.calledOnce.should.be.true;
     });
   });
 });

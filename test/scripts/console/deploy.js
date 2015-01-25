@@ -1,6 +1,7 @@
 var should = require('chai').should();
 var fs = require('hexo-fs');
 var pathFn = require('path');
+var sinon = require('sinon');
 
 describe('deploy', function(){
   var Hexo = require('../../../lib/hexo');
@@ -13,61 +14,71 @@ describe('deploy', function(){
     });
   });
 
+  beforeEach(function(){
+    hexo.config.deploy = {type: 'foo'};
+    hexo.extend.deployer.register('foo', function(){});
+  });
+
   after(function(){
     return fs.rmdir(hexo.base_dir);
   });
 
   it('single deploy setting', function(){
-    var executed = 0;
-    var emitted = 0;
-
     hexo.config.deploy = {
       type: 'foo',
       foo: 'bar'
     };
 
-    hexo.extend.deployer.register('foo', function(args){
+    var deployer = sinon.spy(function(args){
       args.should.eql({
         type: 'foo',
         foo: 'foo',
         bar: 'bar'
       });
-
-      executed++;
     });
 
-    hexo.once('deployBefore', function(){
-      emitted++;
-    });
+    var beforeListener = sinon.spy();
+    var afterListener = sinon.spy();
 
-    hexo.once('deployAfter', function(){
-      emitted++;
-    });
+    hexo.once('deployBefore', beforeListener);
+    hexo.once('deployAfter', afterListener);
+    hexo.extend.deployer.register('foo', deployer);
 
     return deploy({foo: 'foo', bar: 'bar'}).then(function(){
-      executed.should.eql(1);
-      emitted.should.eql(2);
+      deployer.calledOnce.should.be.true;
+      beforeListener.calledOnce.should.be.true;
+      afterListener.calledOnce.should.be.true;
     });
   });
 
   it('multiple deploy setting', function(){
-    var executed = 0;
+    var deployer1 = sinon.spy(function(args){
+      args.should.eql({
+        type: 'foo',
+        foo: 'foo',
+        test: true
+      });
+    });
+
+    var deployer2 = sinon.spy(function(args){
+      args.should.eql({
+        type: 'bar',
+        bar: 'bar',
+        test: true
+      });
+    });
 
     hexo.config.deploy = [
-      {type: 'foo'},
-      {type: 'bar'}
+      {type: 'foo', foo: 'foo'},
+      {type: 'bar', bar: 'bar'}
     ];
 
-    hexo.extend.deployer.register('foo', function(args){
-      executed++;
-    });
+    hexo.extend.deployer.register('foo', deployer1);
+    hexo.extend.deployer.register('bar', deployer2);
 
-    hexo.extend.deployer.register('bar', function(args){
-      executed++;
-    });
-
-    return deploy({}).then(function(){
-      executed.should.eql(2);
+    return deploy({test: true}).then(function(){
+      deployer1.calledOnce.should.be.true;
+      deployer2.calledOnce.should.be.true;
     });
   });
 

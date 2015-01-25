@@ -4,6 +4,7 @@ var Readable = require('stream').Readable;
 var pathFn = require('path');
 var crypto = require('crypto');
 var fs = require('hexo-fs');
+var sinon = require('sinon');
 var testUtil = require('../../util');
 
 describe('Router', function(){
@@ -63,14 +64,17 @@ describe('Router', function(){
   })
 
   it('set() - string', function(){
-    router.once('update', function(path){
+    var listener = sinon.spy(function(path){
       path.should.eql('test');
     });
+
+    router.once('update', listener);
 
     router.set('test', 'foo');
     var data = router.get('test');
 
     data.modified.should.be.true;
+    listener.calledOnce.should.be.true;
     return checkStream(data, 'foo');
   });
 
@@ -214,13 +218,16 @@ describe('Router', function(){
   });
 
   it('remove()', function(){
-    router.once('remove', function(path){
+    var listener = sinon.spy(function(path){
       path.should.eql('test');
     });
+
+    router.once('remove', listener);
 
     router.set('test', 'foo');
     router.remove('test');
     should.not.exist(router.get('test'));
+    listener.calledOnce.should.be.true;
   });
 
   it('remove() - path must be a string', function(){
