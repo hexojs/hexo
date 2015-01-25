@@ -62,8 +62,6 @@ describe('Post', function(){
     var path = pathFn.join(hexo.source_dir, '_posts', 'foo.md');
     var date = moment(now);
 
-    console.log(now);
-
     var content = [
       'title: "Hello World"',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),

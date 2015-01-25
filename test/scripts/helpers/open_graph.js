@@ -233,6 +233,23 @@ describe('open_graph', function(){
     ].join('\n') + '\n');
   });
 
+  it('images - don\'t pollute context', function(){
+    var ctx = {
+      page: {
+        content: [
+          '<p>123456789</p>',
+          '<img src="http://hexo.io/test.jpg">'
+        ].join(''),
+        photos: []
+      },
+      config: hexo.config,
+      is_post: isPost
+    };
+
+    openGraph.call(ctx);
+    ctx.page.photos.should.eql([]);
+  });
+
   it('site_name - options', function(){
     var result = openGraph.call({
       page: {},
