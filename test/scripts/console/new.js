@@ -3,23 +3,28 @@ var fs = require('hexo-fs');
 var moment = require('moment');
 var pathFn = require('path');
 var Promise = require('bluebird');
+var sinon = require('sinon');
 
 describe('new', function(){
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(__dirname, {silent: true});
   var n = require('../../../lib/plugins/console/new').bind(hexo);
   var post = hexo.post;
+  var now = Date.now();
+  var clock;
 
   before(function(){
+    clock = sinon.useFakeTimers(now);
     return hexo.init();
   });
 
   after(function(){
+    clock.restore();
     return fs.rmdir(hexo.source_dir);
   });
 
   it('title', function(){
-    var date = moment();
+    var date = moment(now);
     var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
     var body = [
       'title: "Hello World"',
@@ -57,7 +62,7 @@ describe('new', function(){
   });
 
   it('slug', function(){
-    var date = moment();
+    var date = moment(now);
     var path = pathFn.join(hexo.source_dir, '_posts', 'foo.md');
     var body = [
       'title: "Hello World"',
@@ -78,7 +83,7 @@ describe('new', function(){
   });
 
   it('path', function(){
-    var date = moment();
+    var date = moment(now);
     var path = pathFn.join(hexo.source_dir, '_posts', 'bar.md');
     var body = [
       'title: "Hello World"',
@@ -139,7 +144,7 @@ describe('new', function(){
   });
 
   it('extra data', function(){
-    var date = moment();
+    var date = moment(now);
     var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
     var body = [
       'title: "Hello World"',

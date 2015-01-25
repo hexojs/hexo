@@ -4,14 +4,19 @@ var moment = require('moment');
 var Promise = require('bluebird');
 var fs = require('hexo-fs');
 var util = require('hexo-util');
+var sinon = require('sinon');
 var fixture = require('../../fixtures/post_render');
 
 describe('Post', function(){
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(pathFn.join(__dirname, 'post_test'));
   var post = hexo.post;
+  var now = Date.now();
+  var clock;
 
   before(function(){
+    clock = sinon.useFakeTimers(now);
+
     return fs.mkdirs(hexo.base_dir, function(){
       return hexo.init();
     }).then(function(){
@@ -21,13 +26,14 @@ describe('Post', function(){
   });
 
   after(function(){
+    clock.restore();
     return fs.rmdir(hexo.base_dir);
   });
 
   it('create()', function(){
-    var emitted = false;
     var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
-    var date = moment();
+    var date = moment(now);
+    var listener = sinon.spy();
 
     var content = [
       'title: "Hello World"',
@@ -36,16 +42,14 @@ describe('Post', function(){
       '---'
     ].join('\n') + '\n';
 
-    hexo.once('new', function(){
-      emitted = true;
-    });
+    hexo.once('new', listener);
 
     return post.create({
       title: 'Hello World'
     }).then(function(post){
       post.path.should.eql(path);
       post.content.should.eql(content);
-      emitted.should.be.true;
+      listener.calledOnce.should.be.true;
 
       return fs.readFile(path);
     }).then(function(data){
@@ -56,7 +60,9 @@ describe('Post', function(){
 
   it('create() - slug', function(){
     var path = pathFn.join(hexo.source_dir, '_posts', 'foo.md');
-    var date = moment();
+    var date = moment(now);
+
+    console.log(now);
 
     var content = [
       'title: "Hello World"',
@@ -83,7 +89,7 @@ describe('Post', function(){
     hexo.config.filename_case = 1;
 
     var path = pathFn.join(hexo.source_dir, '_posts', 'hello-world.md');
-    var date = moment();
+    var date = moment(now);
 
     var content = [
       'title: "Hello World"',
@@ -108,7 +114,7 @@ describe('Post', function(){
 
   it('create() - layout', function(){
     var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
-    var date = moment();
+    var date = moment(now);
 
     var content = [
       'layout: photo',
@@ -134,7 +140,7 @@ describe('Post', function(){
 
   it('create() - extra data', function(){
     var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
-    var date = moment();
+    var date = moment(now);
 
     var content = [
       'title: "Hello World"',
@@ -266,7 +272,7 @@ describe('Post', function(){
   it('publish()', function(){
     var draftPath = '';
     var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
-    var date = moment();
+    var date = moment(now);
 
     var content = [
       'title: "Hello World"',
@@ -302,7 +308,7 @@ describe('Post', function(){
 
   it('publish() - layout', function(){
     var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
-    var date = moment();
+    var date = moment(now);
 
     var content = [
       'layout: photo',
@@ -401,24 +407,20 @@ describe('Post', function(){
   });
 
   it('render()', function(){
-    var executed = 0;
+    // TODO: validate data
+    var beforeHook = sinon.spy();
+    var afterHook = sinon.spy();
 
-    hexo.extend.filter.register('before_post_render', function(data){
-      // TODO: validate data
-      executed++;
-    });
-
-    hexo.extend.filter.register('after_post_render', function(data){
-      // TODO: validate data
-      executed++;
-    });
+    hexo.extend.filter.register('before_post_render', beforeHook);
+    hexo.extend.filter.register('after_post_render', afterHook);
 
     return post.render(null, {
       content: fixture.content,
       engine: 'markdown'
     }).then(function(data){
       data.content.should.eql(fixture.expected);
-      executed.should.eql(2);
+      beforeHook.calledOnce.should.be.true;
+      afterHook.calledOnce.should.be.true;
     });
   });
 

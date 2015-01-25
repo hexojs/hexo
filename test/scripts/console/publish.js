@@ -3,18 +3,23 @@ var fs = require('hexo-fs');
 var moment = require('moment');
 var pathFn = require('path');
 var Promise = require('bluebird');
+var sinon = require('sinon');
 
 describe('publish', function(){
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(__dirname, {silent: true});
   var publish = require('../../../lib/plugins/console/publish').bind(hexo);
   var post = hexo.post;
+  var now = Date.now();
+  var clock;
 
   before(function(){
+    clock = sinon.useFakeTimers(now);
     return hexo.init();
   });
 
   after(function(){
+    clock.restore();
     return fs.rmdir(hexo.source_dir);
   });
 
@@ -28,7 +33,7 @@ describe('publish', function(){
   it('slug', function(){
     var draftPath = pathFn.join(hexo.source_dir, '_drafts', 'Hello-World.md');
     var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
-    var date = moment();
+    var date = moment(now);
 
     var content = [
       'title: "Hello World"',
@@ -54,7 +59,7 @@ describe('publish', function(){
 
   it('layout', function(){
     var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
-    var date = moment();
+    var date = moment(now);
 
     var content = [
       'layout: photo',

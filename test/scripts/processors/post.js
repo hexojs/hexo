@@ -103,10 +103,7 @@ describe('post', function(){
       asset.post.should.eql(postId);
       asset.modified.should.be.true;
 
-      return Promise.all([
-        asset.remove(),
-        Post.removeById(postId)
-      ]);
+      return Post.removeById(postId);
     });
   });
 
@@ -140,10 +137,7 @@ describe('post', function(){
 
       asset.modified.should.be.true;
 
-      return Promise.all([
-        asset.remove(),
-        Post.removeById(asset.post)
-      ]);
+      return Post.removeById(asset.post);
     });
   });
 
@@ -177,10 +171,7 @@ describe('post', function(){
 
       asset.modified.should.be.false;
 
-      return Promise.all([
-        asset.remove(),
-        Post.removeById(asset.post)
-      ]);
+      return Post.removeById(asset.post)
     });
   });
 
@@ -765,7 +756,6 @@ describe('post', function(){
 
       return Promise.all([
         post.remove(),
-        asset.remove(),
         fs.unlink(file.source),
         fs.unlink(assetPath)
       ]);

@@ -2,6 +2,7 @@ var should = require('chai').should();
 var pathFn = require('path');
 var fs = require('hexo-fs');
 var Promise = require('bluebird');
+var sinon = require('sinon');
 var sep = pathFn.sep;
 var testUtil = require('../../util');
 
@@ -92,14 +93,12 @@ describe('Hexo', function(){
 
   it('init()', function(){
     var hexo = new Hexo(pathFn.join(__dirname, 'hexo_test'), {silent: true});
-    var executed = 0;
+    var hook = sinon.spy();
 
-    hexo.extend.filter.register('after_init', function(){
-      executed++;
-    });
+    hexo.extend.filter.register('after_init', hook);
 
     return hexo.init().then(function(){
-      executed.should.eql(1);
+      hook.calledOnce.should.be.true;
     });
   });
 
@@ -185,18 +184,15 @@ describe('Hexo', function(){
   it('unwatch()');
 
   it('exit()', function(){
-    var executed = 0;
+    var hook = sinon.spy();
+    var listener = sinon.spy();
 
-    hexo.extend.filter.register('before_exit', function(){
-      executed++;
-    });
-
-    hexo.once('exit', function(){
-      executed++;
-    });
+    hexo.extend.filter.register('before_exit', hook);
+    hexo.once('exit', listener);
 
     return hexo.exit().then(function(){
-      executed.should.eql(2);
+      hook.calledOnce.should.be.true;
+      listener.calledOnce.should.be.true;
     });
   });
 
@@ -274,8 +270,6 @@ describe('Hexo', function(){
   });
 
   it('_generate()', function(){
-    var executed = 0;
-
     // object
     hexo.extend.generator.register('test_obj', function(locals){
       locals.test.should.eql('foo');
@@ -296,27 +290,26 @@ describe('Hexo', function(){
       ];
     });
 
-    hexo.once('generateBefore', function(){
-      executed++;
-    });
+    var beforeListener = sinon.spy();
+    var afterListener = sinon.spy();
+    var afterHook = sinon.spy();
 
-    hexo.once('generateAfter', function(){
-      executed++;
-    });
-
-    hexo.extend.filter.register('before_generate', function(){
+    var beforeHook = sinon.spy(function(){
       hexo.locals.test = 'foo';
-      executed++;
     });
 
-    hexo.extend.filter.register('after_generate', function(){
-      executed++;
-    });
+    hexo.once('generateBefore', beforeListener);
+    hexo.once('generateAfter', afterListener);
+    hexo.extend.filter.register('before_generate', beforeHook);
+    hexo.extend.filter.register('after_generate', afterHook);
 
     return hexo._generate().then(function(){
       route.list().should.eql(['foo', 'bar', 'baz']);
 
-      executed.should.eql(4);
+      beforeListener.calledOnce.should.be.true;
+      afterListener.calledOnce.should.be.true;
+      beforeHook.calledOnce.should.be.true;
+      afterHook.calledOnce.should.be.true;
 
       return Promise.all([
         checkStream(route.get('foo'), 'foo'),
