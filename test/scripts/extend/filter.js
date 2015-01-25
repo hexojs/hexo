@@ -59,6 +59,38 @@ describe('Filter', function(){
     }).should.eql([5, 10, 15]);
   });
 
+  it('unregister()', function(){
+    var f = new Filter();
+    var filter = sinon.spy();
+
+    f.register('test', filter);
+    f.unregister('test', filter);
+
+    return f.exec('test').then(function(){
+      filter.called.should.be.false;
+    });
+  });
+
+  it('unregister() - type is required', function(){
+    var f = new Filter();
+
+    try {
+      f.unregister();
+    } catch (err){
+      err.should.have.property('message', 'type is required');
+    }
+  });
+
+  it('unregister() - fn must be a function', function(){
+    var f = new Filter();
+
+    try {
+      f.unregister('test');
+    } catch (err){
+      err.should.have.property('message', 'fn must be a function');
+    }
+  });
+
   it('list()', function(){
     var f = new Filter();
 

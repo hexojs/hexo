@@ -1,10 +1,11 @@
-var Hexo = require('../../../lib/hexo');
 var fs = require('hexo-fs');
 var pathFn = require('path');
 var Promise = require('bluebird');
 var yaml = require('js-yaml');
+var sinon = require('sinon');
 
 describe('Render', function(){
+  var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(pathFn.join(__dirname, 'render_test'));
 
   var body = [
@@ -141,6 +142,43 @@ describe('Render', function(){
     });
   });
 
+  it('render() - after_render filter', function(){
+    var data = {
+      text: '  <strong>123456</strong>  ',
+      engine: 'swig'
+    };
+
+    var filter = sinon.spy(function(result, obj){
+      result.should.eql(data.text);
+      obj.should.eql(data);
+      return result.trim();
+    });
+
+    hexo.extend.filter.register('after_render:html', filter);
+
+    return hexo.render.render(data).then(function(result){
+      filter.calledOnce.should.be.true;
+      result.should.eql(data.text.trim());
+
+      hexo.extend.filter.unregister('after_render:html', filter);
+    });
+  });
+
+  it('render() - after_render filter: use the given output extension if not found', function(){
+    var data = {
+      text: 'foo',
+      engine: 'txt'
+    };
+
+    var filter = sinon.spy();
+    hexo.extend.filter.register('after_render:txt', filter);
+
+    return hexo.render.render(data).then(function(result){
+      filter.calledOnce.should.be.true;
+      hexo.extend.filter.unregister('after_render:txt', filter);
+    });
+  });
+
   it('renderSync() - path', function(){
     var result = hexo.render.renderSync({path: path});
     result.should.eql(obj);
@@ -202,5 +240,42 @@ describe('Render', function(){
     });
 
     result.should.eql(JSON.stringify(obj, null, '  '));
+  });
+
+  it('renderSync() - after_render filter', function(){
+    var data = {
+      text: '  <strong>123456</strong>  ',
+      engine: 'swig'
+    };
+
+    var filter = sinon.spy(function(result, obj){
+      result.should.eql(data.text);
+      obj.should.eql(data);
+      return result.trim();
+    });
+
+    hexo.extend.filter.register('after_render:html', filter);
+
+    var result = hexo.render.renderSync(data);
+
+    filter.calledOnce.should.be.true;
+    result.should.eql(data.text.trim());
+
+    hexo.extend.filter.unregister('after_render:html', filter);
+  });
+
+  it('renderSync() - after_render filter: use the given output extension if not found', function(){
+    var data = {
+      text: 'foo',
+      engine: 'txt'
+    };
+
+    var filter = sinon.spy();
+    hexo.extend.filter.register('after_render:txt', filter);
+
+    var result = hexo.render.renderSync(data);
+
+    filter.calledOnce.should.be.true;
+    hexo.extend.filter.unregister('after_render:txt', filter);
   });
 });
