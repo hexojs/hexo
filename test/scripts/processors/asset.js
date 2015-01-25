@@ -417,4 +417,27 @@ describe('asset', function(){
       ]);
     });
   });
+
+  it('page - don\'t remove extension name', function(){
+    var body = '';
+
+    var file = newFile({
+      path: 'test.min.js',
+      type: 'create',
+      content: new Buffer(body)
+    });
+
+    return fs.writeFile(file.source, body).then(function(){
+      return process(file);
+    }).then(function(){
+      var page = Page.findOne({source: file.path});
+
+      page.path.should.eql('test.min.js');
+
+      return Promise.all([
+        page.remove(),
+        fs.unlink(file.source)
+      ]);
+    });
+  });
 });

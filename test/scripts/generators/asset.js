@@ -86,4 +86,23 @@ describe('asset', function(){
       should.not.exist(Asset.findById(path));
     });
   });
+
+  it('don\'t remove extension name', function(){
+    var path = 'test.min.js';
+    var source = pathFn.join(hexo.base_dir, path);
+
+    return Promise.all([
+      Asset.insert({_id: path, path: path}),
+      fs.writeFile(source, '')
+    ]).then(function(){
+      return generator(hexo.locals);
+    }).then(function(data){
+      data[0].path.should.eql('test.min.js');
+
+      return Promise.all([
+        Asset.removeById(path),
+        fs.unlink(source)
+      ]);
+    });
+  });
 });
