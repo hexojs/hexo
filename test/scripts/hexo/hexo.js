@@ -13,6 +13,7 @@ describe('Hexo', function(){
   var version = require('../../../package.json').version;
   var Post = hexo.model('Post');
   var Page = hexo.model('Page');
+  var Data = hexo.model('Data');
   var route = hexo.route;
 
   function checkStream(stream, expected){
@@ -266,6 +267,22 @@ describe('Hexo', function(){
       return pages;
     }).map(function(page){
       return Page.removeById(page._id);
+    });
+  });
+
+  it('locals.data', function(){
+    return Data.insert([
+      {_id: 'users', data: {foo: 1}},
+      {_id: 'comments', data: {bar: 2}}
+    ]).then(function(data){
+      hexo.locals.data.should.eql({
+        users: {foo: 1},
+        comments: {bar: 2}
+      });
+
+      return data;
+    }).map(function(data){
+      return data.remove();
     });
   });
 

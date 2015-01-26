@@ -44,7 +44,6 @@
     "moment": "2.9.0",
     "moment-timezone": "^0.3.0",
     "pretty-hrtime": "^1.0.0",
-    "strip-ansi": "^2.0.1",
     "strip-indent": "^1.0.0",
     "swig": "1.4.2",
     "text-table": "^0.2.0",
