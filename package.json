@@ -50,6 +50,7 @@
     "text-table": "^0.2.0",
     "tildify": "^1.0.0",
     "titlecase": "^1.0.2",
+    "update-notifier": "^0.3.0",
     "warehouse": "1.0.0-rc.5"
   },
   "devDependencies": {
