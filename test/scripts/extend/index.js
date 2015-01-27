@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Extend', function(){
   require('./console');
   require('./deployer');

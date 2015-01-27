@@ -1,3 +1,5 @@
+'use strict';
+
 var should = require('chai').should();
 var Promise = require('bluebird');
 var _ = require('lodash');

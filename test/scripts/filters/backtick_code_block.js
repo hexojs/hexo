@@ -1,3 +1,5 @@
+'use strict';
+
 var should = require('chai').should();
 var util = require('hexo-util');
 var _ = require('lodash');

@@ -1,3 +1,5 @@
+'use strict';
+
 var should = require('chai').should();
 var fs = require('hexo-fs');
 

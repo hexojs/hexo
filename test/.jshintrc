@@ -3,6 +3,7 @@
   "expr": true,
   "indent": 2,
   "node": true,
+  "mocha": true,
   "trailing": true,
   "quotmark": "single",
   "undef": true,

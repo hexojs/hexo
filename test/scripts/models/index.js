@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Models', function(){
   require('./asset');
   require('./cache');

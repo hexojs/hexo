@@ -1,3 +1,5 @@
+'use strict';
+
 var should = require('chai').should();
 var pathFn = require('path');
 var fs = require('hexo-fs');
@@ -8,31 +10,17 @@ describe('Update package.json', function(){
   var updatePkg = require('../../../lib/hexo/update_package');
   var packagePath = pathFn.join(hexo.base_dir, 'package.json');
 
-  hexo.env.init = true;
-
-  before(function(){
-    return hexo.init();
-  });
-
-  afterEach(function(){
-    return fs.exists(packagePath).then(function(exist){
-      if (exist) return fs.unlink(packagePath);
-    });
-  });
+  beforeEach(function(){
+    hexo.env.init = false;
+  })
 
   it('package.json does not exist', function(){
-    var pkg = require('../../../assets/package.json');
-
     return updatePkg(hexo).then(function(){
-      return fs.readFile(packagePath);
-    }).then(function(raw){
-      var content = JSON.parse(raw);
-      pkg.version = hexo.version;
-      content.should.eql(pkg);
+      hexo.env.init.should.be.false;
     });
   });
 
-  it('package.json exists, but the version does not match', function(){
+  it('package.json exists, but the version doesn\'t match', function(){
     var pkg = {
       name: 'hexo-site',
       version: '0.0.1'
@@ -42,10 +30,30 @@ describe('Update package.json', function(){
       return updatePkg(hexo);
     }).then(function(){
       return fs.readFile(packagePath);
-    }).then(function(raw){
-      var content = JSON.parse(raw);
-      pkg.version = hexo.version;
-      content.should.eql(pkg);
+    }).then(function(content){
+      JSON.parse(content).version.should.eql(hexo.version);
+      hexo.env.init.should.be.true;
+
+      return fs.unlink(packagePath);
+    });
+  });
+
+  it('package.json exists, but the name isn\'t right', function(){
+    var pkg = {
+      name: 'hexo',
+      version: '0.0.1'
+    };
+
+    return fs.writeFile(packagePath, JSON.stringify(pkg)).then(function(){
+      return updatePkg(hexo);
+    }).then(function(){
+      return fs.readFile(packagePath);
+    }).then(function(content){
+      // Don't change the original package.json
+      JSON.parse(content).should.eql(pkg);
+      hexo.env.init.should.be.false;
+
+      return fs.unlink(packagePath);
     });
   });
 
@@ -59,9 +67,11 @@ describe('Update package.json', function(){
       return updatePkg(hexo);
     }).then(function(){
       return fs.readFile(packagePath);
-    }).then(function(raw){
-      var content = JSON.parse(raw);
-      content.should.eql(pkg);
+    }).then(function(content){
+      JSON.parse(content).should.eql(pkg);
+      hexo.env.init.should.be.true;
+
+      return fs.unlink(packagePath);
     });
   });
 });

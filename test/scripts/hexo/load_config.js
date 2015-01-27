@@ -1,3 +1,5 @@
+'use strict';
+
 var should = require('chai').should();
 var pathFn = require('path');
 var fs = require('hexo-fs');
@@ -9,20 +11,25 @@ describe('Load config', function(){
   var loadConfig = require('../../../lib/hexo/load_config');
   var defaultConfig = require('../../../lib/hexo/default_config');
 
+  hexo.env.init = true;
+
   function reset(){
-    hexo.env.init = false;
     hexo.config = _.clone(defaultConfig);
   }
 
   before(function(){
-    return fs.mkdirs(pathFn.join(hexo.base_dir, 'themes', 'landscape')).then(function(){
+    return fs.mkdirs(hexo.base_dir).then(function(){
       return hexo.init();
     });
   });
 
+  after(function(){
+    return fs.rmdir(hexo.base_dir);
+  });
+
   it('config file does not exist', function(){
     return loadConfig(hexo).then(function(){
-      hexo.env.init.should.be.false;
+      hexo.config.should.eql(defaultConfig);
     });
   });
 
@@ -32,24 +39,7 @@ describe('Load config', function(){
     return fs.writeFile(configPath, 'foo: 1').then(function(){
       return loadConfig(hexo);
     }).then(function(){
-      hexo.env.init.should.be.true;
       hexo.config.foo.should.eql(1);
-      hexo.theme_dir.should.eql(pathFn.resolve(hexo.base_dir, 'themes', 'landscape') + pathFn.sep);
-      hexo.theme_script_dir.should.eql(pathFn.resolve(hexo.theme_dir, 'scripts') + pathFn.sep);
-
-      reset();
-      return fs.unlink(configPath);
-    });
-  });
-
-  it('_config.yaml exists', function(){
-    var configPath = pathFn.join(hexo.base_dir, '_config.yaml');
-
-    return fs.writeFile(configPath, 'bar: 2').then(function(){
-      return loadConfig(hexo);
-    }).then(function(){
-      hexo.env.init.should.be.true;
-      hexo.config.bar.should.eql(2);
 
       reset();
       return fs.unlink(configPath);
@@ -62,8 +52,20 @@ describe('Load config', function(){
     return fs.writeFile(configPath, '{"baz": 3}').then(function(){
       return loadConfig(hexo);
     }).then(function(){
-      hexo.env.init.should.be.true;
       hexo.config.baz.should.eql(3);
+
+      reset();
+      return fs.unlink(configPath);
+    });
+  });
+
+  it('_config.txt exists', function(){
+    var configPath = pathFn.join(hexo.base_dir, '_config.txt');
+
+    return fs.writeFile(configPath, 'foo: 1').then(function(){
+      return loadConfig(hexo);
+    }).then(function(){
+      hexo.config.should.eql(defaultConfig);
 
       reset();
       return fs.unlink(configPath);
@@ -76,12 +78,27 @@ describe('Load config', function(){
     return fs.writeFile(configPath, 'foo: 1').then(function(){
       return loadConfig(hexo);
     }).then(function(){
-      hexo.env.init.should.be.true;
       hexo.config.foo.should.eql(1);
 
       reset();
       hexo.config_path = pathFn.join(hexo.base_dir, '_config.yml');
       return fs.unlink(configPath);
+    });
+  });
+
+  it('custom config path with different extension name', function(){
+    var configPath = hexo.config_path = pathFn.join(__dirname, 'werwerwer.yml');
+    var realPath = pathFn.join(__dirname, 'werwerwer.json');
+
+    return fs.writeFile(realPath, '{"foo": 2}').then(function(){
+      return loadConfig(hexo);
+    }).then(function(){
+      hexo.config.foo.should.eql(2);
+      hexo.config_path.should.eql(realPath);
+
+      reset();
+      hexo.config_path = pathFn.join(hexo.base_dir, '_config.yml');
+      return fs.unlink(realPath);
     });
   });
 
@@ -107,6 +124,7 @@ describe('Load config', function(){
       return loadConfig(hexo);
     }).then(function(){
       hexo.public_dir.should.eql(pathFn.resolve(hexo.base_dir, 'foo') + pathFn.sep);
+
       reset();
       return fs.unlink(hexo.config_path);
     });
@@ -117,12 +135,23 @@ describe('Load config', function(){
       return loadConfig(hexo);
     }).then(function(){
       hexo.source_dir.should.eql(pathFn.resolve(hexo.base_dir, 'bar') + pathFn.sep);
+
       reset();
       return fs.unlink(hexo.config_path);
     });
   });
 
-  after(function(){
-    return fs.rmdir(hexo.base_dir);
+  it('custom theme', function(){
+    return fs.writeFile(hexo.config_path, 'theme: test').then(function(){
+      return loadConfig(hexo);
+    }).then(function(){
+      hexo.config.theme.should.eql('test');
+      hexo.theme_dir.should.eql(pathFn.join(hexo.base_dir, 'themes', 'test') + pathFn.sep);
+      hexo.theme_script_dir.should.eql(pathFn.join(hexo.theme_dir, 'scripts') + pathFn.sep);
+      hexo.theme.base.should.eql(hexo.theme_dir);
+
+      reset();
+      return fs.unlink(hexo.config_path);
+    });
   });
 });

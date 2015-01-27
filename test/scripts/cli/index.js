@@ -1,4 +1,6 @@
+'use strict';
+
 describe('CLI', function(){
-  require('./find_config');
+  require('./find_pkg');
   require('./init');
 });

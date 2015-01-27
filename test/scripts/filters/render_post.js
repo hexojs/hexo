@@ -1,3 +1,5 @@
+'use strict';
+
 var should = require('chai').should();
 var fixture = require('../../fixtures/post_render');
 

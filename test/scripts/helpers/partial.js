@@ -1,3 +1,5 @@
+'use strict';
+
 var should = require('chai').should();
 var pathFn = require('path');
 var fs = require('hexo-fs');
@@ -19,6 +21,8 @@ describe('partial', function(){
   };
 
   ctx.fragment_cache = require('../../../lib/plugins/helper/fragment_cache')(hexo);
+
+  hexo.env.init = true;
 
   var partial = require('../../../lib/plugins/helper/partial')(hexo).bind(ctx);
 
