@@ -69,7 +69,7 @@ describe('generate', function(){
     return testGenerate();
   });
 
-  it('watch', function(){
+  it('watch - update', function(){
     return testGenerate({watch: true}).then(function(){
       // Update the file
       return fs.writeFile(pathFn.join(hexo.source_dir, 'test.txt'), 'newtest');
@@ -81,6 +81,21 @@ describe('generate', function(){
     }).then(function(content){
       // Check the updated file
       content.should.eql('newtest');
+
+      // Stop watching
+      hexo.unwatch();
+    });
+  });
+
+  it('watch - delete', function(){
+    return testGenerate({watch: true}).then(function(){
+      return fs.unlink(pathFn.join(hexo.source_dir, 'test.txt'));
+    }).then(function(){
+      return testUtil.wait(300);
+    }).then(function(){
+      return fs.exists(pathFn.join(hexo.public_dir, 'test.txt'));
+    }).then(function(exist){
+      exist.should.be.false;
 
       // Stop watching
       hexo.unwatch();
