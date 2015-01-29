@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Filters', function(){
   require('./backtick_code_block');
   require('./excerpt');

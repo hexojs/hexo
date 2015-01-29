@@ -1,3 +1,5 @@
+'use strict';
+
 var should = require('chai').should();
 var Promise = require('bluebird');
 var pathFn = require('path');

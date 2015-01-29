@@ -1,3 +1,5 @@
+'use strict';
+
 var should = require('chai').should();
 var pathFn = require('path');
 var fs = require('hexo-fs');
@@ -13,6 +15,7 @@ describe('Hexo', function(){
   var version = require('../../../package.json').version;
   var Post = hexo.model('Post');
   var Page = hexo.model('Page');
+  var Data = hexo.model('Data');
   var route = hexo.route;
 
   function checkStream(stream, expected){
@@ -158,10 +161,7 @@ describe('Hexo', function(){
     }).then(function(){
       // Update the file
       return fs.writeFile(target, newBody);
-    }).then(function(){
-      // Wait for a while
-      return testUtil.wait(300);
-    }).then(function(){
+    }).delay(300).then(function(){
       // Check the new route
       return checkStream(route.get('test.txt'), newBody);
     }).then(function(){
@@ -266,6 +266,22 @@ describe('Hexo', function(){
       return pages;
     }).map(function(page){
       return Page.removeById(page._id);
+    });
+  });
+
+  it('locals.data', function(){
+    return Data.insert([
+      {_id: 'users', data: {foo: 1}},
+      {_id: 'comments', data: {bar: 2}}
+    ]).then(function(data){
+      hexo.locals.data.should.eql({
+        users: {foo: 1},
+        comments: {bar: 2}
+      });
+
+      return data;
+    }).map(function(data){
+      return data.remove();
     });
   });
 

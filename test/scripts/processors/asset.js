@@ -1,3 +1,5 @@
+'use strict';
+
 var should = require('chai').should();
 var pathFn = require('path');
 var fs = require('hexo-fs');
@@ -410,6 +412,29 @@ describe('asset', function(){
 
       page.date.toDate().should.eql(stats.ctime);
       page.updated.toDate().should.eql(stats.mtime);
+
+      return Promise.all([
+        page.remove(),
+        fs.unlink(file.source)
+      ]);
+    });
+  });
+
+  it('page - don\'t remove extension name', function(){
+    var body = '';
+
+    var file = newFile({
+      path: 'test.min.js',
+      type: 'create',
+      content: new Buffer(body)
+    });
+
+    return fs.writeFile(file.source, body).then(function(){
+      return process(file);
+    }).then(function(){
+      var page = Page.findOne({source: file.path});
+
+      page.path.should.eql('test.min.js');
 
       return Promise.all([
         page.remove(),

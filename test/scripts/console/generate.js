@@ -1,3 +1,5 @@
+'use strict';
+
 var should = require('chai').should();
 var pathFn = require('path');
 var fs = require('hexo-fs');
@@ -67,18 +69,32 @@ describe('generate', function(){
     return testGenerate();
   });
 
-  it('watch', function(){
+  it('generate big files');
+
+  it('skip generating');
+
+  it('watch - update', function(){
     return testGenerate({watch: true}).then(function(){
       // Update the file
       return fs.writeFile(pathFn.join(hexo.source_dir, 'test.txt'), 'newtest');
-    }).then(function(){
-      // Wait for a while
-      return testUtil.wait(300);
-    }).then(function(){
+    }).delay(300).then(function(){
       return fs.readFile(pathFn.join(hexo.public_dir, 'test.txt'));
     }).then(function(content){
       // Check the updated file
       content.should.eql('newtest');
+
+      // Stop watching
+      hexo.unwatch();
+    });
+  });
+
+  it('watch - delete', function(){
+    return testGenerate({watch: true}).then(function(){
+      return fs.unlink(pathFn.join(hexo.source_dir, 'test.txt'));
+    }).delay(300).then(function(){
+      return fs.exists(pathFn.join(hexo.public_dir, 'test.txt'));
+    }).then(function(exist){
+      exist.should.be.false;
 
       // Stop watching
       hexo.unwatch();

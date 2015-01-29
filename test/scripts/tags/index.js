@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Tags', function(){
   require('./asset_img');
   require('./asset_link');
@@ -13,7 +15,6 @@ describe('Tags', function(){
   require('./post_link');
   require('./post_path');
   require('./pullquote');
-  require('./raw');
   require('./vimeo');
   require('./youtube');
 });

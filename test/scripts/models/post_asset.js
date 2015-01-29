@@ -1,3 +1,5 @@
+'use strict';
+
 var should = require('chai').should();
 var url = require('url');
 var pathFn = require('path');

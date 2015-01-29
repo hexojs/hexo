@@ -1,3 +1,5 @@
+'use strict';
+
 var should = require('chai').should();
 
 describe('link_to', function(){

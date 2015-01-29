@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Helpers', function(){
   require('./css');
   require('./date');

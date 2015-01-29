@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Theme processors', function(){
   require('./config');
   require('./i18n');

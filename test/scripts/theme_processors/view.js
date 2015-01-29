@@ -1,3 +1,5 @@
+'use strict';
+
 var should = require('chai').should();
 var pathFn = require('path');
 var fs = require('hexo-fs');
@@ -9,6 +11,8 @@ describe('view', function(){
   var processor = require('../../../lib/theme/processors/view');
   var process = Promise.method(processor.process.bind(hexo));
   var themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
+
+  hexo.env.init = true;
 
   function newFile(options){
     var path = options.path;

@@ -6,6 +6,7 @@
   "trailing": true,
   "quotmark": "single",
   "undef": true,
+  "strict": true,
   "unused": "vars",
   "globals": {
     "Promise": true
