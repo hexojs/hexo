@@ -15,7 +15,6 @@ describe('Tags', function(){
   require('./post_link');
   require('./post_path');
   require('./pullquote');
-  require('./raw');
   require('./vimeo');
   require('./youtube');
 });

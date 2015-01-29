@@ -28,7 +28,7 @@ describe('Render post', function(){
       return renderPost();
     }).then(function(){
       var post = Post.findById(id);
-      post.content.should.eql(fixture.expected);
+      post.content.trim().should.eql(fixture.expected);
 
       return post.remove();
     });
@@ -46,7 +46,7 @@ describe('Render post', function(){
       return renderPost();
     }).then(function(){
       var page = Page.findById(id);
-      page.content.should.eql(fixture.expected);
+      page.content.trim().should.eql(fixture.expected);
 
       return page.remove();
     });

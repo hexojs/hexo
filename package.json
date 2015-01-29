@@ -44,6 +44,7 @@
     "minimist": "^1.1.0",
     "moment": "2.9.0",
     "moment-timezone": "^0.3.0",
+    "nunjucks": "1.1.0",
     "pretty-hrtime": "^1.0.0",
     "strip-indent": "^1.0.0",
     "swig": "1.4.2",

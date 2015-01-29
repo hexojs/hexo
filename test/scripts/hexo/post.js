@@ -418,7 +418,7 @@ describe('Post', function(){
       content: fixture.content,
       engine: 'markdown'
     }).then(function(data){
-      data.content.should.eql(fixture.expected);
+      data.content.trim().should.eql(fixture.expected);
       beforeHook.calledOnce.should.be.true;
       afterHook.calledOnce.should.be.true;
     });
@@ -431,7 +431,7 @@ describe('Post', function(){
     return fs.writeFile(path, content).then(function(){
       return post.render(path);
     }).then(function(data){
-      data.content.should.eql('<p><strong>file test</strong></p>');
+      data.content.trim().should.eql('<p><strong>file test</strong></p>');
       return fs.unlink(path);
     });
   });
@@ -458,7 +458,7 @@ describe('Post', function(){
       content: content,
       engine: 'swig'
     }).then(function(data){
-      data.content.should.eql([
+      data.content.trim().should.eql([
         '<blockquote><p>quote content</p>\n',
         '<footer><strong>Hello World</strong></footer></blockquote>'
       ].join(''));
