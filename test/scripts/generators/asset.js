@@ -42,8 +42,8 @@ describe('asset', function(){
       data[0].path.should.eql('test.json');
       data[0].data.modified.should.be.true;
 
-      return data[0].data().then(function(result){
-        result.should.eql({foo: 'bar'});
+      return data[0].data.data().then(function(result){
+        result.should.eql('{"foo":"bar"}');
       });
     }).then(function(){
       return Promise.all([
@@ -67,7 +67,7 @@ describe('asset', function(){
       data[0].path.should.eql(path);
       data[0].data.modified.should.be.true;
 
-      return checkStream(data[0].data(), content);
+      return checkStream(data[0].data.data(), content);
     }).then(function(){
       return Promise.all([
         Asset.removeById(path),

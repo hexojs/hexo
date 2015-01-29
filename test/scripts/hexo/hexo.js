@@ -161,10 +161,7 @@ describe('Hexo', function(){
     }).then(function(){
       // Update the file
       return fs.writeFile(target, newBody);
-    }).then(function(){
-      // Wait for a while
-      return testUtil.wait(300);
-    }).then(function(){
+    }).delay(300).then(function(){
       // Check the new route
       return checkStream(route.get('test.txt'), newBody);
     }).then(function(){

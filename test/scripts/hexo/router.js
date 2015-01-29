@@ -110,10 +110,11 @@ describe('Router', function(){
   });
 
   it('set() - modified', function(){
-    var fn = function(){};
-    fn.modified = false;
+    router.set('test', {
+      data: '',
+      modified: false
+    });
 
-    router.set('test', fn);
     router.isModified('test').should.be.false;
   });
 

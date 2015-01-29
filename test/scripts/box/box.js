@@ -301,9 +301,7 @@ describe('Box', function(){
       Cache.insert({_id: cacheId, shasum: 'a'})
     ]).then(function(){
       return box.watch();
-    }).then(function(){
-      return testUtil.wait(300);
-    }).then(function(){
+    }).delay(300).then(function(){
       box.addProcessor(function(file){
         file.source.should.eql(src);
         file.path.should.eql(path);
@@ -331,10 +329,7 @@ describe('Box', function(){
       Cache.insert({_id: cacheId, shasum: 'a'})
     ]).then(function(){
       return box.watch();
-    }).then(function(){
-      return testUtil.wait(300);
-    }).then(function(){
-
+    }).delay(300).then(function(){
       box.addProcessor(function(file){
         file.source.should.eql(src);
         file.path.should.eql(path);
