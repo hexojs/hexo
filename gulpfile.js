@@ -1,3 +1,5 @@
+'use strict';
+
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')();
 var del = require('del');
@@ -16,7 +18,7 @@ gulp.task('coverage:clean', function(callback){
 });
 
 function mochaStream(){
-  return gulp.src('test/index.js')
+  return gulp.src('test/index.js', {read: false})
     .pipe($.mocha({
       reporter: 'spec'
     }));

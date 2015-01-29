@@ -22,7 +22,7 @@ describe('page', function(){
             data: page
           }
         ]);
-      }).then(function(){
+
         return page.remove();
       });
     });
@@ -36,7 +36,7 @@ describe('page', function(){
     }).then(function(page){
       return generator(hexo.locals).then(function(data){
         data[0].layout.should.eql(['photo', 'page', 'post', 'index']);
-      }).then(function(){
+
         return page.remove();
       });
     });
@@ -50,7 +50,67 @@ describe('page', function(){
     }).then(function(page){
       return generator(hexo.locals).then(function(data){
         should.not.exist(data[0].layout);
-      }).then(function(){
+
+        return page.remove();
+      });
+    });
+  });
+
+  it('skip render', function(){
+    hexo.config.skip_render = 'lab/**/*.js';
+
+    return Page.insert({
+      source: 'lab/assets/jquery.min.js',
+      path: 'lab/assets/jquery.min.js',
+      layout: false,
+      raw: 'jquery raw'
+    }).then(function(page){
+      return generator(hexo.locals).then(function(data){
+        data.should.eql([
+          {path: page.source, data: page.raw}
+        ]);
+
+        hexo.config.skip_render = [];
+        return page.remove();
+      });
+    });
+  });
+
+  it('skip render - multiple rules', function(){
+    hexo.config.skip_render = ['lab/**/*.js'];
+
+    return Page.insert({
+      source: 'lab/assets/jquery.min.js',
+      path: 'lab/assets/jquery.min.js',
+      layout: false,
+      raw: 'jquery raw'
+    }).then(function(page){
+      return generator(hexo.locals).then(function(data){
+        data.should.eql([
+          {path: page.source, data: page.raw}
+        ]);
+
+        hexo.config.skip_render = [];
+        return page.remove();
+      });
+    });
+  });
+
+  it('skip render - don\'t replace extension name', function(){
+    hexo.config.skip_render = 'README.md';
+
+    return Page.insert({
+      source: 'README.md',
+      path: 'README.html',
+      layout: 'page',
+      raw: 'readme raw'
+    }).then(function(page){
+      return generator(hexo.locals).then(function(data){
+        data.should.eql([
+          {path: page.source, data: page.raw}
+        ]);
+
+        hexo.config.skip_render = [];
         return page.remove();
       });
     });

@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Hexo', function(){
   require('./scripts/box');
   require('./scripts/cli');

@@ -28,7 +28,7 @@ describe('post', function(){
             data: post
           }
         ]);
-      }).then(function(){
+
         return post.remove();
       });
     });
@@ -42,7 +42,7 @@ describe('post', function(){
     }).then(function(post){
       return generator(hexo.locals).then(function(data){
         data[0].layout.should.eql(['photo', 'post', 'page', 'index']);
-      }).then(function(){
+
         return post.remove();
       });
     });
@@ -56,7 +56,7 @@ describe('post', function(){
     }).then(function(post){
       return generator(hexo.locals).then(function(data){
         should.not.exist(data[0].layout);
-      }).then(function(){
+
         return post.remove();
       });
     });

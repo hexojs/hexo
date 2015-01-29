@@ -40,6 +40,7 @@
     "hexo-util": "^0.1.2",
     "js-yaml": "^3.2.5",
     "lodash": "^3.0.0",
+    "minimatch": "^2.0.1",
     "minimist": "^1.1.0",
     "moment": "2.9.0",
     "moment-timezone": "^0.3.0",
