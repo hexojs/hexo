@@ -18,6 +18,8 @@ describe('is', function(){
 
     is.home.call({path: '', config: hexo.config}).should.be.true;
     is.home.call({path: paginationDir + '/2/', config: hexo.config}).should.be.true;
+    is.home.call({path: 'index.html', config: hexo.config}).should.be.true;
+    is.home.call({path: paginationDir + '/2/index.html', config: hexo.config}).should.be.true;
   });
 
   it('is_post', function(){
