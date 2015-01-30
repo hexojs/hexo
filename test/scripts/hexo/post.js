@@ -464,4 +464,14 @@ describe('Post', function(){
       ].join(''));
     });
   });
+
+  it('render() - wrap variable with raw block if it\'s not a swig file', function(){
+    var content = 'Hello {{ world }}!';
+
+    return post.render(null, {
+      content: content
+    }).then(function(data){
+      data.content.should.eql(content);
+    });
+  });
 });
