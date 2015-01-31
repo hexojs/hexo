@@ -139,6 +139,52 @@ describe('Post', function(){
     });
   });
 
+  it('setTags() - old tags should be removed', function(){
+    var id;
+
+    return Post.insert({
+      source: 'foo.md',
+      slug: 'foo'
+    }).then(function(post){
+      id = post._id;
+      return post.setTags(['foo', 'bar']);
+    }).then(function(){
+      var post = Post.findById(id);
+      return post.setTags(['bar', 'baz']);
+    }).then(function(){
+      var post = Post.findById(id);
+
+      post.tags.map(function(tag){
+        return tag.name;
+      }).should.eql(['bar', 'baz']);
+
+      return Post.removeById(id);
+    });
+  });
+
+  it('setCategories() - old categories should be removed', function(){
+    var id;
+
+    return Post.insert({
+      source: 'foo.md',
+      slug: 'foo'
+    }).then(function(post){
+      id = post._id;
+      return post.setCategories(['foo', 'bar']);
+    }).then(function(){
+      var post = Post.findById(id);
+      return post.setCategories(['foo', 'baz']);
+    }).then(function(){
+      var post = Post.findById(id);
+
+      post.categories.map(function(cat){
+        return cat.name;
+      }).should.eql(['foo', 'baz']);
+
+      return Post.removeById(id);
+    });
+  });
+
   it('remove PostTag references when a post is removed', function(){
     return Post.insert({
       source: 'foo.md',

@@ -105,6 +105,26 @@ describe('File', function(){
     });
   });
 
+  it('read() - escape BOM', function(){
+    var file = new File({
+      content: new Buffer('\ufefffoo')
+    });
+
+    return file.read().then(function(result){
+      result.should.eql('foo');
+    });
+  });
+
+  it('read() - escape Windows line ending', function(){
+    var file = new File({
+      content: new Buffer('foo\r\nbar')
+    });
+
+    return file.read().then(function(result){
+      result.should.eql('foo\nbar');
+    });
+  });
+
   it('readSync()', function(){
     file.readSync().should.eql(body);
   });
@@ -148,6 +168,22 @@ describe('File', function(){
 
       return fs.unlink(file.source);
     });
+  });
+
+  it('readSync() - escape BOM', function(){
+    var file = new File({
+      content: new Buffer('\ufefffoo')
+    });
+
+    file.readSync().should.eql('foo');
+  });
+
+  it('readSync() - escape Windows line ending', function(){
+    var file = new File({
+      content: new Buffer('foo\r\nbar')
+    });
+
+    file.readSync().should.eql('foo\nbar');
   });
 
   it('stat()', function(){
