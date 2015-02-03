@@ -1,7 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
-var highlight = require('hexo-util').highlight;
+var util = require('hexo-util');
 
 describe('code', function(){
   var Hexo = require('../../../lib/hexo');
@@ -16,6 +16,12 @@ describe('code', function(){
 
   function code(args, content){
     return codeTag(args.split(' '), content);
+  }
+
+  function highlight(code, options){
+    return util.highlight(code, options || {})
+      .replace(/{/g, '&#123;')
+      .replace(/}/g, '&#125;');
   }
 
   it('default', function(){

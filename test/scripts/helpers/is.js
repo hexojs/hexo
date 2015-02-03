@@ -16,10 +16,16 @@ describe('is', function(){
   it('is_home', function(){
     var paginationDir = hexo.config.pagination_dir;
 
-    is.home.call({path: '', config: hexo.config}).should.be.true;
-    is.home.call({path: paginationDir + '/2/', config: hexo.config}).should.be.true;
-    is.home.call({path: 'index.html', config: hexo.config}).should.be.true;
-    is.home.call({path: paginationDir + '/2/index.html', config: hexo.config}).should.be.true;
+    is.home.call({path: '', config: hexo.config, page: {}}).should.be.true;
+    is.home.call({path: paginationDir + '/2/', config: hexo.config, page: {}}).should.be.true;
+    is.home.call({path: 'index.html', config: hexo.config, page: {}}).should.be.true;
+    is.home.call({path: paginationDir + '/2/index.html', config: hexo.config, page: {}}).should.be.true;
+
+    is.home.call({
+      path: 'zh-tw/index.html',
+      config: hexo.config,
+      page: {canonical_path: 'index.html'}
+    }).should.be.true;
   });
 
   it('is_post', function(){

@@ -3,7 +3,6 @@
 var should = require('chai').should();
 var util = require('hexo-util');
 var _ = require('lodash');
-var highlight = util.highlight;
 var defaultConfig = require('../../../lib/hexo/default_config');
 
 describe('Backtick code block', function(){
@@ -16,6 +15,12 @@ describe('Backtick code block', function(){
     '  sleep();',
     '}'
   ].join('\n');
+
+  function highlight(code, options){
+    return util.highlight(code, options || {})
+      .replace(/{/g, '&#123;')
+      .replace(/}/g, '&#125;');
+  }
 
   beforeEach(function(){
     // Reset config
