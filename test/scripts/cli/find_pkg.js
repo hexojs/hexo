@@ -16,7 +16,7 @@ describe('find package', function(){
   it('found', function(){
     var pkgPath = pathFn.join(__dirname, 'package.json');
 
-    return fs.writeFile(pkgPath, '{"name": "hexo-site"}').then(function(){
+    return fs.writeFile(pkgPath, '{"hexo": {}}').then(function(){
       return findPkg(__dirname, {});
     }).then(function(path){
       path.should.eql(__dirname);
@@ -25,7 +25,7 @@ describe('find package', function(){
     });
   });
 
-  it('name not match', function(){
+  it('don\'t have hexo data', function(){
     var pkgPath = pathFn.join(__dirname, 'package.json');
 
     return fs.writeFile(pkgPath, '{"name": "hexo"}').then(function(){

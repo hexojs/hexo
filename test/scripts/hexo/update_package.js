@@ -22,8 +22,9 @@ describe('Update package.json', function(){
 
   it('package.json exists, but the version doesn\'t match', function(){
     var pkg = {
-      name: 'hexo-site',
-      version: '0.0.1'
+      hexo: {
+        version: '0.0.1'
+      }
     };
 
     return fs.writeFile(packagePath, JSON.stringify(pkg)).then(function(){
@@ -31,14 +32,14 @@ describe('Update package.json', function(){
     }).then(function(){
       return fs.readFile(packagePath);
     }).then(function(content){
-      JSON.parse(content).version.should.eql(hexo.version);
+      JSON.parse(content).hexo.version.should.eql(hexo.version);
       hexo.env.init.should.be.true;
 
       return fs.unlink(packagePath);
     });
   });
 
-  it('package.json exists, but the name isn\'t right', function(){
+  it('package.json exists, but don\'t have hexo data', function(){
     var pkg = {
       name: 'hexo',
       version: '0.0.1'
@@ -59,8 +60,9 @@ describe('Update package.json', function(){
 
   it('package.json exists and everything is ok', function(){
     var pkg = {
-      name: 'hexo-site',
-      version: hexo.version
+      hexo: {
+        version: hexo.version
+      }
     };
 
     return fs.writeFile(packagePath, JSON.stringify(pkg)).then(function(){
