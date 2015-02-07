@@ -8,13 +8,17 @@ init:
 # Test against these versions of Node.js.
 environment:
   matrix:
+    # node.js
     - nodejs_version: "0.10"
     - nodejs_version: "0.11"
+    # io.js
+    - nodejs_version: "1.0"
 
 # Allow failing jobs for bleeding-edge Node.js versions.
 matrix:
   allow_failures:
     - nodejs_version: "0.11"
+    - nodejs_version: "1.0"
 
 # Install scripts. (runs after repo cloning)
 install:
@@ -28,10 +32,8 @@ test_script:
   # Output useful info for debugging.
   - node --version
   - npm --version
-  # We test multiple Windows shells because of prior stdout buffering issues
-  # filed against Grunt. https://github.com/joyent/node/issues/3584
-  - ps: "npm test # PowerShell" # Pass comment to PS for easier debugging
-  - cmd: npm test
+  # Run tests
+  - npm test
 
 # Don't actually build.
 build: off
