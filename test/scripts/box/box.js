@@ -360,17 +360,24 @@ describe('Box', function(){
       var i = 0;
 
       box.addProcessor(function(file){
-        if (i++){
-          file.source.should.eql(newSrc);
-          file.path.should.eql(newPath);
-          file.type.should.eql('create');
+        switch (file.type){
+          case 'create':
+            file.source.should.eql(newSrc);
+            file.path.should.eql(newPath);
+            break;
 
+          case 'delete':
+            file.source.should.eql(src);
+            file.path.should.eql(path);
+            break;
+
+          default:
+            throw new Error('Type must be either create or delete');
+        }
+
+        if (i++){
           box.unwatch();
           fs.rmdir(box.base, callback);
-        } else {
-          file.source.should.eql(src);
-          file.path.should.eql(path);
-          file.type.should.eql('delete');
         }
       });
 
@@ -396,17 +403,24 @@ describe('Box', function(){
       var i = 0;
 
       box.addProcessor(function(file){
-        if (i++){
-          file.source.should.eql(newSrc);
-          file.path.should.eql(newPath);
-          file.type.should.eql('create');
+        switch (file.type){
+          case 'create':
+            file.source.should.eql(newSrc);
+            file.path.should.eql(newPath);
+            break;
 
+          case 'delete':
+            file.source.should.eql(src);
+            file.path.should.eql(path);
+            break;
+
+          default:
+            throw new Error('Type must be either create or delete');
+        }
+
+        if (i++){
           box.unwatch();
           fs.rmdir(box.base, callback);
-        } else {
-          file.source.should.eql(newSrc);
-          file.path.should.eql(path);
-          file.type.should.eql('delete');
         }
       });
 
