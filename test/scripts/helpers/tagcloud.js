@@ -10,7 +10,6 @@ describe('tagcloud', function(){
   var Tag = hexo.model('Tag');
 
   var ctx = {
-    site: hexo.locals,
     config: hexo.config
   };
 
@@ -34,6 +33,9 @@ describe('tagcloud', function(){
       ], function(tags, i){
         return posts[i].setTags(tags);
       });
+    }).then(function(){
+      hexo.locals.invalidate();
+      ctx.site = hexo.locals.toObject();
     });
   });
 

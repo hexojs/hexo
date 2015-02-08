@@ -8,7 +8,6 @@ describe('list_posts', function(){
   var Post = hexo.model('Post');
 
   var ctx = {
-    site: hexo.locals,
     config: hexo.config
   };
 
@@ -25,6 +24,9 @@ describe('list_posts', function(){
       {source: 'baz', slug: 'baz', title: 'Bitch', date: 1e8 - 1}
     ]).then(function(){
       return hexo.init();
+    }).then(function(){
+      hexo.locals.invalidate();
+      ctx.site = hexo.locals.toObject();
     });
   });
 

@@ -686,7 +686,7 @@ describe('post', function(){
       should.not.exist(post.tag);
       post.tags.map(function(item){
         return item.name;
-      }).should.eql(['foo', 'bar']);
+      }).should.have.members(['foo', 'bar']);
 
       return Promise.all([
         post.remove(),

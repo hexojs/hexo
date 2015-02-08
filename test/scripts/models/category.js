@@ -128,6 +128,7 @@ describe('Category', function(){
         return post._id;
       }
 
+      hexo.locals.invalidate();
       cat.posts.map(mapper).should.eql(posts.map(mapper));
       cat.length.should.eql(posts.length);
 
@@ -152,12 +153,14 @@ describe('Category', function(){
       }
 
       // draft off
+      hexo.locals.invalidate();
       cat.posts.eq(0)._id.should.eql(posts[0]._id);
       cat.posts.eq(1)._id.should.eql(posts[2]._id);
       cat.length.should.eql(2);
 
       // draft on
       hexo.config.render_drafts = true;
+      hexo.locals.invalidate();
       cat = Category.findOne({name: 'foo'});
       cat.posts.map(mapper).should.eql(posts.map(mapper));
       cat.length.should.eql(posts.length);
@@ -187,11 +190,13 @@ describe('Category', function(){
 
       // future on
       hexo.config.future = true;
+      hexo.locals.invalidate();
       cat.posts.map(mapper).should.eql(posts.map(mapper));
       cat.length.should.eql(posts.length);
 
       // future off
       hexo.config.future = false;
+      hexo.locals.invalidate();
       cat = Category.findOne({name: 'foo'});
       cat.posts.eq(0)._id.should.eql(posts[0]._id);
       cat.posts.eq(1)._id.should.eql(posts[2]._id);

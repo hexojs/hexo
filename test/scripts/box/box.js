@@ -279,7 +279,6 @@ describe('Box', function(){
         file.path.should.eql(path);
         file.type.should.eql('create');
         file.params.should.eql({});
-        file.content.toString().should.eql('a');
 
         box.unwatch();
         fs.rmdir(box.base, callback);
@@ -307,7 +306,6 @@ describe('Box', function(){
         file.path.should.eql(path);
         file.type.should.eql('update');
         file.params.should.eql({});
-        file.content.should.eql(new Buffer('ab'));
 
         box.unwatch();
         fs.rmdir(box.base, callback);
@@ -335,7 +333,6 @@ describe('Box', function(){
         file.path.should.eql(path);
         file.type.should.eql('delete');
         file.params.should.eql({});
-        should.not.exist(file.content);
 
         box.unwatch();
         fs.rmdir(box.base, callback);

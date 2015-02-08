@@ -10,7 +10,6 @@ describe('list_categories', function(){
   var Category = hexo.model('Category');
 
   var ctx = {
-    site: hexo.locals,
     config: hexo.config
   };
 
@@ -33,6 +32,9 @@ describe('list_categories', function(){
       ], function(cats, i){
         return posts[i].setCategories(cats);
       });
+    }).then(function(){
+      hexo.locals.invalidate();
+      ctx.site = hexo.locals.toObject();
     });
   });
 
