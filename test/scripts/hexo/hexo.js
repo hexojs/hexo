@@ -210,11 +210,13 @@ describe('Hexo', function(){
       {source: 'foo', slug: 'foo', published: true},
       {source: 'bar', slug: 'bar', published: false}
     ]).then(function(posts){
-      hexo.locals.posts.toArray().should.eql(posts.slice(0, 1));
+      hexo.locals.invalidate();
+      hexo.locals.get('posts').toArray().should.eql(posts.slice(0, 1));
 
       // draft visible
       hexo.config.render_drafts = true;
-      hexo.locals.posts.toArray().should.eql(posts);
+      hexo.locals.invalidate();
+      hexo.locals.get('posts').toArray().should.eql(posts);
       hexo.config.render_drafts = false;
 
       return posts;
@@ -234,11 +236,13 @@ describe('Hexo', function(){
 
       // future on
       hexo.config.future = true;
-      hexo.locals.posts.map(mapper).should.eql(posts.map(mapper));
+      hexo.locals.invalidate();
+      hexo.locals.get('posts').map(mapper).should.eql(posts.map(mapper));
 
       // future off
       hexo.config.future = false;
-      hexo.locals.posts.map(mapper).should.eql([posts[0]._id]);
+      hexo.locals.invalidate();
+      hexo.locals.get('posts').map(mapper).should.eql([posts[0]._id]);
 
       return posts;
     }).map(function(post){
@@ -257,11 +261,13 @@ describe('Hexo', function(){
 
       // future on
       hexo.config.future = true;
-      hexo.locals.pages.map(mapper).should.eql(pages.map(mapper));
+      hexo.locals.invalidate();
+      hexo.locals.get('pages').map(mapper).should.eql(pages.map(mapper));
 
       // future off
       hexo.config.future = false;
-      hexo.locals.pages.map(mapper).should.eql([pages[0]._id]);
+      hexo.locals.invalidate();
+      hexo.locals.get('pages').map(mapper).should.eql([pages[0]._id]);
 
       return pages;
     }).map(function(page){
@@ -274,7 +280,8 @@ describe('Hexo', function(){
       {_id: 'users', data: {foo: 1}},
       {_id: 'comments', data: {bar: 2}}
     ]).then(function(data){
-      hexo.locals.data.should.eql({
+      hexo.locals.invalidate();
+      hexo.locals.get('data').should.eql({
         users: {foo: 1},
         comments: {bar: 2}
       });
@@ -311,7 +318,7 @@ describe('Hexo', function(){
     var afterHook = sinon.spy();
 
     var beforeHook = sinon.spy(function(){
-      hexo.locals.test = 'foo';
+      hexo.locals.set('test', 'foo');
     });
 
     hexo.once('generateBefore', beforeListener);

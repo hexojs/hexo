@@ -1,6 +1,6 @@
 {
   "name": "hexo",
-  "version": "3.0.0-rc.2",
+  "version": "3.0.0-rc.3",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
   "main": "lib/hexo",
   "bin": {
@@ -37,7 +37,7 @@
     "hexo-front-matter": "^0.2.1",
     "hexo-fs": "^0.1.2",
     "hexo-i18n": "^0.2.0",
-    "hexo-util": "^0.1.2",
+    "hexo-util": "^0.1.3",
     "js-yaml": "^3.2.5",
     "lodash": "^3.0.0",
     "minimatch": "^2.0.1",

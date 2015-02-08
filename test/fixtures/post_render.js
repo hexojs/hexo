@@ -3,14 +3,13 @@
 var util = require('hexo-util');
 
 var code = [
-  'if (tired && night){',
-  '  sleep();',
-  '}',
+  'if tired && night:',
+  '  sleep()'
 ].join('\n');
 
 var content = [
   '# Title',
-  '``` js',
+  '``` python',
   code,
   '```',
   'some content',
@@ -29,7 +28,7 @@ exports.content = content;
 
 exports.expected = [
   '<h1 id="Title">Title</h1>',
-  util.highlight(code, {lang: 'js'}),
+  util.highlight(code, {lang: 'python'}),
   '\n<p>some content</p>\n',
   '<h2 id="Another_title">Another title</h2>',
   '<blockquote>',

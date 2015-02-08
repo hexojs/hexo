@@ -9,12 +9,17 @@ describe('page', function(){
   var Page = hexo.model('Page');
   var generator = Promise.method(require('../../../lib/plugins/generator/page').bind(hexo));
 
+  function locals(){
+    hexo.locals.invalidate();
+    return hexo.locals.toObject();
+  }
+
   it('default layout', function(){
     return Page.insert({
       source: 'foo',
       path: 'bar'
     }).then(function(page){
-      return generator(hexo.locals).then(function(data){
+      return generator(locals()).then(function(data){
         data.should.eql([
           {
             path: page.path,
@@ -34,7 +39,7 @@ describe('page', function(){
       path: 'bar',
       layout: 'photo'
     }).then(function(page){
-      return generator(hexo.locals).then(function(data){
+      return generator(locals()).then(function(data){
         data[0].layout.should.eql(['photo', 'page', 'post', 'index']);
 
         return page.remove();
@@ -48,7 +53,7 @@ describe('page', function(){
       path: 'bar',
       layout: false
     }).then(function(page){
-      return generator(hexo.locals).then(function(data){
+      return generator(locals()).then(function(data){
         should.not.exist(data[0].layout);
 
         return page.remove();
@@ -65,7 +70,7 @@ describe('page', function(){
       layout: false,
       raw: 'jquery raw'
     }).then(function(page){
-      return generator(hexo.locals).then(function(data){
+      return generator(locals()).then(function(data){
         data.should.eql([
           {path: page.source, data: page.raw}
         ]);
@@ -85,7 +90,7 @@ describe('page', function(){
       layout: false,
       raw: 'jquery raw'
     }).then(function(page){
-      return generator(hexo.locals).then(function(data){
+      return generator(locals()).then(function(data){
         data.should.eql([
           {path: page.source, data: page.raw}
         ]);
@@ -105,7 +110,7 @@ describe('page', function(){
       layout: 'page',
       raw: 'readme raw'
     }).then(function(page){
-      return generator(hexo.locals).then(function(data){
+      return generator(locals()).then(function(data){
         data.should.eql([
           {path: page.source, data: page.raw}
         ]);

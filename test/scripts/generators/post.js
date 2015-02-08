@@ -11,6 +11,11 @@ describe('post', function(){
 
   hexo.config.permalink = ':title/';
 
+  function locals(){
+    hexo.locals.invalidate();
+    return hexo.locals.toObject();
+  }
+
   before(function(){
     return hexo.init();
   });
@@ -20,7 +25,7 @@ describe('post', function(){
       source: 'foo',
       slug: 'bar'
     }).then(function(post){
-      return generator(hexo.locals).then(function(data){
+      return generator(locals()).then(function(data){
         data.should.eql([
           {
             path: 'bar/',
@@ -40,7 +45,7 @@ describe('post', function(){
       slug: 'bar',
       layout: 'photo'
     }).then(function(post){
-      return generator(hexo.locals).then(function(data){
+      return generator(locals()).then(function(data){
         data[0].layout.should.eql(['photo', 'post', 'page', 'index']);
 
         return post.remove();
@@ -54,7 +59,7 @@ describe('post', function(){
       slug: 'bar',
       layout: false
     }).then(function(post){
-      return generator(hexo.locals).then(function(data){
+      return generator(locals()).then(function(data){
         should.not.exist(data[0].layout);
 
         return post.remove();
@@ -68,7 +73,7 @@ describe('post', function(){
       {source: 'bar', slug: 'bar', date: 1e8 + 1},
       {source: 'baz', slug: 'baz', date: 1e8 - 1}
     ]).then(function(posts){
-      return generator(hexo.locals).then(function(data){
+      return generator(locals()).then(function(data){
         should.not.exist(data[0].data.prev);
         data[0].data.next._id.should.eql(posts[0]._id);
 

@@ -8,9 +8,9 @@ describe('paginator', function(){
 
   var ctx = {
     page: {
-      base: ''
+      base: '',
+      total: 10
     },
-    total: 10,
     site: hexo.locals,
     config: hexo.config
   };
@@ -120,7 +120,7 @@ describe('paginator', function(){
       current: 5,
       total: 10,
       pages: [0, 3, 4, 5, 6, 7, 0]
-    })
+    });
   });
 
   it('mid_size', function(){
@@ -262,4 +262,24 @@ describe('paginator', function(){
       '<a class="extend next" rel="next" href="/page/3/">Next</a>'
     ].join(''));
   });
+
+  it('context', function(){
+    ctx.page.current = 5;
+    var result = paginator({
+      space: ''
+    });
+
+    checkResult(result, {
+      current: 5,
+      total: 10,
+      pages: [1, 3, 4, 5, 6, 7, 10]
+    });
+  });
+
+  it('current = 0', function(){
+    ctx.page.current = 0;
+    var result = paginator({});
+
+    result.should.eql('');
+  })
 });

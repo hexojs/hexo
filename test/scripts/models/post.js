@@ -107,7 +107,7 @@ describe('Post', function(){
     }).then(function(post){
       post.tags.map(function(tag){
         return tag.name;
-      }).should.eql(['foo', 'bar', 'baz']);
+      }).should.eql(['bar', 'baz', 'foo']);
 
       return Post.removeById(post._id);
     });
@@ -159,6 +159,26 @@ describe('Post', function(){
       }).should.eql(['bar', 'baz']);
 
       return Post.removeById(id);
+    });
+  });
+
+  it('setTags() - sync problem', function(){
+    return Post.insert([
+      {source: 'foo.md', slug: 'foo'},
+      {source: 'bar.md', slug: 'bar'}
+    ]).then(function(posts){
+      return Promise.all([
+        posts[0].setTags(['foo', 'bar']),
+        posts[1].setTags(['bar', 'baz'])
+      ]).thenReturn(posts);
+    }).then(function(posts){
+      Tag.map(function(tag){
+        return tag.name;
+      }).should.have.members(['foo', 'bar', 'baz']);
+
+      return posts;
+    }).map(function(post){
+      return Post.removeById(post._id);
     });
   });
 

@@ -465,13 +465,39 @@ describe('Post', function(){
     });
   });
 
-  it('render() - wrap variable with raw block if it\'s not a swig file', function(){
-    var content = 'Hello {{ world }}!';
+  it('render() - escaping swig blocks with similar names', function(){
+    var code = 'alert("Hello world")';
+    var highlighted = util.highlight(code);
+
+    var content = [
+      '{% codeblock %}',
+      code,
+      '{% endcodeblock %}',
+      '',
+      '{% code %}',
+      code,
+      '{% endcode %}'
+    ].join('\n');
 
     return post.render(null, {
       content: content
     }).then(function(data){
-      data.content.should.eql(content);
+      data.content.trim().should.eql([
+        highlighted,
+        '',
+        highlighted
+      ].join('\n'));
+    });
+  });
+
+  it('render() - recover escaped swig blocks which is html escaped', function(){
+    var content = '`{% raw %}{{ test }}{% endraw %}`';
+
+    return post.render(null, {
+      content: content,
+      engine: 'markdown'
+    }).then(function(data){
+      data.content.trim().should.eql('<p><code>{{ test }}</code></p>');
     });
   });
 });

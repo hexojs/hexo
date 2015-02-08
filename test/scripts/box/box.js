@@ -279,7 +279,6 @@ describe('Box', function(){
         file.path.should.eql(path);
         file.type.should.eql('create');
         file.params.should.eql({});
-        file.content.toString().should.eql('a');
 
         box.unwatch();
         fs.rmdir(box.base, callback);
@@ -307,7 +306,6 @@ describe('Box', function(){
         file.path.should.eql(path);
         file.type.should.eql('update');
         file.params.should.eql({});
-        file.content.should.eql(new Buffer('ab'));
 
         box.unwatch();
         fs.rmdir(box.base, callback);
@@ -335,13 +333,84 @@ describe('Box', function(){
         file.path.should.eql(path);
         file.type.should.eql('delete');
         file.params.should.eql({});
-        should.not.exist(file.content);
 
         box.unwatch();
         fs.rmdir(box.base, callback);
       });
 
       fs.unlink(src);
+    });
+  });
+
+  it('watch() - rename file', function(callback){
+    var box = newBox('test');
+    var path = 'a.txt';
+    var src = pathFn.join(box.base, path);
+    var newPath = 'b.txt';
+    var newSrc = pathFn.join(box.base, newPath);
+    var cacheId = 'test/' + path;
+    var Cache = box.Cache;
+
+    Promise.all([
+      fs.writeFile(src, 'a'),
+      Cache.insert({_id: cacheId, shasum: 'a'})
+    ]).then(function(){
+      return box.watch();
+    }).then(function(){
+      var i = 0;
+
+      box.addProcessor(function(file){
+        if (i++){
+          file.source.should.eql(newSrc);
+          file.path.should.eql(newPath);
+          file.type.should.eql('create');
+
+          box.unwatch();
+          fs.rmdir(box.base, callback);
+        } else {
+          file.source.should.eql(src);
+          file.path.should.eql(path);
+          file.type.should.eql('delete');
+        }
+      });
+
+      fs.rename(src, newSrc);
+    });
+  });
+
+  it('watch() - rename folder', function(callback){
+    var box = newBox('test');
+    var path = 'a/b.txt';
+    var src = pathFn.join(box.base, path);
+    var newPath = 'b/b.txt';
+    var newSrc = pathFn.join(box.base, newPath);
+    var cacheId = 'test/' + path;
+    var Cache = box.Cache;
+
+    Promise.all([
+      fs.writeFile(src, 'a'),
+      Cache.insert({_id: cacheId, shasum: 'a'})
+    ]).then(function(){
+      return box.watch();
+    }).then(function(){
+      var i = 0;
+
+      box.addProcessor(function(file){
+        if (i++){
+          file.source.should.eql(newSrc);
+          file.path.should.eql(newPath);
+          file.type.should.eql('create');
+
+          box.unwatch();
+          fs.rmdir(box.base, callback);
+        } else {
+          file.source.should.eql(newSrc);
+          file.path.should.eql(path);
+          file.type.should.eql('delete');
+        }
+      });
+
+      fs.rename(pathFn.join(box.base, 'a'), pathFn.join(box.base, 'b'));
     });
   });
 

@@ -110,6 +110,7 @@ describe('Tag', function(){
         return post._id;
       }
 
+      hexo.locals.invalidate();
       tag.posts.map(mapper).should.eql(posts.map(mapper));
       tag.length.should.eql(posts.length);
 
@@ -134,6 +135,7 @@ describe('Tag', function(){
       }
 
       // draft off
+      hexo.locals.invalidate();
       tag.posts.eq(0)._id.should.eql(posts[0]._id);
       tag.posts.eq(1)._id.should.eql(posts[2]._id);
       tag.length.should.eql(2);
@@ -141,6 +143,7 @@ describe('Tag', function(){
       // draft on
       hexo.config.render_drafts = true;
       tag = Tag.findOne({name: 'foo'});
+      hexo.locals.invalidate();
       tag.posts.map(mapper).should.eql(posts.map(mapper));
       tag.length.should.eql(posts.length);
       hexo.config.render_drafts = false;
@@ -169,11 +172,13 @@ describe('Tag', function(){
 
       // future on
       hexo.config.future = true;
+      hexo.locals.invalidate();
       tag.posts.map(mapper).should.eql(posts.map(mapper));
       tag.length.should.eql(posts.length);
 
       // future off
       hexo.config.future = false;
+      hexo.locals.invalidate();
       tag = Tag.findOne({name: 'foo'});
       tag.posts.eq(0)._id.should.eql(posts[0]._id);
       tag.posts.eq(1)._id.should.eql(posts[2]._id);

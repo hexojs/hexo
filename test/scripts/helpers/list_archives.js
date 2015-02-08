@@ -8,7 +8,6 @@ describe('list_archives', function(){
   var Post = hexo.model('Post');
 
   var ctx = {
-    site: hexo.locals,
     config: hexo.config
   };
 
@@ -22,7 +21,10 @@ describe('list_archives', function(){
       {source: 'bar', slug: 'bar', date: new Date(2013, 5, 6)},
       {source: 'baz', slug: 'baz', date: new Date(2013, 9, 10)},
       {source: 'boo', slug: 'boo', date: new Date(2013, 5, 8)}
-    ]);
+    ]).then(function(){
+      hexo.locals.invalidate();
+      ctx.site = hexo.locals.toObject();
+    });
   });
 
   it('default', function(){
