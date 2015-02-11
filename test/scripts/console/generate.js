@@ -69,19 +69,79 @@ describe('generate', function(){
     return testGenerate();
   });
 
-  it('generate big files');
+  it('write file if not exist', function(){
+    var src = pathFn.join(hexo.source_dir, 'test.txt');
+    var dest = pathFn.join(hexo.public_dir, 'test.txt');
+    var content = 'test';
 
-  it('skip generating');
+    // Add some source files
+    return fs.writeFile(src, content).then(function(){
+      // First generation
+      return generate({});
+    }).then(function(){
+      // Delete generated files
+      return fs.unlink(dest);
+    }).then(function(){
+      // Second generation
+      return generate({});
+    }).then(function(){
+      return fs.readFile(dest);
+    }).then(function(result){
+      result.should.eql(content);
+
+      // Remove source files and generated files
+      return Promise.all([
+        fs.unlink(src),
+        fs.unlink(dest)
+      ]);
+    });
+  });
+
+  it('don\'t write if file unchanged', function(){
+    var src = pathFn.join(hexo.source_dir, 'test.txt');
+    var dest = pathFn.join(hexo.public_dir, 'test.txt');
+    var content = 'test';
+    var newContent = 'newtest';
+    // var mtime;
+
+    // Add some source files
+    return fs.writeFile(src, content).then(function(){
+      // First generation
+      return generate({});
+    }).then(function(){
+      // Change the generated file
+      return fs.writeFile(dest, newContent);
+    }).then(function(){
+      // Second generation
+      return generate({});
+    }).then(function(){
+      // Read the generated file
+      return fs.readFile(dest);
+    }).then(function(result){
+      // Make sure the generated file didn't changed
+      result.should.eql(newContent);
+
+      // Remove source files and generated files
+      return Promise.all([
+        fs.unlink(src),
+        fs.unlink(dest)
+      ]);
+    });
+  });
 
   it('watch - update', function(){
+    var src = pathFn.join(hexo.source_dir, 'test.txt');
+    var dest = pathFn.join(hexo.public_dir, 'test.txt');
+    var content = 'test';
+
     return testGenerate({watch: true}).then(function(){
       // Update the file
-      return fs.writeFile(pathFn.join(hexo.source_dir, 'test.txt'), 'newtest');
+      return fs.writeFile(src, content);
     }).delay(300).then(function(){
-      return fs.readFile(pathFn.join(hexo.public_dir, 'test.txt'));
-    }).then(function(content){
+      return fs.readFile(dest);
+    }).then(function(result){
       // Check the updated file
-      content.should.eql('newtest');
+      result.should.eql(content);
 
       // Stop watching
       hexo.unwatch();
