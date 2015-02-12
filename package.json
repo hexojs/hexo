@@ -34,6 +34,7 @@
     "bunyan": "^1.2.3",
     "chalk": "^0.5.1",
     "cheerio": "^0.18.0",
+    "hexo-cli": "^0.1.0",
     "hexo-front-matter": "^0.2.1",
     "hexo-fs": "^0.1.2",
     "hexo-i18n": "^0.2.0",
@@ -41,7 +42,6 @@
     "js-yaml": "^3.2.5",
     "lodash": "^3.0.0",
     "minimatch": "^2.0.1",
-    "minimist": "^1.1.0",
     "moment": "2.9.0",
     "moment-timezone": "^0.3.0",
     "nunjucks": "1.1.0",
@@ -52,7 +52,6 @@
     "through2": "^0.6.3",
     "tildify": "^1.0.0",
     "titlecase": "^1.0.2",
-    "update-notifier": "^0.3.0",
     "warehouse": "^1.0.0"
   },
   "devDependencies": {
