@@ -4,11 +4,12 @@ var pathFn = require('path');
 var should = require('chai').should();
 var fs = require('hexo-fs');
 var highlight = require('hexo-util').highlight;
+var Promise = require('bluebird');
 
 describe('include_code', function(){
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(pathFn.join(__dirname, 'include_code_test'));
-  var includeCode = require('../../../lib/plugins/tag/include_code')(hexo);
+  var includeCode = Promise.method(require('../../../lib/plugins/tag/include_code')(hexo));
   var path = pathFn.join(hexo.source_dir, hexo.config.code_dir, 'test.js');
 
   var fixture = [
@@ -30,46 +31,50 @@ describe('include_code', function(){
   });
 
   it('default', function(){
-    var result = code('test.js');
     var expected = highlight(fixture, {
       lang: 'js',
       caption: '<span>test.js</span><a href="/downloads/code/test.js">view raw</a>'
     });
 
-    result.should.eql(expected);
+    return code('test.js').then(function(result){
+      result.should.eql(expected);
+    });
   });
 
   it('title', function(){
-    var result = code('Hello world test.js');
     var expected = highlight(fixture, {
       lang: 'js',
       caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
     });
 
-    result.should.eql(expected);
+    return code('Hello world test.js').then(function(result){
+      result.should.eql(expected);
+    });
   });
 
   it('lang', function(){
-    var result = code('Hello world lang:js test.js');
     var expected = highlight(fixture, {
       lang: 'js',
       caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
     });
 
-    result.should.eql(expected);
+    return code('Hello world lang:js test.js').then(function(result){
+      result.should.eql(expected);
+    });
   });
 
   it('file not found', function(){
-    var result = code('nothing');
-    should.not.exist(result);
+    return code('nothing').then(function(result){
+      should.not.exist(result);
+    });
   });
 
   it('disabled', function(){
     hexo.config.highlight.enable = false;
 
-    var result = code('test.js');
-    result.should.eql('<pre><code>' + fixture + '</code></pre>');
-
-    hexo.config.highlight.enable = true;
+    return code('test.js').then(function(result){
+      result.should.eql('<pre><code>' + fixture + '</code></pre>');
+      hexo.config.highlight.enable = true;
+    });
   });
 });
