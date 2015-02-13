@@ -463,12 +463,30 @@ describe('Hexo', function(){
     });
 
     // First generation
-    return hexo._generate().then(function(){
+    return hexo._generate({cache: true}).then(function(){
       return checkStream(route.get('test'), '0');
     }).then(function(){
       // Second generation
-      return hexo._generate();
+      return hexo._generate({cache: true});
     }).then(function(){
+      return checkStream(route.get('test'), '1');
+    });
+  });
+
+  it('_generate() - cache disabled & update template', function(){
+    hexo.theme.setView('test.swig', '0');
+
+    hexo.extend.generator.register('test', function(){
+      return {
+        path: 'test',
+        layout: 'test'
+      };
+    });
+
+    return hexo._generate({cache: false}).then(function(){
+      return checkStream(route.get('test'), '0');
+    }).then(function(){
+      hexo.theme.setView('test.swig', '1');
       return checkStream(route.get('test'), '1');
     });
   });
