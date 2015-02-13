@@ -35,17 +35,6 @@ describe('Scaffold', function(){
     });
   });
 
-  it('get() - file does not exists, use default scaffold instead', function(){
-    var assetPath = pathFn.join(hexo.core_dir, 'assets', 'scaffolds', 'post.md');
-
-    return Promise.all([
-      fs.readFile(assetPath),
-      scaffold.get('post')
-    ]).spread(function(asset, data){
-      asset.should.eql(data);
-    });
-  });
-
   it('get() - normal scaffold', function(){
     return scaffold.get('normal').then(function(data){
       data.should.eql(scaffold.defaults.normal);

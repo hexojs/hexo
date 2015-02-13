@@ -24,6 +24,19 @@ describe('Post', function(){
     }).then(function(){
       // Load marked renderer for testing
       return hexo.loadPlugin(require.resolve('hexo-renderer-marked'));
+    }).then(function(){
+      return hexo.scaffold.set('post', [
+        'title: {{ title }}',
+        'date: {{ date }}',
+        'tags:',
+        '---'
+      ].join('\n'));
+    }).then(function(){
+      return hexo.scaffold.set('draft', [
+        'title: {{ title }}',
+        'tags:',
+        '---'
+      ].join('\n'));
     });
   });
 

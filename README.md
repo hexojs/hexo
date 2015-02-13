@@ -14,7 +14,7 @@ A fast, simple & powerful blog framework, powered by [Node.js](http://nodejs.org
 ## Installation
 
 ``` bash
-$ npm install hexo -g
+$ npm install hexo-cli -g
 ```
 
 ## Quick Start
