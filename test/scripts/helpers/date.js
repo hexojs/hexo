@@ -1,12 +1,22 @@
 'use strict';
 
-var moment = require('moment');
+var moment = require('moment-timezone');
 var should = require('chai').should();
+var sinon = require('sinon');
 
 describe('date', function(){
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo();
   var dateHelper = require('../../../lib/plugins/helper/date');
+  var clock;
+
+  before(function(){
+    clock = sinon.useFakeTimers(Date.now());
+  });
+
+  after(function(){
+    clock.restore();
+  });
 
   it('date', function(){
     var ctx = {
@@ -16,46 +26,51 @@ describe('date', function(){
 
     var date = dateHelper.date.bind(ctx);
 
+    // now
+    date().should.eql(moment().format(hexo.config.date_format));
+
     // moment
-    var now = moment();
-    date(now).should.eql(now.format(hexo.config.date_format));
-    date(now, 'MMM-D-YYYY').should.eql(now.format('MMM-D-YYYY'));
+    date(moment()).should.eql(moment().format(hexo.config.date_format));
+    date(moment(), 'MMM-D-YYYY').should.eql(moment().format('MMM-D-YYYY'));
 
     // date
-    now = new Date();
-    date(now).should.eql(moment(now).format(hexo.config.date_format));
-    date(now, 'MMM-D-YYYY').should.eql(moment(now).format('MMM-D-YYYY'));
+    date(new Date()).should.eql(moment().format(hexo.config.date_format));
+    date(new Date(), 'MMM-D-YYYY').should.eql(moment().format('MMM-D-YYYY'));
 
     // number
-    now = Date.now();
-    date(now).should.eql(moment(now).format(hexo.config.date_format));
-    date(now, 'MMM-D-YYYY').should.eql(moment(now).format('MMM-D-YYYY'));
+    date(Date.now()).should.eql(moment().format(hexo.config.date_format));
+    date(Date.now(), 'MMM-D-YYYY').should.eql(moment().format('MMM-D-YYYY'));
 
     // page.lang
     ctx.page.lang = 'zh-tw';
-    date(now).should.eql(moment(now).locale('zh-tw').format(hexo.config.date_format));
+    date(Date.now(), 'MMM D YYYY').should.eql(moment().locale('zh-tw').format('MMM D YYYY'));
     ctx.page.lang = '';
 
     // config.language
     ctx.config.language = 'ja';
-    date(now).should.eql(moment(now).locale('ja').format(hexo.config.date_format));
+    date(Date.now(), 'MMM D YYYY').should.eql(moment().locale('ja').format('MMM D YYYY'));
     ctx.config.language = '';
+
+    // timezone
+    ctx.config.timezone = 'UTC';
+    date(Date.now(), 'LLL').should.eql(moment().tz('UTC').format('LLL'));
+    ctx.config.timezone = '';
   });
 
   it('date_xml', function(){
     var dateXML = dateHelper.date_xml;
 
+    // now
+    dateXML().should.eql(moment().toISOString());
+
     // moment
-    var now = moment();
-    dateXML(now).should.eql(now.toISOString());
+    dateXML(moment()).should.eql(moment().toISOString());
 
     // date
-    now = new Date();
-    dateXML(now).should.eql(now.toISOString());
+    dateXML(new Date()).should.eql(moment().toISOString());
 
     // number
-    now = Date.now();
-    dateXML(now).should.eql(new Date(now).toISOString());
+    dateXML(Date.now()).should.eql(moment().toISOString());
   });
 
   it('time', function(){
@@ -66,30 +81,35 @@ describe('date', function(){
 
     var time = dateHelper.time.bind(ctx);
 
+    // now
+    time().should.eql(moment().format(hexo.config.time_format));
+
     // moment
-    var now = moment();
-    time(now).should.eql(now.format(hexo.config.time_format));
-    time(now, 'H:mm').should.eql(now.format('H:mm'));
+    time(moment()).should.eql(moment().format(hexo.config.time_format));
+    time(moment(), 'H:mm').should.eql(moment().format('H:mm'));
 
     // date
-    now = new Date();
-    time(now).should.eql(moment(now).format(hexo.config.time_format));
-    time(now, 'H:mm').should.eql(moment(now).format('H:mm'));
+    time(new Date()).should.eql(moment().format(hexo.config.time_format));
+    time(new Date(), 'H:mm').should.eql(moment().format('H:mm'));
 
     // number
-    now = Date.now();
-    time(now).should.eql(moment(now).format(hexo.config.time_format));
-    time(now, 'H:mm').should.eql(moment(now).format('H:mm'));
+    time(Date.now()).should.eql(moment().format(hexo.config.time_format));
+    time(Date.now(), 'H:mm').should.eql(moment().format('H:mm'));
 
     // page.lang
     ctx.page.lang = 'zh-tw';
-    time(now).should.eql(moment(now).locale('zh-tw').format(hexo.config.time_format));
+    time(Date.now(), 'A H:mm').should.eql(moment().locale('zh-tw').format('A H:mm'));
     ctx.page.lang = '';
 
     // config.language
     ctx.config.language = 'ja';
-    time(now).should.eql(moment(now).locale('ja').format(hexo.config.time_format));
+    time(Date.now(), 'A H:mm').should.eql(moment().locale('ja').format('A H:mm'));
     ctx.config.language = '';
+
+    // timezone
+    ctx.config.timezone = 'UTC';
+    time().should.eql(moment().tz('UTC').format(hexo.config.time_format));
+    ctx.config.timezone = '';
   });
 
   it('full_date', function(){
@@ -103,30 +123,35 @@ describe('date', function(){
     var fullDate = dateHelper.full_date.bind(ctx);
     var fullDateFormat = hexo.config.date_format + ' ' + hexo.config.time_format;
 
+    // now
+    fullDate().should.eql(moment().format(fullDateFormat));
+
     // moment
-    var now = moment();
-    fullDate(now).should.eql(now.format(fullDateFormat));
-    fullDate(now, 'MMM-D-YYYY').should.eql(now.format('MMM-D-YYYY'));
+    fullDate(moment()).should.eql(moment().format(fullDateFormat));
+    fullDate(moment(), 'MMM-D-YYYY').should.eql(moment().format('MMM-D-YYYY'));
 
     // date
-    now = new Date();
-    fullDate(now).should.eql(moment(now).format(fullDateFormat));
-    fullDate(now, 'MMM-D-YYYY').should.eql(moment(now).format('MMM-D-YYYY'));
+    fullDate(new Date()).should.eql(moment().format(fullDateFormat));
+    fullDate(new Date(), 'MMM-D-YYYY').should.eql(moment().format('MMM-D-YYYY'));
 
     // number
-    now = Date.now();
-    fullDate(now).should.eql(moment(now).format(fullDateFormat));
-    fullDate(now, 'MMM-D-YYYY').should.eql(moment(now).format('MMM-D-YYYY'));
+    fullDate(Date.now()).should.eql(moment().format(fullDateFormat));
+    fullDate(Date.now(), 'MMM-D-YYYY').should.eql(moment().format('MMM-D-YYYY'));
 
     // page.lang
     ctx.page.lang = 'zh-tw';
-    fullDate(now).should.eql(moment(now).locale('zh-tw').format(fullDateFormat));
+    fullDate(Date.now(), 'LLL').should.eql(moment().locale('zh-tw').format('LLL'));
     ctx.page.lang = '';
 
     // config.language
     ctx.config.language = 'ja';
-    fullDate(now).should.eql(moment(now).locale('ja').format(fullDateFormat));
+    fullDate(Date.now(), 'LLL').should.eql(moment().locale('ja').format('LLL'));
     ctx.config.language = '';
+
+    // timezone
+    ctx.config.timezone = 'UTC';
+    fullDate().should.eql(moment().tz('UTC').format(fullDateFormat));
+    ctx.config.timezone = '';
   });
 
   it('time_tag', function(){
@@ -138,29 +163,45 @@ describe('date', function(){
 
     var timeTag = dateHelper.time_tag.bind(ctx);
 
+    function result(date, format){
+      date = date || new Date();
+      format = format || hexo.config.date_format;
+      return '<time datetime="' + moment(date).toISOString() + '">' + moment(date).format(format) + '</time>';
+    }
+
+    function check(date, format){
+      format = format || hexo.config.date_format;
+      timeTag(date, format).should.eql(result(date, format));
+    }
+
+    // now
+    timeTag().should.eql(result());
+
     // moment
-    var now = moment();
-    timeTag(now).should.eql('<time datetime="' + now.toISOString() + '">' + now.format(hexo.config.date_format) + '</time>');
-    timeTag(now, 'MMM-D-YYYY').should.eql('<time datetime="' + now.toISOString() + '">' + now.format('MMM-D-YYYY') + '</time>');
+    check(moment());
+    check(moment(), 'MMM-D-YYYY');
 
     // date
-    now = new Date();
-    timeTag(now).should.eql('<time datetime="' + moment(now).toISOString() + '">' + moment(now).format(hexo.config.date_format) + '</time>');
-    timeTag(now, 'MMM-D-YYYY').should.eql('<time datetime="' + moment(now).toISOString() + '">' + moment(now).format('MMM-D-YYYY') + '</time>');
+    check(new Date());
+    check(new Date(), 'MMM-D-YYYY');
 
     // number
-    now = Date.now();
-    timeTag(now).should.eql('<time datetime="' + moment(now).toISOString() + '">' + moment(now).format(hexo.config.date_format) + '</time>');
-    timeTag(now, 'MMM-D-YYYY').should.eql('<time datetime="' + moment(now).toISOString() + '">' + moment(now).format('MMM-D-YYYY') + '</time>');
+    check(Date.now());
+    check(Date.now(), 'MMM-D-YYYY');
 
     // page.lang
     ctx.page.lang = 'zh-tw';
-    timeTag(now).should.eql('<time datetime="' + moment(now).toISOString() + '">' + moment(now).locale('zh-tw').format(hexo.config.date_format) + '</time>');
+    timeTag(Date.now(), 'LLL').should.eql('<time datetime="' + moment().toISOString() + '">' + moment().locale('zh-tw').format('LLL') + '</time>');
     ctx.page.lang = '';
 
     // config.language
     ctx.config.language = 'ja';
-    timeTag(now).should.eql('<time datetime="' + moment(now).toISOString() + '">' + moment(now).locale('ja').format(hexo.config.date_format) + '</time>');
+    timeTag(Date.now(), 'LLL').should.eql('<time datetime="' + moment().toISOString() + '">' + moment().locale('ja').format('LLL') + '</time>');
     ctx.config.language = '';
+
+    // timezone
+    ctx.config.timezone = 'UTC';
+    timeTag(Date.now(), 'LLL').should.eql('<time datetime="' + moment().toISOString() + '">' + moment().tz('UTC').format('LLL') + '</time>');
+    ctx.config.timezone = '';
   });
 });
