@@ -8,12 +8,18 @@ describe('list_archives', function(){
   var Post = hexo.model('Post');
 
   var ctx = {
-    config: hexo.config
+    config: hexo.config,
+    page: {}
   };
 
   ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
 
   var listArchives = require('../../../lib/plugins/helper/list_archives').bind(ctx);
+
+  function resetLocals(){
+    hexo.locals.invalidate();
+    ctx.site = hexo.locals.toObject();
+  }
 
   before(function(){
     return Post.insert([
@@ -22,8 +28,7 @@ describe('list_archives', function(){
       {source: 'baz', slug: 'baz', date: new Date(2013, 9, 10)},
       {source: 'boo', slug: 'boo', date: new Date(2013, 5, 8)}
     ]).then(function(){
-      hexo.locals.invalidate();
-      ctx.site = hexo.locals.toObject();
+      resetLocals();
     });
   });
 
@@ -148,4 +153,34 @@ describe('list_archives', function(){
       '</ul>'
     ].join(''));
   });
+
+  it('page.lang', function(){
+    ctx.page.lang = 'zh-tw';
+    var result = listArchives();
+    ctx.page.lang = '';
+
+    result.should.eql([
+      '<ul class="archive-list">',
+        '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">1</span></li>',
+        '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">1</span></li>',
+        '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">六月 2013</a><span class="archive-list-count">2</span></li>',
+      '</ul>'
+    ].join(''));
+  });
+
+  it('config.language', function(){
+    ctx.config.language = 'de';
+    var result = listArchives();
+    ctx.config.language = '';
+
+    result.should.eql([
+      '<ul class="archive-list">',
+        '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">Februar 2014</a><span class="archive-list-count">1</span></li>',
+        '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">Oktober 2013</a><span class="archive-list-count">1</span></li>',
+        '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">Juni 2013</a><span class="archive-list-count">2</span></li>',
+      '</ul>'
+    ].join(''));
+  });
+
+  it('timezone');
 });

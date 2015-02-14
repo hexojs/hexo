@@ -439,7 +439,57 @@ describe('Hexo', function(){
 
   it('_generate() - validate locals');
 
-  it('_generate() - do nothing if it\'s generating');
+  it('_generate() - do nothing if it\'s generating', function(){
+    var spy = sinon.spy();
+    hexo.extend.generator.register('test', spy);
+
+    hexo._isGenerating = true;
+    hexo._generate();
+    spy.called.should.be.false;
+    hexo._isGenerating = false;
+  });
+
+  it('_generate() - reset cache for new route', function(){
+    var count = 0;
+
+    hexo.theme.setView('test.swig', '{{ page.count }}');
+
+    hexo.extend.generator.register('test', function(){
+      return {
+        path: 'test',
+        layout: 'test',
+        data: {count: count++}
+      };
+    });
+
+    // First generation
+    return hexo._generate({cache: true}).then(function(){
+      return checkStream(route.get('test'), '0');
+    }).then(function(){
+      // Second generation
+      return hexo._generate({cache: true});
+    }).then(function(){
+      return checkStream(route.get('test'), '1');
+    });
+  });
+
+  it('_generate() - cache disabled & update template', function(){
+    hexo.theme.setView('test.swig', '0');
+
+    hexo.extend.generator.register('test', function(){
+      return {
+        path: 'test',
+        layout: 'test'
+      };
+    });
+
+    return hexo._generate({cache: false}).then(function(){
+      return checkStream(route.get('test'), '0');
+    }).then(function(){
+      hexo.theme.setView('test.swig', '1');
+      return checkStream(route.get('test'), '1');
+    });
+  });
 
   it('execFilter()', function(){
     hexo.extend.filter.register('exec_test', function(data){

@@ -9,6 +9,5 @@ describe('Filters', function(){
   require('./post_permalink');
   require('./render_post');
   require('./save_database');
-  require('./stop_watcher');
   require('./titlecase');
 });

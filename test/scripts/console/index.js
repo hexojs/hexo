@@ -5,7 +5,6 @@ describe('Console', function(){
   require('./config');
   require('./deploy');
   require('./generate');
-  require('./init');
   require('./migrate');
   require('./new');
   require('./publish');
