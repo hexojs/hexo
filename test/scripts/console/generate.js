@@ -5,7 +5,6 @@ var pathFn = require('path');
 var fs = require('hexo-fs');
 var Promise = require('bluebird');
 var sinon = require('sinon');
-var testUtil = require('../../util');
 
 describe('generate', function(){
   var Hexo = require('../../../lib/hexo');
@@ -102,7 +101,6 @@ describe('generate', function(){
     var dest = pathFn.join(hexo.public_dir, 'test.txt');
     var content = 'test';
     var newContent = 'newtest';
-    // var mtime;
 
     // Add some source files
     return fs.writeFile(src, content).then(function(){
