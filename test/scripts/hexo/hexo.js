@@ -437,7 +437,28 @@ describe('Hexo', function(){
     });
   });
 
-  it('_generate() - validate locals');
+  it('_generate() - validate locals', function(){
+    hexo.theme.setView('test.swig', [
+      '{{ path }}',
+      '{{ url }}',
+      '{{ view_dir }}'
+    ].join('\n'));
+
+    hexo.extend.generator.register('test', function(){
+      return {
+        path: 'test',
+        layout: 'test'
+      };
+    });
+
+    return hexo._generate().then(function(){
+      return checkStream(route.get('test'), [
+        'test',
+        hexo.config.url + '/test',
+        pathFn.join(hexo.theme_dir, 'layout') + pathFn.sep
+      ].join('\n'));
+    });
+  });
 
   it('_generate() - do nothing if it\'s generating', function(){
     var spy = sinon.spy();
