@@ -442,4 +442,37 @@ describe('asset', function(){
       ]);
     });
   });
+
+  it('page - timezone', function(){
+    var body = [
+      'title: "Hello world"',
+      'date: Apr 24 2014',
+      'updated: May 5 2015',
+      '---'
+    ].join('\n');
+
+    var file = newFile({
+      path: 'hello.swig',
+      type: 'create',
+      content: new Buffer(body)
+    });
+
+    hexo.config.timezone = 'UTC';
+
+    return fs.writeFile(file.source, body).then(function(){
+      return process(file);
+    }).then(function(){
+      var page = Page.findOne({source: file.path});
+
+      page.date.utc().format(dateFormat).should.eql('2014-04-24 00:00:00');
+      page.updated.utc().format(dateFormat).should.eql('2015-05-05 00:00:00');
+
+      hexo.config.timezone = '';
+
+      return Promise.all([
+        page.remove(),
+        fs.unlink(file.source)
+      ]);
+    });
+  });
 });

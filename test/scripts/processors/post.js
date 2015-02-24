@@ -853,4 +853,69 @@ describe('post', function(){
       ]);
     });
   });
+
+  it('post - timezone', function(){
+    var body = [
+      'title: "Hello world"',
+      'date: 2014-04-24',
+      'updated: 2015-05-05',
+      '---'
+    ].join('\n');
+
+    var file = newFile({
+      path: 'foo.html',
+      published: true,
+      type: 'create'
+    });
+
+    hexo.config.timezone = 'UTC';
+
+    return fs.writeFile(file.source, body).then(function(){
+      return process(file);
+    }).then(function(){
+      var post = Post.findOne({source: file.path});
+
+      post.date.utc().format(dateFormat).should.eql('2014-04-24 00:00:00');
+      post.updated.utc().format(dateFormat).should.eql('2015-05-05 00:00:00');
+
+      hexo.config.timezone = '';
+
+      return Promise.all([
+        post.remove(),
+        fs.unlink(file.source)
+      ]);
+    });
+  });
+
+  it('post - new_post_name timezone', function(){
+    var body = [
+      'title: "Hello world"',
+      '---'
+    ].join('\n');
+
+    var file = newFile({
+      path: '2006/01/02/foo.html',
+      published: true,
+      type: 'create'
+    });
+
+    hexo.config.new_post_name = ':year/:month/:day/:title';
+    hexo.config.timezone = 'UTC';
+
+    return fs.writeFile(file.source, body).then(function(){
+      return process(file);
+    }).then(function(){
+      hexo.config.new_post_name = newPostName;
+      hexo.config.timezone = '';
+
+      var post = Post.findOne({source: file.path});
+
+      post.date.utc().format(dateFormat).should.eql('2006-01-02 00:00:00');
+
+      return Promise.all([
+        post.remove(),
+        fs.unlink(file.source)
+      ]);
+    });
+  });
 });
