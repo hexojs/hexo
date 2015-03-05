@@ -31,6 +31,15 @@ describe('url_for', function(){
     ctx.config.relative_link = false;
   });
 
+  it('internal url (options.relative)', function(){
+    ctx.path = '';
+    urlFor('index.html', {relative: true}).should.eql('index.html');
+
+    ctx.config.relative_link = true;
+    urlFor('index.html', {relative: false}).should.eql('/index.html');
+    ctx.config.relative_link = false;
+  });
+
   it('external url', function(){
     [
       'http://hexo.io/',

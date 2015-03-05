@@ -21,7 +21,7 @@ describe('js', function(){
       expected += '<script src="' + arguments[i] + '" type="text/javascript"></script>\n';
     }
 
-    result.should.eql(expected);
+    result.should.eql(expected.trim());
   }
 
   it('a string', function(){

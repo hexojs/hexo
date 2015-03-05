@@ -30,7 +30,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:card', content: 'summary'}),
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('title - page', function(){
@@ -52,7 +52,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:card', content: 'summary'}),
       meta({name: 'twitter:title', content: ctx.page.title}),
       meta({name: 'twitter:description'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('title - options', function(){
@@ -72,7 +72,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:card', content: 'summary'}),
       meta({name: 'twitter:title', content: 'test'}),
       meta({name: 'twitter:description'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('type - options', function(){
@@ -92,7 +92,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:card', content: 'summary'}),
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('type - is_post', function(){
@@ -112,7 +112,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:card', content: 'summary'}),
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('url - context', function(){
@@ -135,7 +135,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:card', content: 'summary'}),
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('url - options', function(){
@@ -156,7 +156,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:card', content: 'summary'}),
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('images - content', function(){
@@ -182,7 +182,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:card', content: 'summary'}),
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description', content: '123456789'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('images - string', function(){
@@ -205,7 +205,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:card', content: 'summary'}),
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('images - array', function(){
@@ -232,7 +232,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:card', content: 'summary'}),
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('images - don\'t pollute context', function(){
@@ -252,6 +252,48 @@ describe('open_graph', function(){
     ctx.page.photos.should.eql([]);
   });
 
+  it('images - options.image', function(){
+    var result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    }, {image: 'http://hexo.io/test.jpg'});
+
+    result.should.eql([
+      meta({name: 'description'}),
+      meta({property: 'og:type', content: 'website'}),
+      meta({property: 'og:title', content: hexo.config.title}),
+      meta({property: 'og:url'}),
+      meta({property: 'og:site_name', content: hexo.config.title}),
+      meta({property: 'og:description'}),
+      meta({property: 'og:image', content: 'http://hexo.io/test.jpg'}),
+      meta({name: 'twitter:card', content: 'summary'}),
+      meta({name: 'twitter:title', content: hexo.config.title}),
+      meta({name: 'twitter:description'})
+    ].join('\n'));
+  });
+
+  it('images - options.images', function(){
+    var result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    }, {images: 'http://hexo.io/test.jpg'});
+
+    result.should.eql([
+      meta({name: 'description'}),
+      meta({property: 'og:type', content: 'website'}),
+      meta({property: 'og:title', content: hexo.config.title}),
+      meta({property: 'og:url'}),
+      meta({property: 'og:site_name', content: hexo.config.title}),
+      meta({property: 'og:description'}),
+      meta({property: 'og:image', content: 'http://hexo.io/test.jpg'}),
+      meta({name: 'twitter:card', content: 'summary'}),
+      meta({name: 'twitter:title', content: hexo.config.title}),
+      meta({name: 'twitter:description'})
+    ].join('\n'));
+  });
+
   it('site_name - options', function(){
     var result = openGraph.call({
       page: {},
@@ -269,7 +311,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:card', content: 'summary'}),
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('description - page', function(){
@@ -291,7 +333,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:card', content: 'summary'}),
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description', content: ctx.page.description})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('description - options', function(){
@@ -313,7 +355,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:card', content: 'summary'}),
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description', content: 'foo'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('description - excerpt', function(){
@@ -335,7 +377,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:card', content: 'summary'}),
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description', content: ctx.page.excerpt})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('description - content', function(){
@@ -357,7 +399,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:card', content: 'summary'}),
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description', content: ctx.page.content})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('description - config', function(){
@@ -381,7 +423,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:card', content: 'summary'}),
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description', content: hexo.config.description})
-    ].join('\n') + '\n');
+    ].join('\n'));
 
     hexo.config.description = '';
   });
@@ -406,7 +448,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:card', content: 'summary'}),
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description', content: escaped})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('twitter_card - options', function(){
@@ -426,7 +468,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:card', content: 'photo'}),
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('twitter_id - options (without prefixing @)', function(){
@@ -447,7 +489,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description'}),
       meta({name: 'twitter:creator', content: '@hexojs'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('twitter_id - options (with prefixing @)', function(){
@@ -468,7 +510,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description'}),
       meta({name: 'twitter:creator', content: '@hexojs'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('twitter_site - options', function(){
@@ -489,7 +531,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description'}),
       meta({name: 'twitter:site', content: 'Hello'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('google_plus - options', function(){
@@ -510,7 +552,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description'}),
       tag('link', {rel: 'publisher', href: '+123456789'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('fb_admins - options', function(){
@@ -531,7 +573,7 @@ describe('open_graph', function(){
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description'}),
       meta({property: 'fb:admins', content: '123456789'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 
   it('fb_app_id - options', function(){
@@ -552,6 +594,6 @@ describe('open_graph', function(){
       meta({name: 'twitter:title', content: hexo.config.title}),
       meta({name: 'twitter:description'}),
       meta({property: 'fb:app_id', content: '123456789'})
-    ].join('\n') + '\n');
+    ].join('\n'));
   });
 });

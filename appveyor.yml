@@ -9,12 +9,12 @@ environment:
     - nodejs_version: "0.10"
     - nodejs_version: "0.12"
     # io.js
-    - nodejs_version: "1.0"
+    - nodejs_version: "1"
 
 # Allow failing jobs for bleeding-edge Node.js versions.
 matrix:
   allow_failures:
-    - nodejs_version: "1.0"
+    - nodejs_version: "1"
 
 # Install scripts. (runs after repo cloning)
 install:

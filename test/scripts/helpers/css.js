@@ -21,7 +21,7 @@ describe('css', function(){
       expected += '<link rel="stylesheet" href="' + arguments[i] + '" type="text/css">\n';
     }
 
-    result.should.eql(expected);
+    result.should.eql(expected.trim());
   }
 
   it('a string', function(){
