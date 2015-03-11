@@ -282,6 +282,18 @@ describe('Post', function(){
     });
   });
 
+  // https://github.com/hexojs/hexo/issues/1100
+  it('create() - non-string title', function(){
+    var path = pathFn.join(hexo.source_dir, '_posts', '12345.md');
+
+    return post.create({
+      title: 12345
+    }).then(function(data){
+      data.path.should.eql(path);
+      return fs.unlink(path);
+    });
+  });
+
   it('publish()', function(){
     var draftPath = '';
     var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
@@ -416,6 +428,23 @@ describe('Post', function(){
       exist.should.be.false;
       files.should.have.members(['a.txt', 'b.txt']);
       return fs.rmdir(newAssetDir);
+    });
+  });
+
+  //https://github.com/hexojs/hexo/issues/1100
+  it('publish() - non-string title', function(){
+    var path = pathFn.join(hexo.source_dir, '_posts', '12345.md');
+
+    return post.create({
+      title: 12345,
+      layout: 'draft'
+    }).then(function(data){
+      return post.publish({
+        slug: 12345
+      });
+    }).then(function(data){
+      data.path.should.eql(path);
+      return fs.unlink(path);
     });
   });
 
