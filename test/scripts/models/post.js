@@ -205,6 +205,77 @@ describe('Post', function(){
     });
   });
 
+  it('setCategories() - posts share categories', function(){
+    var postIdA, postIdB;
+
+    return Post.insert({
+      source: 'foo.md',
+      slug: 'foo'
+    }).then(function(post){
+      postIdA = post._id;
+      return post.setCategories(['foo', 'bar']);
+    }).then(function(){
+      return Post.insert({
+        source: 'bar.md',
+        slug: 'bar'
+      }).then(function(post){
+        postIdB = post._id;
+        return post.setCategories(['foo', 'bar']);
+      });
+    }).then(function(){
+      var postA = Post.findById(postIdA);
+      var postB = Post.findById(postIdB);
+
+      postA.categories.map(function(cat){
+        return cat._id;
+      }).should.eql(postB.categories.map(function(cat){
+        return cat._id;
+      }));
+
+      return Post.removeById(postIdA);
+    }).then(function(){
+      return Post.removeById(postIdB);
+    });
+  });
+
+  it('setCategories() - posts without common categories', function(){
+    var postIdA, postIdB;
+
+    return Post.insert({
+      source: 'foo.md',
+      slug: 'foo'
+    }).then(function(post){
+      postIdA = post._id;
+      return post.setCategories(['foo', 'bar']);
+    }).then(function(){
+      return Post.insert({
+        source: 'bar.md',
+        slug: 'bar'
+      }).then(function(post){
+        postIdB = post._id;
+        return post.setCategories(['baz', 'bar']);
+      });
+    }).then(function(){
+      var postA = Post.findById(postIdA);
+      var postB = Post.findById(postIdB);
+
+      var postCategoriesA = postA.categories.map(function(cat) {
+        return cat._id;
+      });
+      var postCategoriesB = postB.categories.map(function(cat) {
+        return cat._id;
+      });
+
+      postCategoriesA.forEach(function(catId) {
+        postCategoriesB.should.not.include(catId);
+      });
+
+      return Post.removeById(postIdA);
+    }).then(function(){
+      return Post.removeById(postIdB);
+    });
+  });
+
   it('remove PostTag references when a post is removed', function(){
     return Post.insert({
       source: 'foo.md',
