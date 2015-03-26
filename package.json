@@ -48,6 +48,7 @@
     "pretty-hrtime": "^1.0.0",
     "strip-indent": "^1.0.0",
     "swig": "1.4.2",
+    "swig-extras": "0.0.1",
     "text-table": "^0.2.0",
     "through2": "^1.1.1",
     "tildify": "^1.0.0",
