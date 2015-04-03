@@ -37,39 +37,39 @@ describe('is', function(){
   });
 
   it('is_archive', function(){
-    is.archive.call({}).should.be.false;
-    is.archive.call({archive: true}).should.be.true;
-    is.archive.call({archive: false}).should.be.false;
+    is.archive.call({page: {}}).should.be.false;
+    is.archive.call({page: {archive: true}}).should.be.true;
+    is.archive.call({page: {archive: false}}).should.be.false;
   });
 
   it('is_year', function(){
-    is.year.call({}).should.be.false;
-    is.year.call({archive: true}).should.be.false;
-    is.year.call({archive: true, year: 2014}).should.be.true;
-    is.year.call({archive: true, year: 2014}, 2014).should.be.true;
-    is.year.call({archive: true, year: 2014}, 2015).should.be.false;
-    is.year.call({archive: true, year: 2014, month: 10}).should.be.true;
+    is.year.call({page: {}}).should.be.false;
+    is.year.call({page: {archive: true}}).should.be.false;
+    is.year.call({page: {archive: true, year: 2014}}).should.be.true;
+    is.year.call({page: {archive: true, year: 2014}}, 2014).should.be.true;
+    is.year.call({page: {archive: true, year: 2014}}, 2015).should.be.false;
+    is.year.call({page: {archive: true, year: 2014, month: 10}}).should.be.true;
   });
 
   it('is_month', function(){
-    is.month.call({}).should.be.false;
-    is.month.call({archive: true}).should.be.false;
-    is.month.call({archive: true, year: 2014}).should.be.false;
-    is.month.call({archive: true, year: 2014, month: 10}).should.be.true;
-    is.month.call({archive: true, year: 2014, month: 10}, 2014, 10).should.be.true;
-    is.month.call({archive: true, year: 2014, month: 10}, 2015, 10).should.be.false;
-    is.month.call({archive: true, year: 2014, month: 10}, 2014, 12).should.be.false;
-    is.month.call({archive: true, year: 2014, month: 10}, 10).should.be.true;
-    is.month.call({archive: true, year: 2014, month: 10}, 12).should.be.false;
+    is.month.call({page: {}}).should.be.false;
+    is.month.call({page: {archive: true}}).should.be.false;
+    is.month.call({page: {archive: true, year: 2014}}).should.be.false;
+    is.month.call({page: {archive: true, year: 2014, month: 10}}).should.be.true;
+    is.month.call({page: {archive: true, year: 2014, month: 10}}, 2014, 10).should.be.true;
+    is.month.call({page: {archive: true, year: 2014, month: 10}}, 2015, 10).should.be.false;
+    is.month.call({page: {archive: true, year: 2014, month: 10}}, 2014, 12).should.be.false;
+    is.month.call({page: {archive: true, year: 2014, month: 10}}, 10).should.be.true;
+    is.month.call({page: {archive: true, year: 2014, month: 10}}, 12).should.be.false;
   });
 
   it('is_category', function(){
-    is.category.call({category: 'foo'}).should.be.true;
-    is.category.call({}).should.be.false;
+    is.category.call({page: {category: 'foo'}}).should.be.true;
+    is.category.call({page: {}}).should.be.false;
   });
 
   it('is_tag', function(){
-    is.tag.call({tag: 'foo'}).should.be.true;
-    is.tag.call({}).should.be.false;
+    is.tag.call({page: {tag: 'foo'}}).should.be.true;
+    is.tag.call({page: {}}).should.be.false;
   });
 });
