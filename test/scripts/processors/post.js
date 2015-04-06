@@ -918,4 +918,30 @@ describe('post', function(){
       ]);
     });
   });
+
+  it('post - permalink', function(){
+    var body = [
+      'title: "Hello world"',
+      'permalink: foooo',
+      '---'
+    ].join('\n');
+
+    var file = newFile({
+      path: 'test.html',
+      published: true,
+      type: 'create'
+    });
+
+    return fs.writeFile(file.source, body).then(function(){
+      return process(file);
+    }).then(function(){
+      var post = Post.findOne({source: file.path});
+      post.slug.should.eql('foooo');
+
+      return Promise.all([
+        post.remove(),
+        fs.unlink(file.source)
+      ]);
+    });
+  });
 });
