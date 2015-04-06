@@ -172,4 +172,32 @@ describe('generate', function(){
       deployer.calledOnce.should.be.true;
     });
   });
+
+  it('update theme source files', function(){
+    return Promise.all([
+      // Add some source files
+      fs.writeFile(pathFn.join(hexo.theme_dir, 'source', 'a.txt'), 'a'),
+      fs.writeFile(pathFn.join(hexo.theme_dir, 'source', 'b.txt'), 'b'),
+      fs.writeFile(pathFn.join(hexo.theme_dir, 'source', 'c.swig'), 'c')
+    ]).then(function(){
+      return generate({});
+    }).then(function(){
+      // Update source file
+      return Promise.all([
+        fs.writeFile(pathFn.join(hexo.theme_dir, 'source', 'b.txt'), 'bb'),
+        fs.writeFile(pathFn.join(hexo.theme_dir, 'source', 'c.swig'), 'cc')
+      ]);
+    }).then(function(){
+      // Generate again
+      return generate({});
+    }).then(function(){
+      // Read the updated source file
+      return Promise.all([
+        fs.readFile(pathFn.join(hexo.public_dir, 'b.txt')),
+        fs.readFile(pathFn.join(hexo.public_dir, 'c.html'))
+      ]);
+    }).then(function(result){
+      console.log(result)
+    });
+  });
 });
