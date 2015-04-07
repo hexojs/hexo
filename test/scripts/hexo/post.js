@@ -542,4 +542,21 @@ describe('Post', function(){
       data.content.trim().should.eql('<p><code>{{ test }}</code></p>');
     });
   });
+
+  it('render() - recover escaped swig blocks which is html escaped before post_render', function(){
+    var content = '`{% raw %}{{ test }}{% endraw %}`';
+
+    var filter = sinon.spy(function(result) {
+      result.trim().should.eql('<p><code>{{ test }}</code></p>');
+    });
+    hexo.extend.filter.register('after_render:html', filter);
+
+    return post.render(null, {
+      content: content,
+      engine: 'markdown'
+    }).then(function(data){
+      filter.calledOnce.should.be.true;
+      hexo.extend.filter.unregister('after_render:html', filter);
+    });
+  });
 });

@@ -181,6 +181,29 @@ describe('Render', function(){
     });
   });
 
+  it('render() - onRenderEnd method', function() {
+    var onRenderEnd = sinon.spy(function(result) {
+      return result + 'bar';
+    });
+    var data = {
+      text: 'foo',
+      engine: 'txt',
+      onRenderEnd: onRenderEnd
+    };
+
+    var filter = sinon.spy(function(result) {
+      result.should.eql('foobar');
+    });
+    hexo.extend.filter.register('after_render:txt', filter);
+
+    return hexo.render.render(data).then(function(result){
+      onRenderEnd.calledOnce.should.be.true;
+      filter.calledOnce.should.be.true;
+
+      hexo.extend.filter.unregister('after_render:txt', filter);
+    });
+  });
+
   it('renderSync() - path', function(){
     var result = hexo.render.renderSync({path: path});
     result.should.eql(obj);
@@ -278,6 +301,29 @@ describe('Render', function(){
     var result = hexo.render.renderSync(data);
 
     filter.calledOnce.should.be.true;
+    hexo.extend.filter.unregister('after_render:txt', filter);
+  });
+
+  it('renderSync() - onRenderEnd', function(){
+    var onRenderEnd = sinon.spy(function(result) {
+      return result + 'bar';
+    });
+    var data = {
+      text: 'foo',
+      engine: 'txt',
+      onRenderEnd: onRenderEnd
+    };
+
+    var filter = sinon.spy(function(result) {
+      result.should.eql('foobar');
+    });
+    hexo.extend.filter.register('after_render:txt', filter);
+
+    var result = hexo.render.renderSync(data);
+
+    onRenderEnd.calledOnce.should.be.true;
+    filter.calledOnce.should.be.true;
+
     hexo.extend.filter.unregister('after_render:txt', filter);
   });
 });
