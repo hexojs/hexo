@@ -19,7 +19,8 @@ matrix:
 # Install scripts. (runs after repo cloning)
 install:
   - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
-  - cmd: npm update -g npm
+  - cmd: npm install -g npm@2
+  - set PATH=%APPDATA%\npm;%PATH%
   - npm install
 
 # Post-install test scripts.
