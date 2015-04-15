@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var assert = require('chai').assert;
 var pathFn = require('path');
 var Promise = require('bluebird');
 
@@ -44,7 +45,9 @@ describe('Post', function(){
   });
 
   it('source - required', function(){
-    return Post.insert({}).catch(function(err){
+    return Post.insert({}).then(function(){
+      assert.fail();
+    }).catch(function(err){
       err.should.have.property('message', '`source` is required!');
     });
   });
@@ -52,6 +55,8 @@ describe('Post', function(){
   it('slug - required', function(){
     return Post.insert({
       source: 'foo.md'
+    }).then(function(){
+      assert.fail();
     }).catch(function(err){
       err.should.have.property('message', '`slug` is required!');
     });

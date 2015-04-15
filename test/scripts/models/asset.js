@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var assert = require('chai').assert;
 var pathFn = require('path');
 
 describe('Asset', function(){
@@ -19,7 +20,9 @@ describe('Asset', function(){
   });
 
   it('_id - required', function(){
-    return Asset.insert({}).catch(function(err){
+    return Asset.insert({}).then(function(){
+      assert.fail();
+    }).catch(function(err){
       err.should.have.property('message', 'ID is not defined');
     });
   });
@@ -27,6 +30,8 @@ describe('Asset', function(){
   it('path - required', function(){
     return Asset.insert({
       _id: 'foo'
+    }).then(function(){
+      assert.fail();
     }).catch(function(err){
       err.should.have.property('message', '`path` is required!');
     });

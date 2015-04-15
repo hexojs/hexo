@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var assert = require('chai').assert;
 var pathFn = require('path');
 
 describe('Page', function(){
@@ -31,7 +32,9 @@ describe('Page', function(){
   });
 
   it('source - required', function(){
-    return Page.insert({}).catch(function(err){
+    return Page.insert({}).then(function(){
+      assert.fail();
+    }).catch(function(err){
       err.should.have.property('message', '`source` is required!');
     });
   });
@@ -39,6 +42,8 @@ describe('Page', function(){
   it('path - required', function(){
     return Page.insert({
       source: 'foo'
+    }).then(function(){
+      assert.fail();
     }).catch(function(err){
       err.should.have.property('message', '`path` is required!');
     });

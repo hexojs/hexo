@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var assert = require('chai').assert;
 var pathFn = require('path');
 var fs = require('hexo-fs');
 var Promise = require('bluebird');
@@ -82,7 +83,9 @@ describe('config', function(){
       type: 'create'
     });
 
-    return process(file).catch(function(err){
+    return process(file).then(function(){
+      assert.fail();
+    }).catch(function(err){
       err.should.have.property('message', 'Theme config load failed.');
     }).catch(function(){}); // Catch again because it throws error
   });

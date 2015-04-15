@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var assert = require('chai').assert;
 var pathFn = require('path');
 var moment = require('moment');
 var Promise = require('bluebird');
@@ -170,7 +171,9 @@ describe('new_post_path', function(){
   });
 
   it('data is required', function(){
-    return newPostPath().catch(function(err){
+    return newPostPath().then(function(){
+      assert.fail();
+    }).catch(function(err){
       err.should.have.property('message', 'Either data.path or data.slug is required!');
     });
   });

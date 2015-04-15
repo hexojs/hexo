@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var assert = require('chai').assert;
 var pathFn = require('path');
 var fs = require('hexo-fs');
 var Promise = require('bluebird');
@@ -89,7 +90,9 @@ describe('Hexo', function(){
   });
 
   it('call() - console not registered', function(){
-    return hexo.call('nothing').catch(function(err){
+    return hexo.call('nothing').then(function(){
+      assert.fail();
+    }).catch(function(err){
       err.should.have.property('message', 'Console `nothing` has not been registered yet!');
     });
   });

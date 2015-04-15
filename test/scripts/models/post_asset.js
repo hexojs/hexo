@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var assert = require('chai').assert;
 var url = require('url');
 var pathFn = require('path');
 
@@ -34,7 +35,9 @@ describe('PostAsset', function(){
   });
 
   it('_id - required', function(){
-    return PostAsset.insert({}).catch(function(err){
+    return PostAsset.insert({}).then(function(){
+      assert.fail();
+    }).catch(function(err){
       err.should.have.property('message', 'ID is not defined');
     });
   });
@@ -42,6 +45,8 @@ describe('PostAsset', function(){
   it('slug - required', function(){
     return PostAsset.insert({
       _id: 'foo'
+    }).then(function(){
+      assert.fail();
     }).catch(function(err){
       err.should.have.property('message', '`slug` is required!');
     });

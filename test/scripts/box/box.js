@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var assert = require('chai').assert;
 var pathFn = require('path');
 var fs = require('hexo-fs');
 var Promise = require('bluebird');
@@ -85,6 +86,7 @@ describe('Box', function(){
 
     try {
       box.addProcessor('test');
+      assert.fail();
     } catch (err){
       err.should.have.property('message', 'fn must be a function');
     }
@@ -432,7 +434,9 @@ describe('Box', function(){
     var box = newBox();
 
     box.watch().then(function(){
-      box.watch().catch(function(err){
+      box.watch().then(function(){
+        assert.fail();
+      }).catch(function(err){
         err.should.have.property('message', 'Watcher has already started.');
         box.unwatch();
         callback();
@@ -485,6 +489,7 @@ describe('Box', function(){
 
     try {
       box.unwatch();
+      assert.fail();
     } catch (err){
       err.should.have.property('message', 'Watcher hasn\'t started yet.');
     }

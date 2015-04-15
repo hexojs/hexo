@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var assert = require('chai').assert;
 
 describe('Locals', function(){
   var Locals = require('../../../lib/hexo/locals');
@@ -9,6 +10,7 @@ describe('Locals', function(){
   it('get() - name must be a string', function(){
     try {
       locals.get();
+      assert.fail();
     } catch (err){
       err.should.have.property('message', 'name must be a string!');
     }
@@ -34,6 +36,7 @@ describe('Locals', function(){
   it('set() - name must be a string', function(){
     try {
       locals.set();
+      assert.fail();
     } catch (err){
       err.should.have.property('message', 'name must be a string!');
     }
@@ -42,6 +45,7 @@ describe('Locals', function(){
   it('set() - value is required', function(){
     try {
       locals.set('test');
+      assert.fail();
     } catch (err){
       err.should.have.property('message', 'value is required!');
     }
@@ -59,6 +63,7 @@ describe('Locals', function(){
   it('remove() - name must be a string', function(){
     try {
       locals.remove();
+      assert.fail();
     } catch (err){
       err.should.have.property('message', 'name must be a string!');
     }

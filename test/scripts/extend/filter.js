@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var assert = require('chai').assert;
 var sinon = require('sinon');
 
 describe('Filter', function(){
@@ -78,6 +79,7 @@ describe('Filter', function(){
 
     try {
       f.unregister();
+      assert.fail();
     } catch (err){
       err.should.have.property('message', 'type is required');
     }
@@ -88,6 +90,7 @@ describe('Filter', function(){
 
     try {
       f.unregister('test');
+      assert.fail();
     } catch (err){
       err.should.have.property('message', 'fn must be a function');
     }

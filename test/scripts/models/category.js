@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var assert = require('chai').assert;
 var Promise = require('bluebird');
 
 describe('Category', function(){
@@ -15,7 +16,9 @@ describe('Category', function(){
   });
 
   it('name - required', function(){
-    return Category.insert({}).catch(function(err){
+    return Category.insert({}).then(function(){
+      assert.fail();
+    }).catch(function(err){
       err.should.have.property('message', '`name` is required!');
     });
   });
@@ -214,6 +217,8 @@ describe('Category', function(){
     }).then(function(data){
       Category.insert({
         name: 'foo'
+      }).then(function(){
+        assert.fail();
       }).catch(function(err){
         err.should.have.property('message', 'Category `foo` has already existed!');
       });

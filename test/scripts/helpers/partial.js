@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var assert = require('chai').assert;
 var pathFn = require('path');
 var fs = require('hexo-fs');
 var Promise = require('bluebird');
@@ -82,6 +83,7 @@ describe('partial', function(){
   it('name must be a string', function(){
     try {
       partial();
+      assert.fail();
     } catch (err){
       err.should.have.property('message', 'name must be a string!');
     }

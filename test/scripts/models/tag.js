@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var assert = require('chai').assert;
 var Promise = require('bluebird');
 var _ = require('lodash');
 
@@ -16,7 +17,9 @@ describe('Tag', function(){
   });
 
   it('name - required', function(){
-    return Tag.insert({}).catch(function(err){
+    return Tag.insert({}).then(function(){
+      assert.fail();
+    }).catch(function(err){
       err.should.have.property('message', '`name` is required!');
     });
   });
@@ -196,6 +199,8 @@ describe('Tag', function(){
     }).then(function(data){
       Tag.insert({
         name: 'foo'
+      }).then(function(){
+        assert.fail();
       }).catch(function(err){
         err.should.have.property('message', 'Tag `foo` has already existed!');
       });

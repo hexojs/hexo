@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var assert = require('chai').assert;
 var Promise = require('bluebird');
 var Readable = require('stream').Readable;
 var pathFn = require('path');
@@ -60,6 +61,7 @@ describe('Router', function(){
   it('format() - path must be a string', function(){
     try {
       router.format();
+      assert.fail();
     } catch (err){
       err.should.have.property('message', 'path must be a string!');
     }
@@ -121,6 +123,7 @@ describe('Router', function(){
   it('set() - path must be a string', function(){
     try {
       router.set();
+      assert.fail();
     } catch (err){
       err.should.have.property('message', 'path must be a string!');
     }
@@ -129,6 +132,7 @@ describe('Router', function(){
   it('set() - data is required', function(){
     try {
       router.set('test');
+      assert.fail();
     } catch (err){
       err.should.have.property('message', 'data is required!');
     }
@@ -139,7 +143,9 @@ describe('Router', function(){
       throw new Error('error test');
     });
 
-    return testUtil.stream.read(router.get('test')).catch(function(err){
+    return testUtil.stream.read(router.get('test')).then(function(){
+      assert.fail();
+    }).catch(function(err){
       err.should.have.property('message', 'error test');
     });
   });
@@ -181,6 +187,7 @@ describe('Router', function(){
   it('get() - path must be a string', function(){
     try {
       router.get();
+      assert.fail();
     } catch (err){
       err.should.have.property('message', 'path must be a string!');
     }
@@ -215,6 +222,7 @@ describe('Router', function(){
   it('isModified() - path must be a string', function(){
     try {
       router.isModified();
+      assert.fail();
     } catch (err){
       err.should.have.property('message', 'path must be a string!');
     }
@@ -236,6 +244,7 @@ describe('Router', function(){
   it('remove() - path must be a string', function(){
     try {
       router.remove();
+      assert.fail();
     } catch (err){
       err.should.have.property('message', 'path must be a string!');
     }

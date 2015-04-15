@@ -99,7 +99,9 @@ describe('Render', function(){
   });
 
   it('render() - no path and text', function(){
-    return hexo.render.render().catch(function(err){
+    return hexo.render.render().then(function(){
+      assert.fail();
+    }).catch(function(err){
       err.should.have.property('message', 'No input file or string!');
     });
   });
@@ -222,6 +224,7 @@ describe('Render', function(){
   it('renderSync() - no path and text', function(){
     try {
       hexo.render.renderSync();
+      assert.fail();
     } catch (err){
       err.should.have.property('message', 'No input file or string!');
     }

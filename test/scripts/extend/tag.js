@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var assert = require('chai').assert;
 var Promise = require('bluebird');
 
 describe('Tag', function(){
@@ -125,6 +126,7 @@ describe('Tag', function(){
   it('register() - name is required', function(){
     try {
       tag.register();
+      assert.fail();
     } catch (err){
       err.should.have.property('message', 'name is required');
     }
@@ -133,6 +135,7 @@ describe('Tag', function(){
   it('register() - fn must be a function', function(){
     try {
       tag.register('test');
+      assert.fail();
     } catch (err){
       err.should.have.property('message', 'fn must be a function');
     }
