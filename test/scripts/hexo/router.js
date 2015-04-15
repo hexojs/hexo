@@ -60,7 +60,7 @@ describe('Router', function(){
 
   it('format() - path must be a string', function(){
     try {
-      router.format();
+      router.format(function(){});
       assert.fail();
     } catch (err){
       err.should.have.property('message', 'path must be a string!');
