@@ -75,6 +75,19 @@ describe('tagcloud', function(){
     ].join(''));
   });
 
+  it('font size - when every tag has the same number of posts, font-size should be minimum.', function() {
+    var result = tagcloud(Tag.find({
+      name: /abc/
+    }), {
+      min_font: 15,
+      max_font: 30
+    });
+
+    result.should.eql([
+      '<a href="/tags/abc/" style="font-size: 15px;">abc</a>'
+    ].join(''));
+  });
+
   it('font unit', function(){
     var result = tagcloud({
       unit: 'em'
@@ -199,4 +212,19 @@ describe('tagcloud', function(){
       '<a href="/tags/def/" style="font-size: 10px; color: rgba(70, 130, 180, 0.3)">def</a>'
     ].join(''));
   });
+
+  it('color - when every tag has the same number of posts, start_color should be used.', function() {
+    var result = tagcloud(Tag.find({
+      name: /abc/
+    }), {
+      color: true,
+      start_color: 'red',
+      end_color: 'pink'
+    });
+
+    result.should.eql([
+      '<a href="/tags/abc/" style="font-size: 10px; color: #f00">abc</a>'
+    ].join(''));
+  });
+
 });
