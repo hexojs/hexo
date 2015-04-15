@@ -1,7 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
-var assert = require('chai').assert;
+var sinon = require('sinon');
 var pathFn = require('path');
 var moment = require('moment');
 var Promise = require('bluebird');
@@ -171,10 +171,12 @@ describe('new_post_path', function(){
   });
 
   it('data is required', function(){
-    return newPostPath().then(function(){
-      assert.fail();
-    }).catch(function(err){
+    var errorCallback = sinon.spy(function(err){
       err.should.have.property('message', 'Either data.path or data.slug is required!');
+    });
+
+    return newPostPath().catch(errorCallback).finally(function() {
+      errorCallback.calledOnce.should.be.true;
     });
   });
 });

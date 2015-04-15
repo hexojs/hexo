@@ -1,7 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
-var assert = require('chai').assert;
+var sinon = require('sinon');
 var url = require('url');
 var pathFn = require('path');
 
@@ -35,21 +35,25 @@ describe('PostAsset', function(){
   });
 
   it('_id - required', function(){
-    return PostAsset.insert({}).then(function(){
-      assert.fail();
-    }).catch(function(err){
+    var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', 'ID is not defined');
     });
+
+    return PostAsset.insert({}).catch(errorCallback).finally(function() {
+      errorCallback.calledOnce.should.be.true;
+    });;
   });
 
   it('slug - required', function(){
-    return PostAsset.insert({
-      _id: 'foo'
-    }).then(function(){
-      assert.fail();
-    }).catch(function(err){
+    var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', '`slug` is required!');
     });
+
+    return PostAsset.insert({
+      _id: 'foo'
+    }).catch(errorCallback).finally(function() {
+      errorCallback.calledOnce.should.be.true;
+    });;
   });
 
   it('path - virtual', function(){

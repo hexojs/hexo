@@ -1,7 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
-var assert = require('chai').assert;
+var sinon = require('sinon');
 var pathFn = require('path');
 var fs = require('hexo-fs');
 var Promise = require('bluebird');
@@ -83,10 +83,12 @@ describe('config', function(){
       type: 'create'
     });
 
-    return process(file).then(function(){
-      assert.fail();
-    }).catch(function(err){
+    var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', 'Theme config load failed.');
+    });
+
+    return process(file).catch(errorCallback).finally(function() {
+      errorCallback.calledOnce.should.be.true;
     }).catch(function(){}); // Catch again because it throws error
   });
 });

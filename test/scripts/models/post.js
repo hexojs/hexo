@@ -1,7 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
-var assert = require('chai').assert;
+var sinon = require('sinon');
 var pathFn = require('path');
 var Promise = require('bluebird');
 
@@ -45,20 +45,24 @@ describe('Post', function(){
   });
 
   it('source - required', function(){
-    return Post.insert({}).then(function(){
-      assert.fail();
-    }).catch(function(err){
+    var errorCallback = sinon.spy(function(err){
       err.should.have.property('message', '`source` is required!');
+    });
+
+    return Post.insert({}).catch(errorCallback).finally(function() {
+      errorCallback.calledOnce.should.be.true;
     });
   });
 
   it('slug - required', function(){
+    var errorCallback = sinon.spy(function(err){
+      err.should.have.property('message', '`slug` is required!');
+    });
+
     return Post.insert({
       source: 'foo.md'
-    }).then(function(){
-      assert.fail();
-    }).catch(function(err){
-      err.should.have.property('message', '`slug` is required!');
+    }).catch(errorCallback).finally(function() {
+      errorCallback.calledOnce.should.be.true;
     });
   });
 

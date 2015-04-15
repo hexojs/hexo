@@ -1,7 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
-var assert = require('chai').assert;
+var sinon = require('sinon');
 var Promise = require('bluebird');
 
 describe('Category', function(){
@@ -16,10 +16,12 @@ describe('Category', function(){
   });
 
   it('name - required', function(){
-    return Category.insert({}).then(function(){
-      assert.fail();
-    }).catch(function(err){
+    var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', '`name` is required!');
+    });
+
+    return Category.insert({}).catch(errorCallback).finally(function() {
+      errorCallback.calledOnce.should.be.true;
     });
   });
 
@@ -212,18 +214,22 @@ describe('Category', function(){
   });
 
   it('check whether a category exists', function(){
+    var errorCallback = sinon.spy(function(err){
+      err.should.have.property('message', 'Category `foo` has already existed!');
+    });
+
     return Category.insert({
       name: 'foo'
     }).then(function(data){
+      var errorCall
+
       Category.insert({
         name: 'foo'
-      }).then(function(){
-        assert.fail();
-      }).catch(function(err){
-        err.should.have.property('message', 'Category `foo` has already existed!');
-      });
+      }).catch(errorCallback);
 
       return Category.removeById(data._id);
+    }).finally(function() {
+      errorCallback.calledOnce.should.be.true;
     });
   });
 

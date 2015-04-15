@@ -1,7 +1,6 @@
 'use strict';
 
 var should = require('chai').should();
-var assert = require('chai').assert;
 var sinon = require('sinon');
 
 describe('Filter', function(){
@@ -76,24 +75,32 @@ describe('Filter', function(){
 
   it('unregister() - type is required', function(){
     var f = new Filter();
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'type is required');
+    });
 
     try {
       f.unregister();
-      assert.fail();
     } catch (err){
-      err.should.have.property('message', 'type is required');
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   });
 
   it('unregister() - fn must be a function', function(){
     var f = new Filter();
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'fn must be a function');
+    });
 
     try {
       f.unregister('test');
-      assert.fail();
     } catch (err){
-      err.should.have.property('message', 'fn must be a function');
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   });
 
   it('list()', function(){

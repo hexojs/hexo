@@ -1,19 +1,24 @@
 'use strict';
 
 var should = require('chai').should();
-var assert = require('chai').assert;
+var sinon = require('sinon');
 
 describe('Locals', function(){
   var Locals = require('../../../lib/hexo/locals');
   var locals = new Locals();
 
   it('get() - name must be a string', function(){
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'name must be a string!');
+    });
+
     try {
       locals.get();
-      assert.fail();
     } catch (err){
-      err.should.have.property('message', 'name must be a string!');
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   });
 
   it('set() - function', function(){
@@ -34,21 +39,31 @@ describe('Locals', function(){
   });
 
   it('set() - name must be a string', function(){
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'name must be a string!');
+    });
+
     try {
       locals.set();
-      assert.fail();
     } catch (err){
-      err.should.have.property('message', 'name must be a string!');
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   });
 
   it('set() - value is required', function(){
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'value is required!');
+    });
+
     try {
       locals.set('test');
-      assert.fail();
     } catch (err){
-      err.should.have.property('message', 'value is required!');
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   });
 
   it('remove()', function(){
@@ -61,12 +76,17 @@ describe('Locals', function(){
   });
 
   it('remove() - name must be a string', function(){
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'name must be a string!');
+    });
+
     try {
       locals.remove();
-      assert.fail();
     } catch (err){
-      err.should.have.property('message', 'name must be a string!');
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   });
 
   it('toObject()', function(){

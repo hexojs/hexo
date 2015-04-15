@@ -1,12 +1,12 @@
 'use strict';
 
 var should = require('chai').should();
-var assert = require('chai').assert;
 var pathFn = require('path');
 var fs = require('hexo-fs');
 var Promise = require('bluebird');
 var crypto = require('crypto');
 var util = require('hexo-util');
+var sinon = require('sinon');
 var Pattern = util.Pattern;
 var testUtil = require('../../util');
 
@@ -83,13 +83,17 @@ describe('Box', function(){
 
   it('addProcessor() - no fn', function(){
     var box = newBox();
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'fn must be a function');
+    });
 
     try {
       box.addProcessor('test');
-      assert.fail();
     } catch (err){
-      err.should.have.property('message', 'fn must be a function');
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   });
 
   it('_loadFiles() - create', function(){
@@ -432,13 +436,16 @@ describe('Box', function(){
 
   it.skip('watch() - watcher has started', function(callback){
     var box = newBox();
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'Watcher has already started.');
+    });
 
     box.watch().then(function(){
-      box.watch().then(function(){
-        assert.fail();
-      }).catch(function(err){
-        err.should.have.property('message', 'Watcher has already started.');
+      box.watch().catch(function(err){
+        errorCallback(err);
         box.unwatch();
+      }).finally(function() {
+        errorCallback.calledOnce.should.be.false;
         callback();
       });
     });
@@ -486,13 +493,17 @@ describe('Box', function(){
 
   it('unwatch() - watcher not started', function(){
     var box = newBox();
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'Watcher hasn\'t started yet.');
+    });
 
     try {
       box.unwatch();
-      assert.fail();
     } catch (err){
-      err.should.have.property('message', 'Watcher hasn\'t started yet.');
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   });
 
   it.skip('isWatching()', function(){

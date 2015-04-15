@@ -1,7 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
-var assert = require('chai').assert;
+var sinon = require('sinon');
 var pathFn = require('path');
 
 describe('Page', function(){
@@ -32,20 +32,24 @@ describe('Page', function(){
   });
 
   it('source - required', function(){
-    return Page.insert({}).then(function(){
-      assert.fail();
-    }).catch(function(err){
+    var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', '`source` is required!');
+    });
+
+    return Page.insert({}).catch(errorCallback).finally(function() {
+      errorCallback.calledOnce.should.be.true;
     });
   });
 
   it('path - required', function(){
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', '`path` is required!');
+    });
+
     return Page.insert({
       source: 'foo'
-    }).then(function(){
-      assert.fail();
-    }).catch(function(err){
-      err.should.have.property('message', '`path` is required!');
+    }).catch(errorCallback).finally(function() {
+      errorCallback.calledOnce.should.be.true;
     });
   });
 
