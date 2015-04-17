@@ -67,6 +67,7 @@
     "hexo-renderer-marked": "^0.2.3",
     "jshint-stylish": "^1.0.0",
     "mocha": "^2.0.1",
+    "mute": "^1.0.0",
     "sinon": "^1.12.2"
   }
 }
