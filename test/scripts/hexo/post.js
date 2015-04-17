@@ -520,12 +520,12 @@ describe('Post', function(){
     return post.create({
       title: 'Hello World',
       layout: 'draft'
-    }, callback).then(function(data){
+    }).then(function(data){
       draftPath = data.path;
 
       return post.publish({
         slug: 'Hello-World'
-      });
+      }, callback);
     }).then(function(post){
       callback.calledOnce.should.be.true;
 
