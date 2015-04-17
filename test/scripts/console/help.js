@@ -18,7 +18,6 @@ describe('help', function(){
 
   beforeEach(function() {
     sinon.stub(console, "log").returns(void 0);
-    sinon.stub(console, "error").returns(void 0);
   });
 
   afterEach(function() {
