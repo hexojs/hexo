@@ -58,11 +58,17 @@ describe('Router', function(){
   });
 
   it('format() - path must be a string', function(){
-    try {
-      router.format();
-    } catch (err){
+    var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', 'path must be a string!');
+    })
+
+    try {
+      router.format(function(){});
+    } catch (err){
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   })
 
   it('set() - string', function(){
@@ -119,19 +125,31 @@ describe('Router', function(){
   });
 
   it('set() - path must be a string', function(){
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'path must be a string!');
+    });
+
     try {
       router.set();
     } catch (err){
-      err.should.have.property('message', 'path must be a string!');
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   });
 
   it('set() - data is required', function(){
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'data is required!');
+    });
+
     try {
       router.set('test');
     } catch (err){
-      err.should.have.property('message', 'data is required!');
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   });
 
   it('get() - error handling', function(){
@@ -139,8 +157,12 @@ describe('Router', function(){
       throw new Error('error test');
     });
 
-    return testUtil.stream.read(router.get('test')).catch(function(err){
+    var errorCallback = sinon.spy(function(err){
       err.should.have.property('message', 'error test');
+    });
+
+    return testUtil.stream.read(router.get('test')).catch(errorCallback).finally(function() {
+      errorCallback.calledOnce.should.be.true;
     });
   });
 
@@ -179,11 +201,17 @@ describe('Router', function(){
   });
 
   it('get() - path must be a string', function(){
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'path must be a string!');
+    });
+
     try {
       router.get();
     } catch (err){
-      err.should.have.property('message', 'path must be a string!');
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   });
 
   it('get() - export stringified JSON object', function(){
@@ -213,11 +241,17 @@ describe('Router', function(){
   });
 
   it('isModified() - path must be a string', function(){
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'path must be a string!');
+    });
+
     try {
       router.isModified();
     } catch (err){
-      err.should.have.property('message', 'path must be a string!');
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   });
 
   it('remove()', function(){
@@ -234,10 +268,16 @@ describe('Router', function(){
   });
 
   it('remove() - path must be a string', function(){
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'path must be a string!');
+    });
+
     try {
       router.remove();
     } catch (err){
-      err.should.have.property('message', 'path must be a string!');
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   });
 });

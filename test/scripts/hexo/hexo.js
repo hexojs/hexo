@@ -89,8 +89,12 @@ describe('Hexo', function(){
   });
 
   it('call() - console not registered', function(){
-    return hexo.call('nothing').catch(function(err){
+    var errorCallback = sinon.spy(function(err){
       err.should.have.property('message', 'Console `nothing` has not been registered yet!');
+    });
+
+    return hexo.call('nothing').catch(errorCallback).finally(function(){
+      errorCallback.calledOnce.should.be.true;
     });
   });
 

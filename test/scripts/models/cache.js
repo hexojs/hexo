@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var sinon = require('sinon');
 
 describe('Cache', function(){
   var Hexo = require('../../../lib/hexo');
@@ -8,8 +9,12 @@ describe('Cache', function(){
   var Cache = hexo.model('Cache');
 
   it('_id - required', function(){
-    return Cache.insert({}).catch(function(err){
+    var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', 'ID is not defined');
+    });
+
+    return Cache.insert({}).catch(errorCallback).finally(function() {
+      errorCallback.calledOnce.should.be.true;
     });
   });
 });

@@ -6,6 +6,7 @@ var fs = require('hexo-fs');
 var Promise = require('bluebird');
 var crypto = require('crypto');
 var util = require('hexo-util');
+var sinon = require('sinon');
 var Pattern = util.Pattern;
 var testUtil = require('../../util');
 
@@ -82,12 +83,17 @@ describe('Box', function(){
 
   it('addProcessor() - no fn', function(){
     var box = newBox();
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'fn must be a function');
+    });
 
     try {
       box.addProcessor('test');
     } catch (err){
-      err.should.have.property('message', 'fn must be a function');
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   });
 
   it('_loadFiles() - create', function(){
@@ -430,11 +436,16 @@ describe('Box', function(){
 
   it.skip('watch() - watcher has started', function(callback){
     var box = newBox();
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'Watcher has already started.');
+    });
 
     box.watch().then(function(){
       box.watch().catch(function(err){
-        err.should.have.property('message', 'Watcher has already started.');
+        errorCallback(err);
         box.unwatch();
+      }).finally(function() {
+        errorCallback.calledOnce.should.be.false;
         callback();
       });
     });
@@ -482,12 +493,17 @@ describe('Box', function(){
 
   it('unwatch() - watcher not started', function(){
     var box = newBox();
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'Watcher hasn\'t started yet.');
+    });
 
     try {
       box.unwatch();
     } catch (err){
-      err.should.have.property('message', 'Watcher hasn\'t started yet.');
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   });
 
   it.skip('isWatching()', function(){

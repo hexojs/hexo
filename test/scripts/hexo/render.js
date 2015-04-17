@@ -99,8 +99,12 @@ describe('Render', function(){
   });
 
   it('render() - no path and text', function(){
-    return hexo.render.render().catch(function(err){
+    var errorCallback = sinon.spy(function(err){
       err.should.have.property('message', 'No input file or string!');
+    })
+
+    return hexo.render.render().catch(errorCallback).finally(function() {
+      errorCallback.calledOnce.should.be.true;
     });
   });
 
@@ -220,11 +224,17 @@ describe('Render', function(){
   });
 
   it('renderSync() - no path and text', function(){
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'No input file or string!');
+    });
+
     try {
       hexo.render.renderSync();
     } catch (err){
-      err.should.have.property('message', 'No input file or string!');
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   });
 
   it('renderSync() - options', function(){

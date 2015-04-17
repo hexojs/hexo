@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var sinon = require('sinon');
 var Promise = require('bluebird');
 
 describe('Tag', function(){
@@ -123,19 +124,31 @@ describe('Tag', function(){
   });
 
   it('register() - name is required', function(){
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'name is required');
+    });
+
     try {
       tag.register();
     } catch (err){
-      err.should.have.property('message', 'name is required');
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   });
 
   it('register() - fn must be a function', function(){
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'fn must be a function');
+    });
+
     try {
       tag.register('test');
     } catch (err){
-      err.should.have.property('message', 'fn must be a function');
+      errorCallback(err);
     }
+
+    errorCallback.calledOnce.should.be.true;
   });
 
   it('render() - context', function(){

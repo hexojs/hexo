@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var sinon = require('sinon');
 var Promise = require('bluebird');
 var _ = require('lodash');
 
@@ -16,8 +17,12 @@ describe('Tag', function(){
   });
 
   it('name - required', function(){
-    return Tag.insert({}).catch(function(err){
+    var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', '`name` is required!');
+    });
+
+    return Tag.insert({}).catch(errorCallback).finally(function() {
+      errorCallback.calledOnce.should.be.true;
     });
   });
 
@@ -191,16 +196,20 @@ describe('Tag', function(){
   });
 
   it('check whether a tag exists', function(){
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', 'Tag `foo` has already existed!');
+    });
+
     return Tag.insert({
       name: 'foo'
     }).then(function(data){
       Tag.insert({
         name: 'foo'
-      }).catch(function(err){
-        err.should.have.property('message', 'Tag `foo` has already existed!');
-      });
+      }).catch(errorCallback);
 
       return Tag.removeById(data._id);
+    }).finally(function() {
+      errorCallback.calledOnce.should.be.true;
     });
   });
 

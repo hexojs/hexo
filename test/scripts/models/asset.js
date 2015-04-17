@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should();
+var sinon = require('sinon');
 var pathFn = require('path');
 
 describe('Asset', function(){
@@ -19,16 +20,24 @@ describe('Asset', function(){
   });
 
   it('_id - required', function(){
-    return Asset.insert({}).catch(function(err){
+    var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', 'ID is not defined');
+    });
+
+    return Asset.insert({}).catch(errorCallback).finally(function() {
+      errorCallback.calledOnce.should.be.true;
     });
   });
 
   it('path - required', function(){
+    var errorCallback = sinon.spy(function(err) {
+      err.should.have.property('message', '`path` is required!');
+    });
+
     return Asset.insert({
       _id: 'foo'
-    }).catch(function(err){
-      err.should.have.property('message', '`path` is required!');
+    }).catch(errorCallback).finally(function() {
+      errorCallback.calledOnce.should.be.true;
     });
   });
 
