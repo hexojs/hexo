@@ -3,7 +3,7 @@
 var should = require('chai').should();
 var fs = require('hexo-fs');
 var pathFn = require('path');
-var mute = require('mute');
+var sinon = require('sinon');
 
 describe('help', function(){
   var Hexo = require('../../../lib/hexo');
@@ -16,15 +16,21 @@ describe('help', function(){
     });
   });
 
+  beforeEach(function() {
+    sinon.stub(console, "log").returns(void 0);
+    sinon.stub(console, "error").returns(void 0);
+  });
+
+  afterEach(function() {
+    console.log.restore();
+  });
+
   after(function(){
     return fs.rmdir(hexo.base_dir);
   });
-  
+
   // Only check that the error does not occur
   it('help list', function(){
-    return mute(function(unmute) {
-      help({_: ['list']});
-      unmute();
-    });
+    return help({_: ['list']});
   });
 });
