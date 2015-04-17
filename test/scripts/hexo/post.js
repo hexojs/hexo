@@ -294,6 +294,59 @@ describe('Post', function(){
     });
   });
 
+  it('create() - with content', function(){
+    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    var date = moment(now);
+
+    var content = [
+      'title: "Hello World"',
+      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+      'tags:',
+      '---',
+      '',
+      'Hello hexo'
+    ].join('\n');
+
+    return post.create({
+      title: 'Hello World',
+      content: 'Hello hexo'
+    }).then(function(post){
+      post.path.should.eql(path);
+      post.content.should.eql(content);
+
+      return fs.readFile(path);
+    }).then(function(data){
+      data.should.eql(content);
+      return fs.unlink(path);
+    });
+  });
+
+  it('create() - with callback', function(){
+    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    var date = moment(now);
+    var callback = sinon.spy(function(post) {
+      post.path.should.eql(path);
+      post.content.should.eql(content);
+    });
+
+    var content = [
+      'title: "Hello World"',
+      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+      'tags:',
+      '---'
+    ].join('\n') + '\n';
+
+    return post.create({
+      title: 'Hello World'
+    }, callback).then(function(post){
+      callback.calledOnce.should.be.true;
+      return fs.readFile(path);
+    }).then(function(data){
+      data.should.eql(content);
+      return fs.unlink(path);
+    });
+  });
+
   it('publish()', function(){
     var draftPath = '';
     var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
@@ -444,6 +497,46 @@ describe('Post', function(){
       });
     }).then(function(data){
       data.path.should.eql(path);
+      return fs.unlink(path);
+    });
+  });
+
+  it('publish() - with callback', function(){
+    var draftPath = '';
+    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    var date = moment(now);
+    var callback = sinon.spy(function(post) {
+      post.path.should.eql(path);
+      post.content.should.eql(content);
+    });
+
+    var content = [
+      'title: "Hello World"',
+      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+      'tags:',
+      '---'
+    ].join('\n') + '\n';
+
+    return post.create({
+      title: 'Hello World',
+      layout: 'draft'
+    }).then(function(data){
+      draftPath = data.path;
+
+      return post.publish({
+        slug: 'Hello-World'
+      }, callback);
+    }).then(function(post){
+      callback.calledOnce.should.be.true;
+
+      return Promise.all([
+        fs.exists(draftPath),
+        fs.readFile(path)
+      ]);
+    }).spread(function(exist, data){
+      exist.should.be.false;
+      data.should.eql(content);
+
       return fs.unlink(path);
     });
   });
