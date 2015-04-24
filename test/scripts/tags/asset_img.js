@@ -34,7 +34,11 @@ describe('asset_img', function(){
   });
 
   it('default', function(){
-    assetImg('bar').should.eql('<img src="/foo/bar">');
+    assetImg('bar').should.eql('<img src="/foo/bar" alt="bar" title="">');
+  });
+
+  it('default', function(){
+    assetImg('bar title').should.eql('<img src="/foo/bar" alt="title" title="title">');
   });
 
   it('no slug', function(){
