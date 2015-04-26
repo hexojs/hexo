@@ -54,6 +54,36 @@ describe('Backtick code block', function(){
     data.content.should.eql('<escape>' + highlight(code, {lang: 'js'}) + '</escape>');
   });
 
+  it('without language name', function(){
+    var data = {
+      content: [
+        '```',
+        code,
+        '```'
+      ].join('\n')
+    };
+
+    var expected = highlight(code);
+
+    codeBlock(data);
+    data.content.should.eql('<escape>' + expected + '</escape>');
+  });
+
+  it('without language name - ignore tab character', function(){
+    var data = {
+      content: [
+        '``` \t',
+        code,
+        '```'
+      ].join('\n')
+    };
+
+    var expected = highlight(code);
+
+    codeBlock(data);
+    data.content.should.eql('<escape>' + expected + '</escape>');
+  });
+
   it('title', function(){
     var data = {
       content: [
