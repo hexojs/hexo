@@ -295,6 +295,20 @@ describe('Post', function(){
     });
   });
 
+  it('create() - escape title', function(){
+    return post.create({
+      title: 'Foo: Bar'
+    }).then(function(data){
+      data.content.should.eql([
+        'title: "Foo: Bar"',
+        'date: ' + moment(now).format('YYYY-MM-DD HH:mm:ss'),
+        'tags:',
+        '---'
+      ].join('\n') + '\n');
+      return fs.unlink(data.path);
+    });
+  });
+
   it('create() - with content', function(){
     var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
     var date = moment(now);
