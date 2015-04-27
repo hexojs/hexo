@@ -197,7 +197,8 @@ describe('generate', function(){
         fs.readFile(pathFn.join(hexo.public_dir, 'c.html'))
       ]);
     }).then(function(result){
-      console.log(result)
+      result[0].should.eql('bb');
+      result[1].should.eql('cc');
     });
   });
 });
