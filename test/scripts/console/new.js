@@ -45,7 +45,7 @@ describe('new', function(){
     var date = moment(now);
     var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
     var body = [
-      'title: "Hello World"',
+      'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
       '---'
@@ -64,7 +64,7 @@ describe('new', function(){
   it('layout', function(){
     var path = pathFn.join(hexo.source_dir, '_drafts', 'Hello-World.md');
     var body = [
-      'title: "Hello World"',
+      'title: Hello World',
       'tags:',
       '---',
     ].join('\n') + '\n';
@@ -83,7 +83,7 @@ describe('new', function(){
     var date = moment(now);
     var path = pathFn.join(hexo.source_dir, '_posts', 'foo.md');
     var body = [
-      'title: "Hello World"',
+      'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
       '---'
@@ -104,7 +104,7 @@ describe('new', function(){
     var date = moment(now);
     var path = pathFn.join(hexo.source_dir, '_posts', 'bar.md');
     var body = [
-      'title: "Hello World"',
+      'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
       '---'
@@ -165,10 +165,10 @@ describe('new', function(){
     var date = moment(now);
     var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
     var body = [
-      'title: "Hello World"',
+      'title: Hello World',
+      'foo: bar',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
-      'foo: bar',
       '---'
     ].join('\n') + '\n';
 
