@@ -127,6 +127,36 @@ describe('generate', function(){
     });
   });
 
+  it('force regenerate', function(){
+    var src = pathFn.join(hexo.source_dir, 'test.txt');
+    var dest = pathFn.join(hexo.public_dir, 'test.txt');
+    var content = 'test';
+    var mtime;
+
+    return fs.writeFile(src, content).then(function(){
+      // First generation
+      return generate({});
+    }).then(function(){
+      // Read file status
+      return fs.stat(dest);
+    }).then(function(stats){
+      mtime = stats.mtime.getTime();
+    }).delay(1000).then(function(){
+      // Force regenerate
+      return generate({force: true});
+    }).then(function(){
+      return fs.stat(dest);
+    }).then(function(stats){
+      stats.mtime.getTime().should.be.above(mtime);
+
+      // Remove source files and generated files
+      return Promise.all([
+        fs.unlink(src),
+        fs.unlink(dest)
+      ]);
+    });
+  });
+
   it('watch - update', function(){
     var src = pathFn.join(hexo.source_dir, 'test.txt');
     var dest = pathFn.join(hexo.public_dir, 'test.txt');
