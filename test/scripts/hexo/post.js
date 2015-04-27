@@ -7,6 +7,7 @@ var Promise = require('bluebird');
 var fs = require('hexo-fs');
 var util = require('hexo-util');
 var sinon = require('sinon');
+var frontMatter = require('hexo-front-matter');
 var fixture = require('../../fixtures/post_render');
 
 describe('Post', function(){
@@ -51,7 +52,7 @@ describe('Post', function(){
     var listener = sinon.spy();
 
     var content = [
-      'title: "Hello World"',
+      'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
       '---'
@@ -78,7 +79,7 @@ describe('Post', function(){
     var date = moment(now);
 
     var content = [
-      'title: "Hello World"',
+      'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
       '---'
@@ -105,7 +106,7 @@ describe('Post', function(){
     var date = moment(now);
 
     var content = [
-      'title: "Hello World"',
+      'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
       '---'
@@ -131,7 +132,7 @@ describe('Post', function(){
 
     var content = [
       'layout: photo',
-      'title: "Hello World"',
+      'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
       '---'
@@ -156,10 +157,10 @@ describe('Post', function(){
     var date = moment(now);
 
     var content = [
-      'title: "Hello World"',
+      'title: Hello World',
+      'foo: bar',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
-      'foo: bar',
       '---'
     ].join('\n') + '\n';
 
@@ -245,7 +246,7 @@ describe('Post', function(){
     }).then(function(post){
       post.content.should.eql([
         '---',
-        'title: "Hello World"',
+        'title: Hello World',
         '---'
       ].join('\n') + '\n');
 
@@ -294,12 +295,26 @@ describe('Post', function(){
     });
   });
 
+  it('create() - escape title', function(){
+    return post.create({
+      title: 'Foo: Bar'
+    }).then(function(data){
+      data.content.should.eql([
+        'title: "Foo: Bar"',
+        'date: ' + moment(now).format('YYYY-MM-DD HH:mm:ss'),
+        'tags:',
+        '---'
+      ].join('\n') + '\n');
+      return fs.unlink(data.path);
+    });
+  });
+
   it('create() - with content', function(){
     var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
     var date = moment(now);
 
     var content = [
-      'title: "Hello World"',
+      'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
       '---',
@@ -330,7 +345,7 @@ describe('Post', function(){
     });
 
     var content = [
-      'title: "Hello World"',
+      'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
       '---'
@@ -353,7 +368,7 @@ describe('Post', function(){
     var date = moment(now);
 
     var content = [
-      'title: "Hello World"',
+      'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
       '---'
@@ -390,7 +405,7 @@ describe('Post', function(){
 
     var content = [
       'layout: photo',
-      'title: "Hello World"',
+      'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
       '---'
@@ -484,7 +499,7 @@ describe('Post', function(){
     });
   });
 
-  //https://github.com/hexojs/hexo/issues/1100
+  // https://github.com/hexojs/hexo/issues/1100
   it('publish() - non-string title', function(){
     var path = pathFn.join(hexo.source_dir, '_posts', '12345.md');
 
@@ -511,7 +526,7 @@ describe('Post', function(){
     });
 
     var content = [
-      'title: "Hello World"',
+      'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
       '---'
@@ -538,6 +553,23 @@ describe('Post', function(){
       data.should.eql(content);
 
       return fs.unlink(path);
+    });
+  });
+
+  // https://github.com/hexojs/hexo/issues/1139
+  it('publish() - preserve non-null data in drafts', function(){
+    return post.create({
+      title: 'foo',
+      layout: 'draft',
+      tags: ['tag', 'test']
+    }).then(function(data){
+      return post.publish({
+        slug: 'foo'
+      });
+    }).then(function(data){
+      var meta = frontMatter(data.content);
+      meta.tags.should.eql(['tag', 'test']);
+      return fs.unlink(data.path);
     });
   });
 

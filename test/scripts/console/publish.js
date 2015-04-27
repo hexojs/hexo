@@ -54,7 +54,7 @@ describe('publish', function(){
     var date = moment(now);
 
     var content = [
-      'title: "Hello World"',
+      'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
       '---'
@@ -81,7 +81,7 @@ describe('publish', function(){
 
     var content = [
       'layout: photo',
-      'title: "Hello World"',
+      'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
       '---'
