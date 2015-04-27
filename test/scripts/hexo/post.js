@@ -300,7 +300,8 @@ describe('Post', function(){
       title: 'Foo: Bar'
     }).then(function(data){
       data.content.should.eql([
-        'title: "Foo: Bar"',
+        // js-yaml use single-quotation for dumping since 3.3
+        'title: \'Foo: Bar\'',
         'date: ' + moment(now).format('YYYY-MM-DD HH:mm:ss'),
         'tags:',
         '---'
