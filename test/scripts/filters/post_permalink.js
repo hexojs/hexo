@@ -70,4 +70,17 @@ describe('post_permalink', function(){
 
     hexo.config.permalink = PERMALINK;
   });
+
+  it('name', function(){
+    hexo.config.permalink = ':title/:name';
+
+    return Post.insert({
+      source: 'sub/bar.md',
+      slug: 'sub/bar'
+    }).then(function(post){
+      postPermalink(post).should.eql('sub/bar/bar');
+      hexo.config.permalink = PERMALINK;
+      return Post.removeById(post._id);
+    });
+  });
 });
