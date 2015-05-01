@@ -48,4 +48,15 @@ describe('url_for', function(){
       urlFor(url).should.eql(url);
     });
   });
+
+  it('internal url (options.permalink_remove_ext_and_dir)', function(){
+    ctx.path = '';
+    urlFor('a/test/index.html', {relative: true}).should.eql('a/test/index.html');
+    urlFor('b/test.html', {relative: true}).should.eql('b/test.html');
+
+    ctx.config.permalink_remove_ext_and_dir = true;
+    urlFor('c/test/index.html', {relative: true}).should.eql('c/test');
+    urlFor('d/test.html', {relative: true}).should.eql('d/test');
+    ctx.config.permalink_remove_ext_and_dir = false;
+  });
 });
