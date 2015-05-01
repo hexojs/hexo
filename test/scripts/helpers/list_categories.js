@@ -228,4 +228,26 @@ describe('list_categories', function(){
       '<a class="category-link" href="/categories/foo/">foo<span class="category-count">1</span></a>'
     ].join(''));
   });
+
+  it('children-indicator', function(){
+    var result = listCategories({
+      children_indicator: 'has-children'
+    });
+
+    result.should.eql([
+      '<ul class="category-list">',
+        '<li class="category-list-item has-children">',
+          '<a class="category-list-link" href="/categories/baz/">baz</a><span class="category-list-count">3</span>',
+          '<ul class="category-list-child">',
+            '<li class="category-list-item">',
+              '<a class="category-list-link" href="/categories/baz/bar/">bar</a><span class="category-list-count">1</span>',
+            '</li>',
+          '</ul>',
+        '</li>',
+        '<li class="category-list-item">',
+          '<a class="category-list-link" href="/categories/foo/">foo</a><span class="category-list-count">1</span>',
+        '</li>',
+      '</ul>'
+    ].join(''));
+  });
 });
