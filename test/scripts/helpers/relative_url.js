@@ -23,4 +23,10 @@ describe('relative_url', function(){
     relativeURL('foo/bar/', 'css/style.css').should.eql('../../css/style.css');
     relativeURL('foo/bar/index.html', 'css/style.css').should.eql('../../css/style.css');
   });
+
+  it('to root', function(){
+    relativeURL('index.html', '/').should.eql('/');
+    relativeURL('foo/', '/').should.eql('../');
+    relativeURL('foo/index.html', '/').should.eql('../');
+  });
 });
