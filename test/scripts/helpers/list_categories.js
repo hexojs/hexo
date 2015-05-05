@@ -35,6 +35,7 @@ describe('list_categories', function(){
     }).then(function(){
       hexo.locals.invalidate();
       ctx.site = hexo.locals.toObject();
+      ctx.page = ctx.site.posts.data[1];
     });
   });
 
@@ -241,6 +242,28 @@ describe('list_categories', function(){
           '<ul class="category-list-child">',
             '<li class="category-list-item">',
               '<a class="category-list-link" href="/categories/baz/bar/">bar</a><span class="category-list-count">1</span>',
+            '</li>',
+          '</ul>',
+        '</li>',
+        '<li class="category-list-item">',
+          '<a class="category-list-link" href="/categories/foo/">foo</a><span class="category-list-count">1</span>',
+        '</li>',
+      '</ul>'
+    ].join(''));
+  });
+
+  it('show-current', function(){
+    var result = listCategories({
+      show_current: true
+    });
+
+    result.should.eql([
+      '<ul class="category-list">',
+        '<li class="category-list-item">',
+          '<a class="category-list-link current" href="/categories/baz/">baz</a><span class="category-list-count">3</span>',
+          '<ul class="category-list-child">',
+            '<li class="category-list-item">',
+              '<a class="category-list-link current" href="/categories/baz/bar/">bar</a><span class="category-list-count">1</span>',
             '</li>',
           '</ul>',
         '</li>',
