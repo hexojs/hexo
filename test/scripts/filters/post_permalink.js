@@ -83,4 +83,19 @@ describe('post_permalink', function(){
       return Post.removeById(post._id);
     });
   });
+
+  it('post_title', function(){
+    hexo.config.permalink = ':year/:month/:day/:post_title/';
+
+    return Post.insert({
+      source: 'sub/2015-05-06-my-new-post.md',
+      slug: '2015-05-06-my-new-post',
+      title: 'My New Post',
+      date: moment('2015-05-06')
+    }).then(function(post){
+      postPermalink(post).should.eql('2015/05/06/my-new-post/');
+      hexo.config.permalink = PERMALINK;
+      return Post.removeById(post._id);
+    });
+  });
 });
