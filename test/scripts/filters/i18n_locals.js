@@ -88,4 +88,23 @@ describe('i18n locals', function(){
     locals.page.canonical_path.should.eql('index.html');
     locals.__('Home').should.eql('Home');
   });
+
+  it('use config by default - with multiple languages, first language should be used', function(){
+    var oldConfig = hexo.config.language;
+    hexo.config.language = ['zh-tw', 'en'];
+
+    var locals = {
+      config: hexo.config,
+      page: {},
+      path: 'index.html'
+    };
+
+    i18nFilter(locals);
+
+    locals.page.lang.should.eql('zh-tw');
+    locals.page.canonical_path.should.eql('index.html');
+    locals.__('Home').should.eql('首頁');
+
+    hexo.config.language = oldConfig;
+  });
 });

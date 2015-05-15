@@ -70,4 +70,32 @@ describe('post_permalink', function(){
 
     hexo.config.permalink = PERMALINK;
   });
+
+  it('name', function(){
+    hexo.config.permalink = ':title/:name';
+
+    return Post.insert({
+      source: 'sub/bar.md',
+      slug: 'sub/bar'
+    }).then(function(post){
+      postPermalink(post).should.eql('sub/bar/bar');
+      hexo.config.permalink = PERMALINK;
+      return Post.removeById(post._id);
+    });
+  });
+
+  it('post_title', function(){
+    hexo.config.permalink = ':year/:month/:day/:post_title/';
+
+    return Post.insert({
+      source: 'sub/2015-05-06-my-new-post.md',
+      slug: '2015-05-06-my-new-post',
+      title: 'My New Post',
+      date: moment('2015-05-06')
+    }).then(function(post){
+      postPermalink(post).should.eql('2015/05/06/my-new-post/');
+      hexo.config.permalink = PERMALINK;
+      return Post.removeById(post._id);
+    });
+  });
 });

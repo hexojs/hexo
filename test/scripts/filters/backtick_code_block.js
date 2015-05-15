@@ -41,6 +41,24 @@ describe('Backtick code block', function(){
     data.content.should.eql(content);
   });
 
+  it('with no config (disabled)', function(){
+    var content = [
+      '``` js',
+      code,
+      '```'
+    ].join('\n');
+
+    var data = {content: content};
+
+    var oldConfig = hexo.config.highlight;
+    delete hexo.config.highlight;
+
+    codeBlock(data);
+    data.content.should.eql(content);
+
+    hexo.config.highlight = oldConfig;
+  });
+
   it('default', function(){
     var data = {
       content: [

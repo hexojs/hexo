@@ -47,7 +47,7 @@ describe('tagcloud', function(){
       '<a href="/tags/bcd/" style="font-size: 20px;">bcd</a>',
       '<a href="/tags/cde/" style="font-size: 16.67px;">cde</a>',
       '<a href="/tags/def/" style="font-size: 10px;">def</a>'
-    ].join(''));
+    ].join(' '));
   });
 
   it('specified collection', function(){
@@ -58,7 +58,7 @@ describe('tagcloud', function(){
     result.should.eql([
       '<a href="/tags/abc/" style="font-size: 10px;">abc</a>',
       '<a href="/tags/bcd/" style="font-size: 20px;">bcd</a>'
-    ].join(''));
+    ].join(' '));
   });
 
   it('font size', function(){
@@ -72,7 +72,7 @@ describe('tagcloud', function(){
       '<a href="/tags/bcd/" style="font-size: 30px;">bcd</a>',
       '<a href="/tags/cde/" style="font-size: 25px;">cde</a>',
       '<a href="/tags/def/" style="font-size: 15px;">def</a>'
-    ].join(''));
+    ].join(' '));
   });
 
   it('font size - when every tag has the same number of posts, font-size should be minimum.', function() {
@@ -85,7 +85,7 @@ describe('tagcloud', function(){
 
     result.should.eql([
       '<a href="/tags/abc/" style="font-size: 15px;">abc</a>'
-    ].join(''));
+    ].join(' '));
   });
 
   it('font unit', function(){
@@ -98,7 +98,7 @@ describe('tagcloud', function(){
       '<a href="/tags/bcd/" style="font-size: 20em;">bcd</a>',
       '<a href="/tags/cde/" style="font-size: 16.67em;">cde</a>',
       '<a href="/tags/def/" style="font-size: 10em;">def</a>'
-    ].join(''));
+    ].join(' '));
   });
 
   it('orderby', function(){
@@ -111,7 +111,7 @@ describe('tagcloud', function(){
       '<a href="/tags/abc/" style="font-size: 13.33px;">abc</a>',
       '<a href="/tags/cde/" style="font-size: 16.67px;">cde</a>',
       '<a href="/tags/bcd/" style="font-size: 20px;">bcd</a>'
-    ].join(''));
+    ].join(' '));
   });
 
   it('order', function(){
@@ -124,7 +124,7 @@ describe('tagcloud', function(){
       '<a href="/tags/cde/" style="font-size: 16.67px;">cde</a>',
       '<a href="/tags/bcd/" style="font-size: 20px;">bcd</a>',
       '<a href="/tags/abc/" style="font-size: 13.33px;">abc</a>'
-    ].join(''));
+    ].join(' '));
   });
 
   it('amount', function(){
@@ -135,7 +135,7 @@ describe('tagcloud', function(){
     result.should.eql([
       '<a href="/tags/abc/" style="font-size: 10px;">abc</a>',
       '<a href="/tags/bcd/" style="font-size: 20px;">bcd</a>'
-    ].join(''));
+    ].join(' '));
   });
 
   it('transform', function(){
@@ -150,7 +150,7 @@ describe('tagcloud', function(){
       '<a href="/tags/bcd/" style="font-size: 20px;">BCD</a>',
       '<a href="/tags/cde/" style="font-size: 16.67px;">CDE</a>',
       '<a href="/tags/def/" style="font-size: 10px;">DEF</a>'
-    ].join(''));
+    ].join(' '));
   });
 
   it('color: name', function(){
@@ -165,7 +165,7 @@ describe('tagcloud', function(){
       '<a href="/tags/bcd/" style="font-size: 20px; color: #ffc0cb">bcd</a>',
       '<a href="/tags/cde/" style="font-size: 16.67px; color: #ff8087">cde</a>',
       '<a href="/tags/def/" style="font-size: 10px; color: #f00">def</a>'
-    ].join(''));
+    ].join(' '));
   });
 
   it('color: hex', function(){
@@ -180,7 +180,7 @@ describe('tagcloud', function(){
       '<a href="/tags/bcd/" style="font-size: 20px; color: #ffc0cb">bcd</a>',
       '<a href="/tags/cde/" style="font-size: 16.67px; color: #ff8087">cde</a>',
       '<a href="/tags/def/" style="font-size: 10px; color: #f00">def</a>'
-    ].join(''));
+    ].join(' '));
   });
 
   it('color: RGBA', function(){
@@ -195,7 +195,7 @@ describe('tagcloud', function(){
       '<a href="/tags/bcd/" style="font-size: 20px; color: #4682b4">bcd</a>',
       '<a href="/tags/cde/" style="font-size: 16.67px; color: rgba(70, 130, 180, 0.77)">cde</a>',
       '<a href="/tags/def/" style="font-size: 10px; color: rgba(70, 130, 180, 0.3)">def</a>'
-    ].join(''));
+    ].join(' '));
   });
 
   it('color: HSLA', function(){
@@ -210,7 +210,7 @@ describe('tagcloud', function(){
       '<a href="/tags/bcd/" style="font-size: 20px; color: #4682b4">bcd</a>',
       '<a href="/tags/cde/" style="font-size: 16.67px; color: rgba(70, 130, 180, 0.77)">cde</a>',
       '<a href="/tags/def/" style="font-size: 10px; color: rgba(70, 130, 180, 0.3)">def</a>'
-    ].join(''));
+    ].join(' '));
   });
 
   it('color - when every tag has the same number of posts, start_color should be used.', function() {
@@ -224,7 +224,19 @@ describe('tagcloud', function(){
 
     result.should.eql([
       '<a href="/tags/abc/" style="font-size: 10px; color: #f00">abc</a>'
-    ].join(''));
+    ].join(' '));
   });
 
+  it('separator', function(){
+    var result = tagcloud({
+      separator: ', '
+    });
+
+    result.should.eql([
+      '<a href="/tags/abc/" style="font-size: 13.33px;">abc</a>',
+      '<a href="/tags/bcd/" style="font-size: 20px;">bcd</a>',
+      '<a href="/tags/cde/" style="font-size: 16.67px;">cde</a>',
+      '<a href="/tags/def/" style="font-size: 10px;">def</a>'
+    ].join(', '));
+  });
 });
