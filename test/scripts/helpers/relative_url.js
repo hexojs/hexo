@@ -25,8 +25,8 @@ describe('relative_url', function(){
   });
 
   it('to root', function(){
-    relativeURL('index.html', '/').should.eql('/');
-    relativeURL('foo/', '/').should.eql('../');
-    relativeURL('foo/index.html', '/').should.eql('../');
+    relativeURL('index.html', '/').should.eql('index.html');
+    relativeURL('foo/', '/').should.eql('../index.html');
+    relativeURL('foo/index.html', '/').should.eql('../index.html');
   });
 });
