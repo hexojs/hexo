@@ -14,26 +14,18 @@ describe('is', function(){
   });
 
   it('is_home', function(){
-    var paginationDir = hexo.config.pagination_dir;
-
-    is.home.call({path: '', config: hexo.config, page: {}}).should.be.true;
-    is.home.call({path: paginationDir + '/2/', config: hexo.config, page: {}}).should.be.true;
-    is.home.call({path: 'index.html', config: hexo.config, page: {}}).should.be.true;
-    is.home.call({path: paginationDir + '/2/index.html', config: hexo.config, page: {}}).should.be.true;
-
-    is.home.call({
-      path: 'zh-tw/index.html',
-      config: hexo.config,
-      page: {canonical_path: 'index.html'}
-    }).should.be.true;
+    is.home.call({page: {__index: true}}).should.be.true;
+    is.home.call({page: {}}).should.be.false;
   });
 
   it('is_post', function(){
-    var config = {
-      permalink: ':id/:category/:year/:month/:day/:title'
-    };
+    is.post.call({page: {__post: true}}).should.be.true;
+    is.post.call({page: {}}).should.be.false;
+  });
 
-    is.post.call({path: '123/foo/bar/2013/08/12/foo-bar', config: config}).should.be.true;
+  it('is_page', function(){
+    is.page.call({page: {__page: true}}).should.be.true;
+    is.page.call({page: {}}).should.be.false;
   });
 
   it('is_archive', function(){

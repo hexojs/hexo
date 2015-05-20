@@ -2,6 +2,7 @@
 
 var should = require('chai').should();
 var Promise = require('bluebird');
+var _ = require('lodash');
 
 describe('post', function(){
   var Hexo = require('../../../lib/hexo');
@@ -30,7 +31,7 @@ describe('post', function(){
           {
             path: 'bar/',
             layout: ['post', 'page', 'index'],
-            data: post
+            data: _.extend({__post: true}, post)
           }
         ]);
 
