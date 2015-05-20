@@ -8,6 +8,7 @@ describe('is', function(){
   var is = require('../../../lib/plugins/helper/is');
 
   it('is_current', function(){
+    is.current.call({path: 'index.html', config: hexo.config}).should.be.true;
     is.current.call({path: 'foo/bar', config: hexo.config}, 'foo').should.be.true;
     is.current.call({path: 'foo/bar', config: hexo.config}, 'foo/bar').should.be.true;
     is.current.call({path: 'foo/bar', config: hexo.config}, 'foo/baz').should.be.false;
