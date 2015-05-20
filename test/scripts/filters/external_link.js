@@ -8,7 +8,7 @@ describe('External link', function(){
   var externalLink = require('../../../lib/plugins/filter/after_post_render/external_link').bind(hexo);
 
   hexo.config.external_link = true;
-  hexo.config.url = 'maji.moe';
+  hexo.config.url = 'http://maji.moe';
 
   it('disabled', function(){
     var content = 'foo' +
