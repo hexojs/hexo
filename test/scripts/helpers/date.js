@@ -73,6 +73,27 @@ describe('date', function(){
     dateXML(Date.now()).should.eql(moment().toISOString());
   });
 
+  it('date_fromNow', function(){
+    var ctx = {
+      config: hexo.config,
+      page: {}
+    };
+
+    var dateFromNow = dateHelper.date_fromNow.bind(ctx);
+
+    // now
+    dateFromNow().should.eql(moment().fromNow());
+
+    // moment
+    dateFromNow(moment()).should.eql(moment().fromNow());
+
+    // date
+    dateFromNow(new Date()).should.eql(moment().fromNow());
+
+    // number
+    dateFromNow(Date.now()).should.eql(moment().fromNow());
+  });
+
   it('time', function(){
     var ctx = {
       config: hexo.config,
