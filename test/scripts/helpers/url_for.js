@@ -14,10 +14,12 @@ describe('url_for', function(){
     ctx.config.root = '/';
     urlFor('index.html').should.eql('/index.html');
     urlFor('/').should.eql('/');
+    urlFor('/index.html').should.eql('/index.html');
 
     ctx.config.root = '/blog/';
     urlFor('index.html').should.eql('/blog/index.html');
     urlFor('/').should.eql('/blog/');
+    urlFor('/index.html').should.eql('/blog/index.html');
   });
 
   it('internal url (relative on)', function(){
