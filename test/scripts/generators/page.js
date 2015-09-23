@@ -1,26 +1,26 @@
 'use strict';
 
-var should = require('chai').should();
+var should = require('chai').should(); // eslint-disable-line
 var Promise = require('bluebird');
 var _ = require('lodash');
 
-describe('page', function(){
+describe('page', function() {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(__dirname, {silent: true});
   var Page = hexo.model('Page');
   var generator = Promise.method(require('../../../lib/plugins/generator/page').bind(hexo));
 
-  function locals(){
+  function locals() {
     hexo.locals.invalidate();
     return hexo.locals.toObject();
   }
 
-  it('default layout', function(){
+  it('default layout', function() {
     return Page.insert({
       source: 'foo',
       path: 'bar'
-    }).then(function(page){
-      return generator(locals()).then(function(data){
+    }).then(function(page) {
+      return generator(locals()).then(function(data) {
         data.should.eql([
           {
             path: page.path,
@@ -34,13 +34,13 @@ describe('page', function(){
     });
   });
 
-  it('custom layout', function(){
+  it('custom layout', function() {
     return Page.insert({
       source: 'foo',
       path: 'bar',
       layout: 'photo'
-    }).then(function(page){
-      return generator(locals()).then(function(data){
+    }).then(function(page) {
+      return generator(locals()).then(function(data) {
         data[0].layout.should.eql(['photo', 'page', 'post', 'index']);
 
         return page.remove();
@@ -48,13 +48,13 @@ describe('page', function(){
     });
   });
 
-  it('layout disabled', function(){
+  it('layout disabled', function() {
     return Page.insert({
       source: 'foo',
       path: 'bar',
       layout: false
-    }).then(function(page){
-      return generator(locals()).then(function(data){
+    }).then(function(page) {
+      return generator(locals()).then(function(data) {
         should.not.exist(data[0].layout);
 
         return page.remove();
@@ -62,7 +62,7 @@ describe('page', function(){
     });
   });
 
-  it('skip render', function(){
+  it('skip render', function() {
     hexo.config.skip_render = 'lab/**/*.js';
 
     return Page.insert({
@@ -70,8 +70,8 @@ describe('page', function(){
       path: 'lab/assets/jquery.min.js',
       layout: false,
       raw: 'jquery raw'
-    }).then(function(page){
-      return generator(locals()).then(function(data){
+    }).then(function(page) {
+      return generator(locals()).then(function(data) {
         data.should.eql([
           {path: page.source, data: page.raw}
         ]);
@@ -82,7 +82,7 @@ describe('page', function(){
     });
   });
 
-  it('skip render - multiple rules', function(){
+  it('skip render - multiple rules', function() {
     hexo.config.skip_render = ['lab/**/*.js'];
 
     return Page.insert({
@@ -90,8 +90,8 @@ describe('page', function(){
       path: 'lab/assets/jquery.min.js',
       layout: false,
       raw: 'jquery raw'
-    }).then(function(page){
-      return generator(locals()).then(function(data){
+    }).then(function(page) {
+      return generator(locals()).then(function(data) {
         data.should.eql([
           {path: page.source, data: page.raw}
         ]);
@@ -102,7 +102,7 @@ describe('page', function(){
     });
   });
 
-  it('skip render - don\'t replace extension name', function(){
+  it('skip render - don\'t replace extension name', function() {
     hexo.config.skip_render = 'README.md';
 
     return Page.insert({
@@ -110,8 +110,8 @@ describe('page', function(){
       path: 'README.html',
       layout: 'page',
       raw: 'readme raw'
-    }).then(function(page){
-      return generator(locals()).then(function(data){
+    }).then(function(page) {
+      return generator(locals()).then(function(data) {
         data.should.eql([
           {path: page.source, data: page.raw}
         ]);

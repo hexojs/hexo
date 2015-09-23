@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Core', function(){
+describe('Core', function() {
   require('./hexo');
   require('./load_config');
   require('./load_database');
@@ -10,5 +10,5 @@ describe('Core', function(){
   require('./render');
   require('./router');
   require('./scaffold');
-  require('./update_package')
+  require('./update_package');
 });

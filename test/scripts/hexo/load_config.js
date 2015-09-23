@@ -1,11 +1,11 @@
 'use strict';
 
-var should = require('chai').should();
+var should = require('chai').should(); // eslint-disable-line
 var pathFn = require('path');
 var fs = require('hexo-fs');
 var _ = require('lodash');
 
-describe('Load config', function(){
+describe('Load config', function() {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
   var loadConfig = require('../../../lib/hexo/load_config');
@@ -13,32 +13,32 @@ describe('Load config', function(){
 
   hexo.env.init = true;
 
-  function reset(){
+  function reset() {
     hexo.config = _.clone(defaultConfig);
   }
 
-  before(function(){
-    return fs.mkdirs(hexo.base_dir).then(function(){
+  before(function() {
+    return fs.mkdirs(hexo.base_dir).then(function() {
       return hexo.init();
     });
   });
 
-  after(function(){
+  after(function() {
     return fs.rmdir(hexo.base_dir);
   });
 
-  it('config file does not exist', function(){
-    return loadConfig(hexo).then(function(){
+  it('config file does not exist', function() {
+    return loadConfig(hexo).then(function() {
       hexo.config.should.eql(defaultConfig);
     });
   });
 
-  it('_config.yml exists', function(){
+  it('_config.yml exists', function() {
     var configPath = pathFn.join(hexo.base_dir, '_config.yml');
 
-    return fs.writeFile(configPath, 'foo: 1').then(function(){
+    return fs.writeFile(configPath, 'foo: 1').then(function() {
       return loadConfig(hexo);
-    }).then(function(){
+    }).then(function() {
       hexo.config.foo.should.eql(1);
 
       reset();
@@ -46,12 +46,12 @@ describe('Load config', function(){
     });
   });
 
-  it('_config.json exists', function(){
+  it('_config.json exists', function() {
     var configPath = pathFn.join(hexo.base_dir, '_config.json');
 
-    return fs.writeFile(configPath, '{"baz": 3}').then(function(){
+    return fs.writeFile(configPath, '{"baz": 3}').then(function() {
       return loadConfig(hexo);
-    }).then(function(){
+    }).then(function() {
       hexo.config.baz.should.eql(3);
 
       reset();
@@ -59,12 +59,12 @@ describe('Load config', function(){
     });
   });
 
-  it('_config.txt exists', function(){
+  it('_config.txt exists', function() {
     var configPath = pathFn.join(hexo.base_dir, '_config.txt');
 
-    return fs.writeFile(configPath, 'foo: 1').then(function(){
+    return fs.writeFile(configPath, 'foo: 1').then(function() {
       return loadConfig(hexo);
-    }).then(function(){
+    }).then(function() {
       hexo.config.should.eql(defaultConfig);
 
       reset();
@@ -72,12 +72,12 @@ describe('Load config', function(){
     });
   });
 
-  it('custom config path', function(){
+  it('custom config path', function() {
     var configPath = hexo.config_path = pathFn.join(__dirname, 'werwerwer.yml');
 
-    return fs.writeFile(configPath, 'foo: 1').then(function(){
+    return fs.writeFile(configPath, 'foo: 1').then(function() {
       return loadConfig(hexo);
-    }).then(function(){
+    }).then(function() {
       hexo.config.foo.should.eql(1);
 
       reset();
@@ -86,13 +86,13 @@ describe('Load config', function(){
     });
   });
 
-  it('custom config path with different extension name', function(){
-    var configPath = hexo.config_path = pathFn.join(__dirname, 'werwerwer.yml');
+  it('custom config path with different extension name', function() {
     var realPath = pathFn.join(__dirname, 'werwerwer.json');
+    hexo.config_path = pathFn.join(__dirname, 'werwerwer.yml');
 
-    return fs.writeFile(realPath, '{"foo": 2}').then(function(){
+    return fs.writeFile(realPath, '{"foo": 2}').then(function() {
       return loadConfig(hexo);
-    }).then(function(){
+    }).then(function() {
       hexo.config.foo.should.eql(2);
       hexo.config_path.should.eql(realPath);
 
@@ -102,15 +102,15 @@ describe('Load config', function(){
     });
   });
 
-  it('handle trailing "/" of url', function(){
+  it('handle trailing "/" of url', function() {
     var content = [
       'root: foo',
       'url: http://hexo.io/'
     ].join('\n');
 
-    return fs.writeFile(hexo.config_path, content).then(function(){
+    return fs.writeFile(hexo.config_path, content).then(function() {
       return loadConfig(hexo);
-    }).then(function(){
+    }).then(function() {
       hexo.config.root.should.eql('foo/');
       hexo.config.url.should.eql('http://hexo.io');
 
@@ -119,10 +119,10 @@ describe('Load config', function(){
     });
   });
 
-  it('custom public_dir', function(){
-    return fs.writeFile(hexo.config_path, 'public_dir: foo').then(function(){
+  it('custom public_dir', function() {
+    return fs.writeFile(hexo.config_path, 'public_dir: foo').then(function() {
       return loadConfig(hexo);
-    }).then(function(){
+    }).then(function() {
       hexo.public_dir.should.eql(pathFn.resolve(hexo.base_dir, 'foo') + pathFn.sep);
 
       reset();
@@ -130,10 +130,10 @@ describe('Load config', function(){
     });
   });
 
-  it('custom source_dir', function(){
-    return fs.writeFile(hexo.config_path, 'source_dir: bar').then(function(){
+  it('custom source_dir', function() {
+    return fs.writeFile(hexo.config_path, 'source_dir: bar').then(function() {
       return loadConfig(hexo);
-    }).then(function(){
+    }).then(function() {
       hexo.source_dir.should.eql(pathFn.resolve(hexo.base_dir, 'bar') + pathFn.sep);
 
       reset();
@@ -141,10 +141,10 @@ describe('Load config', function(){
     });
   });
 
-  it('custom theme', function(){
-    return fs.writeFile(hexo.config_path, 'theme: test').then(function(){
+  it('custom theme', function() {
+    return fs.writeFile(hexo.config_path, 'theme: test').then(function() {
       return loadConfig(hexo);
-    }).then(function(){
+    }).then(function() {
       hexo.config.theme.should.eql('test');
       hexo.theme_dir.should.eql(pathFn.join(hexo.base_dir, 'themes', 'test') + pathFn.sep);
       hexo.theme_script_dir.should.eql(pathFn.join(hexo.theme_dir, 'scripts') + pathFn.sep);

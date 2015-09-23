@@ -1,13 +1,13 @@
 'use strict';
 
-var should = require('chai').should();
+var should = require('chai').should(); // eslint-disable-line
 
-describe('Excerpt', function(){
+describe('Excerpt', function() {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo();
   var excerpt = require('../../../lib/plugins/filter/after_post_render/excerpt').bind(hexo);
 
-  it('without <!-- more -->', function(){
+  it('without <!-- more -->', function() {
     var content = [
       'foo',
       'bar',
@@ -24,7 +24,7 @@ describe('Excerpt', function(){
     data.more.should.eql(content);
   });
 
-  it('with <!-- more -->', function(){
+  it('with <!-- more -->', function() {
     var content = [
       'foo',
       'bar',
@@ -47,7 +47,7 @@ describe('Excerpt', function(){
 
     data.excerpt.should.eql([
       'foo',
-      'bar',
+      'bar'
     ].join('\n'));
 
     data.more.should.eql([
@@ -55,7 +55,7 @@ describe('Excerpt', function(){
     ].join('\n'));
   });
 
-  it('multiple <!-- more -->', function(){
+  it('multiple <!-- more -->', function() {
     var content = [
       'foo',
       '<!-- more -->',

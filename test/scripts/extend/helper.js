@@ -1,21 +1,22 @@
 'use strict';
 
-var should = require('chai').should();
+var should = require('chai').should(); // eslint-disable-line
 
-describe('Helper', function(){
+describe('Helper', function() {
   var Helper = require('../../../lib/extend/helper');
 
-  it('register()', function(){
+  it('register()', function() {
     var h = new Helper();
 
     // name, fn
-    h.register('test', function(){});
+    h.register('test', function() {});
+
     h.get('test').should.exist;
 
     // no fn
     try {
       h.register('test');
-    } catch (err){
+    } catch (err) {
       err.should.be
         .instanceOf(TypeError)
         .property('message', 'fn must be a function');
@@ -24,24 +25,26 @@ describe('Helper', function(){
     // no name
     try {
       h.register();
-    } catch (err){
+    } catch (err) {
       err.should.be
         .instanceOf(TypeError)
         .property('message', 'name is required');
     }
   });
 
-  it('list()', function(){
+  it('list()', function() {
     var h = new Helper();
 
-    h.register('test', function(){});
+    h.register('test', function() {});
+
     h.list().should.have.keys(['test']);
   });
 
-  it('get()', function(){
+  it('get()', function() {
     var h = new Helper();
 
-    h.register('test', function(){});
+    h.register('test', function() {});
+
     h.get('test').should.exist;
   });
 });

@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Helpers', function(){
+describe('Helpers', function() {
   require('./debug');
   require('./css');
   require('./date');

@@ -1,13 +1,13 @@
 'use strict';
 
-var should = require('chai').should();
+var should = require('chai').should(); // eslint-disable-line
 var pathFn = require('path');
 var fs = require('hexo-fs');
 var Promise = require('bluebird');
 
 var dateFormat = 'YYYY-MM-DD HH:mm:ss';
 
-describe('asset', function(){
+describe('asset', function() {
   var Hexo = require('../../../lib/hexo');
   var baseDir = pathFn.join(__dirname, 'asset_test');
   var hexo = new Hexo(baseDir);
@@ -18,28 +18,28 @@ describe('asset', function(){
   var Asset = hexo.model('Asset');
   var Page = hexo.model('Page');
 
-  function newFile(options){
+  function newFile(options) {
     options.source = pathFn.join(source.base, options.path);
     return new File(options);
   }
 
-  before(function(){
-    return fs.mkdirs(baseDir).then(function(){
+  before(function() {
+    return fs.mkdirs(baseDir).then(function() {
       return hexo.init();
     });
   });
 
-  after(function(){
+  after(function() {
     return fs.rmdir(baseDir);
   });
 
-  it('asset - type: create', function(){
+  it('asset - type: create', function() {
     var file = newFile({
       path: 'foo.jpg',
       type: 'create'
     });
 
-    return process(file).then(function(){
+    return process(file).then(function() {
       var id = 'source/' + file.path;
       var asset = Asset.findById(id);
 
@@ -51,7 +51,7 @@ describe('asset', function(){
     });
   });
 
-  it('asset - type: update', function(){
+  it('asset - type: update', function() {
     var file = newFile({
       path: 'foo.jpg',
       type: 'update'
@@ -63,9 +63,9 @@ describe('asset', function(){
       _id: id,
       path: file.path,
       modified: false
-    }).then(function(){
+    }).then(function() {
       return process(file);
-    }).then(function(){
+    }).then(function() {
       var asset = Asset.findById(id);
 
       asset._id.should.eql(id);
@@ -76,7 +76,7 @@ describe('asset', function(){
     });
   });
 
-  it('asset - type: skip', function(){
+  it('asset - type: skip', function() {
     var file = newFile({
       path: 'foo.jpg',
       type: 'skip'
@@ -88,9 +88,9 @@ describe('asset', function(){
       _id: id,
       path: file.path,
       modified: false
-    }).then(function(){
+    }).then(function() {
       return process(file);
-    }).then(function(){
+    }).then(function() {
       var asset = Asset.findById(id);
 
       asset._id.should.eql(id);
@@ -101,7 +101,7 @@ describe('asset', function(){
     });
   });
 
-  it('asset - type: delete', function(){
+  it('asset - type: delete', function() {
     var file = newFile({
       path: 'foo.jpg',
       type: 'delete'
@@ -112,14 +112,14 @@ describe('asset', function(){
     return Asset.insert({
       _id: id,
       path: file.path
-    }).then(function(){
+    }).then(function() {
       return process(file);
-    }).then(function(){
+    }).then(function() {
       should.not.exist(Asset.findById(id));
     });
   });
 
-  it('page - type: create', function(){
+  it('page - type: create', function() {
     var body = [
       'title: "Hello world"',
       'date: 2006-01-02 15:04:05',
@@ -134,9 +134,9 @@ describe('asset', function(){
       content: new Buffer(body)
     });
 
-    return fs.writeFile(file.source, body).then(function(){
+    return fs.writeFile(file.source, body).then(function() {
       return process(file);
-    }).then(function(){
+    }).then(function() {
       var page = Page.findOne({source: file.path});
 
       page.title.should.eql('Hello world');
@@ -155,7 +155,7 @@ describe('asset', function(){
     });
   });
 
-  it('page - type: update', function(){
+  it('page - type: update', function() {
     var body = [
       'title: "Hello world"',
       '---'
@@ -172,10 +172,10 @@ describe('asset', function(){
     return Promise.all([
       Page.insert({source: file.path, path: 'hello.html'}),
       fs.writeFile(file.source, body)
-    ]).spread(function(doc){
+    ]).spread(function(doc) {
       id = doc._id;
       return process(file);
-    }).then(function(){
+    }).then(function() {
       var page = Page.findOne({source: file.path});
 
       page._id.should.eql(id);
@@ -188,7 +188,7 @@ describe('asset', function(){
     });
   });
 
-  it('page - type: delete', function(){
+  it('page - type: delete', function() {
     var file = newFile({
       path: 'hello.swig',
       type: 'delete'
@@ -197,25 +197,25 @@ describe('asset', function(){
     return Page.insert({
       source: file.path,
       path: 'hello.html'
-    }).then(function(){
+    }).then(function() {
       return process(file);
-    }).then(function(){
+    }).then(function() {
       should.not.exist(Page.findOne({source: file.path}));
     });
   });
 
-  it('page - use the status of the source file if date not set', function(){
+  it('page - use the status of the source file if date not set', function() {
     var file = newFile({
       path: 'hello.swig',
       type: 'create'
     });
 
-    return fs.writeFile(file.source, '').then(function(){
+    return fs.writeFile(file.source, '').then(function() {
       return Promise.all([
         fs.stat(file.source),
         process(file)
       ]);
-    }).spread(function(stats){
+    }).spread(function(stats) {
       var page = Page.findOne({source: file.path});
 
       page.date.toDate().should.eql(stats.ctime);
@@ -228,7 +228,7 @@ describe('asset', function(){
     });
   });
 
-  it('page - permalink', function(){
+  it('page - permalink', function() {
     var body = [
       'title: "Hello world"',
       'permalink: foo.html',
@@ -241,9 +241,9 @@ describe('asset', function(){
       content: new Buffer(body)
     });
 
-    return fs.writeFile(file.source, body).then(function(){
+    return fs.writeFile(file.source, body).then(function() {
       return process(file);
-    }).then(function(){
+    }).then(function() {
       var page = Page.findOne({source: file.path});
 
       page.path.should.eql('foo.html');
@@ -255,7 +255,7 @@ describe('asset', function(){
     });
   });
 
-  it('page - permalink (without extension name)', function(){
+  it('page - permalink (without extension name)', function() {
     var body = [
       'title: "Hello world"',
       'permalink: foo',
@@ -268,9 +268,9 @@ describe('asset', function(){
       content: new Buffer(body)
     });
 
-    return fs.writeFile(file.source, body).then(function(){
+    return fs.writeFile(file.source, body).then(function() {
       return process(file);
-    }).then(function(){
+    }).then(function() {
       var page = Page.findOne({source: file.path});
 
       page.path.should.eql('foo.html');
@@ -282,7 +282,7 @@ describe('asset', function(){
     });
   });
 
-  it('page - permalink (with trailing slash)', function(){
+  it('page - permalink (with trailing slash)', function() {
     var body = [
       'title: "Hello world"',
       'permalink: foo/',
@@ -295,9 +295,9 @@ describe('asset', function(){
       content: new Buffer(body)
     });
 
-    return fs.writeFile(file.source, body).then(function(){
+    return fs.writeFile(file.source, body).then(function() {
       return process(file);
-    }).then(function(){
+    }).then(function() {
       var page = Page.findOne({source: file.path});
 
       page.path.should.eql('foo/index.html');
@@ -309,7 +309,7 @@ describe('asset', function(){
     });
   });
 
-  it('page - set layout to false if output is not html', function(){
+  it('page - set layout to false if output is not html', function() {
     var body = 'foo: 1';
 
     var file = newFile({
@@ -318,9 +318,9 @@ describe('asset', function(){
       content: new Buffer(body)
     });
 
-    return fs.writeFile(file.source, body).then(function(){
+    return fs.writeFile(file.source, body).then(function() {
       return process(file);
-    }).then(function(){
+    }).then(function() {
       var page = Page.findOne({source: file.path});
 
       page.layout.should.eql('false');
@@ -332,7 +332,7 @@ describe('asset', function(){
     });
   });
 
-  it('page - don\'t set layout to false if layout is set but output is not html', function(){
+  it('page - don\'t set layout to false if layout is set but output is not html', function() {
     var body = [
       'layout: something',
       '---',
@@ -345,9 +345,9 @@ describe('asset', function(){
       content: new Buffer(body)
     });
 
-    return fs.writeFile(file.source, body).then(function(){
+    return fs.writeFile(file.source, body).then(function() {
       return process(file);
-    }).then(function(){
+    }).then(function() {
       var page = Page.findOne({source: file.path});
 
       page.layout.should.eql('something');
@@ -359,7 +359,7 @@ describe('asset', function(){
     });
   });
 
-  it('page - parse date', function(){
+  it('page - parse date', function() {
     var body = [
       'title: "Hello world"',
       'date: Apr 24 2014',
@@ -373,9 +373,9 @@ describe('asset', function(){
       content: new Buffer(body)
     });
 
-    return fs.writeFile(file.source, body).then(function(){
+    return fs.writeFile(file.source, body).then(function() {
       return process(file);
-    }).then(function(){
+    }).then(function() {
       var page = Page.findOne({source: file.path});
 
       page.date.format(dateFormat).should.eql('2014-04-24 00:00:00');
@@ -388,7 +388,7 @@ describe('asset', function(){
     });
   });
 
-  it('page - use file stats instead if date is invalid', function(){
+  it('page - use file stats instead if date is invalid', function() {
     var body = [
       'title: "Hello world"',
       'date: yomama',
@@ -402,12 +402,12 @@ describe('asset', function(){
       content: new Buffer(body)
     });
 
-    return fs.writeFile(file.source, body).then(function(){
+    return fs.writeFile(file.source, body).then(function() {
       return Promise.all([
         file.stat(),
         process(file)
       ]);
-    }).spread(function(stats){
+    }).spread(function(stats) {
       var page = Page.findOne({source: file.path});
 
       page.date.toDate().should.eql(stats.ctime);
@@ -420,7 +420,7 @@ describe('asset', function(){
     });
   });
 
-  it('page - don\'t remove extension name', function(){
+  it('page - don\'t remove extension name', function() {
     var body = '';
 
     var file = newFile({
@@ -429,9 +429,9 @@ describe('asset', function(){
       content: new Buffer(body)
     });
 
-    return fs.writeFile(file.source, body).then(function(){
+    return fs.writeFile(file.source, body).then(function() {
       return process(file);
-    }).then(function(){
+    }).then(function() {
       var page = Page.findOne({source: file.path});
 
       page.path.should.eql('test.min.js');
@@ -443,7 +443,7 @@ describe('asset', function(){
     });
   });
 
-  it('page - timezone', function(){
+  it('page - timezone', function() {
     var body = [
       'title: "Hello world"',
       'date: Apr 24 2014',
@@ -459,9 +459,9 @@ describe('asset', function(){
 
     hexo.config.timezone = 'UTC';
 
-    return fs.writeFile(file.source, body).then(function(){
+    return fs.writeFile(file.source, body).then(function() {
       return process(file);
-    }).then(function(){
+    }).then(function() {
       var page = Page.findOne({source: file.path});
 
       page.date.utc().format(dateFormat).should.eql('2014-04-24 00:00:00');

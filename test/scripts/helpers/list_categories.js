@@ -1,9 +1,9 @@
 'use strict';
 
-var should = require('chai').should();
+var should = require('chai').should(); // eslint-disable-line
 var Promise = require('bluebird');
 
-describe('list_categories', function(){
+describe('list_categories', function() {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(__dirname);
   var Post = hexo.model('Post');
@@ -17,29 +17,29 @@ describe('list_categories', function(){
 
   var listCategories = require('../../../lib/plugins/helper/list_categories').bind(ctx);
 
-  before(function(){
+  before(function() {
     return Post.insert([
       {source: 'foo', slug: 'foo'},
       {source: 'bar', slug: 'bar'},
       {source: 'baz', slug: 'baz'},
       {source: 'boo', slug: 'boo'}
-    ]).then(function(posts){
+    ]).then(function(posts) {
       return Promise.each([
         ['baz'],
         ['baz', 'bar'],
         ['foo'],
         ['baz']
-      ], function(cats, i){
+      ], function(cats, i) {
         return posts[i].setCategories(cats);
       });
-    }).then(function(){
+    }).then(function() {
       hexo.locals.invalidate();
       ctx.site = hexo.locals.toObject();
       ctx.page = ctx.site.posts.data[1];
     });
   });
 
-  it('default', function(){
+  it('default', function() {
     var result = listCategories();
 
     result.should.eql([
@@ -59,7 +59,7 @@ describe('list_categories', function(){
     ].join(''));
   });
 
-  it('specified collection', function(){
+  it('specified collection', function() {
     var result = listCategories(Category.find({
       parent: {$exists: false}
     }));
@@ -76,7 +76,7 @@ describe('list_categories', function(){
     ].join(''));
   });
 
-  it('style: false', function(){
+  it('style: false', function() {
     var result = listCategories({
       style: false
     });
@@ -88,7 +88,7 @@ describe('list_categories', function(){
     ].join(', '));
   });
 
-  it('show_count: false', function(){
+  it('show_count: false', function() {
     var result = listCategories({
       show_count: false
     });
@@ -110,7 +110,7 @@ describe('list_categories', function(){
     ].join(''));
   });
 
-  it('class', function(){
+  it('class', function() {
     var result = listCategories({
       class: 'test'
     });
@@ -132,7 +132,7 @@ describe('list_categories', function(){
     ].join(''));
   });
 
-  it('depth', function(){
+  it('depth', function() {
     var result = listCategories({
       depth: 1
     });
@@ -149,7 +149,7 @@ describe('list_categories', function(){
     ].join(''));
   });
 
-  it('orderby', function(){
+  it('orderby', function() {
     var result = listCategories({
       orderby: 'length'
     });
@@ -171,7 +171,7 @@ describe('list_categories', function(){
     ].join(''));
   });
 
-  it('order', function(){
+  it('order', function() {
     var result = listCategories({
       order: -1
     });
@@ -193,9 +193,9 @@ describe('list_categories', function(){
     ].join(''));
   });
 
-  it('transform', function(){
+  it('transform', function() {
     var result = listCategories({
-      transform: function(name){
+      transform: function(name) {
         return name.toUpperCase();
       }
     });
@@ -217,7 +217,7 @@ describe('list_categories', function(){
     ].join(''));
   });
 
-  it('separator', function(){
+  it('separator', function() {
     var result = listCategories({
       style: false,
       separator: ''
@@ -230,7 +230,7 @@ describe('list_categories', function(){
     ].join(''));
   });
 
-  it('children-indicator', function(){
+  it('children-indicator', function() {
     var result = listCategories({
       children_indicator: 'has-children'
     });
@@ -252,7 +252,7 @@ describe('list_categories', function(){
     ].join(''));
   });
 
-  it('show-current', function(){
+  it('show-current', function() {
     var result = listCategories({
       show_current: true
     });

@@ -1,22 +1,21 @@
 'use strict';
 
-var should = require('chai').should();
+var should = require('chai').should(); // eslint-disable-line
 var sinon = require('sinon');
 var Promise = require('bluebird');
-var _ = require('lodash');
 
-describe('Tag', function(){
+describe('Tag', function() {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo();
   var Tag = hexo.model('Tag');
   var Post = hexo.model('Post');
   var PostTag = hexo.model('PostTag');
 
-  before(function(){
+  before(function() {
     return hexo.init();
   });
 
-  it('name - required', function(){
+  it('name - required', function() {
     var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', '`name` is required!');
     });
@@ -26,23 +25,23 @@ describe('Tag', function(){
     });
   });
 
-  it('slug - virtual', function(){
+  it('slug - virtual', function() {
     return Tag.insert({
       name: 'foo'
-    }).then(function(data){
+    }).then(function(data) {
       data.slug.should.eql('foo');
       return Tag.removeById(data._id);
     });
   });
 
-  it('slug - tag_map', function(){
+  it('slug - tag_map', function() {
     hexo.config.tag_map = {
       test: 'wat'
     };
 
     return Tag.insert({
       name: 'test'
-    }).then(function(data){
+    }).then(function(data) {
       data.slug.should.eql('wat');
       hexo.config.tag_map = {};
 
@@ -50,68 +49,68 @@ describe('Tag', function(){
     });
   });
 
-  it('slug - filename_case: 0', function(){
+  it('slug - filename_case: 0', function() {
     return Tag.insert({
       name: 'WahAHa'
-    }).then(function(data){
+    }).then(function(data) {
       data.slug.should.eql('WahAHa');
       return Tag.removeById(data._id);
     });
   });
 
-  it('slug - filename_case: 1', function(){
+  it('slug - filename_case: 1', function() {
     hexo.config.filename_case = 1;
 
     return Tag.insert({
       name: 'WahAHa'
-    }).then(function(data){
+    }).then(function(data) {
       data.slug.should.eql('wahaha');
       hexo.config.filename_case = 0;
       return Tag.removeById(data._id);
     });
   });
 
-  it('slug - filename_case: 2', function(){
+  it('slug - filename_case: 2', function() {
     hexo.config.filename_case = 2;
 
     return Tag.insert({
       name: 'WahAHa'
-    }).then(function(data){
+    }).then(function(data) {
       data.slug.should.eql('WAHAHA');
       hexo.config.filename_case = 0;
       return Tag.removeById(data._id);
     });
   });
 
-  it('path - virtual', function(){
+  it('path - virtual', function() {
     return Tag.insert({
       name: 'foo'
-    }).then(function(data){
+    }).then(function(data) {
       data.path.should.eql(hexo.config.tag_dir + '/' + data.slug + '/');
       return Tag.removeById(data._id);
-    })
+    });
   });
 
-  it('permalink - virtual', function(){
+  it('permalink - virtual', function() {
     return Tag.insert({
       name: 'foo'
-    }).then(function(data){
+    }).then(function(data) {
       data.permalink.should.eql(hexo.config.url + '/' + data.path);
       return Tag.removeById(data._id);
     });
   });
 
-  it('posts - virtual', function(){
+  it('posts - virtual', function() {
     return Post.insert([
       {source: 'foo.md', slug: 'foo'},
       {source: 'bar.md', slug: 'bar'},
       {source: 'baz.md', slug: 'baz'}
-    ]).each(function(post){
+    ]).each(function(post) {
       return post.setTags(['foo']);
-    }).then(function(posts){
+    }).then(function(posts) {
       var tag = Tag.findOne({name: 'foo'});
 
-      function mapper(post){
+      function mapper(post) {
         return post._id;
       }
 
@@ -120,22 +119,22 @@ describe('Tag', function(){
       tag.length.should.eql(posts.length);
 
       return tag.remove().thenReturn(posts);
-    }).map(function(post){
+    }).map(function(post) {
       return post.remove();
     });
   });
 
-  it('posts - draft', function(){
+  it('posts - draft', function() {
     return Post.insert([
       {source: 'foo.md', slug: 'foo', published: true},
       {source: 'bar.md', slug: 'bar', published: false},
       {source: 'baz.md', slug: 'baz', published: true}
-    ]).each(function(post){
+    ]).each(function(post) {
       return post.setTags(['foo']);
-    }).then(function(posts){
+    }).then(function(posts) {
       var tag = Tag.findOne({name: 'foo'});
 
-      function mapper(post){
+      function mapper(post) {
         return post._id;
       }
 
@@ -154,24 +153,24 @@ describe('Tag', function(){
       hexo.config.render_drafts = false;
 
       return tag.remove().thenReturn(posts);
-    }).map(function(post){
+    }).map(function(post) {
       return post.remove();
     });
   });
 
-  it('posts - future', function(){
+  it('posts - future', function() {
     var now = Date.now();
 
     return Post.insert([
       {source: 'foo.md', slug: 'foo', date: now - 3600},
       {source: 'bar.md', slug: 'bar', date: now + 3600},
       {source: 'baz.md', slug: 'baz', date: now}
-    ]).each(function(post){
+    ]).each(function(post) {
       return post.setTags(['foo']);
-    }).then(function(posts){
+    }).then(function(posts) {
       var tag = Tag.findOne({name: 'foo'});
 
-      function mapper(post){
+      function mapper(post) {
         return post._id;
       }
 
@@ -190,19 +189,19 @@ describe('Tag', function(){
       tag.length.should.eql(2);
 
       return tag.remove().thenReturn(posts);
-    }).map(function(post){
+    }).map(function(post) {
       return post.remove();
     });
   });
 
-  it('check whether a tag exists', function(){
+  it('check whether a tag exists', function() {
     var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', 'Tag `foo` has already existed!');
     });
 
     return Tag.insert({
       name: 'foo'
-    }).then(function(data){
+    }).then(function(data) {
       Tag.insert({
         name: 'foo'
       }).catch(errorCallback);
@@ -213,24 +212,24 @@ describe('Tag', function(){
     });
   });
 
-  it('remove PostTag references when a tag is removed', function(){
+  it('remove PostTag references when a tag is removed', function() {
     var tag;
 
     return Post.insert([
       {source: 'foo.md', slug: 'foo'},
       {source: 'bar.md', slug: 'bar'},
       {source: 'baz.md', slug: 'baz'}
-    ]).then(function(posts){
-      return Promise.map(posts, function(post){
+    ]).then(function(posts) {
+      return Promise.map(posts, function(post) {
         return post.setTags(['foo']).thenReturn(post);
       }, {concurrency: 1}); // One item a time
-    }).then(function(posts){
+    }).then(function(posts) {
       tag = Tag.findOne({name: 'foo'});
       return Tag.removeById(tag._id).thenReturn(posts);
-    }).then(function(posts){
+    }).then(function(posts) {
       PostTag.find({tag_id: tag._id}).length.should.eql(0);
       return posts;
-    }).map(function(post){
+    }).map(function(post) {
       return Post.removeById(post._id);
     });
   });

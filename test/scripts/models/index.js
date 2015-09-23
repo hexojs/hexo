@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Models', function(){
+describe('Models', function() {
   require('./asset');
   require('./cache');
   require('./cachestring');

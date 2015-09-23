@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Renderers', function(){
+describe('Renderers', function() {
   require('./json');
   require('./plain');
   require('./swig');

@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Hexo', function(){
+describe('Hexo', function() {
   require('./scripts/box');
   require('./scripts/console');
   require('./scripts/extend');

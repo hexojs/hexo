@@ -5,22 +5,13 @@ init:
 # Test against these versions of Node.js.
 environment:
   matrix:
-    # node.js
     - nodejs_version: "0.10"
     - nodejs_version: "0.12"
-    # io.js
-    - nodejs_version: "1"
-
-# Allow failing jobs for bleeding-edge Node.js versions.
-matrix:
-  allow_failures:
-    - nodejs_version: "1"
+    - nodejs_version: "4"
 
 # Install scripts. (runs after repo cloning)
 install:
-  - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
-  - cmd: npm install -g npm@2
-  - set PATH=%APPDATA%\npm;%PATH%
+  - ps: Install-Product node $env:nodejs_version
   - npm install
 
 # Post-install test scripts.
@@ -29,7 +20,9 @@ test_script:
   - node --version
   - npm --version
   # Run tests
-  - npm test
+  - npm run eslint
+  - npm run jscs
+  - npm run test-cov
 
 # Don't actually build.
 build: off

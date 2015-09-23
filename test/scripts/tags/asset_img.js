@@ -1,8 +1,8 @@
 'use strict';
 
-var should = require('chai').should();
+var should = require('chai').should(); // eslint-disable-line
 
-describe('asset_img', function(){
+describe('asset_img', function() {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(__dirname);
   var assetImgTag = require('../../../lib/plugins/tag/asset_img')(hexo);
@@ -12,17 +12,17 @@ describe('asset_img', function(){
 
   hexo.config.permalink = ':title/';
 
-  function assetImg(args){
+  function assetImg(args) {
     return assetImgTag.call(post, args.split(' '));
   }
 
-  before(function(){
-    return hexo.init().then(function(){
+  before(function() {
+    return hexo.init().then(function() {
       return Post.insert({
         source: 'foo.md',
         slug: 'foo'
       });
-    }).then(function(post_){
+    }).then(function(post_) {
       post = post_;
 
       return PostAsset.insert({
@@ -33,19 +33,19 @@ describe('asset_img', function(){
     });
   });
 
-  it('default', function(){
+  it('default', function() {
     assetImg('bar').should.eql('<img src="/foo/bar" alt="bar" title="">');
   });
 
-  it('default', function(){
+  it('default', function() {
     assetImg('bar title').should.eql('<img src="/foo/bar" alt="title" title="title">');
   });
 
-  it('no slug', function(){
+  it('no slug', function() {
     should.not.exist(assetImg(''));
   });
 
-  it('asset not found', function(){
+  it('asset not found', function() {
     should.not.exist(assetImg('boo'));
   });
 });
