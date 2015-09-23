@@ -318,6 +318,7 @@ describe('Render', function() {
     var onRenderEnd = sinon.spy(function(result) {
       return result + 'bar';
     });
+
     var data = {
       text: 'foo',
       engine: 'txt',
