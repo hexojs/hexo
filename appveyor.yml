@@ -22,7 +22,7 @@ test_script:
   # Run tests
   - npm run eslint
   - npm run jscs
-  - npm run test-cov
+  - npm test
 
 # Don't actually build.
 build: off
