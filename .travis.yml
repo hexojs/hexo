@@ -1,6 +1,21 @@
 language: node_js
+
+sudo: false
+
+cache:
+  apt: true
+  directories:
+    - node_modules
+
 node_js:
   - "0.10"
-  - "0.11"
-before_script:
-  - npm install -g gulp
+  - "0.12"
+  - "4"
+
+script:
+  - npm run eslint
+  - npm run jscs
+  - npm run test-cov
+
+after_script:
+  - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js

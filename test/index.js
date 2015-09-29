@@ -1,28 +1,17 @@
-var file = require('../lib/util/file2'),
-  fs = require('graceful-fs'),
-  pathFn = require('path');
+'use strict';
 
-describe('Hexo test', function(){
-  before(require('./scripts/init'));
-
-  require('./scripts/core');
-  require('./scripts/util');
-  require('./scripts/i18n');
-  require('./scripts/filter');
-  require('./scripts/helper');
-  require('./scripts/tag');
-  require('./scripts/post');
-  require('./scripts/scaffold');
-
-  after(function(done){
-    var blogDir = pathFn.join(__dirname, 'blog');
-
-    fs.exists(blogDir, function(exist){
-      if (exist){
-        file.rmdir(blogDir, done);
-      } else {
-        done();
-      }
-    });
-  });
+describe('Hexo', function() {
+  require('./scripts/box');
+  require('./scripts/console');
+  require('./scripts/extend');
+  require('./scripts/filters');
+  require('./scripts/generators');
+  require('./scripts/helpers');
+  require('./scripts/hexo');
+  require('./scripts/models');
+  require('./scripts/processors');
+  require('./scripts/renderers');
+  require('./scripts/tags');
+  require('./scripts/theme');
+  require('./scripts/theme_processors');
 });

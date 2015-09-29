@@ -1,13 +1,16 @@
 {
   "name": "hexo",
-  "version": "2.8.3",
+  "version": "3.1.1",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
   "main": "lib/hexo",
   "bin": {
     "hexo": "./bin/hexo"
   },
   "scripts": {
-    "test": "gulp test"
+    "eslint": "eslint .",
+    "jscs": "jscs .",
+    "test": "mocha test/index.js",
+    "test-cov": "istanbul cover --print both _mocha -- test/index.js && istanbul check-coverage"
   },
   "directories": {
     "lib": "./lib",
@@ -16,13 +19,7 @@
   "engines": {
     "node": ">= 0.10.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/hexojs/hexo.git"
-  },
-  "bugs": {
-    "url": "https://github.com/hexojs/hexo/issues"
-  },
+  "repository": "hexojs/hexo",
   "homepage": "http://hexo.io/",
   "keywords": [
     "website",
@@ -34,33 +31,41 @@
   "author": "Tommy Chen <tommy351@gmail.com> (http://zespia.tw)",
   "license": "MIT",
   "dependencies": {
-    "async": "^0.9.0",
-    "cheerio": "0.17.0",
-    "chokidar": "0.8.2",
-    "colors": "0.6.2",
-    "compression": "^1.0.3",
-    "connect": "3.x",
-    "graceful-fs": "^3.0.2",
-    "hexo-front-matter": "0.0.4",
-    "highlight.js": "8.1.0",
-    "js-yaml": "^3.1.0",
-    "lodash": "^2.4.1",
-    "mime": "^1.2.11",
-    "minimist": "0.2.0",
-    "moment": "^2.8.1",
-    "morgan": "^1.1.1",
-    "serve-static": "^1.2.0",
-    "sprintf-js": "0.0.7",
-    "strip-indent": "^0.1.3",
-    "swig": "1.4.1",
-    "warehouse": "0.2.2"
+    "abbrev": "^1.0.5",
+    "archy": "^1.0.0",
+    "bluebird": "^2.9.8",
+    "bunyan": "^1.3.3",
+    "chalk": "^1.0.0",
+    "cheerio": "^0.19.0",
+    "hexo-cli": "^0.1.6",
+    "hexo-front-matter": "^0.2.1",
+    "hexo-fs": "^0.1.3",
+    "hexo-i18n": "^0.2.1",
+    "hexo-util": "^0.1.7",
+    "js-yaml": "^3.2.5",
+    "lodash": "^3.2.0",
+    "minimatch": "^2.0.1",
+    "moment": "~2.10.3",
+    "moment-timezone": "^0.4.0",
+    "nunjucks": "^2.1.0",
+    "pretty-hrtime": "^1.0.0",
+    "strip-indent": "^1.0.0",
+    "swig": "1.4.2",
+    "swig-extras": "0.0.1",
+    "text-table": "^0.2.0",
+    "through2": "^2.0.0",
+    "tildify": "^1.0.0",
+    "titlecase": "^1.0.2",
+    "warehouse": "^1.0.2"
   },
   "devDependencies": {
-    "mocha": "^1.20.1",
-    "chai": "^1.9.1",
-    "gulp": "^3.6.2",
-    "gulp-jshint": "^1.5.5",
-    "gulp-mocha": "^0.5.1",
-    "jshint-stylish": "^0.4.0"
+    "chai": "^3.2.0",
+    "coveralls": "^2.11.2",
+    "eslint": "^1.5.0",
+    "hexo-renderer-marked": "^0.2.3",
+    "istanbul": "^0.3.20",
+    "jscs": "^2.1.1",
+    "mocha": "^2.0.1",
+    "sinon": "^1.12.2"
   }
 }

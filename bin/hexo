@@ -1,32 +1,5 @@
 #!/usr/bin/env node
 
-var args = require('minimist')(process.argv.slice(2)),
-  fs = require('graceful-fs'),
-  path = require('path'),
-  async = require('async'),
-  init = require('../lib/init'),
-  cwd = process.cwd(),
-  lastCwd = cwd;
+'use strict';
 
-// Find Hexo folder recursively
-async.doUntil(
-  function(next){
-    var configFile = path.join(cwd, '_config.yml');
-
-    fs.exists(configFile, function(exist){
-      if (exist){
-        init(cwd, args);
-      } else {
-        lastCwd = cwd;
-        cwd = path.dirname(cwd);
-        next();
-      }
-    });
-  },
-  function(){
-    return cwd === lastCwd;
-  },
-  function(){
-    init(process.cwd(), args);
-  }
-);
+require('hexo-cli')();

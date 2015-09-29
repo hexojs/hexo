@@ -1,0 +1,9 @@
+{
+  "extend": "../.eslintrc",
+  "rules": {
+    "no-unused-expressions": 0
+  },
+  "env": {
+    "mocha": true
+  }
+}
