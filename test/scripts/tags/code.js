@@ -29,6 +29,19 @@ describe('code', function() {
     result.should.eql(highlight(fixture));
   });
 
+  it('non standard indent', function() {
+    var nonStandardIndent = [
+        '  ',
+        '  return x;',
+        '}',
+        '',
+        fixture,
+        '  '
+    ].join('/n');
+    var result = code('', nonStandardIndent);
+    result.should.eql(highlight(nonStandardIndent));
+  });
+
   it('lang', function() {
     var result = code('lang:js', fixture);
     result.should.eql(highlight(fixture, {lang: 'js'}));
