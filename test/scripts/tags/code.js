@@ -34,6 +34,11 @@ describe('code', function() {
     result.should.eql(highlight(fixture, {lang: 'js'}));
   });
 
+  it('highlight disable', function() {
+    var result = code('highlight:false', fixture);
+    result.should.eql("<pre><code>" + fixture + "</code></pre>");
+  });
+
   it('title', function() {
     var result = code('Hello world', fixture);
     result.should.eql(highlight(fixture, {caption: '<span>Hello world</span>'}));
