@@ -15,14 +15,14 @@ describe('feed_tag', function() {
   var feed = require('../../../lib/plugins/helper/feed_tag').bind(ctx);
 
   it('path', function() {
-    feed('atom.xml').should.eql('<link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">');
+    feed('atom.xml').should.eql('<link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">');
   });
 
   it('title', function() {
-    feed('atom.xml', {title: 'RSS Feed'}).should.eql('<link rel="alternative" href="/atom.xml" title="RSS Feed" type="application/atom+xml">');
+    feed('atom.xml', {title: 'RSS Feed'}).should.eql('<link rel="alternate" href="/atom.xml" title="RSS Feed" type="application/atom+xml">');
   });
 
   it('type', function() {
-    feed('rss.xml', {type: 'rss'}).should.eql('<link rel="alternative" href="/rss.xml" title="Hexo" type="application/rss+xml">');
+    feed('rss.xml', {type: 'rss'}).should.eql('<link rel="alternate" href="/rss.xml" title="Hexo" type="application/rss+xml">');
   });
 });
