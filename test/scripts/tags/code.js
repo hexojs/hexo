@@ -44,12 +44,32 @@ describe('code', function() {
 
   it('lang', function() {
     var result = code('lang:js', fixture);
-    result.should.eql(highlight(fixture, {lang: 'js'}));
+    result.should.eql(highlight(fixture, {
+      lang: 'js'
+    }));
+  });
+
+  it('line_number', function() {
+    var result = code('line_number:false', fixture);
+    result.should.eql(highlight(fixture, {
+      gutter: false
+    }));
+    result = code('line_number:true', fixture);
+    result.should.eql(highlight(fixture, {
+      gutter: true
+    }));
+  });
+
+  it('highlight disable', function() {
+    var result = code('highlight:false', fixture);
+    result.should.eql('<pre><code>' + fixture + '</code></pre>');
   });
 
   it('title', function() {
     var result = code('Hello world', fixture);
-    result.should.eql(highlight(fixture, {caption: '<span>Hello world</span>'}));
+    result.should.eql(highlight(fixture, {
+      caption: '<span>Hello world</span>'
+    }));
   });
 
   it('link', function() {
