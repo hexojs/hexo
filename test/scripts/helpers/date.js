@@ -73,25 +73,25 @@ describe('date', function() {
     dateXML(Date.now()).should.eql(moment().toISOString());
   });
 
-  it('date_fromNow', function() {
+  it('relative_date', function() {
     var ctx = {
       config: hexo.config,
       page: {}
     };
 
-    var dateFromNow = dateHelper.date_fromNow.bind(ctx);
+    var relativeDate = dateHelper.relative_date.bind(ctx);
 
     // now
-    dateFromNow().should.eql(moment().fromNow());
+    relativeDate().should.eql(moment().fromNow());
 
     // moment
-    dateFromNow(moment()).should.eql(moment().fromNow());
+    relativeDate(moment()).should.eql(moment().fromNow());
 
     // date
-    dateFromNow(new Date()).should.eql(moment().fromNow());
+    relativeDate(new Date()).should.eql(moment().fromNow());
 
     // number
-    dateFromNow(Date.now()).should.eql(moment().fromNow());
+    relativeDate(Date.now()).should.eql(moment().fromNow());
   });
 
   it('time', function() {
