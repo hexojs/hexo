@@ -53,10 +53,10 @@
     "swig": "1.4.2",
     "swig-extras": "0.0.1",
     "text-table": "^0.2.0",
-    "through2": "^2.0.0",
     "tildify": "^1.1.2",
     "titlecase": "^1.0.2",
-    "warehouse": "^1.0.3"
+    "warehouse": "^1.0.3",
+    "xxhash": "^0.2.3"
   },
   "devDependencies": {
     "chai": "^3.4.0",
