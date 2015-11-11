@@ -1,4 +1,4 @@
-if [ "$XXHASH" == "1" ]; then
+if [ -n "$XXHASH" ]; then
   npm install
 else
   npm install --no-optional

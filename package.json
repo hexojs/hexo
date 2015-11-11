@@ -16,9 +16,6 @@
     "lib": "./lib",
     "bin": "./bin"
   },
-  "engines": {
-    "node": ">= 0.10.0"
-  },
   "repository": "hexojs/hexo",
   "homepage": "http://hexo.io/",
   "keywords": [
@@ -39,7 +36,7 @@
     "cheerio": "^0.19.0",
     "hexo-cli": "^0.1.9",
     "hexo-front-matter": "^0.2.2",
-    "hexo-fs": "^0.1.4",
+    "hexo-fs": "^0.1.5",
     "hexo-i18n": "^0.2.1",
     "hexo-util": "^0.2.1",
     "js-yaml": "^3.4.3",
@@ -55,7 +52,7 @@
     "text-table": "^0.2.0",
     "tildify": "^1.1.2",
     "titlecase": "^1.0.2",
-    "warehouse": "^1.0.3"
+    "warehouse": "^2.0.0"
   },
   "devDependencies": {
     "chai": "^3.4.0",
