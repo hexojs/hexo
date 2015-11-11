@@ -58,11 +58,15 @@ describe('is', function() {
 
   it('is_category', function() {
     is.category.call({page: {category: 'foo'}}).should.be.true;
+    is.category.call({page: {category: 'foo'}}, 'foo').should.be.true;
+    is.category.call({page: {category: 'foo'}}, 'bar').should.be.false;
     is.category.call({page: {}}).should.be.false;
   });
 
   it('is_tag', function() {
     is.tag.call({page: {tag: 'foo'}}).should.be.true;
+    is.tag.call({page: {tag: 'foo'}}, 'foo').should.be.true;
+    is.tag.call({page: {tag: 'foo'}}, 'bar').should.be.false;
     is.tag.call({page: {}}).should.be.false;
   });
 });
