@@ -14,6 +14,9 @@ install:
   - ps: Install-Product node $env:nodejs_version
   - npm install
 
+cache:
+  - node_modules
+
 # Post-install test scripts.
 test_script:
   # Output useful info for debugging.

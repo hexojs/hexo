@@ -37,7 +37,7 @@
     "bunyan": "^1.5.1",
     "chalk": "^1.1.1",
     "cheerio": "^0.19.0",
-    "hexo-cli": "^0.1.8",
+    "hexo-cli": "^0.1.9",
     "hexo-front-matter": "^0.2.2",
     "hexo-fs": "^0.1.4",
     "hexo-i18n": "^0.2.1",
@@ -55,8 +55,7 @@
     "text-table": "^0.2.0",
     "tildify": "^1.1.2",
     "titlecase": "^1.0.2",
-    "warehouse": "^1.0.3",
-    "xxhash": "^0.2.3"
+    "warehouse": "^1.0.3"
   },
   "devDependencies": {
     "chai": "^3.4.0",
@@ -66,5 +65,8 @@
     "jscs": "^2.5.0",
     "mocha": "^2.3.3",
     "sinon": "^1.17.2"
+  },
+  "optionalDependencies": {
+    "xxhash": "^0.2.3"
   }
 }

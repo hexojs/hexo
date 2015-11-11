@@ -4,13 +4,13 @@ var should = require('chai').should(); // eslint-disable-line
 var pathFn = require('path');
 var fs = require('hexo-fs');
 var Promise = require('bluebird');
-var xxhash = require('xxhash');
 var util = require('hexo-util');
 var sinon = require('sinon');
 var Pattern = util.Pattern;
+var hash = require('../../../lib/hash');
 
 function getHash(content) {
-  return xxhash.hash(new Buffer(content), 0xCAFEBABE);
+  return hash.hash(content);
 }
 
 describe('Box', function() {
