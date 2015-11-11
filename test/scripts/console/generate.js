@@ -8,27 +8,20 @@ var sinon = require('sinon');
 
 describe('generate', function() {
   var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'generate_test'), {silent: true});
-  var generate = require('../../../lib/plugins/console/generate').bind(hexo);
+  var generateConsole = require('../../../lib/plugins/console/generate');
+  var hexo, generate;
 
-  before(function() {
+  beforeEach(function() {
+    hexo = new Hexo(pathFn.join(__dirname, 'generate_test'), {silent: true});
+    generate = generateConsole.bind(hexo);
+
     return fs.mkdirs(hexo.base_dir).then(function() {
       return hexo.init();
     });
   });
 
-  after(function() {
-    return fs.rmdir(hexo.base_dir);
-  });
-
   afterEach(function() {
-    return Promise.all([
-      // Delete the public folder
-      fs.rmdir(hexo.public_dir),
-      // Clean cache
-      hexo.model('Cache').remove({}),
-      hexo.model('Asset').remove({})
-    ]);
+    return fs.rmdir(hexo.base_dir);
   });
 
   function testGenerate(options) {
@@ -170,7 +163,7 @@ describe('generate', function() {
     }).then(function(result) {
       // Check the updated file
       result.should.eql(content);
-
+    }).finally(function() {
       // Stop watching
       hexo.unwatch();
     });
@@ -183,7 +176,7 @@ describe('generate', function() {
       return fs.exists(pathFn.join(hexo.public_dir, 'test.txt'));
     }).then(function(exist) {
       exist.should.be.false;
-
+    }).finally(function() {
       // Stop watching
       hexo.unwatch();
     });
