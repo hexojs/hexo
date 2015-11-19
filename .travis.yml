@@ -3,8 +3,7 @@ language: node_js
 sudo: false
 
 env:
-  - CXX=g++-4.8 XXHASH=1
-  - XXHASH=0
+  - CXX=g++-4.8
 
 cache:
   apt: true
@@ -22,9 +21,6 @@ node_js:
   - "0.12"
   - "4"
   - "5"
-
-install:
-  - sh .travis/install.sh
 
 script:
   - npm run eslint
