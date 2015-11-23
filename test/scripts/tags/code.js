@@ -109,5 +109,4 @@ describe('code', function() {
       firstLine: 1
     }));
   });
-
 });
