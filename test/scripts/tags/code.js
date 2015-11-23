@@ -98,4 +98,16 @@ describe('code', function() {
 
     hexo.config.highlight.enable = true;
   });
+
+  it('first_line', function() {
+    var result = code('first_line:1234', fixture);
+    result.should.eql(highlight(fixture, {
+      firstLine: 1234
+    }));
+    result = code('', fixture);
+    result.should.eql(highlight(fixture, {
+      firstLine: 1
+    }));
+  });
+
 });
