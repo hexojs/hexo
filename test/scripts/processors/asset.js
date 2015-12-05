@@ -39,7 +39,9 @@ describe('asset', function() {
       type: 'create'
     });
 
-    return process(file).then(function() {
+    return fs.writeFile(file.source, 'foo').then(function() {
+      return process(file);
+    }).then(function() {
       var id = 'source/' + file.path;
       var asset = Asset.findById(id);
 
@@ -48,6 +50,8 @@ describe('asset', function() {
       asset.modified.should.be.true;
 
       return asset.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
@@ -59,11 +63,14 @@ describe('asset', function() {
 
     var id = 'source/' + file.path;
 
-    return Asset.insert({
-      _id: id,
-      path: file.path,
-      modified: false
-    }).then(function() {
+    return Promise.all([
+      fs.writeFile(file.source, 'test'),
+      Asset.insert({
+        _id: id,
+        path: file.path,
+        modified: false
+      })
+    ]).then(function() {
       return process(file);
     }).then(function() {
       var asset = Asset.findById(id);
@@ -73,31 +80,72 @@ describe('asset', function() {
       asset.modified.should.be.true;
 
       return asset.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
-  it('asset - type: skip', function() {
+  it('asset - changed', function() {
     var file = newFile({
       path: 'foo.jpg',
-      type: 'skip'
+      type: 'update'
     });
+
+    file.changed = function() {
+      return Promise.resolve(true);
+    };
 
     var id = 'source/' + file.path;
 
-    return Asset.insert({
-      _id: id,
-      path: file.path,
-      modified: false
-    }).then(function() {
+    return Promise.all([
+      fs.writeFile(file.source, 'test'),
+      Asset.insert({
+        _id: id,
+        path: file.path,
+        modified: false
+      })
+    ]).then(function() {
       return process(file);
     }).then(function() {
       var asset = Asset.findById(id);
+      asset.modified.should.be.true;
+    }).finally(function() {
+      return Promise.all([
+        Asset.removeById(id),
+        fs.unlink(file.source)
+      ]);
+    });
+  });
 
-      asset._id.should.eql(id);
-      asset.path.should.eql(file.path);
+  it('asset - unchanged', function() {
+    var file = newFile({
+      path: 'foo.jpg',
+      type: 'update'
+    });
+
+    file.changed = function() {
+      return Promise.resolve(false);
+    };
+
+    var id = 'source/' + file.path;
+
+    return Promise.all([
+      fs.writeFile(file.source, 'test'),
+      Asset.insert({
+        _id: id,
+        path: file.path,
+        modified: false
+      })
+    ]).then(function() {
+      return process(file);
+    }).then(function() {
+      var asset = Asset.findById(id);
       asset.modified.should.be.false;
-
-      return asset.remove();
+    }).finally(function() {
+      return Promise.all([
+        Asset.removeById(id),
+        fs.unlink(file.source)
+      ]);
     });
   });
 

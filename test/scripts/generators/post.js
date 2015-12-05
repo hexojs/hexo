@@ -27,11 +27,13 @@ describe('post', function() {
       slug: 'bar'
     }).then(function(post) {
       return generator(locals()).then(function(data) {
+        post.__post = true;
+
         data.should.eql([
           {
             path: 'bar/',
             layout: ['post', 'page', 'index'],
-            data: _.extend({__post: true}, post)
+            data: post
           }
         ]);
 

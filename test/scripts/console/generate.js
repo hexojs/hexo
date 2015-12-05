@@ -51,9 +51,9 @@ describe('generate', function() {
       // Check the updated file
       result[1].should.eql('yoooo');
 
-      // Old files should be deleted
-      result[2].should.be.false;
-      result[3].should.be.false;
+      // Old files should not be deleted
+      result[2].should.be.true;
+      result[3].should.be.true;
     });
   }
 

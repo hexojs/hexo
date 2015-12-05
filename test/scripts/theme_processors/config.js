@@ -53,12 +53,15 @@ describe('config', function() {
       content: body
     });
 
-    return process(file).then(function() {
+    return fs.writeFile(file.source, body).then(function() {
+      return process(file);
+    }).then(function() {
       hexo.theme.config.should.eql({
         name: {first: 'John', last: 'Doe'}
       });
-
+    }).finally(function() {
       hexo.theme.config = {};
+      return fs.unlink(file.source);
     });
   });
 

@@ -23,9 +23,9 @@ describe('Page', function() {
       data.layout.should.eql('page');
       data._content.should.eql('');
       data.raw.should.eql('');
-      data.content.should.eql('');
-      data.excerpt.should.eql('');
-      data.more.should.eql('');
+      should.not.exist(data.content);
+      should.not.exist(data.excerpt);
+      should.not.exist(data.more);
 
       return Page.removeById(data._id);
     });
