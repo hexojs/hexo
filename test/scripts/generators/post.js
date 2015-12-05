@@ -2,7 +2,6 @@
 
 var should = require('chai').should(); // eslint-disable-line
 var Promise = require('bluebird');
-var _ = require('lodash');
 
 describe('post', function() {
   var Hexo = require('../../../lib/hexo');

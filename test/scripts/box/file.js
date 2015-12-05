@@ -6,7 +6,7 @@ var Promise = require('bluebird');
 var fs = require('hexo-fs');
 var yaml = require('js-yaml');
 var _ = require('lodash');
-var getHash = require('../../../lib/hash').hash;
+var util = require('hexo-util');
 
 describe('File', function() {
   var Hexo = require('../../../lib/hexo');
@@ -30,7 +30,7 @@ describe('File', function() {
 
   var obj = yaml.load(body);
   var path = 'test.yml';
-  var hash = getHash(body);
+  var hash = util.hash(body).toString('hex');
   var stats;
 
   function makeFile(path, props) {
@@ -87,20 +87,25 @@ describe('File', function() {
   });
 
   it('stat()', function() {
-    return fs.stat(file.source).should.eventually.eql(stats);
+    return Promise.all([
+      fs.stat(file.source),
+      file.stat()
+    ]).then(function(stats) {
+      stats[0].should.eql(stats[1]);
+    });
   });
 
   it('stat() - callback', function(callback) {
     file.stat(function(err, fileStats) {
-      if (err) return calllback(err);
+      if (err) return callback(err);
 
-      fileStats.should.eql(stats);
+      fileStats.should.eql(fs.statSync(file.source));
       callback();
     });
   });
 
   it('statSync()', function() {
-    file.statSync().should.eql(stats);
+    file.statSync().should.eql(fs.statSync(file.source));
   });
 
   it('render()', function() {

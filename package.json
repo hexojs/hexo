@@ -38,7 +38,7 @@
     "hexo-front-matter": "^0.2.2",
     "hexo-fs": "^0.1.5",
     "hexo-i18n": "^0.2.1",
-    "hexo-util": "^0.2.1",
+    "hexo-util": "^0.3.0",
     "js-yaml": "^3.4.3",
     "lodash": "^3.10.1",
     "minimatch": "^3.0.0",
@@ -65,8 +65,5 @@
     "jscs-preset-hexo": "^1.0.1",
     "mocha": "^2.3.3",
     "sinon": "^1.17.2"
-  },
-  "optionalDependencies": {
-    "xxhash": "^0.2.3"
   }
 }
