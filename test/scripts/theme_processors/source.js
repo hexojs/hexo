@@ -54,8 +54,11 @@ describe('source', function() {
       type: 'create'
     });
 
-    return process(file).then(function() {
-      var id = 'themes/test/' + file.path;
+    var id = 'themes/test/' + file.path;
+
+    return fs.writeFile(file.source, 'test').then(function() {
+      return process(file);
+    }).then(function() {
       var asset = Asset.findById(id);
 
       asset._id.should.eql(id);
@@ -63,6 +66,8 @@ describe('source', function() {
       asset.modified.should.be.true;
 
       return asset.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
@@ -72,43 +77,63 @@ describe('source', function() {
       type: 'update'
     });
 
+    file.changed = function() {
+      return Promise.resolve(true);
+    };
+
     var id = 'themes/test/' + file.path;
 
-    return Asset.insert({
-      _id: id,
-      path: file.params.path,
-      modified: false
-    }).then(function() {
+    return Promise.all([
+      fs.writeFile(file.source, 'test'),
+      Asset.insert({
+        _id: id,
+        path: file.params.path,
+        modified: false
+      })
+    ]).then(function() {
       return process(file);
     }).then(function() {
       var asset = Asset.findById(id);
 
       asset.modified.should.be.true;
-
-      return asset.remove();
+    }).finally(function() {
+      return Promise.all([
+        fs.unlink(file.source),
+        Asset.removeById(id)
+      ]);
     });
   });
 
-  it('type: skip', function() {
+  it('unchanged', function() {
     var file = newFile({
       path: 'style.css',
-      type: 'skip'
+      type: 'update'
     });
+
+    file.changed = function() {
+      return Promise.resolve(false);
+    };
 
     var id = 'themes/test/' + file.path;
 
-    return Asset.insert({
-      _id: id,
-      path: file.params.path,
-      modified: true
-    }).then(function() {
+    return Promise.all([
+      fs.writeFile(file.source, 'test'),
+      Asset.insert({
+        _id: id,
+        path: file.params.path,
+        modified: false
+      })
+    ]).then(function() {
       return process(file);
     }).then(function() {
       var asset = Asset.findById(id);
 
       asset.modified.should.be.false;
-
-      return asset.remove();
+    }).finally(function() {
+      return Promise.all([
+        fs.unlink(file.source),
+        Asset.removeById(id)
+      ]);
     });
   });
 

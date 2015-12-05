@@ -51,16 +51,19 @@ describe('data', function() {
 
     var file = newFile({
       path: 'users.yml',
-      type: 'create',
-      content: new Buffer(body)
+      type: 'create'
     });
 
-    return process(file).then(function() {
+    return fs.writeFile(file.source, body).then(function() {
+      return process(file);
+    }).then(function() {
       var data = Data.findById('users');
 
       data.data.should.eql({foo: 'bar'});
 
       return data.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
@@ -69,28 +72,38 @@ describe('data', function() {
 
     var file = newFile({
       path: 'users.json',
-      type: 'create',
-      content: new Buffer(body)
+      type: 'create'
     });
 
-    return process(file).then(function() {
+    return fs.writeFile(file.source, body).then(function() {
+      return process(file);
+    }).then(function() {
       var data = Data.findById('users');
 
       data.data.should.eql({foo: 1});
 
       return data.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
   it('type: create - others', function() {
     var file = newFile({
       path: 'users.txt',
-      type: 'create',
-      content: new Buffer('')
+      type: 'create'
     });
 
-    return process(file).then(function() {
-      should.not.exist(Data.findById('users'));
+    return fs.writeFile(file.source, 'text').then(function() {
+      return process(file);
+    }).then(function() {
+      var data = Data.findById('users');
+
+      data.data.should.eql('text');
+
+      return data.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
@@ -99,14 +112,20 @@ describe('data', function() {
 
     var file = newFile({
       path: 'users.yml',
-      type: 'update',
-      content: new Buffer(body)
+      type: 'update'
     });
 
-    return Data.insert({
-      _id: 'users',
-      data: {}
-    }).then(function() {
+    file.changed = function() {
+      return Promise.resolve(true);
+    };
+
+    return Promise.all([
+      fs.writeFile(file.source, body),
+      Data.insert({
+        _id: 'users',
+        data: {}
+      })
+    ]).then(function() {
       return process(file);
     }).then(function() {
       var data = Data.findById('users');
@@ -114,14 +133,15 @@ describe('data', function() {
       data.data.should.eql({foo: 'bar'});
 
       return data.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
   it('type: delete', function() {
     var file = newFile({
       path: 'users.yml',
-      type: 'delete',
-      content: new Buffer('')
+      type: 'delete'
     });
 
     return Data.insert({

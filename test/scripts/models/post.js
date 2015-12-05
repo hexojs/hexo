@@ -36,9 +36,9 @@ describe('Post', function() {
       data.link.should.eql('');
       data.raw.should.eql('');
       data.published.should.be.true;
-      data.content.should.eql('');
-      data.excerpt.should.eql('');
-      data.more.should.eql('');
+      should.not.exist(data.content);
+      should.not.exist(data.excerpt);
+      should.not.exist(data.more);
 
       return Post.removeById(data._id);
     });
@@ -116,7 +116,7 @@ describe('Post', function() {
     }).then(function(post) {
       post.tags.map(function(tag) {
         return tag.name;
-      }).should.eql(['bar', 'baz', 'foo']);
+      }).should.have.members(['bar', 'baz', 'foo']);
 
       return Post.removeById(post._id);
     });

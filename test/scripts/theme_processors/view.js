@@ -54,11 +54,12 @@ describe('view', function() {
 
     var file = newFile({
       path: 'index.swig',
-      type: 'create',
-      content: new Buffer(body)
+      type: 'create'
     });
 
-    return process(file).then(function() {
+    return fs.writeFile(file.source, body).then(function() {
+      return process(file);
+    }).then(function() {
       var view = hexo.theme.getView('index.swig');
 
       view.path.should.eql('index.swig');
@@ -67,8 +68,9 @@ describe('view', function() {
         foo: 'bar',
         _content: 'test'
       });
-
+    }).finally(function() {
       hexo.theme.removeView('index.swig');
+      return fs.unlink(file.source);
     });
   });
 

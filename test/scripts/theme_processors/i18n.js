@@ -55,15 +55,18 @@ describe('i18n', function() {
 
     var file = newFile({
       path: 'en.yml',
-      type: 'create',
-      content: body
+      type: 'create'
     });
 
-    return process(file).then(function() {
+    return fs.writeFile(file.source, body).then(function() {
+      return process(file);
+    }).then(function() {
       var __ = hexo.theme.i18n.__('en');
 
       __('ok').should.eql('OK');
       __('index.title').should.eql('Home');
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 

@@ -23,8 +23,6 @@ test_script:
   - node --version
   - npm --version
   # Run tests
-  - npm run eslint
-  - npm run jscs
   - npm test
 
 # Don't actually build.

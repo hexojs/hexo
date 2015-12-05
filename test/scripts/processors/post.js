@@ -89,23 +89,29 @@ describe('post', function() {
 
     var postId;
 
-    return Post.insert({
-      source: '_posts/foo.html',
-      slug: 'foo'
-    }).then(function(doc) {
+    return Promise.all([
+      Post.insert({
+        source: '_posts/foo.html',
+        slug: 'foo'
+      }),
+      fs.writeFile(file.source, 'test')
+    ]).spread(function(doc) {
       postId = doc._id;
       return process(file);
     }).then(function() {
-      hexo.config.post_asset_folder = false;
-
       var id = 'source/' + file.path;
       var asset = PostAsset.findById(id);
 
       asset._id.should.eql(id);
       asset.post.should.eql(postId);
       asset.modified.should.be.true;
+    }).finally(function() {
+      hexo.config.post_asset_folder = false;
 
-      return Post.removeById(postId);
+      return Promise.all([
+        Post.removeById(postId),
+        fs.unlink(file.source)
+      ]);
     });
   });
 
@@ -118,62 +124,86 @@ describe('post', function() {
       type: 'update'
     });
 
-    var id = 'source/' + file.path;
+    file.changed = function() {
+      return Promise.resolve(true);
+    };
 
-    return Post.insert({
-      source: '_posts/foo.html',
-      slug: 'foo'
-    }).then(function(post) {
+    var id = 'source/' + file.path;
+    var postId;
+
+    return Promise.all([
+      Post.insert({
+        source: '_posts/foo.html',
+        slug: 'foo'
+      }),
+      fs.writeFile(file.source, 'test')
+    ]).spread(function(post) {
+      postId = post._id;
+
       return PostAsset.insert({
         _id: id,
         slug: file.path,
         modified: false,
-        post: post._id
+        post: postId
       });
     }).then(function() {
       return process(file);
     }).then(function() {
+      var asset = PostAsset.findById(id);
+      asset.modified.should.be.true;
+    }).finally(function() {
       hexo.config.post_asset_folder = false;
 
-      var asset = PostAsset.findById(id);
-
-      asset.modified.should.be.true;
-
-      return Post.removeById(asset.post);
+      return Promise.all([
+        Post.removeById(postId),
+        fs.unlink(file.source)
+      ]);
     });
   });
 
-  it('asset - type: skip', function() {
+  it('asset - unchanged', function() {
     hexo.config.post_asset_folder = true;
 
     var file = newFile({
       path: 'foo/bar.jpg',
       published: true,
-      type: 'skip'
+      type: 'update'
     });
 
-    var id = 'source/' + file.path;
+    file.changed = function() {
+      return Promise.resolve(false);
+    };
 
-    return Post.insert({
-      source: '_posts/foo.html',
-      slug: 'foo'
-    }).then(function(post) {
+    var id = 'source/' + file.path;
+    var postId;
+
+    return Promise.all([
+      Post.insert({
+        source: '_posts/foo.html',
+        slug: 'foo'
+      }),
+      fs.writeFile(file.source, 'test')
+    ]).spread(function(post) {
+      postId = post._id;
+
       return PostAsset.insert({
         _id: id,
         slug: file.path,
         modified: false,
-        post: post._id
+        post: postId
       });
     }).then(function() {
       return process(file);
     }).then(function() {
+      var asset = PostAsset.findById(id);
+      asset.modified.should.be.false;
+    }).finally(function() {
       hexo.config.post_asset_folder = false;
 
-      var asset = PostAsset.findById(id);
-
-      asset.modified.should.be.false;
-
-      return Post.removeById(asset.post);
+      return Promise.all([
+        Post.removeById(postId),
+        fs.unlink(file.source)
+      ]);
     });
   });
 
@@ -204,9 +234,9 @@ describe('post', function() {
     }).then(function() {
       return process(file);
     }).then(function() {
-      hexo.config.post_asset_folder = false;
-
       should.not.exist(PostAsset.findById(id));
+    }).finally(function() {
+      hexo.config.post_asset_folder = false;
       return Post.removeById(postId);
     });
   });
@@ -222,9 +252,14 @@ describe('post', function() {
 
     var id = 'source/' + file.path;
 
-    return process(file).then(function() {
-      hexo.config.post_asset_folder = false;
+    return fs.writeFile(file.source, 'test').then(function() {
+      return process(file);
+    }).then(function() {
       should.not.exist(PostAsset.findById(id));
+    }).finally(function() {
+      hexo.config.post_asset_folder = false;
+
+      return fs.unlink(file.source);
     });
   });
 
@@ -239,15 +274,20 @@ describe('post', function() {
 
     var id = 'source/' + file.path;
 
-    return PostAsset.insert({
-      _id: id,
-      slug: file.path
-    }).then(function() {
+    return Promise.all([
+      fs.writeFile(file.source, 'test'),
+      PostAsset.insert({
+        _id: id,
+        slug: file.path
+      })
+    ]).then(function() {
       return process(file);
     }).then(function() {
+      should.not.exist(PostAsset.findById(id));
+    }).finally(function() {
       hexo.config.post_asset_folder = false;
 
-      should.not.exist(PostAsset.findById(id));
+      return fs.unlink(file.source);
     });
   });
 

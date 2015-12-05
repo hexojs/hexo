@@ -2,7 +2,6 @@
 
 var should = require('chai').should(); // eslint-disable-line
 var Promise = require('bluebird');
-var _ = require('lodash');
 
 describe('post', function() {
   var Hexo = require('../../../lib/hexo');
@@ -27,11 +26,13 @@ describe('post', function() {
       slug: 'bar'
     }).then(function(post) {
       return generator(locals()).then(function(data) {
+        post.__post = true;
+
         data.should.eql([
           {
             path: 'bar/',
             layout: ['post', 'page', 'index'],
-            data: _.extend({__post: true}, post)
+            data: post
           }
         ]);
 
