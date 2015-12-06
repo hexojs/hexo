@@ -46,6 +46,8 @@ describe('source', function() {
     pattern.match('source/foo.jpg%').should.be.false;
     pattern.match('layout/foo.swig').should.be.false;
     pattern.match('package.json').should.be.false;
+    pattern.match('node_modules/test/test.js').should.be.false;
+    pattern.match('source/node_modules/test/test.js').should.be.false;
   });
 
   it('type: create', function() {
