@@ -47,10 +47,10 @@ $ hexo generate
 
 ## More Information
 
-- Read the [documentation](http://hexo.io/)
-- Find solutions in [troubleshooting](http://hexo.io/docs/troubleshooting.html)
+- Read the [documentation](https://hexo.io/)
+- Find solutions in [troubleshooting](https://hexo.io/docs/troubleshooting.html)
 - Join discussion on [Google Group](https://groups.google.com/group/hexo)
-- See the [plugin list](https://github.com/hexojs/hexo/wiki/Plugins) and the [theme list](https://github.com/hexojs/hexo/wiki/Themes) on wiki
+- See the [plugin list](https://hexo.io/plugins/) and the [theme list](https://hexo.io/themes/) on wiki
 - Follow [@hexojs](https://twitter.com/hexojs) for latest news
 
 ## License

@@ -11,8 +11,9 @@ describe('asset', function() {
   var Hexo = require('../../../lib/hexo');
   var baseDir = pathFn.join(__dirname, 'asset_test');
   var hexo = new Hexo(baseDir);
-  var asset = require('../../../lib/plugins/processor/asset');
+  var asset = require('../../../lib/plugins/processor/asset')(hexo);
   var process = asset.process.bind(hexo);
+  var pattern = asset.pattern;
   var source = hexo.source;
   var File = source.File;
   var Asset = hexo.model('Asset');
@@ -20,6 +21,10 @@ describe('asset', function() {
 
   function newFile(options) {
     options.source = pathFn.join(source.base, options.path);
+    options.params = {
+      renderable: options.renderable
+    };
+
     return new File(options);
   }
 
@@ -33,10 +38,44 @@ describe('asset', function() {
     return fs.rmdir(baseDir);
   });
 
+  it('pattern', function() {
+    // Renderable files
+    pattern.match('foo.json').should.have.property('renderable', true);
+
+    // Non-renderable files
+    pattern.match('foo.txt').should.have.property('renderable', false);
+
+    // Tmp files
+    should.not.exist(pattern.match('foo.txt~'));
+    should.not.exist(pattern.match('foo.txt%'));
+
+    // Hidden files
+    should.not.exist(pattern.match('_foo.txt'));
+    should.not.exist(pattern.match('test/_foo.txt'));
+    should.not.exist(pattern.match('.foo.txt'));
+    should.not.exist(pattern.match('test/.foo.txt'));
+
+    // Include files
+    hexo.config.include = ['fff/**'];
+    pattern.match('fff/_foo.txt').should.exist;
+    hexo.config.include = [];
+
+    // Exclude files
+    hexo.config.exclude = ['fff/**'];
+    should.not.exist(pattern.match('fff/foo.txt'));
+    hexo.config.exclude = [];
+
+    // Skip render files
+    hexo.config.skip_render = ['fff/**'];
+    pattern.match('fff/foo.json').should.have.property('renderable', false);
+    hexo.config.skip_render = [];
+  });
+
   it('asset - type: create', function() {
     var file = newFile({
       path: 'foo.jpg',
-      type: 'create'
+      type: 'create',
+      renderable: false
     });
 
     return fs.writeFile(file.source, 'foo').then(function() {
@@ -58,7 +97,8 @@ describe('asset', function() {
   it('asset - type: update', function() {
     var file = newFile({
       path: 'foo.jpg',
-      type: 'update'
+      type: 'update',
+      renderable: false
     });
 
     var id = 'source/' + file.path;
@@ -88,7 +128,8 @@ describe('asset', function() {
   it('asset - changed', function() {
     var file = newFile({
       path: 'foo.jpg',
-      type: 'update'
+      type: 'update',
+      renderable: false
     });
 
     file.changed = function() {
@@ -120,7 +161,8 @@ describe('asset', function() {
   it('asset - unchanged', function() {
     var file = newFile({
       path: 'foo.jpg',
-      type: 'update'
+      type: 'update',
+      renderable: false
     });
 
     file.changed = function() {
@@ -152,7 +194,8 @@ describe('asset', function() {
   it('asset - type: delete', function() {
     var file = newFile({
       path: 'foo.jpg',
-      type: 'delete'
+      type: 'delete',
+      renderable: false
     });
 
     var id = 'source/' + file.path;
@@ -179,7 +222,7 @@ describe('asset', function() {
     var file = newFile({
       path: 'hello.swig',
       type: 'create',
-      content: new Buffer(body)
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -212,7 +255,7 @@ describe('asset', function() {
     var file = newFile({
       path: 'hello.swig',
       type: 'update',
-      content: new Buffer(body)
+      renderable: true
     });
 
     var id;
@@ -239,7 +282,8 @@ describe('asset', function() {
   it('page - type: delete', function() {
     var file = newFile({
       path: 'hello.swig',
-      type: 'delete'
+      type: 'delete',
+      renderable: true
     });
 
     return Page.insert({
@@ -255,7 +299,8 @@ describe('asset', function() {
   it('page - use the status of the source file if date not set', function() {
     var file = newFile({
       path: 'hello.swig',
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     return fs.writeFile(file.source, '').then(function() {
@@ -286,7 +331,7 @@ describe('asset', function() {
     var file = newFile({
       path: 'hello.swig',
       type: 'create',
-      content: new Buffer(body)
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -313,7 +358,7 @@ describe('asset', function() {
     var file = newFile({
       path: 'hello.swig',
       type: 'create',
-      content: new Buffer(body)
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -340,7 +385,7 @@ describe('asset', function() {
     var file = newFile({
       path: 'hello.swig',
       type: 'create',
-      content: new Buffer(body)
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -363,7 +408,7 @@ describe('asset', function() {
     var file = newFile({
       path: 'test.yml',
       type: 'create',
-      content: new Buffer(body)
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -390,7 +435,7 @@ describe('asset', function() {
     var file = newFile({
       path: 'test.yml',
       type: 'create',
-      content: new Buffer(body)
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -418,7 +463,7 @@ describe('asset', function() {
     var file = newFile({
       path: 'hello.swig',
       type: 'create',
-      content: new Buffer(body)
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -447,7 +492,7 @@ describe('asset', function() {
     var file = newFile({
       path: 'hello.swig',
       type: 'create',
-      content: new Buffer(body)
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -474,7 +519,7 @@ describe('asset', function() {
     var file = newFile({
       path: 'test.min.js',
       type: 'create',
-      content: new Buffer(body)
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -502,7 +547,7 @@ describe('asset', function() {
     var file = newFile({
       path: 'hello.swig',
       type: 'create',
-      content: new Buffer(body)
+      renderable: true
     });
 
     hexo.config.timezone = 'UTC';
@@ -515,12 +560,12 @@ describe('asset', function() {
       page.date.utc().format(dateFormat).should.eql('2014-04-24 00:00:00');
       page.updated.utc().format(dateFormat).should.eql('2015-05-05 00:00:00');
 
-      hexo.config.timezone = '';
-
       return Promise.all([
         page.remove(),
         fs.unlink(file.source)
       ]);
+    }).finally(function() {
+      hexo.config.timezone = '';
     });
   });
 });

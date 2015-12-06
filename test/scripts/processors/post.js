@@ -13,7 +13,7 @@ describe('post', function() {
   var Hexo = require('../../../lib/hexo');
   var baseDir = pathFn.join(__dirname, 'post_test');
   var hexo = new Hexo(baseDir);
-  var post = require('../../../lib/plugins/processor/post');
+  var post = require('../../../lib/plugins/processor/post')(hexo);
   var process = Promise.method(post.process.bind(hexo));
   var pattern = post.pattern;
   var source = hexo.source;
@@ -29,7 +29,8 @@ describe('post', function() {
 
     options.params = {
       published: options.published,
-      path: path
+      path: path,
+      renderable: options.renderable
     };
 
     return new File(options);
@@ -46,21 +47,50 @@ describe('post', function() {
   });
 
   it('pattern', function() {
+    // Renderable files
     pattern.match('_posts/foo.html').should.eql({
       published: true,
-      path: 'foo.html'
+      path: 'foo.html',
+      renderable: true
     });
 
     pattern.match('_drafts/bar.html').should.eql({
       published: false,
-      path: 'bar.html'
+      path: 'bar.html',
+      renderable: true
     });
 
-    pattern.match('_posts/foo.html~').should.be.false;
-    pattern.match('_posts/foo.html%').should.be.false;
-    pattern.match('_posts/_foo.html').should.be.false;
-    pattern.match('_posts/foo/_bar.html').should.be.false;
-    pattern.match('_foo/bar.html').should.be.false;
+    // Non-renderable files
+    pattern.match('_posts/foo.txt').should.eql({
+      published: true,
+      path: 'foo.txt',
+      renderable: false
+    });
+
+    pattern.match('_drafts/bar.txt').should.eql({
+      published: false,
+      path: 'bar.txt',
+      renderable: false
+    });
+
+    // Tmp files
+    should.not.exist(pattern.match('_posts/foo.html~'));
+    should.not.exist(pattern.match('_posts/foo.html%'));
+
+    // Hidden files
+    should.not.exist(pattern.match('_posts/_foo.html'));
+    should.not.exist(pattern.match('_posts/foo/_bar.html'));
+    should.not.exist(pattern.match('_posts/.foo.html'));
+    should.not.exist(pattern.match('_posts/foo/.bar.html'));
+
+    // Outside "_posts" and "_drafts" folder
+    should.not.exist(pattern.match('_foo/bar.html'));
+    should.not.exist(pattern.match('baz.html'));
+
+    // Skip render files
+    hexo.config.skip_render = ['_posts/foo/**'];
+    pattern.match('_posts/foo/bar.html').should.have.property('renderable', false);
+    hexo.config.skip_render = [];
   });
 
   it('asset - post_asset_folder disabled', function() {
@@ -69,7 +99,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo/bar.jpg',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: false
     });
 
     return process(file).then(function() {
@@ -84,7 +115,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo/bar.jpg',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: false
     });
 
     var postId;
@@ -121,7 +153,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo/bar.jpg',
       published: true,
-      type: 'update'
+      type: 'update',
+      renderable: false
     });
 
     file.changed = function() {
@@ -167,7 +200,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo/bar.jpg',
       published: true,
-      type: 'update'
+      type: 'update',
+      renderable: false
     });
 
     file.changed = function() {
@@ -213,7 +247,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo/bar.jpg',
       published: true,
-      type: 'delete'
+      type: 'delete',
+      renderable: false
     });
 
     var id = 'source/' + file.path;
@@ -247,7 +282,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo/bar.jpg',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: false
     });
 
     var id = 'source/' + file.path;
@@ -269,7 +305,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo/bar.jpg',
       published: true,
-      type: 'update'
+      type: 'update',
+      renderable: false
     });
 
     var id = 'source/' + file.path;
@@ -303,7 +340,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -320,10 +358,9 @@ describe('post', function() {
       post.slug.should.eql('foo');
       post.published.should.be.true;
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
@@ -336,7 +373,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo.html',
       published: true,
-      type: 'update'
+      type: 'update',
+      renderable: true
     });
 
     var id;
@@ -353,10 +391,9 @@ describe('post', function() {
       post._id.should.eql(id);
       post.title.should.eql('New world');
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
@@ -364,7 +401,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo.html',
       published: true,
-      type: 'delete'
+      type: 'delete',
+      renderable: true
     });
 
     return Post.insert({
@@ -386,7 +424,8 @@ describe('post', function() {
     var file = newFile({
       path: '2006/01/02/foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     hexo.config.new_post_name = ':year/:month/:day/:title';
@@ -394,17 +433,15 @@ describe('post', function() {
     return fs.writeFile(file.source, body).then(function() {
       return process(file);
     }).then(function() {
-      hexo.config.new_post_name = newPostName;
-
       var post = Post.findOne({source: file.path});
 
       post.slug.should.eql('foo');
       post.date.format('YYYY-MM-DD').should.eql('2006-01-02');
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      hexo.config.new_post_name = newPostName;
+      return fs.unlink(file.source);
     });
   });
 
@@ -417,7 +454,8 @@ describe('post', function() {
     var file = newFile({
       path: 'zh/foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     hexo.config.new_post_name = ':lang/:title';
@@ -425,16 +463,14 @@ describe('post', function() {
     return fs.writeFile(file.source, body).then(function() {
       return process(file);
     }).then(function() {
-      hexo.config.new_post_name = newPostName;
-
       var post = Post.findOne({source: file.path});
 
       post.lang.should.eql('zh');
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      hexo.config.new_post_name = newPostName;
+      return fs.unlink(file.source);
     });
   });
 
@@ -447,7 +483,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     hexo.config.new_post_name = ':year/:month/:day/:title';
@@ -455,16 +492,14 @@ describe('post', function() {
     return fs.writeFile(file.source, body).then(function() {
       return process(file);
     }).then(function() {
-      hexo.config.new_post_name = newPostName;
-
       var post = Post.findOne({source: file.path});
 
       post.slug.should.eql('foo');
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      hexo.config.new_post_name = newPostName;
+      return fs.unlink(file.source);
     });
   });
 
@@ -478,7 +513,8 @@ describe('post', function() {
     var file = newFile({
       path: 'zh/foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -488,10 +524,9 @@ describe('post', function() {
 
       post.published.should.be.false;
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
@@ -505,7 +540,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo.html',
       published: false,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -515,10 +551,9 @@ describe('post', function() {
 
       post.published.should.be.false;
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
@@ -531,7 +566,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -545,10 +581,9 @@ describe('post', function() {
       post.date.toDate().should.eql(stats.ctime);
       post.updated.toDate().should.eql(stats.mtime);
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
@@ -564,7 +599,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -579,10 +615,9 @@ describe('post', function() {
 
       should.not.exist(post.photo);
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
@@ -596,7 +631,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -608,10 +644,9 @@ describe('post', function() {
         'http://hexo.io/foo.jpg'
       ]);
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
@@ -624,7 +659,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -635,10 +671,9 @@ describe('post', function() {
       post.link.should.eql('http://hexo.io/');
       post.title.should.eql('hexo.io');
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
@@ -654,7 +689,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -667,10 +703,9 @@ describe('post', function() {
         return item.name;
       }).should.eql(['foo', 'bar']);
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
@@ -684,7 +719,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -696,10 +732,9 @@ describe('post', function() {
         return item.name;
       }).should.eql(['foo']);
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
@@ -715,7 +750,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -728,10 +764,9 @@ describe('post', function() {
         return item.name;
       }).should.have.members(['foo', 'bar']);
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
@@ -745,7 +780,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -757,10 +793,9 @@ describe('post', function() {
         return item.name;
       }).should.eql(['foo']);
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
@@ -775,7 +810,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     var assetId = 'source/_posts/foo/bar.jpg';
@@ -787,8 +823,6 @@ describe('post', function() {
     ]).then(function() {
       return process(file);
     }).then(function() {
-      hexo.config.post_asset_folder = false;
-
       var post = Post.findOne({source: file.path});
       var asset = PostAsset.findById(assetId);
 
@@ -796,8 +830,11 @@ describe('post', function() {
       asset.post.should.eql(post._id);
       asset.modified.should.be.true;
 
+      return post.remove();
+    }).finally(function() {
+      hexo.config.post_asset_folder = false;
+
       return Promise.all([
-        post.remove(),
         fs.unlink(file.source),
         fs.unlink(assetPath)
       ]);
@@ -810,7 +847,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     var assetId = 'source/_posts/foo/bar.jpg';
@@ -825,8 +863,9 @@ describe('post', function() {
       var post = Post.findOne({source: file.path});
       should.not.exist(PostAsset.findById(assetId));
 
+      return post.remove();
+    }).finally(function() {
       return Promise.all([
-        post.remove(),
         fs.unlink(file.source),
         fs.unlink(assetPath)
       ]);
@@ -844,7 +883,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -855,10 +895,9 @@ describe('post', function() {
       post.date.format(dateFormat).should.eql('2014-04-24 00:00:00');
       post.updated.format(dateFormat).should.eql('2015-05-05 00:00:00');
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
@@ -873,7 +912,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -887,10 +927,9 @@ describe('post', function() {
       post.date.toDate().should.eql(stats.ctime);
       post.updated.toDate().should.eql(stats.mtime);
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 
@@ -905,7 +944,8 @@ describe('post', function() {
     var file = newFile({
       path: 'foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     hexo.config.timezone = 'UTC';
@@ -918,12 +958,10 @@ describe('post', function() {
       post.date.utc().format(dateFormat).should.eql('2014-04-24 00:00:00');
       post.updated.utc().format(dateFormat).should.eql('2015-05-05 00:00:00');
 
+      return post.remove();
+    }).finally(function() {
       hexo.config.timezone = '';
-
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return fs.unlink(file.source);
     });
   });
 
@@ -936,7 +974,8 @@ describe('post', function() {
     var file = newFile({
       path: '2006/01/02/foo.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     hexo.config.new_post_name = ':year/:month/:day/:title';
@@ -945,17 +984,16 @@ describe('post', function() {
     return fs.writeFile(file.source, body).then(function() {
       return process(file);
     }).then(function() {
-      hexo.config.new_post_name = newPostName;
-      hexo.config.timezone = '';
-
       var post = Post.findOne({source: file.path});
 
       post.date.utc().format(dateFormat).should.eql('2006-01-02 00:00:00');
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      hexo.config.new_post_name = newPostName;
+      hexo.config.timezone = '';
+
+      return fs.unlink(file.source);
     });
   });
 
@@ -969,7 +1007,8 @@ describe('post', function() {
     var file = newFile({
       path: 'test.html',
       published: true,
-      type: 'create'
+      type: 'create',
+      renderable: true
     });
 
     return fs.writeFile(file.source, body).then(function() {
@@ -978,10 +1017,9 @@ describe('post', function() {
       var post = Post.findOne({source: file.path});
       post.slug.should.eql('foooo');
 
-      return Promise.all([
-        post.remove(),
-        fs.unlink(file.source)
-      ]);
+      return post.remove();
+    }).finally(function() {
+      return fs.unlink(file.source);
     });
   });
 });

@@ -49,76 +49,18 @@ describe('page', function() {
     });
   });
 
-  it('layout disabled', function() {
-    return Page.insert({
-      source: 'foo',
-      path: 'bar',
-      layout: false
-    }).then(function(page) {
-      return generator(locals()).then(function(data) {
-        should.not.exist(data[0].layout);
-
-        return page.remove();
-      });
-    });
-  });
-
-  it('skip render', function() {
-    hexo.config.skip_render = 'lab/**/*.js';
-
-    return Page.insert({
-      source: 'lab/assets/jquery.min.js',
-      path: 'lab/assets/jquery.min.js',
-      layout: false,
-      raw: 'jquery raw'
-    }).then(function(page) {
-      return generator(locals()).then(function(data) {
-        data.should.eql([
-          {path: page.source, data: page.raw}
-        ]);
-
-        hexo.config.skip_render = [];
-        return page.remove();
-      });
-    });
-  });
-
-  it('skip render - multiple rules', function() {
-    hexo.config.skip_render = ['lab/**/*.js'];
-
-    return Page.insert({
-      source: 'lab/assets/jquery.min.js',
-      path: 'lab/assets/jquery.min.js',
-      layout: false,
-      raw: 'jquery raw'
-    }).then(function(page) {
-      return generator(locals()).then(function(data) {
-        data.should.eql([
-          {path: page.source, data: page.raw}
-        ]);
-
-        hexo.config.skip_render = [];
-        return page.remove();
-      });
-    });
-  });
-
-  it('skip render - don\'t replace extension name', function() {
-    hexo.config.skip_render = 'README.md';
-
-    return Page.insert({
-      source: 'README.md',
-      path: 'README.html',
-      layout: 'page',
-      raw: 'readme raw'
-    }).then(function(page) {
-      return generator(locals()).then(function(data) {
-        data.should.eql([
-          {path: page.source, data: page.raw}
-        ]);
-
-        hexo.config.skip_render = [];
-        return page.remove();
+  [false, 'false', 'off'].forEach(function(layout) {
+    it('layout = ' + JSON.stringify(layout), function() {
+      return Page.insert({
+        source: 'foo',
+        path: 'bar',
+        layout: layout
+      }).then(function(page) {
+        return generator(locals()).then(function(data) {
+          should.not.exist(data[0].layout);
+        }).finally(function() {
+          return page.remove();
+        });
       });
     });
   });

@@ -9,7 +9,7 @@ describe('data', function() {
   var Hexo = require('../../../lib/hexo');
   var baseDir = pathFn.join(__dirname, 'data_test');
   var hexo = new Hexo(baseDir);
-  var processor = require('../../../lib/plugins/processor/data');
+  var processor = require('../../../lib/plugins/processor/data')(hexo);
   var process = Promise.method(processor.process).bind(hexo);
   var source = hexo.source;
   var File = source.File;
