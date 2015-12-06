@@ -13,10 +13,6 @@ describe('Load config', function() {
 
   hexo.env.init = true;
 
-  function reset() {
-    hexo.config = _.clone(defaultConfig);
-  }
-
   before(function() {
     return fs.mkdirs(hexo.base_dir).then(function() {
       return hexo.init();
@@ -25,6 +21,10 @@ describe('Load config', function() {
 
   after(function() {
     return fs.rmdir(hexo.base_dir);
+  });
+
+  beforeEach(function() {
+    hexo.config = _.cloneDeep(defaultConfig);
   });
 
   it('config file does not exist', function() {
@@ -40,8 +40,7 @@ describe('Load config', function() {
       return loadConfig(hexo);
     }).then(function() {
       hexo.config.foo.should.eql(1);
-
-      reset();
+    }).finally(function() {
       return fs.unlink(configPath);
     });
   });
@@ -53,8 +52,7 @@ describe('Load config', function() {
       return loadConfig(hexo);
     }).then(function() {
       hexo.config.baz.should.eql(3);
-
-      reset();
+    }).finally(function() {
       return fs.unlink(configPath);
     });
   });
@@ -66,8 +64,7 @@ describe('Load config', function() {
       return loadConfig(hexo);
     }).then(function() {
       hexo.config.should.eql(defaultConfig);
-
-      reset();
+    }).finally(function() {
       return fs.unlink(configPath);
     });
   });
@@ -79,8 +76,7 @@ describe('Load config', function() {
       return loadConfig(hexo);
     }).then(function() {
       hexo.config.foo.should.eql(1);
-
-      reset();
+    }).finally(function() {
       hexo.config_path = pathFn.join(hexo.base_dir, '_config.yml');
       return fs.unlink(configPath);
     });
@@ -95,8 +91,7 @@ describe('Load config', function() {
     }).then(function() {
       hexo.config.foo.should.eql(2);
       hexo.config_path.should.eql(realPath);
-
-      reset();
+    }).finally(function() {
       hexo.config_path = pathFn.join(hexo.base_dir, '_config.yml');
       return fs.unlink(realPath);
     });
@@ -113,8 +108,7 @@ describe('Load config', function() {
     }).then(function() {
       hexo.config.root.should.eql('foo/');
       hexo.config.url.should.eql('http://hexo.io');
-
-      reset();
+    }).finally(function() {
       return fs.unlink(hexo.config_path);
     });
   });
@@ -124,8 +118,7 @@ describe('Load config', function() {
       return loadConfig(hexo);
     }).then(function() {
       hexo.public_dir.should.eql(pathFn.resolve(hexo.base_dir, 'foo') + pathFn.sep);
-
-      reset();
+    }).finally(function() {
       return fs.unlink(hexo.config_path);
     });
   });
@@ -135,8 +128,7 @@ describe('Load config', function() {
       return loadConfig(hexo);
     }).then(function() {
       hexo.source_dir.should.eql(pathFn.resolve(hexo.base_dir, 'bar') + pathFn.sep);
-
-      reset();
+    }).finally(function() {
       return fs.unlink(hexo.config_path);
     });
   });
@@ -149,8 +141,23 @@ describe('Load config', function() {
       hexo.theme_dir.should.eql(pathFn.join(hexo.base_dir, 'themes', 'test') + pathFn.sep);
       hexo.theme_script_dir.should.eql(pathFn.join(hexo.theme_dir, 'scripts') + pathFn.sep);
       hexo.theme.base.should.eql(hexo.theme_dir);
+    }).finally(function() {
+      return fs.unlink(hexo.config_path);
+    });
+  });
 
-      reset();
+  it('merge config', function() {
+    var content = [
+      'highlight:',
+      '  tab_replace: yoooo'
+    ].join('\n');
+
+    return fs.writeFile(hexo.config_path, content).then(function() {
+      return loadConfig(hexo);
+    }).then(function() {
+      hexo.config.highlight.enable.should.be.true;
+      hexo.config.highlight.tab_replace.should.eql('yoooo');
+    }).finally(function() {
       return fs.unlink(hexo.config_path);
     });
   });

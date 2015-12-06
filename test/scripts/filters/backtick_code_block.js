@@ -24,7 +24,7 @@ describe('Backtick code block', function() {
 
   beforeEach(function() {
     // Reset config
-    hexo.config.highlight = _.clone(defaultConfig.highlight);
+    hexo.config.highlight = _.cloneDeep(defaultConfig.highlight);
   });
 
   it('disabled', function() {
