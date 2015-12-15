@@ -32,6 +32,7 @@ $ npm install
 ``` bash
 $ hexo server
 ```
+If running locally, you may have to vist `http://localhost:4000/` to view.
 
 **Create a new post**
 
