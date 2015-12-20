@@ -18,12 +18,14 @@ describe('tagcloud', function() {
   var tagcloud = require('../../../lib/plugins/helper/tagcloud').bind(ctx);
 
   before(function() {
-    return Post.insert([
-      {source: 'foo', slug: 'foo'},
-      {source: 'bar', slug: 'bar'},
-      {source: 'baz', slug: 'baz'},
-      {source: 'boo', slug: 'boo'}
-    ]).then(function(posts) {
+    return hexo.init().then(function() {
+      return Post.insert([
+        {source: 'foo', slug: 'foo'},
+        {source: 'bar', slug: 'bar'},
+        {source: 'baz', slug: 'baz'},
+        {source: 'boo', slug: 'boo'}
+      ]);
+    }).then(function(posts) {
       // TODO: Warehouse needs to add a mutex lock when writing data to avoid data sync problem
       return Promise.each([
         ['bcd'],

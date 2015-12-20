@@ -18,12 +18,14 @@ describe('list_categories', function() {
   var listCategories = require('../../../lib/plugins/helper/list_categories').bind(ctx);
 
   before(function() {
-    return Post.insert([
-      {source: 'foo', slug: 'foo'},
-      {source: 'bar', slug: 'bar'},
-      {source: 'baz', slug: 'baz'},
-      {source: 'boo', slug: 'boo'}
-    ]).then(function(posts) {
+    return hexo.init().then(function() {
+      return Post.insert([
+        {source: 'foo', slug: 'foo'},
+        {source: 'bar', slug: 'bar'},
+        {source: 'baz', slug: 'baz'},
+        {source: 'boo', slug: 'boo'}
+      ]);
+    }).then(function(posts) {
       return Promise.each([
         ['baz'],
         ['baz', 'bar'],

@@ -18,12 +18,12 @@ describe('list_posts', function() {
   hexo.config.permalink = ':title/';
 
   before(function() {
-    return Post.insert([
-      {source: 'foo', slug: 'foo', title: 'Its', date: 1e8},
-      {source: 'bar', slug: 'bar', title: 'Chemistry', date: 1e8 + 1},
-      {source: 'baz', slug: 'baz', title: 'Bitch', date: 1e8 - 1}
-    ]).then(function() {
-      return hexo.init();
+    return hexo.init().then(function() {
+      return Post.insert([
+        {source: 'foo', slug: 'foo', title: 'Its', date: 1e8},
+        {source: 'bar', slug: 'bar', title: 'Chemistry', date: 1e8 + 1},
+        {source: 'baz', slug: 'baz', title: 'Bitch', date: 1e8 - 1}
+      ]);
     }).then(function() {
       hexo.locals.invalidate();
       ctx.site = hexo.locals.toObject();

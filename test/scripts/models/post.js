@@ -77,11 +77,23 @@ describe('Post', function() {
   });
 
   it('permalink - virtual', function() {
+    hexo.config.root = '/';
     return Post.insert({
       source: 'foo.md',
       slug: 'bar'
     }).then(function(data) {
       data.permalink.should.eql(hexo.config.url + '/' + data.path);
+      return Post.removeById(data._id);
+    });
+  });
+
+  it('permalink_root_prefix - virtual', function() {
+    hexo.config.root = '/root/';
+    return Post.insert({
+      source: 'foo.md',
+      slug: 'bar'
+    }).then(function(data) {
+      data.permalink.should.eql(hexo.config.url + '/root/' + data.path);
       return Post.removeById(data._id);
     });
   });
