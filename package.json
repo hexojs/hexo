@@ -59,7 +59,7 @@
     "chai-as-promised": "^5.1.0",
     "eslint": "^1.8.0",
     "eslint-config-hexo": "^1.0.2",
-    "hexo-renderer-marked": "^0.2.5",
+    "hexo-renderer-marked": "^0.2.7",
     "istanbul": "^0.4.0",
     "jscs": "^2.5.0",
     "jscs-preset-hexo": "^1.0.1",
