@@ -22,12 +22,14 @@ describe('list_archives', function() {
   }
 
   before(function() {
-    return Post.insert([
-      {source: 'foo', slug: 'foo', date: new Date(2014, 1, 2)},
-      {source: 'bar', slug: 'bar', date: new Date(2013, 5, 6)},
-      {source: 'baz', slug: 'baz', date: new Date(2013, 9, 10)},
-      {source: 'boo', slug: 'boo', date: new Date(2013, 5, 8)}
-    ]).then(function() {
+    return hexo.init().then(function() {
+      return Post.insert([
+        {source: 'foo', slug: 'foo', date: new Date(2014, 1, 2)},
+        {source: 'bar', slug: 'bar', date: new Date(2013, 5, 6)},
+        {source: 'baz', slug: 'baz', date: new Date(2013, 9, 10)},
+        {source: 'boo', slug: 'boo', date: new Date(2013, 5, 8)}
+      ]);
+    }).then(function() {
       resetLocals();
     });
   });
