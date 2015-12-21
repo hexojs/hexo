@@ -41,7 +41,7 @@ describe('File', function() {
   }
 
   function getCacheId(path) {
-    return 'file_test/' + path;
+    return pathFn.join('file_test', path);
   }
 
   function removeCache(path) {
