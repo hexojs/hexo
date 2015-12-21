@@ -578,8 +578,8 @@ describe('post', function() {
     }).spread(function(stats) {
       var post = Post.findOne({source: file.path});
 
-      post.date.toDate().should.eql(stats.ctime);
-      post.updated.toDate().should.eql(stats.mtime);
+      post.date.toDate().setMilliseconds(0).should.eql(stats.ctime.setMilliseconds(0));
+      post.updated.toDate().setMilliseconds(0).should.eql(stats.mtime.setMilliseconds(0));
 
       return post.remove();
     }).finally(function() {
@@ -924,8 +924,8 @@ describe('post', function() {
     }).spread(function(stats) {
       var post = Post.findOne({source: file.path});
 
-      post.date.toDate().should.eql(stats.ctime);
-      post.updated.toDate().should.eql(stats.mtime);
+      post.date.toDate().setMilliseconds(0).should.eql(stats.ctime.setMilliseconds(0));
+      post.updated.toDate().setMilliseconds(0).should.eql(stats.mtime.setMilliseconds(0));
 
       return post.remove();
     }).finally(function() {
