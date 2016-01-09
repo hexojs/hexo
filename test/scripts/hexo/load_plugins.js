@@ -71,6 +71,32 @@ describe('Load plugins', function() {
     });
   });
 
+  it('specify plugin list in config', function() {
+    var names = ['hexo-plugin-test', 'another-plugin'];
+    var paths = names.map(function(name) {
+      return pathFn.join(hexo.plugin_dir, name, 'index.js');
+    });
+
+    return Promise.all([
+      createPackageFile.apply(null, names),
+      fs.writeFile(paths[0], 'hexo._script_test0 = true'),
+      fs.writeFile(paths[1], 'hexo._script_test1 = true')
+    ]).then(function() {
+      hexo.config.plugins = [names[1]];
+      return loadPlugins(hexo);
+    }).then(function() {
+      should.not.exist(hexo._script_test0);
+      hexo._script_test1.should.be.true;
+
+      delete hexo.config.plugins;
+      delete hexo._script_test1;
+
+      return Promise.map(paths, function(path) {
+        return fs.unlink(path);
+      });
+    });
+  });
+
   it('ignore plugins whose name is not started with "hexo-"', function() {
     var script = 'hexo._script_test = true';
     var name = 'another-plugin';
