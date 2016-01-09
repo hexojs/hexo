@@ -52,4 +52,8 @@ describe('url_for', function() {
       urlFor(url).should.eql(url);
     });
   });
+
+  it('only hash', function() {
+    urlFor('#test').should.eql('#test');
+  });
 });
