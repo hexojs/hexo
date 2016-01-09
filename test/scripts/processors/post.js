@@ -137,6 +137,7 @@ describe('post', function() {
       asset._id.should.eql(id);
       asset.post.should.eql(postId);
       asset.modified.should.be.true;
+      asset.renderable.should.be.false;
     }).finally(function() {
       hexo.config.post_asset_folder = false;
 

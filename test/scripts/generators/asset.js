@@ -76,6 +76,29 @@ describe('asset', function() {
     });
   });
 
+  it('skip render', function() {
+    var path = 'test.yml';
+    var source = pathFn.join(hexo.base_dir, path);
+    var content = 'foo: bar';
+
+    return Promise.all([
+      Asset.insert({_id: path, path: path, renderable: false}),
+      fs.writeFile(source, content)
+    ]).then(function() {
+      return generator(hexo.locals);
+    }).then(function(data) {
+      data[0].path.should.eql('test.yml');
+      data[0].data.modified.should.be.true;
+
+      return checkStream(data[0].data.data(), content);
+    }).then(function() {
+      return Promise.all([
+        Asset.removeById(path),
+        fs.unlink(source)
+      ]);
+    });
+  });
+
   it('remove assets which does not exist', function() {
     var path = 'test.txt';
 

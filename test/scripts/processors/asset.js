@@ -87,6 +87,7 @@ describe('asset', function() {
       asset._id.should.eql(id);
       asset.path.should.eql(file.path);
       asset.modified.should.be.true;
+      asset.renderable.should.be.false;
 
       return asset.remove();
     }).finally(function() {
@@ -118,6 +119,7 @@ describe('asset', function() {
       asset._id.should.eql(id);
       asset.path.should.eql(file.path);
       asset.modified.should.be.true;
+      asset.renderable.should.be.false;
 
       return asset.remove();
     }).finally(function() {
