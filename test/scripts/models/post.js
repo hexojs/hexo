@@ -203,6 +203,26 @@ describe('Post', function() {
     });
   });
 
+  it('setTags() - empty tag', function() {
+    var id;
+
+    return Post.insert({
+      source: 'foo.md',
+      slug: 'foo'
+    }).then(function(post) {
+      id = post._id;
+      return post.setTags(['', undefined, null, false, 0, 'normal']);
+    }).then(function() {
+      var post = Post.findById(id);
+
+      post.tags.map(function(tag) {
+        return tag.name;
+      }).should.eql(['false', '0', 'normal']);
+    }).finally(function() {
+      return Post.removeById(id);
+    });
+  });
+
   it('setCategories() - old categories should be removed', function() {
     var id;
 
@@ -301,6 +321,46 @@ describe('Post', function() {
         Post.removeById(postIdA),
         Post.removeById(postIdB)
       ]);
+    });
+  });
+
+  it('setCategories() - empty category', function() {
+    var id;
+
+    return Post.insert({
+      source: 'foo.md',
+      slug: 'foo'
+    }).then(function(post) {
+      id = post._id;
+      return post.setCategories(['test', null]);
+    }).then(function() {
+      var post = Post.findById(id);
+
+      post.categories.map(function(cat) {
+        return cat.name;
+      }).should.eql(['test']);
+    }).finally(function() {
+      return Post.removeById(id);
+    });
+  });
+
+  it('setCategories() - empty category in middle', function() {
+    var id;
+
+    return Post.insert({
+      source: 'foo.md',
+      slug: 'foo'
+    }).then(function(post) {
+      id = post._id;
+      return post.setCategories(['foo', null, 'bar']);
+    }).then(function() {
+      var post = Post.findById(id);
+
+      post.categories.map(function(cat) {
+        return cat.name;
+      }).should.eql(['foo', 'bar']);
+    }).finally(function() {
+      return Post.removeById(id);
     });
   });
 
