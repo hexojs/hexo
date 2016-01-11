@@ -18,7 +18,7 @@ describe('js', function() {
     var expected = '';
 
     for (var i = 1, len = arguments.length; i < len; i++) {
-      expected += '<script src="' + arguments[i] + '" type="text/javascript"></script>\n';
+      expected += '<script src="' + arguments[i] + '"></script>\n';
     }
 
     result.should.eql(expected.trim());

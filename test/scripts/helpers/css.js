@@ -18,7 +18,7 @@ describe('css', function() {
     var expected = '';
 
     for (var i = 1, len = arguments.length; i < len; i++) {
-      expected += '<link rel="stylesheet" href="' + arguments[i] + '" type="text/css">\n';
+      expected += '<link rel="stylesheet" href="' + arguments[i] + '">\n';
     }
 
     result.should.eql(expected.trim());
