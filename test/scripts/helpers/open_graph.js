@@ -15,13 +15,20 @@ describe('open_graph', function() {
 
   it('default', function() {
     var result = openGraph.call({
-      page: {},
-      config: hexo.config,
-      is_post: isPost
+        page: {
+            tags: [{
+                name: 'optimize'
+            }, {
+                name: 'web'
+            }]
+        },
+        config: hexo.config,
+        is_post: isPost
     });
 
     result.should.eql([
       meta({name: 'description'}),
+      meta({name: 'keywords', content: 'optimize,web'}),
       meta({property: 'og:type', content: 'website'}),
       meta({property: 'og:title', content: hexo.config.title}),
       meta({property: 'og:url'}),
