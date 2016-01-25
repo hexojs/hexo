@@ -15,15 +15,14 @@ describe('open_graph', function() {
 
   it('default', function() {
     var result = openGraph.call({
-        page: {
-            tags: [{
-                name: 'optimize'
-            }, {
-                name: 'web'
-            }]
-        },
-        config: hexo.config,
-        is_post: isPost
+      page: {
+        tags: [
+          { name: 'optimize' },
+          { name: 'web' }
+        ]
+      },
+      config: hexo.config,
+      is_post: isPost
     });
 
     result.should.eql([
