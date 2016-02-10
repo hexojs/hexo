@@ -3,6 +3,10 @@
 var should = require('chai').should(); // eslint-disable-line
 var _ = require('lodash');
 
+function ifTrue(cond, yes, no) {
+  return cond ? yes : no;
+}
+
 describe('toc', function() {
   var toc = require('../../../lib/plugins/helper/toc');
 
@@ -30,19 +34,19 @@ describe('toc', function() {
       '<ol class="' + className + '">',
         '<li class="' + className + '-item ' + className + '-level-1">',
           '<a class="' + className + '-link" href="#title_1">',
-            (listNumber ? '<span class="' + className + '-number">1.</span> ' : ''),
+            ifTrue(listNumber, '<span class="' + className + '-number">1.</span> ', ''),
             '<span class="' + className + '-text">Title 1</span>',
           '</a>',
           '<ol class="' + className + '-child">',
             '<li class="' + className + '-item ' + className + '-level-2">',
               '<a class="' + className + '-link" href="#title_1_1">',
-                (listNumber ? '<span class="' + className + '-number">1.1.</span> ' : ''),
+                ifTrue(listNumber, '<span class="' + className + '-number">1.1.</span> ', ''),
                 '<span class="' + className + '-text">Title 1.1</span>',
               '</a>',
               '<ol class="' + className + '-child">',
                 '<li class="' + className + '-item ' + className + '-level-3">',
                   '<a class="' + className + '-link" href="#title_1_1_1">',
-                    (listNumber ? '<span class="' + className + '-number">1.1.1.</span> ' : ''),
+                    ifTrue(listNumber, '<span class="' + className + '-number">1.1.1.</span> ', ''),
                     '<span class="' + className + '-text">Title 1.1.1</span>',
                   '</a>',
                 '</li>',
@@ -50,19 +54,19 @@ describe('toc', function() {
             '</li>',
             '<li class="' + className + '-item ' + className + '-level-2">',
               '<a class="' + className + '-link" href="#title_1_2">',
-                (listNumber ? '<span class="' + className + '-number">1.2.</span> ' : ''),
+                ifTrue(listNumber, '<span class="' + className + '-number">1.2.</span> ', ''),
                 '<span class="' + className + '-text">Title 1.2</span>',
               '</a>',
             '</li>',
             '<li class="' + className + '-item ' + className + '-level-2">',
               '<a class="' + className + '-link" href="#title_1_3">',
-                (listNumber ? '<span class="' + className + '-number">1.3.</span> ' : ''),
+                ifTrue(listNumber, '<span class="' + className + '-number">1.3.</span> ', ''),
                 '<span class="' + className + '-text">Title 1.3</span>',
               '</a>',
               '<ol class="' + className + '-child">',
                 '<li class="' + className + '-item ' + className + '-level-3">',
                   '<a class="' + className + '-link" href="#title_1_3_1">',
-                    (listNumber ? '<span class="' + className + '-number">1.3.1.</span> ' : ''),
+                    ifTrue(listNumber, '<span class="' + className + '-number">1.3.1.</span> ', ''),
                     '<span class="' + className + '-text">Title 1.3.1</span>',
                   '</a>',
                 '</li>',
@@ -72,13 +76,13 @@ describe('toc', function() {
         '</li>',
         '<li class="' + className + '-item ' + className + '-level-1">',
           '<a class="' + className + '-link" href="#title_2">',
-            (listNumber ? '<span class="' + className + '-number">2.</span> ' : ''),
+            ifTrue(listNumber, '<span class="' + className + '-number">2.</span> ', ''),
             '<span class="' + className + '-text">Title 2</span>',
           '</a>',
           '<ol class="' + className + '-child">',
             '<li class="' + className + '-item ' + className + '-level-2">',
               '<a class="' + className + '-link" href="#title_2_1">',
-                (listNumber ? '<span class="' + className + '-number">2.1.</span> ' : ''),
+                ifTrue(listNumber, '<span class="' + className + '-number">2.1.</span> ', ''),
                 '<span class="' + className + '-text">Title 2.1</span>',
               '</a>',
             '</li>',
