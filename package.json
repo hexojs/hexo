@@ -31,7 +31,6 @@
     "abbrev": "^1.0.7",
     "archy": "^1.0.0",
     "bluebird": "^3.2.2",
-    "bunyan": "^1.5.1",
     "chalk": "^1.1.1",
     "cheerio": "^0.20.0",
     "hexo-cli": "^1.0.0",
