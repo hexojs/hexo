@@ -5,11 +5,14 @@ var fs = require('hexo-fs');
 var pathFn = require('path');
 var yaml = require('js-yaml');
 var _ = require('lodash');
+var rewire = require('rewire');
+var sinon = require('sinon');
 
 describe('config', function() {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
   var config = require('../../../lib/plugins/console/config').bind(hexo);
+  var configModule = rewire('../../../lib/plugins/console/config');
 
   before(function() {
     return fs.mkdirs(hexo.base_dir).then(function() {
@@ -25,9 +28,53 @@ describe('config', function() {
     return fs.rmdir(hexo.base_dir);
   });
 
-  it('read all config');
+  it('read all config', function() {
+    var spy = sinon.spy();
 
-  it('read config');
+    return configModule.__with__({
+      console: {
+        log: spy
+      }
+    })(function() {
+      return configModule.call(hexo, {_: []});
+    }).then(function() {
+      spy.args[0][0].should.eql(hexo.config);
+    });
+  });
+
+  it('read config', function() {
+    var spy = sinon.spy();
+
+    return configModule.__with__({
+      console: {
+        log: spy
+      }
+    })(function() {
+      return configModule.call(hexo, {_: ['title']});
+    }).then(function() {
+      spy.args[0][0].should.eql(hexo.config.title);
+    });
+  });
+
+  it('read nested config', function() {
+    var spy = sinon.spy();
+
+    hexo.config.server = {
+      port: 12345
+    };
+
+    return configModule.__with__({
+      console: {
+        log: spy
+      }
+    })(function() {
+      return configModule.call(hexo, {_: ['server.port']});
+    }).then(function() {
+      spy.args[0][0].should.eql(hexo.config.server.port);
+    }).finally(function() {
+      delete hexo.config.server;
+    });
+  });
 
   function writeConfig() {
     var args = _.toArray(arguments);
