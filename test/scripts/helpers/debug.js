@@ -1,9 +1,12 @@
 'use strict';
 
 var should = require('chai').should(); // eslint-disable-line
+var rewire = require('rewire');
+var sinon = require('sinon');
 
 describe('debug', function() {
   var debug = require('../../../lib/plugins/helper/debug');
+  var debugModule = rewire('../../../lib/plugins/helper/debug');
   var inspect = require('util').inspect;
 
   it('inspect simple object', function() {
@@ -24,8 +27,16 @@ describe('debug', function() {
   });
 
   it('log should print to console', function() {
-    debug.log('Hello %s from debug.log()!', 'World');
-    // console should print 'Hello World from debug.log()!'
-    debug.should.be.a('object'); // void assert
+    var spy = sinon.spy();
+
+    debugModule.__with__({
+      console: {
+        log: spy
+      }
+    })(function() {
+      debugModule.log('Hello %s from debug.log()!', 'World');
+    });
+
+    spy.args[0].should.eql(['Hello %s from debug.log()!', 'World']);
   });
 });
