@@ -9,13 +9,17 @@ environment:
     - nodejs_version: "4"
     - nodejs_version: "5"
 
+matrix:
+  fast_finish: true
+
 # Install scripts. (runs after repo cloning)
 install:
   - ps: Install-Product node $env:nodejs_version
+  - npm install -g npm
   - npm install
 
 cache:
-  - node_modules
+  - node_modules -> package.json
 
 # Post-install test scripts.
 test_script:
