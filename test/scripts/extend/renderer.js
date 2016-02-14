@@ -72,6 +72,19 @@ describe('Renderer', function() {
     });
   });
 
+  it('register() - compile', function() {
+    var r = new Renderer();
+
+    function renderer(data, locals) {}
+
+    renderer.compile = function(data) {
+      //
+    };
+
+    r.register('swig', 'html', renderer);
+    r.get('swig').compile.should.eql(renderer.compile);
+  });
+
   it('getOutput()', function() {
     var r = new Renderer();
 

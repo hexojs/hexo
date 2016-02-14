@@ -22,7 +22,7 @@ describe('toc', function() {
   ].join('');
 
   var genResult = function(options) {
-    options = _.extend({
+    options = _.assign({
       class: 'toc',
       list_number: true
     }, options);

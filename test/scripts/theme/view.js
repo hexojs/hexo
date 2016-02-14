@@ -38,11 +38,14 @@ describe('View', function() {
   });
 
   it('constructor', function() {
-    var view = newView('index.swig', {});
+    var data = {
+      _content: ''
+    };
+    var view = newView('index.swig', data);
 
     view.path.should.eql('index.swig');
     view.source.should.eql(pathFn.join(themeDir, 'layout', 'index.swig'));
-    view.data.should.eql({});
+    view.data.should.eql(data);
   });
 
   it('parse front-matter', function() {
@@ -57,6 +60,42 @@ describe('View', function() {
     view.data.should.eql({
       layout: false,
       _content: 'content'
+    });
+  });
+
+  it('precompile view if possible', function() {
+    var body = 'Hello {{ name }}';
+    var view = newView('index.swig', body);
+
+    view._compiledSync({
+      name: 'Hexo'
+    }).should.eql('Hello Hexo');
+
+    return view._compiled({
+      name: 'Hexo'
+    }).then(function(result) {
+      result.should.eql('Hello Hexo');
+    });
+  });
+
+  it('generate precompiled function even if renderer does not provide compile function', function() {
+    // Remove compile function
+    var compile = hexo.extend.renderer.store.swig.compile;
+    delete hexo.extend.renderer.store.swig.compile;
+
+    var body = 'Hello {{ name }}';
+    var view = newView('index.swig', body);
+
+    view._compiledSync({
+      name: 'Hexo'
+    }).should.eql('Hello Hexo');
+
+    return view._compiled({
+      name: 'Hexo'
+    }).then(function(result) {
+      result.should.eql('Hello Hexo');
+    }).finally(function() {
+      hexo.extend.renderer.store.swig.compile = compile;
     });
   });
 
