@@ -111,6 +111,13 @@ describe('code', function() {
     }));
   });
 
+  it('mark', function() {
+    var result = code('mark:2,4,6-8', fixture);
+    result.should.eql(highlight(fixture, {
+      mark: [2, 4, 6, 7, 8]
+    }));
+  });
+
   it('# lines', function() {
     var result = code('', fixture);
     var $ = cheerio.load(result);
