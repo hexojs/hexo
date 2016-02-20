@@ -109,4 +109,11 @@ describe('code', function() {
       firstLine: 1
     }));
   });
+
+  it('mark', function() {
+    var result = code('mark:2,4,6-8', fixture);
+    result.should.eql(highlight(fixture, {
+      mark: [2, 4, 6, 7, 8]
+    }));
+  });
 });
