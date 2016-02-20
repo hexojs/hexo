@@ -30,7 +30,7 @@ exports.expected = [
   '<h1 id="Title"><a href="#Title" class="headerlink" title="Title"></a>Title</h1>',
   util.highlight(code, {lang: 'python'}),
   '\n<p>some content</p>\n',
-  '<h2 id="Another_title"><a href="#Another_title" class="headerlink" title="Another title"></a>Another title</h2>',
+  '<h2 id="Another-title"><a href="#Another-title" class="headerlink" title="Another title"></a>Another title</h2>',
   '<blockquote>',
   '<p>quote content</p>\n',
   '</blockquote>\n',
