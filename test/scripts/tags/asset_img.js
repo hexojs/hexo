@@ -25,11 +25,18 @@ describe('asset_img', function() {
     }).then(function(post_) {
       post = post_;
 
-      return PostAsset.insert({
-        _id: 'bar',
-        slug: 'bar',
-        post: post._id
-      });
+      return Promise.all([
+        PostAsset.insert({
+          _id: 'bar',
+          slug: 'bar',
+          post: post._id
+        }),
+        PostAsset.insert({
+          _id: 'file with space',
+          slug: 'file with space',
+          post: post._id
+        })
+      ]);
     });
   });
 
@@ -39,6 +46,12 @@ describe('asset_img', function() {
 
   it('default', function() {
     assetImg('bar title').should.eql('<img src="/foo/bar" alt="title" title="title">');
+  });
+
+  it('with space', function() {
+    // {% asset_img "file with space" "title with space" %}
+    assetImgTag.call(post, ['file with space', 'title with space'])
+      .should.eql('<img src="/foo/file with space" alt="title with space" title="title with space">');
   });
 
   it('no slug', function() {
