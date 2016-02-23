@@ -1,6 +1,7 @@
 'use strict';
 
 var should = require('chai').should(); // eslint-disable-line
+var Promise = require('bluebird');
 
 describe('asset_img', function() {
   var Hexo = require('../../../lib/hexo');
