@@ -25,11 +25,18 @@ describe('asset_link', function() {
     }).then(function(post_) {
       post = post_;
 
-      return PostAsset.insert({
-        _id: 'bar',
-        slug: 'bar',
-        post: post._id
-      });
+      return Promise.all([
+        PostAsset.insert({
+          _id: 'bar',
+          slug: 'bar',
+          post: post._id
+        }),
+        PostAsset.insert({
+          _id: 'spaced asset',
+          slug: 'spaced asset',
+          post: post._id
+        })
+      ]);
     });
   });
 
@@ -39,6 +46,12 @@ describe('asset_link', function() {
 
   it('title', function() {
     assetLink('bar Hello world').should.eql('<a href="/foo/bar" title="Hello world">Hello world</a>');
+  });
+
+  it('with space', function() {
+    // {% asset_link "spaced asset" "spaced title" %}
+    assetLinkTag.call(post, ['spaced asset', 'spaced title'])
+      .should.eql('<a href="/foo/spaced asset" title="spaced title">spaced title</a>');
   });
 
   it('no slug', function() {

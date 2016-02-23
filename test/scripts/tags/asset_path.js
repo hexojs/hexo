@@ -25,16 +25,29 @@ describe('asset_path', function() {
     }).then(function(post_) {
       post = post_;
 
-      return PostAsset.insert({
-        _id: 'bar',
-        slug: 'bar',
-        post: post._id
-      });
+      return Promise.all([
+        PostAsset.insert({
+          _id: 'bar',
+          slug: 'bar',
+          post: post._id
+        }),
+        PostAsset.insert({
+          _id: 'spaced asset',
+          slug: 'spaced asset',
+          post: post._id
+        })
+      ]);
     });
   });
 
   it('default', function() {
     assetPath('bar').should.eql('/foo/bar');
+  });
+
+  it('with space', function() {
+    // {% asset_path "spaced asset" %}
+    assetPathTag.call(post, ['spaced asset'])
+      .should.eql('/foo/spaced asset');
   });
 
   it('no slug', function() {

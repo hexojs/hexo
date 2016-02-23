@@ -32,8 +32,8 @@ describe('asset_img', function() {
           post: post._id
         }),
         PostAsset.insert({
-          _id: 'file with space',
-          slug: 'file with space',
+          _id: 'spaced asset',
+          slug: 'spaced asset',
           post: post._id
         })
       ]);
@@ -49,9 +49,9 @@ describe('asset_img', function() {
   });
 
   it('with space', function() {
-    // {% asset_img "file with space" "title with space" %}
-    assetImgTag.call(post, ['file with space', 'title with space'])
-      .should.eql('<img src="/foo/file with space" alt="title with space" title="title with space">');
+    // {% asset_img "spaced asset" "spaced title" %}
+    assetImgTag.call(post, ['spaced asset', 'spaced title'])
+      .should.eql('<img src="/foo/spaced asset" alt="spaced title" title="spaced title">');
   });
 
   it('no slug', function() {
