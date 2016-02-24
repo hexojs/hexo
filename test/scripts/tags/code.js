@@ -2,6 +2,7 @@
 
 var should = require('chai').should(); // eslint-disable-line
 var util = require('hexo-util');
+var cheerio = require('cheerio');
 
 describe('code', function() {
   var Hexo = require('../../../lib/hexo');
@@ -108,5 +109,11 @@ describe('code', function() {
     result.should.eql(highlight(fixture, {
       firstLine: 1
     }));
+  });
+
+  it('# lines', function() {
+    var result = code('', fixture);
+    var $ = cheerio.load(result);
+    $('.gutter .line').length.should.eql(3);
   });
 });
