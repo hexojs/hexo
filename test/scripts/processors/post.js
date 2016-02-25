@@ -579,7 +579,7 @@ describe('post', function() {
     }).spread(function(stats) {
       var post = Post.findOne({source: file.path});
 
-      post.date.toDate().setMilliseconds(0).should.eql(stats.ctime.setMilliseconds(0));
+      post.date.toDate().setMilliseconds(0).should.eql(stats.birthtime.setMilliseconds(0));
       post.updated.toDate().setMilliseconds(0).should.eql(stats.mtime.setMilliseconds(0));
 
       return post.remove();
@@ -925,7 +925,7 @@ describe('post', function() {
     }).spread(function(stats) {
       var post = Post.findOne({source: file.path});
 
-      post.date.toDate().setMilliseconds(0).should.eql(stats.ctime.setMilliseconds(0));
+      post.date.toDate().setMilliseconds(0).should.eql(stats.birthtime.setMilliseconds(0));
       post.updated.toDate().setMilliseconds(0).should.eql(stats.mtime.setMilliseconds(0));
 
       return post.remove();
