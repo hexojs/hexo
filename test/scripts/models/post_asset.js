@@ -2,7 +2,6 @@
 
 var should = require('chai').should(); // eslint-disable-line
 var sinon = require('sinon');
-var url = require('url');
 var pathFn = require('path');
 
 describe('PostAsset', function() {
@@ -62,7 +61,7 @@ describe('PostAsset', function() {
       slug: 'foo.jpg',
       post: post._id
     }).then(function(data) {
-      data.path.should.eql(url.resolve(post.path, data.slug));
+      data.path.should.eql(pathFn.join(post.path, data.slug));
       return PostAsset.removeById(data._id);
     });
   });

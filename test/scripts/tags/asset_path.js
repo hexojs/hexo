@@ -48,7 +48,7 @@ describe('asset_path', function() {
   it('with space', function() {
     // {% asset_path "spaced asset" %}
     assetPathTag.call(post, ['spaced asset'])
-      .should.eql('/foo/spaced asset');
+      .should.eql('/foo/spaced%20asset');
   });
 
   it('no slug', function() {

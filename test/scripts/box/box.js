@@ -272,30 +272,20 @@ describe('Box', function() {
     var box = newBox('test');
     var path = 'a.txt';
     var src = pathFn.join(box.base, path);
+    var processor = sinon.spy();
+
+    box.addProcessor(processor);
 
     return box.watch().then(function() {
-      var processor;
       box.isWatching().should.be.true;
+      return fs.writeFile(src, 'a');
+    }).delay(500).then(function() {
+      var file = processor.args[0][0];
 
-      return new Promise(function(resolve, reject) {
-        processor = sinon.spy(function(file) {
-          try {
-            file.source.should.eql(src);
-            file.path.should.eql(path);
-            file.type.should.eql('create');
-            file.params.should.eql({});
-
-            resolve();
-          } catch (err) {
-            reject(err);
-          }
-        });
-
-        box.addProcessor(processor);
-        fs.writeFile(src, 'a').catch(reject);
-      }).then(function() {
-        processor.calledOnce.should.be.true;
-      });
+      file.source.should.eql(src);
+      file.path.should.eql(path);
+      file.type.should.eql('create');
+      file.params.should.eql({});
     }).finally(function() {
       box.unwatch();
       return fs.rmdir(box.base);
@@ -308,6 +298,9 @@ describe('Box', function() {
     var src = pathFn.join(box.base, path);
     var cacheId = 'test/' + path;
     var Cache = box.Cache;
+    var processor = sinon.spy();
+
+    box.addProcessor(processor);
 
     return Promise.all([
       fs.writeFile(src, 'a'),
@@ -315,27 +308,14 @@ describe('Box', function() {
     ]).then(function() {
       return box.watch();
     }).then(function() {
-      var processor;
+      return fs.appendFile(src, 'b');
+    }).delay(500).then(function() {
+      var file = processor.lastCall.args[0];
 
-      return new Promise(function(resolve, reject) {
-        processor = sinon.spy(function(file) {
-          try {
-            file.source.should.eql(src);
-            file.path.should.eql(path);
-            file.type.should.eql('update');
-            file.params.should.eql({});
-
-            resolve();
-          } catch (err) {
-            reject(err);
-          }
-        });
-
-        box.addProcessor(processor);
-        fs.appendFile(src, 'b').catch(reject);
-      }).then(function() {
-        processor.calledOnce.should.be.true;
-      });
+      file.source.should.eql(src);
+      file.path.should.eql(path);
+      file.type.should.eql('update');
+      file.params.should.eql({});
     }).finally(function() {
       box.unwatch();
       return fs.rmdir(box.base);
@@ -348,6 +328,9 @@ describe('Box', function() {
     var src = pathFn.join(box.base, path);
     var cacheId = 'test/' + path;
     var Cache = box.Cache;
+    var processor = sinon.spy();
+
+    box.addProcessor(processor);
 
     return Promise.all([
       fs.writeFile(src, 'a'),
@@ -355,27 +338,14 @@ describe('Box', function() {
     ]).then(function() {
       return box.watch();
     }).then(function() {
-      var processor;
+      return fs.unlink(src);
+    }).delay(500).then(function() {
+      var file = processor.lastCall.args[0];
 
-      return new Promise(function(resolve, reject) {
-        processor = sinon.spy(function(file) {
-          try {
-            file.source.should.eql(src);
-            file.path.should.eql(path);
-            file.type.should.eql('delete');
-            file.params.should.eql({});
-
-            resolve();
-          } catch (err) {
-            reject(err);
-          }
-        });
-
-        box.addProcessor(processor);
-        fs.unlink(src).catch(reject);
-      }).then(function() {
-        processor.calledOnce.should.be.true;
-      });
+      file.source.should.eql(src);
+      file.path.should.eql(path);
+      file.type.should.eql('delete');
+      file.params.should.eql({});
     }).finally(function() {
       box.unwatch();
       return fs.rmdir(box.base);
@@ -390,6 +360,9 @@ describe('Box', function() {
     var newSrc = pathFn.join(box.base, newPath);
     var cacheId = 'test/' + path;
     var Cache = box.Cache;
+    var processor = sinon.spy();
+
+    box.addProcessor(processor);
 
     return Promise.all([
       fs.writeFile(src, 'a'),
@@ -397,38 +370,24 @@ describe('Box', function() {
     ]).then(function() {
       return box.watch();
     }).then(function() {
-      var processor;
+      return fs.rename(src, newSrc);
+    }).delay(500).then(function() {
+      var lastTwoCalls = processor.args.slice(processor.args.length - 2, processor.args.length);
 
-      return new Promise(function(resolve, reject) {
-        processor = sinon.spy(function(file) {
-          try {
-            switch (file.type){
-              case 'create':
-                file.source.should.eql(newSrc);
-                file.path.should.eql(newPath);
-                break;
+      lastTwoCalls.forEach(function(args) {
+        var file = args[0];
 
-              case 'delete':
-                file.source.should.eql(src);
-                file.path.should.eql(path);
-                break;
+        switch (file.type){
+          case 'create':
+            file.source.should.eql(newSrc);
+            file.path.should.eql(newPath);
+            break;
 
-              default:
-                return reject(new Error('Type should be either create or delete'));
-            }
-
-            if (processor.calledTwice) {
-              resolve();
-            }
-          } catch (err) {
-            reject(err);
-          }
-        });
-
-        box.addProcessor(processor);
-        fs.rename(src, newSrc).catch(reject);
-      }).then(function() {
-        processor.calledTwice.should.be.true;
+          case 'delete':
+            file.source.should.eql(src);
+            file.path.should.eql(path);
+            break;
+        }
       });
     }).finally(function() {
       box.unwatch();
@@ -444,6 +403,9 @@ describe('Box', function() {
     var newSrc = pathFn.join(box.base, newPath);
     var cacheId = 'test/' + path;
     var Cache = box.Cache;
+    var processor = sinon.spy();
+
+    box.addProcessor(processor);
 
     return Promise.all([
       fs.writeFile(src, 'a'),
@@ -451,38 +413,24 @@ describe('Box', function() {
     ]).then(function() {
       return box.watch();
     }).then(function() {
-      var processor;
+      return fs.rename(pathFn.join(box.base, 'a'), pathFn.join(box.base, 'b'));
+    }).delay(500).then(function() {
+      var lastTwoCalls = processor.args.slice(processor.args.length - 2, processor.args.length);
 
-      return new Promise(function(resolve, reject) {
-        processor = sinon.spy(function(file) {
-          try {
-            switch (file.type){
-              case 'create':
-                file.source.should.eql(newSrc);
-                file.path.should.eql(newPath);
-                break;
+      lastTwoCalls.forEach(function(args) {
+        var file = args[0];
 
-              case 'delete':
-                file.source.should.eql(src);
-                file.path.should.eql(path);
-                break;
+        switch (file.type){
+          case 'create':
+            file.source.should.eql(newSrc);
+            file.path.should.eql(newPath);
+            break;
 
-              default:
-                return reject(new Error('Type should be either create or delete'));
-            }
-
-            if (processor.calledTwice) {
-              resolve();
-            }
-          } catch (err) {
-            reject(err);
-          }
-        });
-
-        box.addProcessor(processor);
-        fs.rename(pathFn.join(box.base, 'a'), pathFn.join(box.base, 'b')).catch(reject);
-      }).then(function() {
-        processor.calledTwice.should.be.true;
+          case 'delete':
+            file.source.should.eql(src);
+            file.path.should.eql(path);
+            break;
+        }
       });
     }).finally(function() {
       box.unwatch();

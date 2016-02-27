@@ -52,7 +52,7 @@ describe('asset_link', function() {
   it('with space', function() {
     // {% asset_link "spaced asset" "spaced title" %}
     assetLinkTag.call(post, ['spaced asset', 'spaced title'])
-      .should.eql('<a href="/foo/spaced asset" title="spaced title">spaced title</a>');
+      .should.eql('<a href="/foo/spaced%20asset" title="spaced title">spaced title</a>');
   });
 
   it('no slug', function() {

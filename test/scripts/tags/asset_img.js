@@ -52,7 +52,7 @@ describe('asset_img', function() {
   it('with space', function() {
     // {% asset_img "spaced asset" "spaced title" %}
     assetImgTag.call(post, ['spaced asset', 'spaced title'])
-      .should.eql('<img src="/foo/spaced asset" alt="spaced title" title="spaced title">');
+      .should.eql('<img src="/foo/spaced%20asset" alt="spaced title" title="spaced title">');
   });
 
   it('no slug', function() {
