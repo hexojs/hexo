@@ -32,4 +32,18 @@ describe('swig', function() {
 
     r({text: body}, data).should.eql('123');
   });
+
+  it('compile', function() {
+    var body = [
+      'Hello {{ name }}!'
+    ].join('\n');
+
+    var render = r.compile({
+      text: body
+    });
+
+    render({
+      name: 'world'
+    }).should.eql('Hello world!');
+  });
 });
