@@ -158,10 +158,6 @@ describe('post', function() {
       renderable: false
     });
 
-    file.changed = function() {
-      return Promise.resolve(true);
-    };
-
     var id = 'source/' + file.path;
     var postId;
 
@@ -195,19 +191,15 @@ describe('post', function() {
     });
   });
 
-  it('asset - unchanged', function() {
+  it('asset - type: skip', function() {
     hexo.config.post_asset_folder = true;
 
     var file = newFile({
       path: 'foo/bar.jpg',
       published: true,
-      type: 'update',
+      type: 'skip',
       renderable: false
     });
-
-    file.changed = function() {
-      return Promise.resolve(false);
-    };
 
     var id = 'source/' + file.path;
     var postId;

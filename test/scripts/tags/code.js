@@ -126,7 +126,6 @@ describe('code', function() {
       '});'
     ].join('\n');
     var result = code('mark:1,7-8,10', source);
-    console.log(result);
     result.should.eql(highlight(source, {
       mark: [1, 7, 8, 10]
     }));

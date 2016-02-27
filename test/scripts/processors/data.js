@@ -115,10 +115,6 @@ describe('data', function() {
       type: 'update'
     });
 
-    file.changed = function() {
-      return Promise.resolve(true);
-    };
-
     return Promise.all([
       fs.writeFile(file.source, body),
       Data.insert({

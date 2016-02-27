@@ -127,49 +127,12 @@ describe('asset', function() {
     });
   });
 
-  it('asset - changed', function() {
+  it('asset - type: skip', function() {
     var file = newFile({
       path: 'foo.jpg',
-      type: 'update',
+      type: 'skip',
       renderable: false
     });
-
-    file.changed = function() {
-      return Promise.resolve(true);
-    };
-
-    var id = 'source/' + file.path;
-
-    return Promise.all([
-      fs.writeFile(file.source, 'test'),
-      Asset.insert({
-        _id: id,
-        path: file.path,
-        modified: false
-      })
-    ]).then(function() {
-      return process(file);
-    }).then(function() {
-      var asset = Asset.findById(id);
-      asset.modified.should.be.true;
-    }).finally(function() {
-      return Promise.all([
-        Asset.removeById(id),
-        fs.unlink(file.source)
-      ]);
-    });
-  });
-
-  it('asset - unchanged', function() {
-    var file = newFile({
-      path: 'foo.jpg',
-      type: 'update',
-      renderable: false
-    });
-
-    file.changed = function() {
-      return Promise.resolve(false);
-    };
 
     var id = 'source/' + file.path;
 

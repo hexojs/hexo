@@ -79,10 +79,6 @@ describe('source', function() {
       type: 'update'
     });
 
-    file.changed = function() {
-      return Promise.resolve(true);
-    };
-
     var id = 'themes/test/' + file.path;
 
     return Promise.all([
@@ -106,15 +102,11 @@ describe('source', function() {
     });
   });
 
-  it('unchanged', function() {
+  it('type: skip', function() {
     var file = newFile({
       path: 'style.css',
-      type: 'update'
+      type: 'skip'
     });
-
-    file.changed = function() {
-      return Promise.resolve(false);
-    };
 
     var id = 'themes/test/' + file.path;
 

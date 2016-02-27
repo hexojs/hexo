@@ -127,43 +127,99 @@ describe('Box', function() {
 
   it('process() - create', function() {
     var box = newBox('test');
-    var path = pathFn.join(box.base, 'a.txt');
+    var name = 'a.txt';
+    var path = pathFn.join(box.base, name);
 
-    var processor = sinon.spy(function(file) {
-      file.type.should.eql('create');
-    });
-
+    var processor = sinon.spy();
     box.addProcessor(processor);
 
     return fs.writeFile(path, 'a').then(function() {
       return box.process();
     }).then(function() {
-      processor.calledOnce.should.be.true;
+      var file = processor.args[0][0];
+      file.type.should.eql('create');
+      file.path.should.eql(name);
     }).finally(function() {
       return fs.rmdir(box.base);
     });
   });
 
-  it('process() - update', function() {
+  it('process() - mtime changed', function() {
     var box = newBox('test');
-    var path = pathFn.join(box.base, 'a.txt');
-    var cacheId = 'test/a.txt';
+    var name = 'a.txt';
+    var path = pathFn.join(box.base, name);
+    var cacheId = 'test/' + name;
 
-    var processor = sinon.spy(function(file) {
-      file.type.should.eql('update');
-    });
-
+    var processor = sinon.spy();
     box.addProcessor(processor);
 
     return Promise.all([
       fs.writeFile(path, 'a'),
       box.Cache.insert({
-        _id: cacheId
+        _id: cacheId,
+        modified: 0
       })
     ]).then(function() {
       return box.process();
     }).then(function() {
-      processor.calledOnce.should.be.true;
+      var file = processor.args[0][0];
+      file.type.should.eql('update');
+      file.path.should.eql(name);
+    }).finally(function() {
+      return fs.rmdir(box.base);
+    });
+  });
+
+  it('process() - hash changed', function() {
+    var box = newBox('test');
+    var name = 'a.txt';
+    var path = pathFn.join(box.base, name);
+    var cacheId = 'test/' + name;
+
+    var processor = sinon.spy();
+    box.addProcessor(processor);
+
+    return fs.writeFile(path, 'a').then(function() {
+      return fs.stat(path);
+    }).then(function(stats) {
+      return box.Cache.insert({
+        _id: cacheId,
+        modified: stats.mtime
+      });
+    }).then(function() {
+      return box.process();
+    }).then(function() {
+      var file = processor.args[0][0];
+      file.type.should.eql('update');
+      file.path.should.eql(name);
+    }).finally(function() {
+      return fs.rmdir(box.base);
+    });
+  });
+
+  it('process() - skip', function() {
+    var box = newBox('test');
+    var name = 'a.txt';
+    var path = pathFn.join(box.base, name);
+    var cacheId = 'test/' + name;
+
+    var processor = sinon.spy();
+    box.addProcessor(processor);
+
+    return fs.writeFile(path, 'a').then(function() {
+      return fs.stat(path);
+    }).then(function(stats) {
+      return box.Cache.insert({
+        _id: cacheId,
+        modified: stats.mtime,
+        hash: util.hash('a').toString('hex')
+      });
+    }).then(function() {
+      return box.process();
+    }).then(function() {
+      var file = processor.args[0][0];
+      file.type.should.eql('skip');
+      file.path.should.eql(name);
     }).finally(function() {
       return fs.rmdir(box.base);
     });
