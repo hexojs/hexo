@@ -107,7 +107,6 @@ describe('toc', function() {
       '</li>'
     ].join('');
 
-
     var result = [
       '<ol class="' + className + '">',
         ifTrue(maxDepth >= 1, resultAllTitles_Level1, ''),
