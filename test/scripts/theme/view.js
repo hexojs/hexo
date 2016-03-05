@@ -5,6 +5,7 @@ var pathFn = require('path');
 var fs = require('hexo-fs');
 var Promise = require('bluebird');
 var moment = require('moment');
+var sinon = require('sinon');
 
 describe('View', function() {
   var Hexo = require('../../../lib/hexo');
@@ -201,6 +202,29 @@ describe('View', function() {
     });
   });
 
+  it('render() - execute after_render:html', function() {
+    var body = [
+      '{{ test }}'
+    ].join('\n');
+
+    var view = newView('index.swig', body);
+
+    var filter = sinon.spy(function(result) {
+      result.should.eql('foo');
+      return 'bar';
+    });
+
+    hexo.extend.filter.register('after_render:html', filter);
+
+    return view.render({
+      test: 'foo'
+    }).then(function(content) {
+      content.should.eql('bar');
+    }).finally(function() {
+      hexo.extend.filter.unregister('after_render:html', filter);
+    });
+  });
+
   it('renderSync()', function() {
     var body = [
       '{{ test }}'
@@ -256,6 +280,23 @@ describe('View', function() {
     view.renderSync({
       layout: 'wtf'
     }).should.eql(body);
+  });
+
+  it('renderSync() - execute after_render:html', function() {
+    var body = [
+      '{{ test }}'
+    ].join('\n');
+
+    var view = newView('index.swig', body);
+
+    var filter = sinon.spy(function(result) {
+      result.should.eql('foo');
+      return 'bar';
+    });
+
+    hexo.extend.filter.register('after_render:html', filter);
+    view.renderSync({test: 'foo'}).should.eql('bar');
+    hexo.extend.filter.unregister('after_render:html', filter);
   });
 
   it('_resolveLayout()', function() {
