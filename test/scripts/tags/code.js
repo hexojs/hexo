@@ -9,7 +9,7 @@ describe('code', function() {
   var hexo = new Hexo();
   var codeTag = require('../../../lib/plugins/tag/code')(hexo);
   var escapeHTML = util.escapeHTML;
-  
+
   var fixture = [
     'if (tired && night){',
     '  sleep();',
