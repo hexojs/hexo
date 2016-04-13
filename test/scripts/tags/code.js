@@ -8,7 +8,8 @@ describe('code', function() {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo();
   var codeTag = require('../../../lib/plugins/tag/code')(hexo);
-
+  var escapeHTML = util.escapeHTML;
+  
   var fixture = [
     'if (tired && night){',
     '  sleep();',
@@ -63,7 +64,7 @@ describe('code', function() {
 
   it('highlight disable', function() {
     var result = code('highlight:false', fixture);
-    result.should.eql('<pre><code>' + fixture + '</code></pre>');
+    result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
   });
 
   it('title', function() {
@@ -95,7 +96,7 @@ describe('code', function() {
     hexo.config.highlight.enable = false;
 
     var result = code('', fixture);
-    result.should.eql('<pre><code>' + fixture + '</code></pre>');
+    result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
 
     hexo.config.highlight.enable = true;
   });
