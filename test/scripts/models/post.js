@@ -88,12 +88,13 @@ describe('Post', function() {
   });
 
   it('permalink_root_prefix - virtual', function() {
+    hexo.config.url = 'http://yoursite.com/root';
     hexo.config.root = '/root/';
     return Post.insert({
       source: 'foo.md',
       slug: 'bar'
     }).then(function(data) {
-      data.permalink.should.eql(hexo.config.url + '/root/' + data.path);
+      data.permalink.should.eql('http://yoursite.com/root/' + data.path);
       return Post.removeById(data._id);
     });
   });
