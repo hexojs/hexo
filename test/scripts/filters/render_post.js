@@ -51,4 +51,23 @@ describe('Render post', function() {
       return page.remove();
     });
   });
+
+  it('use data variables', function() {
+    var id;
+
+    return Page.insert({
+      source: 'foo.md',
+      path: 'foo.html',
+      _content: '<p>Hello {{site.data.foo.name}}</p>'
+    }).then(function(page) {
+      id = page._id;
+      return renderPost({foo: {name: 'Hexo'}});
+    }).then(function() {
+      var page = Page.findById(id);
+      page.content.trim().should.eql('<p>Hello Hexo</p>');
+
+      return page.remove();
+    });
+  });
+
 });
