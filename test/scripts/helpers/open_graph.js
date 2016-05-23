@@ -1,5 +1,6 @@
 'use strict';
 
+var moment = require('moment');
 var should = require('chai').should(); // eslint-disable-line
 
 describe('open_graph', function() {
@@ -371,4 +372,35 @@ describe('open_graph', function() {
 
     result.should.contain(meta({property: 'fb:app_id', content: '123456789'}));
   });
+
+  it('updated - options', function() {
+    var result = openGraph.call({
+      page: { updated: moment('2016-05-23T21:20:21.372Z') },
+      config: {},
+      is_post: isPost
+    }, { });
+
+    result.should.contain(meta({property: 'og:updated_time', content: '2016-05-23T21:20:21.372Z'}));
+  });
+
+  it('updated - options - allow overriding og:updated_time', function() {
+    var result = openGraph.call({
+      page: { updated: moment('2016-05-23T21:20:21.372Z') },
+      config: {},
+      is_post: isPost
+    }, { updated: moment('2015-04-22T20:19:20.371Z') });
+
+    result.should.contain(meta({property: 'og:updated_time', content: '2015-04-22T20:19:20.371Z'}));
+  });
+
+  it('updated - options - allow disabling og:updated_time', function() {
+    var result = openGraph.call({
+      page: { updated: moment('2016-05-23T21:20:21.372Z') },
+      config: {},
+      is_post: isPost
+    }, { updated: false });
+
+    result.should.not.contain(meta({property: 'og:updated_time', content: '2016-05-23T21:20:21.372Z'}));
+  });
+
 });
