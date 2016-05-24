@@ -27,16 +27,13 @@ describe('open_graph', function() {
     });
 
     result.should.eql([
-      meta({name: 'description'}),
       meta({name: 'keywords', content: 'optimize,web'}),
       meta({property: 'og:type', content: 'website'}),
       meta({property: 'og:title', content: hexo.config.title}),
       meta({property: 'og:url'}),
       meta({property: 'og:site_name', content: hexo.config.title}),
-      meta({property: 'og:description'}),
       meta({name: 'twitter:card', content: 'summary'}),
-      meta({name: 'twitter:title', content: hexo.config.title}),
-      meta({name: 'twitter:description'})
+      meta({name: 'twitter:title', content: hexo.config.title})
     ].join('\n'));
   });
 
@@ -401,6 +398,18 @@ describe('open_graph', function() {
     }, { updated: false });
 
     result.should.not.contain(meta({property: 'og:updated_time', content: '2016-05-23T21:20:21.372Z'}));
+  });
+
+  it('description - do not add /(?:og:|twitter:)?description/ meta tags if there is no description', function() {
+    var result = openGraph.call({
+      page: { },
+      config: {},
+      is_post: isPost
+    }, { });
+
+    result.should.not.contain(meta({property: 'og:description'}));
+    result.should.not.contain(meta({property: 'twitter:description'}));
+    result.should.not.contain(meta({property: 'description'}));
   });
 
 });
