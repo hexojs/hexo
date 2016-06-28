@@ -24,7 +24,6 @@ $ npm install hexo-cli -g
 ``` bash
 $ hexo init blog
 $ cd blog
-$ npm install
 ```
 
 **Start the server**
