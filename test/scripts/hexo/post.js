@@ -27,6 +27,7 @@ describe('Post', function() {
       return hexo.loadPlugin(require.resolve('hexo-renderer-marked'));
     }).then(function() {
       return hexo.scaffold.set('post', [
+        '---',
         'title: {{ title }}',
         'date: {{ date }}',
         'tags:',
@@ -34,6 +35,7 @@ describe('Post', function() {
       ].join('\n'));
     }).then(function() {
       return hexo.scaffold.set('draft', [
+        '---',
         'title: {{ title }}',
         'tags:',
         '---'
@@ -52,6 +54,7 @@ describe('Post', function() {
     var listener = sinon.spy();
 
     var content = [
+        '---',
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
@@ -79,6 +82,7 @@ describe('Post', function() {
     var date = moment(now);
 
     var content = [
+        '---',
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
@@ -106,6 +110,7 @@ describe('Post', function() {
     var date = moment(now);
 
     var content = [
+        '---',
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
@@ -131,6 +136,7 @@ describe('Post', function() {
     var date = moment(now);
 
     var content = [
+        '---',
       'layout: photo',
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
@@ -157,6 +163,7 @@ describe('Post', function() {
     var date = moment(now);
 
     var content = [
+        '---',
       'title: Hello World',
       'foo: bar',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
@@ -301,6 +308,7 @@ describe('Post', function() {
     }).then(function(data) {
       data.content.should.eql([
         // js-yaml use single-quotation for dumping since 3.3
+          '---',
         'title: \'Foo: Bar\'',
         'date: ' + moment(now).format('YYYY-MM-DD HH:mm:ss'),
         'tags:',
@@ -315,6 +323,7 @@ describe('Post', function() {
     var date = moment(now);
 
     var content = [
+      '---',
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
@@ -342,6 +351,7 @@ describe('Post', function() {
     var date = moment(now);
 
     var content = [
+        '---',
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
@@ -370,6 +380,7 @@ describe('Post', function() {
     var date = moment(now);
 
     var content = [
+        '---',
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
@@ -406,6 +417,7 @@ describe('Post', function() {
     var date = moment(now);
 
     var content = [
+        '---',
       'layout: photo',
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
@@ -524,6 +536,7 @@ describe('Post', function() {
     var date = moment(now);
 
     var content = [
+        '---',
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',

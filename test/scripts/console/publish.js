@@ -22,6 +22,7 @@ describe('publish', function() {
       return hexo.init();
     }).then(function() {
       return hexo.scaffold.set('post', [
+        '---',
         'title: {{ title }}',
         'date: {{ date }}',
         'tags:',
@@ -29,6 +30,7 @@ describe('publish', function() {
       ].join('\n'));
     }).then(function() {
       return hexo.scaffold.set('draft', [
+        '---',
         'title: {{ title }}',
         'tags:',
         '---'
@@ -54,6 +56,7 @@ describe('publish', function() {
     var date = moment(now);
 
     var content = [
+        '---',
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
@@ -80,6 +83,7 @@ describe('publish', function() {
     var date = moment(now);
 
     var content = [
+        '---',
       'layout: photo',
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),

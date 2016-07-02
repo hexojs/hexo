@@ -12,6 +12,7 @@ describe('Scaffold', function() {
   var scaffoldDir = hexo.scaffold_dir;
 
   var testContent = [
+    '---',
     'title: {{ title }}',
     '---',
     'test scaffold'
