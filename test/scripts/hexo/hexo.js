@@ -90,6 +90,15 @@ describe('Hexo', function() {
     });
   });
 
+  it('call() - callback without args', function(callback) {
+    hexo.call('test', function(err, data) {
+      should.not.exist(err);
+      data.should.eql({});
+
+      callback();
+    });
+  });
+
   it('call() - console not registered', function() {
     var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', 'Console `nothing` has not been registered yet!');

@@ -479,7 +479,7 @@ describe('Box', function() {
     var box = newBox('test');
     var processor = sinon.spy();
 
-    box.watch().then(function() {
+    return box.watch().then(function() {
       box.addProcessor(processor);
       box.unwatch();
 
