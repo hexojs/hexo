@@ -342,6 +342,16 @@ describe('open_graph', function() {
 
     result.should.contain(meta({name: 'twitter:site', content: 'Hello'}));
   });
+  
+  it('twitter_site - video', function() {
+    var result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    }, {twitter_player: 'http://provider.url'});
+
+    result.should.contain(meta({name: 'twitter:player', content: 'http://provider.url'}));
+  });
 
   it('google_plus - options', function() {
     var result = openGraph.call({
