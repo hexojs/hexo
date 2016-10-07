@@ -10,6 +10,7 @@ describe('Tags', function() {
   require('./iframe');
   require('./img');
   require('./include_code');
+  require('./inject');
   require('./jsfiddle');
   require('./link');
   require('./post_link');
