@@ -43,12 +43,12 @@ describe('inject', function() {
     });
   });
 
-  it('empty file', function () {
+  it('empty file', function() {
 
     return content('test_dir/empty.html').then(function(result) {
       should.not.exist(result);
     });
-  })
+  });
 
   it('nonexistent file', function() {
     return content('this/file/doesnt/exist.magic').then(function(result) {
