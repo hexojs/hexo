@@ -18,22 +18,25 @@ describe('Console list', function() {
       return log.apply(log, arguments);
     });
   });
+
   after(function() {
     console.log.restore();
   });
+
   it('no tags', function() {
-    listTags()
-    expect( console.log.calledWith(sinon.match('Name')) ).to.be.true;
-    expect( console.log.calledWith(sinon.match('Posts')) ).to.be.true;
-    expect( console.log.calledWith(sinon.match('Path')) ).to.be.true;
-    expect( console.log.calledWith(sinon.match('No tags.')) ).to.be.true;
+    listTags();
+    expect(console.log.calledWith(sinon.match('Name'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('Posts'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('Path'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('No tags.'))).to.be.true;
   });
+
   it('tags', function() {
     var posts = [
       {source: 'foo', slug: 'foo', title: 'Its', date: 1e8},
       {source: 'bar', slug: 'bar', title: 'Math', date: 1e8 + 1},
       {source: 'baz', slug: 'baz', title: 'Dude', date: 1e8 - 1}
-    ]
+    ];
     return hexo.init()
     .then(function() {
       return Post.insert(posts);
@@ -48,15 +51,15 @@ describe('Console list', function() {
     }).then(function() {
       hexo.locals.invalidate();
     })
-    .then(function(){
-      listTags()
-      expect( console.log.calledWith(sinon.match('Name')) ).to.be.true;
-      expect( console.log.calledWith(sinon.match('Posts')) ).to.be.true;
-      expect( console.log.calledWith(sinon.match('Path')) ).to.be.true;
-      expect( console.log.calledWith(sinon.match('baz')) ).to.be.true;
-      expect( console.log.calledWith(sinon.match('foo')) ).to.be.true;
-      expect( console.log.calledWith(sinon.match('tags/baz')) ).to.be.true;
-      expect( console.log.calledWith(sinon.match('tags/foo')) ).to.be.true;
+    .then(function() {
+      listTags();
+      expect(console.log.calledWith(sinon.match('Name'))).to.be.true;
+      expect(console.log.calledWith(sinon.match('Posts'))).to.be.true;
+      expect(console.log.calledWith(sinon.match('Path'))).to.be.true;
+      expect(console.log.calledWith(sinon.match('baz'))).to.be.true;
+      expect(console.log.calledWith(sinon.match('foo'))).to.be.true;
+      expect(console.log.calledWith(sinon.match('tags/baz'))).to.be.true;
+      expect(console.log.calledWith(sinon.match('tags/foo'))).to.be.true;
     });
   });
 });

@@ -17,21 +17,24 @@ describe('Console list', function() {
       return log.apply(log, arguments);
     });
   });
+
   after(function() {
     console.log.restore();
   });
+
   it('no categories', function() {
-    listCategories()
-    expect( console.log.calledWith(sinon.match('Name')) ).to.be.true;
-    expect( console.log.calledWith(sinon.match('Posts')) ).to.be.true;
-    expect( console.log.calledWith(sinon.match('No categories.')) ).to.be.true;
+    listCategories();
+    expect(console.log.calledWith(sinon.match('Name'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('Posts'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('No categories.'))).to.be.true;
   });
+
   it('categories', function() {
     var posts = [
       {source: 'foo', slug: 'foo', title: 'Its', date: 1e8},
       {source: 'bar', slug: 'bar', title: 'Math', date: 1e8 + 1},
       {source: 'baz', slug: 'baz', title: 'Dude', date: 1e8 - 1}
-    ]
+    ];
     return hexo.init()
     .then(function() {
       return Post.insert(posts);
@@ -46,12 +49,12 @@ describe('Console list', function() {
     }).then(function() {
       hexo.locals.invalidate();
     })
-    .then(function(){
-      listCategories()
-      expect( console.log.calledWith(sinon.match('Name')) ).to.be.true;
-      expect( console.log.calledWith(sinon.match('Posts')) ).to.be.true;
-      expect( console.log.calledWith(sinon.match('baz')) ).to.be.true;
-      expect( console.log.calledWith(sinon.match('foo')) ).to.be.true;
+    .then(function() {
+      listCategories();
+      expect(console.log.calledWith(sinon.match('Name'))).to.be.true;
+      expect(console.log.calledWith(sinon.match('Posts'))).to.be.true;
+      expect(console.log.calledWith(sinon.match('baz'))).to.be.true;
+      expect(console.log.calledWith(sinon.match('foo'))).to.be.true;
     });
   });
 });
