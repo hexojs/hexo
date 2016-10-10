@@ -1,13 +1,8 @@
 'use strict';
 
-var should = require('chai').should(); // eslint-disable-line
-var fs = require('hexo-fs');
-var moment = require('moment');
-var pathFn = require('path');
 var Promise = require('bluebird');
 var sinon = require('sinon');
 var expect = require('chai').expect;
-
 
 describe('Console list', function() {
   var Hexo = require('../../../lib/hexo');
