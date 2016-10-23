@@ -4,8 +4,6 @@ var pathFn = require('path');
 var should = require('chai').should(); // eslint-disable-line
 var fs = require('hexo-fs');
 var yml = require('js-yaml');
-var sinon = require('sinon')
-var rewire = require('rewire')
 
 describe('config flag handling', function() {
   var Hexo = require('../../../lib/hexo');
@@ -14,52 +12,58 @@ describe('config flag handling', function() {
   var mcp = require('../../../lib/hexo/multi_config_path')(hexo);
   var base = hexo.base_dir;
 
-  function consoleReader() {
-    this.reader = []
+  function ConsoleReader() {
+    this.reader = [];
     this.i = function() {
       var type = 'info';
       var message = '';
       for (var i = 0; i < arguments.length;) {
         message += arguments[i];
-        if (++i < arguments.length)
+        if (++i < arguments.length) {
           message += ' ';
+        }
       }
+
       this.reader.push({
         type: type,
         msg: message
-      })
+      });
     }.bind(this);
 
-    this.w = function(){
+    this.w = function() {
       var type = 'warning';
       var message = '';
       for (var i = 0; i < arguments.length;) {
         message += arguments[i];
-        if (++i < arguments.length)
+        if (++i < arguments.length) {
           message += ' ';
+        }
       }
+
       this.reader.push({
         type: type,
         msg: message
-      })
+      });
     }.bind(this);
 
-    this.e = function(){
+    this.e = function() {
       var type = 'error';
       var message = '';
       for (var i = 0; i < arguments.length;) {
         message += arguments[i];
-        if (++i < arguments.length)
-        message += ' ';
+        if (++i < arguments.length) {
+          message += ' ';
+        }
       }
+
       this.reader.push({
         type: type,
         msg: message
-      })
+      });
     }.bind(this);
   }
 
-  hexo.log = new consoleReader();
+  hexo.log = new ConsoleReader();
 
   var testYaml1 = [
     'author: foo',
@@ -103,7 +107,7 @@ describe('config flag handling', function() {
   });
 
   afterEach(function() {
-    hexo.log.reader = []
+    hexo.log.reader = [];
     return;
   });
 
@@ -127,7 +131,6 @@ describe('config flag handling', function() {
 
   it('1 not found file warning', function() {
     var notFile = 'not_a_file.json';
-
 
     mcp(base, notFile).should.eql(pathFn.join(base, '_config.yml'));
     hexo.log.reader[0].type.should.eql('warning');
