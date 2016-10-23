@@ -4,31 +4,62 @@ var pathFn = require('path');
 var should = require('chai').should(); // eslint-disable-line
 var fs = require('hexo-fs');
 var yml = require('js-yaml');
+var sinon = require('sinon')
+var rewire = require('rewire')
 
 describe('config flag handling', function() {
   var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'test_dir'), {
-      silent: true,
-      debug: true
-    });
+  var hexo = new Hexo(pathFn.join(__dirname, 'test_dir'));
 
   var mcp = require('../../../lib/hexo/multi_config_path')(hexo);
   var base = hexo.base_dir;
 
-  var debugPath = pathFn.resolve('debug.log');
-
-  function readDebug() {
-    return fs.readFile(debugPath).then(function(out) {
-      var lines = out.split('\n');
-
-      var debug = [];
-      for (var i = 0; i < lines.length; i++) {
-        debug.push(yml.safeLoad(lines[i]), {'json': true});
+  function consoleReader() {
+    this.reader = []
+    this.i = function() {
+      var type = 'info';
+      var message = '';
+      for (var i = 0; i < arguments.length;) {
+        message += arguments[i];
+        if (++i < arguments.length)
+          message += ' ';
       }
+      this.reader.push({
+        type: type,
+        msg: message
+      })
+    }.bind(this);
 
-      return debug;
-    });
+    this.w = function(){
+      var type = 'warning';
+      var message = '';
+      for (var i = 0; i < arguments.length;) {
+        message += arguments[i];
+        if (++i < arguments.length)
+          message += ' ';
+      }
+      this.reader.push({
+        type: type,
+        msg: message
+      })
+    }.bind(this);
+
+    this.e = function(){
+      var type = 'error';
+      var message = '';
+      for (var i = 0; i < arguments.length;) {
+        message += arguments[i];
+        if (++i < arguments.length)
+        message += ' ';
+      }
+      this.reader.push({
+        type: type,
+        msg: message
+      })
+    }.bind(this);
   }
+
+  hexo.log = new consoleReader();
 
   var testYaml1 = [
     'author: foo',
@@ -64,8 +95,6 @@ describe('config flag handling', function() {
   ].join('\n');
 
   before(function() {
-    if (fs.existsSync(debugPath)) fs.unlinkSync(debugPath);
-
     fs.writeFileSync(base + 'test1.yml', testYaml1);
     fs.writeFileSync(base + 'test2.yml', testYaml2);
     fs.writeFileSync(base + 'test1.json', testJson1);
@@ -74,7 +103,7 @@ describe('config flag handling', function() {
   });
 
   afterEach(function() {
-    if (fs.existsSync(debugPath)) fs.unlinkSync(debugPath);
+    hexo.log.reader = []
     return;
   });
 
@@ -84,10 +113,8 @@ describe('config flag handling', function() {
 
   it('no file', function() {
     mcp(base).should.equal(base + '_config.yml');
-    readDebug().then(function(debug) {
-      debug[0].level.should.eql(40);
-      debug[0].msg.should.eql('No config file entered.');
-    });
+    hexo.log.reader[0].type.should.eql('warning');
+    hexo.log.reader[0].msg.should.eql('No config file entered.');
   });
 
   it('1 file', function() {
@@ -101,12 +128,11 @@ describe('config flag handling', function() {
   it('1 not found file warning', function() {
     var notFile = 'not_a_file.json';
 
+
     mcp(base, notFile).should.eql(pathFn.join(base, '_config.yml'));
-    readDebug().then(function(debug) {
-      debug[0].level.should.eql(40);
-      debug[0].msg.should.eql('Config file ' + notFile +
-                              ' not found, using default.');
-    });
+    hexo.log.reader[0].type.should.eql('warning');
+    hexo.log.reader[0].msg.should.eql('Config file ' + notFile +
+                          ' not found, using default.');
   });
 
   it('combined config output', function() {
@@ -117,10 +143,24 @@ describe('config flag handling', function() {
     mcp(base, 'test1.yml,test1.json').should.eql(combinedPath);
     mcp(base, 'test1.json,test2.json').should.eql(combinedPath);
     mcp(base, 'notafile.yml,test1.json').should.eql(combinedPath);
+
+    hexo.log.reader[0].type.should.eql('info');
+    hexo.log.reader[0].msg.should.eql('Config based on 2 files');
+    hexo.log.reader[3].type.should.eql('warning');
+    hexo.log.reader[3].msg.should.eql('Config file notafile.yml not found.');
+    hexo.log.reader[4].type.should.eql('info');
+    hexo.log.reader[4].msg.should.eql('Config based on 1 files');
+    // because who cares about grammar anyway?
+
+    mcp(base, 'notafile.yml,alsonotafile.json').should.not.eql(combinedPath);
+    hexo.log.reader[7].type.should.eql('error');
+    hexo.log.reader[7].msg.should.eql('No config files found.' +
+                                     ' Using _config.yml.');
   });
 
   it('2 YAML overwrite', function() {
-    var config = fs.readFileSync(mcp(base, 'test1.yml,test2.yml'));
+    var configFile = mcp(base, 'test1.yml,test2.yml');
+    var config = fs.readFileSync(configFile);
     config = yml.safeLoad(config);
 
     config.author.should.eql('bar');
@@ -165,9 +205,5 @@ describe('config flag handling', function() {
     config.author.should.eql('foo');
     config.favorites.food.should.eql('sushi');
     config.type.should.eql('dinosaur');
-  });
-
-  it('multifile warnings', function() {
-
   });
 });
