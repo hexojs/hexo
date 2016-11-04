@@ -6,6 +6,7 @@ describe('Core', function() {
   require('./load_database');
   require('./load_plugins');
   require('./locals');
+  require('./multi_config_path');
   require('./post');
   require('./render');
   require('./router');
