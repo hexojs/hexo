@@ -11,6 +11,7 @@ node_js:
   - "0.12"
   - "4"
   - "6"
+  - "7"
 
 script:
   - npm run eslint
