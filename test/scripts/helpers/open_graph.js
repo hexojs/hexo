@@ -28,7 +28,7 @@ describe('open_graph', function() {
         return post.setTags(['optimize', 'web'])
           .thenReturn(Post.findById(post._id));
       }).then(function(post) {
-        var result = openGraph.call({
+        openGraph.call({
           page: post,
           config: hexo.config,
           is_post: isPost
