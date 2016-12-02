@@ -9,32 +9,42 @@ describe('open_graph', function() {
   var openGraph = require('../../../lib/plugins/helper/open_graph');
   var isPost = require('../../../lib/plugins/helper/is').post;
   var tag = require('hexo-util').htmlTag;
+  var Post = hexo.model('Post');
 
   function meta(options) {
     return tag('meta', options);
   }
 
-  it('default', function() {
-    var result = openGraph.call({
-      page: {
-        tags: [
-          { name: 'optimize' },
-          { name: 'web' }
-        ]
-      },
-      config: hexo.config,
-      is_post: isPost
-    });
+  before(function() {
+    hexo.config.permalink = ':title';
+    return hexo.init();
+  });
 
-    result.should.eql([
-      meta({name: 'keywords', content: 'optimize,web'}),
-      meta({property: 'og:type', content: 'website'}),
-      meta({property: 'og:title', content: hexo.config.title}),
-      meta({property: 'og:url'}),
-      meta({property: 'og:site_name', content: hexo.config.title}),
-      meta({name: 'twitter:card', content: 'summary'}),
-      meta({name: 'twitter:title', content: hexo.config.title})
-    ].join('\n'));
+  it('default', function() {
+    Post.insert({
+        source: 'foo.md',
+        slug: 'bar'
+      }).then(function(post) {
+        return post.setTags(['optimize', 'web'])
+          .thenReturn(Post.findById(post._id));
+      }).then(function(post) {
+        openGraph.call({
+          page: post,
+          config: hexo.config,
+          is_post: isPost
+        }).should.eql([
+          meta({name: 'keywords', content: 'optimize,web'}),
+          meta({property: 'og:type', content: 'website'}),
+          meta({property: 'og:title', content: hexo.config.title}),
+          meta({property: 'og:url'}),
+          meta({property: 'og:site_name', content: hexo.config.title}),
+          meta({property: 'og:updated_time', content: post.updated.toISOString()}),
+          meta({name: 'twitter:card', content: 'summary'}),
+          meta({name: 'twitter:title', content: hexo.config.title})
+        ].join('\n'));
+
+        return Post.removeById(post._id);
+      });
   });
 
   it('title - page', function() {
