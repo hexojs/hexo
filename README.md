@@ -31,6 +31,7 @@ $ cd blog
 ``` bash
 $ hexo server
 ```
+If running locally, you may have to visit `http://localhost:4000/` to view.
 
 **Create a new post**
 
