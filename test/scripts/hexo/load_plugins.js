@@ -71,6 +71,21 @@ describe('Load plugins', function() {
     });
   });
 
+  it('load scoped plugins', function() {
+    var name = '@some-scope/hexo-plugin-test';
+    var path = pathFn.join(hexo.plugin_dir, name, 'index.js');
+
+    return Promise.all([
+      createPackageFile(name),
+      fs.writeFile(path, script)
+    ]).then(function() {
+      return loadPlugins(hexo);
+    }).then(function() {
+      validate(path);
+      return fs.unlink(path);
+    });
+  });
+
   it('specify plugin list in config', function() {
     var names = ['hexo-plugin-test', 'another-plugin'];
     var paths = names.map(function(name) {
