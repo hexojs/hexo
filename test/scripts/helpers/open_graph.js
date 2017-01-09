@@ -226,7 +226,7 @@ describe('open_graph', function() {
 
     var result = openGraph.call({
       page: {},
-      config,
+      config: config,
       is_post: isPost,
       url: postUrl
     }, {images: 'test.jpg'});
