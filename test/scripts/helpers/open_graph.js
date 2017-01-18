@@ -217,6 +217,23 @@ describe('open_graph', function() {
     result.should.contain(meta({property: 'og:image', content: hexo.config.url + '/test.jpg'}));
   });
 
+  it('images - resolve relative path when site is hosted in subdirectory', function() {
+    var urlFn = require('url');
+    var config = hexo.config;
+    config.url = urlFn.resolve(config.url, 'blog');
+    config.root = 'blog';
+    var postUrl = urlFn.resolve(config.url, '/foo/bar/index.html');
+
+    var result = openGraph.call({
+      page: {},
+      config: config,
+      is_post: isPost,
+      url: postUrl
+    }, {images: 'test.jpg'});
+
+    result.should.contain(meta({property: 'og:image', content: urlFn.resolve(config.url, '/foo/bar/test.jpg')}));
+  });
+
   it('site_name - options', function() {
     var result = openGraph.call({
       page: {},
