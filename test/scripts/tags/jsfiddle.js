@@ -1,38 +1,38 @@
 'use strict';
 
 var cheerio = require('cheerio');
-var should = require('chai').should();
+var should = require('chai').should(); // eslint-disable-line
 
-describe('jsfiddle', function(){
+describe('jsfiddle', function() {
   var jsfiddle = require('../../../lib/plugins/tag/jsfiddle');
 
-  it('id', function(){
+  it('id', function() {
     var $ = cheerio.load(jsfiddle(['foo']));
 
-    $('iframe').attr('src').should.eql('http://jsfiddle.net/foo/embedded/js,resources,html,css,result/light');
+    $('iframe').attr('src').should.eql('//jsfiddle.net/foo/embedded/js,resources,html,css,result/light');
   });
 
-  it('tabs', function(){
+  it('tabs', function() {
     var $ = cheerio.load(jsfiddle(['foo', 'default']));
 
-    $('iframe').attr('src').should.eql('http://jsfiddle.net/foo/embedded/js,resources,html,css,result/light');
+    $('iframe').attr('src').should.eql('//jsfiddle.net/foo/embedded/js,resources,html,css,result/light');
 
     $ = cheerio.load(jsfiddle(['foo', 'html,css']));
 
-    $('iframe').attr('src').should.eql('http://jsfiddle.net/foo/embedded/html,css/light');
+    $('iframe').attr('src').should.eql('//jsfiddle.net/foo/embedded/html,css/light');
   });
 
-  it('skin', function(){
+  it('skin', function() {
     var $ = cheerio.load(jsfiddle(['foo', 'default', 'default']));
 
-    $('iframe').attr('src').should.eql('http://jsfiddle.net/foo/embedded/js,resources,html,css,result/light');
+    $('iframe').attr('src').should.eql('//jsfiddle.net/foo/embedded/js,resources,html,css,result/light');
 
     $ = cheerio.load(jsfiddle(['foo', 'default', 'dark']));
 
-    $('iframe').attr('src').should.eql('http://jsfiddle.net/foo/embedded/js,resources,html,css,result/dark');
+    $('iframe').attr('src').should.eql('//jsfiddle.net/foo/embedded/js,resources,html,css,result/dark');
   });
 
-  it('width', function(){
+  it('width', function() {
     var $ = cheerio.load(jsfiddle(['foo', 'default', 'default', 'default']));
 
     $('iframe').attr('width').should.eql('100%');
@@ -42,7 +42,7 @@ describe('jsfiddle', function(){
     $('iframe').attr('width').should.eql('500');
   });
 
-  it('height', function(){
+  it('height', function() {
     var $ = cheerio.load(jsfiddle(['foo', 'default', 'default', 'default', 'default']));
 
     $('iframe').attr('height').should.eql('300');

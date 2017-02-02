@@ -1,11 +1,11 @@
 'use strict';
 
-var should = require('chai').should();
+var should = require('chai').should(); // eslint-disable-line
 var moment = require('moment');
 
 var PERMALINK = ':year/:month/:day/:title/';
 
-describe('post_permalink', function(){
+describe('post_permalink', function() {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo();
   var postPermalink = require('../../../lib/plugins/filter/post_permalink').bind(hexo);
@@ -14,53 +14,53 @@ describe('post_permalink', function(){
 
   hexo.config.permalink = PERMALINK;
 
-  before(function(){
+  before(function() {
     var id;
 
-    return hexo.init().then(function(){
+    return hexo.init().then(function() {
       return Post.insert({
         source: 'foo.md',
         slug: 'foo',
         date: moment('2014-01-02')
       });
-    }).then(function(post){
+    }).then(function(post) {
       id = post._id;
       return post.setCategories(['foo', 'bar']);
-    }).then(function(){
+    }).then(function() {
       post = Post.findById(id);
     });
   });
 
-  it('default', function(){
+  it('default', function() {
     postPermalink(post).should.eql('2014/01/02/foo/');
   });
 
-  it('categories', function(){
+  it('categories', function() {
     hexo.config.permalink = ':category/:title/';
     postPermalink(post).should.eql('foo/bar/foo/');
     hexo.config.permalink = PERMALINK;
   });
 
-  it('uncategorized', function(){
+  it('uncategorized', function() {
     hexo.config.permalink = ':category/:title/';
 
     return Post.insert({
       source: 'bar.md',
       slug: 'bar'
-    }).then(function(post){
+    }).then(function(post) {
       postPermalink(post).should.eql(hexo.config.default_category + '/bar/');
       hexo.config.permalink = PERMALINK;
       return Post.removeById(post._id);
     });
   });
 
-  it('extra data', function(){
+  it('extra data', function() {
     hexo.config.permalink = ':layout/:title/';
     postPermalink(post).should.eql(post.layout + '/foo/');
     hexo.config.permalink = PERMALINK;
   });
 
-  it('id', function(){
+  it('id', function() {
     hexo.config.permalink = ':id';
 
     postPermalink(post).should.eql(post._id);
@@ -71,20 +71,20 @@ describe('post_permalink', function(){
     hexo.config.permalink = PERMALINK;
   });
 
-  it('name', function(){
+  it('name', function() {
     hexo.config.permalink = ':title/:name';
 
     return Post.insert({
       source: 'sub/bar.md',
       slug: 'sub/bar'
-    }).then(function(post){
+    }).then(function(post) {
       postPermalink(post).should.eql('sub/bar/bar');
       hexo.config.permalink = PERMALINK;
       return Post.removeById(post._id);
     });
   });
 
-  it('post_title', function(){
+  it('post_title', function() {
     hexo.config.permalink = ':year/:month/:day/:post_title/';
 
     return Post.insert({
@@ -92,7 +92,7 @@ describe('post_permalink', function(){
       slug: '2015-05-06-my-new-post',
       title: 'My New Post',
       date: moment('2015-05-06')
-    }).then(function(post){
+    }).then(function(post) {
       postPermalink(post).should.eql('2015/05/06/my-new-post/');
       hexo.config.permalink = PERMALINK;
       return Post.removeById(post._id);

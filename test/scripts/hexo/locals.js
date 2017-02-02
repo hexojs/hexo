@@ -1,28 +1,28 @@
 'use strict';
 
-var should = require('chai').should();
+var should = require('chai').should(); // eslint-disable-line
 var sinon = require('sinon');
 
-describe('Locals', function(){
+describe('Locals', function() {
   var Locals = require('../../../lib/hexo/locals');
   var locals = new Locals();
 
-  it('get() - name must be a string', function(){
+  it('get() - name must be a string', function() {
     var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', 'name must be a string!');
     });
 
     try {
       locals.get();
-    } catch (err){
+    } catch (err) {
       errorCallback(err);
     }
 
     errorCallback.calledOnce.should.be.true;
   });
 
-  it('set() - function', function(){
-    locals.set('foo', function(){
+  it('set() - function', function() {
+    locals.set('foo', function() {
       return 'foo';
     });
 
@@ -33,40 +33,40 @@ describe('Locals', function(){
     locals.cache.foo.should.eql('foo');
   });
 
-  it('set() - not function', function(){
+  it('set() - not function', function() {
     locals.set('foo', 'foo');
     locals.get('foo').should.eql('foo');
   });
 
-  it('set() - name must be a string', function(){
+  it('set() - name must be a string', function() {
     var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', 'name must be a string!');
     });
 
     try {
       locals.set();
-    } catch (err){
+    } catch (err) {
       errorCallback(err);
     }
 
     errorCallback.calledOnce.should.be.true;
   });
 
-  it('set() - value is required', function(){
+  it('set() - value is required', function() {
     var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', 'value is required!');
     });
 
     try {
       locals.set('test');
-    } catch (err){
+    } catch (err) {
       errorCallback(err);
     }
 
     errorCallback.calledOnce.should.be.true;
   });
 
-  it('remove()', function(){
+  it('remove()', function() {
     locals.set('foo', 'foo');
     locals.get('foo');
     locals.remove('foo');
@@ -75,21 +75,21 @@ describe('Locals', function(){
     should.not.exist(locals.cache.foo);
   });
 
-  it('remove() - name must be a string', function(){
+  it('remove() - name must be a string', function() {
     var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', 'name must be a string!');
     });
 
     try {
       locals.remove();
-    } catch (err){
+    } catch (err) {
       errorCallback(err);
     }
 
     errorCallback.calledOnce.should.be.true;
   });
 
-  it('toObject()', function(){
+  it('toObject()', function() {
     var locals = new Locals();
 
     locals.set('foo', 'foo');
@@ -98,7 +98,7 @@ describe('Locals', function(){
     locals.toObject().should.eql({foo: 'foo'});
   });
 
-  it('invalidate()', function(){
+  it('invalidate()', function() {
     locals.set('foo', 'foo');
     locals.get('foo');
     locals.invalidate();

@@ -1,6 +1,6 @@
 'use strict';
 
-var should = require('chai').should();
+var should = require('chai').should(); // eslint-disable-line
 var Promise = require('bluebird');
 var Readable = require('stream').Readable;
 var pathFn = require('path');
@@ -9,33 +9,33 @@ var fs = require('hexo-fs');
 var sinon = require('sinon');
 var testUtil = require('../../util');
 
-describe('Router', function(){
+describe('Router', function() {
   var Router = require('../../../lib/hexo/router');
   var router = new Router();
 
-  function checkStream(stream, expected){
-    return testUtil.stream.read(stream).then(function(data){
+  function checkStream(stream, expected) {
+    return testUtil.stream.read(stream).then(function(data) {
       data.should.eql(expected);
     });
   }
 
-  function checksum(stream){
-    return new Promise(function(resolve, reject){
+  function checksum(stream) {
+    return new Promise(function(resolve, reject) {
       var hash = crypto.createHash('sha1');
 
-      stream.on('readable', function(){
+      stream.on('readable', function() {
         var chunk;
 
-        while ((chunk = stream.read()) !== null){
+        while ((chunk = stream.read()) !== null) {
           hash.update(chunk);
         }
-      }).on('end', function(){
+      }).on('end', function() {
         resolve(hash.digest('hex'));
       }).on('error', reject);
     });
   }
 
-  it('format()', function(){
+  it('format()', function() {
     router.format('foo').should.eql('foo');
 
     // Remove prefixed slashes
@@ -57,22 +57,22 @@ describe('Router', function(){
     router.format('foo?a=1&b=2').should.eql('foo');
   });
 
-  it('format() - path must be a string', function(){
+  it('format() - path must be a string', function() {
     var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', 'path must be a string!');
-    })
+    });
 
     try {
-      router.format(function(){});
-    } catch (err){
+      router.format(function() {});
+    } catch (err) {
       errorCallback(err);
     }
 
     errorCallback.calledOnce.should.be.true;
-  })
+  });
 
-  it('set() - string', function(){
-    var listener = sinon.spy(function(path){
+  it('set() - string', function() {
+    var listener = sinon.spy(function(path) {
       path.should.eql('test');
     });
 
@@ -86,36 +86,36 @@ describe('Router', function(){
     return checkStream(data, 'foo');
   });
 
-  it('set() - function', function(){
-    router.set('test', function(){
+  it('set() - function', function() {
+    router.set('test', function() {
       return 'foo';
     });
 
     return checkStream(router.get('test'), 'foo');
   });
 
-  it('set() - function (callback style)', function(){
-    router.set('test', function(callback){
+  it('set() - function (callback style)', function() {
+    router.set('test', function(callback) {
       callback(null, 'foo');
     });
 
     return checkStream(router.get('test'), 'foo');
   });
 
-  it('set() - readable stream', function(){
+  it('set() - readable stream', function() {
     // Prepare a readable stream
     var stream = new Readable();
     stream.push('foo');
     stream.push(null);
 
-    router.set('test', function(){
+    router.set('test', function() {
       return stream;
     });
 
     return checkStream(router.get('test'), 'foo');
   });
 
-  it('set() - modified', function(){
+  it('set() - modified', function() {
     router.set('test', {
       data: '',
       modified: false
@@ -124,40 +124,40 @@ describe('Router', function(){
     router.isModified('test').should.be.false;
   });
 
-  it('set() - path must be a string', function(){
+  it('set() - path must be a string', function() {
     var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', 'path must be a string!');
     });
 
     try {
       router.set();
-    } catch (err){
+    } catch (err) {
       errorCallback(err);
     }
 
     errorCallback.calledOnce.should.be.true;
   });
 
-  it('set() - data is required', function(){
+  it('set() - data is required', function() {
     var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', 'data is required!');
     });
 
     try {
       router.set('test');
-    } catch (err){
+    } catch (err) {
       errorCallback(err);
     }
 
     errorCallback.calledOnce.should.be.true;
   });
 
-  it('get() - error handling', function(){
-    router.set('test', function(){
+  it('get() - error handling', function() {
+    router.set('test', function() {
       throw new Error('error test');
     });
 
-    var errorCallback = sinon.spy(function(err){
+    var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', 'error test');
     });
 
@@ -166,65 +166,65 @@ describe('Router', function(){
     });
   });
 
-  it('get() - no data', function(){
-    router.set('test', function(){
+  it('get() - no data', function() {
+    router.set('test', function() {
       return;
     });
 
     return checkStream(router.get('test'), '');
   });
 
-  it('get() - empty readable stream', function(){
+  it('get() - empty readable stream', function() {
     var stream = new Readable();
     stream.push(null);
 
-    router.set('test', function(){
+    router.set('test', function() {
       return stream;
     });
 
     return checkStream(router.get('test'), '');
   });
 
-  it('get() - large readable stream (more than 65535 bits)', function(){
+  it('get() - large readable stream (more than 65535 bits)', function() {
     var path = pathFn.join(__dirname, '../../fixtures/banner.jpg');
 
-    router.set('test', function(){
+    router.set('test', function() {
       return fs.createReadStream(path);
     });
 
     return Promise.all([
       checksum(router.get('test')),
       checksum(fs.createReadStream(path))
-    ]).then(function(data){
+    ]).then(function(data) {
       data[0].should.eql(data[1]);
     });
   });
 
-  it('get() - path must be a string', function(){
+  it('get() - path must be a string', function() {
     var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', 'path must be a string!');
     });
 
     try {
       router.get();
-    } catch (err){
+    } catch (err) {
       errorCallback(err);
     }
 
     errorCallback.calledOnce.should.be.true;
   });
 
-  it('get() - export stringified JSON object', function(){
+  it('get() - export stringified JSON object', function() {
     var obj = {foo: 1, bar: 2};
 
-    router.set('test', function(){
+    router.set('test', function() {
       return obj;
     });
 
     return checkStream(router.get('test'), JSON.stringify(obj));
   });
 
-  it('list()', function(){
+  it('list()', function() {
     var router = new Router();
 
     router.set('foo', 'foo');
@@ -235,27 +235,27 @@ describe('Router', function(){
     router.list().should.eql(['foo', 'baz']);
   });
 
-  it('isModified()', function(){
+  it('isModified()', function() {
     router.set('test', 'foo');
     router.isModified('test').should.be.true;
   });
 
-  it('isModified() - path must be a string', function(){
+  it('isModified() - path must be a string', function() {
     var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', 'path must be a string!');
     });
 
     try {
       router.isModified();
-    } catch (err){
+    } catch (err) {
       errorCallback(err);
     }
 
     errorCallback.calledOnce.should.be.true;
   });
 
-  it('remove()', function(){
-    var listener = sinon.spy(function(path){
+  it('remove()', function() {
+    var listener = sinon.spy(function(path) {
       path.should.eql('test');
     });
 
@@ -267,14 +267,14 @@ describe('Router', function(){
     listener.calledOnce.should.be.true;
   });
 
-  it('remove() - path must be a string', function(){
+  it('remove() - path must be a string', function() {
     var errorCallback = sinon.spy(function(err) {
       err.should.have.property('message', 'path must be a string!');
     });
 
     try {
       router.remove();
-    } catch (err){
+    } catch (err) {
       errorCallback(err);
     }
 

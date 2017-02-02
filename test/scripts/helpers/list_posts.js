@@ -1,8 +1,8 @@
 'use strict';
 
-var should = require('chai').should();
+var should = require('chai').should(); // eslint-disable-line
 
-describe('list_posts', function(){
+describe('list_posts', function() {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(__dirname);
   var Post = hexo.model('Post');
@@ -17,20 +17,20 @@ describe('list_posts', function(){
 
   hexo.config.permalink = ':title/';
 
-  before(function(){
-    return Post.insert([
-      {source: 'foo', slug: 'foo', title: 'Its', date: 1e8},
-      {source: 'bar', slug: 'bar', title: 'Chemistry', date: 1e8 + 1},
-      {source: 'baz', slug: 'baz', title: 'Bitch', date: 1e8 - 1}
-    ]).then(function(){
-      return hexo.init();
-    }).then(function(){
+  before(function() {
+    return hexo.init().then(function() {
+      return Post.insert([
+        {source: 'foo', slug: 'foo', title: 'Its', date: 1e8},
+        {source: 'bar', slug: 'bar', title: 'Chemistry', date: 1e8 + 1},
+        {source: 'baz', slug: 'baz', title: 'Bitch', date: 1e8 - 1}
+      ]);
+    }).then(function() {
       hexo.locals.invalidate();
       ctx.site = hexo.locals.toObject();
     });
   });
 
-  it('default', function(){
+  it('default', function() {
     var result = listPosts();
 
     result.should.eql([
@@ -42,7 +42,7 @@ describe('list_posts', function(){
     ].join(''));
   });
 
-  it('specified collection', function(){
+  it('specified collection', function() {
     var result = listPosts(Post.find({
       title: 'Its'
     }));
@@ -54,7 +54,7 @@ describe('list_posts', function(){
     ].join(''));
   });
 
-  it('style: false', function(){
+  it('style: false', function() {
     var result = listPosts({
       style: false
     });
@@ -66,7 +66,7 @@ describe('list_posts', function(){
     ].join(', '));
   });
 
-  it('orderby', function(){
+  it('orderby', function() {
     var result = listPosts({
       orderby: 'title'
     });
@@ -80,7 +80,7 @@ describe('list_posts', function(){
     ].join(''));
   });
 
-  it('order', function(){
+  it('order', function() {
     var result = listPosts({
       order: 1
     });
@@ -94,7 +94,7 @@ describe('list_posts', function(){
     ].join(''));
   });
 
-  it('class', function(){
+  it('class', function() {
     var result = listPosts({
       class: 'test'
     });
@@ -108,9 +108,9 @@ describe('list_posts', function(){
     ].join(''));
   });
 
-  it('transform', function(){
+  it('transform', function() {
     var result = listPosts({
-      transform: function(str){
+      transform: function(str) {
         return str.toUpperCase();
       }
     });
@@ -124,7 +124,7 @@ describe('list_posts', function(){
     ].join(''));
   });
 
-  it('separator', function(){
+  it('separator', function() {
     var result = listPosts({
       style: false,
       separator: ''
@@ -137,7 +137,7 @@ describe('list_posts', function(){
     ].join(''));
   });
 
-  it('amount', function(){
+  it('amount', function() {
     var result = listPosts({
       amount: 2
     });
