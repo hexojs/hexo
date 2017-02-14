@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Box', function(){
+describe('Box', function() {
   require('./box');
   require('./file');
 });

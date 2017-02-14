@@ -1,9 +1,9 @@
 'use strict';
 
-var should = require('chai').should();
+var should = require('chai').should(); // eslint-disable-line
 var Promise = require('bluebird');
 
-describe('tagcloud', function(){
+describe('tagcloud', function() {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(__dirname);
   var Post = hexo.model('Post');
@@ -17,29 +17,31 @@ describe('tagcloud', function(){
 
   var tagcloud = require('../../../lib/plugins/helper/tagcloud').bind(ctx);
 
-  before(function(){
-    return Post.insert([
-      {source: 'foo', slug: 'foo'},
-      {source: 'bar', slug: 'bar'},
-      {source: 'baz', slug: 'baz'},
-      {source: 'boo', slug: 'boo'}
-    ]).then(function(posts){
+  before(function() {
+    return hexo.init().then(function() {
+      return Post.insert([
+        {source: 'foo', slug: 'foo'},
+        {source: 'bar', slug: 'bar'},
+        {source: 'baz', slug: 'baz'},
+        {source: 'boo', slug: 'boo'}
+      ]);
+    }).then(function(posts) {
       // TODO: Warehouse needs to add a mutex lock when writing data to avoid data sync problem
       return Promise.each([
         ['bcd'],
         ['bcd', 'cde'],
         ['bcd', 'cde', 'abc'],
         ['bcd', 'cde', 'abc', 'def']
-      ], function(tags, i){
+      ], function(tags, i) {
         return posts[i].setTags(tags);
       });
-    }).then(function(){
+    }).then(function() {
       hexo.locals.invalidate();
       ctx.site = hexo.locals.toObject();
     });
   });
 
-  it('default', function(){
+  it('default', function() {
     var result = tagcloud();
 
     result.should.eql([
@@ -50,7 +52,7 @@ describe('tagcloud', function(){
     ].join(' '));
   });
 
-  it('specified collection', function(){
+  it('specified collection', function() {
     var result = tagcloud(Tag.find({
       name: /bc/
     }));
@@ -61,7 +63,7 @@ describe('tagcloud', function(){
     ].join(' '));
   });
 
-  it('font size', function(){
+  it('font size', function() {
     var result = tagcloud({
       min_font: 15,
       max_font: 30
@@ -88,7 +90,7 @@ describe('tagcloud', function(){
     ].join(' '));
   });
 
-  it('font unit', function(){
+  it('font unit', function() {
     var result = tagcloud({
       unit: 'em'
     });
@@ -101,7 +103,7 @@ describe('tagcloud', function(){
     ].join(' '));
   });
 
-  it('orderby', function(){
+  it('orderby', function() {
     var result = tagcloud({
       orderby: 'length'
     });
@@ -114,7 +116,7 @@ describe('tagcloud', function(){
     ].join(' '));
   });
 
-  it('order', function(){
+  it('order', function() {
     var result = tagcloud({
       order: -1
     });
@@ -127,7 +129,7 @@ describe('tagcloud', function(){
     ].join(' '));
   });
 
-  it('amount', function(){
+  it('amount', function() {
     var result = tagcloud({
       amount: 2
     });
@@ -138,9 +140,9 @@ describe('tagcloud', function(){
     ].join(' '));
   });
 
-  it('transform', function(){
+  it('transform', function() {
     var result = tagcloud({
-      transform: function(name){
+      transform: function(name) {
         return name.toUpperCase();
       }
     });
@@ -153,7 +155,7 @@ describe('tagcloud', function(){
     ].join(' '));
   });
 
-  it('color: name', function(){
+  it('color: name', function() {
     var result = tagcloud({
       color: true,
       start_color: 'red',
@@ -168,7 +170,7 @@ describe('tagcloud', function(){
     ].join(' '));
   });
 
-  it('color: hex', function(){
+  it('color: hex', function() {
     var result = tagcloud({
       color: true,
       start_color: '#f00', // red
@@ -183,7 +185,7 @@ describe('tagcloud', function(){
     ].join(' '));
   });
 
-  it('color: RGBA', function(){
+  it('color: RGBA', function() {
     var result = tagcloud({
       color: true,
       start_color: 'rgba(70, 130, 180, 0.3)', // steelblue
@@ -198,7 +200,7 @@ describe('tagcloud', function(){
     ].join(' '));
   });
 
-  it('color: HSLA', function(){
+  it('color: HSLA', function() {
     var result = tagcloud({
       color: true,
       start_color: 'hsla(207, 44%, 49%, 0.3)', // rgba(70, 130, 180, 0.3)
@@ -227,7 +229,7 @@ describe('tagcloud', function(){
     ].join(' '));
   });
 
-  it('separator', function(){
+  it('separator', function() {
     var result = tagcloud({
       separator: ', '
     });

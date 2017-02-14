@@ -1,15 +1,15 @@
 'use strict';
 
-var should = require('chai').should();
+var should = require('chai').should(); // eslint-disable-line
 
-describe('yaml', function(){
+describe('yaml', function() {
   var r = require('../../../lib/plugins/renderer/yaml');
 
-  it('normal', function(){
+  it('normal', function() {
     r({text: 'foo: 1'}).should.eql({foo: 1});
   });
 
-  it('escape', function(){
+  it('escape', function() {
     var body = [
       'foo: 1',
       'bar:',

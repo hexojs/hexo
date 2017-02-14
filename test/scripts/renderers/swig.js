@@ -1,12 +1,11 @@
 'use strict';
 
-var should = require('chai').should();
-var fs = require('hexo-fs');
+var should = require('chai').should(); // eslint-disable-line
 
-describe('swig', function(){
+describe('swig', function() {
   var r = require('../../../lib/plugins/renderer/swig');
 
-  it('normal', function(){
+  it('normal', function() {
     var body = [
       'Hello {{ name }}!'
     ].join('\n');
@@ -16,7 +15,7 @@ describe('swig', function(){
     }).should.eql('Hello world!');
   });
 
-  it('override "for" tag', function(){
+  it('override "for" tag', function() {
     var body = [
       '{% for x in arr %}',
       '{{ x }}',
@@ -25,12 +24,26 @@ describe('swig', function(){
 
     var data = {
       arr: {
-        toArray: function(){
+        toArray: function() {
           return [1, 2, 3];
         }
       }
     };
 
     r({text: body}, data).should.eql('123');
+  });
+
+  it('compile', function() {
+    var body = [
+      'Hello {{ name }}!'
+    ].join('\n');
+
+    var render = r.compile({
+      text: body
+    });
+
+    render({
+      name: 'world'
+    }).should.eql('Hello world!');
   });
 });

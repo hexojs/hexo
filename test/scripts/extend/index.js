@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Extend', function(){
+describe('Extend', function() {
   require('./console');
   require('./deployer');
   require('./filter');

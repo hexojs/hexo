@@ -1,8 +1,8 @@
 'use strict';
 
-var should = require('chai').should();
+var should = require('chai').should(); // eslint-disable-line
 
-describe('i18n locals', function(){
+describe('i18n locals', function() {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo();
   var i18nFilter = require('../../../lib/plugins/filter/template_locals/i18n').bind(hexo);
@@ -21,7 +21,7 @@ describe('i18n locals', function(){
     Home: '首頁'
   });
 
-  it('page.lang set', function(){
+  it('page.lang set', function() {
     var locals = {
       config: hexo.config,
       page: {
@@ -34,7 +34,7 @@ describe('i18n locals', function(){
     locals.__('Home').should.eql('首頁');
   });
 
-  it('page.language set', function(){
+  it('page.language set', function() {
     var locals = {
       config: hexo.config,
       page: {
@@ -47,7 +47,7 @@ describe('i18n locals', function(){
     locals.__('Home').should.eql('首頁');
   });
 
-  it('detect by path (lang found)', function(){
+  it('detect by path (lang found)', function() {
     var locals = {
       config: hexo.config,
       page: {},
@@ -61,7 +61,7 @@ describe('i18n locals', function(){
     locals.__('Home').should.eql('首頁');
   });
 
-  it('detect by path (lang not found)', function(){
+  it('detect by path (lang not found)', function() {
     var locals = {
       config: hexo.config,
       page: {},
@@ -75,7 +75,7 @@ describe('i18n locals', function(){
     locals.__('Home').should.eql('Home');
   });
 
-  it('use config by default', function(){
+  it('use config by default', function() {
     var locals = {
       config: hexo.config,
       page: {},
@@ -89,7 +89,7 @@ describe('i18n locals', function(){
     locals.__('Home').should.eql('Home');
   });
 
-  it('use config by default - with multiple languages, first language should be used', function(){
+  it('use config by default - with multiple languages, first language should be used', function() {
     var oldConfig = hexo.config.language;
     hexo.config.language = ['zh-tw', 'en'];
 
