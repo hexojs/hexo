@@ -10,3 +10,4 @@ appveyor.yml
 .editorconfig
 .eslintrc
 .eslintignore
+.DS_Store
