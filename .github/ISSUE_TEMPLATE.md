@@ -11,18 +11,20 @@ Your site `_config.yml` (Optional):
 
 Your theme `_config.yml` (Optional): 
 
-Plugin version(`npm ls --depth 0`): 
+Hexo and Plugin version(`npm ls --depth 0`): 
 
 ## For BUG
 
-- BUG description
-- the way to reproduce
-- log with hexo <command> --debug
+<!--
+ 1. BUG description
+ 2. The way to reproduce
+ 3. Log with hexo <command> --debug
+-->
 
 ## For question
 
-just push question
+<!-- Question description -->
 
 ## For feature request
 
-just push feature request
+<!-- Feature description -->
