@@ -1,10 +1,8 @@
-'use strict';
-
 var chai = require('chai');
 
 chai.use(require('chai-as-promised'));
 
-describe('Hexo', function() {
+describe('Hexo', () => {
   require('./scripts/box');
   require('./scripts/console');
   require('./scripts/extend');

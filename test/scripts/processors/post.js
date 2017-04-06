@@ -1,5 +1,3 @@
-'use strict';
-
 var should = require('chai').should(); // eslint-disable-line
 var pathFn = require('path');
 var fs = require('hexo-fs');
@@ -9,7 +7,7 @@ var defaultConfig = require('../../../lib/hexo/default_config');
 var dateFormat = 'YYYY-MM-DD HH:mm:ss';
 var newPostName = defaultConfig.new_post_name;
 
-describe('post', function() {
+describe('post', () => {
   var Hexo = require('../../../lib/hexo');
   var baseDir = pathFn.join(__dirname, 'post_test');
   var hexo = new Hexo(baseDir);
@@ -29,24 +27,18 @@ describe('post', function() {
 
     options.params = {
       published: options.published,
-      path: path,
+      path,
       renderable: options.renderable
     };
 
     return new File(options);
   }
 
-  before(function() {
-    return fs.mkdirs(baseDir).then(function() {
-      return hexo.init();
-    });
-  });
+  before(() => fs.mkdirs(baseDir).then(() => hexo.init()));
 
-  after(function() {
-    return fs.rmdir(baseDir);
-  });
+  after(() => fs.rmdir(baseDir));
 
-  it('pattern', function() {
+  it('pattern', () => {
     // Renderable files
     pattern.match('_posts/foo.html').should.eql({
       published: true,
@@ -93,7 +85,7 @@ describe('post', function() {
     hexo.config.skip_render = [];
   });
 
-  it('asset - post_asset_folder disabled', function() {
+  it('asset - post_asset_folder disabled', () => {
     hexo.config.post_asset_folder = false;
 
     var file = newFile({
@@ -103,13 +95,13 @@ describe('post', function() {
       renderable: false
     });
 
-    return process(file).then(function() {
+    return process(file).then(() => {
       var id = 'source/' + file.path;
       should.not.exist(PostAsset.findById(id));
     });
   });
 
-  it('asset - type: create', function() {
+  it('asset - type: create', () => {
     hexo.config.post_asset_folder = true;
 
     var file = newFile({
@@ -127,10 +119,10 @@ describe('post', function() {
         slug: 'foo'
       }),
       fs.writeFile(file.source, 'test')
-    ]).spread(function(doc) {
+    ]).spread(doc => {
       postId = doc._id;
       return process(file);
-    }).then(function() {
+    }).then(() => {
       var id = 'source/' + file.path;
       var asset = PostAsset.findById(id);
 
@@ -138,7 +130,7 @@ describe('post', function() {
       asset.post.should.eql(postId);
       asset.modified.should.be.true;
       asset.renderable.should.be.false;
-    }).finally(function() {
+    }).finally(() => {
       hexo.config.post_asset_folder = false;
 
       return Promise.all([
@@ -148,7 +140,7 @@ describe('post', function() {
     });
   });
 
-  it('asset - type: update', function() {
+  it('asset - type: update', () => {
     hexo.config.post_asset_folder = true;
 
     var file = newFile({
@@ -167,7 +159,7 @@ describe('post', function() {
         slug: 'foo'
       }),
       fs.writeFile(file.source, 'test')
-    ]).spread(function(post) {
+    ]).spread(post => {
       postId = post._id;
 
       return PostAsset.insert({
@@ -176,12 +168,10 @@ describe('post', function() {
         modified: false,
         post: postId
       });
-    }).then(function() {
-      return process(file);
-    }).then(function() {
+    }).then(() => process(file)).then(() => {
       var asset = PostAsset.findById(id);
       asset.modified.should.be.true;
-    }).finally(function() {
+    }).finally(() => {
       hexo.config.post_asset_folder = false;
 
       return Promise.all([
@@ -191,7 +181,7 @@ describe('post', function() {
     });
   });
 
-  it('asset - type: skip', function() {
+  it('asset - type: skip', () => {
     hexo.config.post_asset_folder = true;
 
     var file = newFile({
@@ -210,7 +200,7 @@ describe('post', function() {
         slug: 'foo'
       }),
       fs.writeFile(file.source, 'test')
-    ]).spread(function(post) {
+    ]).spread(post => {
       postId = post._id;
 
       return PostAsset.insert({
@@ -219,12 +209,10 @@ describe('post', function() {
         modified: false,
         post: postId
       });
-    }).then(function() {
-      return process(file);
-    }).then(function() {
+    }).then(() => process(file)).then(() => {
       var asset = PostAsset.findById(id);
       asset.modified.should.be.false;
-    }).finally(function() {
+    }).finally(() => {
       hexo.config.post_asset_folder = false;
 
       return Promise.all([
@@ -234,7 +222,7 @@ describe('post', function() {
     });
   });
 
-  it('asset - type: delete', function() {
+  it('asset - type: delete', () => {
     hexo.config.post_asset_folder = true;
 
     var file = newFile({
@@ -250,7 +238,7 @@ describe('post', function() {
     return Post.insert({
       source: '_posts/foo.html',
       slug: 'foo'
-    }).then(function(post) {
+    }).then(post => {
       postId = post._id;
 
       return PostAsset.insert({
@@ -259,17 +247,15 @@ describe('post', function() {
         modified: false,
         post: postId
       });
-    }).then(function() {
-      return process(file);
-    }).then(function() {
+    }).then(() => process(file)).then(() => {
       should.not.exist(PostAsset.findById(id));
-    }).finally(function() {
+    }).finally(() => {
       hexo.config.post_asset_folder = false;
       return Post.removeById(postId);
     });
   });
 
-  it('asset - skip if can\'t find a matching post', function() {
+  it('asset - skip if can\'t find a matching post', () => {
     hexo.config.post_asset_folder = true;
 
     var file = newFile({
@@ -281,18 +267,16 @@ describe('post', function() {
 
     var id = 'source/' + file.path;
 
-    return fs.writeFile(file.source, 'test').then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, 'test').then(() => process(file)).then(() => {
       should.not.exist(PostAsset.findById(id));
-    }).finally(function() {
+    }).finally(() => {
       hexo.config.post_asset_folder = false;
 
       return fs.unlink(file.source);
     });
   });
 
-  it('asset - the related post has been deleted', function() {
+  it('asset - the related post has been deleted', () => {
     hexo.config.post_asset_folder = true;
 
     var file = newFile({
@@ -310,18 +294,16 @@ describe('post', function() {
         _id: id,
         slug: file.path
       })
-    ]).then(function() {
-      return process(file);
-    }).then(function() {
+    ]).then(() => process(file)).then(() => {
       should.not.exist(PostAsset.findById(id));
-    }).finally(function() {
+    }).finally(() => {
       hexo.config.post_asset_folder = false;
 
       return fs.unlink(file.source);
     });
   });
 
-  it('post - type: create', function() {
+  it('post - type: create', () => {
     var body = [
       'title: "Hello world"',
       'date: 2006-01-02 15:04:05',
@@ -337,9 +319,7 @@ describe('post', function() {
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
 
       post.title.should.eql('Hello world');
@@ -352,12 +332,10 @@ describe('post', function() {
       post.published.should.be.true;
 
       return post.remove();
-    }).finally(function() {
-      return fs.unlink(file.source);
-    });
+    }).finally(() => fs.unlink(file.source));
   });
 
-  it('post - type: update', function() {
+  it('post - type: update', () => {
     var body = [
       'title: "New world"',
       '---'
@@ -375,22 +353,20 @@ describe('post', function() {
     return Promise.all([
       Post.insert({source: file.path, slug: 'foo'}),
       fs.writeFile(file.source, body)
-    ]).spread(function(doc) {
+    ]).spread(doc => {
       id = doc._id;
       return process(file);
-    }).then(function() {
+    }).then(() => {
       var post = Post.findOne({source: file.path});
 
       post._id.should.eql(id);
       post.title.should.eql('New world');
 
       return post.remove();
-    }).finally(function() {
-      return fs.unlink(file.source);
-    });
+    }).finally(() => fs.unlink(file.source));
   });
 
-  it('post - type: delete', function() {
+  it('post - type: delete', () => {
     var file = newFile({
       path: 'foo.html',
       published: true,
@@ -401,14 +377,12 @@ describe('post', function() {
     return Post.insert({
       source: file.path,
       slug: 'foo'
-    }).then(function() {
-      return process(file);
-    }).then(function() {
+    }).then(() => process(file)).then(() => {
       should.not.exist(Post.findOne({source: file.path}));
     });
   });
 
-  it('post - parse file name', function() {
+  it('post - parse file name', () => {
     var body = [
       'title: "Hello world"',
       '---'
@@ -423,22 +397,20 @@ describe('post', function() {
 
     hexo.config.new_post_name = ':year/:month/:day/:title';
 
-    return fs.writeFile(file.source, body).then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
 
       post.slug.should.eql('foo');
       post.date.format('YYYY-MM-DD').should.eql('2006-01-02');
 
       return post.remove();
-    }).finally(function() {
+    }).finally(() => {
       hexo.config.new_post_name = newPostName;
       return fs.unlink(file.source);
     });
   });
 
-  it('post - extra data in file name', function() {
+  it('post - extra data in file name', () => {
     var body = [
       'title: "Hello world"',
       '---'
@@ -453,21 +425,19 @@ describe('post', function() {
 
     hexo.config.new_post_name = ':lang/:title';
 
-    return fs.writeFile(file.source, body).then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
 
       post.lang.should.eql('zh');
 
       return post.remove();
-    }).finally(function() {
+    }).finally(() => {
       hexo.config.new_post_name = newPostName;
       return fs.unlink(file.source);
     });
   });
 
-  it('post - file name does not match to the config', function() {
+  it('post - file name does not match to the config', () => {
     var body = [
       'title: "Hello world"',
       '---'
@@ -482,21 +452,19 @@ describe('post', function() {
 
     hexo.config.new_post_name = ':year/:month/:day/:title';
 
-    return fs.writeFile(file.source, body).then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
 
       post.slug.should.eql('foo');
 
       return post.remove();
-    }).finally(function() {
+    }).finally(() => {
       hexo.config.new_post_name = newPostName;
       return fs.unlink(file.source);
     });
   });
 
-  it('post - published', function() {
+  it('post - published', () => {
     var body = [
       'title: "Hello world"',
       'published: false',
@@ -510,20 +478,16 @@ describe('post', function() {
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
 
       post.published.should.be.false;
 
       return post.remove();
-    }).finally(function() {
-      return fs.unlink(file.source);
-    });
+    }).finally(() => fs.unlink(file.source));
   });
 
-  it('post - always set published: false for drafts', function() {
+  it('post - always set published: false for drafts', () => {
     var body = [
       'title: "Hello world"',
       'published: true',
@@ -537,20 +501,16 @@ describe('post', function() {
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
 
       post.published.should.be.false;
 
       return post.remove();
-    }).finally(function() {
-      return fs.unlink(file.source);
-    });
+    }).finally(() => fs.unlink(file.source));
   });
 
-  it('post - use the status of the source file if date not set', function() {
+  it('post - use the status of the source file if date not set', () => {
     var body = [
       'title: "Hello world"',
       '---'
@@ -563,24 +523,20 @@ describe('post', function() {
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(function() {
-      return Promise.all([
-        file.stat(),
-        process(file)
-      ]);
-    }).spread(function(stats) {
+    return fs.writeFile(file.source, body).then(() => Promise.all([
+      file.stat(),
+      process(file)
+    ])).spread(stats => {
       var post = Post.findOne({source: file.path});
 
       post.date.toDate().setMilliseconds(0).should.eql(stats.birthtime.setMilliseconds(0));
       post.updated.toDate().setMilliseconds(0).should.eql(stats.mtime.setMilliseconds(0));
 
       return post.remove();
-    }).finally(function() {
-      return fs.unlink(file.source);
-    });
+    }).finally(() => fs.unlink(file.source));
   });
 
-  it('post - photo is an alias for photos', function() {
+  it('post - photo is an alias for photos', () => {
     var body = [
       'title: "Hello world"',
       'photo:',
@@ -596,9 +552,7 @@ describe('post', function() {
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
 
       post.photos.should.eql([
@@ -609,12 +563,10 @@ describe('post', function() {
       should.not.exist(post.photo);
 
       return post.remove();
-    }).finally(function() {
-      return fs.unlink(file.source);
-    });
+    }).finally(() => fs.unlink(file.source));
   });
 
-  it('post - photos (not array)', function() {
+  it('post - photos (not array)', () => {
     var body = [
       'title: "Hello world"',
       'photos: http://hexo.io/foo.jpg',
@@ -628,9 +580,7 @@ describe('post', function() {
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
 
       post.photos.should.eql([
@@ -638,12 +588,10 @@ describe('post', function() {
       ]);
 
       return post.remove();
-    }).finally(function() {
-      return fs.unlink(file.source);
-    });
+    }).finally(() => fs.unlink(file.source));
   });
 
-  it('post - link without title', function() {
+  it('post - link without title', () => {
     var body = [
       'link: http://hexo.io/',
       '---'
@@ -656,21 +604,17 @@ describe('post', function() {
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
 
       post.link.should.eql('http://hexo.io/');
       post.title.should.eql('hexo.io');
 
       return post.remove();
-    }).finally(function() {
-      return fs.unlink(file.source);
-    });
+    }).finally(() => fs.unlink(file.source));
   });
 
-  it('post - category is an alias for categories', function() {
+  it('post - category is an alias for categories', () => {
     var body = [
       'title: "Hello world"',
       'category:',
@@ -686,23 +630,17 @@ describe('post', function() {
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
 
       should.not.exist(post.category);
-      post.categories.map(function(item) {
-        return item.name;
-      }).should.eql(['foo', 'bar']);
+      post.categories.map(item => item.name).should.eql(['foo', 'bar']);
 
       return post.remove();
-    }).finally(function() {
-      return fs.unlink(file.source);
-    });
+    }).finally(() => fs.unlink(file.source));
   });
 
-  it('post - categories (not array)', function() {
+  it('post - categories (not array)', () => {
     var body = [
       'title: "Hello world"',
       'categories: foo',
@@ -716,22 +654,16 @@ describe('post', function() {
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
 
-      post.categories.map(function(item) {
-        return item.name;
-      }).should.eql(['foo']);
+      post.categories.map(item => item.name).should.eql(['foo']);
 
       return post.remove();
-    }).finally(function() {
-      return fs.unlink(file.source);
-    });
+    }).finally(() => fs.unlink(file.source));
   });
 
-  it('post - tag is an alias for tags', function() {
+  it('post - tag is an alias for tags', () => {
     var body = [
       'title: "Hello world"',
       'tags:',
@@ -747,23 +679,17 @@ describe('post', function() {
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
 
       should.not.exist(post.tag);
-      post.tags.map(function(item) {
-        return item.name;
-      }).should.have.members(['foo', 'bar']);
+      post.tags.map(item => item.name).should.have.members(['foo', 'bar']);
 
       return post.remove();
-    }).finally(function() {
-      return fs.unlink(file.source);
-    });
+    }).finally(() => fs.unlink(file.source));
   });
 
-  it('post - tags (not array)', function() {
+  it('post - tags (not array)', () => {
     var body = [
       'title: "Hello world"',
       'tags: foo',
@@ -777,22 +703,16 @@ describe('post', function() {
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
 
-      post.tags.map(function(item) {
-        return item.name;
-      }).should.eql(['foo']);
+      post.tags.map(item => item.name).should.eql(['foo']);
 
       return post.remove();
-    }).finally(function() {
-      return fs.unlink(file.source);
-    });
+    }).finally(() => fs.unlink(file.source));
   });
 
-  it('post - post_asset_folder enabled', function() {
+  it('post - post_asset_folder enabled', () => {
     hexo.config.post_asset_folder = true;
 
     var body = [
@@ -813,9 +733,7 @@ describe('post', function() {
     return Promise.all([
       fs.writeFile(file.source, body),
       fs.writeFile(assetPath, '')
-    ]).then(function() {
-      return process(file);
-    }).then(function() {
+    ]).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
       var asset = PostAsset.findById(assetId);
 
@@ -824,7 +742,7 @@ describe('post', function() {
       asset.modified.should.be.true;
 
       return post.remove();
-    }).finally(function() {
+    }).finally(() => {
       hexo.config.post_asset_folder = false;
 
       return Promise.all([
@@ -834,7 +752,7 @@ describe('post', function() {
     });
   });
 
-  it('post - post_asset_folder disabled', function() {
+  it('post - post_asset_folder disabled', () => {
     hexo.config.post_asset_folder = false;
 
     var file = newFile({
@@ -850,22 +768,18 @@ describe('post', function() {
     return Promise.all([
       fs.writeFile(file.source, ''),
       fs.writeFile(assetPath, '')
-    ]).then(function() {
-      return process(file);
-    }).then(function() {
+    ]).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
       should.not.exist(PostAsset.findById(assetId));
 
       return post.remove();
-    }).finally(function() {
-      return Promise.all([
-        fs.unlink(file.source),
-        fs.unlink(assetPath)
-      ]);
-    });
+    }).finally(() => Promise.all([
+      fs.unlink(file.source),
+      fs.unlink(assetPath)
+    ]));
   });
 
-  it('post - parse date', function() {
+  it('post - parse date', () => {
     var body = [
       'title: "Hello world"',
       'date: Apr 24 2014',
@@ -880,21 +794,17 @@ describe('post', function() {
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
 
       post.date.format(dateFormat).should.eql('2014-04-24 00:00:00');
       post.updated.format(dateFormat).should.eql('2015-05-05 00:00:00');
 
       return post.remove();
-    }).finally(function() {
-      return fs.unlink(file.source);
-    });
+    }).finally(() => fs.unlink(file.source));
   });
 
-  it('post - use file stats instead if date is invalid', function() {
+  it('post - use file stats instead if date is invalid', () => {
     var body = [
       'title: "Hello world"',
       'date: yomama',
@@ -909,24 +819,20 @@ describe('post', function() {
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(function() {
-      return Promise.all([
-        file.stat(),
-        process(file)
-      ]);
-    }).spread(function(stats) {
+    return fs.writeFile(file.source, body).then(() => Promise.all([
+      file.stat(),
+      process(file)
+    ])).spread(stats => {
       var post = Post.findOne({source: file.path});
 
       post.date.toDate().setMilliseconds(0).should.eql(stats.birthtime.setMilliseconds(0));
       post.updated.toDate().setMilliseconds(0).should.eql(stats.mtime.setMilliseconds(0));
 
       return post.remove();
-    }).finally(function() {
-      return fs.unlink(file.source);
-    });
+    }).finally(() => fs.unlink(file.source));
   });
 
-  it('post - timezone', function() {
+  it('post - timezone', () => {
     var body = [
       'title: "Hello world"',
       'date: 2014-04-24',
@@ -943,22 +849,20 @@ describe('post', function() {
 
     hexo.config.timezone = 'UTC';
 
-    return fs.writeFile(file.source, body).then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
 
       post.date.utc().format(dateFormat).should.eql('2014-04-24 00:00:00');
       post.updated.utc().format(dateFormat).should.eql('2015-05-05 00:00:00');
 
       return post.remove();
-    }).finally(function() {
+    }).finally(() => {
       hexo.config.timezone = '';
       return fs.unlink(file.source);
     });
   });
 
-  it('post - new_post_name timezone', function() {
+  it('post - new_post_name timezone', () => {
     var body = [
       'title: "Hello world"',
       '---'
@@ -974,15 +878,13 @@ describe('post', function() {
     hexo.config.new_post_name = ':year/:month/:day/:title';
     hexo.config.timezone = 'UTC';
 
-    return fs.writeFile(file.source, body).then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
 
       post.date.utc().format(dateFormat).should.eql('2006-01-02 00:00:00');
 
       return post.remove();
-    }).finally(function() {
+    }).finally(() => {
       hexo.config.new_post_name = newPostName;
       hexo.config.timezone = '';
 
@@ -990,7 +892,7 @@ describe('post', function() {
     });
   });
 
-  it('post - permalink', function() {
+  it('post - permalink', () => {
     var body = [
       'title: "Hello world"',
       'permalink: foooo',
@@ -1004,15 +906,11 @@ describe('post', function() {
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       var post = Post.findOne({source: file.path});
       post.slug.should.eql('foooo');
 
       return post.remove();
-    }).finally(function() {
-      return fs.unlink(file.source);
-    });
+    }).finally(() => fs.unlink(file.source));
   });
 });

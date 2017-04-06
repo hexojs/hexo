@@ -1,8 +1,6 @@
-'use strict';
-
 var should = require('chai').should(); // eslint-disable-line
 
-describe('js', function() {
+describe('js', () => {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(__dirname);
 
@@ -24,26 +22,26 @@ describe('js', function() {
     result.should.eql(expected.trim());
   }
 
-  it('a string', function() {
+  it('a string', () => {
     assertResult(js('script'), '/script.js');
     assertResult(js('script.js'), '/script.js');
     assertResult(js('http://hexo.io/script.js'), 'http://hexo.io/script.js');
     assertResult(js('//hexo.io/script.js'), '//hexo.io/script.js');
   });
 
-  it('an array', function() {
+  it('an array', () => {
     assertResult(js(['foo', 'bar', 'baz']), '/foo.js', '/bar.js', '/baz.js');
   });
 
-  it('multiple strings', function() {
+  it('multiple strings', () => {
     assertResult(js('foo', 'bar', 'baz'), '/foo.js', '/bar.js', '/baz.js');
   });
 
-  it('multiple arrays', function() {
+  it('multiple arrays', () => {
     assertResult(js(['foo', 'bar'], ['baz']), '/foo.js', '/bar.js', '/baz.js');
   });
 
-  it('mixed', function() {
+  it('mixed', () => {
     assertResult(js(['foo', 'bar'], 'baz'), '/foo.js', '/bar.js', '/baz.js');
   });
 });

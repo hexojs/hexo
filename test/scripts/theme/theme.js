@@ -1,29 +1,21 @@
-'use strict';
-
 var should = require('chai').should(); // eslint-disable-line
 var pathFn = require('path');
 var fs = require('hexo-fs');
 var Promise = require('bluebird');
 
-describe('Theme', function() {
+describe('Theme', () => {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(pathFn.join(__dirname, 'theme_test'), {silent: true});
   var themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
 
-  before(function() {
-    return Promise.all([
-      fs.mkdirs(themeDir),
-      fs.writeFile(hexo.config_path, 'theme: test')
-    ]).then(function() {
-      return hexo.init();
-    });
-  });
+  before(() => Promise.all([
+    fs.mkdirs(themeDir),
+    fs.writeFile(hexo.config_path, 'theme: test')
+  ]).then(() => hexo.init()));
 
-  after(function() {
-    return fs.rmdir(hexo.base_dir);
-  });
+  after(() => fs.rmdir(hexo.base_dir));
 
-  it('getView()', function() {
+  it('getView()', () => {
     hexo.theme.setView('test.swig', '');
 
     // With extension name
@@ -38,7 +30,7 @@ describe('Theme', function() {
     hexo.theme.removeView('test.swig');
   });
 
-  it('getView() - escape backslashes', function() {
+  it('getView() - escape backslashes', () => {
     hexo.theme.setView('foo/bar.swig', '');
 
     hexo.theme.getView('foo\\bar.swig').should.have.property('path', 'foo/bar.swig');
@@ -46,7 +38,7 @@ describe('Theme', function() {
     hexo.theme.removeView('foo/bar.swig');
   });
 
-  it('setView()', function() {
+  it('setView()', () => {
     hexo.theme.setView('test.swig', '');
 
     var view = hexo.theme.getView('test.swig');
@@ -55,7 +47,7 @@ describe('Theme', function() {
     hexo.theme.removeView('test.swig');
   });
 
-  it('removeView()', function() {
+  it('removeView()', () => {
     hexo.theme.setView('test.swig', '');
     hexo.theme.removeView('test.swig');
 

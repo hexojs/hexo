@@ -1,15 +1,13 @@
-'use strict';
-
 var should = require('chai').should(); // eslint-disable-line
 
-describe('Helper', function() {
+describe('Helper', () => {
   var Helper = require('../../../lib/extend/helper');
 
-  it('register()', function() {
+  it('register()', () => {
     var h = new Helper();
 
     // name, fn
-    h.register('test', function() {});
+    h.register('test', () => {});
 
     h.get('test').should.exist;
 
@@ -32,18 +30,18 @@ describe('Helper', function() {
     }
   });
 
-  it('list()', function() {
+  it('list()', () => {
     var h = new Helper();
 
-    h.register('test', function() {});
+    h.register('test', () => {});
 
     h.list().should.have.keys(['test']);
   });
 
-  it('get()', function() {
+  it('get()', () => {
     var h = new Helper();
 
-    h.register('test', function() {});
+    h.register('test', () => {});
 
     h.get('test').should.exist;
   });

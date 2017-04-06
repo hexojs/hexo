@@ -1,6 +1,4 @@
-'use strict';
-
-describe('Theme', function() {
+describe('Theme', () => {
   require('./theme');
   require('./view');
 });

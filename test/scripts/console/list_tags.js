@@ -1,10 +1,8 @@
-'use strict';
-
 var Promise = require('bluebird');
 var sinon = require('sinon');
 var expect = require('chai').expect;
 
-describe('Console list', function() {
+describe('Console list', () => {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(__dirname);
   var Post = hexo.model('Post');
@@ -12,18 +10,18 @@ describe('Console list', function() {
   var listTags = require('../../../lib/plugins/console/list/tag').bind(hexo);
 
   hexo.config.permalink = ':title/';
-  before(function() {
+  before(() => {
     var log = console.log;
-    sinon.stub(console, 'log', function() {
-      return log.apply(log, arguments);
+    sinon.stub(console, 'log', function(...args) {
+      return log.apply(log, args);
     });
   });
 
-  after(function() {
+  after(() => {
     console.log.restore();
   });
 
-  it('no tags', function() {
+  it('no tags', () => {
     listTags();
     expect(console.log.calledWith(sinon.match('Name'))).to.be.true;
     expect(console.log.calledWith(sinon.match('Posts'))).to.be.true;
@@ -31,27 +29,21 @@ describe('Console list', function() {
     expect(console.log.calledWith(sinon.match('No tags.'))).to.be.true;
   });
 
-  it('tags', function() {
+  it('tags', () => {
     var posts = [
       {source: 'foo', slug: 'foo', title: 'Its', date: 1e8},
       {source: 'bar', slug: 'bar', title: 'Math', date: 1e8 + 1},
       {source: 'baz', slug: 'baz', title: 'Dude', date: 1e8 - 1}
     ];
     return hexo.init()
-    .then(function() {
-      return Post.insert(posts);
-    }).then(function(posts) {
-      return Promise.each([
-        ['foo'],
-        ['baz'],
-        ['baz']
-      ], function(tags, i) {
-        return posts[i].setTags(tags);
-      });
-    }).then(function() {
+    .then(() => Post.insert(posts)).then(posts => Promise.each([
+      ['foo'],
+      ['baz'],
+      ['baz']
+    ], (tags, i) => posts[i].setTags(tags))).then(() => {
       hexo.locals.invalidate();
     })
-    .then(function() {
+    .then(() => {
       listTags();
       expect(console.log.calledWith(sinon.match('Name'))).to.be.true;
       expect(console.log.calledWith(sinon.match('Posts'))).to.be.true;

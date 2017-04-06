@@ -1,8 +1,6 @@
-'use strict';
-
 var should = require('chai').should(); // eslint-disable-line
 
-describe('External link', function() {
+describe('External link', () => {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo();
   var externalLink = require('../../../lib/plugins/filter/after_post_render/external_link').bind(hexo);
@@ -10,12 +8,12 @@ describe('External link', function() {
   hexo.config.external_link = true;
   hexo.config.url = 'http://maji.moe';
 
-  it('disabled', function() {
+  it('disabled', () => {
     var content = 'foo' +
       '<a href="http://hexo.io/">Hexo</a>' +
       'bar';
 
-    var data = {content: content};
+    var data = {content};
     hexo.config.external_link = false;
 
     externalLink(data);
@@ -23,7 +21,7 @@ describe('External link', function() {
     hexo.config.external_link = true;
   });
 
-  it('enabled', function() {
+  it('enabled', () => {
     var content = [
       '# External link test',
       '1. External link',
@@ -38,7 +36,7 @@ describe('External link', function() {
       '<a href="http://maji.moe">moe</a>'
     ].join('\n');
 
-    var data = {content: content};
+    var data = {content};
 
     externalLink(data);
 

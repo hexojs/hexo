@@ -1,6 +1,4 @@
-'use strict';
-
-describe('Core', function() {
+describe('Core', () => {
   require('./hexo');
   require('./load_config');
   require('./load_database');

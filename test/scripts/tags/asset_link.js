@@ -1,9 +1,7 @@
-'use strict';
-
 var should = require('chai').should(); // eslint-disable-line
 var Promise = require('bluebird');
 
-describe('asset_link', function() {
+describe('asset_link', () => {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(__dirname);
   var assetLinkTag = require('../../../lib/plugins/tag/asset_link')(hexo);
@@ -17,49 +15,45 @@ describe('asset_link', function() {
     return assetLinkTag.call(post, args.split(' '));
   }
 
-  before(function() {
-    return hexo.init().then(function() {
-      return Post.insert({
-        source: 'foo.md',
-        slug: 'foo'
-      });
-    }).then(function(post_) {
-      post = post_;
+  before(() => hexo.init().then(() => Post.insert({
+    source: 'foo.md',
+    slug: 'foo'
+  })).then(post_ => {
+    post = post_;
 
-      return Promise.all([
-        PostAsset.insert({
-          _id: 'bar',
-          slug: 'bar',
-          post: post._id
-        }),
-        PostAsset.insert({
-          _id: 'spaced asset',
-          slug: 'spaced asset',
-          post: post._id
-        })
-      ]);
-    });
-  });
+    return Promise.all([
+      PostAsset.insert({
+        _id: 'bar',
+        slug: 'bar',
+        post: post._id
+      }),
+      PostAsset.insert({
+        _id: 'spaced asset',
+        slug: 'spaced asset',
+        post: post._id
+      })
+    ]);
+  }));
 
-  it('default', function() {
+  it('default', () => {
     assetLink('bar').should.eql('<a href="/foo/bar" title="bar">bar</a>');
   });
 
-  it('title', function() {
+  it('title', () => {
     assetLink('bar Hello world').should.eql('<a href="/foo/bar" title="Hello world">Hello world</a>');
   });
 
-  it('with space', function() {
+  it('with space', () => {
     // {% asset_link "spaced asset" "spaced title" %}
     assetLinkTag.call(post, ['spaced asset', 'spaced title'])
       .should.eql('<a href="/foo/spaced%20asset" title="spaced title">spaced title</a>');
   });
 
-  it('no slug', function() {
+  it('no slug', () => {
     should.not.exist(assetLink(''));
   });
 
-  it('asset not found', function() {
+  it('asset not found', () => {
     should.not.exist(assetLink('boo'));
   });
 });

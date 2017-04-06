@@ -1,8 +1,6 @@
-'use strict';
-
 var should = require('chai').should(); // eslint-disable-line
 
-describe('post_path', function() {
+describe('post_path', () => {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(__dirname);
   var postPath = require('../../../lib/plugins/tag/post_path')(hexo);
@@ -10,24 +8,20 @@ describe('post_path', function() {
 
   hexo.config.permalink = ':title/';
 
-  before(function() {
-    return hexo.init().then(function() {
-      return Post.insert({
-        source: 'foo',
-        slug: 'foo'
-      });
-    });
-  });
+  before(() => hexo.init().then(() => Post.insert({
+    source: 'foo',
+    slug: 'foo'
+  })));
 
-  it('default', function() {
+  it('default', () => {
     postPath(['foo']).should.eql('/foo/');
   });
 
-  it('no slug', function() {
+  it('no slug', () => {
     should.not.exist(postPath([]));
   });
 
-  it('post not found', function() {
+  it('post not found', () => {
     should.not.exist(postPath(['bar']));
   });
 });

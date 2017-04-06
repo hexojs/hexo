@@ -1,11 +1,9 @@
-'use strict';
-
 var should = require('chai').should(); // eslint-disable-line
 var util = require('hexo-util');
 var _ = require('lodash');
 var defaultConfig = require('../../../lib/hexo/default_config');
 
-describe('Backtick code block', function() {
+describe('Backtick code block', () => {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo();
   var codeBlock = require('../../../lib/plugins/filter/before_post_render/backtick_code_block').bind(hexo);
@@ -22,33 +20,33 @@ describe('Backtick code block', function() {
       .replace(/}/g, '&#125;');
   }
 
-  beforeEach(function() {
+  beforeEach(() => {
     // Reset config
     hexo.config.highlight = _.cloneDeep(defaultConfig.highlight);
   });
 
-  it('disabled', function() {
+  it('disabled', () => {
     var content = [
       '``` js',
       code,
       '```'
     ].join('\n');
 
-    var data = {content: content};
+    var data = {content};
 
     hexo.config.highlight.enable = false;
     codeBlock(data);
     data.content.should.eql(content);
   });
 
-  it('with no config (disabled)', function() {
+  it('with no config (disabled)', () => {
     var content = [
       '``` js',
       code,
       '```'
     ].join('\n');
 
-    var data = {content: content};
+    var data = {content};
 
     var oldConfig = hexo.config.highlight;
     delete hexo.config.highlight;
@@ -59,7 +57,7 @@ describe('Backtick code block', function() {
     hexo.config.highlight = oldConfig;
   });
 
-  it('default', function() {
+  it('default', () => {
     var data = {
       content: [
         '``` js',
@@ -72,7 +70,7 @@ describe('Backtick code block', function() {
     data.content.should.eql('<escape>' + highlight(code, {lang: 'js'}) + '</escape>');
   });
 
-  it('without language name', function() {
+  it('without language name', () => {
     var data = {
       content: [
         '```',
@@ -87,7 +85,7 @@ describe('Backtick code block', function() {
     data.content.should.eql('<escape>' + expected + '</escape>');
   });
 
-  it('without language name - ignore tab character', function() {
+  it('without language name - ignore tab character', () => {
     var data = {
       content: [
         '``` \t',
@@ -102,7 +100,7 @@ describe('Backtick code block', function() {
     data.content.should.eql('<escape>' + expected + '</escape>');
   });
 
-  it('title', function() {
+  it('title', () => {
     var data = {
       content: [
         '``` js Hello world',
@@ -120,7 +118,7 @@ describe('Backtick code block', function() {
     data.content.should.eql('<escape>' + expected + '</escape>');
   });
 
-  it('url', function() {
+  it('url', () => {
     var data = {
       content: [
         '``` js Hello world http://hexo.io/',
@@ -138,7 +136,7 @@ describe('Backtick code block', function() {
     data.content.should.eql('<escape>' + expected + '</escape>');
   });
 
-  it('link text', function() {
+  it('link text', () => {
     var data = {
       content: [
         '``` js Hello world http://hexo.io/ Hexo',
@@ -156,10 +154,8 @@ describe('Backtick code block', function() {
     data.content.should.eql('<escape>' + expected + '</escape>');
   });
 
-  it('indent', function() {
-    var indentCode = code.split('\n').map(function(line) {
-      return '  ' + line;
-    }).join('\n');
+  it('indent', () => {
+    var indentCode = code.split('\n').map(line => '  ' + line).join('\n');
 
     var data = {
       content: [
@@ -178,7 +174,7 @@ describe('Backtick code block', function() {
     data.content.should.eql('<escape>' + expected + '</escape>');
   });
 
-  it('line number', function() {
+  it('line number', () => {
     hexo.config.highlight.line_number = false;
 
     var data = {
@@ -198,7 +194,7 @@ describe('Backtick code block', function() {
     data.content.should.eql('<escape>' + expected + '</escape>');
   });
 
-  it('tab replace', function() {
+  it('tab replace', () => {
     hexo.config.highlight.tab_replace = '  ';
 
     var code = [
