@@ -1,9 +1,7 @@
-'use strict';
-
 var should = require('chai').should(); // eslint-disable-line
 var Promise = require('bluebird');
 
-describe('post', function() {
+describe('post', () => {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(__dirname, {silent: true});
   var Post = hexo.model('Post');
@@ -16,82 +14,62 @@ describe('post', function() {
     return hexo.locals.toObject();
   }
 
-  before(function() {
-    return hexo.init();
-  });
+  before(() => hexo.init());
 
-  it('default layout', function() {
-    return Post.insert({
-      source: 'foo',
-      slug: 'bar'
-    }).then(function(post) {
-      return generator(locals()).then(function(data) {
-        post.__post = true;
+  it('default layout', () => Post.insert({
+    source: 'foo',
+    slug: 'bar'
+  }).then(post => generator(locals()).then(data => {
+    post.__post = true;
 
-        data.should.eql([
-          {
-            path: 'bar/',
-            layout: ['post', 'page', 'index'],
-            data: post
-          }
-        ]);
+    data.should.eql([
+      {
+        path: 'bar/',
+        layout: ['post', 'page', 'index'],
+        data: post
+      }
+    ]);
 
-        return post.remove();
-      });
-    });
-  });
+    return post.remove();
+  })));
 
-  it('custom layout', function() {
-    return Post.insert({
-      source: 'foo',
-      slug: 'bar',
-      layout: 'photo'
-    }).then(function(post) {
-      return generator(locals()).then(function(data) {
-        data[0].layout.should.eql(['photo', 'post', 'page', 'index']);
+  it('custom layout', () => Post.insert({
+    source: 'foo',
+    slug: 'bar',
+    layout: 'photo'
+  }).then(post => generator(locals()).then(data => {
+    data[0].layout.should.eql(['photo', 'post', 'page', 'index']);
 
-        return post.remove();
-      });
-    });
-  });
+    return post.remove();
+  })));
 
-  it('layout disabled', function() {
-    return Post.insert({
-      source: 'foo',
-      slug: 'bar',
-      layout: false
-    }).then(function(post) {
-      return generator(locals()).then(function(data) {
-        should.not.exist(data[0].layout);
+  it('layout disabled', () => Post.insert({
+    source: 'foo',
+    slug: 'bar',
+    layout: false
+  }).then(post => generator(locals()).then(data => {
+    should.not.exist(data[0].layout);
 
-        return post.remove();
-      });
-    });
-  });
+    return post.remove();
+  })));
 
-  it('prev/next post', function() {
-    return Post.insert([
-      {source: 'foo', slug: 'foo', date: 1e8},
-      {source: 'bar', slug: 'bar', date: 1e8 + 1},
-      {source: 'baz', slug: 'baz', date: 1e8 - 1}
-    ]).then(function(posts) {
-      return generator(locals()).then(function(data) {
+  it('prev/next post', () => Post.insert([
+    {source: 'foo', slug: 'foo', date: 1e8},
+    {source: 'bar', slug: 'bar', date: 1e8 + 1},
+    {source: 'baz', slug: 'baz', date: 1e8 - 1}
+  ]).then(posts => generator(locals()).then(data => {
 
-        // Posts should be sorted by date
-        data[0].data._id.should.eql(posts[2]._id);
-        data[1].data._id.should.eql(posts[0]._id);
-        data[2].data._id.should.eql(posts[1]._id);
+    // Posts should be sorted by date
+    data[0].data._id.should.eql(posts[2]._id);
+    data[1].data._id.should.eql(posts[0]._id);
+    data[2].data._id.should.eql(posts[1]._id);
 
-        data[0].data.next._id.should.eq(posts[0]._id);
-        data[1].data.next._id.should.eq(posts[1]._id);
-        should.not.exist(data[2].data.next);
+    data[0].data.next._id.should.eq(posts[0]._id);
+    data[1].data.next._id.should.eq(posts[1]._id);
+    should.not.exist(data[2].data.next);
 
-        should.not.exist(data[0].data.prev);
-        data[1].data.prev._id.should.eq(posts[2]._id);
-        data[2].data.prev._id.should.eq(posts[0]._id);
-      }).thenReturn(posts);
-    }).map(function(post) {
-      return post.remove();
-    });
-  });
+    should.not.exist(data[0].data.prev);
+    data[1].data.prev._id.should.eq(posts[2]._id);
+    data[2].data.prev._id.should.eq(posts[0]._id);
+  }).thenReturn(posts)).map(post => post.remove()));
 });

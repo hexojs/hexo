@@ -1,11 +1,9 @@
-'use strict';
-
 var should = require('chai').should(); // eslint-disable-line
 var fs = require('hexo-fs');
 var pathFn = require('path');
 var Promise = require('bluebird');
 
-describe('Load plugins', function() {
+describe('Load plugins', () => {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(pathFn.join(__dirname, 'plugin_test'), {silent: true});
   var loadPlugins = require('../../../lib/hexo/load_plugins');
@@ -30,7 +28,7 @@ describe('Load plugins', function() {
     delete hexo._script_test;
   }
 
-  function createPackageFile() {
+  function createPackageFile(...args) {
     var pkg = {
       name: 'hexo-site',
       version: '0.0.0',
@@ -38,8 +36,8 @@ describe('Load plugins', function() {
       dependencies: {}
     };
 
-    for (var i = 0, len = arguments.length; i < len; i++) {
-      pkg.dependencies[arguments[i]] = '*';
+    for (var i = 0, len = args.length; i < len; i++) {
+      pkg.dependencies[args[i]] = '*';
     }
 
     return fs.writeFile(pathFn.join(hexo.base_dir, 'package.json'), JSON.stringify(pkg, null, '  '));
@@ -48,71 +46,59 @@ describe('Load plugins', function() {
   hexo.env.init = true;
   hexo.theme_script_dir = pathFn.join(hexo.base_dir, 'themes', 'test', 'scripts');
 
-  before(function() {
-    return fs.mkdir(hexo.base_dir);
-  });
+  before(() => fs.mkdir(hexo.base_dir));
 
-  after(function() {
-    return fs.rmdir(hexo.base_dir);
-  });
+  after(() => fs.rmdir(hexo.base_dir));
 
-  it('load plugins', function() {
+  it('load plugins', () => {
     var name = 'hexo-plugin-test';
     var path = pathFn.join(hexo.plugin_dir, name, 'index.js');
 
     return Promise.all([
       createPackageFile(name),
       fs.writeFile(path, script)
-    ]).then(function() {
-      return loadPlugins(hexo);
-    }).then(function() {
+    ]).then(() => loadPlugins(hexo)).then(() => {
       validate(path);
       return fs.unlink(path);
     });
   });
 
-  it('load scoped plugins', function() {
+  it('load scoped plugins', () => {
     var name = '@some-scope/hexo-plugin-test';
     var path = pathFn.join(hexo.plugin_dir, name, 'index.js');
 
     return Promise.all([
       createPackageFile(name),
       fs.writeFile(path, script)
-    ]).then(function() {
-      return loadPlugins(hexo);
-    }).then(function() {
+    ]).then(() => loadPlugins(hexo)).then(() => {
       validate(path);
       return fs.unlink(path);
     });
   });
 
-  it('specify plugin list in config', function() {
+  it('specify plugin list in config', () => {
     var names = ['hexo-plugin-test', 'another-plugin'];
-    var paths = names.map(function(name) {
-      return pathFn.join(hexo.plugin_dir, name, 'index.js');
-    });
+    var paths = names.map(name => pathFn.join(hexo.plugin_dir, name, 'index.js'));
 
     return Promise.all([
-      createPackageFile.apply(null, names),
+      createPackageFile(...names),
       fs.writeFile(paths[0], 'hexo._script_test0 = true'),
       fs.writeFile(paths[1], 'hexo._script_test1 = true')
-    ]).then(function() {
+    ]).then(() => {
       hexo.config.plugins = [names[1]];
       return loadPlugins(hexo);
-    }).then(function() {
+    }).then(() => {
       should.not.exist(hexo._script_test0);
       hexo._script_test1.should.be.true;
 
       delete hexo.config.plugins;
       delete hexo._script_test1;
 
-      return Promise.map(paths, function(path) {
-        return fs.unlink(path);
-      });
+      return Promise.map(paths, path => fs.unlink(path));
     });
   });
 
-  it('ignore plugins whose name is not started with "hexo-"', function() {
+  it('ignore plugins whose name is not started with "hexo-"', () => {
     var script = 'hexo._script_test = true';
     var name = 'another-plugin';
     var path = pathFn.join(hexo.plugin_dir, name, 'index.js');
@@ -120,50 +106,40 @@ describe('Load plugins', function() {
     return Promise.all([
       createPackageFile(name),
       fs.writeFile(path, script)
-    ]).then(function() {
-      return loadPlugins(hexo);
-    }).then(function() {
+    ]).then(() => loadPlugins(hexo)).then(() => {
       should.not.exist(hexo._script_test);
       return fs.unlink(path);
     });
   });
 
-  it('ignore plugins which are in package.json but not exist actually', function() {
-    return createPackageFile('hexo-plugin-test').then(function() {
-      return loadPlugins(hexo);
-    });
-  });
+  it('ignore plugins which are in package.json but not exist actually', () => createPackageFile('hexo-plugin-test').then(() => loadPlugins(hexo)));
 
-  it('load scripts', function() {
+  it('load scripts', () => {
     var path = pathFn.join(hexo.script_dir, 'test.js');
 
-    return fs.writeFile(path, script).then(function() {
-      return loadPlugins(hexo);
-    }).then(function() {
+    return fs.writeFile(path, script).then(() => loadPlugins(hexo)).then(() => {
       validate(path);
       return fs.unlink(path);
     });
   });
 
-  it('load theme scripts', function() {
+  it('load theme scripts', () => {
     var path = pathFn.join(hexo.theme_script_dir, 'test.js');
 
-    return fs.writeFile(path, script).then(function() {
-      return loadPlugins(hexo);
-    }).then(function() {
+    return fs.writeFile(path, script).then(() => loadPlugins(hexo)).then(() => {
       validate(path);
       return fs.unlink(path);
     });
   });
 
-  it('don\'t load plugins in safe mode', function() {
+  it('don\'t load plugins in safe mode', () => {
     var script = 'hexo._script_test = true';
     var path = pathFn.join(hexo.script_dir, 'test.js');
 
-    return fs.writeFile(path, script).then(function() {
+    return fs.writeFile(path, script).then(() => {
       hexo.env.safe = true;
       return loadPlugins(hexo);
-    }).then(function() {
+    }).then(() => {
       hexo.env.safe = false;
       should.not.exist(hexo._script_test);
       return fs.unlink(path);

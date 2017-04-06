@@ -1,6 +1,4 @@
-'use strict';
-
-describe('Tags', function() {
+describe('Tags', () => {
   require('./asset_img');
   require('./asset_link');
   require('./asset_path');

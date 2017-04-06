@@ -1,6 +1,4 @@
-'use strict';
-
-describe('Generators', function() {
+describe('Generators', () => {
   require('./asset');
   require('./page');
   require('./post');

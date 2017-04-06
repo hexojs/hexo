@@ -1,8 +1,6 @@
-'use strict';
-
 var should = require('chai').should(); // eslint-disable-line
 
-describe('paginator', function() {
+describe('paginator', () => {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(__dirname);
 
@@ -66,25 +64,25 @@ describe('paginator', function() {
     [1, 0, 6, 7, 8, 9, 10],
     [1, 0, 7, 8, 9, 10],
     [1, 0, 8, 9, 10]
-  ].forEach(function(pages, i, arr) {
+  ].forEach((pages, i, arr) => {
     var current = i + 1;
     var total = arr.length;
 
-    it('current = ' + current, function() {
+    it('current = ' + current, () => {
       var result = paginator({
-        current: current,
-        total: total
+        current,
+        total
       });
 
       checkResult(result, {
-        current: current,
-        total: total,
-        pages: pages
+        current,
+        total,
+        pages
       });
     });
   });
 
-  it('show_all', function() {
+  it('show_all', () => {
     var result = paginator({
       current: 5,
       show_all: true
@@ -97,7 +95,7 @@ describe('paginator', function() {
     });
   });
 
-  it('end_size', function() {
+  it('end_size', () => {
     var result = paginator({
       current: 5,
       end_size: 2
@@ -110,7 +108,7 @@ describe('paginator', function() {
     });
   });
 
-  it('end_size = 0', function() {
+  it('end_size = 0', () => {
     var result = paginator({
       current: 5,
       end_size: 0
@@ -123,7 +121,7 @@ describe('paginator', function() {
     });
   });
 
-  it('mid_size', function() {
+  it('mid_size', () => {
     var result = paginator({
       current: 5,
       mid_size: 1
@@ -136,7 +134,7 @@ describe('paginator', function() {
     });
   });
 
-  it('mid_size = 0', function() {
+  it('mid_size = 0', () => {
     var result = paginator({
       current: 5,
       mid_size: 0
@@ -149,7 +147,7 @@ describe('paginator', function() {
     });
   });
 
-  it('space', function() {
+  it('space', () => {
     var result = paginator({
       current: 5,
       space: '~'
@@ -163,7 +161,7 @@ describe('paginator', function() {
     });
   });
 
-  it('no space', function() {
+  it('no space', () => {
     var result = paginator({
       current: 5,
       space: ''
@@ -176,7 +174,7 @@ describe('paginator', function() {
     });
   });
 
-  it('base', function() {
+  it('base', () => {
     var result = paginator({
       current: 1,
       base: 'archives/'
@@ -192,7 +190,7 @@ describe('paginator', function() {
     ].join(''));
   });
 
-  it('format', function() {
+  it('format', () => {
     var result = paginator({
       current: 1,
       format: 'index-%d.html'
@@ -208,7 +206,7 @@ describe('paginator', function() {
     ].join(''));
   });
 
-  it('prev_text / next_text', function() {
+  it('prev_text / next_text', () => {
     var result = paginator({
       current: 2,
       prev_text: 'Newer',
@@ -227,7 +225,7 @@ describe('paginator', function() {
     ].join(''));
   });
 
-  it('prev_next', function() {
+  it('prev_next', () => {
     var result = paginator({
       current: 2,
       prev_next: false
@@ -243,10 +241,10 @@ describe('paginator', function() {
     ].join(''));
   });
 
-  it('transform', function() {
+  it('transform', () => {
     var result = paginator({
       current: 2,
-      transform: function(page) {
+      transform(page) {
         return 'Page ' + page;
       }
     });
@@ -263,7 +261,7 @@ describe('paginator', function() {
     ].join(''));
   });
 
-  it('context', function() {
+  it('context', () => {
     ctx.page.current = 5;
     var result = paginator({
       space: ''
@@ -276,7 +274,7 @@ describe('paginator', function() {
     });
   });
 
-  it('current = 0', function() {
+  it('current = 0', () => {
     ctx.page.current = 0;
     var result = paginator({});
 

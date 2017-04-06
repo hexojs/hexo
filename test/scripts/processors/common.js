@@ -1,18 +1,16 @@
-'use strict';
-
 var should = require('chai').should(); // eslint-disable-line
 var moment = require('moment');
 
-describe('common', function() {
+describe('common', () => {
   var common = require('../../../lib/plugins/processor/common');
 
-  it('isTmpFile()', function() {
+  it('isTmpFile()', () => {
     common.isTmpFile('foo').should.be.false;
     common.isTmpFile('foo%').should.be.true;
     common.isTmpFile('foo~').should.be.true;
   });
 
-  it('isHiddenFile()', function() {
+  it('isHiddenFile()', () => {
     common.isHiddenFile('foo').should.be.false;
     common.isHiddenFile('_foo').should.be.true;
     common.isHiddenFile('foo/_bar').should.be.true;
@@ -20,7 +18,7 @@ describe('common', function() {
     common.isHiddenFile('foo/.bar').should.be.true;
   });
 
-  it('ignoreTmpAndHiddenFile()', function() {
+  it('ignoreTmpAndHiddenFile()', () => {
     var pattern = common.ignoreTmpAndHiddenFile;
 
     pattern.match('foo').should.be.true;
@@ -32,7 +30,7 @@ describe('common', function() {
     pattern.match('foo/.bar').should.be.false;
   });
 
-  it('toDate()', function() {
+  it('toDate()', () => {
     var m = moment();
     var d = new Date();
 
@@ -45,7 +43,7 @@ describe('common', function() {
     should.not.exist(common.toDate('foo'));
   });
 
-  it('isMatch() - string', function() {
+  it('isMatch() - string', () => {
     // String
     common.isMatch('foo/test.html', 'foo/*.html').should.be.true;
     common.isMatch('foo/test.html', 'bar/*.html').should.be.false;
