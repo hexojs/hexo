@@ -10,8 +10,7 @@
     "eslint": "eslint .",
     "jscs": "jscs .",
     "test": "mocha test/index.js",
-    "test-cov": "istanbul cover --print both _mocha -- test/index.js",
-    "postinstall": "./node_modules/.bin/opencollective-postinstall || exit 0"
+    "test-cov": "istanbul cover --print both _mocha -- test/index.js"
   },
   "directories": {
     "lib": "./lib",
@@ -57,23 +56,17 @@
     "warehouse": "^2.2.0"
   },
   "devDependencies": {
-    "babel-eslint": "^7.2.1",
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
     "eslint": "^2.12.0",
     "eslint-config-hexo": "^1.0.4",
+    "babel-eslint": "^7.2.1",
     "hexo-renderer-marked": "^0.2.10",
     "istanbul": "^0.4.3",
     "jscs": "^3.0.4",
     "jscs-preset-hexo": "^1.0.1",
     "mocha": "^2.5.3",
-    "opencollective-postinstall": "^1.0.15",
     "rewire": "^2.5.1",
     "sinon": "^1.17.4"
-  },
-  "collective": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/hexo",
-    "logo": "https://opencollective.com/hexo/logo.txt?variant=bits&reverse=true"
   }
 }
