@@ -7,8 +7,9 @@ var sep = pathFn.sep;
 var testUtil = require('../../util');
 
 describe('Hexo', () => {
+  var base_dir = pathFn.join(__dirname, 'hexo_test');
   var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'hexo_test'), {silent: true});
+  var hexo = new Hexo(base_dir, {silent: true});
   var coreDir = pathFn.join(__dirname, '../../..');
   var version = require('../../../package.json').version;
   var Post = hexo.model('Post');
@@ -63,6 +64,13 @@ describe('Hexo', () => {
       init: false
     });
     hexo.config_path.should.eql(pathFn.join(__dirname, '_config.yml'));
+  });
+
+  it('constructs mutli-config', () => {
+    var configs = [ '../../../fixtures/_config.json', '../../../fixtures/_config.json' ];
+    var args = { _: [], config: configs.join(',') };
+    var hexo = new Hexo(base_dir, args);
+    hexo.config_path.should.eql(pathFn.join(base_dir, '_multiconfig.yml'));
   });
 
   it('call()', () => hexo.call('test', {foo: 'bar'}).then(data => {
