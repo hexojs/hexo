@@ -58,18 +58,11 @@ describe('post', () => {
     {source: 'bar', slug: 'bar', date: 1e8 + 1},
     {source: 'baz', slug: 'baz', date: 1e8 - 1}
   ]).then(posts => generator(locals()).then(data => {
-
-    // Posts should be sorted by date
-    data[0].data._id.should.eql(posts[2]._id);
-    data[1].data._id.should.eql(posts[0]._id);
-    data[2].data._id.should.eql(posts[1]._id);
-
-    data[0].data.next._id.should.eq(posts[0]._id);
-    data[1].data.next._id.should.eq(posts[1]._id);
-    should.not.exist(data[2].data.next);
-
     should.not.exist(data[0].data.prev);
-    data[1].data.prev._id.should.eq(posts[2]._id);
+    data[0].data.next._id.should.eq(posts[0]._id);
+    data[1].data.prev._id.should.eq(posts[1]._id);
+    data[1].data.next._id.should.eq(posts[2]._id);
     data[2].data.prev._id.should.eq(posts[0]._id);
+    should.not.exist(data[2].data.next);
   }).thenReturn(posts)).map(post => post.remove()));
 });
