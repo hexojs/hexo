@@ -435,4 +435,123 @@ describe('open_graph', () => {
     result.should.not.contain(meta({property: 'description'}));
   });
 
+  it('keywords - page keywords string', () => {
+    var ctx = {
+      page: { keywords: 'optimize,web' },
+      config: {},
+      is_post: isPost
+    };
+
+    var result = openGraph.call(ctx);
+    var escaped = 'optimize,web';
+
+    result.should.contain(meta({name: 'keywords', content: escaped}));
+  });
+
+  it('keywords - page keywords array', () => {
+    var ctx = {
+      page: { keywords: ['optimize','web'] },
+      config: {},
+      is_post: isPost
+    };
+
+    var result = openGraph.call(ctx);
+    var keywords = 'optimize,web';
+
+    result.should.contain(meta({name: 'keywords', content: keywords}));
+  });
+
+  it('keywords - page tags', () => {
+    var ctx = {
+      page: { tags: ['optimize','web'] },
+      config: {},
+      is_post: isPost
+    };
+
+    var result = openGraph.call(ctx);
+    var keywords = 'optimize,web';
+
+    result.should.contain(meta({name: 'keywords', content: keywords}));
+  });
+
+  it('keywords - config keywords string', () => {
+    var ctx = {
+      page: {},
+      config: { keywords: 'optimize,web' },
+      is_post: isPost
+    };
+
+    var result = openGraph.call(ctx);
+    var keywords = 'optimize,web';
+
+    result.should.contain(meta({name: 'keywords', content: keywords}));
+  });
+
+  it('keywords - config keywords array', () => {
+    var ctx = {
+      page: {},
+      config: { keywords: ['optimize', 'web'] },
+      is_post: isPost
+    };
+
+    var result = openGraph.call(ctx);
+    var keywords = 'optimize,web';
+
+    result.should.contain(meta({name: 'keywords', content: keywords}));
+  });
+
+  it('keywords - page keywords first', () => {
+    var ctx = {
+      page: {
+        keywords: ['web1', 'web2'],
+        tags: ['web3', 'web4']
+      },
+      config: { keywords: 'web5,web6' },
+      is_post: isPost
+    };
+
+    var result = openGraph.call(ctx);
+    var keywords = 'web1,web2';
+
+    result.should.contain(meta({name: 'keywords', content: keywords}));
+  });
+
+  it('keywords - page tags second', () => {
+    var ctx = {
+      page: { tags: ['optimize','web'] },
+      config: { keywords: 'web5,web6' },
+      is_post: isPost
+    };
+
+    var result = openGraph.call(ctx);
+    var keywords = 'optimize,web';
+
+    result.should.contain(meta({name: 'keywords', content: keywords}));
+  });
+
+  it('keywords - page tags empty', () => {
+    var ctx = {
+      page: { tags: [] },
+      config: { keywords: 'web5,web6' },
+      is_post: isPost
+    };
+
+    var result = openGraph.call(ctx);
+    var keywords = 'web5,web6';
+
+    result.should.contain(meta({name: 'keywords', content: keywords}));
+  });
+
+  it('keywords - escape', () => {
+    var ctx = {
+      page: { keywords: 'optimize,web&<>"\'/,site' },
+      config: {},
+      is_post: isPost
+    };
+
+    var result = openGraph.call(ctx);
+    var keywords = 'optimize,web&amp;&lt;&gt;&quot;&#39;&#x2F;,site';
+
+    result.should.contain(meta({name: 'keywords', content: keywords}));
+  });
 });
