@@ -1,6 +1,6 @@
 {
   "name": "hexo",
-  "version": "3.3.1",
+  "version": "3.3.5",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
   "main": "lib/hexo",
   "bin": {
@@ -26,6 +26,9 @@
     "hexo"
   ],
   "author": "Tommy Chen <tommy351@gmail.com> (http://zespia.tw)",
+  "maintainers": [
+    "Abner Chou <hi@abnerchou.me> (http://abnerchou.me)"
+    ],
   "license": "MIT",
   "dependencies": {
     "abbrev": "^1.0.7",
