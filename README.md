@@ -46,6 +46,7 @@ $ hexo generate
 
 ## More Information
 
+- Visit the [Awesome Hexo](https://github.com/hexojs/awesome-hexo) list
 - Read the [documentation](https://hexo.io/)
 - Find solutions in [troubleshooting](https://hexo.io/docs/troubleshooting.html)
 - Join discussion on [Google Group](https://groups.google.com/group/hexo)
