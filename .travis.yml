@@ -9,7 +9,7 @@ cache:
 
 node_js:
   - "6"
-  - "7"
+  - "node"
 
 script:
   - npm run eslint
