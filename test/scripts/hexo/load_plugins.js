@@ -43,6 +43,21 @@ describe('Load plugins', () => {
     return fs.writeFile(pathFn.join(hexo.base_dir, 'package.json'), JSON.stringify(pkg, null, '  '));
   }
 
+  function createPackageFileWithDevDeps(...args) {
+    var pkg = {
+      name: 'hexo-site',
+      version: '0.0.0',
+      private: true,
+      devDependencies: {}
+    };
+
+    for (var i = 0, len = args.length; i < len; i++) {
+      pkg.devDependencies[args[i]] = '*';
+    }
+
+    return fs.writeFile(pathFn.join(hexo.base_dir, 'package.json'), JSON.stringify(pkg, null, '  '));
+  }
+
   hexo.env.init = true;
   hexo.theme_script_dir = pathFn.join(hexo.base_dir, 'themes', 'test', 'scripts');
 
@@ -69,6 +84,19 @@ describe('Load plugins', () => {
 
     return Promise.all([
       createPackageFile(name),
+      fs.writeFile(path, script)
+    ]).then(() => loadPlugins(hexo)).then(() => {
+      validate(path);
+      return fs.unlink(path);
+    });
+  });
+
+  it('load devDep plugins', () => {
+    var name = 'hexo-plugin-test';
+    var path = pathFn.join(hexo.plugin_dir, name, 'index.js');
+
+    return Promise.all([
+      createPackageFileWithDevDeps(name),
       fs.writeFile(path, script)
     ]).then(() => loadPlugins(hexo)).then(() => {
       validate(path);
