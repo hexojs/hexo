@@ -53,6 +53,13 @@ $ hexo generate
 - See the [plugin list](https://hexo.io/plugins/) and the [theme list](https://hexo.io/themes/) on wiki
 - Follow [@hexojs](https://twitter.com/hexojs) for latest news
 
+**Clean generated content and styles**
+
+```
+$ hexo clean
+```
+
+
 ## License
 
 MIT
