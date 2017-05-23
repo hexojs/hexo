@@ -164,49 +164,4 @@ describe('Tag', () => {
       result.should.eql(str);
     });
   });
-
-  it('render() - ignore mixed repeated <code>', function() {
-    var str = `
-aaa
-
-{% test1 foo.jpg %}
-
-<pre><code>{{ helper.json1() }}</code></pre>
-
-bbb
-
-{% test2 foo2.jpg %}
-
-ccc
-
-<code>{{ helper.json2() }}</code>
-
-{% test3 foo3.jpg %}
-
-ddd
-
-<code>{{ helper.json3() }}</code>
-
-{% test4 foo4.jpg %}
-
-<pre><code>{{ helper.json4() }}</code></pre>
-
-eee
-
-{% test5 foo5.jpg %}
-
-fff
-`;
-    var expected = str.replace(/\{\% (test\d) (\S+) \%\}/g, '$1=$2');
-
-    tag.register('test1', (args, content) => 'test1=' + args.join('='));
-    tag.register('test2', (args, content) => 'test2=' + args.join('='));
-    tag.register('test3', (args, content) => 'test3=' + args.join('='));
-    tag.register('test4', (args, content) => 'test4=' + args.join('='));
-    tag.register('test5', (args, content) => 'test5=' + args.join('='));
-
-    return tag.render(str).then(function(result) {
-      result.should.eql(expected);
-    });
-  });
 });
