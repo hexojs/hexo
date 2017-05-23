@@ -148,20 +148,4 @@ describe('Tag', () => {
       result.should.eql('bar');
     });
   });
-
-  it('render() - ignore <pre><code>', function() {
-    var str = '<pre><code>{{ helper.json() }}</code></pre>';
-
-    return tag.render(str).then(function(result) {
-      result.should.eql(str);
-    });
-  });
-
-  it('render() - ignore <code>', function() {
-    var str = '<code>{{ helper.json() }}</code>';
-
-    return tag.render(str).then(function(result) {
-      result.should.eql(str);
-    });
-  });
 });
