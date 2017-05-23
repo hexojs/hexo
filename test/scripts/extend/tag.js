@@ -171,7 +171,7 @@ aaa
 
 {% test1 foo.jpg %}
 
-<pre><code>{{ helper.json1() }}</code></pre>
+<pre class=""><code>{{ helper.json1() }}</code></pre>
 
 bbb
 
