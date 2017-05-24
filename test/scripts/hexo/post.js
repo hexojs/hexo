@@ -640,7 +640,7 @@ describe('Post', () => {
       content,
       engine: 'markdown'
     }).then(data => {
-      data.content.trim().should.eql('<p><code>{% raw %}{{ test }}{% endraw %}</code></p>');
+      data.content.trim().should.eql('<p><code>{{ test }}</code></p>');
     });
   });
 
@@ -648,7 +648,7 @@ describe('Post', () => {
     var content = '`{% raw %}{{ test }}{% endraw %}`';
 
     var filter = sinon.spy(result => {
-      result.trim().should.eql('<p><code>{% raw %}{{ test }}{% endraw %}</code></p>');
+      result.trim().should.eql('<p><code>{{ test }}</code></p>');
     });
 
     hexo.extend.filter.register('after_render:html', filter);
