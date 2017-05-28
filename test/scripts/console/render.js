@@ -1,24 +1,16 @@
-'use strict';
-
 var should = require('chai').should(); // eslint-disable-line
 var fs = require('hexo-fs');
 var pathFn = require('path');
 var Promise = require('bluebird');
 
-describe('render', function() {
+describe('render', () => {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(pathFn.join(__dirname, 'render_test'), {silent: true});
   var render = require('../../../lib/plugins/console/render').bind(hexo);
 
-  before(function() {
-    return fs.mkdirs(hexo.base_dir).then(function() {
-      return hexo.init();
-    });
-  });
+  before(() => fs.mkdirs(hexo.base_dir).then(() => hexo.init()));
 
-  after(function() {
-    return fs.rmdir(hexo.base_dir);
-  });
+  after(() => fs.rmdir(hexo.base_dir));
 
   var body = [
     'foo: 1',
@@ -26,15 +18,11 @@ describe('render', function() {
     '  boo: 2'
   ].join('\n');
 
-  it('relative path', function() {
+  it('relative path', () => {
     var src = pathFn.join(hexo.base_dir, 'test.yml');
     var dest = pathFn.join(hexo.base_dir, 'result.json');
 
-    return fs.writeFile(src, body).then(function() {
-      return render({_: ['test.yml'], output: 'result.json'});
-    }).then(function() {
-      return fs.readFile(dest);
-    }).then(function(result) {
+    return fs.writeFile(src, body).then(() => render({_: ['test.yml'], output: 'result.json'})).then(() => fs.readFile(dest)).then(result => {
       JSON.parse(result).should.eql({
         foo: 1,
         bar: {
@@ -49,15 +37,11 @@ describe('render', function() {
     });
   });
 
-  it('absolute path', function() {
+  it('absolute path', () => {
     var src = pathFn.join(hexo.base_dir, 'test.yml');
     var dest = pathFn.join(hexo.base_dir, 'result.json');
 
-    return fs.writeFile(src, body).then(function() {
-      return render({_: [src], output: 'result.json'});
-    }).then(function() {
-      return fs.readFile(dest);
-    }).then(function(result) {
+    return fs.writeFile(src, body).then(() => render({_: [src], output: 'result.json'})).then(() => fs.readFile(dest)).then(result => {
       JSON.parse(result).should.eql({
         foo: 1,
         bar: {
@@ -72,15 +56,11 @@ describe('render', function() {
     });
   });
 
-  it('absolute output', function() {
+  it('absolute output', () => {
     var src = pathFn.join(hexo.base_dir, 'test.yml');
     var dest = pathFn.join(hexo.base_dir, 'result.json');
 
-    return fs.writeFile(src, body).then(function() {
-      return render({_: ['test.yml'], output: dest});
-    }).then(function() {
-      return fs.readFile(dest);
-    }).then(function(result) {
+    return fs.writeFile(src, body).then(() => render({_: ['test.yml'], output: dest})).then(() => fs.readFile(dest)).then(result => {
       JSON.parse(result).should.eql({
         foo: 1,
         bar: {
@@ -97,15 +77,11 @@ describe('render', function() {
 
   it('output');
 
-  it('engine', function() {
+  it('engine', () => {
     var src = pathFn.join(hexo.base_dir, 'test');
     var dest = pathFn.join(hexo.base_dir, 'result.json');
 
-    return fs.writeFile(src, body).then(function() {
-      return render({_: ['test'], output: 'result.json', engine: 'yaml'});
-    }).then(function() {
-      return fs.readFile(dest);
-    }).then(function(result) {
+    return fs.writeFile(src, body).then(() => render({_: ['test'], output: 'result.json', engine: 'yaml'})).then(() => fs.readFile(dest)).then(result => {
       JSON.parse(result).should.eql({
         foo: 1,
         bar: {
@@ -120,15 +96,11 @@ describe('render', function() {
     });
   });
 
-  it('pretty', function() {
+  it('pretty', () => {
     var src = pathFn.join(hexo.base_dir, 'test.yml');
     var dest = pathFn.join(hexo.base_dir, 'result.json');
 
-    return fs.writeFile(src, body).then(function() {
-      return render({_: ['test.yml'], output: 'result.json', pretty: true});
-    }).then(function() {
-      return fs.readFile(dest);
-    }).then(function(result) {
+    return fs.writeFile(src, body).then(() => render({_: ['test.yml'], output: 'result.json', pretty: true})).then(() => fs.readFile(dest)).then(result => {
       result.should.eql(JSON.stringify({
         foo: 1,
         bar: {

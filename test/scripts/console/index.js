@@ -1,6 +1,4 @@
-'use strict';
-
-describe('Console', function() {
+describe('Console', () => {
   require('./clean');
   require('./config');
   require('./deploy');
@@ -9,4 +7,8 @@ describe('Console', function() {
   require('./new');
   require('./publish');
   require('./render');
+  require('./list_post');
+  require('./list_categories');
+  require('./list_tags');
+  require('./list_page');
 });

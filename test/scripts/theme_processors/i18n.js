@@ -1,11 +1,9 @@
-'use strict';
-
 var should = require('chai').should(); // eslint-disable-line
 var pathFn = require('path');
 var fs = require('hexo-fs');
 var Promise = require('bluebird');
 
-describe('i18n', function() {
+describe('i18n', () => {
   var Hexo = require('../../../lib/hexo');
   var hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
   var processor = require('../../../lib/theme/processors/i18n');
@@ -16,7 +14,7 @@ describe('i18n', function() {
     var path = options.path;
 
     options.params = {
-      path: path
+      path
     };
 
     options.path = 'languages/' + path;
@@ -25,20 +23,14 @@ describe('i18n', function() {
     return new hexo.theme.File(options);
   }
 
-  before(function() {
-    return Promise.all([
-      fs.mkdirs(themeDir),
-      fs.writeFile(hexo.config_path, 'theme: test')
-    ]).then(function() {
-      return hexo.init();
-    });
-  });
+  before(() => Promise.all([
+    fs.mkdirs(themeDir),
+    fs.writeFile(hexo.config_path, 'theme: test')
+  ]).then(() => hexo.init()));
 
-  after(function() {
-    return fs.rmdir(hexo.base_dir);
-  });
+  after(() => fs.rmdir(hexo.base_dir));
 
-  it('pattern', function() {
+  it('pattern', () => {
     var pattern = processor.pattern;
 
     pattern.match('languages/default.yml').should.be.ok;
@@ -46,7 +38,7 @@ describe('i18n', function() {
     should.not.exist(pattern.match('default.yml'));
   });
 
-  it('type: create', function() {
+  it('type: create', () => {
     var body = [
       'ok: OK',
       'index:',
@@ -58,19 +50,15 @@ describe('i18n', function() {
       type: 'create'
     });
 
-    return fs.writeFile(file.source, body).then(function() {
-      return process(file);
-    }).then(function() {
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       var __ = hexo.theme.i18n.__('en');
 
       __('ok').should.eql('OK');
       __('index.title').should.eql('Home');
-    }).finally(function() {
-      return fs.unlink(file.source);
-    });
+    }).finally(() => fs.unlink(file.source));
   });
 
-  it('type: delete', function() {
+  it('type: delete', () => {
     hexo.theme.i18n.set('en', {
       foo: 'foo',
       bar: 'bar'
@@ -81,7 +69,7 @@ describe('i18n', function() {
       type: 'delete'
     });
 
-    return process(file).then(function() {
+    return process(file).then(() => {
       hexo.theme.i18n.get('en').should.eql({});
     });
   });

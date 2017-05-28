@@ -1,21 +1,19 @@
-'use strict';
-
 var should = require('chai').should(); // eslint-disable-line
 
-describe('Renderer', function() {
+describe('Renderer', () => {
   var Renderer = require('../../../lib/extend/renderer');
 
-  it('register()', function() {
+  it('register()', () => {
     var r = new Renderer();
 
     // name, output, fn
-    r.register('yaml', 'json', function() {});
+    r.register('yaml', 'json', () => {});
 
     r.get('yaml').should.exist;
     r.get('yaml').output.should.eql('json');
 
     // name, output, fn, sync
-    r.register('yaml', 'json', function() {}, true);
+    r.register('yaml', 'json', () => {}, true);
 
     r.get('yaml').should.exist;
     r.get('yaml').output.should.eql('json');
@@ -50,34 +48,32 @@ describe('Renderer', function() {
     }
   });
 
-  it('register() - promisify', function() {
+  it('register() - promisify', () => {
     var r = new Renderer();
 
     // async
-    r.register('yaml', 'json', function(data, options, callback) {
+    r.register('yaml', 'json', (data, options, callback) => {
       callback(null, 'foo');
     });
 
-    r.get('yaml')({}, {}).then(function(result) {
+    r.get('yaml')({}, {}).then(result => {
       result.should.eql('foo');
     });
 
     // sync
-    r.register('swig', 'html', function(data, options) {
-      return 'foo';
-    }, true);
+    r.register('swig', 'html', (data, options) => 'foo', true);
 
-    r.get('swig')({}, {}).then(function(result) {
+    r.get('swig')({}, {}).then(result => {
       result.should.eql('foo');
     });
   });
 
-  it('register() - compile', function() {
+  it('register() - compile', () => {
     var r = new Renderer();
 
     function renderer(data, locals) {}
 
-    renderer.compile = function(data) {
+    renderer.compile = data => {
       //
     };
 
@@ -85,10 +81,10 @@ describe('Renderer', function() {
     r.get('swig').compile.should.eql(renderer.compile);
   });
 
-  it('getOutput()', function() {
+  it('getOutput()', () => {
     var r = new Renderer();
 
-    r.register('yaml', 'json', function() {});
+    r.register('yaml', 'json', () => {});
 
     r.getOutput('yaml').should.eql('json');
     r.getOutput('.yaml').should.eql('json');
@@ -96,10 +92,10 @@ describe('Renderer', function() {
     r.getOutput('foo.xml').should.not.ok;
   });
 
-  it('isRenderable()', function() {
+  it('isRenderable()', () => {
     var r = new Renderer();
 
-    r.register('yaml', 'json', function() {});
+    r.register('yaml', 'json', () => {});
 
     r.isRenderable('yaml').should.be.true;
     r.isRenderable('.yaml').should.be.true;
@@ -107,14 +103,14 @@ describe('Renderer', function() {
     r.isRenderable('foo.xml').should.be.false;
   });
 
-  it('isRenderableSync()', function() {
+  it('isRenderableSync()', () => {
     var r = new Renderer();
 
-    r.register('yaml', 'json', function() {});
+    r.register('yaml', 'json', () => {});
 
     r.isRenderableSync('yaml').should.be.false;
 
-    r.register('swig', 'html', function() {}, true);
+    r.register('swig', 'html', () => {}, true);
 
     r.isRenderableSync('swig').should.be.true;
     r.isRenderableSync('.swig').should.be.true;
@@ -122,10 +118,10 @@ describe('Renderer', function() {
     r.isRenderableSync('foo.html').should.be.false;
   });
 
-  it('get()', function() {
+  it('get()', () => {
     var r = new Renderer();
 
-    r.register('yaml', 'json', function() {});
+    r.register('yaml', 'json', () => {});
 
     r.get('yaml').should.exist;
     r.get('.yaml').should.exist;
@@ -133,18 +129,18 @@ describe('Renderer', function() {
     should.not.exist(r.get('foo.xml'));
     should.not.exist(r.get('yaml', true));
 
-    r.register('swig', 'html', function() {}, true);
+    r.register('swig', 'html', () => {}, true);
 
     r.get('swig').should.exist;
     r.get('swig', true).should.exist;
   });
 
-  it('list()', function() {
+  it('list()', () => {
     var r = new Renderer();
 
-    r.register('yaml', 'json', function() {});
+    r.register('yaml', 'json', () => {});
 
-    r.register('swig', 'html', function() {}, true);
+    r.register('swig', 'html', () => {}, true);
 
     r.list().should.have.keys(['yaml', 'swig']);
     r.list(true).should.have.keys(['swig']);

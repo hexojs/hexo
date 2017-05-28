@@ -1,48 +1,30 @@
-> before you submit your issue, please delete all the example code in template
+<!--
+Thank you for reporting an issue. For general issues/bugs, please view https://hexo.io/docs/troubleshooting.html .
+Before you submit your issue, please provide the following information as much as possible.
+-->
 
 ## Environment Info
 
-Node version(`node -v`)
-```
-v5.7.0
-```
+Node version(`node -v`):
 
-Your site `_config.yml`
-```
-# Hexo Configuration
-...
-```
+Your site `_config.yml` (Optional):
 
-Your theme `_config.yml`
-```
-# Hexo Configuration
-...
-```
+Your theme `_config.yml` (Optional): 
 
-Plugin version(`npm ls --depth 0`)
-```
-hexo-vanilla-site@0.0.0 ~/hexo-vanilla-site
-├── hexo@3.1.1
-├── hexo-generator-archive@0.1.4
-├── hexo-generator-category@0.1.3
-├── hexo-generator-index@0.2.0
-├── hexo-generator-tag@0.2.0
-├── hexo-renderer-ejs@0.1.1
-├── hexo-renderer-marked@0.2.10
-├── hexo-renderer-stylus@0.3.1
-└── hexo-server@0.1.3
-```
+Hexo and Plugin version(`npm ls --depth 0`): 
 
 ## For BUG
 
-- BUG description
-- the way to reproduce
-- log with hexo <command> --debug
+<!--
+ 1. BUG description
+ 2. The way to reproduce
+ 3. Log with hexo <command> --debug
+-->
 
 ## For question
 
-just push question
+<!-- Question description -->
 
 ## For feature request
 
-just push feature request
+<!-- Feature description -->

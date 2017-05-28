@@ -1,8 +1,6 @@
-'use strict';
-
 var should = require('chai').should(); // eslint-disable-line
 
-describe('url_for', function() {
+describe('url_for', () => {
   var ctx = {
     config: {},
     relative_url: require('../../../lib/plugins/helper/relative_url')
@@ -10,7 +8,7 @@ describe('url_for', function() {
 
   var urlFor = require('../../../lib/plugins/helper/url_for').bind(ctx);
 
-  it('internal url (relative off)', function() {
+  it('internal url (relative off)', () => {
     ctx.config.root = '/';
     urlFor('index.html').should.eql('/index.html');
     urlFor('/').should.eql('/');
@@ -22,7 +20,7 @@ describe('url_for', function() {
     urlFor('/index.html').should.eql('/blog/index.html');
   });
 
-  it('internal url (relative on)', function() {
+  it('internal url (relative on)', () => {
     ctx.config.relative_link = true;
     ctx.config.root = '/';
 
@@ -35,7 +33,7 @@ describe('url_for', function() {
     ctx.config.relative_link = false;
   });
 
-  it('internal url (options.relative)', function() {
+  it('internal url (options.relative)', () => {
     ctx.path = '';
     urlFor('index.html', {relative: true}).should.eql('index.html');
 
@@ -44,16 +42,16 @@ describe('url_for', function() {
     ctx.config.relative_link = false;
   });
 
-  it('external url', function() {
+  it('external url', () => {
     [
       'http://hexo.io/',
       '//google.com/'
-    ].forEach(function(url) {
+    ].forEach(url => {
       urlFor(url).should.eql(url);
     });
   });
 
-  it('only hash', function() {
+  it('only hash', () => {
     urlFor('#test').should.eql('#test');
   });
 });

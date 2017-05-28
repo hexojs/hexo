@@ -1,6 +1,4 @@
-'use strict';
-
-describe('Filters', function() {
+describe('Filters', () => {
   require('./backtick_code_block');
   require('./excerpt');
   require('./external_link');

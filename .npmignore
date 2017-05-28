@@ -6,3 +6,8 @@ coverage/
 gulpfile.js
 .idea/
 appveyor.yml
+.github/
+.editorconfig
+.eslintrc
+.eslintignore
+.DS_Store
