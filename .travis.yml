@@ -12,6 +12,7 @@ node_js:
   - "node"
 
 script:
+  - npm config get production
   - npm run eslint
   - npm run jscs
   - npm run test-cov
