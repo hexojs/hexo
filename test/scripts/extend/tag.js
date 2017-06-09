@@ -81,6 +81,29 @@ describe('Tag', () => {
     });
   });
 
+  it('register() - nested async / async test', () => {
+    var tag = new Tag();
+
+    tag.register('test', (args, content) => content, {ends: true, async: true});
+    tag.register('async', (args, content) => {
+      return Promise.resolve(args.join(' ') + ' ' + content)
+    }, {ends: true, async: true});
+
+    var str = [
+      '{% test %}',
+      '123456',
+      '  {% async %}',
+      '  async',
+      '  {% endasync %}',
+      '789012',
+      '{% endtest %}'
+    ].join('\n');
+
+    return tag.render(str).then(result => {
+      result.replace(/\s/g, '').should.eql('123456async789012');
+    });
+  });
+
   it('register() - strip indention', () => {
     var tag = new Tag();
 
