@@ -86,7 +86,7 @@ describe('Tag', () => {
 
     tag.register('test', (args, content) => content, {ends: true, async: true});
     tag.register('async', (args, content) => {
-      return Promise.resolve(args.join(' ') + ' ' + content)
+      return Promise.resolve(args.join(' ') + ' ' + content);
     }, {ends: true, async: true});
 
     var str = [
