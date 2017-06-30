@@ -605,5 +605,5 @@ describe('open_graph', () => {
     });
 
     result.should.not.contain(meta({property: 'og:locale'}));
-  })
+  });
 });
