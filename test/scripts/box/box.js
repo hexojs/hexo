@@ -110,7 +110,6 @@ describe('Box', () => {
     }).finally(() => fs.rmdir(box.base));
   });
 
-
   it('process() - do nothing if target does not exist', () => {
     var box = newBox('test');
 
@@ -244,8 +243,6 @@ describe('Box', () => {
 
       keys.length.should.eql(1);
       keys[0].should.eql('foo.txt');
-
-
     }).finally(() => fs.rmdir(box.base));
   });
 
