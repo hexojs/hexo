@@ -554,4 +554,56 @@ describe('open_graph', () => {
 
     result.should.contain(meta({name: 'keywords', content: keywords}));
   });
+
+  it('og:locale - options.language', () => {
+    var result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    }, {language: 'es-cr'});
+
+    result.should.contain(meta({property: 'og:locale', content: 'es-cr'}));
+  });
+
+  it('og:locale - page.lang', () => {
+    var result = openGraph.call({
+      page: { lang: 'es-mx' },
+      config: hexo.config,
+      is_post: isPost
+    });
+
+    result.should.contain(meta({property: 'og:locale', content: 'es-mx'}));
+  });
+
+  it('og:locale - page.language', () => {
+    var result = openGraph.call({
+      page: { language: 'es-gt' },
+      config: hexo.config,
+      is_post: isPost
+    });
+
+    result.should.contain(meta({property: 'og:locale', content: 'es-gt'}));
+  });
+
+  it('og:locale - config.language', () => {
+    hexo.config.language = 'es-pa';
+
+    var result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    });
+
+    result.should.contain(meta({property: 'og:locale', content: 'es-pa'}));
+  });
+
+  it('og:locale - no language set', () => {
+    var result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    });
+
+    result.should.not.contain(meta({property: 'og:locale'}));
+  });
 });
