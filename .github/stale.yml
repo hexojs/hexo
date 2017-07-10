@@ -10,6 +10,8 @@ exemptLabels:
   - discussion
   - need-verify
   - pending-reply
+  - feature-request
+  - enhancement
 # Label to use when marking as stale
 staleLabel:
   - wontfix
