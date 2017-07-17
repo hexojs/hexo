@@ -39,7 +39,7 @@
     "deep-assign": "^2.0.0",
     "hexo-cli": "^1.0.2",
     "hexo-front-matter": "^0.2.2",
-    "hexo-fs": "^0.1.5",
+    "hexo-fs": "^0.2.0",
     "hexo-i18n": "^0.2.1",
     "hexo-log": "^0.1.2",
     "hexo-util": "^0.6.0",
