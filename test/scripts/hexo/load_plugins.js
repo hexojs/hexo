@@ -48,6 +48,7 @@ describe('Load plugins', () => {
       name: 'hexo-site',
       version: '0.0.0',
       private: true,
+      dependencies: {},
       devDependencies: {}
     };
 
