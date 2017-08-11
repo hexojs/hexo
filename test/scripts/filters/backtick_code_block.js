@@ -278,6 +278,28 @@ describe('Backtick code block', () => {
     data.content.should.eql('<escape>' + expected + '</escape>');
   });
 
+  it('line number, first_line_number inline, js', () => {
+    hexo.config.highlight.line_number = true;
+    hexo.config.highlight.first_line_number = 'inline';
+
+    var data = {
+      content: [
+        '``` js',
+        code,
+        '```'
+      ].join('\n')
+    };
+
+    var expected = highlight(code, {
+      lang: 'js',
+      gutter: false,
+      firstLine: 0
+    });
+
+    codeBlock(data);
+    data.content.should.eql('<escape>' + expected + '</escape>');
+  });
+
   it('line number, first_line_number inline, js=1', () => {
     hexo.config.highlight.line_number = true;
     hexo.config.highlight.first_line_number = 'inline';
