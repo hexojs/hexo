@@ -194,7 +194,7 @@ describe('Backtick code block', () => {
     data.content.should.eql('<escape>' + expected + '</escape>');
   });
 
-  it("line number false, don'care first_line_number always1", () => {
+  it('line number false, don`t first_line_number always1', () => {
     hexo.config.highlight.line_number = false;
     hexo.config.highlight.first_line_number = 'always1';
 
@@ -215,7 +215,7 @@ describe('Backtick code block', () => {
     data.content.should.eql('<escape>' + expected + '</escape>');
   });
 
-  it("line number false, don'care first_line_number inilne", () => {
+  it('line number false, don`t care first_line_number inilne', () => {
     hexo.config.highlight.line_number = false;
     hexo.config.highlight.first_line_number = 'inilne';
 
