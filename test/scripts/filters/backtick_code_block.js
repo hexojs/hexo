@@ -194,6 +194,48 @@ describe('Backtick code block', () => {
     data.content.should.eql('<escape>' + expected + '</escape>');
   });
 
+  it("line number false, don'care first_line_number always1", () => {
+    hexo.config.highlight.line_number = false;
+    hexo.config.highlight.first_line_number = 'always1';
+
+    var data = {
+      content: [
+        '``` js',
+        code,
+        '```'
+      ].join('\n')
+    };
+
+    var expected = highlight(code, {
+      lang: 'js',
+      gutter: false
+    });
+
+    codeBlock(data);
+    data.content.should.eql('<escape>' + expected + '</escape>');
+  });
+
+  it("line number false, don'care first_line_number inilne", () => {
+    hexo.config.highlight.line_number = false;
+    hexo.config.highlight.first_line_number = 'inilne';
+
+    var data = {
+      content: [
+        '``` js',
+        code,
+        '```'
+      ].join('\n')
+    };
+
+    var expected = highlight(code, {
+      lang: 'js',
+      gutter: false
+    });
+
+    codeBlock(data);
+    data.content.should.eql('<escape>' + expected + '</escape>');
+  });
+
   it('line number true', () => {
     hexo.config.highlight.line_number = true;
 
