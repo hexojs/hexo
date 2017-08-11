@@ -262,7 +262,7 @@ describe('Backtick code block', () => {
 
     var data = {
       content: [
-        '```js=',
+        '``` js=',
         code,
         '```'
       ].join('\n')
@@ -284,7 +284,7 @@ describe('Backtick code block', () => {
 
     var data = {
       content: [
-        '```js=1',
+        '``` js=1',
         code,
         '```'
       ].join('\n')
@@ -306,7 +306,7 @@ describe('Backtick code block', () => {
 
     var data = {
       content: [
-        '```js=2',
+        '``` js=2',
         code,
         '```'
       ].join('\n')
