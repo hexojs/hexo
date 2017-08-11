@@ -174,7 +174,7 @@ describe('Backtick code block', () => {
     data.content.should.eql('<escape>' + expected + '</escape>');
   });
 
-  it('line number', () => {
+  it('line number false', () => {
     hexo.config.highlight.line_number = false;
 
     var data = {
@@ -188,6 +188,92 @@ describe('Backtick code block', () => {
     var expected = highlight(code, {
       lang: 'js',
       gutter: false
+    });
+
+    codeBlock(data);
+    data.content.should.eql('<escape>' + expected + '</escape>');
+  });
+
+  it('line number true', () => {
+    hexo.config.highlight.line_number = true;
+
+    var data = {
+      content: [
+        '``` js',
+        code,
+        '```'
+      ].join('\n')
+    };
+
+    var expected = highlight(code, {
+      lang: 'js',
+      gutter: true
+    });
+
+    codeBlock(data);
+    data.content.should.eql('<escape>' + expected + '</escape>');
+  });
+
+  it('line number, first_line_number always1, js=', () => {
+    hexo.config.highlight.line_number = true;
+    hexo.config.highlight.first_line_number = 'always1';
+
+    var data = {
+      content: [
+        '```js=',
+        code,
+        '```'
+      ].join('\n')
+    };
+
+    var expected = highlight(code, {
+      lang: 'js',
+      gutter: true,
+      firstLine: 1
+    });
+
+    codeBlock(data);
+    data.content.should.eql('<escape>' + expected + '</escape>');
+  });
+
+  it('line number, first_line_number inline, js=1', () => {
+    hexo.config.highlight.line_number = true;
+    hexo.config.highlight.first_line_number = 'inline';
+
+    var data = {
+      content: [
+        '```js=1',
+        code,
+        '```'
+      ].join('\n')
+    };
+
+    var expected = highlight(code, {
+      lang: 'js',
+      gutter: true,
+      firstLine: 1
+    });
+
+    codeBlock(data);
+    data.content.should.eql('<escape>' + expected + '</escape>');
+  });
+
+  it('line number, first_line_number inline, js=2', () => {
+    hexo.config.highlight.line_number = true;
+    hexo.config.highlight.first_line_number = 'inline';
+
+    var data = {
+      content: [
+        '```js=2',
+        code,
+        '```'
+      ].join('\n')
+    };
+
+    var expected = highlight(code, {
+      lang: 'js',
+      gutter: true,
+      firstLine: 2
     });
 
     codeBlock(data);
