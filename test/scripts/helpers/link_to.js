@@ -22,12 +22,12 @@ describe('link_to', () => {
 
   it('external (boolean)', () => {
     linkTo('http://hexo.io/', 'Hexo', true)
-      .should.eql('<a href="http://hexo.io/" title="Hexo" target="_blank" rel="external">Hexo</a>');
+      .should.eql('<a href="http://hexo.io/" title="Hexo" target="_blank" rel="external noopener">Hexo</a>');
   });
 
   it('external (object)', () => {
     linkTo('http://hexo.io/', 'Hexo', {external: true})
-      .should.eql('<a href="http://hexo.io/" title="Hexo" target="_blank" rel="external">Hexo</a>');
+      .should.eql('<a href="http://hexo.io/" title="Hexo" target="_blank" rel="external noopener">Hexo</a>');
   });
 
   it('class (string)', () => {
