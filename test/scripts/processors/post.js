@@ -663,6 +663,31 @@ describe('post', () => {
     }).finally(() => fs.unlink(file.source));
   });
 
+  it('post - categories (multiple hierarchies)', () => {
+    var body = [
+      'title: "Hello world"',
+      'categories:',
+      '- foo',
+      '- [bar, baz]',
+      '---'
+    ].join('\n');
+
+    var file = newFile({
+      path: 'foo.html',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
+      var post = Post.findOne({source: file.path});
+
+      post.categories.map(item => item.name).should.eql(['foo', 'bar', 'baz']);
+
+      return post.remove();
+    }).finally(() => fs.unlink(file.source));
+  });
+
   it('post - tag is an alias for tags', () => {
     var body = [
       'title: "Hello world"',

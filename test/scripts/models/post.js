@@ -143,31 +143,6 @@ describe('Post', () => {
     return Post.removeById(post._id);
   }));
 
-  it('categories (multi hierarchy) - virtual', () => Post.insert({
-    source: 'foo.md',
-    slug: 'bar'
-  }).then(post => post.setCategories([['foo', '', 'bar'], '', 'baz'])
-    .thenReturn(Post.findById(post._id))).then(post => {
-    var cats = post.categories.toArray();
-
-    // There should have been 3 categories set; blanks eliminated
-    cats.should.have.lengthOf(3);
-
-    // Category 1 should be foo, no parent
-    cats[0].name.should.eql('foo');
-    should.not.exist(cats[0].parent);
-    
-    // Category 2 should be bar, foo as parent
-    cats[1].name.should.eql('bar');
-    cats[1].parent.should.eql(cats[0]._id);
-    
-    // Category 3 should be baz, no parent
-    cats[2].name.should.eql('baz');
-    should.not.exist(cats[2].parent);
-
-    return Post.removeById(post._id);
-  }));
-
   it('setTags() - old tags should be removed', () => {
     var id;
 
@@ -337,6 +312,31 @@ describe('Post', () => {
       post.categories.map(cat => cat.name).should.eql(['foo', 'bar']);
     }).finally(() => Post.removeById(id));
   });
+
+  it('setCategories() - multiple hierarchies', () => Post.insert({
+    source: 'foo.md',
+    slug: 'bar'
+  }).then(post => post.setCategories([['foo', '', 'bar'], '', 'baz'])
+    .thenReturn(Post.findById(post._id))).then(post => {
+    var cats = post.categories.toArray();
+
+    // There should have been 3 categories set; blanks eliminated
+    cats.should.have.lengthOf(3);
+
+    // Category 1 should be foo, no parent
+    cats[0].name.should.eql('foo');
+    should.not.exist(cats[0].parent);
+    
+    // Category 2 should be bar, foo as parent
+    cats[1].name.should.eql('bar');
+    cats[1].parent.should.eql(cats[0]._id);
+    
+    // Category 3 should be baz, no parent
+    cats[2].name.should.eql('baz');
+    should.not.exist(cats[2].parent);
+
+    return Post.removeById(post._id);
+  }));
 
   it('remove PostTag references when a post is removed', () => Post.insert({
     source: 'foo.md',
