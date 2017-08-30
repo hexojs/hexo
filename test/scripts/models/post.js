@@ -127,7 +127,7 @@ describe('Post', () => {
   }).then(post => post.setCategories(['foo', 'bar', 'baz'])
     .thenReturn(Post.findById(post._id))).then(post => {
     var cats = post.categories;
-    
+
     // Make sure the order of categories is correct
     cats.map((cat, i) => {
       // Make sure the parent reference is correct
@@ -326,11 +326,11 @@ describe('Post', () => {
     // Category 1 should be foo, no parent
     cats[0].name.should.eql('foo');
     should.not.exist(cats[0].parent);
-    
+
     // Category 2 should be bar, foo as parent
     cats[1].name.should.eql('bar');
     cats[1].parent.should.eql(cats[0]._id);
-    
+
     // Category 3 should be baz, no parent
     cats[2].name.should.eql('baz');
     should.not.exist(cats[2].parent);
