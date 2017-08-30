@@ -338,6 +338,19 @@ describe('Post', () => {
     return Post.removeById(post._id);
   }));
 
+  it('setCategories() - multiple hierarchies (dedupes repeated parent)', () => Post.insert({
+    source: 'foo.md',
+    slug: 'bar'
+  }).then(post => post.setCategories([['foo', 'bar'], ['foo', 'baz']])
+    .thenReturn(Post.findById(post._id))).then(post => {
+    var cats = post.categories.toArray();
+
+    // There should have been 3 categories set (foo is dupe)
+    cats.should.have.lengthOf(3);
+
+    return Post.removeById(post._id);
+  }));
+
   it('remove PostTag references when a post is removed', () => Post.insert({
     source: 'foo.md',
     slug: 'bar'
