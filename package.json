@@ -41,7 +41,7 @@
     "hexo-front-matter": "^0.2.2",
     "hexo-fs": "^0.2.0",
     "hexo-i18n": "^0.2.1",
-    "hexo-log": "^0.1.2",
+    "hexo-log": "^0.2.0",
     "hexo-util": "^0.6.0",
     "js-yaml": "^3.6.1",
     "lodash": "^4.13.1",
