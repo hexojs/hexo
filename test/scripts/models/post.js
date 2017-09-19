@@ -82,7 +82,7 @@ describe('Post', () => {
       return Post.removeById(data._id);
     });
   });
-  
+
   it('permalink - virtual - when set relative_link', () => {
     hexo.config.root = '/';
     hexo.config.relative_link = true;
@@ -106,7 +106,7 @@ describe('Post', () => {
       return Post.removeById(data._id);
     });
   });
-  
+
   it('permalink_root_prefix - virtual - when set relative_link', () => {
     hexo.config.url = 'http://yoursite.com/root';
     hexo.config.root = '/root/';
