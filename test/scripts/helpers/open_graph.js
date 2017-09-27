@@ -348,9 +348,9 @@ describe('open_graph', function() {
       page: {},
       config: hexo.config,
       is_post: isPost
-    }, {twitter_player: 'http://provider.url'});
+    }, {twitter_player: 'provider.url'});
 
-    result.should.contain(meta({name: 'twitter:player', content: 'http://provider.url'}));
+    result.should.contain(meta({name: 'twitter:player', content: 'provider.url'}));
   });
 
   it('google_plus - options', function() {
