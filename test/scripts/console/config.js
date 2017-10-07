@@ -63,7 +63,7 @@ describe('config', () => {
   function writeConfig() {
     var args = _.toArray(arguments);
 
-    return config({_: args}).then(() => fs.readFile(hexo.config_path)).then(content => yaml.safeLoad(content));
+    return config({_: args}).then(() => fs.readFile(hexo.config_path)).then(content => yaml.load(content));
   }
 
   it('write config', () => writeConfig('title', 'My Blog').then(config => {
@@ -84,6 +84,10 @@ describe('config', () => {
 
   it('write config: null', () => writeConfig('language', 'null').then(config => {
     should.not.exist(config.language);
+  }));
+
+  it('write config: regex', () => writeConfig('include', /^pattern$/gim).then(config => {
+    config.include.should.eql(/^pattern$/gim);
   }));
 
   it('write config: json', () => {
