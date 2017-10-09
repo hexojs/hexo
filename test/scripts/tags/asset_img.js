@@ -48,16 +48,16 @@ describe('asset_img', () => {
     assetImgTag.call(post, ['spaced asset', 'spaced title'])
       .should.eql('<img src="/foo/spaced%20asset" title="spaced title">');
   });
-  
+
   it('with alt and title', () => {
     assetImgTag.call(post, ['bar', '"title"', '"alt"'])
       .should.eql('<img src="/foo/bar" title="title" alt="alt">');
   });
-  
-    it('with width height alt and title', () => {
-      assetImgTag.call(post, ['bar', '100', '200', '"title"', '"alt"'])
-        .should.eql('<img src="/foo/bar" width="100" height="200" title="title" alt="alt">');
-    });
+
+  it('with width height alt and title', () => {
+    assetImgTag.call(post, ['bar', '100', '200', '"title"', '"alt"'])
+      .should.eql('<img src="/foo/bar" width="100" height="200" title="title" alt="alt">');
+  });
 
   it('no slug', () => {
     should.not.exist(assetImg(''));
