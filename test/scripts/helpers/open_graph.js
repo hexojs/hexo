@@ -1,5 +1,6 @@
 var moment = require('moment');
 var should = require('chai').should(); // eslint-disable-line
+var expect = require('chai').expect;
 
 describe('open_graph', () => {
   var Hexo = require('../../../lib/hexo');
@@ -238,6 +239,19 @@ describe('open_graph', () => {
     }, {site_name: 'foo'});
 
     result.should.contain(meta({property: 'og:site_name', content: 'foo'}));
+  });
+
+  it('description - truncate meta description to 160 characters', () => {
+    var ctx = {
+      // 160 `a`s followed by some `b`s
+      page: {description: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbb'},
+      config: hexo.config,
+      is_post: isPost
+    };
+
+    var result = openGraph.call(ctx);
+
+    expect(result.match('<meta name="description"[^>]+content="([^")]*)"')[1].length).to.be.at.most(160);
   });
 
   it('description - page', () => {
