@@ -43,7 +43,7 @@ describe('External link', () => {
     data.content.should.eql([
       '# External link test',
       '1. External link',
-      '<a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>',
+      '<a href="http://hexo.io/" target="_blank" rel="noopener">Hexo</a>',
       '2. Internal link',
       '<a href="/archives/foo.html">Link</a>',
       '3. Ignore links have "target" attribute',
