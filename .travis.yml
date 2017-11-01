@@ -9,6 +9,7 @@ cache:
 
 node_js:
   - "6"
+  - "8"
   - "node"
 
 script:
