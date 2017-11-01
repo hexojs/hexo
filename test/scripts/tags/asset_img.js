@@ -66,4 +66,9 @@ describe('asset_img', () => {
   it('asset not found', () => {
     should.not.exist(assetImg('boo'));
   });
+
+  it('with root path', ()=> {
+    hexo.config.root = '/root/';
+    assetImg('bar').should.eql('<img src="/root/foo/bar">');
+  });
 });
