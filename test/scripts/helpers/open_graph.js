@@ -251,7 +251,7 @@ describe('open_graph', () => {
 
     var result = openGraph.call(ctx);
 
-    expect(result.match('<meta name="description"[^>]+content="([^")]*)"')[1].length).to.be.at.most(160);
+    result.match('<meta name="description"[^>]+content="([^")]*)"')[1].length.should.be.at.most(160);
   });
 
   it('description - page', () => {
