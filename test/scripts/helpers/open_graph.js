@@ -1,6 +1,5 @@
 var moment = require('moment');
 var should = require('chai').should(); // eslint-disable-line
-var expect = require('chai').expect;
 
 describe('open_graph', () => {
   var Hexo = require('../../../lib/hexo');
