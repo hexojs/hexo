@@ -38,20 +38,14 @@
     "no-mixed-spaces-and-tabs": 2,
     "no-multiple-empty-lines": 2,
     "no-multi-str": 2,
-    "one-var": [
-      2,
-      {
-        "uninitialized": "always",
-        "initialized": "never"
-      }
-    ],
+    "one-var": 0,
     "dot-location": [
       2,
       "property"
     ],
     "operator-linebreak": [
       2,
-      "before"
+      "after"
     ],
     "key-spacing": [
       2,
@@ -70,7 +64,7 @@
     "comma-spacing": [
       2,
       {
-        "before": false
+        "after": true
       }
     ],
     "semi-spacing": [
@@ -87,12 +81,7 @@
     ],
     "space-in-parens": [
       2,
-      "never",
-      {
-        "exceptions": [
-          "{}"
-        ]
-      }
+      "never"
     ],
     "comma-dangle": [
       2,
@@ -109,7 +98,7 @@
     ],
     "curly": [
       2,
-      "all"
+      "multi-line"
     ],
     "dot-notation": 2,
     "eol-last": 2,
