@@ -7,7 +7,7 @@
     "hexo": "./bin/hexo"
   },
   "scripts": {
-    "eslint": "eslint .",
+    "eslint": "eslint-ci .",
     "jscs": "jscs .",
     "test": "mocha test/index.js",
     "test-cov": "istanbul cover --print both _mocha -- test/index.js"
@@ -62,6 +62,7 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
     "eslint": "^2.12.0",
+    "eslint-ci": "^0.1.0",
     "eslint-config-hexo": "^1.0.4",
     "hexo-renderer-marked": "^0.2.10",
     "istanbul": "^0.4.3",
