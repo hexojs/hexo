@@ -201,7 +201,7 @@ describe('Hexo', () => {
           } catch (e) {
             reject(e);
           }
-        })
+        });
       })
     ]);
   });
