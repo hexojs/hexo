@@ -187,6 +187,10 @@ describe('Hexo', () => {
       callback();
     });
 
+    hexo.exit({foo: 'bar'});
+  });
+
+  it('exit() - error handling', () => {
     return hexo.exit({foo: 'bar'});
   });
 
