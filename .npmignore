@@ -9,5 +9,6 @@ appveyor.yml
 .github/
 .editorconfig
 .eslintrc
+.eslintrc.json
 .eslintignore
 .DS_Store
