@@ -68,7 +68,7 @@
     "istanbul": "^0.4.3",
     "jscs": "^3.0.4",
     "jscs-preset-hexo": "^1.0.1",
-    "mocha": "^2.5.3",
+    "mocha": "^4.0.1",
     "rewire": "^2.5.1",
     "sinon": "^1.17.4"
   }
