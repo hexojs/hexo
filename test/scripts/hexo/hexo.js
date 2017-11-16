@@ -181,7 +181,7 @@ describe('Hexo', () => {
     });
   });
 
-  it('exit() - error handling', callback => {
+  it('exit() - error handling - callback', callback => {
     hexo.once('exit', err => {
       err.should.eql({foo: 'bar'});
       callback();
@@ -190,8 +190,20 @@ describe('Hexo', () => {
     hexo.exit({foo: 'bar'});
   });
 
-  it('exit() - error handling', () => {
-    return hexo.exit({foo: 'bar'});
+  it('exit() - error handling - promise', () => {
+    return Promise.all([
+      hexo.exit({foo: 'bar'}),
+      new Promise((resolve, reject) => {
+        hexo.once('exit', err => {
+          try {
+            err.should.eql({foo: 'bar'});
+            resolve();
+          } catch (e) {
+            reject(e);
+          }
+        })
+      })
+    ]);
   });
 
   it('draft visibility', () => Post.insert([
