@@ -11,7 +11,7 @@ describe('Console list', () => {
 
   before(() => {
     var log = console.log;
-    sinon.stub(console, 'log', function(...args) {
+    sinon.stub(console, 'log').callsFake(function(...args) {
       return log.apply(log, args);
     });
   });
