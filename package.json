@@ -1,13 +1,13 @@
 {
   "name": "hexo",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
   "main": "lib/hexo",
   "bin": {
     "hexo": "./bin/hexo"
   },
   "scripts": {
-    "eslint": "eslint .",
+    "eslint": "eslint-ci .",
     "jscs": "jscs .",
     "test": "mocha test/index.js",
     "test-cov": "istanbul cover --print both _mocha -- test/index.js"
@@ -46,8 +46,8 @@
     "js-yaml": "^3.6.1",
     "lodash": "^4.13.1",
     "minimatch": "^3.0.0",
-    "moment": "~2.13.0",
-    "moment-timezone": "^0.5.4",
+    "moment": "^2.19.2",
+    "moment-timezone": "^0.5.12",
     "nunjucks": "^2.4.2",
     "pretty-hrtime": "^1.0.2",
     "strip-indent": "^1.0.1",
@@ -59,16 +59,17 @@
     "warehouse": "^2.2.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0",
-    "chai-as-promised": "^5.3.0",
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
     "eslint": "^2.12.0",
+    "eslint-ci": "^0.1.0",
     "eslint-config-hexo": "^1.0.4",
     "hexo-renderer-marked": "^0.2.10",
     "istanbul": "^0.4.3",
     "jscs": "^3.0.4",
     "jscs-preset-hexo": "^1.0.1",
-    "mocha": "^2.5.3",
+    "mocha": "^4.0.1",
     "rewire": "^2.5.1",
-    "sinon": "^1.17.4"
+    "sinon": "^4.1.2"
   }
 }
