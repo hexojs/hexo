@@ -20,7 +20,6 @@ describe('generate', () => {
   afterEach(() => fs.rmdir(hexo.base_dir));
 
   function testGenerate(options) {
-    options = options || {};
 
     return Promise.all([
       // Add some source files
@@ -57,9 +56,9 @@ describe('generate', () => {
 
     // Add some source files
     return fs.writeFile(src, content).then(() => // First generation
-    generate({})).then(() => // Delete generated files
+    generate()).then(() => // Delete generated files
     fs.unlink(dest)).then(() => // Second generation
-    generate({})).then(() => fs.readFile(dest)).then(result => {
+    generate()).then(() => fs.readFile(dest)).then(result => {
       result.should.eql(content);
 
       // Remove source files and generated files
@@ -78,9 +77,9 @@ describe('generate', () => {
 
     // Add some source files
     return fs.writeFile(src, content).then(() => // First generation
-    generate({})).then(() => // Change the generated file
+    generate()).then(() => // Change the generated file
     fs.writeFile(dest, newContent)).then(() => // Second generation
-    generate({})).then(() => // Read the generated file
+    generate()).then(() => // Read the generated file
     fs.readFile(dest)).then(result => {
       // Make sure the generated file didn't changed
       result.should.eql(newContent);
@@ -100,7 +99,7 @@ describe('generate', () => {
     var mtime;
 
     return fs.writeFile(src, content).then(() => // First generation
-    generate({})).then(() => // Read file status
+    generate()).then(() => // Read file status
     fs.stat(dest)).then(stats => {
       mtime = stats.mtime.getTime();
     }).delay(1000).then(() => // Force regenerate
@@ -156,12 +155,12 @@ describe('generate', () => {
     fs.writeFile(pathFn.join(hexo.theme_dir, 'source', 'a.txt'), 'a'),
     fs.writeFile(pathFn.join(hexo.theme_dir, 'source', 'b.txt'), 'b'),
     fs.writeFile(pathFn.join(hexo.theme_dir, 'source', 'c.swig'), 'c')
-  ]).then(() => generate({})).then(() => // Update source file
+  ]).then(() => generate()).then(() => // Update source file
   Promise.all([
     fs.writeFile(pathFn.join(hexo.theme_dir, 'source', 'b.txt'), 'bb'),
     fs.writeFile(pathFn.join(hexo.theme_dir, 'source', 'c.swig'), 'cc')
   ])).then(() => // Generate again
-  generate({})).then(() => // Read the updated source file
+  generate()).then(() => // Read the updated source file
   Promise.all([
     fs.readFile(pathFn.join(hexo.public_dir, 'b.txt')),
     fs.readFile(pathFn.join(hexo.public_dir, 'c.html'))
