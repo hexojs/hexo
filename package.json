@@ -47,7 +47,7 @@
     "lodash": "^4.13.1",
     "minimatch": "^3.0.0",
     "moment": "^2.19.2",
-    "moment-timezone": "^0.5.12",
+    "moment-timezone": "^0.5.14",
     "nunjucks": "^2.4.2",
     "pretty-hrtime": "^1.0.2",
     "strip-indent": "^1.0.1",
