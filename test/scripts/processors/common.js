@@ -43,6 +43,14 @@ describe('common', () => {
     should.not.exist(common.toDate('foo'));
   });
 
+  it('timezone()', () => {
+    const d = new Date(Date.UTC(1972, 2, 29, 0, 0, 0));
+    const d_timezone_UTC = common.timezone(d, 'UTC');
+    (common.timezone(d, 'Asia/Shanghai') - d_timezone_UTC).should.eql(-8 * 3600 * 1000);
+    (common.timezone(d, 'Asia/Bangkok') - d_timezone_UTC).should.eql(-7 * 3600 * 1000);
+    (common.timezone(d, 'America/Los_Angeles') - d_timezone_UTC).should.eql(8 * 3600 * 1000);
+  });
+
   it('isMatch() - string', () => {
     // String
     common.isMatch('foo/test.html', 'foo/*.html').should.be.true;
