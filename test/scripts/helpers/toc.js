@@ -16,7 +16,8 @@ describe('toc', () => {
     '<h2 id="title_1_3">Title 1.3</h2>',
     '<h3 id="title_1_3_1">Title 1.3.1</h3>',
     '<h1 id="title_2">Title 2</h1>',
-    '<h2 id="title_2_1">Title 2.1</h2>'
+    '<h2 id="title_2_1">Title 2.1</h2>',
+    '<h1 id="title_3">Title should escape &amp;, &lt;, &apos;, and &quot;</h1>'
   ].join('');
 
   var genResult = options => {
@@ -102,6 +103,12 @@ describe('toc', () => {
           '<span class="' + className + '-text">Title 2</span>',
         '</a>',
         ifTrue(maxDepth >= 2, resultTitle_2_1, ''),
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_3">',
+      ifTrue(listNumber, '<span class="' + className + '-number">3.</span> ', ''),
+      '<span class="' + className + '-text">Title should escape &amp;, &lt;, &apos;, and &quot;</span>',
+      '</a>',
       '</li>'
     ].join('');
 
