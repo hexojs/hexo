@@ -83,6 +83,18 @@ describe('Post', () => {
     });
   });
 
+  it('permalink - virtual - when set relative_link', () => {
+    hexo.config.root = '/';
+    hexo.config.relative_link = true;
+    return Post.insert({
+      source: 'foo.md',
+      slug: 'bar'
+    }).then(data => {
+      data.permalink.should.eql(hexo.config.url + '/' + data.path);
+      return Post.removeById(data._id);
+    });
+  });
+
   it('permalink_root_prefix - virtual', () => {
     hexo.config.url = 'http://yoursite.com/root';
     hexo.config.root = '/root/';
@@ -91,6 +103,19 @@ describe('Post', () => {
       slug: 'bar'
     }).then(data => {
       data.permalink.should.eql('http://yoursite.com/root/' + data.path);
+      return Post.removeById(data._id);
+    });
+  });
+
+  it('permalink_root_prefix - virtual - when set relative_link', () => {
+    hexo.config.url = 'http://yoursite.com/root';
+    hexo.config.root = '/root/';
+    hexo.config.relative_link = true;
+    return Post.insert({
+      source: 'foo.md',
+      slug: 'bar'
+    }).then(data => {
+      data.permalink.should.eql(hexo.config.url + '/' + data.path);
       return Post.removeById(data._id);
     });
   });
