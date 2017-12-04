@@ -56,6 +56,48 @@ describe('PostAsset', () => {
     return PostAsset.removeById(data._id);
   }));
 
+  it('path - virtual - when permalink is .html', () => {
+    hexo.config.permalink = ':year/:month/:day/:title.html';
+    return PostAsset.insert({
+      _id: 'source/_posts/test/foo.html',
+      slug: 'foo.htm',
+      post: post._id
+    }).then(data => {
+      data.path.should.eql(pathFn.join(post.path, data.slug));
+      return PostAsset.removeById(data._id);
+    }).finally(() => {
+      hexo.config.permalink = ':year/:month/:day/:title';
+    });
+  });
+
+  it('path - virtual - when permalink is .htm', () => {
+    hexo.config.permalink = ':year/:month/:day/:title.htm';
+    return PostAsset.insert({
+      _id: 'source/_posts/test/foo.htm',
+      slug: 'foo.htm',
+      post: post._id
+    }).then(data => {
+      data.path.should.eql(pathFn.join(post.path, data.slug));
+      return PostAsset.removeById(data._id);
+    }).finally(() => {
+      hexo.config.permalink = ':year/:month/:day/:title';
+    });
+  });
+
+  it('path - virtual - when permalink contains .htm not in the end', () => {
+    hexo.config.permalink = ':year/:month/:day/:title/.htm-foo/';
+    return PostAsset.insert({
+      _id: 'source/_posts/test/foo.html',
+      slug: 'foo.html',
+      post: post._id
+    }).then(data => {
+      data.path.should.eql(pathFn.join(post.path + '.htm-foo/', data.slug));
+      return PostAsset.removeById(data._id);
+    }).finally(() => {
+      hexo.config.permalink = ':year/:month/:day/:title';
+    });
+  });
+
   it('source - virtual', () => PostAsset.insert({
     _id: 'source/_posts/test/foo.jpg',
     slug: 'foo.jpg',
