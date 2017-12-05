@@ -240,19 +240,6 @@ describe('open_graph', () => {
     result.should.contain(meta({property: 'og:site_name', content: 'foo'}));
   });
 
-  it('description - truncate meta description to 160 characters', () => {
-    var ctx = {
-      // 160 `a`s followed by some `b`s
-      page: {description: 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabbbbbbb'},
-      config: hexo.config,
-      is_post: isPost
-    };
-
-    var result = openGraph.call(ctx);
-
-    result.match('<meta name="description"[^>]+content="([^")]*)"')[1].length.should.be.at.most(160);
-  });
-
   it('description - page', () => {
     var ctx = {
       page: {description: 'test'},
