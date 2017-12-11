@@ -17,7 +17,8 @@ describe('toc', () => {
     '<h3 id="title_1_3_1">Title 1.3.1</h3>',
     '<h1 id="title_2">Title 2</h1>',
     '<h2 id="title_2_1">Title 2.1</h2>',
-    '<h1 id="title_3">Title should escape &amp;, &lt;, &apos;, and &quot;</h1>'
+    '<h1 id="title_3">Title should escape &amp;, &lt;, &#39;, and &quot;</h1>',
+    '<h1 id="title_4"><a name="chapter1">Chapter 1 should be printed to toc</a></h1>'
   ].join('');
 
   var genResult = options => {
@@ -107,7 +108,13 @@ describe('toc', () => {
       '<li class="' + className + '-item ' + className + '-level-1">',
       '<a class="' + className + '-link" href="#title_3">',
       ifTrue(listNumber, '<span class="' + className + '-number">3.</span> ', ''),
-      '<span class="' + className + '-text">Title should escape &amp;, &lt;, &apos;, and &quot;</span>',
+      '<span class="' + className + '-text">Title should escape &amp;, &lt;, &#39;, and &quot;</span>',
+      '</a>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_4">',
+      ifTrue(listNumber, '<span class="' + className + '-number">4.</span> ', ''),
+      '<span class="' + className + '-text">Chapter 1 should be printed to toc</span>',
       '</a>',
       '</li>'
     ].join('');
