@@ -9,9 +9,9 @@ describe('External link', () => {
   hexo.config.url = 'http://maji.moe';
 
   it('disabled', () => {
-    var content = 'foo' +
-      '<a href="http://hexo.io/">Hexo</a>' +
-      'bar';
+    var content = 'foo'
+      + '<a href="http://hexo.io/">Hexo</a>'
+      + 'bar';
 
     var data = {content};
     hexo.config.external_link = false;

@@ -21,12 +21,12 @@ describe('tagcloud', () => {
     {source: 'baz', slug: 'baz'},
     {source: 'boo', slug: 'boo'}
   ])).then(posts => // TODO: Warehouse needs to add a mutex lock when writing data to avoid data sync problem
-  Promise.each([
-    ['bcd'],
-    ['bcd', 'cde'],
-    ['bcd', 'cde', 'abc'],
-    ['bcd', 'cde', 'abc', 'def']
-  ], (tags, i) => posts[i].setTags(tags))).then(() => {
+    Promise.each([
+      ['bcd'],
+      ['bcd', 'cde'],
+      ['bcd', 'cde', 'abc'],
+      ['bcd', 'cde', 'abc', 'def']
+    ], (tags, i) => posts[i].setTags(tags))).then(() => {
     hexo.locals.invalidate();
     ctx.site = hexo.locals.toObject();
   }));

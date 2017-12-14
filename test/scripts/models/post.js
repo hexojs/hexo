@@ -239,8 +239,8 @@ describe('Post', () => {
   });
 
   it('setCategories() - shared category should be same', () => {
-    var postIdA;
-    var postIdB;
+    var postIdA,
+      postIdB;
 
     return Post.insert({
       source: 'foo.md',
@@ -268,8 +268,8 @@ describe('Post', () => {
   });
 
   it('setCategories() - category not shared should be different', () => {
-    var postIdA;
-    var postIdB;
+    var postIdA,
+      postIdB;
 
     return Post.insert({
       source: 'foo.md',
