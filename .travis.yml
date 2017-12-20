@@ -21,4 +21,4 @@ after_script:
   - npm install coveralls
   - cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js
 
-dist: precise
+dist: trusty
