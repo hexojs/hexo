@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Extend', () => {
   require('./console');
   require('./deployer');

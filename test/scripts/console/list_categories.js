@@ -1,3 +1,5 @@
+'use strict';
+
 var Promise = require('bluebird');
 var sinon = require('sinon');
 var expect = require('chai').expect;

@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Processors', () => {
   require('./asset');
   require('./common');
