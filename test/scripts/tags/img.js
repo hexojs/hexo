@@ -17,6 +17,12 @@ describe('img', () => {
     $('img').attr('src').should.eql('http://placekitten.com/200/300');
   });
 
+  it('src #', () => {
+    var $ = cheerio.load(img(['#123']));
+
+    should.equal($('img').attr('src') === undefined, true);
+  });
+
   it('internal src', () => {
     hexo.config.root = '/';
     var $ = cheerio.load(img(['/images/test.jpg']));
