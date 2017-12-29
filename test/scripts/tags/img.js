@@ -17,10 +17,10 @@ describe('img', () => {
     $('img').attr('src').should.eql('http://placekitten.com/200/300');
   });
 
-  it('src #', () => {
-    var $ = cheerio.load(img(['#123']));
+  it('src //', () => {
+    var $ = cheerio.load(img(['//placekitten.com/200/300']));
 
-    should.equal($('img').attr('src') === undefined, true);
+    $('img').attr('src').should.eql('//placekitten.com/200/300');
   });
 
   it('internal src', () => {
