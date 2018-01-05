@@ -29,9 +29,9 @@ describe('list_posts', () => {
 
     result.should.eql([
       '<ul class="post-list">',
-        '<li class="post-list-item"><a class="post-list-link" href="/bar/">Chemistry</a></li>',
-        '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
-        '<li class="post-list-item"><a class="post-list-link" href="/baz/">Bitch</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/bar/">Chemistry</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/baz/">Bitch</a></li>',
       '</ul>'
     ].join(''));
   });
@@ -43,7 +43,7 @@ describe('list_posts', () => {
 
     result.should.eql([
       '<ul class="post-list">',
-        '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
       '</ul>'
     ].join(''));
   });
@@ -67,9 +67,9 @@ describe('list_posts', () => {
 
     result.should.eql([
       '<ul class="post-list">',
-        '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
-        '<li class="post-list-item"><a class="post-list-link" href="/bar/">Chemistry</a></li>',
-        '<li class="post-list-item"><a class="post-list-link" href="/baz/">Bitch</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/bar/">Chemistry</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/baz/">Bitch</a></li>',
       '</ul>'
     ].join(''));
   });
@@ -81,9 +81,9 @@ describe('list_posts', () => {
 
     result.should.eql([
       '<ul class="post-list">',
-        '<li class="post-list-item"><a class="post-list-link" href="/baz/">Bitch</a></li>',
-        '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
-        '<li class="post-list-item"><a class="post-list-link" href="/bar/">Chemistry</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/baz/">Bitch</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/bar/">Chemistry</a></li>',
       '</ul>'
     ].join(''));
   });
@@ -95,9 +95,9 @@ describe('list_posts', () => {
 
     result.should.eql([
       '<ul class="test-list">',
-        '<li class="test-list-item"><a class="test-list-link" href="/bar/">Chemistry</a></li>',
-        '<li class="test-list-item"><a class="test-list-link" href="/foo/">Its</a></li>',
-        '<li class="test-list-item"><a class="test-list-link" href="/baz/">Bitch</a></li>',
+      '<li class="test-list-item"><a class="test-list-link" href="/bar/">Chemistry</a></li>',
+      '<li class="test-list-item"><a class="test-list-link" href="/foo/">Its</a></li>',
+      '<li class="test-list-item"><a class="test-list-link" href="/baz/">Bitch</a></li>',
       '</ul>'
     ].join(''));
   });
@@ -111,9 +111,9 @@ describe('list_posts', () => {
 
     result.should.eql([
       '<ul class="post-list">',
-        '<li class="post-list-item"><a class="post-list-link" href="/bar/">CHEMISTRY</a></li>',
-        '<li class="post-list-item"><a class="post-list-link" href="/foo/">ITS</a></li>',
-        '<li class="post-list-item"><a class="post-list-link" href="/baz/">BITCH</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/bar/">CHEMISTRY</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/foo/">ITS</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/baz/">BITCH</a></li>',
       '</ul>'
     ].join(''));
   });
@@ -138,8 +138,8 @@ describe('list_posts', () => {
 
     result.should.eql([
       '<ul class="post-list">',
-        '<li class="post-list-item"><a class="post-list-link" href="/bar/">Chemistry</a></li>',
-        '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/bar/">Chemistry</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
       '</ul>'
     ].join(''));
   });

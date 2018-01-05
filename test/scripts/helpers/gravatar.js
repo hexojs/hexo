@@ -1,3 +1,5 @@
+'use strict';
+
 var crypto = require('crypto');
 var should = require('chai').should(); // eslint-disable-line
 

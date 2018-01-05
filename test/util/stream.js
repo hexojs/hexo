@@ -1,3 +1,5 @@
+'use strict';
+
 var Promise = require('bluebird');
 
 function readStream(stream) {

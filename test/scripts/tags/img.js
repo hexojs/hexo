@@ -1,3 +1,5 @@
+'use strict';
+
 var pathFn = require('path');
 var cheerio = require('cheerio');
 var should = require('chai').should(); // eslint-disable-line
@@ -13,6 +15,12 @@ describe('img', () => {
     var $ = cheerio.load(img(['http://placekitten.com/200/300']));
 
     $('img').attr('src').should.eql('http://placekitten.com/200/300');
+  });
+
+  it('src //', () => {
+    var $ = cheerio.load(img(['//placekitten.com/200/300']));
+
+    $('img').attr('src').should.eql('//placekitten.com/200/300');
   });
 
   it('internal src', () => {

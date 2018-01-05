@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Console', () => {
   require('./clean');
   require('./config');

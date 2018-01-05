@@ -1,3 +1,5 @@
+'use strict';
+
 var moment = require('moment-timezone');
 var should = require('chai').should(); // eslint-disable-line
 var sinon = require('sinon');

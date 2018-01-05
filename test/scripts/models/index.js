@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Models', () => {
   require('./asset');
   require('./cache');

@@ -162,7 +162,7 @@ describe('Router', () => {
 
   it('get() - no data', () => {
     router.set('test', () => {
-      return;
+
     });
 
     return checkStream(router.get('test'), '');

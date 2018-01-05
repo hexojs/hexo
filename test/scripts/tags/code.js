@@ -31,12 +31,12 @@ describe('code', () => {
 
   it('non standard indent', () => {
     var nonStandardIndent = [
-        '  ',
-        '  return x;',
-        '}',
-        '',
-        fixture,
-        '  '
+      '  ',
+      '  return x;',
+      '}',
+      '',
+      fixture,
+      '  '
     ].join('/n');
     var result = code('', nonStandardIndent);
     result.should.eql(highlight(nonStandardIndent));

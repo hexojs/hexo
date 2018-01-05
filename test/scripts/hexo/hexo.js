@@ -67,7 +67,7 @@ describe('Hexo', () => {
   });
 
   it('constructs mutli-config', () => {
-    var configs = [ '../../../fixtures/_config.json', '../../../fixtures/_config.json' ];
+    var configs = ['../../../fixtures/_config.json', '../../../fixtures/_config.json'];
     var args = { _: [], config: configs.join(',') };
     var hexo = new Hexo(base_dir, args);
     hexo.config_path.should.eql(pathFn.join(base_dir, '_multiconfig.yml'));
@@ -155,11 +155,11 @@ describe('Hexo', () => {
     loadAssetGenerator();
 
     return fs.writeFile(target, body).then(() => hexo.watch()).then(() => // Test for first generation
-    checkStream(route.get('test.txt'), body)).then(() => // Update the file
-    fs.writeFile(target, newBody)).delay(300).then(() => // Check the new route
-    checkStream(route.get('test.txt'), newBody)).then(() => // Stop watching
-    hexo.unwatch()).then(() => // Delete the file
-    fs.unlink(target));
+      checkStream(route.get('test.txt'), body)).then(() => // Update the file
+      fs.writeFile(target, newBody)).delay(300).then(() => // Check the new route
+      checkStream(route.get('test.txt'), newBody)).then(() => // Stop watching
+      hexo.unwatch()).then(() => // Delete the file
+      fs.unlink(target));
   }
 
   it('watch() - source', () => testWatch(hexo.source_dir));
@@ -447,7 +447,7 @@ describe('Hexo', () => {
 
     // First generation
     return hexo._generate({cache: true}).then(() => checkStream(route.get('test'), '0')).then(() => // Second generation
-    hexo._generate({cache: true})).then(() => checkStream(route.get('test'), '1'));
+      hexo._generate({cache: true})).then(() => checkStream(route.get('test'), '1'));
   });
 
   it('_generate() - cache disabled & update template', () => {
