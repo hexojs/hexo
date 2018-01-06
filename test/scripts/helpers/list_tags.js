@@ -21,12 +21,12 @@ describe('list_tags', () => {
     {source: 'baz', slug: 'baz'},
     {source: 'boo', slug: 'boo'}
   ])).then(posts => // TODO: Warehouse needs to add a mutex lock when writing data to avoid data sync problem
-  Promise.each([
-    ['foo'],
-    ['baz'],
-    ['baz'],
-    ['bar']
-  ], (tags, i) => posts[i].setTags(tags))).then(() => {
+    Promise.each([
+      ['foo'],
+      ['baz'],
+      ['baz'],
+      ['bar']
+    ], (tags, i) => posts[i].setTags(tags))).then(() => {
     hexo.locals.invalidate();
     ctx.site = hexo.locals.toObject();
   }));
@@ -36,9 +36,9 @@ describe('list_tags', () => {
 
     result.should.eql([
       '<ul class="tag-list">',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">bar</a><span class="tag-list-count">1</span></li>',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">baz</a><span class="tag-list-count">2</span></li>',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/">foo</a><span class="tag-list-count">1</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">bar</a><span class="tag-list-count">1</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">baz</a><span class="tag-list-count">2</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/">foo</a><span class="tag-list-count">1</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -50,8 +50,8 @@ describe('list_tags', () => {
 
     result.should.eql([
       '<ul class="tag-list">',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">bar</a><span class="tag-list-count">1</span></li>',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">baz</a><span class="tag-list-count">2</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">bar</a><span class="tag-list-count">1</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">baz</a><span class="tag-list-count">2</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -75,9 +75,9 @@ describe('list_tags', () => {
 
     result.should.eql([
       '<ul class="tag-list">',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">bar</a></li>',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">baz</a></li>',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/">foo</a></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">bar</a></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">baz</a></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/">foo</a></li>',
       '</ul>'
     ].join(''));
   });
@@ -89,9 +89,9 @@ describe('list_tags', () => {
 
     result.should.eql([
       '<ul class="test-list">',
-        '<li class="test-list-item"><a class="test-list-link" href="/tags/bar/">bar</a><span class="test-list-count">1</span></li>',
-        '<li class="test-list-item"><a class="test-list-link" href="/tags/baz/">baz</a><span class="test-list-count">2</span></li>',
-        '<li class="test-list-item"><a class="test-list-link" href="/tags/foo/">foo</a><span class="test-list-count">1</span></li>',
+      '<li class="test-list-item"><a class="test-list-link" href="/tags/bar/">bar</a><span class="test-list-count">1</span></li>',
+      '<li class="test-list-item"><a class="test-list-link" href="/tags/baz/">baz</a><span class="test-list-count">2</span></li>',
+      '<li class="test-list-item"><a class="test-list-link" href="/tags/foo/">foo</a><span class="test-list-count">1</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -103,9 +103,9 @@ describe('list_tags', () => {
 
     result.should.eql([
       '<ul class="tag-list">',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/">foo</a><span class="tag-list-count">1</span></li>',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">bar</a><span class="tag-list-count">1</span></li>',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">baz</a><span class="tag-list-count">2</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/">foo</a><span class="tag-list-count">1</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">bar</a><span class="tag-list-count">1</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">baz</a><span class="tag-list-count">2</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -117,9 +117,9 @@ describe('list_tags', () => {
 
     result.should.eql([
       '<ul class="tag-list">',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/">foo</a><span class="tag-list-count">1</span></li>',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">baz</a><span class="tag-list-count">2</span></li>',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">bar</a><span class="tag-list-count">1</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/">foo</a><span class="tag-list-count">1</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">baz</a><span class="tag-list-count">2</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">bar</a><span class="tag-list-count">1</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -133,9 +133,9 @@ describe('list_tags', () => {
 
     result.should.eql([
       '<ul class="tag-list">',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">BAR</a><span class="tag-list-count">1</span></li>',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">BAZ</a><span class="tag-list-count">2</span></li>',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/">FOO</a><span class="tag-list-count">1</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">BAR</a><span class="tag-list-count">1</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">BAZ</a><span class="tag-list-count">2</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/">FOO</a><span class="tag-list-count">1</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -160,8 +160,8 @@ describe('list_tags', () => {
 
     result.should.eql([
       '<ul class="tag-list">',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">bar</a><span class="tag-list-count">1</span></li>',
-        '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">baz</a><span class="tag-list-count">2</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">bar</a><span class="tag-list-count">1</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">baz</a><span class="tag-list-count">2</span></li>',
       '</ul>'
     ].join(''));
   });

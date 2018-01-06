@@ -1,3 +1,5 @@
+'use strict';
+
 var sinon = require('sinon');
 var expect = require('chai').expect;
 
@@ -10,7 +12,7 @@ describe('Console list', () => {
   hexo.config.permalink = ':title/';
   before(() => {
     var log = console.log;
-    sinon.stub(console, 'log', function(...args) {
+    sinon.stub(console, 'log').callsFake(function(...args) {
       return log.apply(log, args);
     });
   });
@@ -32,12 +34,12 @@ describe('Console list', () => {
     title: 'Hello World',
     path: 'bar'
   })
-  .then(() => {
-    listPages();
-    expect(console.log.calledWith(sinon.match('Date'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Title'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Path'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Hello World'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('foo'))).to.be.true;
-  }));
+    .then(() => {
+      listPages();
+      expect(console.log.calledWith(sinon.match('Date'))).to.be.true;
+      expect(console.log.calledWith(sinon.match('Title'))).to.be.true;
+      expect(console.log.calledWith(sinon.match('Path'))).to.be.true;
+      expect(console.log.calledWith(sinon.match('Hello World'))).to.be.true;
+      expect(console.log.calledWith(sinon.match('foo'))).to.be.true;
+    }));
 });

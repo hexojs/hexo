@@ -1,3 +1,5 @@
+'use strict';
+
 var cheerio = require('cheerio');
 var should = require('chai').should(); // eslint-disable-line
 

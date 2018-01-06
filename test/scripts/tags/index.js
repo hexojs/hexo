@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Tags', () => {
   require('./asset_img');
   require('./asset_link');

@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Core', () => {
   require('./hexo');
   require('./load_config');

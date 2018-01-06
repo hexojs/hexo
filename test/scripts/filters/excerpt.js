@@ -31,11 +31,11 @@ describe('Excerpt', () => {
       // see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#Special_characters_meaning_in_regular_expressions
       var spaces = ' \f\n\r\t\v\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000\ufeff';
       var cases = [];
-      var more;
-      var lead;
-      var tail;
-      var s;
-      var e;
+      var more,
+        lead,
+        tail,
+        s,
+        e;
 
       for (var i = 0; i < spaces.length; ++i) {
         lead = spaces[i];

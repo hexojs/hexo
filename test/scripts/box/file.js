@@ -73,8 +73,6 @@ describe('File', () => {
     file.stat((err, fileStats) => {
       if (err) return callback(err);
 
-      //todo: cast dev to uint32 until https://github.com/nodejs/node/issues/16496 is resolved
-      fileStats.dev = (new Uint32Array([fileStats.dev]))[0];
       fileStats.should.eql(fs.statSync(file.source));
       callback();
     });
