@@ -8,7 +8,6 @@
   },
   "scripts": {
     "eslint": "eslint-ci .",
-    "jscs": "jscs .",
     "test": "mocha test/index.js",
     "test-cov": "istanbul cover --print both _mocha -- test/index.js"
   },
@@ -66,7 +65,6 @@
     "eslint-config-hexo": "^2.0.0",
     "hexo-renderer-marked": "^0.3.0",
     "istanbul": "^0.4.3",
-    "jscs": "^3.0.4",
     "jscs-preset-hexo": "^1.0.1",
     "mocha": "^4.0.1",
     "rewire": "^3.0.2",
