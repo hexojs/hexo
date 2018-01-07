@@ -168,4 +168,67 @@ describe('generate', () => {
     result[0].should.eql('bb');
     result[1].should.eql('cc');
   }));
+
+  it('proceeds after error when bail option is not set', () => {
+    hexo.extend.renderer.register('err', 'html', () => Promise.reject(new Error('Testing unhandled exception')));
+    hexo.extend.generator.register('test_page', () =>
+      [
+        {
+          path: 'testing-path',
+          layout: 'post',
+          data: {}
+        }
+      ]
+    );
+
+    return Promise.all([
+      fs.writeFile(pathFn.join(hexo.theme_dir, 'layout', 'post.err'), 'post')
+    ]).then(() => {
+      return generate();
+    });
+  });
+
+  it('proceeds after error when bail option is set to false', () => {
+    hexo.extend.renderer.register('err', 'html', () => Promise.reject(new Error('Testing unhandled exception')));
+    hexo.extend.generator.register('test_page', () =>
+      [
+        {
+          path: 'testing-path',
+          layout: 'post',
+          data: {}
+        }
+      ]
+    );
+
+    return Promise.all([
+      fs.writeFile(pathFn.join(hexo.theme_dir, 'layout', 'post.err'), 'post')
+    ]).then(() => {
+      return generate({bail: false});
+    });
+  });
+
+  it('breaks after error when bail option is set to true', () => {
+    hexo.extend.renderer.register('err', 'html', () => Promise.reject(new Error('Testing unhandled exception')));
+    hexo.extend.generator.register('test_page', () =>
+      [
+        {
+          path: 'testing-path',
+          layout: 'post',
+          data: {}
+        }
+      ]
+    );
+
+    var errorCallback = sinon.spy(err => {
+      err.should.have.property('message', 'Testing unhandled exception');
+    });
+
+    return Promise.all([
+      fs.writeFile(pathFn.join(hexo.theme_dir, 'layout', 'post.err'), 'post')
+    ]).then(() => {
+      return generate({bail: true}).catch(errorCallback).finally(() => {
+        errorCallback.calledOnce.should.be.true;
+      });
+    });
+  });
 });
