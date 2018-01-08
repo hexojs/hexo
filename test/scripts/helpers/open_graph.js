@@ -608,4 +608,45 @@ describe('open_graph', () => {
 
     result.should.not.contain(meta({property: 'og:locale'}));
   });
+
+
+  it('description - content with script', () => {
+    var ctx = {
+      page: {content: 'content1.<script>var a = "a";</script> content2.'},
+      config: hexo.config,
+      is_post: isPost
+    };
+
+    var result = openGraph.call(ctx);
+
+    result.should.contain(meta({name: 'description', content: 'content1. content2.'}));
+    result.should.contain(meta({property: 'og:description', content: 'content1. content2.'}));
+  });
+
+  it('description - only script', () => {
+    var ctx = {
+      page: {content: '<script>var a = "a";</script>'},
+      config: hexo.config,
+      is_post: isPost
+    };
+
+    var result = openGraph.call(ctx);
+
+    result.should.contain(meta({name: 'description', content: hexo.config.description}));
+    result.should.contain(meta({property: 'og:description', content: hexo.config.description}));
+  });
+
+  it('description - two scripts', () => {
+    var ctx = {
+      page: {content: '<script>var a = "a";</script><script>var b = 4;</script>'},
+      config: hexo.config,
+      is_post: isPost
+    };
+
+    var result = openGraph.call(ctx);
+
+    result.should.contain(meta({name: 'description', content: hexo.config.description}));
+    result.should.contain(meta({property: 'og:description', content: hexo.config.description}));
+  });
+
 });
