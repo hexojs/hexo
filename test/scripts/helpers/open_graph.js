@@ -629,7 +629,7 @@ describe('open_graph', () => {
       config: hexo.config,
       is_post: isPost
     };
-    hexo.config.description = "test";
+    hexo.config.description = 'test';
     var result = openGraph.call(ctx);
 
     result.should.contain(meta({name: 'description', content: hexo.config.description}));
@@ -642,7 +642,7 @@ describe('open_graph', () => {
       config: hexo.config,
       is_post: isPost
     };
-    hexo.config.description = "test";
+    hexo.config.description = 'test';
     var result = openGraph.call(ctx);
 
     result.should.contain(meta({name: 'description', content: hexo.config.description}));
