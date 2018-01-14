@@ -69,7 +69,6 @@
     "hexo-renderer-marked": "^0.3.0",
     "husky": "^0.14.3",
     "istanbul": "^0.4.3",
-    "jscs-preset-hexo": "^1.0.1",
     "lint-staged": "^6.0.0",
     "mocha": "^4.0.1",
     "rewire": "^3.0.2",
