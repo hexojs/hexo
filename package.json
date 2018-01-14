@@ -9,7 +9,9 @@
   "scripts": {
     "eslint": "eslint-ci .",
     "test": "mocha test/index.js",
-    "test-cov": "istanbul cover --print both _mocha -- test/index.js"
+    "test-cov": "istanbul cover --print both _mocha -- test/index.js",
+    "precommit": "lint-staged",
+    "lint-staged": "lint-staged"
   },
   "directories": {
     "lib": "./lib",
@@ -58,14 +60,17 @@
     "warehouse": "^2.2.0"
   },
   "devDependencies": {
+    "@easyops/git-exec-and-restage": "^1.0.4",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "eslint": "^4.13.1",
     "eslint-ci": "^0.1.1",
     "eslint-config-hexo": "^2.0.0",
     "hexo-renderer-marked": "^0.3.0",
+    "husky": "^0.14.3",
     "istanbul": "^0.4.3",
     "jscs-preset-hexo": "^1.0.1",
+    "lint-staged": "^6.0.0",
     "mocha": "^4.0.1",
     "rewire": "^3.0.2",
     "sinon": "^4.1.2"
