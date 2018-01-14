@@ -52,7 +52,7 @@
     "nunjucks": "^3.0.1",
     "pretty-hrtime": "^1.0.2",
     "strip-ansi": "^4.0.0",
-    "strip-indent": "^1.0.1",
+    "strip-indent": "^2.0.0",
     "swig-extras": "0.0.1",
     "swig-templates": "^2.0.2",
     "text-table": "^0.2.0",
