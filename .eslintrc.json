@@ -1,5 +1,5 @@
 {
-  "extends": "hexo",
+  "extends": ["plugin:node/recommended", "hexo"],
   "root": true,
   "plugins": [ "node" ],
   "rules": {
@@ -13,6 +13,8 @@
       {
         "after": true
       }
-    ]
+    ],
+    "node/no-unsupported-features": 0,
+    "node/no-deprecated-api": 0
   }
 }
