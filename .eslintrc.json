@@ -1,6 +1,7 @@
 {
   "extends": "hexo",
   "root": true,
+  "plugins": [ "node" ],
   "rules": {
     "one-var": 0,
     "operator-linebreak": [
