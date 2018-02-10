@@ -65,7 +65,7 @@
     "chai-as-promised": "^7.1.1",
     "eslint": "^4.13.1",
     "eslint-ci": "^0.1.1",
-    "eslint-config-hexo": "^2.0.0",
+    "eslint-config-hexo": "^3.0.0",
     "hexo-renderer-marked": "^0.3.0",
     "husky": "^0.14.3",
     "istanbul": "^0.4.3",
