@@ -12,7 +12,7 @@
     "test-cov": "istanbul cover --print both _mocha -- test/index.js",
     "precommit": "lint-staged",
     "lint-staged": "lint-staged",
-    "lebab": "lebab"
+    "lebab": "lebab --replace lib/ --transform arrow,for-of,for-each,arg-rest,arg-spread,obj-shorthand,exponent,let,template,default-param"
   },
   "directories": {
     "lib": "./lib",
