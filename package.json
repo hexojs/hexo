@@ -11,7 +11,8 @@
     "test": "mocha test/index.js",
     "test-cov": "istanbul cover --print both _mocha -- test/index.js",
     "precommit": "lint-staged",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "lebab": "lebab"
   },
   "directories": {
     "lib": "./lib",
@@ -69,6 +70,7 @@
     "hexo-renderer-marked": "^0.3.0",
     "husky": "^0.14.3",
     "istanbul": "^0.4.3",
+    "lebab": "^2.7.7",
     "lint-staged": "^6.0.0",
     "mocha": "^4.0.1",
     "rewire": "^3.0.2",
