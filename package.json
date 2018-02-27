@@ -50,6 +50,7 @@
     "moment-timezone": "^0.5.14",
     "nunjucks": "^3.0.1",
     "pretty-hrtime": "^1.0.2",
+    "resolve": "^1.5.0",
     "strip-ansi": "^4.0.0",
     "strip-indent": "^2.0.0",
     "swig-extras": "0.0.1",
