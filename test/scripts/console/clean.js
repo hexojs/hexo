@@ -3,8 +3,12 @@ var fs = require('hexo-fs');
 
 describe('clean', () => {
   var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname, {silent: true});
-  var clean = require('../../../lib/plugins/console/clean').bind(hexo);
+  var hexo, clean;
+
+  beforeEach(() => {
+    hexo = new Hexo(__dirname, {silent: true});
+    clean = require('../../../lib/plugins/console/clean').bind(hexo);
+  });
 
   it('delete database', () => {
     var dbPath = hexo.database.options.path;
@@ -18,6 +22,18 @@ describe('clean', () => {
     var publicDir = hexo.public_dir;
 
     return fs.mkdirs(publicDir).then(() => clean()).then(() => fs.exists(publicDir)).then(exist => {
+      exist.should.be.false;
+    });
+  });
+
+  it('execute corresponding filter', () => {
+    var extraDbPath = hexo.database.options.path + '.tmp';
+
+    hexo.extend.filter.register('after_clean', () => {
+      return fs.unlink(extraDbPath);
+    });
+
+    return fs.writeFile(extraDbPath, '').then(() => clean()).then(() => fs.exists(extraDbPath)).then(exist => {
       exist.should.be.false;
     });
   });
