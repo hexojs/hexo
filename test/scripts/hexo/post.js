@@ -569,6 +569,15 @@ describe('Post', () => {
     });
   });
 
+  it('render() - callback', done => {
+    post.render(null, {
+      content: fixture.content,
+      engine: 'markdown'
+    }, err => {
+      done(err);
+    });
+  });
+
   it('render() - file', () => {
     var content = '**file test**';
     var path = pathFn.join(hexo.base_dir, 'render_test.md');
@@ -659,6 +668,21 @@ describe('Post', () => {
     }).then(data => {
       filter.calledOnce.should.be.true;
       hexo.extend.filter.unregister('after_render:html', filter);
+    });
+  });
+
+  it('render() - callback - not path and file', callback => {
+    post.render(null, {}, (err, result) => {
+      try {
+        err.should.be.exist;
+        err.should.be.instanceof(Error);
+        err.should.be.have.property('message', 'No input file or string!');
+        should.not.exist(result);
+      } catch (e) {
+        callback(e);
+        return;
+      }
+      callback();
     });
   });
 });
