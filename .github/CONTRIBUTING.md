@@ -2,14 +2,12 @@
 
 ## Style Guide
 
-We use [JSCS] and [ESLint] to maintain the code style. You can install linter plugins on your editor or check the status with the following commands:
+We use [ESLint] to maintain the code style. You can install linter plugins on your editor or check the status with the following commands:
 
 ``` bash
-$ npm run jscs
 $ npm run eslint
 
 # You can append `--fix` option to these commands to fix the code style automatically
-$ npm run jscs -- --fix
 $ npm run eslint -- --fix
 ```
 
@@ -86,5 +84,4 @@ When you encounter some problems when using Hexo, you can find the solutions in 
 2. Run `hexo version` and check the version info.    
 3. Post both debug message and version info on GitHub.
 
-[JSCS]: http://jscs.info/
 [ESLint]: http://eslint.org/
