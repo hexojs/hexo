@@ -154,10 +154,21 @@ describe('config flag handling', () => {
 
     mcp(base, 'test1.json').should.eql(
       pathFn.resolve(base + 'test1.json'));
+
+    mcp(base, '/tmp/test3.json').should.eql('/tmp/test3.json');
   });
 
   it('1 not found file warning', () => {
     var notFile = 'not_a_file.json';
+
+    mcp(base, notFile).should.eql(pathFn.join(base, '_config.yml'));
+    hexo.log.reader[0].type.should.eql('warning');
+    hexo.log.reader[0].msg.should.eql('Config file ' + notFile
+                          + ' not found, using default.');
+  });
+
+  it('1 not found file warning absolute', () => {
+    let notFile = '/tmp/not_a_file.json';
 
     mcp(base, notFile).should.eql(pathFn.join(base, '_config.yml'));
     hexo.log.reader[0].type.should.eql('warning');
