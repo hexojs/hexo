@@ -1,6 +1,7 @@
 'use strict';
 
 var pathFn = require('path');
+var osFn = require('os');
 var should = require('chai').should(); // eslint-disable-line
 var fs = require('hexo-fs');
 var yml = require('js-yaml');
@@ -223,7 +224,7 @@ describe('config flag handling', () => {
   });
 
   it('write multiconfig to specified path', () => {
-    let outputPath = '/tmp';
+    let outputPath = osFn.tmpdir();
     let combinedPath = pathFn.join(outputPath, '_multiconfig.yml');
 
     mcp(base, 'test1.yml', outputPath).should.not.eql(combinedPath);
@@ -234,7 +235,7 @@ describe('config flag handling', () => {
     mcp(base, 'notafile.yml,alsonotafile.json', outputPath).should.not.eql(combinedPath);
 
     hexo.log.reader[1].type.should.eql('debug');
-    hexo.log.reader[1].msg.should.eql('Writing _multiconfig.yml to /tmp/_multiconfig.yml');
+    hexo.log.reader[1].msg.should.eql(`Writing _multiconfig.yml to ${combinedPath}`);
     hexo.log.reader[2].type.should.eql('info');
     hexo.log.reader[2].msg.should.eql('Config based on 2 files');
     hexo.log.reader[6].type.should.eql('warning');
