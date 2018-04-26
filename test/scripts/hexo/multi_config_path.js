@@ -115,18 +115,32 @@ describe('config flag handling', () => {
     '}'
   ].join('\n');
 
+  var testJson3 = [
+    '{',
+    '"author": "james bond",',
+    '"favorites": {',
+    '  "food": "martini",',
+    '  "ice_cream": "vanilla"',
+    '  }',
+    '}'
+  ].join('\n');
+
   before(() => {
     fs.writeFileSync(base + 'test1.yml', testYaml1);
     fs.writeFileSync(base + 'test2.yml', testYaml2);
     fs.writeFileSync(base + 'test1.json', testJson1);
     fs.writeFileSync(base + 'test2.json', testJson2);
+    fs.writeFileSync('/tmp/test3.json', testJson3);
   });
 
   afterEach(() => {
     hexo.log.reader = [];
   });
 
-  after(() => fs.rmdir(hexo.base_dir));
+  after(() => {
+    fs.rmdirSync(hexo.base_dir);
+    fs.unlinkSync('/tmp/test3.json');
+  });
 
   it('no file', () => {
     mcp(base).should.equal(base + '_config.yml');
@@ -140,10 +154,21 @@ describe('config flag handling', () => {
 
     mcp(base, 'test1.json').should.eql(
       pathFn.resolve(base + 'test1.json'));
+
+    mcp(base, '/tmp/test3.json').should.eql('/tmp/test3.json');
   });
 
   it('1 not found file warning', () => {
     var notFile = 'not_a_file.json';
+
+    mcp(base, notFile).should.eql(pathFn.join(base, '_config.yml'));
+    hexo.log.reader[0].type.should.eql('warning');
+    hexo.log.reader[0].msg.should.eql('Config file ' + notFile
+                          + ' not found, using default.');
+  });
+
+  it('1 not found file warning absolute', () => {
+    let notFile = '/tmp/not_a_file.json';
 
     mcp(base, notFile).should.eql(pathFn.join(base, '_config.yml'));
     hexo.log.reader[0].type.should.eql('warning');
@@ -172,6 +197,14 @@ describe('config flag handling', () => {
     hexo.log.reader[11].type.should.eql('error');
     hexo.log.reader[11].msg.should.eql('No config files found.'
                                      + ' Using _config.yml.');
+  });
+
+  it('combine config output with absolute paths', () => {
+    var combinedPath = pathFn.join(base, '_multiconfig.yml');
+
+    mcp(base, 'test1.json,/tmp/test3.json').should.eql(combinedPath);
+    hexo.log.reader[0].type.should.eql('info');
+    hexo.log.reader[0].msg.should.eql('Config based on 2 files');
   });
 
   it('2 YAML overwrite', () => {
