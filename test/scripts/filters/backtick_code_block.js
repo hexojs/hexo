@@ -369,4 +369,36 @@ describe('Backtick code block', () => {
     codeBlock(data);
     data.content.should.eql('<escape>' + expected + '</escape>');
   });
+  
+  it('disable for specific language', () =>
+  {
+    hexo.config.highlight.disable_for_lang = ['chart', 'flow'];
+
+    var content = [
+      '``` flow',
+      code,
+      '```'
+    ].join('\n')
+    
+    var data = { content };
+
+    codeBlock(data);
+    data.content.should.eql(content);
+  });
+
+  it('disable for specific language - not includeded', () =>
+  {
+    hexo.config.highlight.disable_for_lang = ['chart', 'flow'];
+    
+    var data = {
+      content: [
+        '``` js',
+        code,
+        '```'
+      ].join('\n')
+    };
+
+    codeBlock(data);
+    data.content.should.eql('<escape>' + highlight(code, { lang: 'js' }) + '</escape>');
+  });
 });
