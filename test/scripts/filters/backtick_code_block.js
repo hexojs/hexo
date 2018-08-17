@@ -385,7 +385,7 @@ describe('Backtick code block', () => {
     data.content.should.eql(content);
   });
 
-  it('disable for specific language - not includeded', () => {
+  it('disable for specific language - not included', () => {
     hexo.config.highlight.disable_for_lang = ['chart', 'flow'];
 
     var data = {
