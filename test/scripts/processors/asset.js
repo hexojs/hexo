@@ -249,7 +249,7 @@ describe('asset', () => {
       var page = Page.findOne({source: file.path});
 
       page.date.toDate().should.eql(stats.ctime);
-      page.updated.toDate().should.eql(stats.mtime);
+      page.updated.toDate().should.eql(page.date.toDate());
 
       return Promise.all([
         page.remove(),
@@ -427,7 +427,7 @@ describe('asset', () => {
       var page = Page.findOne({source: file.path});
 
       page.date.toDate().should.eql(stats.ctime);
-      page.updated.toDate().should.eql(stats.mtime);
+      page.updated.toDate().should.eql(page.date.toDate());
 
       return Promise.all([
         page.remove(),
