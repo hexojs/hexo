@@ -1,19 +1,19 @@
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
-var pathFn = require('path');
-var moment = require('moment');
-var Promise = require('bluebird');
-var fs = require('hexo-fs');
+const should = require('chai').should(); // eslint-disable-line
+const sinon = require('sinon');
+const pathFn = require('path');
+const moment = require('moment');
+const Promise = require('bluebird');
+const fs = require('hexo-fs');
 
-var NEW_POST_NAME = ':title.md';
+const NEW_POST_NAME = ':title.md';
 
 describe('new_post_path', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'new_post_path_test'));
-  var newPostPath = require('../../../lib/plugins/filter/new_post_path').bind(hexo);
-  var sourceDir = hexo.source_dir;
-  var draftDir = pathFn.join(sourceDir, '_drafts');
-  var postDir = pathFn.join(sourceDir, '_posts');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(pathFn.join(__dirname, 'new_post_path_test'));
+  const newPostPath = require('../../../lib/plugins/filter/new_post_path').bind(hexo);
+  const sourceDir = hexo.source_dir;
+  const draftDir = pathFn.join(sourceDir, '_drafts');
+  const postDir = pathFn.join(sourceDir, '_posts');
 
   before(() => {
     hexo.config.new_post_name = NEW_POST_NAME;
@@ -58,7 +58,7 @@ describe('new_post_path', () => {
   }));
 
   it('default layout + slug', () => {
-    var now = moment();
+    const now = moment();
     hexo.config.new_post_name = ':year-:month-:day-:title.md';
 
     return newPostPath({
@@ -70,7 +70,7 @@ describe('new_post_path', () => {
   });
 
   it('date', () => {
-    var date = moment([2014, 0, 1]);
+    const date = moment([2014, 0, 1]);
     hexo.config.new_post_name = ':year-:i_month-:i_day-:title.md';
 
     return newPostPath({
@@ -113,8 +113,8 @@ describe('new_post_path', () => {
   }));
 
   it('replace existing files', () => {
-    var filename = 'test.md';
-    var path = pathFn.join(postDir, filename);
+    const filename = 'test.md';
+    const path = pathFn.join(postDir, filename);
 
     return fs.writeFile(path, '').then(() => newPostPath({
       path: filename
@@ -125,14 +125,14 @@ describe('new_post_path', () => {
   });
 
   it('rename if target existed', () => {
-    var filename = [
+    const filename = [
       'test.md',
       'test-1.md',
       'test-2.md',
       'test-foo.md'
     ];
 
-    var path = filename.map(item => pathFn.join(postDir, item));
+    const path = filename.map(item => pathFn.join(postDir, item));
 
     return Promise.map(path, item => fs.writeFile(item, '')).then(() => newPostPath({
       path: filename[0]
@@ -143,7 +143,7 @@ describe('new_post_path', () => {
   });
 
   it('data is required', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'Either data.path or data.slug is required!');
     });
 

@@ -1,14 +1,13 @@
-var should = require('chai').should(); // eslint-disable-line
-var pathFn = require('path');
-var fs = require('hexo-fs');
-var Promise = require('bluebird');
-var sinon = require('sinon');
+const should = require('chai').should(); // eslint-disable-line
+const pathFn = require('path');
+const fs = require('hexo-fs');
+const Promise = require('bluebird');
+const sinon = require('sinon');
 
 describe('generate', () => {
-  var Hexo = require('../../../lib/hexo');
-  var generateConsole = require('../../../lib/plugins/console/generate');
-  var hexo,
-    generate;
+  const Hexo = require('../../../lib/hexo');
+  const generateConsole = require('../../../lib/plugins/console/generate');
+  let hexo, generate;
 
   beforeEach(() => {
     hexo = new Hexo(pathFn.join(__dirname, 'generate_test'), {silent: true});
@@ -50,9 +49,9 @@ describe('generate', () => {
   it('default', () => testGenerate());
 
   it('write file if not exist', () => {
-    var src = pathFn.join(hexo.source_dir, 'test.txt');
-    var dest = pathFn.join(hexo.public_dir, 'test.txt');
-    var content = 'test';
+    const src = pathFn.join(hexo.source_dir, 'test.txt');
+    const dest = pathFn.join(hexo.public_dir, 'test.txt');
+    const content = 'test';
 
     // Add some source files
     return fs.writeFile(src, content).then(() => // First generation
@@ -70,10 +69,10 @@ describe('generate', () => {
   });
 
   it('don\'t write if file unchanged', () => {
-    var src = pathFn.join(hexo.source_dir, 'test.txt');
-    var dest = pathFn.join(hexo.public_dir, 'test.txt');
-    var content = 'test';
-    var newContent = 'newtest';
+    const src = pathFn.join(hexo.source_dir, 'test.txt');
+    const dest = pathFn.join(hexo.public_dir, 'test.txt');
+    const content = 'test';
+    const newContent = 'newtest';
 
     // Add some source files
     return fs.writeFile(src, content).then(() => // First generation
@@ -93,10 +92,10 @@ describe('generate', () => {
   });
 
   it('force regenerate', () => {
-    var src = pathFn.join(hexo.source_dir, 'test.txt');
-    var dest = pathFn.join(hexo.public_dir, 'test.txt');
-    var content = 'test';
-    var mtime;
+    const src = pathFn.join(hexo.source_dir, 'test.txt');
+    const dest = pathFn.join(hexo.public_dir, 'test.txt');
+    const content = 'test';
+    let mtime;
 
     return fs.writeFile(src, content).then(() => // First generation
       generate()).then(() => // Read file status
@@ -115,9 +114,9 @@ describe('generate', () => {
   });
 
   it('watch - update', () => {
-    var src = pathFn.join(hexo.source_dir, 'test.txt');
-    var dest = pathFn.join(hexo.public_dir, 'test.txt');
-    var content = 'test';
+    const src = pathFn.join(hexo.source_dir, 'test.txt');
+    const dest = pathFn.join(hexo.public_dir, 'test.txt');
+    const content = 'test';
 
     return testGenerate({watch: true}).then(() => // Update the file
       fs.writeFile(src, content)).delay(300).then(() => fs.readFile(dest)).then(result => {
@@ -137,7 +136,7 @@ describe('generate', () => {
   }));
 
   it('deploy', () => {
-    var deployer = sinon.spy();
+    const deployer = sinon.spy();
 
     hexo.extend.deployer.register('test', deployer);
 
@@ -219,7 +218,7 @@ describe('generate', () => {
       ]
     );
 
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'Testing unhandled exception');
     });
 

@@ -1,10 +1,10 @@
-var should = require('chai').should(); // eslint-disable-line
+const should = require('chai').should(); // eslint-disable-line
 
 describe('Migrator', () => {
-  var Migrator = require('../../../lib/extend/migrator');
+  const Migrator = require('../../../lib/extend/migrator');
 
   it('register()', () => {
-    var d = new Migrator();
+    const d = new Migrator();
 
     // name, fn
     d.register('test', () => {});
@@ -31,7 +31,7 @@ describe('Migrator', () => {
   });
 
   it('register() - promisify', () => {
-    var d = new Migrator();
+    const d = new Migrator();
 
     d.register('test', (args, callback) => {
       args.should.eql({foo: 'bar'});
@@ -46,7 +46,7 @@ describe('Migrator', () => {
   });
 
   it('register() - Promise.method', () => {
-    var d = new Migrator();
+    const d = new Migrator();
 
     d.register('test', args => {
       args.should.eql({foo: 'bar'});
@@ -61,7 +61,7 @@ describe('Migrator', () => {
   });
 
   it('list()', () => {
-    var d = new Migrator();
+    const d = new Migrator();
 
     d.register('test', () => {});
 
@@ -69,7 +69,7 @@ describe('Migrator', () => {
   });
 
   it('get()', () => {
-    var d = new Migrator();
+    const d = new Migrator();
 
     d.register('test', () => {});
 

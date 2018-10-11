@@ -1,19 +1,19 @@
-var should = require('chai').should(); // eslint-disable-line
-var Promise = require('bluebird');
+const should = require('chai').should(); // eslint-disable-line
+const Promise = require('bluebird');
 
 describe('list_categories', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
-  var Post = hexo.model('Post');
-  var Category = hexo.model('Category');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
+  const Post = hexo.model('Post');
+  const Category = hexo.model('Category');
 
-  var ctx = {
+  const ctx = {
     config: hexo.config
   };
 
   ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
 
-  var listCategories = require('../../../lib/plugins/helper/list_categories').bind(ctx);
+  const listCategories = require('../../../lib/plugins/helper/list_categories').bind(ctx);
 
   before(() => hexo.init().then(() => Post.insert([
     {source: 'foo', slug: 'foo'},
@@ -34,7 +34,7 @@ describe('list_categories', () => {
   }));
 
   it('default', () => {
-    var result = listCategories();
+    const result = listCategories();
 
     result.should.eql([
       '<ul class="category-list">',
@@ -57,7 +57,7 @@ describe('list_categories', () => {
   });
 
   it('specified collection', () => {
-    var result = listCategories(Category.find({
+    const result = listCategories(Category.find({
       parent: {$exists: false}
     }));
 
@@ -77,7 +77,7 @@ describe('list_categories', () => {
   });
 
   it('style: false', () => {
-    var result = listCategories({
+    const result = listCategories({
       style: false
     });
 
@@ -90,7 +90,7 @@ describe('list_categories', () => {
   });
 
   it('show_count: false', () => {
-    var result = listCategories({
+    const result = listCategories({
       show_count: false
     });
 
@@ -115,7 +115,7 @@ describe('list_categories', () => {
   });
 
   it('class', () => {
-    var result = listCategories({
+    const result = listCategories({
       class: 'test'
     });
 
@@ -140,7 +140,7 @@ describe('list_categories', () => {
   });
 
   it('depth', () => {
-    var result = listCategories({
+    const result = listCategories({
       depth: 1
     });
 
@@ -160,7 +160,7 @@ describe('list_categories', () => {
   });
 
   it('orderby', () => {
-    var result = listCategories({
+    const result = listCategories({
       orderby: 'length'
     });
 
@@ -185,7 +185,7 @@ describe('list_categories', () => {
   });
 
   it('order', () => {
-    var result = listCategories({
+    const result = listCategories({
       order: -1
     });
 
@@ -210,7 +210,7 @@ describe('list_categories', () => {
   });
 
   it('transform', () => {
-    var result = listCategories({
+    const result = listCategories({
       transform(name) {
         return name.toUpperCase();
       }
@@ -237,7 +237,7 @@ describe('list_categories', () => {
   });
 
   it('separator (blank)', () => {
-    var result = listCategories({
+    const result = listCategories({
       style: false,
       separator: ''
     });
@@ -251,7 +251,7 @@ describe('list_categories', () => {
   });
 
   it('separator (non-blank)', () => {
-    var result = listCategories({
+    const result = listCategories({
       style: false,
       separator: '|'
     });
@@ -265,7 +265,7 @@ describe('list_categories', () => {
   });
 
   it('children-indicator', () => {
-    var result = listCategories({
+    const result = listCategories({
       children_indicator: 'has-children'
     });
 
@@ -290,7 +290,7 @@ describe('list_categories', () => {
   });
 
   it('show-current', () => {
-    var result = listCategories({
+    const result = listCategories({
       show_current: true
     });
 

@@ -1,13 +1,13 @@
 'use strict';
 
-var util = require('hexo-util');
+const util = require('hexo-util');
 
-var code = [
+const code = [
   'if tired && night:',
   '  sleep()'
 ].join('\n');
 
-var content = [
+const content = [
   '# Title',
   '``` python',
   code,

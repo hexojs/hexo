@@ -1,21 +1,21 @@
-var should = require('chai').should(); // eslint-disable-line
-var pathFn = require('path');
-var fs = require('hexo-fs');
-var Promise = require('bluebird');
-var sinon = require('sinon');
-var sep = pathFn.sep;
-var testUtil = require('../../util');
+const should = require('chai').should(); // eslint-disable-line
+const pathFn = require('path');
+const fs = require('hexo-fs');
+const Promise = require('bluebird');
+const sinon = require('sinon');
+const sep = pathFn.sep;
+const testUtil = require('../../util');
 
 describe('Hexo', () => {
-  var base_dir = pathFn.join(__dirname, 'hexo_test');
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(base_dir, {silent: true});
-  var coreDir = pathFn.join(__dirname, '../../..');
-  var version = require('../../../package.json').version;
-  var Post = hexo.model('Post');
-  var Page = hexo.model('Page');
-  var Data = hexo.model('Data');
-  var route = hexo.route;
+  const base_dir = pathFn.join(__dirname, 'hexo_test');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(base_dir, {silent: true});
+  const coreDir = pathFn.join(__dirname, '../../..');
+  const version = require('../../../package.json').version;
+  const Post = hexo.model('Post');
+  const Page = hexo.model('Page');
+  const Data = hexo.model('Data');
+  const route = hexo.route;
 
   function checkStream(stream, expected) {
     return testUtil.stream.read(stream).then(data => {
@@ -41,7 +41,7 @@ describe('Hexo', () => {
   hexo.extend.console.register('test', args => args);
 
   it('constructor', () => {
-    var hexo = new Hexo(__dirname);
+    const hexo = new Hexo(__dirname);
 
     /* eslint-disable no-path-concat */
     hexo.core_dir.should.eql(coreDir + sep);
@@ -67,9 +67,9 @@ describe('Hexo', () => {
   });
 
   it('constructs mutli-config', () => {
-    var configs = ['../../../fixtures/_config.json', '../../../fixtures/_config.json'];
-    var args = { _: [], config: configs.join(',') };
-    var hexo = new Hexo(base_dir, args);
+    const configs = ['../../../fixtures/_config.json', '../../../fixtures/_config.json'];
+    const args = { _: [], config: configs.join(',') };
+    const hexo = new Hexo(base_dir, args);
     hexo.config_path.should.eql(pathFn.join(base_dir, '_multiconfig.yml'));
   });
 
@@ -96,7 +96,7 @@ describe('Hexo', () => {
   });
 
   it('call() - console not registered', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'Console `nothing` has not been registered yet!');
     });
 
@@ -106,8 +106,8 @@ describe('Hexo', () => {
   });
 
   it('init()', () => {
-    var hexo = new Hexo(pathFn.join(__dirname, 'hexo_test'), {silent: true});
-    var hook = sinon.spy();
+    const hexo = new Hexo(pathFn.join(__dirname, 'hexo_test'), {silent: true});
+    const hook = sinon.spy();
 
     hexo.extend.filter.register('after_init', hook);
 
@@ -135,8 +135,8 @@ describe('Hexo', () => {
   });
 
   function testLoad(path) {
-    var target = pathFn.join(path, 'test.txt');
-    var body = 'test';
+    const target = pathFn.join(path, 'test.txt');
+    const body = 'test';
 
     loadAssetGenerator();
 
@@ -148,9 +148,9 @@ describe('Hexo', () => {
   it('load() - theme', () => testLoad(pathFn.join(hexo.theme_dir, 'source')));
 
   function testWatch(path) {
-    var target = pathFn.join(path, 'test.txt');
-    var body = 'test';
-    var newBody = body + body;
+    const target = pathFn.join(path, 'test.txt');
+    const body = 'test';
+    const newBody = body + body;
 
     loadAssetGenerator();
 
@@ -169,8 +169,8 @@ describe('Hexo', () => {
   it('unwatch()');
 
   it('exit()', () => {
-    var hook = sinon.spy();
-    var listener = sinon.spy();
+    const hook = sinon.spy();
+    const listener = sinon.spy();
 
     hexo.extend.filter.register('before_exit', hook);
     hexo.once('exit', listener);
@@ -298,11 +298,11 @@ describe('Hexo', () => {
       ];
     });
 
-    var beforeListener = sinon.spy();
-    var afterListener = sinon.spy();
-    var afterHook = sinon.spy();
+    const beforeListener = sinon.spy();
+    const afterListener = sinon.spy();
+    const afterHook = sinon.spy();
 
-    var beforeHook = sinon.spy(() => {
+    const beforeHook = sinon.spy(() => {
       hexo.locals.set('test', 'foo');
     });
 
@@ -344,7 +344,7 @@ describe('Hexo', () => {
       }
     }));
 
-    var expected = [
+    const expected = [
       hexo.config.title,
       'bar',
       'layout',
@@ -425,7 +425,7 @@ describe('Hexo', () => {
   });
 
   it('_generate() - do nothing if it\'s generating', () => {
-    var spy = sinon.spy();
+    const spy = sinon.spy();
     hexo.extend.generator.register('test', spy);
 
     hexo._isGenerating = true;
@@ -435,7 +435,7 @@ describe('Hexo', () => {
   });
 
   it('_generate() - reset cache for new route', () => {
-    var count = 0;
+    let count = 0;
 
     hexo.theme.setView('test.swig', '{{ page.count }}');
 

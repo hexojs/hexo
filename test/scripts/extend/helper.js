@@ -1,10 +1,10 @@
-var should = require('chai').should(); // eslint-disable-line
+const should = require('chai').should(); // eslint-disable-line
 
 describe('Helper', () => {
-  var Helper = require('../../../lib/extend/helper');
+  const Helper = require('../../../lib/extend/helper');
 
   it('register()', () => {
-    var h = new Helper();
+    const h = new Helper();
 
     // name, fn
     h.register('test', () => {});
@@ -31,7 +31,7 @@ describe('Helper', () => {
   });
 
   it('list()', () => {
-    var h = new Helper();
+    const h = new Helper();
 
     h.register('test', () => {});
 
@@ -39,7 +39,7 @@ describe('Helper', () => {
   });
 
   it('get()', () => {
-    var h = new Helper();
+    const h = new Helper();
 
     h.register('test', () => {});
 

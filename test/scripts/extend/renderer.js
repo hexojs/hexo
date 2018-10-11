@@ -1,10 +1,10 @@
-var should = require('chai').should(); // eslint-disable-line
+const should = require('chai').should(); // eslint-disable-line
 
 describe('Renderer', () => {
-  var Renderer = require('../../../lib/extend/renderer');
+  const Renderer = require('../../../lib/extend/renderer');
 
   it('register()', () => {
-    var r = new Renderer();
+    const r = new Renderer();
 
     // name, output, fn
     r.register('yaml', 'json', () => {});
@@ -49,7 +49,7 @@ describe('Renderer', () => {
   });
 
   it('register() - promisify', () => {
-    var r = new Renderer();
+    const r = new Renderer();
 
     // async
     r.register('yaml', 'json', (data, options, callback) => {
@@ -69,7 +69,7 @@ describe('Renderer', () => {
   });
 
   it('register() - compile', () => {
-    var r = new Renderer();
+    const r = new Renderer();
 
     function renderer(data, locals) {}
 
@@ -82,7 +82,7 @@ describe('Renderer', () => {
   });
 
   it('getOutput()', () => {
-    var r = new Renderer();
+    const r = new Renderer();
 
     r.register('yaml', 'json', () => {});
 
@@ -93,7 +93,7 @@ describe('Renderer', () => {
   });
 
   it('isRenderable()', () => {
-    var r = new Renderer();
+    const r = new Renderer();
 
     r.register('yaml', 'json', () => {});
 
@@ -104,7 +104,7 @@ describe('Renderer', () => {
   });
 
   it('isRenderableSync()', () => {
-    var r = new Renderer();
+    const r = new Renderer();
 
     r.register('yaml', 'json', () => {});
 
@@ -119,7 +119,7 @@ describe('Renderer', () => {
   });
 
   it('get()', () => {
-    var r = new Renderer();
+    const r = new Renderer();
 
     r.register('yaml', 'json', () => {});
 
@@ -136,7 +136,7 @@ describe('Renderer', () => {
   });
 
   it('list()', () => {
-    var r = new Renderer();
+    const r = new Renderer();
 
     r.register('yaml', 'json', () => {});
 

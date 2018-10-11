@@ -1,15 +1,15 @@
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
-var pathFn = require('path');
-var fs = require('hexo-fs');
-var Promise = require('bluebird');
+const should = require('chai').should(); // eslint-disable-line
+const sinon = require('sinon');
+const pathFn = require('path');
+const fs = require('hexo-fs');
+const Promise = require('bluebird');
 
 describe('config', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
-  var processor = require('../../../lib/theme/processors/config');
-  var process = Promise.method(processor.process.bind(hexo));
-  var themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
+  const processor = require('../../../lib/theme/processors/config');
+  const process = Promise.method(processor.process.bind(hexo));
+  const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
 
   function newFile(options) {
     options.source = pathFn.join(themeDir, options.path);
@@ -24,7 +24,7 @@ describe('config', () => {
   after(() => fs.rmdir(hexo.base_dir));
 
   it('pattern', () => {
-    var pattern = processor.pattern;
+    const pattern = processor.pattern;
 
     pattern.match('_config.yml').should.be.ok;
     pattern.match('_config.json').should.be.ok;
@@ -33,13 +33,13 @@ describe('config', () => {
   });
 
   it('type: create', () => {
-    var body = [
+    const body = [
       'name:',
       '  first: John',
       '  last: Doe'
     ].join('\n');
 
-    var file = newFile({
+    const file = newFile({
       path: '_config.yml',
       type: 'create',
       content: body
@@ -56,7 +56,7 @@ describe('config', () => {
   });
 
   it('type: delete', () => {
-    var file = newFile({
+    const file = newFile({
       path: '_config.yml',
       type: 'delete'
     });
@@ -69,12 +69,12 @@ describe('config', () => {
   });
 
   it('load failed', () => {
-    var file = newFile({
+    const file = newFile({
       path: '_config.yml',
       type: 'create'
     });
 
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'Theme config load failed.');
     });
 

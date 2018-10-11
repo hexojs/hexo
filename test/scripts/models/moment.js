@@ -1,9 +1,9 @@
-var should = require('chai').should(); // eslint-disable-line
-var moment = require('moment-timezone');
+const should = require('chai').should(); // eslint-disable-line
+const moment = require('moment-timezone');
 
 describe('SchemaTypeMoment', () => {
-  var SchemaTypeMoment = require('../../../lib/models/types/moment');
-  var type = new SchemaTypeMoment('test');
+  const SchemaTypeMoment = require('../../../lib/models/types/moment');
+  const type = new SchemaTypeMoment('test');
 
   it('cast()', () => {
     type.cast(1e8).should.eql(moment(1e8));
@@ -13,24 +13,24 @@ describe('SchemaTypeMoment', () => {
   });
 
   it('cast() - default', () => {
-    var type = new SchemaTypeMoment('test', {default: moment});
+    const type = new SchemaTypeMoment('test', {default: moment});
     moment.isMoment(type.cast()).should.be.true;
   });
 
   it('cast() - language', () => {
-    var lang = 'zh-tw';
-    var format = 'LLLL';
-    var type = new SchemaTypeMoment('test', {language: lang});
-    var now = Date.now();
+    const lang = 'zh-tw';
+    const format = 'LLLL';
+    const type = new SchemaTypeMoment('test', {language: lang});
+    const now = Date.now();
 
     type.cast(now).format(format).should.eql(moment(now).locale(lang).format(format));
   });
 
   it('cast() - timezone', () => {
-    var timezone = 'Etc/UTC';
-    var format = 'LLLL';
-    var type = new SchemaTypeMoment('test', {timezone});
-    var now = Date.now();
+    const timezone = 'Etc/UTC';
+    const format = 'LLLL';
+    const type = new SchemaTypeMoment('test', {timezone});
+    const now = Date.now();
 
     type.cast(now).format(format).should.eql(moment(now).tz(timezone).format(format));
   });
@@ -49,7 +49,7 @@ describe('SchemaTypeMoment', () => {
   });
 
   it('validate() - required', () => {
-    var type = new SchemaTypeMoment('test', {required: true});
+    const type = new SchemaTypeMoment('test', {required: true});
 
     try {
       type.validate();

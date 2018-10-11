@@ -1,14 +1,14 @@
 'use strict';
 
-var moment = require('moment-timezone');
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
+const moment = require('moment-timezone');
+const should = require('chai').should(); // eslint-disable-line
+const sinon = require('sinon');
 
 describe('date', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var dateHelper = require('../../../lib/plugins/helper/date');
-  var clock;
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const dateHelper = require('../../../lib/plugins/helper/date');
+  let clock;
 
   before(() => {
     clock = sinon.useFakeTimers(Date.now());
@@ -19,12 +19,12 @@ describe('date', () => {
   });
 
   it('date', () => {
-    var ctx = {
+    const ctx = {
       config: hexo.config,
       page: {}
     };
 
-    var date = dateHelper.date.bind(ctx);
+    const date = dateHelper.date.bind(ctx);
 
     // now
     date().should.eql(moment().format(hexo.config.date_format));
@@ -58,7 +58,7 @@ describe('date', () => {
   });
 
   it('date_xml', () => {
-    var dateXML = dateHelper.date_xml;
+    const dateXML = dateHelper.date_xml;
 
     // now
     dateXML().should.eql(moment().toISOString());
@@ -74,12 +74,12 @@ describe('date', () => {
   });
 
   it('relative_date', () => {
-    var ctx = {
+    const ctx = {
       config: hexo.config,
       page: {}
     };
 
-    var relativeDate = dateHelper.relative_date.bind(ctx);
+    const relativeDate = dateHelper.relative_date.bind(ctx);
 
     // now
     relativeDate().should.eql(moment().fromNow());
@@ -95,12 +95,12 @@ describe('date', () => {
   });
 
   it('time', () => {
-    var ctx = {
+    const ctx = {
       config: hexo.config,
       page: {}
     };
 
-    var time = dateHelper.time.bind(ctx);
+    const time = dateHelper.time.bind(ctx);
 
     // now
     time().should.eql(moment().format(hexo.config.time_format));
@@ -134,15 +134,15 @@ describe('date', () => {
   });
 
   it('full_date', () => {
-    var ctx = {
+    const ctx = {
       config: hexo.config,
       date: dateHelper.date,
       time: dateHelper.time,
       page: {}
     };
 
-    var fullDate = dateHelper.full_date.bind(ctx);
-    var fullDateFormat = hexo.config.date_format + ' ' + hexo.config.time_format;
+    const fullDate = dateHelper.full_date.bind(ctx);
+    const fullDateFormat = hexo.config.date_format + ' ' + hexo.config.time_format;
 
     // now
     fullDate().should.eql(moment().format(fullDateFormat));
@@ -176,13 +176,13 @@ describe('date', () => {
   });
 
   it('time_tag', () => {
-    var ctx = {
+    const ctx = {
       config: hexo.config,
       date: dateHelper.date,
       page: {}
     };
 
-    var timeTag = dateHelper.time_tag.bind(ctx);
+    const timeTag = dateHelper.time_tag.bind(ctx);
 
     function result(date, format) {
       date = date || new Date();

@@ -1,10 +1,10 @@
-var should = require('chai').should(); // eslint-disable-line
+const should = require('chai').should(); // eslint-disable-line
 
 describe('Generator', () => {
-  var Generator = require('../../../lib/extend/generator');
+  const Generator = require('../../../lib/extend/generator');
 
   it('register()', () => {
-    var g = new Generator();
+    const g = new Generator();
 
     // name, fn
     g.register('test', () => {});
@@ -27,7 +27,7 @@ describe('Generator', () => {
   });
 
   it('register() - promisify', () => {
-    var g = new Generator();
+    const g = new Generator();
 
     g.register('test', (locals, render, callback) => {
       callback(null, 'foo');
@@ -39,7 +39,7 @@ describe('Generator', () => {
   });
 
   it('get()', () => {
-    var g = new Generator();
+    const g = new Generator();
 
     g.register('test', () => {});
 
@@ -47,7 +47,7 @@ describe('Generator', () => {
   });
 
   it('list()', () => {
-    var g = new Generator();
+    const g = new Generator();
 
     g.register('test', () => {});
 

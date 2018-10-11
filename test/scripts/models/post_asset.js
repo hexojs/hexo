@@ -1,13 +1,13 @@
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
-var pathFn = require('path');
+const should = require('chai').should(); // eslint-disable-line
+const sinon = require('sinon');
+const pathFn = require('path');
 
 describe('PostAsset', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var PostAsset = hexo.model('PostAsset');
-  var Post = hexo.model('Post');
-  var post;
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const PostAsset = hexo.model('PostAsset');
+  const Post = hexo.model('Post');
+  let post;
 
   before(() => hexo.init().then(() => Post.insert({
     source: 'foo.md',
@@ -26,7 +26,7 @@ describe('PostAsset', () => {
   }));
 
   it('_id - required', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'ID is not defined');
     });
 
@@ -36,7 +36,7 @@ describe('PostAsset', () => {
   });
 
   it('slug - required', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', '`slug` is required!');
     });
 

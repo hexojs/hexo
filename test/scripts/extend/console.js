@@ -1,10 +1,10 @@
-var should = require('chai').should(); // eslint-disable-line
+const should = require('chai').should(); // eslint-disable-line
 
 describe('Console', () => {
-  var Console = require('../../../lib/extend/console');
+  const Console = require('../../../lib/extend/console');
 
   it('register()', () => {
-    var c = new Console();
+    const c = new Console();
 
     // no name
     try {
@@ -62,7 +62,7 @@ describe('Console', () => {
   });
 
   it('register() - alias', () => {
-    var c = new Console();
+    const c = new Console();
 
     c.register('test', () => {});
 
@@ -75,7 +75,7 @@ describe('Console', () => {
   });
 
   it('register() - promisify', () => {
-    var c = new Console();
+    const c = new Console();
 
     c.register('test', (args, callback) => {
       args.should.eql({foo: 'bar'});
@@ -90,7 +90,7 @@ describe('Console', () => {
   });
 
   it('list()', () => {
-    var c = new Console();
+    const c = new Console();
 
     c.register('test', () => {});
 
@@ -98,7 +98,7 @@ describe('Console', () => {
   });
 
   it('get()', () => {
-    var c = new Console();
+    const c = new Console();
 
     c.register('test', () => {});
 

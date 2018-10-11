@@ -1,14 +1,14 @@
-var should = require('chai').should(); // eslint-disable-line
-var _ = require('lodash');
+const should = require('chai').should(); // eslint-disable-line
+const _ = require('lodash');
 
 function ifTrue(cond, yes, no) {
   return cond ? yes : no;
 }
 
 describe('toc', () => {
-  var toc = require('../../../lib/plugins/helper/toc');
+  const toc = require('../../../lib/plugins/helper/toc');
 
-  var html = [
+  const html = [
     '<h1 id="title_1">Title 1</h1>',
     '<h2 id="title_1_1">Title 1.1</h2>',
     '<h3 id="title_1_1_1">Title 1.1.1</h3>',
@@ -21,18 +21,18 @@ describe('toc', () => {
     '<h1 id="title_4"><a name="chapter1">Chapter 1 should be printed to toc</a></h1>'
   ].join('');
 
-  var genResult = options => {
+  const genResult = options => {
     options = _.assign({
       class: 'toc',
       list_number: true,
       max_depth: 6
     }, options);
 
-    var className = options.class;
-    var listNumber = options.list_number;
-    var maxDepth = options.max_depth;
+    const className = options.class;
+    const listNumber = options.list_number;
+    const maxDepth = options.max_depth;
 
-    var resultTitle_1_1_1 = [
+    const resultTitle_1_1_1 = [
       '<ol class="' + className + '-child">',
       '<li class="' + className + '-item ' + className + '-level-3">',
       '<a class="' + className + '-link" href="#title_1_1_1">',
@@ -43,7 +43,7 @@ describe('toc', () => {
       '</ol>'
     ].join('');
 
-    var resultTitle_1_3_1 = [
+    const resultTitle_1_3_1 = [
       '<ol class="' + className + '-child">',
       '<li class="' + className + '-item ' + className + '-level-3">',
       '<a class="' + className + '-link" href="#title_1_3_1">',
@@ -54,7 +54,7 @@ describe('toc', () => {
       '</ol>'
     ].join('');
 
-    var resultTitle_1_1 = [
+    const resultTitle_1_1 = [
       '<ol class="' + className + '-child">',
       '<li class="' + className + '-item ' + className + '-level-2">',
       '<a class="' + className + '-link" href="#title_1_1">',
@@ -79,7 +79,7 @@ describe('toc', () => {
       '</ol>'
     ].join('');
 
-    var resultTitle_2_1 = [
+    const resultTitle_2_1 = [
       '<ol class="' + className + '-child">',
       '<li class="' + className + '-item ' + className + '-level-2">',
       '<a class="' + className + '-link" href="#title_2_1">',
@@ -90,7 +90,7 @@ describe('toc', () => {
       '</ol>'
     ].join('');
 
-    var resultAllTitles_Level1 = [
+    const resultAllTitles_Level1 = [
       '<li class="' + className + '-item ' + className + '-level-1">',
       '<a class="' + className + '-link" href="#title_1">',
       ifTrue(listNumber, '<span class="' + className + '-number">1.</span> ', ''),
@@ -119,7 +119,7 @@ describe('toc', () => {
       '</li>'
     ].join('');
 
-    var result = [
+    const result = [
       '<ol class="' + className + '">',
       ifTrue(maxDepth >= 1, resultAllTitles_Level1, ''),
       '</ol>'
@@ -133,7 +133,7 @@ describe('toc', () => {
   });
 
   it('class', () => {
-    var options = {
+    const options = {
       class: 'foo'
     };
 
@@ -141,7 +141,7 @@ describe('toc', () => {
   });
 
   it('list_number', () => {
-    var options = {
+    const options = {
       list_number: false
     };
 
@@ -149,7 +149,7 @@ describe('toc', () => {
   });
 
   it('max_depth', () => {
-    var options = {
+    const options = {
       max_depth: 2
     };
 

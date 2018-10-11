@@ -1,18 +1,18 @@
-var should = require('chai').should(); // eslint-disable-line
+const should = require('chai').should(); // eslint-disable-line
 
 describe('list_archives', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
-  var Post = hexo.model('Post');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
+  const Post = hexo.model('Post');
 
-  var ctx = {
+  const ctx = {
     config: hexo.config,
     page: {}
   };
 
   ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
 
-  var listArchives = require('../../../lib/plugins/helper/list_archives').bind(ctx);
+  const listArchives = require('../../../lib/plugins/helper/list_archives').bind(ctx);
 
   function resetLocals() {
     hexo.locals.invalidate();
@@ -29,7 +29,7 @@ describe('list_archives', () => {
   }));
 
   it('default', () => {
-    var result = listArchives();
+    const result = listArchives();
 
     result.should.eql([
       '<ul class="archive-list">',
@@ -41,7 +41,7 @@ describe('list_archives', () => {
   });
 
   it('type: yearly', () => {
-    var result = listArchives({
+    const result = listArchives({
       type: 'yearly'
     });
 
@@ -54,7 +54,7 @@ describe('list_archives', () => {
   });
 
   it('format', () => {
-    var result = listArchives({
+    const result = listArchives({
       format: 'YYYY/M'
     });
 
@@ -68,7 +68,7 @@ describe('list_archives', () => {
   });
 
   it('style: false', () => {
-    var result = listArchives({
+    const result = listArchives({
       style: false
     });
 
@@ -80,7 +80,7 @@ describe('list_archives', () => {
   });
 
   it('show_count', () => {
-    var result = listArchives({
+    const result = listArchives({
       show_count: false
     });
 
@@ -94,7 +94,7 @@ describe('list_archives', () => {
   });
 
   it('order', () => {
-    var result = listArchives({
+    const result = listArchives({
       order: 1
     });
 
@@ -108,7 +108,7 @@ describe('list_archives', () => {
   });
 
   it('transform', () => {
-    var result = listArchives({
+    const result = listArchives({
       transform(str) {
         return str.toUpperCase();
       }
@@ -124,7 +124,7 @@ describe('list_archives', () => {
   });
 
   it('separator', () => {
-    var result = listArchives({
+    const result = listArchives({
       style: false,
       separator: ''
     });
@@ -137,7 +137,7 @@ describe('list_archives', () => {
   });
 
   it('class', () => {
-    var result = listArchives({
+    const result = listArchives({
       class: 'test'
     });
 
@@ -152,7 +152,7 @@ describe('list_archives', () => {
 
   it('page.lang', () => {
     ctx.page.lang = 'zh-tw';
-    var result = listArchives();
+    const result = listArchives();
     ctx.page.lang = '';
 
     result.should.eql([
@@ -166,7 +166,7 @@ describe('list_archives', () => {
 
   it('config.language', () => {
     ctx.config.language = 'de';
-    var result = listArchives();
+    const result = listArchives();
     ctx.config.language = '';
 
     result.should.eql([

@@ -1,10 +1,10 @@
-var should = require('chai').should(); // eslint-disable-line
+const should = require('chai').should(); // eslint-disable-line
 
 describe('Processor', () => {
-  var Processor = require('../../../lib/extend/processor');
+  const Processor = require('../../../lib/extend/processor');
 
   it('register()', () => {
-    var p = new Processor();
+    const p = new Processor();
 
     // pattern, fn
     p.register('test', () => {});
@@ -27,7 +27,7 @@ describe('Processor', () => {
   });
 
   it('list()', () => {
-    var p = new Processor();
+    const p = new Processor();
 
     p.register('test', () => {});
 
