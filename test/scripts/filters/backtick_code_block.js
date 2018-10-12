@@ -1,14 +1,14 @@
-var should = require('chai').should(); // eslint-disable-line
-var util = require('hexo-util');
-var _ = require('lodash');
-var defaultConfig = require('../../../lib/hexo/default_config');
+const should = require('chai').should(); // eslint-disable-line
+const util = require('hexo-util');
+const _ = require('lodash');
+const defaultConfig = require('../../../lib/hexo/default_config');
 
 describe('Backtick code block', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var codeBlock = require('../../../lib/plugins/filter/before_post_render/backtick_code_block').bind(hexo);
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const codeBlock = require('../../../lib/plugins/filter/before_post_render/backtick_code_block').bind(hexo);
 
-  var code = [
+  const code = [
     'if (tired && night){',
     '  sleep();',
     '}'
@@ -26,13 +26,13 @@ describe('Backtick code block', () => {
   });
 
   it('disabled', () => {
-    var content = [
+    const content = [
       '``` js',
       code,
       '```'
     ].join('\n');
 
-    var data = {content};
+    const data = {content};
 
     hexo.config.highlight.enable = false;
     codeBlock(data);
@@ -40,15 +40,15 @@ describe('Backtick code block', () => {
   });
 
   it('with no config (disabled)', () => {
-    var content = [
+    const content = [
       '``` js',
       code,
       '```'
     ].join('\n');
 
-    var data = {content};
+    const data = {content};
 
-    var oldConfig = hexo.config.highlight;
+    const oldConfig = hexo.config.highlight;
     delete hexo.config.highlight;
 
     codeBlock(data);
@@ -58,7 +58,7 @@ describe('Backtick code block', () => {
   });
 
   it('default', () => {
-    var data = {
+    const data = {
       content: [
         '``` js',
         code,
@@ -71,7 +71,7 @@ describe('Backtick code block', () => {
   });
 
   it('without language name', () => {
-    var data = {
+    const data = {
       content: [
         '```',
         code,
@@ -79,14 +79,14 @@ describe('Backtick code block', () => {
       ].join('\n')
     };
 
-    var expected = highlight(code);
+    const expected = highlight(code);
 
     codeBlock(data);
     data.content.should.eql('<escape>' + expected + '</escape>');
   });
 
   it('without language name - ignore tab character', () => {
-    var data = {
+    const data = {
       content: [
         '``` \t',
         code,
@@ -94,14 +94,14 @@ describe('Backtick code block', () => {
       ].join('\n')
     };
 
-    var expected = highlight(code);
+    const expected = highlight(code);
 
     codeBlock(data);
     data.content.should.eql('<escape>' + expected + '</escape>');
   });
 
   it('title', () => {
-    var data = {
+    const data = {
       content: [
         '``` js Hello world',
         code,
@@ -109,7 +109,7 @@ describe('Backtick code block', () => {
       ].join('\n')
     };
 
-    var expected = highlight(code, {
+    const expected = highlight(code, {
       lang: 'js',
       caption: '<span>Hello world</span>'
     });
@@ -119,7 +119,7 @@ describe('Backtick code block', () => {
   });
 
   it('url', () => {
-    var data = {
+    const data = {
       content: [
         '``` js Hello world http://hexo.io/',
         code,
@@ -127,7 +127,7 @@ describe('Backtick code block', () => {
       ].join('\n')
     };
 
-    var expected = highlight(code, {
+    const expected = highlight(code, {
       lang: 'js',
       caption: '<span>Hello world</span><a href="http://hexo.io/">link</a>'
     });
@@ -137,7 +137,7 @@ describe('Backtick code block', () => {
   });
 
   it('link text', () => {
-    var data = {
+    const data = {
       content: [
         '``` js Hello world http://hexo.io/ Hexo',
         code,
@@ -145,7 +145,7 @@ describe('Backtick code block', () => {
       ].join('\n')
     };
 
-    var expected = highlight(code, {
+    const expected = highlight(code, {
       lang: 'js',
       caption: '<span>Hello world</span><a href="http://hexo.io/">Hexo</a>'
     });
@@ -155,9 +155,9 @@ describe('Backtick code block', () => {
   });
 
   it('indent', () => {
-    var indentCode = code.split('\n').map(line => '  ' + line).join('\n');
+    const indentCode = code.split('\n').map(line => '  ' + line).join('\n');
 
-    var data = {
+    const data = {
       content: [
         '``` js Hello world http://hexo.io/',
         indentCode,
@@ -165,7 +165,7 @@ describe('Backtick code block', () => {
       ].join('\n')
     };
 
-    var expected = highlight(code, {
+    const expected = highlight(code, {
       lang: 'js',
       caption: '<span>Hello world</span><a href="http://hexo.io/">link</a>'
     });
@@ -177,7 +177,7 @@ describe('Backtick code block', () => {
   it('line number false', () => {
     hexo.config.highlight.line_number = false;
 
-    var data = {
+    const data = {
       content: [
         '``` js',
         code,
@@ -185,7 +185,7 @@ describe('Backtick code block', () => {
       ].join('\n')
     };
 
-    var expected = highlight(code, {
+    const expected = highlight(code, {
       lang: 'js',
       gutter: false
     });
@@ -198,7 +198,7 @@ describe('Backtick code block', () => {
     hexo.config.highlight.line_number = false;
     hexo.config.highlight.first_line_number = 'always1';
 
-    var data = {
+    const data = {
       content: [
         '``` js',
         code,
@@ -206,7 +206,7 @@ describe('Backtick code block', () => {
       ].join('\n')
     };
 
-    var expected = highlight(code, {
+    const expected = highlight(code, {
       lang: 'js',
       gutter: false
     });
@@ -219,7 +219,7 @@ describe('Backtick code block', () => {
     hexo.config.highlight.line_number = false;
     hexo.config.highlight.first_line_number = 'inilne';
 
-    var data = {
+    const data = {
       content: [
         '``` js',
         code,
@@ -227,7 +227,7 @@ describe('Backtick code block', () => {
       ].join('\n')
     };
 
-    var expected = highlight(code, {
+    const expected = highlight(code, {
       lang: 'js',
       gutter: false
     });
@@ -239,7 +239,7 @@ describe('Backtick code block', () => {
   it('line number true', () => {
     hexo.config.highlight.line_number = true;
 
-    var data = {
+    const data = {
       content: [
         '``` js',
         code,
@@ -247,7 +247,7 @@ describe('Backtick code block', () => {
       ].join('\n')
     };
 
-    var expected = highlight(code, {
+    const expected = highlight(code, {
       lang: 'js',
       gutter: true
     });
@@ -260,7 +260,7 @@ describe('Backtick code block', () => {
     hexo.config.highlight.line_number = true;
     hexo.config.highlight.first_line_number = 'always1';
 
-    var data = {
+    const data = {
       content: [
         '``` js=',
         code,
@@ -268,7 +268,7 @@ describe('Backtick code block', () => {
       ].join('\n')
     };
 
-    var expected = highlight(code, {
+    const expected = highlight(code, {
       lang: 'js',
       gutter: true,
       firstLine: 1
@@ -282,7 +282,7 @@ describe('Backtick code block', () => {
     hexo.config.highlight.line_number = true;
     hexo.config.highlight.first_line_number = 'inline';
 
-    var data = {
+    const data = {
       content: [
         '``` js',
         code,
@@ -290,7 +290,7 @@ describe('Backtick code block', () => {
       ].join('\n')
     };
 
-    var expected = highlight(code, {
+    const expected = highlight(code, {
       lang: 'js',
       gutter: false,
       firstLine: 0
@@ -304,7 +304,7 @@ describe('Backtick code block', () => {
     hexo.config.highlight.line_number = true;
     hexo.config.highlight.first_line_number = 'inline';
 
-    var data = {
+    const data = {
       content: [
         '``` js=1',
         code,
@@ -312,7 +312,7 @@ describe('Backtick code block', () => {
       ].join('\n')
     };
 
-    var expected = highlight(code, {
+    const expected = highlight(code, {
       lang: 'js',
       gutter: true,
       firstLine: 1
@@ -326,7 +326,7 @@ describe('Backtick code block', () => {
     hexo.config.highlight.line_number = true;
     hexo.config.highlight.first_line_number = 'inline';
 
-    var data = {
+    const data = {
       content: [
         '``` js=2',
         code,
@@ -334,7 +334,7 @@ describe('Backtick code block', () => {
       ].join('\n')
     };
 
-    var expected = highlight(code, {
+    const expected = highlight(code, {
       lang: 'js',
       gutter: true,
       firstLine: 2
@@ -347,13 +347,13 @@ describe('Backtick code block', () => {
   it('tab replace', () => {
     hexo.config.highlight.tab_replace = '  ';
 
-    var code = [
+    const code = [
       'if (tired && night){',
       '\tsleep();',
       '}'
     ].join('\n');
 
-    var data = {
+    const data = {
       content: [
         '``` js',
         code,
@@ -361,7 +361,7 @@ describe('Backtick code block', () => {
       ].join('\n')
     };
 
-    var expected = highlight(code, {
+    const expected = highlight(code, {
       lang: 'js',
       tab: '  '
     });

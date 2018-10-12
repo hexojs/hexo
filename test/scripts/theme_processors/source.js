@@ -1,18 +1,18 @@
-var should = require('chai').should(); // eslint-disable-line
-var pathFn = require('path');
-var fs = require('hexo-fs');
-var Promise = require('bluebird');
+const should = require('chai').should(); // eslint-disable-line
+const pathFn = require('path');
+const fs = require('hexo-fs');
+const Promise = require('bluebird');
 
 describe('source', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'source_test'), {silent: true});
-  var processor = require('../../../lib/theme/processors/source');
-  var process = Promise.method(processor.process.bind(hexo));
-  var themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
-  var Asset = hexo.model('Asset');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(pathFn.join(__dirname, 'source_test'), {silent: true});
+  const processor = require('../../../lib/theme/processors/source');
+  const process = Promise.method(processor.process.bind(hexo));
+  const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
+  const Asset = hexo.model('Asset');
 
   function newFile(options) {
-    var path = options.path;
+    const path = options.path;
 
     options.params = {path};
     options.path = 'source/' + path;
@@ -29,7 +29,7 @@ describe('source', () => {
   after(() => fs.rmdir(hexo.base_dir));
 
   it('pattern', () => {
-    var pattern = processor.pattern;
+    const pattern = processor.pattern;
 
     pattern.match('source/foo.jpg').should.eql({path: 'foo.jpg'});
     pattern.match('source/_foo.jpg').should.be.false;
@@ -43,15 +43,15 @@ describe('source', () => {
   });
 
   it('type: create', () => {
-    var file = newFile({
+    const file = newFile({
       path: 'style.css',
       type: 'create'
     });
 
-    var id = 'themes/test/' + file.path;
+    const id = 'themes/test/' + file.path;
 
     return fs.writeFile(file.source, 'test').then(() => process(file)).then(() => {
-      var asset = Asset.findById(id);
+      const asset = Asset.findById(id);
 
       asset._id.should.eql(id);
       asset.path.should.eql(file.params.path);
@@ -62,12 +62,12 @@ describe('source', () => {
   });
 
   it('type: update', () => {
-    var file = newFile({
+    const file = newFile({
       path: 'style.css',
       type: 'update'
     });
 
-    var id = 'themes/test/' + file.path;
+    const id = 'themes/test/' + file.path;
 
     return Promise.all([
       fs.writeFile(file.source, 'test'),
@@ -77,7 +77,7 @@ describe('source', () => {
         modified: false
       })
     ]).then(() => process(file)).then(() => {
-      var asset = Asset.findById(id);
+      const asset = Asset.findById(id);
 
       asset.modified.should.be.true;
     }).finally(() => Promise.all([
@@ -87,12 +87,12 @@ describe('source', () => {
   });
 
   it('type: skip', () => {
-    var file = newFile({
+    const file = newFile({
       path: 'style.css',
       type: 'skip'
     });
 
-    var id = 'themes/test/' + file.path;
+    const id = 'themes/test/' + file.path;
 
     return Promise.all([
       fs.writeFile(file.source, 'test'),
@@ -102,7 +102,7 @@ describe('source', () => {
         modified: false
       })
     ]).then(() => process(file)).then(() => {
-      var asset = Asset.findById(id);
+      const asset = Asset.findById(id);
 
       asset.modified.should.be.false;
     }).finally(() => Promise.all([
@@ -112,12 +112,12 @@ describe('source', () => {
   });
 
   it('type: delete', () => {
-    var file = newFile({
+    const file = newFile({
       path: 'style.css',
       type: 'delete'
     });
 
-    var id = 'themes/test/' + file.path;
+    const id = 'themes/test/' + file.path;
 
     return Asset.insert({
       _id: id,

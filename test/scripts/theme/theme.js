@@ -1,12 +1,12 @@
-var should = require('chai').should(); // eslint-disable-line
-var pathFn = require('path');
-var fs = require('hexo-fs');
-var Promise = require('bluebird');
+const should = require('chai').should(); // eslint-disable-line
+const pathFn = require('path');
+const fs = require('hexo-fs');
+const Promise = require('bluebird');
 
 describe('Theme', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'theme_test'), {silent: true});
-  var themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(pathFn.join(__dirname, 'theme_test'), {silent: true});
+  const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
 
   before(() => Promise.all([
     fs.mkdirs(themeDir),
@@ -41,7 +41,7 @@ describe('Theme', () => {
   it('setView()', () => {
     hexo.theme.setView('test.swig', '');
 
-    var view = hexo.theme.getView('test.swig');
+    const view = hexo.theme.getView('test.swig');
     view.path.should.eql('test.swig');
 
     hexo.theme.removeView('test.swig');

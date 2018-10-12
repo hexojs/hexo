@@ -1,14 +1,14 @@
-var should = require('chai').should(); // eslint-disable-line
-var pathFn = require('path');
-var fs = require('hexo-fs');
-var Promise = require('bluebird');
-var moment = require('moment');
-var sinon = require('sinon');
+const should = require('chai').should(); // eslint-disable-line
+const pathFn = require('path');
+const fs = require('hexo-fs');
+const Promise = require('bluebird');
+const moment = require('moment');
+const sinon = require('sinon');
 
 describe('View', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'theme_test'));
-  var themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(pathFn.join(__dirname, 'theme_test'));
+  const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
 
   hexo.env.init = true;
 
@@ -31,10 +31,10 @@ describe('View', () => {
   after(() => fs.rmdir(hexo.base_dir));
 
   it('constructor', () => {
-    var data = {
+    const data = {
       _content: ''
     };
-    var view = newView('index.swig', data);
+    const view = newView('index.swig', data);
 
     view.path.should.eql('index.swig');
     view.source.should.eql(pathFn.join(themeDir, 'layout', 'index.swig'));
@@ -42,13 +42,13 @@ describe('View', () => {
   });
 
   it('parse front-matter', () => {
-    var body = [
+    const body = [
       'layout: false',
       '---',
       'content'
     ].join('\n');
 
-    var view = newView('index.swig', body);
+    const view = newView('index.swig', body);
 
     view.data.should.eql({
       layout: false,
@@ -57,8 +57,8 @@ describe('View', () => {
   });
 
   it('precompile view if possible', () => {
-    var body = 'Hello {{ name }}';
-    var view = newView('index.swig', body);
+    const body = 'Hello {{ name }}';
+    const view = newView('index.swig', body);
 
     view._compiledSync({
       name: 'Hexo'
@@ -73,11 +73,11 @@ describe('View', () => {
 
   it('generate precompiled function even if renderer does not provide compile function', () => {
     // Remove compile function
-    var compile = hexo.extend.renderer.store.swig.compile;
+    const compile = hexo.extend.renderer.store.swig.compile;
     delete hexo.extend.renderer.store.swig.compile;
 
-    var body = 'Hello {{ name }}';
-    var view = newView('index.swig', body);
+    const body = 'Hello {{ name }}';
+    const view = newView('index.swig', body);
 
     view._compiledSync({
       name: 'Hexo'
@@ -93,11 +93,11 @@ describe('View', () => {
   });
 
   it('render()', () => {
-    var body = [
+    const body = [
       '{{ test }}'
     ].join('\n');
 
-    var view = newView('index.swig', body);
+    const view = newView('index.swig', body);
 
     return view.render({
       test: 'foo'
@@ -108,14 +108,14 @@ describe('View', () => {
 
   it('render() - front-matter', () => {
     // The priority of front-matter is higher
-    var body = [
+    const body = [
       'foo: bar',
       '---',
       '{{ foo }}',
       '{{ test }}'
     ].join('\n');
 
-    var view = newView('index.swig', body);
+    const view = newView('index.swig', body);
 
     return view.render({
       foo: 'foo',
@@ -126,11 +126,11 @@ describe('View', () => {
   });
 
   it('render() - helper', () => {
-    var body = [
+    const body = [
       '{{ date() }}'
     ].join('\n');
 
-    var view = newView('index.swig', body);
+    const view = newView('index.swig', body);
 
     return view.render({
       config: hexo.config,
@@ -141,8 +141,8 @@ describe('View', () => {
   });
 
   it('render() - layout', () => {
-    var body = 'content';
-    var view = newView('index.swig', body);
+    const body = 'content';
+    const view = newView('index.swig', body);
 
     return view.render({
       layout: 'layout'
@@ -152,8 +152,8 @@ describe('View', () => {
   });
 
   it('render() - layout not found', () => {
-    var body = 'content';
-    var view = newView('index.swig', body);
+    const body = 'content';
+    const view = newView('index.swig', body);
 
     return view.render({
       layout: 'wtf'
@@ -163,11 +163,11 @@ describe('View', () => {
   });
 
   it('render() - callback', callback => {
-    var body = [
+    const body = [
       '{{ test }}'
     ].join('\n');
 
-    var view = newView('index.swig', body);
+    const view = newView('index.swig', body);
 
     view.render({
       test: 'foo'
@@ -179,13 +179,13 @@ describe('View', () => {
   });
 
   it('render() - callback (without options)', callback => {
-    var body = [
+    const body = [
       'test: foo',
       '---',
       '{{ test }}'
     ].join('\n');
 
-    var view = newView('index.swig', body);
+    const view = newView('index.swig', body);
 
     view.render((err, content) => {
       should.not.exist(err);
@@ -195,13 +195,13 @@ describe('View', () => {
   });
 
   it('render() - execute after_render:html', () => {
-    var body = [
+    const body = [
       '{{ test }}'
     ].join('\n');
 
-    var view = newView('index.swig', body);
+    const view = newView('index.swig', body);
 
-    var filter = sinon.spy(result => {
+    const filter = sinon.spy(result => {
       result.should.eql('foo');
       return 'bar';
     });
@@ -218,24 +218,24 @@ describe('View', () => {
   });
 
   it('renderSync()', () => {
-    var body = [
+    const body = [
       '{{ test }}'
     ].join('\n');
 
-    var view = newView('index.swig', body);
+    const view = newView('index.swig', body);
     view.renderSync({test: 'foo'}).should.eql('foo');
   });
 
   it('renderSync() - front-matter', () => {
     // The priority of front-matter is higher
-    var body = [
+    const body = [
       'foo: bar',
       '---',
       '{{ foo }}',
       '{{ test }}'
     ].join('\n');
 
-    var view = newView('index.swig', body);
+    const view = newView('index.swig', body);
 
     view.renderSync({
       foo: 'foo',
@@ -244,11 +244,11 @@ describe('View', () => {
   });
 
   it('renderSync() - helper', () => {
-    var body = [
+    const body = [
       '{{ date() }}'
     ].join('\n');
 
-    var view = newView('index.swig', body);
+    const view = newView('index.swig', body);
 
     view.renderSync({
       config: hexo.config,
@@ -257,8 +257,8 @@ describe('View', () => {
   });
 
   it('renderSync() - layout', () => {
-    var body = 'content';
-    var view = newView('index.swig', body);
+    const body = 'content';
+    const view = newView('index.swig', body);
 
     view.renderSync({
       layout: 'layout'
@@ -266,8 +266,8 @@ describe('View', () => {
   });
 
   it('renderSync() - layout not found', () => {
-    var body = 'content';
-    var view = newView('index.swig', body);
+    const body = 'content';
+    const view = newView('index.swig', body);
 
     view.renderSync({
       layout: 'wtf'
@@ -275,13 +275,13 @@ describe('View', () => {
   });
 
   it('renderSync() - execute after_render:html', () => {
-    var body = [
+    const body = [
       '{{ test }}'
     ].join('\n');
 
-    var view = newView('index.swig', body);
+    const view = newView('index.swig', body);
 
-    var filter = sinon.spy(result => {
+    const filter = sinon.spy(result => {
       result.should.eql('foo');
       return 'bar';
     });
@@ -292,7 +292,7 @@ describe('View', () => {
   });
 
   it('_resolveLayout()', () => {
-    var view = newView('partials/header.swig', 'header');
+    const view = newView('partials/header.swig', 'header');
 
     // Relative path
     view._resolveLayout('../layout').should.have.property('path', 'layout.swig');

@@ -1,7 +1,7 @@
-var should = require('chai').should(); // eslint-disable-line
+const should = require('chai').should(); // eslint-disable-line
 
 describe('fragment_cache', () => {
-  var fragment_cache = require('../../../lib/plugins/helper/fragment_cache')();
+  const fragment_cache = require('../../../lib/plugins/helper/fragment_cache')();
 
   fragment_cache.call({cache: true}, 'foo', () => 123);
 

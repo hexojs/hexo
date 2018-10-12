@@ -1,13 +1,13 @@
-var should = require('chai').should(); // eslint-disable-line
+const should = require('chai').should(); // eslint-disable-line
 
 describe('Titlecase', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var titlecase = require('../../../lib/plugins/filter/before_post_render/titlecase').bind(hexo);
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const titlecase = require('../../../lib/plugins/filter/before_post_render/titlecase').bind(hexo);
 
   it('disabled', () => {
-    var title = 'Today is a good day';
-    var data = {title};
+    const title = 'Today is a good day';
+    const data = {title};
     hexo.config.titlecase = false;
 
     titlecase(data);
@@ -15,8 +15,8 @@ describe('Titlecase', () => {
   });
 
   it('enabled', () => {
-    var title = 'Today is a good day';
-    var data = {title};
+    const title = 'Today is a good day';
+    const data = {title};
     hexo.config.titlecase = true;
 
     titlecase(data);

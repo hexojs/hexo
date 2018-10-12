@@ -1,14 +1,14 @@
-var should = require('chai').should(); // eslint-disable-line
-var Promise = require('bluebird');
-var pathFn = require('path');
-var fs = require('hexo-fs');
-var testUtil = require('../../util');
+const should = require('chai').should(); // eslint-disable-line
+const Promise = require('bluebird');
+const pathFn = require('path');
+const fs = require('hexo-fs');
+const testUtil = require('../../util');
 
 describe('asset', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'asset_test'), {silent: true});
-  var generator = require('../../../lib/plugins/generator/asset').bind(hexo);
-  var Asset = hexo.model('Asset');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(pathFn.join(__dirname, 'asset_test'), {silent: true});
+  const generator = require('../../../lib/plugins/generator/asset').bind(hexo);
+  const Asset = hexo.model('Asset');
 
   function checkStream(stream, expected) {
     return testUtil.stream.read(stream).then(data => {
@@ -21,9 +21,9 @@ describe('asset', () => {
   after(() => fs.rmdir(hexo.base_dir));
 
   it('renderable', () => {
-    var path = 'test.yml';
-    var source = pathFn.join(hexo.base_dir, path);
-    var content = 'foo: bar';
+    const path = 'test.yml';
+    const source = pathFn.join(hexo.base_dir, path);
+    const content = 'foo: bar';
 
     return Promise.all([
       Asset.insert({_id: path, path}),
@@ -42,9 +42,9 @@ describe('asset', () => {
   });
 
   it('not renderable', () => {
-    var path = 'test.txt';
-    var source = pathFn.join(hexo.base_dir, path);
-    var content = 'test content';
+    const path = 'test.txt';
+    const source = pathFn.join(hexo.base_dir, path);
+    const content = 'test content';
 
     return Promise.all([
       Asset.insert({_id: path, path}),
@@ -61,9 +61,9 @@ describe('asset', () => {
   });
 
   it('skip render', () => {
-    var path = 'test.yml';
-    var source = pathFn.join(hexo.base_dir, path);
-    var content = 'foo: bar';
+    const path = 'test.yml';
+    const source = pathFn.join(hexo.base_dir, path);
+    const content = 'foo: bar';
 
     return Promise.all([
       Asset.insert({_id: path, path, renderable: false}),
@@ -80,7 +80,7 @@ describe('asset', () => {
   });
 
   it('remove assets which does not exist', () => {
-    var path = 'test.txt';
+    const path = 'test.txt';
 
     return Asset.insert({
       _id: path,
@@ -91,8 +91,8 @@ describe('asset', () => {
   });
 
   it('don\'t remove extension name', () => {
-    var path = 'test.min.js';
-    var source = pathFn.join(hexo.base_dir, path);
+    const path = 'test.min.js';
+    const source = pathFn.join(hexo.base_dir, path);
 
     return Promise.all([
       Asset.insert({_id: path, path}),

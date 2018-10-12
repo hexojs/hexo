@@ -1,9 +1,9 @@
-var should = require('chai').should(); // eslint-disable-line
-var fs = require('hexo-fs');
+const should = require('chai').should(); // eslint-disable-line
+const fs = require('hexo-fs');
 
 describe('clean', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo, clean;
+  const Hexo = require('../../../lib/hexo');
+  let hexo, clean;
 
   beforeEach(() => {
     hexo = new Hexo(__dirname, {silent: true});
@@ -11,7 +11,7 @@ describe('clean', () => {
   });
 
   it('delete database', () => {
-    var dbPath = hexo.database.options.path;
+    const dbPath = hexo.database.options.path;
 
     return fs.writeFile(dbPath, '').then(() => clean()).then(() => fs.exists(dbPath)).then(exist => {
       exist.should.be.false;
@@ -19,7 +19,7 @@ describe('clean', () => {
   });
 
   it('delete public folder', () => {
-    var publicDir = hexo.public_dir;
+    const publicDir = hexo.public_dir;
 
     return fs.mkdirs(publicDir).then(() => clean()).then(() => fs.exists(publicDir)).then(exist => {
       exist.should.be.false;
@@ -27,7 +27,7 @@ describe('clean', () => {
   });
 
   it('execute corresponding filter', () => {
-    var extraDbPath = hexo.database.options.path + '.tmp';
+    const extraDbPath = hexo.database.options.path + '.tmp';
 
     hexo.extend.filter.register('after_clean', () => {
       return fs.unlink(extraDbPath);
