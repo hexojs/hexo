@@ -1,13 +1,13 @@
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
+const should = require('chai').should(); // eslint-disable-line
+const sinon = require('sinon');
 
 describe('migrate', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname, {silent: true});
-  var migrate = require('../../../lib/plugins/console/migrate').bind(hexo);
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname, {silent: true});
+  const migrate = require('../../../lib/plugins/console/migrate').bind(hexo);
 
   it('default', () => {
-    var migrator = sinon.spy(args => {
+    const migrator = sinon.spy(args => {
       args.foo.should.eql(1);
       args.bar.should.eql(2);
     });

@@ -1,15 +1,15 @@
-var should = require('chai').should(); // eslint-disable-line
-var Promise = require('bluebird');
-var Readable = require('stream').Readable;
-var pathFn = require('path');
-var crypto = require('crypto');
-var fs = require('hexo-fs');
-var sinon = require('sinon');
-var testUtil = require('../../util');
+const should = require('chai').should(); // eslint-disable-line
+const Promise = require('bluebird');
+const Readable = require('stream').Readable;
+const pathFn = require('path');
+const crypto = require('crypto');
+const fs = require('hexo-fs');
+const sinon = require('sinon');
+const testUtil = require('../../util');
 
 describe('Router', () => {
-  var Router = require('../../../lib/hexo/router');
-  var router = new Router();
+  const Router = require('../../../lib/hexo/router');
+  const router = new Router();
 
   function checkStream(stream, expected) {
     return testUtil.stream.read(stream).then(data => {
@@ -19,10 +19,10 @@ describe('Router', () => {
 
   function checksum(stream) {
     return new Promise((resolve, reject) => {
-      var hash = crypto.createHash('sha1');
+      const hash = crypto.createHash('sha1');
 
       stream.on('readable', () => {
-        var chunk;
+        let chunk;
 
         while ((chunk = stream.read()) !== null) {
           hash.update(chunk);
@@ -56,7 +56,7 @@ describe('Router', () => {
   });
 
   it('format() - path must be a string', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'path must be a string!');
     });
 
@@ -70,14 +70,14 @@ describe('Router', () => {
   });
 
   it('set() - string', () => {
-    var listener = sinon.spy(path => {
+    const listener = sinon.spy(path => {
       path.should.eql('test');
     });
 
     router.once('update', listener);
 
     router.set('test', 'foo');
-    var data = router.get('test');
+    const data = router.get('test');
 
     data.modified.should.be.true;
     listener.calledOnce.should.be.true;
@@ -100,7 +100,7 @@ describe('Router', () => {
 
   it('set() - readable stream', () => {
     // Prepare a readable stream
-    var stream = new Readable();
+    const stream = new Readable();
     stream.push('foo');
     stream.push(null);
 
@@ -119,7 +119,7 @@ describe('Router', () => {
   });
 
   it('set() - path must be a string', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'path must be a string!');
     });
 
@@ -133,7 +133,7 @@ describe('Router', () => {
   });
 
   it('set() - data is required', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'data is required!');
     });
 
@@ -151,7 +151,7 @@ describe('Router', () => {
       throw new Error('error test');
     });
 
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'error test');
     });
 
@@ -169,7 +169,7 @@ describe('Router', () => {
   });
 
   it('get() - empty readable stream', () => {
-    var stream = new Readable();
+    const stream = new Readable();
     stream.push(null);
 
     router.set('test', () => stream);
@@ -178,7 +178,7 @@ describe('Router', () => {
   });
 
   it('get() - large readable stream (more than 65535 bits)', () => {
-    var path = pathFn.join(__dirname, '../../fixtures/banner.jpg');
+    const path = pathFn.join(__dirname, '../../fixtures/banner.jpg');
 
     router.set('test', () => fs.createReadStream(path));
 
@@ -191,7 +191,7 @@ describe('Router', () => {
   });
 
   it('get() - path must be a string', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'path must be a string!');
     });
 
@@ -205,7 +205,7 @@ describe('Router', () => {
   });
 
   it('get() - export stringified JSON object', () => {
-    var obj = {foo: 1, bar: 2};
+    const obj = {foo: 1, bar: 2};
 
     router.set('test', () => obj);
 
@@ -213,7 +213,7 @@ describe('Router', () => {
   });
 
   it('list()', () => {
-    var router = new Router();
+    const router = new Router();
 
     router.set('foo', 'foo');
     router.set('bar', 'bar');
@@ -229,7 +229,7 @@ describe('Router', () => {
   });
 
   it('isModified() - path must be a string', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'path must be a string!');
     });
 
@@ -243,7 +243,7 @@ describe('Router', () => {
   });
 
   it('remove()', () => {
-    var listener = sinon.spy(path => {
+    const listener = sinon.spy(path => {
       path.should.eql('test');
     });
 
@@ -256,7 +256,7 @@ describe('Router', () => {
   });
 
   it('remove() - path must be a string', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'path must be a string!');
     });
 

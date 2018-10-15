@@ -1,8 +1,8 @@
-var should = require('chai').should(); // eslint-disable-line
-var moment = require('moment');
+const should = require('chai').should(); // eslint-disable-line
+const moment = require('moment');
 
 describe('common', () => {
-  var common = require('../../../lib/plugins/processor/common');
+  const common = require('../../../lib/plugins/processor/common');
 
   it('isTmpFile()', () => {
     common.isTmpFile('foo').should.be.false;
@@ -19,7 +19,7 @@ describe('common', () => {
   });
 
   it('ignoreTmpAndHiddenFile()', () => {
-    var pattern = common.ignoreTmpAndHiddenFile;
+    const pattern = common.ignoreTmpAndHiddenFile;
 
     pattern.match('foo').should.be.true;
     pattern.match('foo%').should.be.false;
@@ -31,8 +31,8 @@ describe('common', () => {
   });
 
   it('toDate()', () => {
-    var m = moment();
-    var d = new Date();
+    const m = moment();
+    const d = new Date();
 
     should.not.exist(common.toDate());
     common.toDate(m).should.eql(m);

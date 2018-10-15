@@ -1,12 +1,12 @@
-var should = require('chai').should(); // eslint-disable-line
-var fs = require('hexo-fs');
-var pathFn = require('path');
-var sinon = require('sinon');
+const should = require('chai').should(); // eslint-disable-line
+const fs = require('hexo-fs');
+const pathFn = require('path');
+const sinon = require('sinon');
 
 describe('deploy', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'deploy_test'), {silent: true});
-  var deploy = require('../../../lib/plugins/console/deploy').bind(hexo);
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(pathFn.join(__dirname, 'deploy_test'), {silent: true});
+  const deploy = require('../../../lib/plugins/console/deploy').bind(hexo);
 
   before(() => fs.mkdirs(hexo.public_dir).then(() => hexo.init()));
 
@@ -23,7 +23,7 @@ describe('deploy', () => {
       foo: 'bar'
     };
 
-    var deployer = sinon.spy(args => {
+    const deployer = sinon.spy(args => {
       args.should.eql({
         type: 'foo',
         foo: 'foo',
@@ -31,8 +31,8 @@ describe('deploy', () => {
       });
     });
 
-    var beforeListener = sinon.spy();
-    var afterListener = sinon.spy();
+    const beforeListener = sinon.spy();
+    const afterListener = sinon.spy();
 
     hexo.once('deployBefore', beforeListener);
     hexo.once('deployAfter', afterListener);
@@ -46,7 +46,7 @@ describe('deploy', () => {
   });
 
   it('multiple deploy setting', () => {
-    var deployer1 = sinon.spy(args => {
+    const deployer1 = sinon.spy(args => {
       args.should.eql({
         type: 'foo',
         foo: 'foo',
@@ -54,7 +54,7 @@ describe('deploy', () => {
       });
     });
 
-    var deployer2 = sinon.spy(args => {
+    const deployer2 = sinon.spy(args => {
       args.should.eql({
         type: 'bar',
         bar: 'bar',

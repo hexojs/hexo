@@ -1,11 +1,11 @@
-var should = require('chai').should(); // eslint-disable-line
-var Promise = require('bluebird');
+const should = require('chai').should(); // eslint-disable-line
+const Promise = require('bluebird');
 
 describe('post', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname, {silent: true});
-  var Post = hexo.model('Post');
-  var generator = Promise.method(require('../../../lib/plugins/generator/post').bind(hexo));
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname, {silent: true});
+  const Post = hexo.model('Post');
+  const generator = Promise.method(require('../../../lib/plugins/generator/post').bind(hexo));
 
   hexo.config.permalink = ':title/';
 

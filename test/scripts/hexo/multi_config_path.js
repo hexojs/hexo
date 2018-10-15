@@ -1,24 +1,24 @@
 'use strict';
 
-var pathFn = require('path');
-var osFn = require('os');
-var should = require('chai').should(); // eslint-disable-line
-var fs = require('hexo-fs');
-var yml = require('js-yaml');
+const pathFn = require('path');
+const osFn = require('os');
+const should = require('chai').should(); // eslint-disable-line
+const fs = require('hexo-fs');
+const yml = require('js-yaml');
 
 describe('config flag handling', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'test_dir'));
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(pathFn.join(__dirname, 'test_dir'));
 
-  var mcp = require('../../../lib/hexo/multi_config_path')(hexo);
-  var base = hexo.base_dir;
+  const mcp = require('../../../lib/hexo/multi_config_path')(hexo);
+  const base = hexo.base_dir;
 
   function ConsoleReader() {
     this.reader = [];
     this.d = function(...args) {
-      var type = 'debug';
-      var message = '';
-      for (var i = 0; i < args.length;) {
+      const type = 'debug';
+      let message = '';
+      for (let i = 0; i < args.length;) {
         message += args[i];
         if (++i < args.length) {
           message += ' ';
@@ -32,9 +32,9 @@ describe('config flag handling', () => {
     }.bind(this);
 
     this.i = function(...args) {
-      var type = 'info';
-      var message = '';
-      for (var i = 0; i < args.length;) {
+      const type = 'info';
+      let message = '';
+      for (let i = 0; i < args.length;) {
         message += args[i];
         if (++i < args.length) {
           message += ' ';
@@ -48,9 +48,9 @@ describe('config flag handling', () => {
     }.bind(this);
 
     this.w = function(...args) {
-      var type = 'warning';
-      var message = '';
-      for (var i = 0; i < args.length;) {
+      const type = 'warning';
+      let message = '';
+      for (let i = 0; i < args.length;) {
         message += args[i];
         if (++i < args.length) {
           message += ' ';
@@ -64,9 +64,9 @@ describe('config flag handling', () => {
     }.bind(this);
 
     this.e = function(...args) {
-      var type = 'error';
-      var message = '';
-      for (var i = 0; i < args.length;) {
+      const type = 'error';
+      let message = '';
+      for (let i = 0; i < args.length;) {
         message += args[i];
         if (++i < args.length) {
           message += ' ';
@@ -82,7 +82,7 @@ describe('config flag handling', () => {
 
   hexo.log = new ConsoleReader();
 
-  var testYaml1 = [
+  const testYaml1 = [
     'author: foo',
     'type: dinosaur',
     'favorites:',
@@ -90,14 +90,14 @@ describe('config flag handling', () => {
     '  color: purple'
   ].join('\n');
 
-  var testYaml2 = [
+  const testYaml2 = [
     'author: bar',
     'favorites:',
     '  food: candy',
     '  ice_cream: chocolate'
   ].join('\n');
 
-  var testJson1 = [
+  const testJson1 = [
     '{',
     '"author": "dinosaur",',
     '"type": "elephant",',
@@ -105,7 +105,7 @@ describe('config flag handling', () => {
     '}'
   ].join('\n');
 
-  var testJson2 = [
+  const testJson2 = [
     '{',
     '"author": "waldo",',
     '"favorites": {',
@@ -115,7 +115,7 @@ describe('config flag handling', () => {
     '}'
   ].join('\n');
 
-  var testJson3 = [
+  const testJson3 = [
     '{',
     '"author": "james bond",',
     '"favorites": {',
@@ -159,7 +159,7 @@ describe('config flag handling', () => {
   });
 
   it('1 not found file warning', () => {
-    var notFile = 'not_a_file.json';
+    const notFile = 'not_a_file.json';
 
     mcp(base, notFile).should.eql(pathFn.join(base, '_config.yml'));
     hexo.log.reader[0].type.should.eql('warning');
@@ -177,7 +177,7 @@ describe('config flag handling', () => {
   });
 
   it('combined config output', () => {
-    var combinedPath = pathFn.join(base, '_multiconfig.yml');
+    const combinedPath = pathFn.join(base, '_multiconfig.yml');
 
     mcp(base, 'test1.yml').should.not.eql(combinedPath);
     mcp(base, 'test1.yml,test2.yml').should.eql(combinedPath);
@@ -200,7 +200,7 @@ describe('config flag handling', () => {
   });
 
   it('combine config output with absolute paths', () => {
-    var combinedPath = pathFn.join(base, '_multiconfig.yml');
+    const combinedPath = pathFn.join(base, '_multiconfig.yml');
 
     mcp(base, 'test1.json,/tmp/test3.json').should.eql(combinedPath);
     hexo.log.reader[0].type.should.eql('info');
@@ -208,8 +208,8 @@ describe('config flag handling', () => {
   });
 
   it('2 YAML overwrite', () => {
-    var configFile = mcp(base, 'test1.yml,test2.yml');
-    var config = fs.readFileSync(configFile);
+    const configFile = mcp(base, 'test1.yml,test2.yml');
+    let config = fs.readFileSync(configFile);
     config = yml.safeLoad(config);
 
     config.author.should.eql('bar');
@@ -225,7 +225,7 @@ describe('config flag handling', () => {
   });
 
   it('2 JSON overwrite', () => {
-    var config = fs.readFileSync(mcp(base, 'test1.json,test2.json'));
+    let config = fs.readFileSync(mcp(base, 'test1.json,test2.json'));
     config = yml.safeLoad(config);
 
     config.author.should.eql('waldo');
@@ -241,7 +241,7 @@ describe('config flag handling', () => {
   });
 
   it('JSON & YAML overwrite', () => {
-    var config = fs.readFileSync(mcp(base, 'test1.yml,test1.json'));
+    let config = fs.readFileSync(mcp(base, 'test1.yml,test1.json'));
     config = yml.safeLoad(config);
 
     config.author.should.eql('dinosaur');

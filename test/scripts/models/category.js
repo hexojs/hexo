@@ -1,18 +1,18 @@
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
-var Promise = require('bluebird');
+const should = require('chai').should(); // eslint-disable-line
+const sinon = require('sinon');
+const Promise = require('bluebird');
 
 describe('Category', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var Category = hexo.model('Category');
-  var Post = hexo.model('Post');
-  var PostCategory = hexo.model('PostCategory');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const Category = hexo.model('Category');
+  const Post = hexo.model('Post');
+  const PostCategory = hexo.model('PostCategory');
 
   before(() => hexo.init());
 
   it('name - required', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', '`name` is required!');
     });
 
@@ -108,7 +108,7 @@ describe('Category', () => {
     {source: 'bar.md', slug: 'bar'},
     {source: 'baz.md', slug: 'baz'}
   ]).each(post => post.setCategories(['foo'])).then(posts => {
-    var cat = Category.findOne({name: 'foo'});
+    const cat = Category.findOne({name: 'foo'});
 
     function mapper(post) {
       return post._id;
@@ -126,7 +126,7 @@ describe('Category', () => {
     {source: 'bar.md', slug: 'bar', published: false},
     {source: 'baz.md', slug: 'baz', published: true}
   ]).each(post => post.setCategories(['foo'])).then(posts => {
-    var cat = Category.findOne({name: 'foo'});
+    let cat = Category.findOne({name: 'foo'});
 
     function mapper(post) {
       return post._id;
@@ -150,14 +150,14 @@ describe('Category', () => {
   }).map(post => post.remove()));
 
   it('posts - future', () => {
-    var now = Date.now();
+    const now = Date.now();
 
     return Post.insert([
       {source: 'foo.md', slug: 'foo', date: now - 3600},
       {source: 'bar.md', slug: 'bar', date: now + 3600},
       {source: 'baz.md', slug: 'baz', date: now}
     ]).each(post => post.setCategories(['foo'])).then(posts => {
-      var cat = Category.findOne({name: 'foo'});
+      let cat = Category.findOne({name: 'foo'});
 
       function mapper(post) {
         return post._id;
@@ -182,7 +182,7 @@ describe('Category', () => {
   });
 
   it('check whether a category exists', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'Category `foo` has already existed!');
     });
 
@@ -210,7 +210,7 @@ describe('Category', () => {
   ])));
 
   it('remove PostCategory references when a category is removed', () => {
-    var cat;
+    let cat;
 
     return Post.insert([
       {source: 'foo.md', slug: 'foo'},

@@ -1,12 +1,12 @@
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
+const should = require('chai').should(); // eslint-disable-line
+const sinon = require('sinon');
 
 describe('Locals', () => {
-  var Locals = require('../../../lib/hexo/locals');
-  var locals = new Locals();
+  const Locals = require('../../../lib/hexo/locals');
+  const locals = new Locals();
 
   it('get() - name must be a string', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'name must be a string!');
     });
 
@@ -35,7 +35,7 @@ describe('Locals', () => {
   });
 
   it('set() - name must be a string', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'name must be a string!');
     });
 
@@ -49,7 +49,7 @@ describe('Locals', () => {
   });
 
   it('set() - value is required', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'value is required!');
     });
 
@@ -72,7 +72,7 @@ describe('Locals', () => {
   });
 
   it('remove() - name must be a string', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'name must be a string!');
     });
 
@@ -86,7 +86,7 @@ describe('Locals', () => {
   });
 
   it('toObject()', () => {
-    var locals = new Locals();
+    const locals = new Locals();
 
     locals.set('foo', 'foo');
     locals.set('bar', 'bar');

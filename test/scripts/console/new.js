@@ -1,17 +1,17 @@
-var should = require('chai').should(); // eslint-disable-line
-var fs = require('hexo-fs');
-var moment = require('moment');
-var pathFn = require('path');
-var Promise = require('bluebird');
-var sinon = require('sinon');
+const should = require('chai').should(); // eslint-disable-line
+const fs = require('hexo-fs');
+const moment = require('moment');
+const pathFn = require('path');
+const Promise = require('bluebird');
+const sinon = require('sinon');
 
 describe('new', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'new_test'), {silent: true});
-  var n = require('../../../lib/plugins/console/new').bind(hexo);
-  var post = hexo.post;
-  var now = Date.now();
-  var clock;
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(pathFn.join(__dirname, 'new_test'), {silent: true});
+  const n = require('../../../lib/plugins/console/new').bind(hexo);
+  const post = hexo.post;
+  const now = Date.now();
+  let clock;
 
   before(() => {
     clock = sinon.useFakeTimers(now);
@@ -34,9 +34,9 @@ describe('new', () => {
   });
 
   it('title', () => {
-    var date = moment(now);
-    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
-    var body = [
+    const date = moment(now);
+    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const body = [
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
@@ -52,8 +52,8 @@ describe('new', () => {
   });
 
   it('layout', () => {
-    var path = pathFn.join(hexo.source_dir, '_drafts', 'Hello-World.md');
-    var body = [
+    const path = pathFn.join(hexo.source_dir, '_drafts', 'Hello-World.md');
+    const body = [
       'title: Hello World',
       'tags:',
       '---'
@@ -68,9 +68,9 @@ describe('new', () => {
   });
 
   it('slug', () => {
-    var date = moment(now);
-    var path = pathFn.join(hexo.source_dir, '_posts', 'foo.md');
-    var body = [
+    const date = moment(now);
+    const path = pathFn.join(hexo.source_dir, '_posts', 'foo.md');
+    const body = [
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
@@ -87,9 +87,9 @@ describe('new', () => {
   });
 
   it('path', () => {
-    var date = moment(now);
-    var path = pathFn.join(hexo.source_dir, '_posts', 'bar.md');
-    var body = [
+    const date = moment(now);
+    const path = pathFn.join(hexo.source_dir, '_posts', 'bar.md');
+    const body = [
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',
@@ -107,7 +107,7 @@ describe('new', () => {
   });
 
   it('rename if target existed', () => {
-    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World-1.md');
+    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World-1.md');
 
     return post.create({
       title: 'Hello World'
@@ -124,7 +124,7 @@ describe('new', () => {
   });
 
   it('replace existing files', () => {
-    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
 
     return post.create({
       title: 'Hello World'
@@ -138,9 +138,9 @@ describe('new', () => {
   });
 
   it('extra data', () => {
-    var date = moment(now);
-    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
-    var body = [
+    const date = moment(now);
+    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const body = [
       'title: Hello World',
       'foo: bar',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),

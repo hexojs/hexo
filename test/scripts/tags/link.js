@@ -1,20 +1,20 @@
 'use strict';
 
-var cheerio = require('cheerio');
-var should = require('chai').should(); // eslint-disable-line
+const cheerio = require('cheerio');
+const should = require('chai').should(); // eslint-disable-line
 
 describe('link', () => {
-  var link = require('../../../lib/plugins/tag/link');
+  const link = require('../../../lib/plugins/tag/link');
 
   it('text + url', () => {
-    var $ = cheerio.load(link('Click here to Google http://google.com'.split(' ')));
+    const $ = cheerio.load(link('Click here to Google http://google.com'.split(' ')));
 
     $('a').attr('href').should.eql('http://google.com');
     $('a').html().should.eql('Click here to Google');
   });
 
   it('text + url + external', () => {
-    var $ = cheerio.load(link('Click here to Google http://google.com true'.split(' ')));
+    let $ = cheerio.load(link('Click here to Google http://google.com true'.split(' ')));
 
     $('a').attr('href').should.eql('http://google.com');
     $('a').html().should.eql('Click here to Google');
@@ -28,7 +28,7 @@ describe('link', () => {
   });
 
   it('text + url + title', () => {
-    var $ = cheerio.load(link('Click here to Google http://google.com Google link'.split(' ')));
+    const $ = cheerio.load(link('Click here to Google http://google.com Google link'.split(' ')));
 
     $('a').attr('href').should.eql('http://google.com');
     $('a').html().should.eql('Click here to Google');
@@ -36,7 +36,7 @@ describe('link', () => {
   });
 
   it('text + url + external + title', () => {
-    var $ = cheerio.load(link('Click here to Google http://google.com true Google link'.split(' ')));
+    let $ = cheerio.load(link('Click here to Google http://google.com true Google link'.split(' ')));
 
     $('a').attr('href').should.eql('http://google.com');
     $('a').html().should.eql('Click here to Google');

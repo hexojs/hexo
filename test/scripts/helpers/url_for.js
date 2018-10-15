@@ -1,12 +1,12 @@
-var should = require('chai').should(); // eslint-disable-line
+const should = require('chai').should(); // eslint-disable-line
 
 describe('url_for', () => {
-  var ctx = {
+  const ctx = {
     config: {},
     relative_url: require('../../../lib/plugins/helper/relative_url')
   };
 
-  var urlFor = require('../../../lib/plugins/helper/url_for').bind(ctx);
+  const urlFor = require('../../../lib/plugins/helper/url_for').bind(ctx);
 
   it('internal url (relative off)', () => {
     ctx.config.root = '/';

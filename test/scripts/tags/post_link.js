@@ -1,10 +1,10 @@
-var should = require('chai').should(); // eslint-disable-line
+const should = require('chai').should(); // eslint-disable-line
 
 describe('post_link', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
-  var postLink = require('../../../lib/plugins/tag/post_link')(hexo);
-  var Post = hexo.model('Post');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
+  const postLink = require('../../../lib/plugins/tag/post_link')(hexo);
+  const Post = hexo.model('Post');
 
   hexo.config.permalink = ':title/';
 

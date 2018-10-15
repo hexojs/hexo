@@ -1,19 +1,19 @@
-var should = require('chai').should(); // eslint-disable-line
-var pathFn = require('path');
-var moment = require('moment');
-var Promise = require('bluebird');
-var fs = require('hexo-fs');
-var util = require('hexo-util');
-var sinon = require('sinon');
-var frontMatter = require('hexo-front-matter');
-var fixture = require('../../fixtures/post_render');
+const should = require('chai').should(); // eslint-disable-line
+const pathFn = require('path');
+const moment = require('moment');
+const Promise = require('bluebird');
+const fs = require('hexo-fs');
+const util = require('hexo-util');
+const sinon = require('sinon');
+const frontMatter = require('hexo-front-matter');
+const fixture = require('../../fixtures/post_render');
 
 describe('Post', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'post_test'));
-  var post = hexo.post;
-  var now = Date.now();
-  var clock;
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(pathFn.join(__dirname, 'post_test'));
+  const post = hexo.post;
+  const now = Date.now();
+  let clock;
 
   before(() => {
     clock = sinon.useFakeTimers(now);
@@ -39,11 +39,11 @@ describe('Post', () => {
   });
 
   it('create()', () => {
-    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
-    var date = moment(now);
-    var listener = sinon.spy();
+    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const date = moment(now);
+    const listener = sinon.spy();
 
-    var content = [
+    const content = [
       '---',
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
@@ -68,10 +68,10 @@ describe('Post', () => {
   });
 
   it('create() - slug', () => {
-    var path = pathFn.join(hexo.source_dir, '_posts', 'foo.md');
-    var date = moment(now);
+    const path = pathFn.join(hexo.source_dir, '_posts', 'foo.md');
+    const date = moment(now);
 
-    var content = [
+    const content = [
       '---',
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
@@ -96,10 +96,10 @@ describe('Post', () => {
   it('create() - filename_case', () => {
     hexo.config.filename_case = 1;
 
-    var path = pathFn.join(hexo.source_dir, '_posts', 'hello-world.md');
-    var date = moment(now);
+    const path = pathFn.join(hexo.source_dir, '_posts', 'hello-world.md');
+    const date = moment(now);
 
-    var content = [
+    const content = [
       '---',
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
@@ -122,10 +122,10 @@ describe('Post', () => {
   });
 
   it('create() - layout', () => {
-    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
-    var date = moment(now);
+    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const date = moment(now);
 
-    var content = [
+    const content = [
       '---',
       'layout: photo',
       'title: Hello World',
@@ -149,10 +149,10 @@ describe('Post', () => {
   });
 
   it('create() - extra data', () => {
-    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
-    var date = moment(now);
+    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const date = moment(now);
 
-    var content = [
+    const content = [
       '---',
       'title: Hello World',
       'foo: bar',
@@ -176,7 +176,7 @@ describe('Post', () => {
   });
 
   it('create() - rename if target existed', () => {
-    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World-1.md');
+    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World-1.md');
 
     return post.create({
       title: 'Hello World'
@@ -196,7 +196,7 @@ describe('Post', () => {
   });
 
   it('create() - replace existing files', () => {
-    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
 
     return post.create({
       title: 'Hello World'
@@ -209,7 +209,7 @@ describe('Post', () => {
   });
 
   it('create() - asset folder', () => {
-    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World');
+    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World');
 
     hexo.config.post_asset_folder = true;
 
@@ -225,7 +225,7 @@ describe('Post', () => {
   });
 
   it('create() - follow the separator style in the scaffold', () => {
-    var scaffold = [
+    const scaffold = [
       '---',
       'title: {{ title }}',
       '---'
@@ -249,7 +249,7 @@ describe('Post', () => {
   });
 
   it('create() - JSON front-matter', () => {
-    var scaffold = [
+    const scaffold = [
       '"title": {{ title }}',
       ';;;'
     ].join('\n');
@@ -274,7 +274,7 @@ describe('Post', () => {
 
   // https://github.com/hexojs/hexo/issues/1100
   it('create() - non-string title', () => {
-    var path = pathFn.join(hexo.source_dir, '_posts', '12345.md');
+    const path = pathFn.join(hexo.source_dir, '_posts', '12345.md');
 
     return post.create({
       title: 12345
@@ -299,10 +299,10 @@ describe('Post', () => {
   }));
 
   it('create() - with content', () => {
-    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
-    var date = moment(now);
+    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const date = moment(now);
 
-    var content = [
+    const content = [
       '---',
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
@@ -327,10 +327,10 @@ describe('Post', () => {
   });
 
   it('create() - with callback', () => {
-    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
-    var date = moment(now);
+    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const date = moment(now);
 
-    var content = [
+    const content = [
       '---',
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
@@ -338,7 +338,7 @@ describe('Post', () => {
       '---'
     ].join('\n') + '\n';
 
-    var callback = sinon.spy(post => {
+    const callback = sinon.spy(post => {
       post.path.should.eql(path);
       post.content.should.eql(content);
     });
@@ -355,11 +355,11 @@ describe('Post', () => {
   });
 
   it('publish()', () => {
-    var draftPath = '';
-    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
-    var date = moment(now);
+    let draftPath = '';
+    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const date = moment(now);
 
-    var content = [
+    const content = [
       '---',
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
@@ -393,10 +393,10 @@ describe('Post', () => {
   });
 
   it('publish() - layout', () => {
-    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
-    var date = moment(now);
+    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const date = moment(now);
 
-    var content = [
+    const content = [
       '---',
       'layout: photo',
       'title: Hello World',
@@ -424,7 +424,7 @@ describe('Post', () => {
   });
 
   it('publish() - rename if target existed', () => {
-    var paths = [pathFn.join(hexo.source_dir, '_posts', 'Hello-World-1.md')];
+    const paths = [pathFn.join(hexo.source_dir, '_posts', 'Hello-World-1.md')];
 
     return Promise.all([
       post.create({title: 'Hello World', layout: 'draft'}),
@@ -442,7 +442,7 @@ describe('Post', () => {
   });
 
   it('publish() - replace existing files', () => {
-    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
 
     return Promise.all([
       post.create({title: 'Hello World', layout: 'draft'}),
@@ -456,8 +456,8 @@ describe('Post', () => {
   });
 
   it('publish() - asset folder', () => {
-    var assetDir = pathFn.join(hexo.source_dir, '_drafts', 'Hello-World');
-    var newAssetDir = pathFn.join(hexo.source_dir, '_posts', 'Hello-World');
+    const assetDir = pathFn.join(hexo.source_dir, '_drafts', 'Hello-World');
+    const newAssetDir = pathFn.join(hexo.source_dir, '_posts', 'Hello-World');
     hexo.config.post_asset_folder = true;
 
     return post.create({
@@ -483,7 +483,7 @@ describe('Post', () => {
 
   // https://github.com/hexojs/hexo/issues/1100
   it('publish() - non-string title', () => {
-    var path = pathFn.join(hexo.source_dir, '_posts', '12345.md');
+    const path = pathFn.join(hexo.source_dir, '_posts', '12345.md');
 
     return post.create({
       title: 12345,
@@ -497,11 +497,11 @@ describe('Post', () => {
   });
 
   it('publish() - with callback', () => {
-    var draftPath = '';
-    var path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
-    var date = moment(now);
+    let draftPath = '';
+    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const date = moment(now);
 
-    var content = [
+    const content = [
       '---',
       'title: Hello World',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
@@ -509,7 +509,7 @@ describe('Post', () => {
       '---'
     ].join('\n') + '\n';
 
-    var callback = sinon.spy(post => {
+    const callback = sinon.spy(post => {
       post.path.should.eql(path);
       post.content.should.eql(content);
     });
@@ -546,15 +546,15 @@ describe('Post', () => {
   }).then(data => post.publish({
     slug: 'foo'
   })).then(data => {
-    var meta = frontMatter(data.content);
+    const meta = frontMatter(data.content);
     meta.tags.should.eql(['tag', 'test']);
     return fs.unlink(data.path);
   }));
 
   it('render()', () => {
     // TODO: validate data
-    var beforeHook = sinon.spy();
-    var afterHook = sinon.spy();
+    const beforeHook = sinon.spy();
+    const afterHook = sinon.spy();
 
     hexo.extend.filter.register('before_post_render', beforeHook);
     hexo.extend.filter.register('after_post_render', afterHook);
@@ -579,8 +579,8 @@ describe('Post', () => {
   });
 
   it('render() - file', () => {
-    var content = '**file test**';
-    var path = pathFn.join(hexo.base_dir, 'render_test.md');
+    const content = '**file test**';
+    const path = pathFn.join(hexo.base_dir, 'render_test.md');
 
     return fs.writeFile(path, content).then(() => post.render(path)).then(data => {
       data.content.trim().should.eql('<p><strong>file test</strong></p>');
@@ -589,7 +589,7 @@ describe('Post', () => {
   });
 
   it('render() - toString', () => {
-    var content = 'foo: 1';
+    const content = 'foo: 1';
 
     return post.render(null, {
       content,
@@ -600,7 +600,7 @@ describe('Post', () => {
   });
 
   it('render() - skip render phase if it\'s swig file', () => {
-    var content = [
+    const content = [
       '{% quote Hello World %}',
       'quote content',
       '{% endquote %}'
@@ -618,10 +618,10 @@ describe('Post', () => {
   });
 
   it('render() - escaping swig blocks with similar names', () => {
-    var code = 'alert("Hello world")';
-    var highlighted = util.highlight(code);
+    const code = 'alert("Hello world")';
+    const highlighted = util.highlight(code);
 
-    var content = [
+    const content = [
       '{% codeblock %}',
       code,
       '{% endcodeblock %}',
@@ -643,7 +643,7 @@ describe('Post', () => {
   });
 
   it('render() - recover escaped swig blocks which is html escaped', () => {
-    var content = '`{% raw %}{{ test }}{% endraw %}`';
+    const content = '`{% raw %}{{ test }}{% endraw %}`';
 
     return post.render(null, {
       content,
@@ -654,9 +654,9 @@ describe('Post', () => {
   });
 
   it('render() - recover escaped swig blocks which is html escaped before post_render', () => {
-    var content = '`{% raw %}{{ test }}{% endraw %}`';
+    const content = '`{% raw %}{{ test }}{% endraw %}`';
 
-    var filter = sinon.spy(result => {
+    const filter = sinon.spy(result => {
       result.trim().should.eql('<p><code>{{ test }}</code></p>');
     });
 

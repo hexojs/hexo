@@ -1,17 +1,17 @@
-var should = require('chai').should(); // eslint-disable-line
-var pathFn = require('path');
-var fs = require('hexo-fs');
-var Promise = require('bluebird');
+const should = require('chai').should(); // eslint-disable-line
+const pathFn = require('path');
+const fs = require('hexo-fs');
+const Promise = require('bluebird');
 
 describe('i18n', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
-  var processor = require('../../../lib/theme/processors/i18n');
-  var process = Promise.method(processor.process.bind(hexo));
-  var themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
+  const processor = require('../../../lib/theme/processors/i18n');
+  const process = Promise.method(processor.process.bind(hexo));
+  const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
 
   function newFile(options) {
-    var path = options.path;
+    const path = options.path;
 
     options.params = {
       path
@@ -31,7 +31,7 @@ describe('i18n', () => {
   after(() => fs.rmdir(hexo.base_dir));
 
   it('pattern', () => {
-    var pattern = processor.pattern;
+    const pattern = processor.pattern;
 
     pattern.match('languages/default.yml').should.be.ok;
     pattern.match('languages/zh-TW.yml').should.be.ok;
@@ -39,19 +39,19 @@ describe('i18n', () => {
   });
 
   it('type: create', () => {
-    var body = [
+    const body = [
       'ok: OK',
       'index:',
       '  title: Home'
     ].join('\n');
 
-    var file = newFile({
+    const file = newFile({
       path: 'en.yml',
       type: 'create'
     });
 
     return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      var __ = hexo.theme.i18n.__('en');
+      const __ = hexo.theme.i18n.__('en');
 
       __('ok').should.eql('OK');
       __('index.title').should.eql('Home');
@@ -64,7 +64,7 @@ describe('i18n', () => {
       bar: 'bar'
     });
 
-    var file = newFile({
+    const file = newFile({
       path: 'en.yml',
       type: 'delete'
     });

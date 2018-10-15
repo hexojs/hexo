@@ -1,12 +1,12 @@
-var should = require('chai').should(); // eslint-disable-line
-var pathFn = require('path');
-var fs = require('hexo-fs');
+const should = require('chai').should(); // eslint-disable-line
+const pathFn = require('path');
+const fs = require('hexo-fs');
 
 describe('Update package.json', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname, {silent: true});
-  var updatePkg = require('../../../lib/hexo/update_package');
-  var packagePath = pathFn.join(hexo.base_dir, 'package.json');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname, {silent: true});
+  const updatePkg = require('../../../lib/hexo/update_package');
+  const packagePath = pathFn.join(hexo.base_dir, 'package.json');
 
   beforeEach(() => {
     hexo.env.init = false;
@@ -17,7 +17,7 @@ describe('Update package.json', () => {
   }));
 
   it('package.json exists, but the version doesn\'t match', () => {
-    var pkg = {
+    const pkg = {
       hexo: {
         version: '0.0.1'
       }
@@ -32,7 +32,7 @@ describe('Update package.json', () => {
   });
 
   it('package.json exists, but don\'t have hexo data', () => {
-    var pkg = {
+    const pkg = {
       name: 'hexo',
       version: '0.0.1'
     };
@@ -47,7 +47,7 @@ describe('Update package.json', () => {
   });
 
   it('package.json exists and everything is ok', () => {
-    var pkg = {
+    const pkg = {
       hexo: {
         version: hexo.version
       }

@@ -1,20 +1,20 @@
-var should = require('chai').should(); // eslint-disable-line
-var Promise = require('bluebird');
-var fs = require('hexo-fs');
-var pathFn = require('path');
+const should = require('chai').should(); // eslint-disable-line
+const Promise = require('bluebird');
+const fs = require('hexo-fs');
+const pathFn = require('path');
 
 describe('data', () => {
-  var Hexo = require('../../../lib/hexo');
-  var baseDir = pathFn.join(__dirname, 'data_test');
-  var hexo = new Hexo(baseDir);
-  var processor = require('../../../lib/plugins/processor/data')(hexo);
-  var process = Promise.method(processor.process).bind(hexo);
-  var source = hexo.source;
-  var File = source.File;
-  var Data = hexo.model('Data');
+  const Hexo = require('../../../lib/hexo');
+  const baseDir = pathFn.join(__dirname, 'data_test');
+  const hexo = new Hexo(baseDir);
+  const processor = require('../../../lib/plugins/processor/data')(hexo);
+  const process = Promise.method(processor.process).bind(hexo);
+  const source = hexo.source;
+  const File = source.File;
+  const Data = hexo.model('Data');
 
   function newFile(options) {
-    var path = options.path;
+    const path = options.path;
 
     options.params = {
       path
@@ -31,7 +31,7 @@ describe('data', () => {
   after(() => fs.rmdir(baseDir));
 
   it('pattern', () => {
-    var pattern = processor.pattern;
+    const pattern = processor.pattern;
 
     pattern.match('_data/users.json').should.be.ok;
     pattern.match('_data/users.yaml').should.be.ok;
@@ -39,15 +39,15 @@ describe('data', () => {
   });
 
   it('type: create - yaml', () => {
-    var body = 'foo: bar';
+    const body = 'foo: bar';
 
-    var file = newFile({
+    const file = newFile({
       path: 'users.yml',
       type: 'create'
     });
 
     return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      var data = Data.findById('users');
+      const data = Data.findById('users');
 
       data.data.should.eql({foo: 'bar'});
 
@@ -56,15 +56,15 @@ describe('data', () => {
   });
 
   it('type: create - json', () => {
-    var body = '{"foo": 1}';
+    const body = '{"foo": 1}';
 
-    var file = newFile({
+    const file = newFile({
       path: 'users.json',
       type: 'create'
     });
 
     return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      var data = Data.findById('users');
+      const data = Data.findById('users');
 
       data.data.should.eql({foo: 1});
 
@@ -73,13 +73,13 @@ describe('data', () => {
   });
 
   it('type: create - others', () => {
-    var file = newFile({
+    const file = newFile({
       path: 'users.txt',
       type: 'create'
     });
 
     return fs.writeFile(file.source, 'text').then(() => process(file)).then(() => {
-      var data = Data.findById('users');
+      const data = Data.findById('users');
 
       data.data.should.eql('text');
 
@@ -88,9 +88,9 @@ describe('data', () => {
   });
 
   it('type: update', () => {
-    var body = 'foo: bar';
+    const body = 'foo: bar';
 
-    var file = newFile({
+    const file = newFile({
       path: 'users.yml',
       type: 'update'
     });
@@ -102,7 +102,7 @@ describe('data', () => {
         data: {}
       })
     ]).then(() => process(file)).then(() => {
-      var data = Data.findById('users');
+      const data = Data.findById('users');
 
       data.data.should.eql({foo: 'bar'});
 
@@ -111,7 +111,7 @@ describe('data', () => {
   });
 
   it('type: delete', () => {
-    var file = newFile({
+    const file = newFile({
       path: 'users.yml',
       type: 'delete'
     });
