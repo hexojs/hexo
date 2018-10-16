@@ -5,7 +5,6 @@ const pathFn = require('path');
 const Promise = require('bluebird');
 const fs = require('hexo-fs');
 const yaml = require('js-yaml');
-const _ = require('lodash');
 
 describe('File', () => {
   const Hexo = require('../../../lib/hexo');
@@ -30,7 +29,7 @@ describe('File', () => {
   const path = 'test.yml';
 
   function makeFile(path, props) {
-    return new File(_.assign({
+    return new File(Object.assign({
       source: pathFn.join(box.base, path),
       path
     }, props));

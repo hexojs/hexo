@@ -2,7 +2,7 @@
 
 require('chai').should();
 const util = require('hexo-util');
-const _ = require('lodash');
+const cloneDeep = require('lodash/cloneDeep');
 const defaultConfig = require('../../../lib/hexo/default_config');
 
 describe('Backtick code block', () => {
@@ -24,7 +24,7 @@ describe('Backtick code block', () => {
 
   beforeEach(() => {
     // Reset config
-    hexo.config.highlight = _.cloneDeep(defaultConfig.highlight);
+    hexo.config.highlight = cloneDeep(defaultConfig.highlight);
   });
 
   it('disabled', () => {
