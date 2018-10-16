@@ -1,4 +1,6 @@
-require('chai').should(); // eslint-disable-line strict
+'use strict';
+
+require('chai').should();
 const Promise = require('bluebird');
 
 describe('tagcloud', () => {

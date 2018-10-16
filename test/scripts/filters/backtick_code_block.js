@@ -1,4 +1,6 @@
-require('chai').should(); // eslint-disable-line strict
+'use strict';
+
+require('chai').should();
 const util = require('hexo-util');
 const _ = require('lodash');
 const defaultConfig = require('../../../lib/hexo/default_config');

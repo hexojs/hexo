@@ -1,4 +1,6 @@
-require('chai').should(); // eslint-disable-line strict
+'use strict';
+
+require('chai').should();
 
 describe('number_format', () => {
   const numberFormat = require('../../../lib/plugins/helper/number_format');

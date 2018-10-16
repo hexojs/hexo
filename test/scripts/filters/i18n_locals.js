@@ -1,4 +1,6 @@
-require('chai').should(); // eslint-disable-line strict
+'use strict';
+
+require('chai').should();
 
 describe('i18n locals', () => {
   const Hexo = require('../../../lib/hexo');

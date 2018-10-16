@@ -1,4 +1,6 @@
-const should = require('chai').should(); // eslint-disable-line strict
+'use strict';
+
+const should = require('chai').should();
 const sinon = require('sinon');
 
 describe('Locals', () => {

@@ -1,4 +1,6 @@
-const should = require('chai').should(); // eslint-disable-line strict
+'use strict';
+
+const should = require('chai').should();
 const fs = require('hexo-fs');
 const pathFn = require('path');
 const yaml = require('js-yaml');

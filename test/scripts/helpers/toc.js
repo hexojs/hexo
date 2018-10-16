@@ -1,4 +1,6 @@
-require('chai').should(); // eslint-disable-line strict
+'use strict';
+
+require('chai').should();
 const _ = require('lodash');
 
 function ifTrue(cond, yes, no) {

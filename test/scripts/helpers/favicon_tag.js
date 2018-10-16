@@ -1,4 +1,6 @@
-require('chai').should(); // eslint-disable-line strict
+'use strict';
+
+require('chai').should();
 
 describe('favicon_tag', () => {
   const Hexo = require('../../../lib/hexo');

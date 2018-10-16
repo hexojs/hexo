@@ -1,4 +1,6 @@
-require('chai').should(); // eslint-disable-line strict
+'use strict';
+
+require('chai').should();
 const qs = require('querystring');
 
 describe('mail_to', () => {

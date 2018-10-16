@@ -1,4 +1,6 @@
-require('chai').should(); // eslint-disable-line strict
+'use strict';
+
+require('chai').should();
 const pathFn = require('path');
 const fs = require('hexo-fs');
 const _ = require('lodash');
