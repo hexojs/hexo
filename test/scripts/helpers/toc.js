@@ -1,5 +1,4 @@
 const should = require('chai').should(); // eslint-disable-line
-const _ = require('lodash');
 
 function ifTrue(cond, yes, no) {
   return cond ? yes : no;
@@ -22,7 +21,7 @@ describe('toc', () => {
   ].join('');
 
   const genResult = options => {
-    options = _.assign({
+    options = Object.assign({
       class: 'toc',
       list_number: true,
       max_depth: 6
