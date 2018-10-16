@@ -1,7 +1,7 @@
 'use strict';
 
 const moment = require('moment');
-const should = require('chai').should(); // eslint-disable-line
+require('chai').should();
 
 describe('open_graph', () => {
   const Hexo = require('../../../lib/hexo');

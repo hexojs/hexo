@@ -1,4 +1,4 @@
-const should = require('chai').should(); // eslint-disable-line
+require('chai').should(); // eslint-disable-line strict
 
 describe('Generator', () => {
   const Generator = require('../../../lib/extend/generator');

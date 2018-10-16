@@ -1,4 +1,4 @@
-const should = require('chai').should(); // eslint-disable-line
+require('chai').should(); // eslint-disable-line strict
 
 describe('search_form', () => {
   const searchForm = require('../../../lib/plugins/helper/search_form').bind({

@@ -1,4 +1,4 @@
-const should = require('chai').should(); // eslint-disable-line
+require('chai').should(); // eslint-disable-line strict
 const fs = require('hexo-fs');
 const pathFn = require('path');
 const sinon = require('sinon');

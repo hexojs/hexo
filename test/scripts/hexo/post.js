@@ -1,4 +1,4 @@
-const should = require('chai').should(); // eslint-disable-line
+const should = require('chai').should(); // eslint-disable-line strict
 const pathFn = require('path');
 const moment = require('moment');
 const Promise = require('bluebird');

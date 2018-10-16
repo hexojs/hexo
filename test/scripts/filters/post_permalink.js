@@ -1,4 +1,4 @@
-const should = require('chai').should(); // eslint-disable-line
+require('chai').should(); // eslint-disable-line strict
 const moment = require('moment');
 
 const PERMALINK = ':year/:month/:day/:title/';

@@ -1,4 +1,4 @@
-const should = require('chai').should(); // eslint-disable-line
+require('chai').should(); // eslint-disable-line strict
 const fixture = require('../../fixtures/post_render');
 
 describe('Render post', () => {

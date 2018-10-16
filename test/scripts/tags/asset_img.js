@@ -1,4 +1,4 @@
-const should = require('chai').should(); // eslint-disable-line
+const should = require('chai').should(); // eslint-disable-line strict
 const Promise = require('bluebird');
 
 describe('asset_img', () => {

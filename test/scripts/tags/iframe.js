@@ -1,7 +1,7 @@
 'use strict';
 
 const cheerio = require('cheerio');
-const should = require('chai').should(); // eslint-disable-line
+require('chai').should();
 
 describe('iframe', () => {
   const iframe = require('../../../lib/plugins/tag/iframe');

@@ -1,7 +1,7 @@
 'use strict';
 
 const crypto = require('crypto');
-const should = require('chai').should(); // eslint-disable-line
+require('chai').should();
 
 describe('gravatar', () => {
   const gravatar = require('../../../lib/plugins/helper/gravatar');

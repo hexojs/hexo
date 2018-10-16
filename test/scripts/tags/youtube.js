@@ -1,7 +1,7 @@
 'use strict';
 
 const cheerio = require('cheerio');
-const should = require('chai').should(); // eslint-disable-line
+require('chai').should();
 
 describe('youtube', () => {
   const youtube = require('../../../lib/plugins/tag/youtube');
