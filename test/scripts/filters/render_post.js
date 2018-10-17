@@ -1,6 +1,5 @@
 'use strict';
 
-require('chai').should();
 const fixture = require('../../fixtures/post_render');
 
 describe('Render post', () => {

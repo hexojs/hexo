@@ -1,7 +1,5 @@
 'use strict';
 
-require('chai').should();
-
 describe('json', () => {
   const r = require('../../../lib/plugins/renderer/json');
 

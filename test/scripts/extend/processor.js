@@ -1,7 +1,5 @@
 'use strict';
 
-require('chai').should();
-
 describe('Processor', () => {
   const Processor = require('../../../lib/extend/processor');
 

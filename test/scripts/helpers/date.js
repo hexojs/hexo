@@ -1,7 +1,6 @@
 'use strict';
 
 const moment = require('moment-timezone');
-require('chai').should();
 const sinon = require('sinon');
 
 describe('date', () => {

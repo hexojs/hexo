@@ -1,7 +1,5 @@
 'use strict';
 
-require('chai').should();
-
 describe('number_format', () => {
   const numberFormat = require('../../../lib/plugins/helper/number_format');
 

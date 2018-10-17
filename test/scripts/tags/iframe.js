@@ -1,7 +1,7 @@
 'use strict';
 
 const cheerio = require('cheerio');
-require('chai').should();
+
 
 describe('iframe', () => {
   const iframe = require('../../../lib/plugins/tag/iframe');

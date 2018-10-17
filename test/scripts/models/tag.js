@@ -1,6 +1,5 @@
 'use strict';
 
-require('chai').should();
 const sinon = require('sinon');
 const Promise = require('bluebird');
 

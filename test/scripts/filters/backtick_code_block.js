@@ -1,6 +1,5 @@
 'use strict';
 
-require('chai').should();
 const util = require('hexo-util');
 const cloneDeep = require('lodash/cloneDeep');
 const defaultConfig = require('../../../lib/hexo/default_config');

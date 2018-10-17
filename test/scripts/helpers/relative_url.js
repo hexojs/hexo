@@ -1,7 +1,5 @@
 'use strict';
 
-require('chai').should();
-
 describe('relative_url', () => {
   const relativeURL = require('../../../lib/plugins/helper/relative_url');
 

@@ -1,7 +1,5 @@
 'use strict';
 
-require('chai').should();
-
 describe('Generator', () => {
   const Generator = require('../../../lib/extend/generator');
 

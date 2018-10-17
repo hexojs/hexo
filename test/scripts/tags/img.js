@@ -2,7 +2,6 @@
 
 const pathFn = require('path');
 const cheerio = require('cheerio');
-require('chai').should();
 
 describe('img', () => {
   const Hexo = require('../../../lib/hexo');

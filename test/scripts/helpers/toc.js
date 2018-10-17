@@ -1,7 +1,5 @@
 'use strict';
 
-require('chai').should();
-
 function ifTrue(cond, yes, no) {
   return cond ? yes : no;
 }

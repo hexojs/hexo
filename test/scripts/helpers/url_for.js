@@ -1,7 +1,5 @@
 'use strict';
 
-require('chai').should();
-
 describe('url_for', () => {
   const ctx = {
     config: {},

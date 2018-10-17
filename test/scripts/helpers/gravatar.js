@@ -1,7 +1,6 @@
 'use strict';
 
 const crypto = require('crypto');
-require('chai').should();
 
 describe('gravatar', () => {
   const gravatar = require('../../../lib/plugins/helper/gravatar');

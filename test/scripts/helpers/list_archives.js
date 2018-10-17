@@ -1,7 +1,5 @@
 'use strict';
 
-require('chai').should();
-
 describe('list_archives', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo(__dirname);

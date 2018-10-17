@@ -2,7 +2,6 @@
 
 const pathFn = require('path');
 const osFn = require('os');
-require('chai').should();
 const fs = require('hexo-fs');
 const yml = require('js-yaml');
 

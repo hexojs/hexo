@@ -1,6 +1,5 @@
 'use strict';
 
-require('chai').should();
 const Promise = require('bluebird');
 
 describe('list_categories', () => {

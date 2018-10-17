@@ -1,6 +1,5 @@
 'use strict';
 
-require('chai').should();
 const fs = require('hexo-fs');
 const Promise = require('bluebird');
 

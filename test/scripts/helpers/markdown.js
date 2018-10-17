@@ -1,7 +1,5 @@
 'use strict';
 
-require('chai').should();
-
 describe('markdown', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo(__dirname);

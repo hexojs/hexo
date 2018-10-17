@@ -1,7 +1,6 @@
 'use strict';
 
 const cheerio = require('cheerio');
-require('chai').should();
 
 describe('vimeo', () => {
   const vimeo = require('../../../lib/plugins/tag/vimeo');

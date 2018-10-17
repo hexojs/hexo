@@ -1,7 +1,5 @@
 'use strict';
 
-require('chai').should();
-
 describe('Deployer', () => {
   const Deployer = require('../../../lib/extend/deployer');
 

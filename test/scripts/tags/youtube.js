@@ -1,7 +1,6 @@
 'use strict';
 
 const cheerio = require('cheerio');
-require('chai').should();
 
 describe('youtube', () => {
   const youtube = require('../../../lib/plugins/tag/youtube');

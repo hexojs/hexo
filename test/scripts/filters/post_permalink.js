@@ -1,6 +1,5 @@
 'use strict';
 
-require('chai').should();
 const moment = require('moment');
 
 const PERMALINK = ':year/:month/:day/:title/';

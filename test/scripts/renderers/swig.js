@@ -1,7 +1,5 @@
 'use strict';
 
-require('chai').should();
-
 describe('swig', () => {
   const r = require('../../../lib/plugins/renderer/swig');
 

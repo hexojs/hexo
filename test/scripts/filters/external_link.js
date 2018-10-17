@@ -1,7 +1,5 @@
 'use strict';
 
-require('chai').should();
-
 describe('External link', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();

@@ -1,7 +1,6 @@
 'use strict';
 
 const moment = require('moment');
-require('chai').should();
 
 describe('open_graph', () => {
   const Hexo = require('../../../lib/hexo');

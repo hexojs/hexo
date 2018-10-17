@@ -1,7 +1,5 @@
 'use strict';
 
-require('chai').should();
-
 describe('plain', () => {
   const r = require('../../../lib/plugins/renderer/plain');
 

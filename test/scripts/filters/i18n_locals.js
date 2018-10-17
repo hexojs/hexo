@@ -1,7 +1,5 @@
 'use strict';
 
-require('chai').should();
-
 describe('i18n locals', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();

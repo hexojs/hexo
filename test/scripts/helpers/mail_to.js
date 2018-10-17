@@ -1,6 +1,5 @@
 'use strict';
 
-require('chai').should();
 const qs = require('querystring');
 
 describe('mail_to', () => {
