@@ -1,6 +1,5 @@
 'use strict';
 
-const should = require('chai').should();
 const pathFn = require('path');
 const moment = require('moment');
 const Promise = require('bluebird');

@@ -1,6 +1,5 @@
 'use strict';
 
-const should = require('chai').should();
 const moment = require('moment-timezone');
 
 describe('SchemaTypeMoment', () => {

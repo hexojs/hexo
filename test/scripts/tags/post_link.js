@@ -1,7 +1,5 @@
 'use strict';
 
-const should = require('chai').should();
-
 describe('post_link', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo(__dirname);

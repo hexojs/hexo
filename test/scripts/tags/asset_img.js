@@ -1,6 +1,5 @@
 'use strict';
 
-const should = require('chai').should();
 const Promise = require('bluebird');
 
 describe('asset_img', () => {

@@ -1,7 +1,5 @@
 'use strict';
 
-const should = require('chai').should();
-
 describe('Renderer', () => {
   const Renderer = require('../../../lib/extend/renderer');
 
