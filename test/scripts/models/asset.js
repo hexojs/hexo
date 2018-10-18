@@ -1,4 +1,5 @@
-const should = require('chai').should(); // eslint-disable-line
+'use strict';
+
 const sinon = require('sinon');
 const pathFn = require('path');
 

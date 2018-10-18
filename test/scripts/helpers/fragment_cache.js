@@ -1,4 +1,4 @@
-const should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('fragment_cache', () => {
   const fragment_cache = require('../../../lib/plugins/helper/fragment_cache')();
