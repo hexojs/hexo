@@ -1,4 +1,4 @@
-const should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('list_archives', () => {
   const Hexo = require('../../../lib/hexo');

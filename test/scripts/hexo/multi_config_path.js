@@ -2,7 +2,6 @@
 
 const pathFn = require('path');
 const osFn = require('os');
-const should = require('chai').should(); // eslint-disable-line
 const fs = require('hexo-fs');
 const yml = require('js-yaml');
 

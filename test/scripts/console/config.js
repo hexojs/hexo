@@ -1,8 +1,8 @@
-const should = require('chai').should(); // eslint-disable-line
+'use strict';
+
 const fs = require('hexo-fs');
 const pathFn = require('path');
 const yaml = require('js-yaml');
-const _ = require('lodash');
 const rewire = require('rewire');
 const sinon = require('sinon');
 
@@ -61,7 +61,7 @@ describe('config', () => {
   });
 
   function writeConfig() {
-    const args = _.toArray(arguments);
+    const args = Array.from(arguments);
 
     return config({_: args}).then(() => fs.readFile(hexo.config_path)).then(content => yaml.load(content));
   }

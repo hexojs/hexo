@@ -1,4 +1,4 @@
-const should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('yaml', () => {
   const r = require('../../../lib/plugins/renderer/yaml');

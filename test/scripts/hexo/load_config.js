@@ -1,7 +1,8 @@
-const should = require('chai').should(); // eslint-disable-line
+'use strict';
+
 const pathFn = require('path');
 const fs = require('hexo-fs');
-const _ = require('lodash');
+const cloneDeep = require('lodash/cloneDeep');
 
 describe('Load config', () => {
   const Hexo = require('../../../lib/hexo');
@@ -16,7 +17,7 @@ describe('Load config', () => {
   after(() => fs.rmdir(hexo.base_dir));
 
   beforeEach(() => {
-    hexo.config = _.cloneDeep(defaultConfig);
+    hexo.config = cloneDeep(defaultConfig);
   });
 
   it('config file does not exist', () => loadConfig(hexo).then(() => {
