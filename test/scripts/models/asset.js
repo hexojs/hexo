@@ -1,11 +1,12 @@
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
-var pathFn = require('path');
+'use strict';
+
+const sinon = require('sinon');
+const pathFn = require('path');
 
 describe('Asset', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var Asset = hexo.model('Asset');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const Asset = hexo.model('Asset');
 
   it('default values', () => Asset.insert({
     _id: 'foo',
@@ -16,7 +17,7 @@ describe('Asset', () => {
   }));
 
   it('_id - required', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'ID is not defined');
     });
 
@@ -26,7 +27,7 @@ describe('Asset', () => {
   });
 
   it('path - required', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', '`path` is required!');
     });
 

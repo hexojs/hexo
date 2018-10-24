@@ -1,22 +1,23 @@
-var should = require('chai').should(); // eslint-disable-line
-var pathFn = require('path');
-var Promise = require('bluebird');
-var fs = require('hexo-fs');
+'use strict';
+
+const pathFn = require('path');
+const Promise = require('bluebird');
+const fs = require('hexo-fs');
 
 describe('Scaffold', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
-  var scaffold = hexo.scaffold;
-  var scaffoldDir = hexo.scaffold_dir;
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
+  const scaffold = hexo.scaffold;
+  const scaffoldDir = hexo.scaffold_dir;
 
-  var testContent = [
+  const testContent = [
     '---',
     'title: {{ title }}',
     '---',
     'test scaffold'
   ].join('\n');
 
-  var testPath = pathFn.join(scaffoldDir, 'test.md');
+  const testPath = pathFn.join(scaffoldDir, 'test.md');
 
   before(() => hexo.init().then(() => fs.writeFile(testPath, testContent)));
 
@@ -40,7 +41,7 @@ describe('Scaffold', () => {
   }));
 
   it('set() - file does not exist', () => {
-    var testPath = pathFn.join(scaffoldDir, 'foo.md');
+    const testPath = pathFn.join(scaffoldDir, 'foo.md');
 
     return scaffold.set('foo', 'bar').then(() => Promise.all([
       fs.readFile(testPath),

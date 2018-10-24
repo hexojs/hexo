@@ -1,10 +1,10 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('swig', () => {
-  var r = require('../../../lib/plugins/renderer/swig');
+  const r = require('../../../lib/plugins/renderer/swig');
 
   it('normal', () => {
-    var body = [
+    const body = [
       'Hello {{ name }}!'
     ].join('\n');
 
@@ -14,13 +14,13 @@ describe('swig', () => {
   });
 
   it('override "for" tag', () => {
-    var body = [
+    const body = [
       '{% for x in arr %}',
       '{{ x }}',
       '{% endfor %}'
     ].join('');
 
-    var data = {
+    const data = {
       arr: {
         toArray() {
           return [1, 2, 3];
@@ -32,11 +32,11 @@ describe('swig', () => {
   });
 
   it('compile', () => {
-    var body = [
+    const body = [
       'Hello {{ name }}!'
     ].join('\n');
 
-    var render = r.compile({
+    const render = r.compile({
       text: body
     });
 

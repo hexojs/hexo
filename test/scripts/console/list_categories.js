@@ -1,18 +1,18 @@
 'use strict';
 
-var Promise = require('bluebird');
-var sinon = require('sinon');
-var expect = require('chai').expect;
+const Promise = require('bluebird');
+const sinon = require('sinon');
+const expect = require('chai').expect;
 
 describe('Console list', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
-  var Post = hexo.model('Post');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
+  const Post = hexo.model('Post');
 
-  var listCategories = require('../../../lib/plugins/console/list/category').bind(hexo);
+  const listCategories = require('../../../lib/plugins/console/list/category').bind(hexo);
 
   before(() => {
-    var log = console.log;
+    const log = console.log;
     sinon.stub(console, 'log').callsFake(function(...args) {
       return log.apply(log, args);
     });
@@ -30,7 +30,7 @@ describe('Console list', () => {
   });
 
   it('categories', () => {
-    var posts = [
+    const posts = [
       {source: 'foo', slug: 'foo', title: 'Its', date: 1e8},
       {source: 'bar', slug: 'bar', title: 'Math', date: 1e8 + 1},
       {source: 'baz', slug: 'baz', title: 'Dude', date: 1e8 - 1}

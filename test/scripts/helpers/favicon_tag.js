@@ -1,16 +1,16 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('favicon_tag', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
 
-  var ctx = {
+  const ctx = {
     config: hexo.config
   };
 
   ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
 
-  var favicon = require('../../../lib/plugins/helper/favicon_tag').bind(ctx);
+  const favicon = require('../../../lib/plugins/helper/favicon_tag').bind(ctx);
 
   it('path', () => {
     favicon('favicon.ico').should.eql('<link rel="shortcut icon" href="/favicon.ico">');

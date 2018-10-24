@@ -1,19 +1,20 @@
-var should = require('chai').should(); // eslint-disable-line
-var Promise = require('bluebird');
+'use strict';
+
+const Promise = require('bluebird');
 
 describe('tagcloud', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
-  var Post = hexo.model('Post');
-  var Tag = hexo.model('Tag');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
+  const Post = hexo.model('Post');
+  const Tag = hexo.model('Tag');
 
-  var ctx = {
+  const ctx = {
     config: hexo.config
   };
 
   ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
 
-  var tagcloud = require('../../../lib/plugins/helper/tagcloud').bind(ctx);
+  const tagcloud = require('../../../lib/plugins/helper/tagcloud').bind(ctx);
 
   before(() => hexo.init().then(() => Post.insert([
     {source: 'foo', slug: 'foo'},
@@ -32,7 +33,7 @@ describe('tagcloud', () => {
   }));
 
   it('default', () => {
-    var result = tagcloud();
+    const result = tagcloud();
 
     result.should.eql([
       '<a href="/tags/abc/" style="font-size: 13.33px;">abc</a>',
@@ -43,7 +44,7 @@ describe('tagcloud', () => {
   });
 
   it('specified collection', () => {
-    var result = tagcloud(Tag.find({
+    const result = tagcloud(Tag.find({
       name: /bc/
     }));
 
@@ -54,7 +55,7 @@ describe('tagcloud', () => {
   });
 
   it('font size', () => {
-    var result = tagcloud({
+    const result = tagcloud({
       min_font: 15,
       max_font: 30
     });
@@ -68,7 +69,7 @@ describe('tagcloud', () => {
   });
 
   it('font size - when every tag has the same number of posts, font-size should be minimum.', () => {
-    var result = tagcloud(Tag.find({
+    const result = tagcloud(Tag.find({
       name: /abc/
     }), {
       min_font: 15,
@@ -81,7 +82,7 @@ describe('tagcloud', () => {
   });
 
   it('font unit', () => {
-    var result = tagcloud({
+    const result = tagcloud({
       unit: 'em'
     });
 
@@ -94,7 +95,7 @@ describe('tagcloud', () => {
   });
 
   it('orderby', () => {
-    var result = tagcloud({
+    const result = tagcloud({
       orderby: 'length'
     });
 
@@ -107,7 +108,7 @@ describe('tagcloud', () => {
   });
 
   it('order', () => {
-    var result = tagcloud({
+    const result = tagcloud({
       order: -1
     });
 
@@ -120,7 +121,7 @@ describe('tagcloud', () => {
   });
 
   it('amount', () => {
-    var result = tagcloud({
+    const result = tagcloud({
       amount: 2
     });
 
@@ -131,7 +132,7 @@ describe('tagcloud', () => {
   });
 
   it('transform', () => {
-    var result = tagcloud({
+    const result = tagcloud({
       transform(name) {
         return name.toUpperCase();
       }
@@ -146,7 +147,7 @@ describe('tagcloud', () => {
   });
 
   it('color: name', () => {
-    var result = tagcloud({
+    const result = tagcloud({
       color: true,
       start_color: 'red',
       end_color: 'pink'
@@ -161,7 +162,7 @@ describe('tagcloud', () => {
   });
 
   it('color: hex', () => {
-    var result = tagcloud({
+    const result = tagcloud({
       color: true,
       start_color: '#f00', // red
       end_color: '#ffc0cb' // pink
@@ -176,7 +177,7 @@ describe('tagcloud', () => {
   });
 
   it('color: RGBA', () => {
-    var result = tagcloud({
+    const result = tagcloud({
       color: true,
       start_color: 'rgba(70, 130, 180, 0.3)', // steelblue
       end_color: 'rgb(70, 130, 180)'
@@ -191,7 +192,7 @@ describe('tagcloud', () => {
   });
 
   it('color: HSLA', () => {
-    var result = tagcloud({
+    const result = tagcloud({
       color: true,
       start_color: 'hsla(207, 44%, 49%, 0.3)', // rgba(70, 130, 180, 0.3)
       end_color: 'hsl(207, 44%, 49%)' // rgb(70, 130, 180)
@@ -206,7 +207,7 @@ describe('tagcloud', () => {
   });
 
   it('color - when every tag has the same number of posts, start_color should be used.', () => {
-    var result = tagcloud(Tag.find({
+    const result = tagcloud(Tag.find({
       name: /abc/
     }), {
       color: true,
@@ -220,7 +221,7 @@ describe('tagcloud', () => {
   });
 
   it('separator', () => {
-    var result = tagcloud({
+    const result = tagcloud({
       separator: ', '
     });
 

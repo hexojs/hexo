@@ -1,13 +1,14 @@
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
-var Promise = require('bluebird');
+'use strict';
+
+const sinon = require('sinon');
+const Promise = require('bluebird');
 
 describe('Tag', () => {
-  var Tag = require('../../../lib/extend/tag');
-  var tag = new Tag();
+  const Tag = require('../../../lib/extend/tag');
+  const tag = new Tag();
 
   it('register()', () => {
-    var tag = new Tag();
+    const tag = new Tag();
 
     tag.register('test', (args, content) => args.join(' '));
 
@@ -17,7 +18,7 @@ describe('Tag', () => {
   });
 
   it('register() - async', () => {
-    var tag = new Tag();
+    const tag = new Tag();
 
     tag.register('test', (args, content) => Promise.resolve(args.join(' ')), {async: true});
 
@@ -27,11 +28,11 @@ describe('Tag', () => {
   });
 
   it('register() - block', () => {
-    var tag = new Tag();
+    const tag = new Tag();
 
     tag.register('test', (args, content) => args.join(' ') + ' ' + content, true);
 
-    var str = [
+    const str = [
       '{% test foo bar %}',
       'test content',
       '{% endtest %}'
@@ -43,11 +44,11 @@ describe('Tag', () => {
   });
 
   it('register() - async block', () => {
-    var tag = new Tag();
+    const tag = new Tag();
 
     tag.register('test', (args, content) => Promise.resolve(args.join(' ') + ' ' + content), {ends: true, async: true});
 
-    var str = [
+    const str = [
       '{% test foo bar %}',
       'test content',
       '{% endtest %}'
@@ -59,11 +60,11 @@ describe('Tag', () => {
   });
 
   it('register() - nested test', () => {
-    var tag = new Tag();
+    const tag = new Tag();
 
     tag.register('test', (args, content) => content, true);
 
-    var str = [
+    const str = [
       '{% test %}',
       '123456',
       '  {% raw %}',
@@ -82,14 +83,14 @@ describe('Tag', () => {
   });
 
   it('register() - nested async / async test', () => {
-    var tag = new Tag();
+    const tag = new Tag();
 
     tag.register('test', (args, content) => content, {ends: true, async: true});
     tag.register('async', (args, content) => {
       return Promise.resolve(args.join(' ') + ' ' + content);
     }, {ends: true, async: true});
 
-    var str = [
+    const str = [
       '{% test %}',
       '123456',
       '  {% async %}',
@@ -105,11 +106,11 @@ describe('Tag', () => {
   });
 
   it('register() - strip indention', () => {
-    var tag = new Tag();
+    const tag = new Tag();
 
     tag.register('test', (args, content) => content, true);
 
-    var str = [
+    const str = [
       '{% test %}',
       '  test content',
       '{% endtest %}'
@@ -121,7 +122,7 @@ describe('Tag', () => {
   });
 
   it('register() - async callback', () => {
-    var tag = new Tag();
+    const tag = new Tag();
 
     tag.register('test', (args, content, callback) => {
       callback(null, args.join(' '));
@@ -133,7 +134,7 @@ describe('Tag', () => {
   });
 
   it('register() - name is required', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'name is required');
     });
 
@@ -147,7 +148,7 @@ describe('Tag', () => {
   });
 
   it('register() - fn must be a function', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'fn must be a function');
     });
 
@@ -161,7 +162,7 @@ describe('Tag', () => {
   });
 
   it('render() - context', () => {
-    var tag = new Tag();
+    const tag = new Tag();
 
     tag.register('test', function() {
       return this.foo;

@@ -1,17 +1,17 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('list_posts', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
-  var Post = hexo.model('Post');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
+  const Post = hexo.model('Post');
 
-  var ctx = {
+  const ctx = {
     config: hexo.config
   };
 
   ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
 
-  var listPosts = require('../../../lib/plugins/helper/list_posts').bind(ctx);
+  const listPosts = require('../../../lib/plugins/helper/list_posts').bind(ctx);
 
   hexo.config.permalink = ':title/';
 
@@ -25,7 +25,7 @@ describe('list_posts', () => {
   }));
 
   it('default', () => {
-    var result = listPosts();
+    const result = listPosts();
 
     result.should.eql([
       '<ul class="post-list">',
@@ -37,7 +37,7 @@ describe('list_posts', () => {
   });
 
   it('specified collection', () => {
-    var result = listPosts(Post.find({
+    const result = listPosts(Post.find({
       title: 'Its'
     }));
 
@@ -49,7 +49,7 @@ describe('list_posts', () => {
   });
 
   it('style: false', () => {
-    var result = listPosts({
+    const result = listPosts({
       style: false
     });
 
@@ -61,7 +61,7 @@ describe('list_posts', () => {
   });
 
   it('orderby', () => {
-    var result = listPosts({
+    const result = listPosts({
       orderby: 'title'
     });
 
@@ -75,7 +75,7 @@ describe('list_posts', () => {
   });
 
   it('order', () => {
-    var result = listPosts({
+    const result = listPosts({
       order: 1
     });
 
@@ -89,7 +89,7 @@ describe('list_posts', () => {
   });
 
   it('class', () => {
-    var result = listPosts({
+    const result = listPosts({
       class: 'test'
     });
 
@@ -103,7 +103,7 @@ describe('list_posts', () => {
   });
 
   it('transform', () => {
-    var result = listPosts({
+    const result = listPosts({
       transform(str) {
         return str.toUpperCase();
       }
@@ -119,7 +119,7 @@ describe('list_posts', () => {
   });
 
   it('separator', () => {
-    var result = listPosts({
+    const result = listPosts({
       style: false,
       separator: ''
     });
@@ -132,7 +132,7 @@ describe('list_posts', () => {
   });
 
   it('amount', () => {
-    var result = listPosts({
+    const result = listPosts({
       amount: 2
     });
 

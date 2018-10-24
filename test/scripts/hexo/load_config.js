@@ -1,13 +1,14 @@
-var should = require('chai').should(); // eslint-disable-line
-var pathFn = require('path');
-var fs = require('hexo-fs');
-var _ = require('lodash');
+'use strict';
+
+const pathFn = require('path');
+const fs = require('hexo-fs');
+const cloneDeep = require('lodash/cloneDeep');
 
 describe('Load config', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
-  var loadConfig = require('../../../lib/hexo/load_config');
-  var defaultConfig = require('../../../lib/hexo/default_config');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
+  const loadConfig = require('../../../lib/hexo/load_config');
+  const defaultConfig = require('../../../lib/hexo/default_config');
 
   hexo.env.init = true;
 
@@ -16,7 +17,7 @@ describe('Load config', () => {
   after(() => fs.rmdir(hexo.base_dir));
 
   beforeEach(() => {
-    hexo.config = _.cloneDeep(defaultConfig);
+    hexo.config = cloneDeep(defaultConfig);
   });
 
   it('config file does not exist', () => loadConfig(hexo).then(() => {
@@ -24,7 +25,7 @@ describe('Load config', () => {
   }));
 
   it('_config.yml exists', () => {
-    var configPath = pathFn.join(hexo.base_dir, '_config.yml');
+    const configPath = pathFn.join(hexo.base_dir, '_config.yml');
 
     return fs.writeFile(configPath, 'foo: 1').then(() => loadConfig(hexo)).then(() => {
       hexo.config.foo.should.eql(1);
@@ -32,7 +33,7 @@ describe('Load config', () => {
   });
 
   it('_config.json exists', () => {
-    var configPath = pathFn.join(hexo.base_dir, '_config.json');
+    const configPath = pathFn.join(hexo.base_dir, '_config.json');
 
     return fs.writeFile(configPath, '{"baz": 3}').then(() => loadConfig(hexo)).then(() => {
       hexo.config.baz.should.eql(3);
@@ -40,7 +41,7 @@ describe('Load config', () => {
   });
 
   it('_config.txt exists', () => {
-    var configPath = pathFn.join(hexo.base_dir, '_config.txt');
+    const configPath = pathFn.join(hexo.base_dir, '_config.txt');
 
     return fs.writeFile(configPath, 'foo: 1').then(() => loadConfig(hexo)).then(() => {
       hexo.config.should.eql(defaultConfig);
@@ -48,7 +49,7 @@ describe('Load config', () => {
   });
 
   it('custom config path', () => {
-    var configPath = hexo.config_path = pathFn.join(__dirname, 'werwerwer.yml');
+    const configPath = hexo.config_path = pathFn.join(__dirname, 'werwerwer.yml');
 
     return fs.writeFile(configPath, 'foo: 1').then(() => loadConfig(hexo)).then(() => {
       hexo.config.foo.should.eql(1);
@@ -59,7 +60,7 @@ describe('Load config', () => {
   });
 
   it('custom config path with different extension name', () => {
-    var realPath = pathFn.join(__dirname, 'werwerwer.json');
+    const realPath = pathFn.join(__dirname, 'werwerwer.json');
     hexo.config_path = pathFn.join(__dirname, 'werwerwer.yml');
 
     return fs.writeFile(realPath, '{"foo": 2}').then(() => loadConfig(hexo)).then(() => {
@@ -72,7 +73,7 @@ describe('Load config', () => {
   });
 
   it('handle trailing "/" of url', () => {
-    var content = [
+    const content = [
       'root: foo',
       'url: http://hexo.io/'
     ].join('\n');
@@ -99,7 +100,7 @@ describe('Load config', () => {
   }).finally(() => fs.unlink(hexo.config_path)));
 
   it('merge config', () => {
-    var content = [
+    const content = [
       'highlight:',
       '  tab_replace: yoooo'
     ].join('\n');

@@ -1,13 +1,12 @@
 'use strict';
 
-var cheerio = require('cheerio');
-var should = require('chai').should(); // eslint-disable-line
+const cheerio = require('cheerio');
 
 describe('vimeo', () => {
-  var vimeo = require('../../../lib/plugins/tag/vimeo');
+  const vimeo = require('../../../lib/plugins/tag/vimeo');
 
   it('responsive', () => {
-    var $ = cheerio.load(vimeo(['foo']));
+    const $ = cheerio.load(vimeo(['foo']));
 
     $('.video-container').html().should.exist;
     $('.video-container').attr('style').should.eql('padding:56.25% 0 0 0;position:relative;');
@@ -20,7 +19,7 @@ describe('vimeo', () => {
   });
 
   it('non responsive', () => {
-    var $ = cheerio.load(vimeo(['foo', 640, 480]));
+    const $ = cheerio.load(vimeo(['foo', 640, 480]));
 
     $('.video-container').html().should.be.ok;
     $('iframe').attr('src').should.eql('//player.vimeo.com/video/foo?title=0&byline=0&portrait=0');

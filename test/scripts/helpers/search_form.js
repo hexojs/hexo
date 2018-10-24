@@ -1,7 +1,7 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('search_form', () => {
-  var searchForm = require('../../../lib/plugins/helper/search_form').bind({
+  const searchForm = require('../../../lib/plugins/helper/search_form').bind({
     config: {url: 'http://hexo.io'}
   });
 

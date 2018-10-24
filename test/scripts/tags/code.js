@@ -1,14 +1,15 @@
-var should = require('chai').should(); // eslint-disable-line
-var util = require('hexo-util');
-var cheerio = require('cheerio');
+'use strict';
+
+const util = require('hexo-util');
+const cheerio = require('cheerio');
 
 describe('code', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var codeTag = require('../../../lib/plugins/tag/code')(hexo);
-  var escapeHTML = util.escapeHTML;
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const codeTag = require('../../../lib/plugins/tag/code')(hexo);
+  const escapeHTML = util.escapeHTML;
 
-  var fixture = [
+  const fixture = [
     'if (tired && night){',
     '  sleep();',
     '}'
@@ -25,12 +26,12 @@ describe('code', () => {
   }
 
   it('default', () => {
-    var result = code('', fixture);
+    const result = code('', fixture);
     result.should.eql(highlight(fixture));
   });
 
   it('non standard indent', () => {
-    var nonStandardIndent = [
+    const nonStandardIndent = [
       '  ',
       '  return x;',
       '}',
@@ -38,19 +39,19 @@ describe('code', () => {
       fixture,
       '  '
     ].join('/n');
-    var result = code('', nonStandardIndent);
+    const result = code('', nonStandardIndent);
     result.should.eql(highlight(nonStandardIndent));
   });
 
   it('lang', () => {
-    var result = code('lang:js', fixture);
+    const result = code('lang:js', fixture);
     result.should.eql(highlight(fixture, {
       lang: 'js'
     }));
   });
 
   it('line_number', () => {
-    var result = code('line_number:false', fixture);
+    let result = code('line_number:false', fixture);
     result.should.eql(highlight(fixture, {
       gutter: false
     }));
@@ -61,20 +62,20 @@ describe('code', () => {
   });
 
   it('highlight disable', () => {
-    var result = code('highlight:false', fixture);
+    const result = code('highlight:false', fixture);
     result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
   });
 
   it('title', () => {
-    var result = code('Hello world', fixture);
+    const result = code('Hello world', fixture);
     result.should.eql(highlight(fixture, {
       caption: '<span>Hello world</span>'
     }));
   });
 
   it('link', () => {
-    var result = code('Hello world http://hexo.io/', fixture);
-    var expected = highlight(fixture, {
+    const result = code('Hello world http://hexo.io/', fixture);
+    const expected = highlight(fixture, {
       caption: '<span>Hello world</span><a href="http://hexo.io/">link</a>'
     });
 
@@ -82,8 +83,8 @@ describe('code', () => {
   });
 
   it('link text', () => {
-    var result = code('Hello world http://hexo.io/ Hexo', fixture);
-    var expected = highlight(fixture, {
+    const result = code('Hello world http://hexo.io/ Hexo', fixture);
+    const expected = highlight(fixture, {
       caption: '<span>Hello world</span><a href="http://hexo.io/">Hexo</a>'
     });
 
@@ -93,14 +94,14 @@ describe('code', () => {
   it('disabled', () => {
     hexo.config.highlight.enable = false;
 
-    var result = code('', fixture);
+    const result = code('', fixture);
     result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
 
     hexo.config.highlight.enable = true;
   });
 
   it('first_line', () => {
-    var result = code('first_line:1234', fixture);
+    let result = code('first_line:1234', fixture);
     result.should.eql(highlight(fixture, {
       firstLine: 1234
     }));
@@ -111,7 +112,7 @@ describe('code', () => {
   });
 
   it('mark', () => {
-    var source = [
+    const source = [
       'const http = require(\'http\');',
       '',
       'const hostname = \'127.0.0.1\';',
@@ -124,15 +125,15 @@ describe('code', () => {
       '  console.log(`Server running at http://${hostname}:${port}/`);',
       '});'
     ].join('\n');
-    var result = code('mark:1,7-8,10', source);
+    const result = code('mark:1,7-8,10', source);
     result.should.eql(highlight(source, {
       mark: [1, 7, 8, 10]
     }));
   });
 
   it('# lines', () => {
-    var result = code('', fixture);
-    var $ = cheerio.load(result);
+    const result = code('', fixture);
+    const $ = cheerio.load(result);
     $('.gutter .line').length.should.eql(3);
   });
 });

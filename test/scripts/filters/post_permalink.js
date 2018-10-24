@@ -1,19 +1,20 @@
-var should = require('chai').should(); // eslint-disable-line
-var moment = require('moment');
+'use strict';
 
-var PERMALINK = ':year/:month/:day/:title/';
+const moment = require('moment');
+
+const PERMALINK = ':year/:month/:day/:title/';
 
 describe('post_permalink', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var postPermalink = require('../../../lib/plugins/filter/post_permalink').bind(hexo);
-  var Post = hexo.model('Post');
-  var post;
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const postPermalink = require('../../../lib/plugins/filter/post_permalink').bind(hexo);
+  const Post = hexo.model('Post');
+  let post;
 
   hexo.config.permalink = PERMALINK;
 
   before(() => {
-    var id;
+    let id;
 
     return hexo.init().then(() => Post.insert({
       source: 'foo.md',

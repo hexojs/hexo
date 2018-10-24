@@ -1,11 +1,12 @@
-var should = require('chai').should(); // eslint-disable-line
-var Promise = require('bluebird');
+'use strict';
+
+const Promise = require('bluebird');
 
 describe('page', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname, {silent: true});
-  var Page = hexo.model('Page');
-  var generator = Promise.method(require('../../../lib/plugins/generator/page').bind(hexo));
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname, {silent: true});
+  const Page = hexo.model('Page');
+  const generator = Promise.method(require('../../../lib/plugins/generator/page').bind(hexo));
 
   function locals() {
     hexo.locals.invalidate();

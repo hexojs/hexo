@@ -1,7 +1,7 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('number_format', () => {
-  var numberFormat = require('../../../lib/plugins/helper/number_format');
+  const numberFormat = require('../../../lib/plugins/helper/number_format');
 
   it('default', () => {
     numberFormat(1234.567).should.eql('1,234.567');
