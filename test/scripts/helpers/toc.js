@@ -1,4 +1,4 @@
-const should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 function ifTrue(cond, yes, no) {
   return cond ? yes : no;

@@ -1,7 +1,6 @@
 'use strict';
 
 const cheerio = require('cheerio');
-const should = require('chai').should(); // eslint-disable-line
 
 describe('vimeo', () => {
   const vimeo = require('../../../lib/plugins/tag/vimeo');

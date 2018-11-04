@@ -1,4 +1,4 @@
-const should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('Processor', () => {
   const Processor = require('../../../lib/extend/processor');

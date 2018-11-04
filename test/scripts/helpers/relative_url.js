@@ -1,4 +1,4 @@
-const should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('relative_url', () => {
   const relativeURL = require('../../../lib/plugins/helper/relative_url');

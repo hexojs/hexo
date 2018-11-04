@@ -1,4 +1,4 @@
-const should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('image_tag', () => {
   const Hexo = require('../../../lib/hexo');

@@ -2,7 +2,6 @@
 
 const pathFn = require('path');
 const cheerio = require('cheerio');
-const should = require('chai').should(); // eslint-disable-line
 
 describe('img', () => {
   const Hexo = require('../../../lib/hexo');

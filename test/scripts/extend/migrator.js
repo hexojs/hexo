@@ -1,4 +1,4 @@
-const should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('Migrator', () => {
   const Migrator = require('../../../lib/extend/migrator');
