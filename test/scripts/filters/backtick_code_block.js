@@ -1,4 +1,5 @@
-const should = require('chai').should(); // eslint-disable-line
+'use strict';
+
 const util = require('hexo-util');
 const cloneDeep = require('lodash/cloneDeep');
 const defaultConfig = require('../../../lib/hexo/default_config');

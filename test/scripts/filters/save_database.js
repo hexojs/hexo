@@ -1,4 +1,5 @@
-const should = require('chai').should(); // eslint-disable-line
+'use strict';
+
 const fs = require('hexo-fs');
 const Promise = require('bluebird');
 
