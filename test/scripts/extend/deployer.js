@@ -1,10 +1,10 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('Deployer', () => {
-  var Deployer = require('../../../lib/extend/deployer');
+  const Deployer = require('../../../lib/extend/deployer');
 
   it('register()', () => {
-    var d = new Deployer();
+    const d = new Deployer();
 
     // name, fn
     d.register('test', () => {});
@@ -31,7 +31,7 @@ describe('Deployer', () => {
   });
 
   it('register() - promisify', () => {
-    var d = new Deployer();
+    const d = new Deployer();
 
     d.register('test', (args, callback) => {
       args.should.eql({foo: 'bar'});
@@ -46,7 +46,7 @@ describe('Deployer', () => {
   });
 
   it('register() - Promise.method', () => {
-    var d = new Deployer();
+    const d = new Deployer();
 
     d.register('test', args => {
       args.should.eql({foo: 'bar'});
@@ -61,7 +61,7 @@ describe('Deployer', () => {
   });
 
   it('list()', () => {
-    var d = new Deployer();
+    const d = new Deployer();
 
     d.register('test', () => {});
 
@@ -69,7 +69,7 @@ describe('Deployer', () => {
   });
 
   it('get()', () => {
-    var d = new Deployer();
+    const d = new Deployer();
 
     d.register('test', () => {});
 

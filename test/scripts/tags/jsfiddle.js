@@ -1,19 +1,18 @@
 'use strict';
 
-var cheerio = require('cheerio');
-var should = require('chai').should(); // eslint-disable-line
+const cheerio = require('cheerio');
 
 describe('jsfiddle', () => {
-  var jsfiddle = require('../../../lib/plugins/tag/jsfiddle');
+  const jsfiddle = require('../../../lib/plugins/tag/jsfiddle');
 
   it('id', () => {
-    var $ = cheerio.load(jsfiddle(['foo']));
+    const $ = cheerio.load(jsfiddle(['foo']));
 
     $('iframe').attr('src').should.eql('//jsfiddle.net/foo/embedded/js,resources,html,css,result/light');
   });
 
   it('tabs', () => {
-    var $ = cheerio.load(jsfiddle(['foo', 'default']));
+    let $ = cheerio.load(jsfiddle(['foo', 'default']));
 
     $('iframe').attr('src').should.eql('//jsfiddle.net/foo/embedded/js,resources,html,css,result/light');
 
@@ -23,7 +22,7 @@ describe('jsfiddle', () => {
   });
 
   it('skin', () => {
-    var $ = cheerio.load(jsfiddle(['foo', 'default', 'default']));
+    let $ = cheerio.load(jsfiddle(['foo', 'default', 'default']));
 
     $('iframe').attr('src').should.eql('//jsfiddle.net/foo/embedded/js,resources,html,css,result/light');
 
@@ -33,7 +32,7 @@ describe('jsfiddle', () => {
   });
 
   it('width', () => {
-    var $ = cheerio.load(jsfiddle(['foo', 'default', 'default', 'default']));
+    let $ = cheerio.load(jsfiddle(['foo', 'default', 'default', 'default']));
 
     $('iframe').attr('width').should.eql('100%');
 
@@ -43,7 +42,7 @@ describe('jsfiddle', () => {
   });
 
   it('height', () => {
-    var $ = cheerio.load(jsfiddle(['foo', 'default', 'default', 'default', 'default']));
+    let $ = cheerio.load(jsfiddle(['foo', 'default', 'default', 'default', 'default']));
 
     $('iframe').attr('height').should.eql('300');
 

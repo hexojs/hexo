@@ -1,14 +1,14 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('markdown', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
 
-  var ctx = {
+  const ctx = {
     render: require('../../../lib/plugins/helper/render')(hexo)
   };
 
-  var markdown = require('../../../lib/plugins/helper/markdown').bind(ctx);
+  const markdown = require('../../../lib/plugins/helper/markdown').bind(ctx);
 
   before(() => hexo.init().then(() => hexo.loadPlugin(require.resolve('hexo-renderer-marked'))));
 

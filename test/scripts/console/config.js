@@ -1,16 +1,16 @@
-var should = require('chai').should(); // eslint-disable-line
-var fs = require('hexo-fs');
-var pathFn = require('path');
-var yaml = require('js-yaml');
-var _ = require('lodash');
-var rewire = require('rewire');
-var sinon = require('sinon');
+'use strict';
+
+const fs = require('hexo-fs');
+const pathFn = require('path');
+const yaml = require('js-yaml');
+const rewire = require('rewire');
+const sinon = require('sinon');
 
 describe('config', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
-  var config = require('../../../lib/plugins/console/config').bind(hexo);
-  var configModule = rewire('../../../lib/plugins/console/config');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
+  const config = require('../../../lib/plugins/console/config').bind(hexo);
+  const configModule = rewire('../../../lib/plugins/console/config');
 
   before(() => fs.mkdirs(hexo.base_dir).then(() => hexo.init()));
 
@@ -19,7 +19,7 @@ describe('config', () => {
   after(() => fs.rmdir(hexo.base_dir));
 
   it('read all config', () => {
-    var spy = sinon.spy();
+    const spy = sinon.spy();
 
     return configModule.__with__({
       console: {
@@ -31,7 +31,7 @@ describe('config', () => {
   });
 
   it('read config', () => {
-    var spy = sinon.spy();
+    const spy = sinon.spy();
 
     return configModule.__with__({
       console: {
@@ -43,7 +43,7 @@ describe('config', () => {
   });
 
   it('read nested config', () => {
-    var spy = sinon.spy();
+    const spy = sinon.spy();
 
     hexo.config.server = {
       port: 12345
@@ -61,7 +61,7 @@ describe('config', () => {
   });
 
   function writeConfig() {
-    var args = _.toArray(arguments);
+    const args = Array.from(arguments);
 
     return config({_: args}).then(() => fs.readFile(hexo.config_path)).then(content => yaml.load(content));
   }
@@ -91,10 +91,10 @@ describe('config', () => {
   }));
 
   it('write config: json', () => {
-    var configPath = hexo.config_path = pathFn.join(hexo.base_dir, '_config.json');
+    const configPath = hexo.config_path = pathFn.join(hexo.base_dir, '_config.json');
 
     return fs.writeFile(configPath, '{}').then(() => config({_: ['title', 'My Blog']})).then(() => fs.readFile(configPath)).then(content => {
-      var json = JSON.parse(content);
+      const json = JSON.parse(content);
 
       json.title.should.eql('My Blog');
 

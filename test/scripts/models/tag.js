@@ -1,18 +1,19 @@
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
-var Promise = require('bluebird');
+'use strict';
+
+const sinon = require('sinon');
+const Promise = require('bluebird');
 
 describe('Tag', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var Tag = hexo.model('Tag');
-  var Post = hexo.model('Post');
-  var PostTag = hexo.model('PostTag');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const Tag = hexo.model('Tag');
+  const Post = hexo.model('Post');
+  const PostTag = hexo.model('PostTag');
 
   before(() => hexo.init());
 
   it('name - required', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', '`name` is required!');
     });
 
@@ -93,7 +94,7 @@ describe('Tag', () => {
     {source: 'bar.md', slug: 'bar'},
     {source: 'baz.md', slug: 'baz'}
   ]).each(post => post.setTags(['foo'])).then(posts => {
-    var tag = Tag.findOne({name: 'foo'});
+    const tag = Tag.findOne({name: 'foo'});
 
     function mapper(post) {
       return post._id;
@@ -111,7 +112,7 @@ describe('Tag', () => {
     {source: 'bar.md', slug: 'bar', published: false},
     {source: 'baz.md', slug: 'baz', published: true}
   ]).each(post => post.setTags(['foo'])).then(posts => {
-    var tag = Tag.findOne({name: 'foo'});
+    let tag = Tag.findOne({name: 'foo'});
 
     function mapper(post) {
       return post._id;
@@ -135,14 +136,14 @@ describe('Tag', () => {
   }).map(post => post.remove()));
 
   it('posts - future', () => {
-    var now = Date.now();
+    const now = Date.now();
 
     return Post.insert([
       {source: 'foo.md', slug: 'foo', date: now - 3600},
       {source: 'bar.md', slug: 'bar', date: now + 3600},
       {source: 'baz.md', slug: 'baz', date: now}
     ]).each(post => post.setTags(['foo'])).then(posts => {
-      var tag = Tag.findOne({name: 'foo'});
+      let tag = Tag.findOne({name: 'foo'});
 
       function mapper(post) {
         return post._id;
@@ -167,7 +168,7 @@ describe('Tag', () => {
   });
 
   it('check whether a tag exists', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'Tag `foo` has already existed!');
     });
 
@@ -185,7 +186,7 @@ describe('Tag', () => {
   });
 
   it('remove PostTag references when a tag is removed', () => {
-    var tag;
+    let tag;
 
     return Post.insert([
       {source: 'foo.md', slug: 'foo'},

@@ -1,10 +1,10 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('paginator', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
 
-  var ctx = {
+  const ctx = {
     page: {
       base: '',
       total: 10
@@ -15,26 +15,26 @@ describe('paginator', () => {
 
   ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
 
-  var paginator = require('../../../lib/plugins/helper/paginator').bind(ctx);
+  const paginator = require('../../../lib/plugins/helper/paginator').bind(ctx);
 
   function link(i) {
     return ctx.url_for(i === 1 ? '' : 'page/' + i + '/');
   }
 
   function checkResult(result, data) {
-    var expected = '';
-    var current = data.current;
-    var total = data.total;
-    var pages = data.pages;
-    var space = data.space || '&hellip;';
-    var prevNext = data.hasOwnProperty('prev_next') ? data.prev_next : true;
-    var num;
+    let expected = '';
+    const current = data.current;
+    const total = data.total;
+    const pages = data.pages;
+    const space = data.space || '&hellip;';
+    const prevNext = data.hasOwnProperty('prev_next') ? data.prev_next : true;
+    let num;
 
     if (prevNext && current > 1) {
       expected += '<a class="extend prev" rel="prev" href="' + link(current - 1) + '">Prev</a>';
     }
 
-    for (var i = 0, len = pages.length; i < len; i++) {
+    for (let i = 0, len = pages.length; i < len; i++) {
       num = pages[i];
 
       if (!num) {
@@ -65,11 +65,11 @@ describe('paginator', () => {
     [1, 0, 7, 8, 9, 10],
     [1, 0, 8, 9, 10]
   ].forEach((pages, i, arr) => {
-    var current = i + 1;
-    var total = arr.length;
+    const current = i + 1;
+    const total = arr.length;
 
     it('current = ' + current, () => {
-      var result = paginator({
+      const result = paginator({
         current,
         total
       });
@@ -83,7 +83,7 @@ describe('paginator', () => {
   });
 
   it('show_all', () => {
-    var result = paginator({
+    const result = paginator({
       current: 5,
       show_all: true
     });
@@ -96,7 +96,7 @@ describe('paginator', () => {
   });
 
   it('end_size', () => {
-    var result = paginator({
+    const result = paginator({
       current: 5,
       end_size: 2
     });
@@ -109,7 +109,7 @@ describe('paginator', () => {
   });
 
   it('end_size = 0', () => {
-    var result = paginator({
+    const result = paginator({
       current: 5,
       end_size: 0
     });
@@ -122,7 +122,7 @@ describe('paginator', () => {
   });
 
   it('mid_size', () => {
-    var result = paginator({
+    const result = paginator({
       current: 5,
       mid_size: 1
     });
@@ -135,7 +135,7 @@ describe('paginator', () => {
   });
 
   it('mid_size = 0', () => {
-    var result = paginator({
+    const result = paginator({
       current: 5,
       mid_size: 0
     });
@@ -148,7 +148,7 @@ describe('paginator', () => {
   });
 
   it('space', () => {
-    var result = paginator({
+    const result = paginator({
       current: 5,
       space: '~'
     });
@@ -162,7 +162,7 @@ describe('paginator', () => {
   });
 
   it('no space', () => {
-    var result = paginator({
+    const result = paginator({
       current: 5,
       space: ''
     });
@@ -175,7 +175,7 @@ describe('paginator', () => {
   });
 
   it('base', () => {
-    var result = paginator({
+    const result = paginator({
       current: 1,
       base: 'archives/'
     });
@@ -191,7 +191,7 @@ describe('paginator', () => {
   });
 
   it('format', () => {
-    var result = paginator({
+    const result = paginator({
       current: 1,
       format: 'index-%d.html'
     });
@@ -207,7 +207,7 @@ describe('paginator', () => {
   });
 
   it('prev_text / next_text', () => {
-    var result = paginator({
+    const result = paginator({
       current: 2,
       prev_text: 'Newer',
       next_text: 'Older'
@@ -226,7 +226,7 @@ describe('paginator', () => {
   });
 
   it('prev_next', () => {
-    var result = paginator({
+    const result = paginator({
       current: 2,
       prev_next: false
     });
@@ -242,7 +242,7 @@ describe('paginator', () => {
   });
 
   it('transform', () => {
-    var result = paginator({
+    const result = paginator({
       current: 2,
       transform(page) {
         return 'Page ' + page;
@@ -263,7 +263,7 @@ describe('paginator', () => {
 
   it('context', () => {
     ctx.page.current = 5;
-    var result = paginator({
+    const result = paginator({
       space: ''
     });
 
@@ -276,7 +276,7 @@ describe('paginator', () => {
 
   it('current = 0', () => {
     ctx.page.current = 0;
-    var result = paginator({});
+    const result = paginator({});
 
     result.should.eql('');
   });

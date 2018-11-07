@@ -1,7 +1,7 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('relative_url', () => {
-  var relativeURL = require('../../../lib/plugins/helper/relative_url');
+  const relativeURL = require('../../../lib/plugins/helper/relative_url');
 
   it('from root', () => {
     relativeURL('', 'css/style.css').should.eql('css/style.css');

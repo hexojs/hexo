@@ -1,19 +1,20 @@
-var should = require('chai').should(); // eslint-disable-line
-var Promise = require('bluebird');
+'use strict';
+
+const Promise = require('bluebird');
 
 describe('list_tags', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
-  var Post = hexo.model('Post');
-  var Tag = hexo.model('Tag');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
+  const Post = hexo.model('Post');
+  const Tag = hexo.model('Tag');
 
-  var ctx = {
+  const ctx = {
     config: hexo.config
   };
 
   ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
 
-  var listTags = require('../../../lib/plugins/helper/list_tags').bind(ctx);
+  const listTags = require('../../../lib/plugins/helper/list_tags').bind(ctx);
 
   before(() => hexo.init().then(() => Post.insert([
     {source: 'foo', slug: 'foo'},
@@ -32,7 +33,7 @@ describe('list_tags', () => {
   }));
 
   it('default', () => {
-    var result = listTags();
+    const result = listTags();
 
     result.should.eql([
       '<ul class="tag-list">',
@@ -44,7 +45,7 @@ describe('list_tags', () => {
   });
 
   it('specified collection', () => {
-    var result = listTags(Tag.find({
+    const result = listTags(Tag.find({
       name: /^b/
     }));
 
@@ -57,7 +58,7 @@ describe('list_tags', () => {
   });
 
   it('style: false', () => {
-    var result = listTags({
+    const result = listTags({
       style: false
     });
 
@@ -69,7 +70,7 @@ describe('list_tags', () => {
   });
 
   it('show_count: false', () => {
-    var result = listTags({
+    const result = listTags({
       show_count: false
     });
 
@@ -83,7 +84,7 @@ describe('list_tags', () => {
   });
 
   it('class', () => {
-    var result = listTags({
+    const result = listTags({
       class: 'test'
     });
 
@@ -97,7 +98,7 @@ describe('list_tags', () => {
   });
 
   it('orderby', () => {
-    var result = listTags({
+    const result = listTags({
       orderby: 'length'
     });
 
@@ -111,7 +112,7 @@ describe('list_tags', () => {
   });
 
   it('order', () => {
-    var result = listTags({
+    const result = listTags({
       order: -1
     });
 
@@ -125,7 +126,7 @@ describe('list_tags', () => {
   });
 
   it('transform', () => {
-    var result = listTags({
+    const result = listTags({
       transform(name) {
         return name.toUpperCase();
       }
@@ -141,7 +142,7 @@ describe('list_tags', () => {
   });
 
   it('separator', () => {
-    var result = listTags({
+    const result = listTags({
       style: false,
       separator: ''
     });
@@ -154,7 +155,7 @@ describe('list_tags', () => {
   });
 
   it('amount', () => {
-    var result = listTags({
+    const result = listTags({
       amount: 2
     });
 

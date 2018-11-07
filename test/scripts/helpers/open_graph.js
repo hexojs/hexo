@@ -1,15 +1,14 @@
 'use strict';
 
-var moment = require('moment');
-var should = require('chai').should(); // eslint-disable-line
+const moment = require('moment');
 
 describe('open_graph', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var openGraph = require('../../../lib/plugins/helper/open_graph');
-  var isPost = require('../../../lib/plugins/helper/is').post;
-  var tag = require('hexo-util').htmlTag;
-  var Post = hexo.model('Post');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const openGraph = require('../../../lib/plugins/helper/open_graph');
+  const isPost = require('../../../lib/plugins/helper/is').post;
+  const tag = require('hexo-util').htmlTag;
+  const Post = hexo.model('Post');
 
   function meta(options) {
     return tag('meta', options);
@@ -46,19 +45,19 @@ describe('open_graph', () => {
   });
 
   it('title - page', () => {
-    var ctx = {
+    const ctx = {
       page: {title: 'Hello world'},
       config: hexo.config,
       is_post: isPost
     };
 
-    var result = openGraph.call(ctx);
+    const result = openGraph.call(ctx);
 
     result.should.contain(meta({property: 'og:title', content: ctx.page.title}));
   });
 
   it('title - options', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {title: 'Hello world'},
       config: hexo.config,
       is_post: isPost
@@ -68,7 +67,7 @@ describe('open_graph', () => {
   });
 
   it('type - options', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config: hexo.config,
       is_post: isPost
@@ -78,7 +77,7 @@ describe('open_graph', () => {
   });
 
   it('type - is_post', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config: hexo.config,
       is_post() {
@@ -90,20 +89,20 @@ describe('open_graph', () => {
   });
 
   it('url - context', () => {
-    var ctx = {
+    const ctx = {
       page: {},
       config: hexo.config,
       is_post: isPost,
       url: 'http://hexo.io/foo'
     };
 
-    var result = openGraph.call(ctx);
+    const result = openGraph.call(ctx);
 
     result.should.contain(meta({property: 'og:url', content: ctx.url}));
   });
 
   it('url - options', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config: hexo.config,
       is_post: isPost,
@@ -114,7 +113,7 @@ describe('open_graph', () => {
   });
 
   it('images - content', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {
         content: [
           '<p>123456789</p>',
@@ -129,7 +128,7 @@ describe('open_graph', () => {
   });
 
   it('images - string', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {
         photos: 'http://hexo.io/test.jpg'
       },
@@ -141,7 +140,7 @@ describe('open_graph', () => {
   });
 
   it('images - array', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {
         photos: [
           'http://hexo.io/foo.jpg',
@@ -159,7 +158,7 @@ describe('open_graph', () => {
   });
 
   it('images - don\'t pollute context', () => {
-    var ctx = {
+    const ctx = {
       page: {
         content: [
           '<p>123456789</p>',
@@ -176,7 +175,7 @@ describe('open_graph', () => {
   });
 
   it('images - options.image', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config: hexo.config,
       is_post: isPost
@@ -186,7 +185,7 @@ describe('open_graph', () => {
   });
 
   it('images - options.images', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config: hexo.config,
       is_post: isPost
@@ -196,7 +195,7 @@ describe('open_graph', () => {
   });
 
   it('images - prepend config.url to the path (without prefixing /)', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config: hexo.config,
       is_post: isPost
@@ -206,7 +205,7 @@ describe('open_graph', () => {
   });
 
   it('images - prepend config.url to the path (with prefixing /)', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config: hexo.config,
       is_post: isPost
@@ -216,13 +215,13 @@ describe('open_graph', () => {
   });
 
   it('images - resolve relative path when site is hosted in subdirectory', () => {
-    var urlFn = require('url');
-    var config = hexo.config;
+    const urlFn = require('url');
+    const config = hexo.config;
     config.url = urlFn.resolve(config.url, 'blog');
     config.root = 'blog';
-    var postUrl = urlFn.resolve(config.url, '/foo/bar/index.html');
+    const postUrl = urlFn.resolve(config.url, '/foo/bar/index.html');
 
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config,
       is_post: isPost,
@@ -233,7 +232,7 @@ describe('open_graph', () => {
   });
 
   it('site_name - options', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config: hexo.config,
       is_post: isPost
@@ -243,59 +242,59 @@ describe('open_graph', () => {
   });
 
   it('description - page', () => {
-    var ctx = {
+    const ctx = {
       page: {description: 'test'},
       config: hexo.config,
       is_post: isPost
     };
 
-    var result = openGraph.call(ctx);
+    const result = openGraph.call(ctx);
 
     result.should.contain(meta({name: 'description', content: ctx.page.description}));
     result.should.contain(meta({property: 'og:description', content: ctx.page.description}));
   });
 
   it('description - options', () => {
-    var ctx = {
+    const ctx = {
       page: {description: 'test'},
       config: hexo.config,
       is_post: isPost
     };
 
-    var result = openGraph.call(ctx, {description: 'foo'});
+    const result = openGraph.call(ctx, {description: 'foo'});
 
     result.should.contain(meta({name: 'description', content: 'foo'}));
     result.should.contain(meta({property: 'og:description', content: 'foo'}));
   });
 
   it('description - excerpt', () => {
-    var ctx = {
+    const ctx = {
       page: {excerpt: 'test'},
       config: hexo.config,
       is_post: isPost
     };
 
-    var result = openGraph.call(ctx);
+    const result = openGraph.call(ctx);
 
     result.should.contain(meta({name: 'description', content: ctx.page.excerpt}));
     result.should.contain(meta({property: 'og:description', content: ctx.page.excerpt}));
   });
 
   it('description - content', () => {
-    var ctx = {
+    const ctx = {
       page: {content: 'test'},
       config: hexo.config,
       is_post: isPost
     };
 
-    var result = openGraph.call(ctx);
+    const result = openGraph.call(ctx);
 
     result.should.contain(meta({name: 'description', content: ctx.page.content}));
     result.should.contain(meta({property: 'og:description', content: ctx.page.content}));
   });
 
   it('description - config', () => {
-    var ctx = {
+    const ctx = {
       page: {},
       config: hexo.config,
       is_post: isPost
@@ -303,7 +302,7 @@ describe('open_graph', () => {
 
     hexo.config.description = 'test';
 
-    var result = openGraph.call(ctx);
+    const result = openGraph.call(ctx);
 
     result.should.contain(meta({name: 'description', content: hexo.config.description}));
     result.should.contain(meta({property: 'og:description', content: hexo.config.description}));
@@ -312,21 +311,21 @@ describe('open_graph', () => {
   });
 
   it('description - escape', () => {
-    var ctx = {
+    const ctx = {
       page: {description: '<b>Important!</b> Today is "not" \'Xmas\'!'},
       config: hexo.config,
       is_post: isPost
     };
 
-    var result = openGraph.call(ctx);
-    var escaped = 'Important! Today is &quot;not&quot; &apos;Xmas&apos;!';
+    const result = openGraph.call(ctx);
+    const escaped = 'Important! Today is &quot;not&quot; &apos;Xmas&apos;!';
 
     result.should.contain(meta({name: 'description', content: escaped}));
     result.should.contain(meta({property: 'og:description', content: escaped}));
   });
 
   it('twitter_card - options', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config: hexo.config,
       is_post: isPost
@@ -336,7 +335,7 @@ describe('open_graph', () => {
   });
 
   it('twitter_id - options (without prefixing @)', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config: hexo.config,
       is_post: isPost
@@ -346,7 +345,7 @@ describe('open_graph', () => {
   });
 
   it('twitter_id - options (with prefixing @)', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config: hexo.config,
       is_post: isPost
@@ -356,7 +355,7 @@ describe('open_graph', () => {
   });
 
   it('twitter_site - options', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config: hexo.config,
       is_post: isPost
@@ -366,7 +365,7 @@ describe('open_graph', () => {
   });
 
   it('google_plus - options', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config: hexo.config,
       is_post: isPost
@@ -376,7 +375,7 @@ describe('open_graph', () => {
   });
 
   it('fb_admins - options', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config: hexo.config,
       is_post: isPost
@@ -386,7 +385,7 @@ describe('open_graph', () => {
   });
 
   it('fb_app_id - options', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config: hexo.config,
       is_post: isPost
@@ -396,7 +395,7 @@ describe('open_graph', () => {
   });
 
   it('updated - options', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: { updated: moment('2016-05-23T21:20:21.372Z') },
       config: {},
       is_post: isPost
@@ -406,7 +405,7 @@ describe('open_graph', () => {
   });
 
   it('updated - options - allow overriding og:updated_time', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: { updated: moment('2016-05-23T21:20:21.372Z') },
       config: {},
       is_post: isPost
@@ -416,7 +415,7 @@ describe('open_graph', () => {
   });
 
   it('updated - options - allow disabling og:updated_time', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: { updated: moment('2016-05-23T21:20:21.372Z') },
       config: {},
       is_post: isPost
@@ -426,7 +425,7 @@ describe('open_graph', () => {
   });
 
   it('description - do not add /(?:og:|twitter:)?description/ meta tags if there is no description', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: { },
       config: {},
       is_post: isPost
@@ -438,72 +437,72 @@ describe('open_graph', () => {
   });
 
   it('keywords - page keywords string', () => {
-    var ctx = {
+    const ctx = {
       page: { keywords: 'optimize,web' },
       config: {},
       is_post: isPost
     };
 
-    var result = openGraph.call(ctx);
-    var escaped = 'optimize,web';
+    const result = openGraph.call(ctx);
+    const escaped = 'optimize,web';
 
     result.should.contain(meta({name: 'keywords', content: escaped}));
   });
 
   it('keywords - page keywords array', () => {
-    var ctx = {
+    const ctx = {
       page: { keywords: ['optimize', 'web'] },
       config: {},
       is_post: isPost
     };
 
-    var result = openGraph.call(ctx);
-    var keywords = 'optimize,web';
+    const result = openGraph.call(ctx);
+    const keywords = 'optimize,web';
 
     result.should.contain(meta({name: 'keywords', content: keywords}));
   });
 
   it('keywords - page tags', () => {
-    var ctx = {
+    const ctx = {
       page: { tags: ['optimize', 'web'] },
       config: {},
       is_post: isPost
     };
 
-    var result = openGraph.call(ctx);
-    var keywords = 'optimize,web';
+    const result = openGraph.call(ctx);
+    const keywords = 'optimize,web';
 
     result.should.contain(meta({name: 'keywords', content: keywords}));
   });
 
   it('keywords - config keywords string', () => {
-    var ctx = {
+    const ctx = {
       page: {},
       config: { keywords: 'optimize,web' },
       is_post: isPost
     };
 
-    var result = openGraph.call(ctx);
-    var keywords = 'optimize,web';
+    const result = openGraph.call(ctx);
+    const keywords = 'optimize,web';
 
     result.should.contain(meta({name: 'keywords', content: keywords}));
   });
 
   it('keywords - config keywords array', () => {
-    var ctx = {
+    const ctx = {
       page: {},
       config: { keywords: ['optimize', 'web'] },
       is_post: isPost
     };
 
-    var result = openGraph.call(ctx);
-    var keywords = 'optimize,web';
+    const result = openGraph.call(ctx);
+    const keywords = 'optimize,web';
 
     result.should.contain(meta({name: 'keywords', content: keywords}));
   });
 
   it('keywords - page keywords first', () => {
-    var ctx = {
+    const ctx = {
       page: {
         keywords: ['web1', 'web2'],
         tags: ['web3', 'web4']
@@ -512,53 +511,53 @@ describe('open_graph', () => {
       is_post: isPost
     };
 
-    var result = openGraph.call(ctx);
-    var keywords = 'web1,web2';
+    const result = openGraph.call(ctx);
+    const keywords = 'web1,web2';
 
     result.should.contain(meta({name: 'keywords', content: keywords}));
   });
 
   it('keywords - page tags second', () => {
-    var ctx = {
+    const ctx = {
       page: { tags: ['optimize', 'web'] },
       config: { keywords: 'web5,web6' },
       is_post: isPost
     };
 
-    var result = openGraph.call(ctx);
-    var keywords = 'optimize,web';
+    const result = openGraph.call(ctx);
+    const keywords = 'optimize,web';
 
     result.should.contain(meta({name: 'keywords', content: keywords}));
   });
 
   it('keywords - page tags empty', () => {
-    var ctx = {
+    const ctx = {
       page: { tags: [] },
       config: { keywords: 'web5,web6' },
       is_post: isPost
     };
 
-    var result = openGraph.call(ctx);
-    var keywords = 'web5,web6';
+    const result = openGraph.call(ctx);
+    const keywords = 'web5,web6';
 
     result.should.contain(meta({name: 'keywords', content: keywords}));
   });
 
   it('keywords - escape', () => {
-    var ctx = {
+    const ctx = {
       page: { keywords: 'optimize,web&<>"\'/,site' },
       config: {},
       is_post: isPost
     };
 
-    var result = openGraph.call(ctx);
-    var keywords = 'optimize,web&amp;&lt;&gt;&quot;&#39;&#x2F;,site';
+    const result = openGraph.call(ctx);
+    const keywords = 'optimize,web&amp;&lt;&gt;&quot;&#39;&#x2F;,site';
 
     result.should.contain(meta({name: 'keywords', content: keywords}));
   });
 
   it('og:locale - options.language', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config: hexo.config,
       is_post: isPost
@@ -568,7 +567,7 @@ describe('open_graph', () => {
   });
 
   it('og:locale - page.lang', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: { lang: 'es-mx' },
       config: hexo.config,
       is_post: isPost
@@ -578,7 +577,7 @@ describe('open_graph', () => {
   });
 
   it('og:locale - page.language', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: { language: 'es-gt' },
       config: hexo.config,
       is_post: isPost
@@ -590,7 +589,7 @@ describe('open_graph', () => {
   it('og:locale - config.language', () => {
     hexo.config.language = 'es-pa';
 
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config: hexo.config,
       is_post: isPost
@@ -600,7 +599,7 @@ describe('open_graph', () => {
   });
 
   it('og:locale - no language set', () => {
-    var result = openGraph.call({
+    const result = openGraph.call({
       page: {},
       config: hexo.config,
       is_post: isPost

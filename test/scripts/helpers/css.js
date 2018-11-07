@@ -1,21 +1,21 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('css', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
 
-  var ctx = {
+  const ctx = {
     config: hexo.config
   };
 
   ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
 
-  var css = require('../../../lib/plugins/helper/css').bind(ctx);
+  const css = require('../../../lib/plugins/helper/css').bind(ctx);
 
   function assertResult(result) {
-    var expected = '';
+    let expected = '';
 
-    for (var i = 1, len = arguments.length; i < len; i++) {
+    for (let i = 1, len = arguments.length; i < len; i++) {
       expected += '<link rel="stylesheet" href="' + arguments[i] + '">\n';
     }
 

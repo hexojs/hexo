@@ -1,16 +1,16 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('image_tag', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
 
-  var ctx = {
+  const ctx = {
     config: hexo.config
   };
 
   ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
 
-  var img = require('../../../lib/plugins/helper/image_tag').bind(ctx);
+  const img = require('../../../lib/plugins/helper/image_tag').bind(ctx);
 
   it('path', () => {
     img('http://hexo.io/image.jpg').should.eql('<img src="http://hexo.io/image.jpg">');

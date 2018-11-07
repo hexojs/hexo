@@ -1,13 +1,14 @@
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
+'use strict';
+
+const sinon = require('sinon');
 
 describe('Cache', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var Cache = hexo.model('Cache');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const Cache = hexo.model('Cache');
 
   it('_id - required', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'ID is not defined');
     });
 

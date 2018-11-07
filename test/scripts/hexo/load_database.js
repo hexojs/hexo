@@ -1,14 +1,15 @@
-var should = require('chai').should(); // eslint-disable-line
-var pathFn = require('path');
-var fs = require('hexo-fs');
+'use strict';
+
+const pathFn = require('path');
+const fs = require('hexo-fs');
 
 describe('Load database', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'db_test'), {silent: true});
-  var loadDatabase = require('../../../lib/hexo/load_database');
-  var dbPath = hexo.database.options.path;
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(pathFn.join(__dirname, 'db_test'), {silent: true});
+  const loadDatabase = require('../../../lib/hexo/load_database');
+  const dbPath = hexo.database.options.path;
 
-  var fixture = {
+  const fixture = {
     meta: {
       version: 1,
       warehouse: require('warehouse').version

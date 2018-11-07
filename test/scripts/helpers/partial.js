@@ -1,16 +1,17 @@
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
-var pathFn = require('path');
-var fs = require('hexo-fs');
-var Promise = require('bluebird');
+'use strict';
+
+const sinon = require('sinon');
+const pathFn = require('path');
+const fs = require('hexo-fs');
+const Promise = require('bluebird');
 
 describe('partial', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'partial_test'), {silent: true});
-  var themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
-  var viewDir = pathFn.join(themeDir, 'layout') + pathFn.sep;
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(pathFn.join(__dirname, 'partial_test'), {silent: true});
+  const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
+  const viewDir = pathFn.join(themeDir, 'layout') + pathFn.sep;
 
-  var ctx = {
+  const ctx = {
     site: hexo.locals,
     config: hexo.config,
     view_dir: viewDir,
@@ -23,7 +24,7 @@ describe('partial', () => {
 
   hexo.env.init = true;
 
-  var partial = require('../../../lib/plugins/helper/partial')(hexo).bind(ctx);
+  const partial = require('../../../lib/plugins/helper/partial')(hexo).bind(ctx);
 
   before(() => Promise.all([
     fs.mkdirs(themeDir),
@@ -73,7 +74,7 @@ describe('partial', () => {
   });
 
   it('name must be a string', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'name must be a string!');
     });
 

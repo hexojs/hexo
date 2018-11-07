@@ -1,14 +1,15 @@
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
-var pathFn = require('path');
+'use strict';
+
+const sinon = require('sinon');
+const pathFn = require('path');
 
 describe('Page', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var Page = hexo.model('Page');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const Page = hexo.model('Page');
 
   it('default values', () => {
-    var now = Date.now();
+    const now = Date.now();
 
     return Page.insert({
       source: 'foo',
@@ -30,7 +31,7 @@ describe('Page', () => {
   });
 
   it('source - required', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', '`source` is required!');
     });
 
@@ -40,7 +41,7 @@ describe('Page', () => {
   });
 
   it('path - required', () => {
-    var errorCallback = sinon.spy(err => {
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', '`path` is required!');
     });
 

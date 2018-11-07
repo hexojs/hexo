@@ -1,14 +1,14 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('yaml', () => {
-  var r = require('../../../lib/plugins/renderer/yaml');
+  const r = require('../../../lib/plugins/renderer/yaml');
 
   it('normal', () => {
     r({text: 'foo: 1'}).should.eql({foo: 1});
   });
 
   it('escape', () => {
-    var body = [
+    const body = [
       'foo: 1',
       'bar:',
       '\tbaz: 3'

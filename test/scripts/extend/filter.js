@@ -1,11 +1,12 @@
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
+'use strict';
+
+const sinon = require('sinon');
 
 describe('Filter', () => {
-  var Filter = require('../../../lib/extend/filter');
+  const Filter = require('../../../lib/extend/filter');
 
   it('register()', () => {
-    var f = new Filter();
+    const f = new Filter();
 
     // type, fn
     f.register('test', () => {});
@@ -40,7 +41,7 @@ describe('Filter', () => {
   });
 
   it('register() - type alias', () => {
-    var f = new Filter();
+    const f = new Filter();
 
     // pre
     f.register('pre', () => {});
@@ -54,7 +55,7 @@ describe('Filter', () => {
   });
 
   it('register() - priority', () => {
-    var f = new Filter();
+    const f = new Filter();
 
     f.register('test', () => {});
 
@@ -66,8 +67,8 @@ describe('Filter', () => {
   });
 
   it('unregister()', () => {
-    var f = new Filter();
-    var filter = sinon.spy();
+    const f = new Filter();
+    const filter = sinon.spy();
 
     f.register('test', filter);
     f.unregister('test', filter);
@@ -78,8 +79,8 @@ describe('Filter', () => {
   });
 
   it('unregister() - type is required', () => {
-    var f = new Filter();
-    var errorCallback = sinon.spy(err => {
+    const f = new Filter();
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'type is required');
     });
 
@@ -93,8 +94,8 @@ describe('Filter', () => {
   });
 
   it('unregister() - fn must be a function', () => {
-    var f = new Filter();
-    var errorCallback = sinon.spy(err => {
+    const f = new Filter();
+    const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'fn must be a function');
     });
 
@@ -108,7 +109,7 @@ describe('Filter', () => {
   });
 
   it('list()', () => {
-    var f = new Filter();
+    const f = new Filter();
 
     f.register('test', () => {});
 
@@ -117,14 +118,14 @@ describe('Filter', () => {
   });
 
   it('exec()', () => {
-    var f = new Filter();
+    const f = new Filter();
 
-    var filter1 = sinon.spy(data => {
+    const filter1 = sinon.spy(data => {
       data.should.eql('');
       return data + 'foo';
     });
 
-    var filter2 = sinon.spy(data => {
+    const filter2 = sinon.spy(data => {
       filter1.calledOnce.should.be.true;
       data.should.eql('foo');
       return data + 'bar';
@@ -141,14 +142,14 @@ describe('Filter', () => {
   });
 
   it('exec() - pointer', () => {
-    var f = new Filter();
+    const f = new Filter();
 
-    var filter1 = sinon.spy(data => {
+    const filter1 = sinon.spy(data => {
       data.should.eql({});
       data.foo = 1;
     });
 
-    var filter2 = sinon.spy(data => {
+    const filter2 = sinon.spy(data => {
       filter1.calledOnce.should.be.true;
       data.should.eql({foo: 1});
       data.bar = 2;
@@ -165,14 +166,14 @@ describe('Filter', () => {
   });
 
   it('exec() - args', () => {
-    var f = new Filter();
+    const f = new Filter();
 
-    var filter1 = sinon.spy((data, arg1, arg2) => {
+    const filter1 = sinon.spy((data, arg1, arg2) => {
       arg1.should.eql(1);
       arg2.should.eql(2);
     });
 
-    var filter2 = sinon.spy((data, arg1, arg2) => {
+    const filter2 = sinon.spy((data, arg1, arg2) => {
       arg1.should.eql(1);
       arg2.should.eql(2);
     });
@@ -189,14 +190,14 @@ describe('Filter', () => {
   });
 
   it('exec() - context', () => {
-    var f = new Filter();
-    var ctx = {foo: 1, bar: 2};
+    const f = new Filter();
+    const ctx = {foo: 1, bar: 2};
 
-    var filter1 = sinon.spy(function(data) {
+    const filter1 = sinon.spy(function(data) {
       this.should.eql(ctx);
     });
 
-    var filter2 = sinon.spy(function(data) {
+    const filter2 = sinon.spy(function(data) {
       this.should.eql(ctx);
     });
 
@@ -210,14 +211,14 @@ describe('Filter', () => {
   });
 
   it('execSync()', () => {
-    var f = new Filter();
+    const f = new Filter();
 
-    var filter1 = sinon.spy(data => {
+    const filter1 = sinon.spy(data => {
       data.should.eql('');
       return data + 'foo';
     });
 
-    var filter2 = sinon.spy(data => {
+    const filter2 = sinon.spy(data => {
       filter1.calledOnce.should.be.true;
       data.should.eql('foo');
       return data + 'bar';
@@ -232,14 +233,14 @@ describe('Filter', () => {
   });
 
   it('execSync() - pointer', () => {
-    var f = new Filter();
+    const f = new Filter();
 
-    var filter1 = sinon.spy(data => {
+    const filter1 = sinon.spy(data => {
       data.should.eql({});
       data.foo = 1;
     });
 
-    var filter2 = sinon.spy(data => {
+    const filter2 = sinon.spy(data => {
       filter1.calledOnce.should.be.true;
       data.should.eql({foo: 1});
       data.bar = 2;
@@ -254,14 +255,14 @@ describe('Filter', () => {
   });
 
   it('execSync() - args', () => {
-    var f = new Filter();
+    const f = new Filter();
 
-    var filter1 = sinon.spy((data, arg1, arg2) => {
+    const filter1 = sinon.spy((data, arg1, arg2) => {
       arg1.should.eql(1);
       arg2.should.eql(2);
     });
 
-    var filter2 = sinon.spy((data, arg1, arg2) => {
+    const filter2 = sinon.spy((data, arg1, arg2) => {
       arg1.should.eql(1);
       arg2.should.eql(2);
     });
@@ -278,14 +279,14 @@ describe('Filter', () => {
   });
 
   it('execSync() - context', () => {
-    var f = new Filter();
-    var ctx = {foo: 1, bar: 2};
+    const f = new Filter();
+    const ctx = {foo: 1, bar: 2};
 
-    var filter1 = sinon.spy(function(data) {
+    const filter1 = sinon.spy(function(data) {
       this.should.eql(ctx);
     });
 
-    var filter2 = sinon.spy(function(data) {
+    const filter2 = sinon.spy(function(data) {
       this.should.eql(ctx);
     });
 

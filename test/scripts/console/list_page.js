@@ -1,17 +1,17 @@
 'use strict';
 
-var sinon = require('sinon');
-var expect = require('chai').expect;
+const sinon = require('sinon');
+const expect = require('chai').expect;
 
 describe('Console list', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var Page = hexo.model('Page');
-  var listPages = require('../../../lib/plugins/console/list/page').bind(hexo);
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const Page = hexo.model('Page');
+  const listPages = require('../../../lib/plugins/console/list/page').bind(hexo);
 
   hexo.config.permalink = ':title/';
   before(() => {
-    var log = console.log;
+    const log = console.log;
     sinon.stub(console, 'log').callsFake(function(...args) {
       return log.apply(log, args);
     });
