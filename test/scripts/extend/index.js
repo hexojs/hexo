@@ -10,4 +10,5 @@ describe('Extend', () => {
   require('./processor');
   require('./renderer');
   require('./tag');
+  require('./tag_errors');
 });
