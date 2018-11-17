@@ -25,9 +25,9 @@
     "framework",
     "hexo"
   ],
-  "author": "Tommy Chen <tommy351@gmail.com> (http://zespia.tw)",
+  "author": "Tommy Chen <tommy351@gmail.com> (https://zespia.tw)",
   "maintainers": [
-    "Abner Chou <hi@abnerchou.me> (http://abnerchou.me)"
+    "Abner Chou <hi@abnerchou.me> (https://abnerchou.me)"
   ],
   "license": "MIT",
   "dependencies": {
