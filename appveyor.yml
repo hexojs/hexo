@@ -21,7 +21,7 @@ matrix:
 install:
   - ps: Update-NodeJsInstallation (Get-NodeJsLatestBuild $env:nodejs_version)
 
-build_script:
+before_test:
   - npm install --build-from-source
 
 cache:
