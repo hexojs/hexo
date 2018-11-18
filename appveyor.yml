@@ -21,7 +21,7 @@ install:
   - ps: Install-Product node $env:nodejs_version
   
 before_test:
-  - npm install --build-from-source
+  - npm install
 
 cache:
   - node_modules -> package.json
