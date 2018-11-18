@@ -10,16 +10,20 @@ image:
 environment:
   matrix:
     - nodejs_version: "6"
+      stack: node 6
     - nodejs_version: "8"
-    - nodejs_version: "10"
+      stack: node 8
+    # - nodejs_version: "10"
+    #   stack: node 10
     # - nodejs_version: "11"
+    #   stack: node 11
 
 matrix:
   fast_finish: true
 
 # Install scripts. (runs after repo cloning)
-install:
-  - ps: Install-Product node $env:nodejs_version
+# install:
+  # - ps: Install-Product node $env:nodejs_version
   
 before_test:
   - npm install --build-from-source
