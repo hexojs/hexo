@@ -10,9 +10,9 @@ image:
 environment:
   matrix:
     - nodejs_version: "6"
-    # - nodejs_version: "8"
-    # - nodejs_version: "10"
-    - nodejs_version: "11"
+    - nodejs_version: "8"
+    - nodejs_version: "10"
+    # - nodejs_version: "11"
 
 matrix:
   fast_finish: true
