@@ -50,7 +50,7 @@
     "nunjucks": "^3.1.3",
     "pretty-hrtime": "^1.0.3",
     "resolve": "^1.8.1",
-    "strip-ansi": "^4.0.0",
+    "strip-ansi": "^5.0.0",
     "strip-indent": "^2.0.0",
     "swig-extras": "0.0.1",
     "swig-templates": "^2.0.3",
@@ -71,7 +71,7 @@
     "istanbul": "^0.4.3",
     "lint-staged": "^7.0.0",
     "mocha": "^5.0.5",
-    "rewire": "^3.0.2",
+    "rewire": "^4.0.1",
     "sinon": "^7.1.1"
   },
   "engines": {
