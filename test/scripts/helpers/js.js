@@ -25,7 +25,7 @@ describe('js', () => {
   it('a string', () => {
     assertResult(js('script'), '/script.js');
     assertResult(js('script.js'), '/script.js');
-    assertResult(js('http://hexo.io/script.js'), 'http://hexo.io/script.js');
+    assertResult(js('https://hexo.io/script.js'), 'https://hexo.io/script.js');
     assertResult(js('//hexo.io/script.js'), '//hexo.io/script.js');
   });
 

@@ -11,9 +11,9 @@ describe('img', () => {
   before(() => hexo.init());
 
   it('src', () => {
-    const $ = cheerio.load(img(['http://placekitten.com/200/300']));
+    const $ = cheerio.load(img(['https://placekitten.com/200/300']));
 
-    $('img').attr('src').should.eql('http://placekitten.com/200/300');
+    $('img').attr('src').should.eql('https://placekitten.com/200/300');
   });
 
   it('src //', () => {
@@ -34,9 +34,9 @@ describe('img', () => {
   });
 
   it('class + src', () => {
-    const $ = cheerio.load(img('left http://placekitten.com/200/300'.split(' ')));
+    const $ = cheerio.load(img('left https://placekitten.com/200/300'.split(' ')));
 
-    $('img').attr('src').should.eql('http://placekitten.com/200/300');
+    $('img').attr('src').should.eql('https://placekitten.com/200/300');
     $('img').attr('class').should.eql('left');
   });
 
@@ -54,9 +54,9 @@ describe('img', () => {
   });
 
   it('multiple classes + src', () => {
-    const $ = cheerio.load(img('left top http://placekitten.com/200/300'.split(' ')));
+    const $ = cheerio.load(img('left top https://placekitten.com/200/300'.split(' ')));
 
-    $('img').attr('src').should.eql('http://placekitten.com/200/300');
+    $('img').attr('src').should.eql('https://placekitten.com/200/300');
     $('img').attr('class').should.eql('left top');
   });
 
@@ -74,43 +74,43 @@ describe('img', () => {
   });
 
   it('class + src + width', () => {
-    const $ = cheerio.load(img('left http://placekitten.com/200/300 200'.split(' ')));
+    const $ = cheerio.load(img('left https://placekitten.com/200/300 200'.split(' ')));
 
-    $('img').attr('src').should.eql('http://placekitten.com/200/300');
+    $('img').attr('src').should.eql('https://placekitten.com/200/300');
     $('img').attr('class').should.eql('left');
     $('img').attr('width').should.eql('200');
   });
 
   it('class + src + width + height', () => {
-    const $ = cheerio.load(img('left http://placekitten.com/200/300 200 300'.split(' ')));
+    const $ = cheerio.load(img('left https://placekitten.com/200/300 200 300'.split(' ')));
 
-    $('img').attr('src').should.eql('http://placekitten.com/200/300');
+    $('img').attr('src').should.eql('https://placekitten.com/200/300');
     $('img').attr('class').should.eql('left');
     $('img').attr('width').should.eql('200');
     $('img').attr('height').should.eql('300');
   });
 
   it('class + src + title', () => {
-    const $ = cheerio.load(img('left http://placekitten.com/200/300 Place Kitten'.split(' ')));
+    const $ = cheerio.load(img('left https://placekitten.com/200/300 Place Kitten'.split(' ')));
 
-    $('img').attr('src').should.eql('http://placekitten.com/200/300');
+    $('img').attr('src').should.eql('https://placekitten.com/200/300');
     $('img').attr('class').should.eql('left');
     $('img').attr('title').should.eql('Place Kitten');
   });
 
   it('class + src + width + title', () => {
-    const $ = cheerio.load(img('left http://placekitten.com/200/300 200 Place Kitten'.split(' ')));
+    const $ = cheerio.load(img('left https://placekitten.com/200/300 200 Place Kitten'.split(' ')));
 
-    $('img').attr('src').should.eql('http://placekitten.com/200/300');
+    $('img').attr('src').should.eql('https://placekitten.com/200/300');
     $('img').attr('class').should.eql('left');
     $('img').attr('width').should.eql('200');
     $('img').attr('title').should.eql('Place Kitten');
   });
 
   it('class + src + width + height + title', () => {
-    const $ = cheerio.load(img('left http://placekitten.com/200/300 200 300 Place Kitten'.split(' ')));
+    const $ = cheerio.load(img('left https://placekitten.com/200/300 200 300 Place Kitten'.split(' ')));
 
-    $('img').attr('src').should.eql('http://placekitten.com/200/300');
+    $('img').attr('src').should.eql('https://placekitten.com/200/300');
     $('img').attr('class').should.eql('left');
     $('img').attr('width').should.eql('200');
     $('img').attr('height').should.eql('300');
@@ -118,9 +118,9 @@ describe('img', () => {
   });
 
   it('class + src + width + height + title + alt', () => {
-    const $ = cheerio.load(img('left http://placekitten.com/200/300 200 300 "Place Kitten" "A cute kitten"'.split(' ')));
+    const $ = cheerio.load(img('left https://placekitten.com/200/300 200 300 "Place Kitten" "A cute kitten"'.split(' ')));
 
-    $('img').attr('src').should.eql('http://placekitten.com/200/300');
+    $('img').attr('src').should.eql('https://placekitten.com/200/300');
     $('img').attr('class').should.eql('left');
     $('img').attr('width').should.eql('200');
     $('img').attr('height').should.eql('300');

@@ -74,18 +74,18 @@ describe('code', () => {
   });
 
   it('link', () => {
-    const result = code('Hello world http://hexo.io/', fixture);
+    const result = code('Hello world https://hexo.io/', fixture);
     const expected = highlight(fixture, {
-      caption: '<span>Hello world</span><a href="http://hexo.io/">link</a>'
+      caption: '<span>Hello world</span><a href="https://hexo.io/">link</a>'
     });
 
     result.should.eql(expected);
   });
 
   it('link text', () => {
-    const result = code('Hello world http://hexo.io/ Hexo', fixture);
+    const result = code('Hello world https://hexo.io/ Hexo', fixture);
     const expected = highlight(fixture, {
-      caption: '<span>Hello world</span><a href="http://hexo.io/">Hexo</a>'
+      caption: '<span>Hello world</span><a href="https://hexo.io/">Hexo</a>'
     });
 
     result.should.eql(expected);
