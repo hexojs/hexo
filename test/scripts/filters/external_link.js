@@ -6,7 +6,7 @@ describe('External link', () => {
   const externalLink = require('../../../lib/plugins/filter/after_post_render/external_link').bind(hexo);
 
   hexo.config.external_link = true;
-  hexo.config.url = 'http://maji.moe';
+  hexo.config.url = 'https://example.com';
 
   it('disabled', () => {
     const content = 'foo'
@@ -33,7 +33,7 @@ describe('External link', () => {
       '4. Ignore links don\'t have "href" attribute',
       '<a>Anchor</a>',
       '5. Ignore links whose hostname is same as config',
-      '<a href="https://maji.moe">moe</a>'
+      '<a href="https://example.com">Example Domain</a>'
     ].join('\n');
 
     const data = {content};
@@ -51,7 +51,7 @@ describe('External link', () => {
       '4. Ignore links don\'t have "href" attribute',
       '<a>Anchor</a>',
       '5. Ignore links whose hostname is same as config',
-      '<a href="https://maji.moe">moe</a>'
+      '<a href="https://example.com">Example Domain</a>'
     ].join('\n'));
   });
 });
