@@ -63,7 +63,7 @@
     "@easyops/git-exec-and-restage": "^1.0.4",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
-    "eslint": "^4.13.1",
+    "eslint": "^5.9.0",
     "eslint-ci": "^1.0.0",
     "eslint-config-hexo": "^3.0.0",
     "hexo-renderer-marked": "^0.3.0",
