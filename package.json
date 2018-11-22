@@ -69,7 +69,7 @@
     "hexo-renderer-marked": "^0.3.0",
     "husky": "^1.1.3",
     "istanbul": "^0.4.3",
-    "lint-staged": "^7.0.0",
+    "lint-staged": "^8.1.0",
     "mocha": "^5.0.5",
     "rewire": "^4.0.1",
     "sinon": "^7.1.1"
