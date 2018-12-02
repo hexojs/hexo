@@ -12,3 +12,4 @@ appveyor.yml
 .eslintrc.json
 .eslintignore
 .DS_Store
+.lintstagedrc
