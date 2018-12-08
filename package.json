@@ -16,6 +16,10 @@
     "lib": "./lib",
     "bin": "./bin"
   },
+  "files":[
+    "lib",
+    "bin"
+  ],
   "repository": "hexojs/hexo",
   "homepage": "https://hexo.io/",
   "keywords": [
