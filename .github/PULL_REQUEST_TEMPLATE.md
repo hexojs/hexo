@@ -9,7 +9,7 @@ Thank you for creating a pull request to contribute to Hexo code! Before you ope
 ## How to test
 
 ```sh
-git clone -b ??? https://github.com/???/hexo.git
+git clone -b BRANCH https://github.com/USER/hexo.git
 cd hexo
 npm install
 npm test
