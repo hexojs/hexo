@@ -10,12 +10,13 @@ describe('partial', () => {
   const hexo = new Hexo(pathFn.join(__dirname, 'partial_test'), {silent: true});
   const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
   const viewDir = pathFn.join(themeDir, 'layout') + pathFn.sep;
+  const viewName = 'article.swig';
 
   const ctx = {
     site: hexo.locals,
     config: hexo.config,
     view_dir: viewDir,
-    filename: pathFn.join(viewDir, 'post', 'article.swig'),
+    filename: pathFn.join(viewDir, 'post', viewName),
     foo: 'foo',
     cache: true
   };
@@ -43,7 +44,14 @@ describe('partial', () => {
     partial('widget/tag').should.eql('tag widget');
 
     // not found
-    partial('foo').should.eql('');
+    try {
+      partial('foo');
+    } catch (err) {
+      err.should.have.property(
+        'message',
+        `Partial foo does not exist. (in ${pathFn.join('post', viewName)})`
+      );
+    }
   });
 
   it('locals', () => {
