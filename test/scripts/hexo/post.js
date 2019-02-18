@@ -643,6 +643,36 @@ describe('Post', () => {
     });
   });
 
+  it.only('render triple backticks and raw tags properly', () => {
+    hexo.config.highlight.hljs = true;
+    const content = [
+      '```js',
+      'alert("Foo")',
+      '```',
+      '{% raw %}',
+      '<p>Foo</p>',
+      '{% endraw %}',
+      '```html',
+      '<div></div>',
+      '```'
+    ].join('\n');
+
+    return post.render(null, {
+      content,
+      engine: 'markdown'
+    }).then(data => {
+      const expected = [
+        '<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs js">alert(<span class="hljs-string">"Foo"</span>)<br></code></pre></td></tr></table></figure>',
+        '',
+        '<p>Foo</p>',
+        '',
+        '<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">div</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span><br></code></pre></td></tr></table></figure>'
+      ].join('\n');
+      data.content.trim().should.eql(expected);
+      hexo.config.highlight.hljs = false;
+    });
+  });
+
   it('render() - recover escaped swig blocks which is html escaped', () => {
     const content = '`{% raw %}{{ test }}{% endraw %}`';
 
