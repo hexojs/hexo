@@ -8,11 +8,13 @@ daysUntilClose: 7
 exemptLabels:
   - bug
   - discussion
+  - "help wanted"
   - need-verify
+  - need-investigation
   - pending-reply
+  - proposal
   - feature-request
   - enhancement
-  - question
   - documentation
 # Label to use when marking as stale
 staleLabel: stale
