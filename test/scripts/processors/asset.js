@@ -83,7 +83,28 @@ describe('asset', () => {
       return asset.remove();
     }).finally(() => fs.unlink(file.source));
   });
+  it('asset - type: create (when source path is configed to parent directory)', () => {
+    const file = newFile({
+      path: '../../source/foo.jpg',
+      type: 'create',
+      renderable: false
+    });
 
+    return fs.writeFile(file.source, 'foo').then(() => process(file)).then(() => {
+      const id = '../source/foo.jpg'; // The id should a relative path,because the 'lib/models/assets.js' use asset path by joining base path with "_id" directly.
+      const asset = Asset.findById(id);
+
+      asset._id.should.eql(id);
+      asset.path.should.eql(file.path);
+      asset.modified.should.be.true;
+      asset.renderable.should.be.false;
+
+      return asset.remove();
+    }).finally(() => {
+      fs.unlink(file.source);
+      fs.rmdir(pathFn.dirname(file.source));
+    });
+  });
   it('asset - type: update', () => {
     const file = newFile({
       path: 'foo.jpg',
