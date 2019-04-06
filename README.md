@@ -54,6 +54,12 @@ $ hexo generate
 - See the [plugin list](https://hexo.io/plugins/) and the [theme list](https://hexo.io/themes/) on wiki
 - Follow [@hexojs](https://twitter.com/hexojs) for latest news
 
+## Contributing
+
+We welcome you to join the development of Hexo. Please see [contributing document](https://hexo.io/docs/contributing). 🤗
+
+Also, we welcome PR or issue to [official-plugins](https://github.com/hexojs).
+
 ## License
 
 MIT
