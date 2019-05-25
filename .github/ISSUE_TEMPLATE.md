@@ -27,7 +27,7 @@ Your package.json `package.json`:
 -->
 
 <!--
-If you want help on your bug, please also send us the github repository where your hexo code is stored. If it is not on github, please post if on github, it would greatly help.
+If you want help on your bug, please also send us the github repository where your hexo code is stored. If it is not on github, please post it on github, it would greatly help.
 -->
 
 ## For question
