@@ -37,3 +37,16 @@ exports.expected = [
   '<blockquote><p>quote content</p>\n',
   '<footer><strong>Hello World</strong></footer></blockquote>'
 ].join('');
+
+exports.expected_disable_nunjucks = [
+  '<h1 id="Title"><a href="#Title" class="headerlink" title="Title"></a>Title</h1>',
+  util.highlight(code, {lang: 'python'}),
+  '\n\n<p>some content</p>\n',
+  '<h2 id="Another-title"><a href="#Another-title" class="headerlink" title="Another title"></a>Another title</h2>',
+  '<p>{% blockquote %}<br>',
+  'quote content<br>',
+  '{% endblockquote %}</p>\n',
+  '<p>{% quote Hello World %}<br>',
+  'quote content<br>',
+  '{% endquote %}</p>'
+].join('');
