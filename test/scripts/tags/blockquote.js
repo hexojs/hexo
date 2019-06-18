@@ -25,13 +25,13 @@ describe('blockquote', () => {
   });
 
   it('link', () => {
-    const result = bq('John Doe http://hexo.io/');
-    result.should.eql('<blockquote><footer><strong>John Doe</strong><cite><a href="http://hexo.io/">hexo.io</a></cite></footer></blockquote>');
+    const result = bq('John Doe https://hexo.io/');
+    result.should.eql('<blockquote><footer><strong>John Doe</strong><cite><a href="https://hexo.io/">hexo.io</a></cite></footer></blockquote>');
   });
 
   it('link title', () => {
-    const result = bq('John Doe http://hexo.io/ Hexo');
-    result.should.eql('<blockquote><footer><strong>John Doe</strong><cite><a href="http://hexo.io/">Hexo</a></cite></footer></blockquote>');
+    const result = bq('John Doe https://hexo.io/ Hexo');
+    result.should.eql('<blockquote><footer><strong>John Doe</strong><cite><a href="https://hexo.io/">Hexo</a></cite></footer></blockquote>');
   });
 
   it('titlecase', () => {

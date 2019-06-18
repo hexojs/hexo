@@ -122,7 +122,7 @@ describe('Backtick code block', () => {
   it('url', () => {
     const data = {
       content: [
-        '``` js Hello world http://hexo.io/',
+        '``` js Hello world https://hexo.io/',
         code,
         '```'
       ].join('\n')
@@ -130,7 +130,7 @@ describe('Backtick code block', () => {
 
     const expected = highlight(code, {
       lang: 'js',
-      caption: '<span>Hello world</span><a href="http://hexo.io/">link</a>'
+      caption: '<span>Hello world</span><a href="https://hexo.io/">link</a>'
     });
 
     codeBlock(data);
@@ -140,7 +140,7 @@ describe('Backtick code block', () => {
   it('link text', () => {
     const data = {
       content: [
-        '``` js Hello world http://hexo.io/ Hexo',
+        '``` js Hello world https://hexo.io/ Hexo',
         code,
         '```'
       ].join('\n')
@@ -148,7 +148,7 @@ describe('Backtick code block', () => {
 
     const expected = highlight(code, {
       lang: 'js',
-      caption: '<span>Hello world</span><a href="http://hexo.io/">Hexo</a>'
+      caption: '<span>Hello world</span><a href="https://hexo.io/">Hexo</a>'
     });
 
     codeBlock(data);
@@ -160,7 +160,7 @@ describe('Backtick code block', () => {
 
     const data = {
       content: [
-        '``` js Hello world http://hexo.io/',
+        '``` js Hello world https://hexo.io/',
         indentCode,
         '```'
       ].join('\n')
@@ -168,7 +168,7 @@ describe('Backtick code block', () => {
 
     const expected = highlight(code, {
       lang: 'js',
-      caption: '<span>Hello world</span><a href="http://hexo.io/">link</a>'
+      caption: '<span>Hello world</span><a href="https://hexo.io/">link</a>'
     });
 
     codeBlock(data);

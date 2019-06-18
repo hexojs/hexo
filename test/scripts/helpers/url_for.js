@@ -44,7 +44,7 @@ describe('url_for', () => {
 
   it('external url', () => {
     [
-      'http://hexo.io/',
+      'https://hexo.io/',
       '//google.com/'
     ].forEach(url => {
       urlFor(url).should.eql(url);

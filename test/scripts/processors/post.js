@@ -541,8 +541,8 @@ describe('post', () => {
     const body = [
       'title: "Hello world"',
       'photo:',
-      '- http://hexo.io/foo.jpg',
-      '- http://hexo.io/bar.png',
+      '- https://hexo.io/foo.jpg',
+      '- https://hexo.io/bar.png',
       '---'
     ].join('\n');
 
@@ -557,8 +557,8 @@ describe('post', () => {
       const post = Post.findOne({source: file.path});
 
       post.photos.should.eql([
-        'http://hexo.io/foo.jpg',
-        'http://hexo.io/bar.png'
+        'https://hexo.io/foo.jpg',
+        'https://hexo.io/bar.png'
       ]);
 
       should.not.exist(post.photo);
@@ -570,7 +570,7 @@ describe('post', () => {
   it('post - photos (not array)', () => {
     const body = [
       'title: "Hello world"',
-      'photos: http://hexo.io/foo.jpg',
+      'photos: https://hexo.io/foo.jpg',
       '---'
     ].join('\n');
 
@@ -585,7 +585,7 @@ describe('post', () => {
       const post = Post.findOne({source: file.path});
 
       post.photos.should.eql([
-        'http://hexo.io/foo.jpg'
+        'https://hexo.io/foo.jpg'
       ]);
 
       return post.remove();
@@ -594,7 +594,7 @@ describe('post', () => {
 
   it('post - link without title', () => {
     const body = [
-      'link: http://hexo.io/',
+      'link: https://hexo.io/',
       '---'
     ].join('\n');
 
@@ -608,7 +608,7 @@ describe('post', () => {
     return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
       const post = Post.findOne({source: file.path});
 
-      post.link.should.eql('http://hexo.io/');
+      post.link.should.eql('https://hexo.io/');
       post.title.should.eql('hexo.io');
 
       return post.remove();

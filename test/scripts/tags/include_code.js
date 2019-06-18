@@ -58,6 +58,49 @@ describe('include_code', () => {
     });
   });
 
+  it('from', () => {
+    const fixture = [
+      '}'
+    ].join('\n');
+    const expected = highlight(fixture, {
+      lang: 'js',
+      caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
+    });
+
+    return code('Hello world lang:js from:3 test.js').then(result => {
+      result.should.eql(expected);
+    });
+  });
+
+  it('to', () => {
+    const fixture = [
+      'if (tired && night){',
+      '  sleep();'
+    ].join('\n');
+    const expected = highlight(fixture, {
+      lang: 'js',
+      caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
+    });
+
+    return code('Hello world lang:js to:2 test.js').then(result => {
+      result.should.eql(expected);
+    });
+  });
+
+  it('from and to', () => {
+    const fixture = [
+      'sleep();'
+    ].join('\n');
+    const expected = highlight(fixture, {
+      lang: 'js',
+      caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
+    });
+
+    return code('Hello world lang:js from:2 to:2 test.js').then(result => {
+      result.should.eql(expected);
+    });
+  });
+
   it('file not found', () => code('nothing').then(result => {
     should.not.exist(result);
   }));
