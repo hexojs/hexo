@@ -22,9 +22,6 @@ install:
 before_test:
   - npm install
 
-cache:
-  - node_modules -> package.json
-
 # Post-install test scripts.
 test_script:
   # Output useful info for debugging.
