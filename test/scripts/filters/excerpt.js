@@ -119,4 +119,35 @@ describe('Excerpt', () => {
       'baz'
     ].join('\n'));
   });
+
+  it('skip processing if post/page.excerpt is present', () => {
+    const content = [
+      'foo',
+      '<!-- more -->',
+      'bar'
+    ].join('\n');
+
+    const data = {
+      content,
+      excerpt: 'baz'
+    };
+
+    excerpt(data);
+
+    data.content.should.eql([
+      'foo',
+      '<!-- more -->',
+      'bar'
+    ].join('\n'));
+
+    data.excerpt.should.eql([
+      'baz'
+    ].join('\n'));
+
+    data.more.should.eql([
+      'foo',
+      '<!-- more -->',
+      'bar'
+    ].join('\n'));
+  });
 });
