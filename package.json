@@ -72,7 +72,7 @@
     "eslint-config-hexo": "^3.0.0",
     "hexo-renderer-marked": "^1.0.1",
     "husky": "^3.0.0",
-    "lint-staged": "^8.1.0",
+    "lint-staged": "^9.0.2",
     "mocha": "^6.0.0",
     "nyc": "^14.1.1",
     "rewire": "^4.0.1",
