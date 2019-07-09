@@ -120,7 +120,7 @@ describe('Excerpt', () => {
     ].join('\n'));
   });
 
-  it('skip processing if post/page.excerpt is present', () => {
+  it('skip processing if post/page.excerpt is present in the front-matter', () => {
     const content = [
       'foo',
       '<!-- more -->',
