@@ -28,11 +28,6 @@ describe('Box', () => {
     box.base.should.eql(pathFn.join(baseDir, 'foo') + pathFn.sep);
   });
 
-  it('constructor - make ignore an array if its not one', () => {
-    const box = newBox('foo', {ignore: 'fooDir'});
-    box.ignore.should.eql(['fooDir']);
-  });
-
   it('addProcessor() - no pattern', () => {
     const box = newBox();
 
@@ -227,8 +222,27 @@ describe('Box', () => {
     }).finally(() => fs.rmdir(box.base));
   });
 
-  it('process() - skip files if they match glob epression in ignore', () => {
+  it('process() - skip files if they match a glob epression in ignore', () => {
     const box = newBox('test', {ignore: '**/ignore_me'});
+    const data = {};
+
+    box.addProcessor(file => {
+      data[file.path] = file;
+    });
+
+    return Promise.all([
+      fs.writeFile(pathFn.join(box.base, 'foo.txt'), 'foo'),
+      fs.writeFile(pathFn.join(box.base, 'ignore_me', 'bar.txt'), 'ignore_me')
+    ]).then(() => box.process()).then(() => {
+      const keys = Object.keys(data);
+
+      keys.length.should.eql(1);
+      keys[0].should.eql('foo.txt');
+    }).finally(() => fs.rmdir(box.base));
+  });
+
+  it('process() - skip files if they match any of the glob expressions in ignore', () => {
+    const box = newBox('test', {ignore: ['**/ignore_me', '**/ignore_me_too']});
     const data = {};
 
     box.addProcessor(file => {
