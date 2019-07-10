@@ -11,7 +11,7 @@ assignees: ''
 
 If you find that markdown files are not rendered as expected, please go to https://marked.js.org/demo/ to see if it can be reproduced there. If it can be reproduced, please file a bug to https://github.com/markedjs/marked.
 
-If you want help on your bug, please also send us the github repository where your hexo code is stored. If it is not on github, please post it on github, it would greatly help.
+If you want help on your bug, please also send us the git repository (GitHub, GitLab, Bitbucket etc...) where your hexo code is stored. It would greatly help.
 
 -->
 
@@ -19,7 +19,7 @@ If you want help on your bug, please also send us the github repository where yo
 
 Please check followings before submitting a new issue.
 
-- [ ] I already confirmed other issue template and they are not different my want
+- [ ] I have already confirmed other issue template and they are not different my want
 
 ## Information
 

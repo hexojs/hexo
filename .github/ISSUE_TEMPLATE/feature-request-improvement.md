@@ -11,8 +11,8 @@ assignees: ''
 
 Please check followings before submitting a new feature request.
 
-- [ ] I already read [Docs page](https://hexo.io/docs/)
-- [ ] I already searched existing issues
+- [ ] I have already read [Docs page](https://hexo.io/docs/)
+- [ ] I have already searched existing issues
 
 ## Feature Request
 
