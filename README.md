@@ -60,6 +60,10 @@ We welcome you to join the development of Hexo. Please see [contributing documen
 
 Also, we welcome PR or issue to [official-plugins](https://github.com/hexojs).
 
+## Backers
+
+<object type="image/svg+xml" data="https://opencollective.com/hexo/tiers/backers.svg?avatarHeight=36&width=600"></object>
+
 ## License
 
 MIT
