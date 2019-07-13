@@ -62,7 +62,7 @@ Also, we welcome PR or issue to [official-plugins](https://github.com/hexojs).
 
 ## Backers
 
-<object type="image/svg+xml" data="https://opencollective.com/hexo/tiers/backers.svg?avatarHeight=36&width=600"></object>
+![Backers](https://opencollective.com/hexo/tiers/backers.svg?avatarHeight=36&width=600)
 
 ## License
 
