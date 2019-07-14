@@ -271,6 +271,30 @@ describe('asset', () => {
       const page = Page.findOne({source: file.path});
 
       page.date.toDate().should.eql(stats.ctime);
+      page.updated.toDate().should.eql(stats.mtime);
+
+      return Promise.all([
+        page.remove(),
+        fs.unlink(file.source)
+      ]);
+    });
+  });
+
+  it('page - use the date for updated if use_date_for_updated is set', () => {
+    const file = newFile({
+      path: 'hello.swig',
+      type: 'create',
+      renderable: true,
+      use_date_for_updated: true
+    });
+
+    return fs.writeFile(file.source, '').then(() => Promise.all([
+      fs.stat(file.source),
+      process(file)
+    ])).spread(stats => {
+      const page = Page.findOne({source: file.path});
+
+      page.date.toDate().should.eql(stats.ctime);
       page.updated.toDate().should.eql(page.date.toDate());
 
       return Promise.all([
