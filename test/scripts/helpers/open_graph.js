@@ -93,7 +93,7 @@ describe('open_graph', () => {
       page: {},
       config: hexo.config,
       is_post: isPost,
-      url: 'http://hexo.io/foo'
+      url: 'https://hexo.io/foo'
     };
 
     const result = openGraph.call(ctx);
@@ -106,10 +106,10 @@ describe('open_graph', () => {
       page: {},
       config: hexo.config,
       is_post: isPost,
-      url: 'http://hexo.io/foo'
-    }, {url: 'http://hexo.io/bar'});
+      url: 'https://hexo.io/foo'
+    }, {url: 'https://hexo.io/bar'});
 
-    result.should.contain(meta({property: 'og:url', content: 'http://hexo.io/bar'}));
+    result.should.contain(meta({property: 'og:url', content: 'https://hexo.io/bar'}));
   });
 
   it('images - content', () => {
@@ -117,34 +117,34 @@ describe('open_graph', () => {
       page: {
         content: [
           '<p>123456789</p>',
-          '<img src="http://hexo.io/test.jpg">'
+          '<img src="https://hexo.io/test.jpg">'
         ].join('')
       },
       config: hexo.config,
       is_post: isPost
     });
 
-    result.should.contain(meta({property: 'og:image', content: 'http://hexo.io/test.jpg'}));
+    result.should.contain(meta({property: 'og:image', content: 'https://hexo.io/test.jpg'}));
   });
 
   it('images - string', () => {
     const result = openGraph.call({
       page: {
-        photos: 'http://hexo.io/test.jpg'
+        photos: 'https://hexo.io/test.jpg'
       },
       config: hexo.config,
       is_post: isPost
     });
 
-    result.should.contain(meta({property: 'og:image', content: 'http://hexo.io/test.jpg'}));
+    result.should.contain(meta({property: 'og:image', content: 'https://hexo.io/test.jpg'}));
   });
 
   it('images - array', () => {
     const result = openGraph.call({
       page: {
         photos: [
-          'http://hexo.io/foo.jpg',
-          'http://hexo.io/bar.jpg'
+          'https://hexo.io/foo.jpg',
+          'https://hexo.io/bar.jpg'
         ]
       },
       config: hexo.config,
@@ -152,8 +152,8 @@ describe('open_graph', () => {
     });
 
     result.should.contain([
-      meta({property: 'og:image', content: 'http://hexo.io/foo.jpg'}),
-      meta({property: 'og:image', content: 'http://hexo.io/bar.jpg'})
+      meta({property: 'og:image', content: 'https://hexo.io/foo.jpg'}),
+      meta({property: 'og:image', content: 'https://hexo.io/bar.jpg'})
     ].join('\n'));
   });
 
@@ -162,7 +162,7 @@ describe('open_graph', () => {
       page: {
         content: [
           '<p>123456789</p>',
-          '<img src="http://hexo.io/test.jpg">'
+          '<img src="https://hexo.io/test.jpg">'
         ].join(''),
         photos: []
       },
@@ -179,9 +179,9 @@ describe('open_graph', () => {
       page: {},
       config: hexo.config,
       is_post: isPost
-    }, {image: 'http://hexo.io/test.jpg'});
+    }, {image: 'https://hexo.io/test.jpg'});
 
-    result.should.contain(meta({property: 'og:image', content: 'http://hexo.io/test.jpg'}));
+    result.should.contain(meta({property: 'og:image', content: 'https://hexo.io/test.jpg'}));
   });
 
   it('images - options.images', () => {
@@ -189,9 +189,9 @@ describe('open_graph', () => {
       page: {},
       config: hexo.config,
       is_post: isPost
-    }, {images: 'http://hexo.io/test.jpg'});
+    }, {images: 'https://hexo.io/test.jpg'});
 
-    result.should.contain(meta({property: 'og:image', content: 'http://hexo.io/test.jpg'}));
+    result.should.contain(meta({property: 'og:image', content: 'https://hexo.io/test.jpg'}));
   });
 
   it('images - prepend config.url to the path (without prefixing /)', () => {

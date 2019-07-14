@@ -686,4 +686,35 @@ describe('Post', () => {
       callback();
     });
   });
+
+  // test for PR [#3573](https://github.com/hexojs/hexo/pull/3573)
+  it('render() - (disableNunjucks === true)', () => {
+    const renderer = hexo.render.renderer.get('markdown');
+    renderer.disableNunjucks = true;
+
+    return post.render(null, {
+      content: fixture.content,
+      engine: 'markdown'
+    }).then(data => {
+      data.content.trim().should.eql(fixture.expected_disable_nunjucks);
+    }).then(data => {
+      renderer.disableNunjucks = false;
+    });
+  });
+
+  // test for PR [#3573](https://github.com/hexojs/hexo/pull/3573)
+  it('render() - (disableNunjucks === false)', () => {
+    const renderer = hexo.render.renderer.get('markdown');
+    renderer.disableNunjucks = false;
+
+    return post.render(null, {
+      content: fixture.content,
+      engine: 'markdown'
+    }).then(data => {
+      data.content.trim().should.eql(fixture.expected);
+    }).then(data => {
+      renderer.disableNunjucks = false;
+    });
+  });
+
 });

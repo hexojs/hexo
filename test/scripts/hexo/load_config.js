@@ -75,12 +75,12 @@ describe('Load config', () => {
   it('handle trailing "/" of url', () => {
     const content = [
       'root: foo',
-      'url: http://hexo.io/'
+      'url: https://hexo.io/'
     ].join('\n');
 
     return fs.writeFile(hexo.config_path, content).then(() => loadConfig(hexo)).then(() => {
       hexo.config.root.should.eql('foo/');
-      hexo.config.url.should.eql('http://hexo.io');
+      hexo.config.url.should.eql('https://hexo.io');
     }).finally(() => fs.unlink(hexo.config_path));
   });
 

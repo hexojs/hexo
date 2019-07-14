@@ -25,7 +25,7 @@ describe('css', () => {
   it('a string', () => {
     assertResult(css('style'), '/style.css');
     assertResult(css('style.css'), '/style.css');
-    assertResult(css('http://hexo.io/style.css'), 'http://hexo.io/style.css');
+    assertResult(css('https://hexo.io/style.css'), 'https://hexo.io/style.css');
     assertResult(css('//hexo.io/style.css'), '//hexo.io/style.css');
   });
 

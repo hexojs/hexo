@@ -3,6 +3,6 @@ node_modules/
 tmp/
 *.log
 .idea/
-coverage/
 yarn.lock
 package-lock.json
+.nyc_output/
