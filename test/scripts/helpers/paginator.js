@@ -27,7 +27,7 @@ describe('paginator', () => {
     const total = data.total;
     const pages = data.pages;
     const space = data.space || '&hellip;';
-    const prevNext = data.hasOwnProperty('prev_next') ? data.prev_next : true;
+    const prevNext = Object.prototype.hasOwnProperty.call(data, 'prev_next') ? data.prev_next : true;
     let num;
 
     if (prevNext && current > 1) {

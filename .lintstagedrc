@@ -1,7 +1,3 @@
 {
-  "linters": {
-    "*.js": [
-      "git-exec-and-restage eslint --fix --"
-    ]
-  }
+  "*.js": "git-exec-and-restage eslint --fix --"
 }
