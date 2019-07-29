@@ -7,7 +7,7 @@
     "hexo": "./bin/hexo"
   },
   "scripts": {
-    "eslint": "eslint-ci .",
+    "eslint": "eslint .",
     "test": "mocha test/index.js",
     "test-cov": "nyc npm run test",
     "lint-staged": "lint-staged"
@@ -68,7 +68,6 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "eslint": "^6.0.1",
-    "eslint-ci": "^1.0.0",
     "eslint-config-hexo": "^3.0.0",
     "hexo-renderer-marked": "^1.0.1",
     "husky": "^3.0.0",
