@@ -23,7 +23,8 @@ describe('link', () => {
 
     $('a').attr('href').should.eql('https://google.com');
     $('a').html().should.eql('Click here to Google');
-    should.not.exist($('a').attr('target'));
+    $('a').attr('title').should.eql('');
+    $('a').attr('target').should.eql('');
   });
 
   it('text + url + title', () => {
@@ -46,7 +47,7 @@ describe('link', () => {
 
     $('a').attr('href').should.eql('https://google.com');
     $('a').html().should.eql('Click here to Google');
-    should.not.exist($('a').attr('target'));
+    $('a').attr('target').should.eql('');
     $('a').attr('title').should.eql('Google link');
   });
 });

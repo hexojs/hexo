@@ -37,27 +37,27 @@ describe('asset_img', () => {
   }));
 
   it('default', () => {
-    assetImg('bar').should.eql('<img src="/foo/bar">');
+    assetImg('bar').should.eql('<img src="/foo/bar" class="">');
   });
 
   it('default', () => {
-    assetImg('bar title').should.eql('<img src="/foo/bar" title="title">');
+    assetImg('bar title').should.eql('<img src="/foo/bar" class="" title="title">');
   });
 
   it('with space', () => {
     // {% asset_img "spaced asset" "spaced title" %}
     assetImgTag.call(post, ['spaced asset', 'spaced title'])
-      .should.eql('<img src="/foo/spaced%20asset" title="spaced title">');
+      .should.eql('<img src="/foo/spaced%20asset" class="" title="spaced title">');
   });
 
   it('with alt and title', () => {
     assetImgTag.call(post, ['bar', '"title"', '"alt"'])
-      .should.eql('<img src="/foo/bar" title="title" alt="alt">');
+      .should.eql('<img src="/foo/bar" class="" title="title" alt="alt">');
   });
 
   it('with width height alt and title', () => {
     assetImgTag.call(post, ['bar', '100', '200', '"title"', '"alt"'])
-      .should.eql('<img src="/foo/bar" width="100" height="200" title="title" alt="alt">');
+      .should.eql('<img src="/foo/bar" class="" width="100" height="200" title="title" alt="alt">');
   });
 
   it('no slug', () => {
@@ -70,6 +70,6 @@ describe('asset_img', () => {
 
   it('with root path', () => {
     hexo.config.root = '/root/';
-    assetImg('bar').should.eql('<img src="/root/foo/bar">');
+    assetImg('bar').should.eql('<img src="/root/foo/bar" class="">');
   });
 });
