@@ -23,4 +23,13 @@ describe('Meta Generator', () => {
     const resultType = typeof result;
     resultType.should.eql('undefined');
   });
+
+  it('disable meta_generator', () => {
+    const content = '<head><link></head>';
+    hexo.config.meta_generator = false;
+    const result = metaGenerator(content);
+
+    const resultType = typeof result;
+    resultType.should.eql('undefined');
+  });
 });
