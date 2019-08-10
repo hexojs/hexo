@@ -1,6 +1,7 @@
 'use strict';
 
 const moment = require('moment');
+const cheerio = require('cheerio');
 
 describe('open_graph', () => {
   const Hexo = require('../../../lib/hexo');
@@ -110,6 +111,19 @@ describe('open_graph', () => {
     }, {url: 'https://hexo.io/bar'});
 
     result.should.contain(meta({property: 'og:url', content: 'https://hexo.io/bar'}));
+  });
+
+  it('url - should not ends with index.html', () => {
+    const result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost,
+      url: 'http://yoursite.com/page/index.html'
+    });
+
+    const $ = cheerio.load(result);
+
+    $('meta[property="og:url"]').attr('content').endsWith('index.html').should.be.false;
   });
 
   it('images - content', () => {
