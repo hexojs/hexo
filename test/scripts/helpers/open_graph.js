@@ -35,6 +35,7 @@ describe('open_graph', () => {
         meta({property: 'og:title', content: hexo.config.title}),
         meta({property: 'og:url'}),
         meta({property: 'og:site_name', content: hexo.config.title}),
+        meta({property: 'og:locale', content: 'en'}),
         meta({property: 'og:updated_time', content: post.updated.toISOString()}),
         meta({name: 'twitter:card', content: 'summary'}),
         meta({name: 'twitter:title', content: hexo.config.title})
