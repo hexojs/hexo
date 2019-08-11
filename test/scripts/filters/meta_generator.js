@@ -15,13 +15,13 @@ describe('Meta Generator', () => {
   });
 
   it('empty <head>', () => {
-    const content = '<head></head>';
+    const content = '<head><link></head><body><head></head></body>';
     const result = metaGenerator(content);
 
     // meta generator should not be prepended if <head> tag is empty
     // see https://github.com/hexojs/hexo/pull/3315
-    const resultType = typeof result;
-    resultType.should.eql('undefined');
+    const $ = cheerio.load(result);
+    $('meta[name="generator"]').length.should.eql(1);
   });
 
   it('disable meta_generator', () => {
