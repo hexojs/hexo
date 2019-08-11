@@ -22,4 +22,14 @@ describe('Meta Generator', () => {
     const resultType = typeof result;
     resultType.should.eql('undefined');
   });
+
+  it('no duplicate generator tag', () => {
+    const content = '<head><title>foo</title>'
+      + '<meta name="generator" content="foo"></head>';
+    hexo.config.meta_generator = true;
+    const result = metaGenerator(content);
+
+    const resultType = typeof result;
+    resultType.should.eql('undefined');
+  });
 });
