@@ -36,8 +36,7 @@ describe('open_graph', () => {
         meta({property: 'og:url'}),
         meta({property: 'og:site_name', content: hexo.config.title}),
         meta({property: 'og:updated_time', content: post.updated.toISOString()}),
-        meta({name: 'twitter:card', content: 'summary'}),
-        meta({name: 'twitter:title', content: hexo.config.title})
+        meta({name: 'twitter:card', content: 'summary'})
       ].join('\n'));
 
       return Post.removeById(post._id);
