@@ -231,4 +231,8 @@ describe('generate', () => {
       });
     });
   });
+
+  it('should generate all files even when concurrency is set', () => {
+    return generate({ concurrency: 1 }).then(() => generate({ concurrency: 2 }));
+  });
 });
