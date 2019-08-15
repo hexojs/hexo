@@ -423,7 +423,7 @@ describe('open_graph', () => {
     result.should.not.contain(meta({property: 'og:updated_time', content: '2016-05-23T21:20:21.372Z'}));
   });
 
-  it('description - do not add /(?:og:|twitter:)?description/ meta tags if there is no description', () => {
+  it('description - do not add /(?:og:)?description/ meta tags if there is no description', () => {
     const result = openGraph.call({
       page: { },
       config: {},
@@ -431,7 +431,6 @@ describe('open_graph', () => {
     }, { });
 
     result.should.not.contain(meta({property: 'og:description'}));
-    result.should.not.contain(meta({property: 'twitter:description'}));
     result.should.not.contain(meta({property: 'description'}));
   });
 
