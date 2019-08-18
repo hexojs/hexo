@@ -95,4 +95,19 @@ describe('post_permalink', () => {
       return Post.removeById(post._id);
     });
   });
+
+  it('post_title', () => {
+    hexo.config.permalink = ':year/:month/:day/:hour/:minute/:post_title/';
+
+    return Post.insert({
+      source: 'sub/2015-05-06-my-new-post.md',
+      slug: '2015-05-06-my-new-post',
+      title: 'My New Post',
+      date: moment('2015-05-06 12:13')
+    }).then(post => {
+      postPermalink(post).should.eql('2015/05/06/12/13/my-new-post/');
+      hexo.config.permalink = PERMALINK;
+      return Post.removeById(post._id);
+    });
+  });
 });
