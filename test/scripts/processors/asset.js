@@ -284,9 +284,10 @@ describe('asset', () => {
     const file = newFile({
       path: 'hello.swig',
       type: 'create',
-      renderable: true,
-      use_date_for_updated: true
+      renderable: true
     });
+
+    hexo.config.use_date_for_updated = true;
 
     return fs.writeFile(file.source, '').then(() => Promise.all([
       fs.stat(file.source),
@@ -301,6 +302,8 @@ describe('asset', () => {
         page.remove(),
         fs.unlink(file.source)
       ]);
+    }).finally(() => {
+      hexo.config.use_date_for_updated = undefined;
     });
   });
 
