@@ -9,6 +9,8 @@ describe('Render', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo(pathFn.join(__dirname, 'render_test'));
 
+  hexo.config.meta_generator = false;
+
   const body = [
     'name:',
     '  first: John',
