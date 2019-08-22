@@ -118,7 +118,9 @@ describe('open_graph', () => {
       page: {
         content: [
           '<p>123456789</p>',
-          '<img src="https://hexo.io/test.jpg">'
+          '<img src="https://hexo.io/test.jpg">',
+          '<img src="">',
+          '<img class="img">'
         ].join('')
       },
       config: hexo.config,
@@ -163,7 +165,9 @@ describe('open_graph', () => {
       page: {
         content: [
           '<p>123456789</p>',
-          '<img src="https://hexo.io/test.jpg">'
+          '<img src="https://hexo.io/test.jpg">',
+          '<img src="">',
+          '<img class="img">'
         ].join(''),
         photos: []
       },
