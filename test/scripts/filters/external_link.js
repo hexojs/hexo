@@ -26,13 +26,16 @@ describe('External link', () => {
       '# External link test',
       '1. External link',
       '<a href="https://hexo.io/">Hexo</a>',
-      '2. Internal link',
+      '2. External link with rel Attribute',
+      '<a rel="external" href="https://hexo.io/">Hexo</a>',
+      '<a href="https://hexo.io/" rel="external">Hexo</a>',
+      '3. Internal link',
       '<a href="/archives/foo.html">Link</a>',
-      '3. Ignore links have "target" attribute',
+      '4. Ignore links have "target" attribute',
       '<a href="https://hexo.io/" target="_blank">Hexo</a>',
-      '4. Ignore links don\'t have "href" attribute',
+      '5. Ignore links don\'t have "href" attribute',
       '<a>Anchor</a>',
-      '5. Ignore links whose hostname is same as config',
+      '6. Ignore links whose hostname is same as config',
       '<a href="https://example.com">Example Domain</a>'
     ].join('\n');
 
@@ -44,13 +47,16 @@ describe('External link', () => {
       '# External link test',
       '1. External link',
       '<a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>',
-      '2. Internal link',
+      '2. External link with rel Attribute',
+      '<a rel="external noopener" href="https://hexo.io/" target="_blank">Hexo</a>',
+      '<a href="https://hexo.io/" target="_blank" rel="external noopener">Hexo</a>',
+      '3. Internal link',
       '<a href="/archives/foo.html">Link</a>',
-      '3. Ignore links have "target" attribute',
+      '4. Ignore links have "target" attribute',
       '<a href="https://hexo.io/" target="_blank">Hexo</a>',
-      '4. Ignore links don\'t have "href" attribute',
+      '5. Ignore links don\'t have "href" attribute',
       '<a>Anchor</a>',
-      '5. Ignore links whose hostname is same as config',
+      '6. Ignore links whose hostname is same as config',
       '<a href="https://example.com">Example Domain</a>'
     ].join('\n'));
   });
