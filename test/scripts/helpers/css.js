@@ -1,5 +1,7 @@
 'use strict';
 
+const cheerio = require('cheerio');
+
 describe('css', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo(__dirname);
@@ -12,14 +14,22 @@ describe('css', () => {
 
   const css = require('../../../lib/plugins/helper/css').bind(ctx);
 
-  function assertResult(result) {
-    let expected = '';
+  function assertResult(result, expected) {
+    const $ = cheerio.load(result);
 
-    for (let i = 1, len = arguments.length; i < len; i++) {
-      expected += '<link rel="stylesheet" href="' + arguments[i] + '">\n';
+    if (!Array.isArray(expected)) {
+      expected = [expected];
     }
 
-    result.should.eql(expected.trim());
+    expected.forEach((item, index) => {
+      if (typeof item === 'string' || item instanceof String) {
+        $('link').eq(index).attr('href').should.eql(item);
+      } else {
+        for (const attribute in item) {
+          $('link').eq(index).attr(attribute).should.eql(item[attribute]);
+        }
+      }
+    });
   }
 
   it('a string', () => {
@@ -30,18 +40,36 @@ describe('css', () => {
   });
 
   it('an array', () => {
-    assertResult(css(['foo', 'bar', 'baz']), '/foo.css', '/bar.css', '/baz.css');
+    assertResult(css(['foo', 'bar', 'baz']), ['/foo.css', '/bar.css', '/baz.css']);
   });
 
   it('multiple strings', () => {
-    assertResult(css('foo', 'bar', 'baz'), '/foo.css', '/bar.css', '/baz.css');
+    assertResult(css('foo', 'bar', 'baz'), ['/foo.css', '/bar.css', '/baz.css']);
   });
 
   it('multiple arrays', () => {
-    assertResult(css(['foo', 'bar'], ['baz']), '/foo.css', '/bar.css', '/baz.css');
+    assertResult(css(['foo', 'bar'], ['baz']), ['/foo.css', '/bar.css', '/baz.css']);
   });
 
   it('mixed', () => {
-    assertResult(css(['foo', 'bar'], 'baz'), '/foo.css', '/bar.css', '/baz.css');
+    assertResult(css(['foo', 'bar'], 'baz'), ['/foo.css', '/bar.css', '/baz.css']);
+  });
+
+  it('an object', () => {
+    assertResult(css({href: 'script.css'}), {href: '/script.css'});
+    assertResult(css({href: '/script.css'}), {href: '/script.css'});
+    assertResult(css({href: '/script.css', foo: 'bar'}), {href: '/script.css', foo: 'bar'});
+  });
+
+  it('mulitple objects', () => {
+    assertResult(css({href: '/foo.css'}, {href: '/bar.css'}), [{href: '/foo.css'}, {href: '/bar.css'}]);
+    assertResult(css({href: '/aaa.css', bbb: 'ccc'}, {href: '/ddd.css', eee: 'fff'}),
+      [{href: '/aaa.css', bbb: 'ccc'}, {href: '/ddd.css', eee: 'fff'}]);
+  });
+
+  it('an array of objects', () => {
+    assertResult(css([{href: '/foo.css'}, {href: '/bar.css'}]), [{href: '/foo.css'}, {href: '/bar.css'}]);
+    assertResult(css([{href: '/aaa.css', bbb: 'ccc'}, {href: '/ddd.css', eee: 'fff'}]),
+      [{href: '/aaa.css', bbb: 'ccc'}, {href: '/ddd.css', eee: 'fff'}]);
   });
 });
