@@ -60,6 +60,17 @@ describe('Page', () => {
     return Page.removeById(data._id);
   }));
 
+  it('permalink - canonical_url', () => {
+    hexo.config.canonical_url = true;
+    return Page.insert({
+      source: 'foo.md',
+      path: 'bar/index.html'
+    }).then(data => {
+      data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/index\.html$/, ''));
+      return Page.removeById(data._id);
+    });
+  });
+
   it('full_source - virtual', () => Page.insert({
     source: 'foo',
     path: 'bar'

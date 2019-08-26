@@ -121,6 +121,17 @@ describe('Post', () => {
     });
   });
 
+  it('permalink - canonical_url', () => {
+    hexo.config.canonical_url = true;
+    return Post.insert({
+      source: 'foo.md',
+      slug: 'bar'
+    }).then(data => {
+      data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/index\.html$/, ''));
+      return Post.removeById(data._id);
+    });
+  });
+
   it('full_source - virtual', () => Post.insert({
     source: 'foo.md',
     slug: 'bar'

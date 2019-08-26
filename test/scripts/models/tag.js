@@ -89,6 +89,16 @@ describe('Tag', () => {
     return Tag.removeById(data._id);
   }));
 
+  it('permalink - canonical_url', () => {
+    hexo.config.canonical_url = true;
+    return Tag.insert({
+      name: 'foo'
+    }).then(data => {
+      data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/index\.html$/, ''));
+      return Tag.removeById(data._id);
+    });
+  });
+
   it('posts - virtual', () => Post.insert([
     {source: 'foo.md', slug: 'foo'},
     {source: 'bar.md', slug: 'bar'},
