@@ -3,7 +3,8 @@
 describe('External link', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
-  const externalLink = require('../../../lib/plugins/filter/after_post_render/external_link').bind(hexo);
+  const externalLink = require('../../../lib/plugins/filter/after_render/external_link').bind(hexo);
+  console.log(typeof externalLink);
 
   hexo.config.external_link = true;
   hexo.config.url = 'https://example.com';
@@ -46,11 +47,9 @@ describe('External link', () => {
       '<a href="https://example.com">Example Domain</a>'
     ].join('\n');
 
-    const data = {content};
+    const result = externalLink(content);
 
-    externalLink(data);
-
-    data.content.should.eql([
+    result.should.eql([
       '# External link test',
       '1. External link',
       '<a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>',
