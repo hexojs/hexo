@@ -36,10 +36,10 @@ describe('list_tags', () => {
     const result = listTags();
 
     result.should.eql([
-      '<ul class="tag-list">',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">bar</a><span class="tag-list-count">1</span></li>',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">baz</a><span class="tag-list-count">2</span></li>',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/">foo</a><span class="tag-list-count">1</span></li>',
+      '<ul class="tag-list" itemprop="keywords">',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/" rel="tag">bar</a><span class="tag-list-count">1</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/" rel="tag">baz</a><span class="tag-list-count">2</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/" rel="tag">foo</a><span class="tag-list-count">1</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -50,9 +50,9 @@ describe('list_tags', () => {
     }));
 
     result.should.eql([
-      '<ul class="tag-list">',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">bar</a><span class="tag-list-count">1</span></li>',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">baz</a><span class="tag-list-count">2</span></li>',
+      '<ul class="tag-list" itemprop="keywords">',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/" rel="tag">bar</a><span class="tag-list-count">1</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/" rel="tag">baz</a><span class="tag-list-count">2</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -63,9 +63,9 @@ describe('list_tags', () => {
     });
 
     result.should.eql([
-      '<a class="tag-link" href="/tags/bar/">bar<span class="tag-count">1</span></a>',
-      '<a class="tag-link" href="/tags/baz/">baz<span class="tag-count">2</span></a>',
-      '<a class="tag-link" href="/tags/foo/">foo<span class="tag-count">1</span></a>'
+      '<a class="tag-link" href="/tags/bar/" rel="tag">bar<span class="tag-count">1</span></a>',
+      '<a class="tag-link" href="/tags/baz/" rel="tag">baz<span class="tag-count">2</span></a>',
+      '<a class="tag-link" href="/tags/foo/" rel="tag">foo<span class="tag-count">1</span></a>'
     ].join(', '));
   });
 
@@ -75,10 +75,10 @@ describe('list_tags', () => {
     });
 
     result.should.eql([
-      '<ul class="tag-list">',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">bar</a></li>',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">baz</a></li>',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/">foo</a></li>',
+      '<ul class="tag-list" itemprop="keywords">',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/" rel="tag">bar</a></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/" rel="tag">baz</a></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/" rel="tag">foo</a></li>',
       '</ul>'
     ].join(''));
   });
@@ -89,10 +89,10 @@ describe('list_tags', () => {
     });
 
     result.should.eql([
-      '<ul class="test-list">',
-      '<li class="test-list-item"><a class="test-list-link" href="/tags/bar/">bar</a><span class="test-list-count">1</span></li>',
-      '<li class="test-list-item"><a class="test-list-link" href="/tags/baz/">baz</a><span class="test-list-count">2</span></li>',
-      '<li class="test-list-item"><a class="test-list-link" href="/tags/foo/">foo</a><span class="test-list-count">1</span></li>',
+      '<ul class="test-list" itemprop="keywords">',
+      '<li class="test-list-item"><a class="test-list-link" href="/tags/bar/" rel="tag">bar</a><span class="test-list-count">1</span></li>',
+      '<li class="test-list-item"><a class="test-list-link" href="/tags/baz/" rel="tag">baz</a><span class="test-list-count">2</span></li>',
+      '<li class="test-list-item"><a class="test-list-link" href="/tags/foo/" rel="tag">foo</a><span class="test-list-count">1</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -103,10 +103,10 @@ describe('list_tags', () => {
     });
 
     result.should.eql([
-      '<ul class="tag-list">',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/">foo</a><span class="tag-list-count">1</span></li>',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">bar</a><span class="tag-list-count">1</span></li>',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">baz</a><span class="tag-list-count">2</span></li>',
+      '<ul class="tag-list" itemprop="keywords">',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/" rel="tag">foo</a><span class="tag-list-count">1</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/" rel="tag">bar</a><span class="tag-list-count">1</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/" rel="tag">baz</a><span class="tag-list-count">2</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -117,10 +117,10 @@ describe('list_tags', () => {
     });
 
     result.should.eql([
-      '<ul class="tag-list">',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/">foo</a><span class="tag-list-count">1</span></li>',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">baz</a><span class="tag-list-count">2</span></li>',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">bar</a><span class="tag-list-count">1</span></li>',
+      '<ul class="tag-list" itemprop="keywords">',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/" rel="tag">foo</a><span class="tag-list-count">1</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/" rel="tag">baz</a><span class="tag-list-count">2</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/" rel="tag">bar</a><span class="tag-list-count">1</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -133,10 +133,10 @@ describe('list_tags', () => {
     });
 
     result.should.eql([
-      '<ul class="tag-list">',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">BAR</a><span class="tag-list-count">1</span></li>',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">BAZ</a><span class="tag-list-count">2</span></li>',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/">FOO</a><span class="tag-list-count">1</span></li>',
+      '<ul class="tag-list" itemprop="keywords">',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/" rel="tag">BAR</a><span class="tag-list-count">1</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/" rel="tag">BAZ</a><span class="tag-list-count">2</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/foo/" rel="tag">FOO</a><span class="tag-list-count">1</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -148,9 +148,9 @@ describe('list_tags', () => {
     });
 
     result.should.eql([
-      '<a class="tag-link" href="/tags/bar/">bar<span class="tag-count">1</span></a>',
-      '<a class="tag-link" href="/tags/baz/">baz<span class="tag-count">2</span></a>',
-      '<a class="tag-link" href="/tags/foo/">foo<span class="tag-count">1</span></a>'
+      '<a class="tag-link" href="/tags/bar/" rel="tag">bar<span class="tag-count">1</span></a>',
+      '<a class="tag-link" href="/tags/baz/" rel="tag">baz<span class="tag-count">2</span></a>',
+      '<a class="tag-link" href="/tags/foo/" rel="tag">foo<span class="tag-count">1</span></a>'
     ].join(''));
   });
 
@@ -160,9 +160,9 @@ describe('list_tags', () => {
     });
 
     result.should.eql([
-      '<ul class="tag-list">',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/">bar</a><span class="tag-list-count">1</span></li>',
-      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/">baz</a><span class="tag-list-count">2</span></li>',
+      '<ul class="tag-list" itemprop="keywords">',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bar/" rel="tag">bar</a><span class="tag-list-count">1</span></li>',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/baz/" rel="tag">baz</a><span class="tag-list-count">2</span></li>',
       '</ul>'
     ].join(''));
   });
