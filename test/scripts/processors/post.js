@@ -615,6 +615,26 @@ describe('post', () => {
     }).finally(() => fs.unlink(file.source));
   });
 
+
+  it('post - link without title and link', () => {
+    const body = '';
+
+    const file = newFile({
+      path: 'foo.md',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+
+    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
+      const post = Post.findOne({source: file.path});
+
+      post.title.should.eql('foo');
+
+      return post.remove();
+    }).finally(() => fs.unlink(file.source));
+  });
+
   it('post - category is an alias for categories', () => {
     const body = [
       'title: "Hello world"',
