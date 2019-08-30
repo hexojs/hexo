@@ -104,8 +104,8 @@ describe('Category', () => {
     return Category.removeById(data._id);
   }));
 
-  it('permalink - canonical_url', () => {
-    hexo.config.canonical_url = true;
+  it('permalink - trailing_index', () => {
+    hexo.config.trailing_url.trailing_index = false;
     return Category.insert({
       name: 'foo'
     }).then(data => {
