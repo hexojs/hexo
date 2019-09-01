@@ -7,7 +7,7 @@ describe('Meta Generator', () => {
   const cheerio = require('cheerio');
 
   it('default', () => {
-    const content = '<head><title>foo</title></head>';
+    const content = '<head><link></head>';
     const result = metaGenerator(content);
 
     const $ = cheerio.load(result);
@@ -16,7 +16,7 @@ describe('Meta Generator', () => {
   });
 
   it('disable meta_generator', () => {
-    const content = '<head><title>foo</title></head>';
+    const content = '<head><link></head>';
     hexo.config.meta_generator = false;
     const result = metaGenerator(content);
 
@@ -25,7 +25,7 @@ describe('Meta Generator', () => {
   });
 
   it('no duplicate generator tag', () => {
-    const content = '<head><title>foo</title>'
+    const content = '<head><link>'
       + '<meta name="generator" content="foo"></head>';
     hexo.config.meta_generator = true;
     const result = metaGenerator(content);
@@ -37,7 +37,6 @@ describe('Meta Generator', () => {
   it('ignore empty head tag', () => {
     const content = '<head></head>'
       + '<head><link></head>'
-      + '<head><link></head>'
       + '<head></head>';
     hexo.config.meta_generator = true;
     const result = metaGenerator(content);
@@ -47,8 +46,23 @@ describe('Meta Generator', () => {
 
     const expected = '<head></head>'
     + '<head><link><meta name="generator" content="Hexo ' + hexo.version + '"></head>'
-    + '<head><link></head>'
     + '<head></head>';
+    result.should.eql(expected);
+  });
+
+  it('apply to first non-empty head tag only', () => {
+    const content = '<head></head>'
+      + '<head><link></head>'
+      + '<head><link></head>';
+    hexo.config.meta_generator = true;
+    const result = metaGenerator(content);
+
+    const $ = cheerio.load(result);
+    $('meta[name="generator"]').length.should.eql(1);
+
+    const expected = '<head></head>'
+    + '<head><link><meta name="generator" content="Hexo ' + hexo.version + '"></head>'
+    + '<head><link></head>';
     result.should.eql(expected);
   });
 });
