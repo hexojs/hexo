@@ -42,7 +42,7 @@
     "cheerio": "0.22.0",
     "hexo-cli": "^2.0.0",
     "hexo-front-matter": "^0.2.3",
-    "hexo-fs": "^1.0.0",
+    "hexo-fs": "^2.0.0",
     "hexo-i18n": "^1.0.0",
     "hexo-log": "^0.2.0",
     "hexo-util": "^1.0.1",
