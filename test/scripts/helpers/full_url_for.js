@@ -29,6 +29,6 @@ describe('full_url_for', () => {
   });
 
   it('only hash', () => {
-    fullUrlFor('#test').should.eql('#test');
+    fullUrlFor('#test').should.eql(ctx.config.url + '/#test');
   });
 });
