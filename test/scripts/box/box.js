@@ -268,20 +268,20 @@ describe('Box', () => {
 
     box.addProcessor(processor);
 
-    return box.watch().then(() => {
-      box.isWatching().should.be.true;
-      return fs.writeFile(src, 'a');
-    }).delay(500).then(() => {
-      const file = processor.args[0][0];
+    return Promise.all([fs.writeFile(src, 'a')])
+      .then(() => box.watch())
+      .then(() => box.isWatching().should.be.true)
+      .delay(500).then(() => {
+        const file = processor.args[0][0];
 
-      file.source.should.eql(src);
-      file.path.should.eql(path);
-      file.type.should.eql('create');
-      file.params.should.eql({});
-    }).finally(() => {
-      box.unwatch();
-      return fs.rmdir(box.base);
-    });
+        file.source.should.eql(src);
+        file.path.should.eql(path);
+        file.type.should.eql('create');
+        file.params.should.eql({});
+      }).finally(() => {
+        box.unwatch();
+        return fs.rmdir(box.base);
+      });
   });
 
   it('watch() - update', () => {
