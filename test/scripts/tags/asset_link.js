@@ -44,6 +44,10 @@ describe('asset_link', () => {
     assetLink('bar Hello world').should.eql('<a href="/foo/bar" title="Hello world">Hello world</a>');
   });
 
+  it('title with tag', () => {
+    assetLink('bar Hello <world>').should.eql('<a href="/foo/bar" title="Hello &lt;world&gt;">Hello &lt;world&gt;</a>');
+  });
+
   it('with space', () => {
     // {% asset_link "spaced asset" "spaced title" %}
     assetLinkTag.call(post, ['spaced asset', 'spaced title'])
