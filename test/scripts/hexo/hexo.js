@@ -425,6 +425,20 @@ describe('Hexo', () => {
     ].join('\n')));
   });
 
+  it('_generate() - should encode url', () => {
+    hexo.config.url = 'http://fôo.com';
+
+    hexo.theme.setView('test.swig', '{{ url }}');
+
+    hexo.extend.generator.register('test', () => ({
+      path: 'bár',
+      layout: 'test'
+    }));
+
+    return hexo._generate().then(() => checkStream(route.get('bár'),
+      'http://xn--fo-8ja.com/b%C3%A1r'));
+  });
+
   it('_generate() - do nothing if it\'s generating', () => {
     const spy = sinon.spy();
     hexo.extend.generator.register('test', spy);

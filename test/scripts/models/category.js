@@ -115,6 +115,16 @@ describe('Category', () => {
     });
   });
 
+  it('permalink - should be encoded', () => {
+    hexo.config.url = 'http://fôo.com';
+    return Category.insert({
+      name: 'bár'
+    }).then(data => {
+      data.permalink.should.eql('http://xn--fo-8ja.com/' + data.path);
+      return Category.removeById(data._id);
+    });
+  });
+
   it('posts - virtual', () => Post.insert([
     {source: 'foo.md', slug: 'foo'},
     {source: 'bar.md', slug: 'bar'},
