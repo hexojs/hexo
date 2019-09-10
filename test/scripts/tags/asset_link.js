@@ -29,6 +29,11 @@ describe('asset_link', () => {
         post: post._id
       }),
       PostAsset.insert({
+        _id: 'bár',
+        slug: 'bár',
+        post: post._id
+      }),
+      PostAsset.insert({
         _id: 'spaced asset',
         slug: 'spaced asset',
         post: post._id
@@ -38,6 +43,10 @@ describe('asset_link', () => {
 
   it('default', () => {
     assetLink('bar').should.eql('<a href="/foo/bar" title="bar">bar</a>');
+  });
+
+  it('should encode path', () => {
+    assetLink('bár').should.eql('<a href="/foo/b%C3%A1r" title="bár">bár</a>');
   });
 
   it('title', () => {
