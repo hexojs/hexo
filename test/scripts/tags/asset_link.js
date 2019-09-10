@@ -44,7 +44,7 @@ describe('asset_link', () => {
     assetLink('bar Hello world').should.eql('<a href="/foo/bar" title="Hello world">Hello world</a>');
   });
 
-  it('title with tag', () => {
+  it('should escape tag in title', () => {
     assetLink('bar Hello <world>').should.eql('<a href="/foo/bar" title="Hello &lt;world&gt;">Hello &lt;world&gt;</a>');
   });
 

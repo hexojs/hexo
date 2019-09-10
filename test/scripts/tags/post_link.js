@@ -27,11 +27,11 @@ describe('post_link', () => {
     postLink(['foo', 'test']).should.eql('<a href="/foo/" title="test">test</a>');
   });
 
-  it('default with tag', () => {
+  it('should escape tag in title', () => {
     postLink(['title-with-tag']).should.eql('<a href="/title-with-tag/" title="Hello &lt;new world&gt;!">Hello &lt;new world&gt;!</a>');
   });
 
-  it('title with tag', () => {
+  it('should escape tag in custom title', () => {
     postLink(['title-with-tag', '<test>']).should.eql('<a href="/title-with-tag/" title="&lt;test&gt;">&lt;test&gt;</a>');
   });
 
