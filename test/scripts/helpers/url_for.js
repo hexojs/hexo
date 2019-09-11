@@ -35,18 +35,15 @@ describe('url_for', () => {
 
   it('internal url (options.relative)', () => {
     ctx.path = '';
-    urlFor('index.html', {relative: true}).should.eql('index.html');
+    urlFor('index.html', { relative: true }).should.eql('index.html');
 
     ctx.config.relative_link = true;
-    urlFor('index.html', {relative: false}).should.eql('/index.html');
+    urlFor('index.html', { relative: false }).should.eql('/index.html');
     ctx.config.relative_link = false;
   });
 
   it('external url', () => {
-    [
-      'https://hexo.io/',
-      '//google.com/'
-    ].forEach(url => {
+    ['https://hexo.io/', '//google.com/'].forEach(url => {
       urlFor(url).should.eql(url);
     });
   });

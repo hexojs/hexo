@@ -27,11 +27,16 @@ describe('paginator', () => {
     const total = data.total;
     const pages = data.pages;
     const space = data.space || '&hellip;';
-    const prevNext = Object.prototype.hasOwnProperty.call(data, 'prev_next') ? data.prev_next : true;
+    const prevNext = Object.prototype.hasOwnProperty.call(data, 'prev_next')
+      ? data.prev_next
+      : true;
     let num;
 
     if (prevNext && current > 1) {
-      expected += '<a class="extend prev" rel="prev" href="' + link(current - 1) + '">Prev</a>';
+      expected +=
+        '<a class="extend prev" rel="prev" href="' +
+        link(current - 1) +
+        '">Prev</a>';
     }
 
     for (let i = 0, len = pages.length; i < len; i++) {
@@ -42,12 +47,16 @@ describe('paginator', () => {
       } else if (num === current) {
         expected += '<span class="page-number current">' + current + '</span>';
       } else {
-        expected += '<a class="page-number" href="' + link(num) + '">' + num + '</a>';
+        expected +=
+          '<a class="page-number" href="' + link(num) + '">' + num + '</a>';
       }
     }
 
     if (prevNext && current < total) {
-      expected += '<a class="extend next" rel="next" href="' + link(current + 1) + '">Next</a>';
+      expected +=
+        '<a class="extend next" rel="next" href="' +
+        link(current + 1) +
+        '">Next</a>';
     }
 
     result.should.eql(expected);
@@ -180,14 +189,16 @@ describe('paginator', () => {
       base: 'archives/'
     });
 
-    result.should.eql([
-      '<span class="page-number current">1</span>',
-      '<a class="page-number" href="/archives/page/2/">2</a>',
-      '<a class="page-number" href="/archives/page/3/">3</a>',
-      '<span class="space">&hellip;</span>',
-      '<a class="page-number" href="/archives/page/10/">10</a>',
-      '<a class="extend next" rel="next" href="/archives/page/2/">Next</a>'
-    ].join(''));
+    result.should.eql(
+      [
+        '<span class="page-number current">1</span>',
+        '<a class="page-number" href="/archives/page/2/">2</a>',
+        '<a class="page-number" href="/archives/page/3/">3</a>',
+        '<span class="space">&hellip;</span>',
+        '<a class="page-number" href="/archives/page/10/">10</a>',
+        '<a class="extend next" rel="next" href="/archives/page/2/">Next</a>'
+      ].join('')
+    );
   });
 
   it('format', () => {
@@ -196,14 +207,16 @@ describe('paginator', () => {
       format: 'index-%d.html'
     });
 
-    result.should.eql([
-      '<span class="page-number current">1</span>',
-      '<a class="page-number" href="/index-2.html">2</a>',
-      '<a class="page-number" href="/index-3.html">3</a>',
-      '<span class="space">&hellip;</span>',
-      '<a class="page-number" href="/index-10.html">10</a>',
-      '<a class="extend next" rel="next" href="/index-2.html">Next</a>'
-    ].join(''));
+    result.should.eql(
+      [
+        '<span class="page-number current">1</span>',
+        '<a class="page-number" href="/index-2.html">2</a>',
+        '<a class="page-number" href="/index-3.html">3</a>',
+        '<span class="space">&hellip;</span>',
+        '<a class="page-number" href="/index-10.html">10</a>',
+        '<a class="extend next" rel="next" href="/index-2.html">Next</a>'
+      ].join('')
+    );
   });
 
   it('prev_text / next_text', () => {
@@ -213,16 +226,18 @@ describe('paginator', () => {
       next_text: 'Older'
     });
 
-    result.should.eql([
-      '<a class="extend prev" rel="prev" href="/">Newer</a>',
-      '<a class="page-number" href="/">1</a>',
-      '<span class="page-number current">2</span>',
-      '<a class="page-number" href="/page/3/">3</a>',
-      '<a class="page-number" href="/page/4/">4</a>',
-      '<span class="space">&hellip;</span>',
-      '<a class="page-number" href="/page/10/">10</a>',
-      '<a class="extend next" rel="next" href="/page/3/">Older</a>'
-    ].join(''));
+    result.should.eql(
+      [
+        '<a class="extend prev" rel="prev" href="/">Newer</a>',
+        '<a class="page-number" href="/">1</a>',
+        '<span class="page-number current">2</span>',
+        '<a class="page-number" href="/page/3/">3</a>',
+        '<a class="page-number" href="/page/4/">4</a>',
+        '<span class="space">&hellip;</span>',
+        '<a class="page-number" href="/page/10/">10</a>',
+        '<a class="extend next" rel="next" href="/page/3/">Older</a>'
+      ].join('')
+    );
   });
 
   it('prev_next', () => {
@@ -231,14 +246,16 @@ describe('paginator', () => {
       prev_next: false
     });
 
-    result.should.eql([
-      '<a class="page-number" href="/">1</a>',
-      '<span class="page-number current">2</span>',
-      '<a class="page-number" href="/page/3/">3</a>',
-      '<a class="page-number" href="/page/4/">4</a>',
-      '<span class="space">&hellip;</span>',
-      '<a class="page-number" href="/page/10/">10</a>'
-    ].join(''));
+    result.should.eql(
+      [
+        '<a class="page-number" href="/">1</a>',
+        '<span class="page-number current">2</span>',
+        '<a class="page-number" href="/page/3/">3</a>',
+        '<a class="page-number" href="/page/4/">4</a>',
+        '<span class="space">&hellip;</span>',
+        '<a class="page-number" href="/page/10/">10</a>'
+      ].join('')
+    );
   });
 
   it('transform', () => {
@@ -249,16 +266,18 @@ describe('paginator', () => {
       }
     });
 
-    result.should.eql([
-      '<a class="extend prev" rel="prev" href="/">Prev</a>',
-      '<a class="page-number" href="/">Page 1</a>',
-      '<span class="page-number current">Page 2</span>',
-      '<a class="page-number" href="/page/3/">Page 3</a>',
-      '<a class="page-number" href="/page/4/">Page 4</a>',
-      '<span class="space">&hellip;</span>',
-      '<a class="page-number" href="/page/10/">Page 10</a>',
-      '<a class="extend next" rel="next" href="/page/3/">Next</a>'
-    ].join(''));
+    result.should.eql(
+      [
+        '<a class="extend prev" rel="prev" href="/">Prev</a>',
+        '<a class="page-number" href="/">Page 1</a>',
+        '<span class="page-number current">Page 2</span>',
+        '<a class="page-number" href="/page/3/">Page 3</a>',
+        '<a class="page-number" href="/page/4/">Page 4</a>',
+        '<span class="space">&hellip;</span>',
+        '<a class="page-number" href="/page/10/">Page 10</a>',
+        '<a class="extend next" rel="next" href="/page/3/">Next</a>'
+      ].join('')
+    );
   });
 
   it('context', () => {

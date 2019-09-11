@@ -8,18 +8,28 @@ describe('post_link', () => {
 
   hexo.config.permalink = ':title/';
 
-  before(() => hexo.init().then(() => Post.insert({
-    source: 'foo',
-    slug: 'foo',
-    title: 'Hello world'
-  })));
+  before(() =>
+    hexo.init().then(() =>
+      Post.insert([
+        {
+          source: 'foo',
+          slug: 'foo',
+          title: 'Hello world'
+        }
+      ])
+    )
+  );
 
   it('default', () => {
-    postLink(['foo']).should.eql('<a href="/foo/" title="Hello world">Hello world</a>');
+    postLink(['foo']).should.eql(
+      '<a href="/foo/" title="Hello world">Hello world</a>'
+    );
   });
 
   it('title', () => {
-    postLink(['foo', 'test']).should.eql('<a href="/foo/" title="test">test</a>');
+    postLink(['foo', 'test']).should.eql(
+      '<a href="/foo/" title="test">test</a>'
+    );
   });
 
   it('no slug', () => {

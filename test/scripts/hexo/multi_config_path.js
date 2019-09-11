@@ -17,7 +17,7 @@ describe('config flag handling', () => {
     this.d = function(...args) {
       const type = 'debug';
       let message = '';
-      for (let i = 0; i < args.length;) {
+      for (let i = 0; i < args.length; ) {
         message += args[i];
         if (++i < args.length) {
           message += ' ';
@@ -33,7 +33,7 @@ describe('config flag handling', () => {
     this.i = function(...args) {
       const type = 'info';
       let message = '';
-      for (let i = 0; i < args.length;) {
+      for (let i = 0; i < args.length; ) {
         message += args[i];
         if (++i < args.length) {
           message += ' ';
@@ -49,7 +49,7 @@ describe('config flag handling', () => {
     this.w = function(...args) {
       const type = 'warning';
       let message = '';
-      for (let i = 0; i < args.length;) {
+      for (let i = 0; i < args.length; ) {
         message += args[i];
         if (++i < args.length) {
           message += ' ';
@@ -65,7 +65,7 @@ describe('config flag handling', () => {
     this.e = function(...args) {
       const type = 'error';
       let message = '';
-      for (let i = 0; i < args.length;) {
+      for (let i = 0; i < args.length; ) {
         message += args[i];
         if (++i < args.length) {
           message += ' ';
@@ -148,11 +148,9 @@ describe('config flag handling', () => {
   });
 
   it('1 file', () => {
-    mcp(base, 'test1.yml').should.eql(
-      pathFn.resolve(base + 'test1.yml'));
+    mcp(base, 'test1.yml').should.eql(pathFn.resolve(base + 'test1.yml'));
 
-    mcp(base, 'test1.json').should.eql(
-      pathFn.resolve(base + 'test1.json'));
+    mcp(base, 'test1.json').should.eql(pathFn.resolve(base + 'test1.json'));
 
     mcp(base, '/tmp/test3.json').should.eql('/tmp/test3.json');
   });
@@ -162,8 +160,9 @@ describe('config flag handling', () => {
 
     mcp(base, notFile).should.eql(pathFn.join(base, '_config.yml'));
     hexo.log.reader[0].type.should.eql('warning');
-    hexo.log.reader[0].msg.should.eql('Config file ' + notFile
-                          + ' not found, using default.');
+    hexo.log.reader[0].msg.should.eql(
+      'Config file ' + notFile + ' not found, using default.'
+    );
   });
 
   it('1 not found file warning absolute', () => {
@@ -171,8 +170,9 @@ describe('config flag handling', () => {
 
     mcp(base, notFile).should.eql(pathFn.join(base, '_config.yml'));
     hexo.log.reader[0].type.should.eql('warning');
-    hexo.log.reader[0].msg.should.eql('Config file ' + notFile
-                          + ' not found, using default.');
+    hexo.log.reader[0].msg.should.eql(
+      'Config file ' + notFile + ' not found, using default.'
+    );
   });
 
   it('combined config output', () => {
@@ -194,8 +194,9 @@ describe('config flag handling', () => {
 
     mcp(base, 'notafile.yml,alsonotafile.json').should.not.eql(combinedPath);
     hexo.log.reader[11].type.should.eql('error');
-    hexo.log.reader[11].msg.should.eql('No config files found.'
-                                     + ' Using _config.yml.');
+    hexo.log.reader[11].msg.should.eql(
+      'No config files found. Using _config.yml.'
+    );
   });
 
   it('combine config output with absolute paths', () => {
@@ -264,10 +265,14 @@ describe('config flag handling', () => {
     mcp(base, 'test1.yml,test1.json', outputPath).should.eql(combinedPath);
     mcp(base, 'test1.json,test2.json', outputPath).should.eql(combinedPath);
     mcp(base, 'notafile.yml,test1.json', outputPath).should.eql(combinedPath);
-    mcp(base, 'notafile.yml,alsonotafile.json', outputPath).should.not.eql(combinedPath);
+    mcp(base, 'notafile.yml,alsonotafile.json', outputPath).should.not.eql(
+      combinedPath
+    );
 
     hexo.log.reader[1].type.should.eql('debug');
-    hexo.log.reader[1].msg.should.eql(`Writing _multiconfig.yml to ${combinedPath}`);
+    hexo.log.reader[1].msg.should.eql(
+      `Writing _multiconfig.yml to ${combinedPath}`
+    );
     hexo.log.reader[2].type.should.eql('info');
     hexo.log.reader[2].msg.should.eql('Config based on 2 files');
     hexo.log.reader[6].type.should.eql('warning');
@@ -275,7 +280,8 @@ describe('config flag handling', () => {
     hexo.log.reader[7].type.should.eql('info');
     hexo.log.reader[7].msg.should.eql('Config based on 1 files');
     hexo.log.reader[11].type.should.eql('error');
-    hexo.log.reader[11].msg.should.eql('No config files found.'
-                                     + ' Using _config.yml.');
+    hexo.log.reader[11].msg.should.eql(
+      'No config files found. Using _config.yml.'
+    );
   });
 });

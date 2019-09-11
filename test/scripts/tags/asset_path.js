@@ -16,25 +16,32 @@ describe('asset_path', () => {
     return assetPathTag.call(post, args.split(' '));
   }
 
-  before(() => hexo.init().then(() => Post.insert({
-    source: 'foo.md',
-    slug: 'foo'
-  })).then(post_ => {
-    post = post_;
+  before(() =>
+    hexo
+      .init()
+      .then(() =>
+        Post.insert({
+          source: 'foo.md',
+          slug: 'foo'
+        })
+      )
+      .then(post_ => {
+        post = post_;
 
-    return Promise.all([
-      PostAsset.insert({
-        _id: 'bar',
-        slug: 'bar',
-        post: post._id
-      }),
-      PostAsset.insert({
-        _id: 'spaced asset',
-        slug: 'spaced asset',
-        post: post._id
+        return Promise.all([
+          PostAsset.insert({
+            _id: 'bar',
+            slug: 'bar',
+            post: post._id
+          }),
+          PostAsset.insert({
+            _id: 'spaced asset',
+            slug: 'spaced asset',
+            post: post._id
+          })
+        ]);
       })
-    ]);
-  }));
+  );
 
   it('default', () => {
     assetPath('bar').should.eql('/foo/bar');
@@ -42,8 +49,7 @@ describe('asset_path', () => {
 
   it('with space', () => {
     // {% asset_path "spaced asset" %}
-    assetPathTag.call(post, ['spaced asset'])
-      .should.eql('/foo/spaced%20asset');
+    assetPathTag.call(post, ['spaced asset']).should.eql('/foo/spaced%20asset');
   });
 
   it('no slug', () => {

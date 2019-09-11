@@ -4,7 +4,7 @@ const sinon = require('sinon');
 
 describe('migrate', () => {
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(__dirname, {silent: true});
+  const hexo = new Hexo(__dirname, { silent: true });
   const migrate = require('../../../lib/plugins/console/migrate').bind(hexo);
 
   it('default', () => {
@@ -15,7 +15,7 @@ describe('migrate', () => {
 
     hexo.extend.migrator.register('test', migrator);
 
-    return migrate({_: ['test'], foo: 1, bar: 2}).then(() => {
+    return migrate({ _: ['test'], foo: 1, bar: 2 }).then(() => {
       migrator.calledOnce.should.be.true;
     });
   });

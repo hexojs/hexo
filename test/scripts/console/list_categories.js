@@ -9,7 +9,9 @@ describe('Console list', () => {
   const hexo = new Hexo(__dirname);
   const Post = hexo.model('Post');
 
-  const listCategories = require('../../../lib/plugins/console/list/category').bind(hexo);
+  const listCategories = require('../../../lib/plugins/console/list/category').bind(
+    hexo
+  );
 
   before(() => {
     const log = console.log;
@@ -31,16 +33,19 @@ describe('Console list', () => {
 
   it('categories', () => {
     const posts = [
-      {source: 'foo', slug: 'foo', title: 'Its', date: 1e8},
-      {source: 'bar', slug: 'bar', title: 'Math', date: 1e8 + 1},
-      {source: 'baz', slug: 'baz', title: 'Dude', date: 1e8 - 1}
+      { source: 'foo', slug: 'foo', title: 'Its', date: 1e8 },
+      { source: 'bar', slug: 'bar', title: 'Math', date: 1e8 + 1 },
+      { source: 'baz', slug: 'baz', title: 'Dude', date: 1e8 - 1 }
     ];
-    return hexo.init()
-      .then(() => Post.insert(posts)).then(posts => Promise.each([
-        ['foo'],
-        ['baz'],
-        ['baz']
-      ], (tags, i) => posts[i].setCategories(tags))).then(() => {
+    return hexo
+      .init()
+      .then(() => Post.insert(posts))
+      .then(posts =>
+        Promise.each([['foo'], ['baz'], ['baz']], (tags, i) =>
+          posts[i].setCategories(tags)
+        )
+      )
+      .then(() => {
         hexo.locals.invalidate();
       })
       .then(() => {

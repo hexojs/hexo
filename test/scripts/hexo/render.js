@@ -75,61 +75,78 @@ describe('Render', () => {
     hexo.render.getOutput('test.yaml').should.eql('json');
   });
 
-  it('render() - path', () => hexo.render.render({path}).then(result => {
-    result.should.eql(obj);
-  }));
+  it('render() - path', () =>
+    hexo.render.render({ path }).then(result => {
+      result.should.eql(obj);
+    }));
 
-  it('render() - text (without engine)', () => hexo.render.render({text: body}).then(result => {
-    result.should.eql(body);
-  }));
+  it('render() - text (without engine)', () =>
+    hexo.render.render({ text: body }).then(result => {
+      result.should.eql(body);
+    }));
 
-  it('render() - text (with engine)', () => hexo.render.render({text: body, engine: 'yaml'}).then(result => {
-    result.should.eql(obj);
-  }));
+  it('render() - text (with engine)', () =>
+    hexo.render.render({ text: body, engine: 'yaml' }).then(result => {
+      result.should.eql(obj);
+    }));
 
   it('render() - no path and text', () => {
     const errorCallback = sinon.spy(err => {
       err.should.have.property('message', 'No input file or string!');
     });
 
-    return hexo.render.render().catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
-    });
+    return hexo.render
+      .render()
+      .catch(errorCallback)
+      .finally(() => {
+        errorCallback.calledOnce.should.be.true;
+      });
   });
 
-  it('render() - options', () => hexo.render.render({
-    text: [
-      '<title>{{ title }}</title>',
-      '<body>{{ content }}</body>'
-    ].join('\n'),
-    engine: 'swig'
-  }, {
-    title: 'Hello world',
-    content: 'foobar'
-  }).then(result => {
-    result.should.eql([
-      '<title>Hello world</title>',
-      '<body>foobar</body>'
-    ].join('\n'));
-  }));
+  it('render() - options', () =>
+    hexo.render
+      .render(
+        {
+          text: [
+            '<title>{{ title }}</title>',
+            '<body>{{ content }}</body>'
+          ].join('\n'),
+          engine: 'swig'
+        },
+        {
+          title: 'Hello world',
+          content: 'foobar'
+        }
+      )
+      .then(result => {
+        result.should.eql(
+          ['<title>Hello world</title>', '<body>foobar</body>'].join('\n')
+        );
+      }));
 
-  it('render() - toString', () => hexo.render.render({
-    text: body,
-    engine: 'yaml',
-    toString: true
-  }).then(content => {
-    content.should.eql(JSON.stringify(obj));
-  }));
+  it('render() - toString', () =>
+    hexo.render
+      .render({
+        text: body,
+        engine: 'yaml',
+        toString: true
+      })
+      .then(content => {
+        content.should.eql(JSON.stringify(obj));
+      }));
 
-  it('render() - custom toString method', () => hexo.render.render({
-    text: body,
-    engine: 'yaml',
-    toString(data) {
-      return JSON.stringify(data, null, '  ');
-    }
-  }).then(content => {
-    content.should.eql(JSON.stringify(obj, null, '  '));
-  }));
+  it('render() - custom toString method', () =>
+    hexo.render
+      .render({
+        text: body,
+        engine: 'yaml',
+        toString(data) {
+          return JSON.stringify(data, null, '  ');
+        }
+      })
+      .then(content => {
+        content.should.eql(JSON.stringify(obj, null, '  '));
+      }));
 
   it('render() - after_render filter', () => {
     const data = {
@@ -192,17 +209,17 @@ describe('Render', () => {
   });
 
   it('renderSync() - path', () => {
-    const result = hexo.render.renderSync({path});
+    const result = hexo.render.renderSync({ path });
     result.should.eql(obj);
   });
 
   it('renderSync() - text (without engine)', () => {
-    const result = hexo.render.renderSync({text: body});
+    const result = hexo.render.renderSync({ text: body });
     result.should.eql(body);
   });
 
   it('renderSync() - text (with engine)', () => {
-    const result = hexo.render.renderSync({text: body, engine: 'yaml'});
+    const result = hexo.render.renderSync({ text: body, engine: 'yaml' });
     result.should.eql(obj);
   });
 
@@ -221,21 +238,22 @@ describe('Render', () => {
   });
 
   it('renderSync() - options', () => {
-    const result = hexo.render.renderSync({
-      text: [
-        '<title>{{ title }}</title>',
-        '<body>{{ content }}</body>'
-      ].join('\n'),
-      engine: 'swig'
-    }, {
-      title: 'Hello world',
-      content: 'foobar'
-    });
+    const result = hexo.render.renderSync(
+      {
+        text: ['<title>{{ title }}</title>', '<body>{{ content }}</body>'].join(
+          '\n'
+        ),
+        engine: 'swig'
+      },
+      {
+        title: 'Hello world',
+        content: 'foobar'
+      }
+    );
 
-    result.should.eql([
-      '<title>Hello world</title>',
-      '<body>foobar</body>'
-    ].join('\n'));
+    result.should.eql(
+      ['<title>Hello world</title>', '<body>foobar</body>'].join('\n')
+    );
   });
 
   it('renderSync() - toString', () => {

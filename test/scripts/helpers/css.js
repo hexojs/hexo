@@ -30,7 +30,12 @@ describe('css', () => {
   });
 
   it('an array', () => {
-    assertResult(css(['foo', 'bar', 'baz']), '/foo.css', '/bar.css', '/baz.css');
+    assertResult(
+      css(['foo', 'bar', 'baz']),
+      '/foo.css',
+      '/bar.css',
+      '/baz.css'
+    );
   });
 
   it('multiple strings', () => {
@@ -38,10 +43,20 @@ describe('css', () => {
   });
 
   it('multiple arrays', () => {
-    assertResult(css(['foo', 'bar'], ['baz']), '/foo.css', '/bar.css', '/baz.css');
+    assertResult(
+      css(['foo', 'bar'], ['baz']),
+      '/foo.css',
+      '/bar.css',
+      '/baz.css'
+    );
   });
 
   it('mixed', () => {
-    assertResult(css(['foo', 'bar'], 'baz'), '/foo.css', '/bar.css', '/baz.css');
+    assertResult(
+      css(['foo', 'bar'], 'baz'),
+      '/foo.css',
+      '/bar.css',
+      '/baz.css'
+    );
   });
 });

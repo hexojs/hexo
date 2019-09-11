@@ -13,6 +13,8 @@ describe('favicon_tag', () => {
   const favicon = require('../../../lib/plugins/helper/favicon_tag').bind(ctx);
 
   it('path', () => {
-    favicon('favicon.ico').should.eql('<link rel="shortcut icon" href="/favicon.ico">');
+    favicon('favicon.ico').should.eql(
+      '<link rel="shortcut icon" href="/favicon.ico">'
+    );
   });
 });

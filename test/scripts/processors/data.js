@@ -47,13 +47,17 @@ describe('data', () => {
       type: 'create'
     });
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      const data = Data.findById('users');
+    return fs
+      .writeFile(file.source, body)
+      .then(() => process(file))
+      .then(() => {
+        const data = Data.findById('users');
 
-      data.data.should.eql({foo: 'bar'});
+        data.data.should.eql({ foo: 'bar' });
 
-      return data.remove();
-    }).finally(() => fs.unlink(file.source));
+        return data.remove();
+      })
+      .finally(() => fs.unlink(file.source));
   });
 
   it('type: create - json', () => {
@@ -64,13 +68,17 @@ describe('data', () => {
       type: 'create'
     });
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      const data = Data.findById('users');
+    return fs
+      .writeFile(file.source, body)
+      .then(() => process(file))
+      .then(() => {
+        const data = Data.findById('users');
 
-      data.data.should.eql({foo: 1});
+        data.data.should.eql({ foo: 1 });
 
-      return data.remove();
-    }).finally(() => fs.unlink(file.source));
+        return data.remove();
+      })
+      .finally(() => fs.unlink(file.source));
   });
 
   it('type: create - others', () => {
@@ -79,13 +87,17 @@ describe('data', () => {
       type: 'create'
     });
 
-    return fs.writeFile(file.source, 'text').then(() => process(file)).then(() => {
-      const data = Data.findById('users');
+    return fs
+      .writeFile(file.source, 'text')
+      .then(() => process(file))
+      .then(() => {
+        const data = Data.findById('users');
 
-      data.data.should.eql('text');
+        data.data.should.eql('text');
 
-      return data.remove();
-    }).finally(() => fs.unlink(file.source));
+        return data.remove();
+      })
+      .finally(() => fs.unlink(file.source));
   });
 
   it('type: update', () => {
@@ -102,13 +114,16 @@ describe('data', () => {
         _id: 'users',
         data: {}
       })
-    ]).then(() => process(file)).then(() => {
-      const data = Data.findById('users');
+    ])
+      .then(() => process(file))
+      .then(() => {
+        const data = Data.findById('users');
 
-      data.data.should.eql({foo: 'bar'});
+        data.data.should.eql({ foo: 'bar' });
 
-      return data.remove();
-    }).finally(() => fs.unlink(file.source));
+        return data.remove();
+      })
+      .finally(() => fs.unlink(file.source));
   });
 
   it('type: delete', () => {
@@ -119,9 +134,11 @@ describe('data', () => {
 
     return Data.insert({
       _id: 'users',
-      data: {foo: 'bar'}
-    }).then(() => process(file)).then(() => {
-      should.not.exist(Data.findById('users'));
-    });
+      data: { foo: 'bar' }
+    })
+      .then(() => process(file))
+      .then(() => {
+        should.not.exist(Data.findById('users'));
+      });
   });
 });

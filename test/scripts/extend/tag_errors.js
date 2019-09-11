@@ -18,13 +18,10 @@ describe('Tag Errors', () => {
   it('unknown tag', () => {
     const tag = new Tag();
 
-    const body = [
-      '{% abc %}',
-      '  content',
-      '{% endabc %}'
-    ].join('\n');
+    const body = ['{% abc %}', '  content', '{% endabc %}'].join('\n');
 
-    return tag.render(body)
+    return tag
+      .render(body)
       .then(result => {
         console.log(result);
         throw new Error('should return error');
@@ -37,16 +34,12 @@ describe('Tag Errors', () => {
   it('no closing tag 1', () => {
     const tag = new Tag();
 
-    tag.register('test',
-      (args, content) => {},
-      { ends: true });
+    tag.register('test', (args, content) => {}, { ends: true });
 
-    const body = [
-      '{% test %}',
-      '  content'
-    ].join('\n');
+    const body = ['{% test %}', '  content'].join('\n');
 
-    return tag.render(body)
+    return tag
+      .render(body)
       .then(result => {
         console.log(result);
         throw new Error('should return error');
@@ -61,17 +54,12 @@ describe('Tag Errors', () => {
   it('no closing tag 2', () => {
     const tag = new Tag();
 
-    tag.register('test',
-      (args, content) => {},
-      { ends: true });
+    tag.register('test', (args, content) => {}, { ends: true });
 
-    const body = [
-      '{% test %}',
-      '  content',
-      '{% test %}'
-    ].join('\n');
+    const body = ['{% test %}', '  content', '{% test %}'].join('\n');
 
-    return tag.render(body)
+    return tag
+      .render(body)
       .then(result => {
         console.log(result);
         throw new Error('should return error');
@@ -90,7 +78,8 @@ describe('Tag Errors', () => {
       '<code>{{docker ps -aq | map docker inspect -f "{{.Name}} {{.Mounts}}"}}</code>'
     ].join('\n');
 
-    return tag.render(body)
+    return tag
+      .render(body)
       .then(result => {
         console.log(result);
         throw new Error('should return error');
@@ -103,9 +92,7 @@ describe('Tag Errors', () => {
   it('nested curly braces', () => {
     const tag = new Tag();
 
-    tag.register('test',
-      (args, content) => {},
-      { ends: true });
+    tag.register('test', (args, content) => {}, { ends: true });
 
     const body = [
       '{% test %}',
@@ -113,7 +100,8 @@ describe('Tag Errors', () => {
       '{% endtest %}'
     ].join('\n');
 
-    return tag.render(body)
+    return tag
+      .render(body)
       .then(result => {
         console.log(result);
         throw new Error('should return error');
@@ -122,5 +110,4 @@ describe('Tag Errors', () => {
         assertNunjucksError(err, 2, 'expected variable end');
       });
   });
-
 });

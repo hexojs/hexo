@@ -8,11 +8,7 @@ describe('render', () => {
   before(() => hexo.init());
 
   it('default', () => {
-    const body = [
-      'foo: 1',
-      'bar:',
-      '\tbaz: 3'
-    ].join('\n');
+    const body = ['foo: 1', 'bar:', '\tbaz: 3'].join('\n');
 
     const result = render(body, 'yaml');
 

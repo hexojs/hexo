@@ -3,7 +3,9 @@
 describe('Meta Generator', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
-  const metaGenerator = require('../../../lib/plugins/filter/meta_generator').bind(hexo);
+  const metaGenerator = require('../../../lib/plugins/filter/meta_generator').bind(
+    hexo
+  );
   const cheerio = require('cheerio');
 
   it('default', () => {
@@ -12,7 +14,9 @@ describe('Meta Generator', () => {
 
     const $ = cheerio.load(result);
     $('meta[name="generator"]').length.should.eql(1);
-    $('meta[name="generator"]').attr('content').should.eql(`Hexo ${hexo.version}`);
+    $('meta[name="generator"]')
+      .attr('content')
+      .should.eql(`Hexo ${hexo.version}`);
   });
 
   it('disable meta_generator', () => {
@@ -25,8 +29,7 @@ describe('Meta Generator', () => {
   });
 
   it('no duplicate generator tag', () => {
-    const content = '<head><link>'
-      + '<meta name="generator" content="foo"></head>';
+    const content = '<head><link><meta name="generator" content="foo"></head>';
     hexo.config.meta_generator = true;
     const result = metaGenerator(content);
 
@@ -35,34 +38,32 @@ describe('Meta Generator', () => {
   });
 
   it('ignore empty head tag', () => {
-    const content = '<head></head>'
-      + '<head><link></head>'
-      + '<head></head>';
+    const content = '<head></head><head><link></head><head></head>';
     hexo.config.meta_generator = true;
     const result = metaGenerator(content);
 
     const $ = cheerio.load(result);
     $('meta[name="generator"]').length.should.eql(1);
 
-    const expected = '<head></head>'
-    + '<head><link><meta name="generator" content="Hexo ' + hexo.version + '"></head>'
-    + '<head></head>';
+    const expected =
+      '<head></head><head><link><meta name="generator" content="Hexo ' +
+      hexo.version +
+      '"></head><head></head>';
     result.should.eql(expected);
   });
 
   it('apply to first non-empty head tag only', () => {
-    const content = '<head></head>'
-      + '<head><link></head>'
-      + '<head><link></head>';
+    const content = '<head></head><head><link></head><head><link></head>';
     hexo.config.meta_generator = true;
     const result = metaGenerator(content);
 
     const $ = cheerio.load(result);
     $('meta[name="generator"]').length.should.eql(1);
 
-    const expected = '<head></head>'
-    + '<head><link><meta name="generator" content="Hexo ' + hexo.version + '"></head>'
-    + '<head><link></head>';
+    const expected =
+      '<head></head><head><link><meta name="generator" content="Hexo ' +
+      hexo.version +
+      '"></head><head><link></head>';
     result.should.eql(expected);
   });
 });

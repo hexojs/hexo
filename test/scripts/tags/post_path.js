@@ -8,10 +8,16 @@ describe('post_path', () => {
 
   hexo.config.permalink = ':title/';
 
-  before(() => hexo.init().then(() => Post.insert({
-    source: 'foo',
-    slug: 'foo'
-  })));
+  before(() =>
+    hexo.init().then(() =>
+      Post.insert([
+        {
+          source: 'foo',
+          slug: 'foo'
+        }
+      ])
+    )
+  );
 
   it('default', () => {
     postPath(['foo']).should.eql('/foo/');

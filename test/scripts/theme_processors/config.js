@@ -7,7 +7,9 @@ const Promise = require('bluebird');
 
 describe('config', () => {
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
+  const hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {
+    silent: true
+  });
   const processor = require('../../../lib/theme/processors/config');
   const process = Promise.method(processor.process.bind(hexo));
   const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
@@ -17,10 +19,12 @@ describe('config', () => {
     return new hexo.theme.File(options);
   }
 
-  before(() => Promise.all([
-    fs.mkdirs(themeDir),
-    fs.writeFile(hexo.config_path, 'theme: test')
-  ]).then(() => hexo.init()));
+  before(() =>
+    Promise.all([
+      fs.mkdirs(themeDir),
+      fs.writeFile(hexo.config_path, 'theme: test')
+    ]).then(() => hexo.init())
+  );
 
   after(() => fs.rmdir(hexo.base_dir));
 
@@ -34,11 +38,7 @@ describe('config', () => {
   });
 
   it('type: create', () => {
-    const body = [
-      'name:',
-      '  first: John',
-      '  last: Doe'
-    ].join('\n');
+    const body = ['name:', '  first: John', '  last: Doe'].join('\n');
 
     const file = newFile({
       path: '_config.yml',
@@ -46,14 +46,18 @@ describe('config', () => {
       content: body
     });
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      hexo.theme.config.should.eql({
-        name: {first: 'John', last: 'Doe'}
+    return fs
+      .writeFile(file.source, body)
+      .then(() => process(file))
+      .then(() => {
+        hexo.theme.config.should.eql({
+          name: { first: 'John', last: 'Doe' }
+        });
+      })
+      .finally(() => {
+        hexo.theme.config = {};
+        return fs.unlink(file.source);
       });
-    }).finally(() => {
-      hexo.theme.config = {};
-      return fs.unlink(file.source);
-    });
   });
 
   it('type: delete', () => {
@@ -62,7 +66,7 @@ describe('config', () => {
       type: 'delete'
     });
 
-    hexo.theme.config = {foo: 'bar'};
+    hexo.theme.config = { foo: 'bar' };
 
     return process(file).then(() => {
       hexo.theme.config.should.eql({});
@@ -79,8 +83,11 @@ describe('config', () => {
       err.should.have.property('message', 'Theme config load failed.');
     });
 
-    return process(file).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
-    }).catch(() => {}); // Catch again because it throws error
+    return process(file)
+      .catch(errorCallback)
+      .finally(() => {
+        errorCallback.calledOnce.should.be.true;
+      })
+      .catch(() => {}); // Catch again because it throws error
   });
 });

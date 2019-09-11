@@ -2,10 +2,7 @@
 
 const util = require('hexo-util');
 
-const code = [
-  'if tired && night:',
-  '  sleep()'
-].join('\n');
+const code = ['if tired && night:', '  sleep()'].join('\n');
 
 const content = [
   '# Title',
@@ -28,7 +25,7 @@ exports.content = content;
 
 exports.expected = [
   '<h1 id="Title"><a href="#Title" class="headerlink" title="Title"></a>Title</h1>',
-  util.highlight(code, {lang: 'python'}),
+  util.highlight(code, { lang: 'python' }),
   '\n\n<p>some content</p>\n',
   '<h2 id="Another-title"><a href="#Another-title" class="headerlink" title="Another title"></a>Another title</h2>',
   '<blockquote>',
@@ -40,7 +37,7 @@ exports.expected = [
 
 exports.expected_disable_nunjucks = [
   '<h1 id="Title"><a href="#Title" class="headerlink" title="Title"></a>Title</h1>',
-  util.highlight(code, {lang: 'python'}),
+  util.highlight(code, { lang: 'python' }),
   '\n\n<p>some content</p>\n',
   '<h2 id="Another-title"><a href="#Another-title" class="headerlink" title="Another title"></a>Another title</h2>',
   '<p>{% blockquote %}<br>',

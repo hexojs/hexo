@@ -6,7 +6,9 @@ const Promise = require('bluebird');
 
 describe('i18n', () => {
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
+  const hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {
+    silent: true
+  });
   const processor = require('../../../lib/theme/processors/i18n');
   const process = Promise.method(processor.process.bind(hexo));
   const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
@@ -24,10 +26,12 @@ describe('i18n', () => {
     return new hexo.theme.File(options);
   }
 
-  before(() => Promise.all([
-    fs.mkdirs(themeDir),
-    fs.writeFile(hexo.config_path, 'theme: test')
-  ]).then(() => hexo.init()));
+  before(() =>
+    Promise.all([
+      fs.mkdirs(themeDir),
+      fs.writeFile(hexo.config_path, 'theme: test')
+    ]).then(() => hexo.init())
+  );
 
   after(() => fs.rmdir(hexo.base_dir));
 
@@ -40,23 +44,23 @@ describe('i18n', () => {
   });
 
   it('type: create', () => {
-    const body = [
-      'ok: OK',
-      'index:',
-      '  title: Home'
-    ].join('\n');
+    const body = ['ok: OK', 'index:', '  title: Home'].join('\n');
 
     const file = newFile({
       path: 'en.yml',
       type: 'create'
     });
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      const __ = hexo.theme.i18n.__('en');
+    return fs
+      .writeFile(file.source, body)
+      .then(() => process(file))
+      .then(() => {
+        const __ = hexo.theme.i18n.__('en');
 
-      __('ok').should.eql('OK');
-      __('index.title').should.eql('Home');
-    }).finally(() => fs.unlink(file.source));
+        __('ok').should.eql('OK');
+        __('index.title').should.eql('Home');
+      })
+      .finally(() => fs.unlink(file.source));
   });
 
   it('type: delete', () => {

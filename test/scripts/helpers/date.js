@@ -42,17 +42,29 @@ describe('date', () => {
 
     // page.lang
     ctx.page.lang = 'zh-tw';
-    date(Date.now(), 'MMM D YYYY').should.eql(moment().locale('zh-tw').format('MMM D YYYY'));
+    date(Date.now(), 'MMM D YYYY').should.eql(
+      moment()
+        .locale('zh-tw')
+        .format('MMM D YYYY')
+    );
     ctx.page.lang = '';
 
     // config.language
     ctx.config.language = 'ja';
-    date(Date.now(), 'MMM D YYYY').should.eql(moment().locale('ja').format('MMM D YYYY'));
+    date(Date.now(), 'MMM D YYYY').should.eql(
+      moment()
+        .locale('ja')
+        .format('MMM D YYYY')
+    );
     ctx.config.language = '';
 
     // timezone
     ctx.config.timezone = 'UTC';
-    date(Date.now(), 'LLL').should.eql(moment().tz('UTC').format('LLL'));
+    date(Date.now(), 'LLL').should.eql(
+      moment()
+        .tz('UTC')
+        .format('LLL')
+    );
     ctx.config.timezone = '';
   });
 
@@ -118,17 +130,29 @@ describe('date', () => {
 
     // page.lang
     ctx.page.lang = 'zh-tw';
-    time(Date.now(), 'A H:mm').should.eql(moment().locale('zh-tw').format('A H:mm'));
+    time(Date.now(), 'A H:mm').should.eql(
+      moment()
+        .locale('zh-tw')
+        .format('A H:mm')
+    );
     ctx.page.lang = '';
 
     // config.language
     ctx.config.language = 'ja';
-    time(Date.now(), 'A H:mm').should.eql(moment().locale('ja').format('A H:mm'));
+    time(Date.now(), 'A H:mm').should.eql(
+      moment()
+        .locale('ja')
+        .format('A H:mm')
+    );
     ctx.config.language = '';
 
     // timezone
     ctx.config.timezone = 'UTC';
-    time().should.eql(moment().tz('UTC').format(hexo.config.time_format));
+    time().should.eql(
+      moment()
+        .tz('UTC')
+        .format(hexo.config.time_format)
+    );
     ctx.config.timezone = '';
   });
 
@@ -141,7 +165,8 @@ describe('date', () => {
     };
 
     const fullDate = dateHelper.full_date.bind(ctx);
-    const fullDateFormat = hexo.config.date_format + ' ' + hexo.config.time_format;
+    const fullDateFormat =
+      hexo.config.date_format + ' ' + hexo.config.time_format;
 
     // now
     fullDate().should.eql(moment().format(fullDateFormat));
@@ -152,25 +177,41 @@ describe('date', () => {
 
     // date
     fullDate(new Date()).should.eql(moment().format(fullDateFormat));
-    fullDate(new Date(), 'MMM-D-YYYY').should.eql(moment().format('MMM-D-YYYY'));
+    fullDate(new Date(), 'MMM-D-YYYY').should.eql(
+      moment().format('MMM-D-YYYY')
+    );
 
     // number
     fullDate(Date.now()).should.eql(moment().format(fullDateFormat));
-    fullDate(Date.now(), 'MMM-D-YYYY').should.eql(moment().format('MMM-D-YYYY'));
+    fullDate(Date.now(), 'MMM-D-YYYY').should.eql(
+      moment().format('MMM-D-YYYY')
+    );
 
     // page.lang
     ctx.page.lang = 'zh-tw';
-    fullDate(Date.now(), 'LLL').should.eql(moment().locale('zh-tw').format('LLL'));
+    fullDate(Date.now(), 'LLL').should.eql(
+      moment()
+        .locale('zh-tw')
+        .format('LLL')
+    );
     ctx.page.lang = '';
 
     // config.language
     ctx.config.language = 'ja';
-    fullDate(Date.now(), 'LLL').should.eql(moment().locale('ja').format('LLL'));
+    fullDate(Date.now(), 'LLL').should.eql(
+      moment()
+        .locale('ja')
+        .format('LLL')
+    );
     ctx.config.language = '';
 
     // timezone
     ctx.config.timezone = 'UTC';
-    fullDate().should.eql(moment().tz('UTC').format(fullDateFormat));
+    fullDate().should.eql(
+      moment()
+        .tz('UTC')
+        .format(fullDateFormat)
+    );
     ctx.config.timezone = '';
   });
 
@@ -186,7 +227,13 @@ describe('date', () => {
     function result(date, format) {
       date = date || new Date();
       format = format || hexo.config.date_format;
-      return '<time datetime="' + moment(date).toISOString() + '">' + moment(date).format(format) + '</time>';
+      return (
+        '<time datetime="' +
+        moment(date).toISOString() +
+        '">' +
+        moment(date).format(format) +
+        '</time>'
+      );
     }
 
     function check(date, format) {
@@ -211,17 +258,41 @@ describe('date', () => {
 
     // page.lang
     ctx.page.lang = 'zh-tw';
-    timeTag(Date.now(), 'LLL').should.eql('<time datetime="' + moment().toISOString() + '">' + moment().locale('zh-tw').format('LLL') + '</time>');
+    timeTag(Date.now(), 'LLL').should.eql(
+      '<time datetime="' +
+        moment().toISOString() +
+        '">' +
+        moment()
+          .locale('zh-tw')
+          .format('LLL') +
+        '</time>'
+    );
     ctx.page.lang = '';
 
     // config.language
     ctx.config.language = 'ja';
-    timeTag(Date.now(), 'LLL').should.eql('<time datetime="' + moment().toISOString() + '">' + moment().locale('ja').format('LLL') + '</time>');
+    timeTag(Date.now(), 'LLL').should.eql(
+      '<time datetime="' +
+        moment().toISOString() +
+        '">' +
+        moment()
+          .locale('ja')
+          .format('LLL') +
+        '</time>'
+    );
     ctx.config.language = '';
 
     // timezone
     ctx.config.timezone = 'UTC';
-    timeTag(Date.now(), 'LLL').should.eql('<time datetime="' + moment().toISOString() + '">' + moment().tz('UTC').format('LLL') + '</time>');
+    timeTag(Date.now(), 'LLL').should.eql(
+      '<time datetime="' +
+        moment().toISOString() +
+        '">' +
+        moment()
+          .tz('UTC')
+          .format('LLL') +
+        '</time>'
+    );
     ctx.config.timezone = '';
   });
 });

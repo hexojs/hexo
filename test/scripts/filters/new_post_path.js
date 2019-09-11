@@ -11,7 +11,9 @@ const NEW_POST_NAME = ':title.md';
 describe('new_post_path', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo(pathFn.join(__dirname, 'new_post_path_test'));
-  const newPostPath = require('../../../lib/plugins/filter/new_post_path').bind(hexo);
+  const newPostPath = require('../../../lib/plugins/filter/new_post_path').bind(
+    hexo
+  );
   const sourceDir = hexo.source_dir;
   const draftDir = pathFn.join(sourceDir, '_drafts');
   const postDir = pathFn.join(sourceDir, '_posts');
@@ -24,39 +26,44 @@ describe('new_post_path', () => {
 
   after(() => fs.rmdir(hexo.base_dir));
 
-  it('page layout + path', () => newPostPath({
-    path: 'foo',
-    layout: 'page'
-  }).then(target => {
-    target.should.eql(pathFn.join(sourceDir, 'foo.md'));
-  }));
+  it('page layout + path', () =>
+    newPostPath({
+      path: 'foo',
+      layout: 'page'
+    }).then(target => {
+      target.should.eql(pathFn.join(sourceDir, 'foo.md'));
+    }));
 
-  it('draft layout + path', () => newPostPath({
-    path: 'foo',
-    layout: 'draft'
-  }).then(target => {
-    target.should.eql(pathFn.join(draftDir, 'foo.md'));
-  }));
+  it('draft layout + path', () =>
+    newPostPath({
+      path: 'foo',
+      layout: 'draft'
+    }).then(target => {
+      target.should.eql(pathFn.join(draftDir, 'foo.md'));
+    }));
 
-  it('default layout + path', () => newPostPath({
-    path: 'foo'
-  }).then(target => {
-    target.should.eql(pathFn.join(postDir, 'foo.md'));
-  }));
+  it('default layout + path', () =>
+    newPostPath({
+      path: 'foo'
+    }).then(target => {
+      target.should.eql(pathFn.join(postDir, 'foo.md'));
+    }));
 
-  it('page layout + slug', () => newPostPath({
-    slug: 'foo',
-    layout: 'page'
-  }).then(target => {
-    target.should.eql(pathFn.join(sourceDir, 'foo', 'index.md'));
-  }));
+  it('page layout + slug', () =>
+    newPostPath({
+      slug: 'foo',
+      layout: 'page'
+    }).then(target => {
+      target.should.eql(pathFn.join(sourceDir, 'foo', 'index.md'));
+    }));
 
-  it('draft layout + slug', () => newPostPath({
-    slug: 'foo',
-    layout: 'draft'
-  }).then(target => {
-    target.should.eql(pathFn.join(draftDir, 'foo.md'));
-  }));
+  it('draft layout + slug', () =>
+    newPostPath({
+      slug: 'foo',
+      layout: 'draft'
+    }).then(target => {
+      target.should.eql(pathFn.join(draftDir, 'foo.md'));
+    }));
 
   it('default layout + slug', () => {
     const now = moment();
@@ -65,7 +72,9 @@ describe('new_post_path', () => {
     return newPostPath({
       slug: 'foo'
     }).then(target => {
-      target.should.eql(pathFn.join(postDir, now.format('YYYY-MM-DD') + '-foo.md'));
+      target.should.eql(
+        pathFn.join(postDir, now.format('YYYY-MM-DD') + '-foo.md')
+      );
       hexo.config.new_post_name = NEW_POST_NAME;
     });
   });
@@ -78,7 +87,9 @@ describe('new_post_path', () => {
       slug: 'foo',
       date: date.toDate()
     }).then(target => {
-      target.should.eql(pathFn.join(postDir, date.format('YYYY-M-D') + '-foo.md'));
+      target.should.eql(
+        pathFn.join(postDir, date.format('YYYY-M-D') + '-foo.md')
+      );
       hexo.config.new_post_name = NEW_POST_NAME;
     });
   });
@@ -107,49 +118,63 @@ describe('new_post_path', () => {
     });
   });
 
-  it('don\'t append extension name if existed', () => newPostPath({
-    path: 'foo.markdown'
-  }).then(target => {
-    target.should.eql(pathFn.join(postDir, 'foo.markdown'));
-  }));
+  it("don't append extension name if existed", () =>
+    newPostPath({
+      path: 'foo.markdown'
+    }).then(target => {
+      target.should.eql(pathFn.join(postDir, 'foo.markdown'));
+    }));
 
   it('replace existing files', () => {
     const filename = 'test.md';
     const path = pathFn.join(postDir, filename);
 
-    return fs.writeFile(path, '').then(() => newPostPath({
-      path: filename
-    }, true)).then(target => {
-      target.should.eql(path);
-      return fs.unlink(path);
-    });
+    return fs
+      .writeFile(path, '')
+      .then(() =>
+        newPostPath(
+          {
+            path: filename
+          },
+          true
+        )
+      )
+      .then(target => {
+        target.should.eql(path);
+        return fs.unlink(path);
+      });
   });
 
   it('rename if target existed', () => {
-    const filename = [
-      'test.md',
-      'test-1.md',
-      'test-2.md',
-      'test-foo.md'
-    ];
+    const filename = ['test.md', 'test-1.md', 'test-2.md', 'test-foo.md'];
 
     const path = filename.map(item => pathFn.join(postDir, item));
 
-    return Promise.map(path, item => fs.writeFile(item, '')).then(() => newPostPath({
-      path: filename[0]
-    })).then(target => {
-      target.should.eql(pathFn.join(postDir, 'test-3.md'));
-      return path;
-    }).map(item => fs.unlink(item));
+    return Promise.map(path, item => fs.writeFile(item, ''))
+      .then(() =>
+        newPostPath({
+          path: filename[0]
+        })
+      )
+      .then(target => {
+        target.should.eql(pathFn.join(postDir, 'test-3.md'));
+        return path;
+      })
+      .map(item => fs.unlink(item));
   });
 
   it('data is required', () => {
     const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'Either data.path or data.slug is required!');
+      err.should.have.property(
+        'message',
+        'Either data.path or data.slug is required!'
+      );
     });
 
-    return newPostPath().catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
-    });
+    return newPostPath()
+      .catch(errorCallback)
+      .finally(() => {
+        errorCallback.calledOnce.should.be.true;
+      });
   });
 });

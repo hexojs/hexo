@@ -7,16 +7,15 @@ const defaultConfig = require('../../../lib/hexo/default_config');
 describe('Backtick code block', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
-  const codeBlock = require('../../../lib/plugins/filter/before_post_render/backtick_code_block').bind(hexo);
+  const codeBlock = require('../../../lib/plugins/filter/before_post_render/backtick_code_block').bind(
+    hexo
+  );
 
-  const code = [
-    'if (tired && night){',
-    '  sleep();',
-    '}'
-  ].join('\n');
+  const code = ['if (tired && night){', '  sleep();', '}'].join('\n');
 
   function highlight(code, options) {
-    return util.highlight(code, options || {})
+    return util
+      .highlight(code, options || {})
       .replace(/{/g, '&#123;')
       .replace(/}/g, '&#125;');
   }
@@ -27,13 +26,9 @@ describe('Backtick code block', () => {
   });
 
   it('disabled', () => {
-    const content = [
-      '``` js',
-      code,
-      '```'
-    ].join('\n');
+    const content = ['``` js', code, '```'].join('\n');
 
-    const data = {content};
+    const data = { content };
 
     hexo.config.highlight.enable = false;
     codeBlock(data);
@@ -41,13 +36,9 @@ describe('Backtick code block', () => {
   });
 
   it('with no config (disabled)', () => {
-    const content = [
-      '``` js',
-      code,
-      '```'
-    ].join('\n');
+    const content = ['``` js', code, '```'].join('\n');
 
-    const data = {content};
+    const data = { content };
 
     const oldConfig = hexo.config.highlight;
     delete hexo.config.highlight;
@@ -60,24 +51,18 @@ describe('Backtick code block', () => {
 
   it('default', () => {
     const data = {
-      content: [
-        '``` js',
-        code,
-        '```'
-      ].join('\n')
+      content: ['``` js', code, '```'].join('\n')
     };
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + highlight(code, {lang: 'js'}) + '</escape>');
+    data.content.should.eql(
+      '<escape>' + highlight(code, { lang: 'js' }) + '</escape>'
+    );
   });
 
   it('without language name', () => {
     const data = {
-      content: [
-        '```',
-        code,
-        '```'
-      ].join('\n')
+      content: ['```', code, '```'].join('\n')
     };
 
     const expected = highlight(code);
@@ -88,11 +73,7 @@ describe('Backtick code block', () => {
 
   it('without language name - ignore tab character', () => {
     const data = {
-      content: [
-        '``` \t',
-        code,
-        '```'
-      ].join('\n')
+      content: ['``` \t', code, '```'].join('\n')
     };
 
     const expected = highlight(code);
@@ -103,11 +84,7 @@ describe('Backtick code block', () => {
 
   it('title', () => {
     const data = {
-      content: [
-        '``` js Hello world',
-        code,
-        '```'
-      ].join('\n')
+      content: ['``` js Hello world', code, '```'].join('\n')
     };
 
     const expected = highlight(code, {
@@ -121,11 +98,7 @@ describe('Backtick code block', () => {
 
   it('url', () => {
     const data = {
-      content: [
-        '``` js Hello world https://hexo.io/',
-        code,
-        '```'
-      ].join('\n')
+      content: ['``` js Hello world https://hexo.io/', code, '```'].join('\n')
     };
 
     const expected = highlight(code, {
@@ -139,11 +112,9 @@ describe('Backtick code block', () => {
 
   it('link text', () => {
     const data = {
-      content: [
-        '``` js Hello world https://hexo.io/ Hexo',
-        code,
-        '```'
-      ].join('\n')
+      content: ['``` js Hello world https://hexo.io/ Hexo', code, '```'].join(
+        '\n'
+      )
     };
 
     const expected = highlight(code, {
@@ -156,14 +127,15 @@ describe('Backtick code block', () => {
   });
 
   it('indent', () => {
-    const indentCode = code.split('\n').map(line => '  ' + line).join('\n');
+    const indentCode = code
+      .split('\n')
+      .map(line => '  ' + line)
+      .join('\n');
 
     const data = {
-      content: [
-        '``` js Hello world https://hexo.io/',
-        indentCode,
-        '```'
-      ].join('\n')
+      content: ['``` js Hello world https://hexo.io/', indentCode, '```'].join(
+        '\n'
+      )
     };
 
     const expected = highlight(code, {
@@ -179,11 +151,7 @@ describe('Backtick code block', () => {
     hexo.config.highlight.line_number = false;
 
     const data = {
-      content: [
-        '``` js',
-        code,
-        '```'
-      ].join('\n')
+      content: ['``` js', code, '```'].join('\n')
     };
 
     const expected = highlight(code, {
@@ -200,11 +168,7 @@ describe('Backtick code block', () => {
     hexo.config.highlight.first_line_number = 'always1';
 
     const data = {
-      content: [
-        '``` js',
-        code,
-        '```'
-      ].join('\n')
+      content: ['``` js', code, '```'].join('\n')
     };
 
     const expected = highlight(code, {
@@ -221,11 +185,7 @@ describe('Backtick code block', () => {
     hexo.config.highlight.first_line_number = 'inilne';
 
     const data = {
-      content: [
-        '``` js',
-        code,
-        '```'
-      ].join('\n')
+      content: ['``` js', code, '```'].join('\n')
     };
 
     const expected = highlight(code, {
@@ -241,11 +201,7 @@ describe('Backtick code block', () => {
     hexo.config.highlight.line_number = true;
 
     const data = {
-      content: [
-        '``` js',
-        code,
-        '```'
-      ].join('\n')
+      content: ['``` js', code, '```'].join('\n')
     };
 
     const expected = highlight(code, {
@@ -262,11 +218,7 @@ describe('Backtick code block', () => {
     hexo.config.highlight.first_line_number = 'always1';
 
     const data = {
-      content: [
-        '``` js=',
-        code,
-        '```'
-      ].join('\n')
+      content: ['``` js=', code, '```'].join('\n')
     };
 
     const expected = highlight(code, {
@@ -284,11 +236,7 @@ describe('Backtick code block', () => {
     hexo.config.highlight.first_line_number = 'inline';
 
     const data = {
-      content: [
-        '``` js',
-        code,
-        '```'
-      ].join('\n')
+      content: ['``` js', code, '```'].join('\n')
     };
 
     const expected = highlight(code, {
@@ -306,11 +254,7 @@ describe('Backtick code block', () => {
     hexo.config.highlight.first_line_number = 'inline';
 
     const data = {
-      content: [
-        '``` js=1',
-        code,
-        '```'
-      ].join('\n')
+      content: ['``` js=1', code, '```'].join('\n')
     };
 
     const expected = highlight(code, {
@@ -328,11 +272,7 @@ describe('Backtick code block', () => {
     hexo.config.highlight.first_line_number = 'inline';
 
     const data = {
-      content: [
-        '``` js=2',
-        code,
-        '```'
-      ].join('\n')
+      content: ['``` js=2', code, '```'].join('\n')
     };
 
     const expected = highlight(code, {
@@ -348,18 +288,10 @@ describe('Backtick code block', () => {
   it('tab replace', () => {
     hexo.config.highlight.tab_replace = '  ';
 
-    const code = [
-      'if (tired && night){',
-      '\tsleep();',
-      '}'
-    ].join('\n');
+    const code = ['if (tired && night){', '\tsleep();', '}'].join('\n');
 
     const data = {
-      content: [
-        '``` js',
-        code,
-        '```'
-      ].join('\n')
+      content: ['``` js', code, '```'].join('\n')
     };
 
     const expected = highlight(code, {

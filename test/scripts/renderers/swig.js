@@ -4,21 +4,18 @@ describe('swig', () => {
   const r = require('../../../lib/plugins/renderer/swig');
 
   it('normal', () => {
-    const body = [
-      'Hello {{ name }}!'
-    ].join('\n');
+    const body = ['Hello {{ name }}!'].join('\n');
 
-    r({text: body}, {
-      name: 'world'
-    }).should.eql('Hello world!');
+    r(
+      { text: body },
+      {
+        name: 'world'
+      }
+    ).should.eql('Hello world!');
   });
 
   it('override "for" tag', () => {
-    const body = [
-      '{% for x in arr %}',
-      '{{ x }}',
-      '{% endfor %}'
-    ].join('');
+    const body = ['{% for x in arr %}', '{{ x }}', '{% endfor %}'].join('');
 
     const data = {
       arr: {
@@ -28,13 +25,11 @@ describe('swig', () => {
       }
     };
 
-    r({text: body}, data).should.eql('123');
+    r({ text: body }, data).should.eql('123');
   });
 
   it('compile', () => {
-    const body = [
-      'Hello {{ name }}!'
-    ].join('\n');
+    const body = ['Hello {{ name }}!'].join('\n');
 
     const render = r.compile({
       text: body

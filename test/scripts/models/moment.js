@@ -9,48 +9,73 @@ describe('SchemaTypeMoment', () => {
   it('cast()', () => {
     type.cast(1e8).should.eql(moment(1e8));
     type.cast(new Date(2014, 1, 1)).should.eql(moment(new Date(2014, 1, 1)));
-    type.cast('2014-11-03T07:45:41.237Z').should.eql(moment('2014-11-03T07:45:41.237Z'));
-    type.cast(moment(1e8)).valueOf().should.eql(1e8);
+    type
+      .cast('2014-11-03T07:45:41.237Z')
+      .should.eql(moment('2014-11-03T07:45:41.237Z'));
+    type
+      .cast(moment(1e8))
+      .valueOf()
+      .should.eql(1e8);
   });
 
   it('cast() - default', () => {
-    const type = new SchemaTypeMoment('test', {default: moment});
+    const type = new SchemaTypeMoment('test', { default: moment });
     moment.isMoment(type.cast()).should.be.true;
   });
 
   it('cast() - language', () => {
     const lang = 'zh-tw';
     const format = 'LLLL';
-    const type = new SchemaTypeMoment('test', {language: lang});
+    const type = new SchemaTypeMoment('test', { language: lang });
     const now = Date.now();
 
-    type.cast(now).format(format).should.eql(moment(now).locale(lang).format(format));
+    type
+      .cast(now)
+      .format(format)
+      .should.eql(
+        moment(now)
+          .locale(lang)
+          .format(format)
+      );
   });
 
   it('cast() - timezone', () => {
     const timezone = 'Etc/UTC';
     const format = 'LLLL';
-    const type = new SchemaTypeMoment('test', {timezone});
+    const type = new SchemaTypeMoment('test', { timezone });
     const now = Date.now();
 
-    type.cast(now).format(format).should.eql(moment(now).tz(timezone).format(format));
+    type
+      .cast(now)
+      .format(format)
+      .should.eql(
+        moment(now)
+          .tz(timezone)
+          .format(format)
+      );
   });
 
   function shouldThrowError(value) {
     try {
       type.validate(value);
     } catch (err) {
-      err.should.have.property('message', '`' + value + '` is not a valid date!');
+      err.should.have.property(
+        'message',
+        '`' + value + '` is not a valid date!'
+      );
     }
   }
 
   it('validate()', () => {
-    type.validate(moment(1e8)).valueOf().should.eql(1e8);
+    type
+      .validate(moment(1e8))
+      .valueOf()
+      .should.eql(1e8);
     shouldThrowError(moment.invalid());
   });
 
   it('validate() - required', () => {
-    const type = new SchemaTypeMoment('test', {required: true});
+    const type = new SchemaTypeMoment('test', { required: true });
 
     try {
       type.validate();
@@ -75,12 +100,16 @@ describe('SchemaTypeMoment', () => {
   });
 
   it('parse()', () => {
-    type.parse('2014-11-03T07:45:41.237Z').should.eql(moment('2014-11-03T07:45:41.237Z'));
+    type
+      .parse('2014-11-03T07:45:41.237Z')
+      .should.eql(moment('2014-11-03T07:45:41.237Z'));
     should.not.exist(type.parse());
   });
 
   it('value()', () => {
-    type.value(moment('2014-11-03T07:45:41.237Z')).should.eql('2014-11-03T07:45:41.237Z');
+    type
+      .value(moment('2014-11-03T07:45:41.237Z'))
+      .should.eql('2014-11-03T07:45:41.237Z');
     should.not.exist(type.value());
   });
 
@@ -103,12 +132,18 @@ describe('SchemaTypeMoment', () => {
   });
 
   it('u$inc()', () => {
-    type.u$inc(moment(1e8), 1).valueOf().should.eql(1e8 + 1);
+    type
+      .u$inc(moment(1e8), 1)
+      .valueOf()
+      .should.eql(1e8 + 1);
     should.not.exist(undefined, 1);
   });
 
   it('u$dec()', () => {
-    type.u$dec(moment(1e8), 1).valueOf().should.eql(1e8 - 1);
+    type
+      .u$dec(moment(1e8), 1)
+      .valueOf()
+      .should.eql(1e8 - 1);
     should.not.exist(undefined, 1);
   });
 });

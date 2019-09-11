@@ -7,7 +7,9 @@ describe('Console list', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
   const Page = hexo.model('Page');
-  const listPages = require('../../../lib/plugins/console/list/page').bind(hexo);
+  const listPages = require('../../../lib/plugins/console/list/page').bind(
+    hexo
+  );
 
   hexo.config.permalink = ':title/';
   before(() => {
@@ -29,12 +31,12 @@ describe('Console list', () => {
     expect(console.log.calledWith(sinon.match('No pages.'))).to.be.true;
   });
 
-  it('page', () => Page.insert({
-    source: 'foo',
-    title: 'Hello World',
-    path: 'bar'
-  })
-    .then(() => {
+  it('page', () =>
+    Page.insert({
+      source: 'foo',
+      title: 'Hello World',
+      path: 'bar'
+    }).then(() => {
       listPages();
       expect(console.log.calledWith(sinon.match('Date'))).to.be.true;
       expect(console.log.calledWith(sinon.match('Title'))).to.be.true;

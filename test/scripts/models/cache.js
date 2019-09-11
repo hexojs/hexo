@@ -12,8 +12,10 @@ describe('Cache', () => {
       err.should.have.property('message', 'ID is not defined');
     });
 
-    return Cache.insert({}).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
-    });
+    return Cache.insert({})
+      .catch(errorCallback)
+      .finally(() => {
+        errorCallback.calledOnce.should.be.true;
+      });
   });
 });

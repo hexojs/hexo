@@ -33,16 +33,19 @@ describe('Console list', () => {
 
   it('tags', () => {
     const posts = [
-      {source: 'foo', slug: 'foo', title: 'Its', date: 1e8},
-      {source: 'bar', slug: 'bar', title: 'Math', date: 1e8 + 1},
-      {source: 'baz', slug: 'baz', title: 'Dude', date: 1e8 - 1}
+      { source: 'foo', slug: 'foo', title: 'Its', date: 1e8 },
+      { source: 'bar', slug: 'bar', title: 'Math', date: 1e8 + 1 },
+      { source: 'baz', slug: 'baz', title: 'Dude', date: 1e8 - 1 }
     ];
-    return hexo.init()
-      .then(() => Post.insert(posts)).then(posts => Promise.each([
-        ['foo'],
-        ['baz'],
-        ['baz']
-      ], (tags, i) => posts[i].setTags(tags))).then(() => {
+    return hexo
+      .init()
+      .then(() => Post.insert(posts))
+      .then(posts =>
+        Promise.each([['foo'], ['baz'], ['baz']], (tags, i) =>
+          posts[i].setTags(tags)
+        )
+      )
+      .then(() => {
         hexo.locals.invalidate();
       })
       .then(() => {

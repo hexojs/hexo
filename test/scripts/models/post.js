@@ -48,9 +48,11 @@ describe('Post', () => {
       err.should.have.property('message', '`source` is required!');
     });
 
-    return Post.insert({}).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
-    });
+    return Post.insert({})
+      .catch(errorCallback)
+      .finally(() => {
+        errorCallback.calledOnce.should.be.true;
+      });
   });
 
   it('slug - required', () => {
@@ -60,18 +62,21 @@ describe('Post', () => {
 
     return Post.insert({
       source: 'foo.md'
-    }).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
-    });
+    })
+      .catch(errorCallback)
+      .finally(() => {
+        errorCallback.calledOnce.should.be.true;
+      });
   });
 
-  it('path - virtual', () => Post.insert({
-    source: 'foo.md',
-    slug: 'bar'
-  }).then(data => {
-    data.path.should.eql(data.slug);
-    return Post.removeById(data._id);
-  }));
+  it('path - virtual', () =>
+    Post.insert({
+      source: 'foo.md',
+      slug: 'bar'
+    }).then(data => {
+      data.path.should.eql(data.slug);
+      return Post.removeById(data._id);
+    }));
 
   it('permalink - virtual', () => {
     hexo.config.root = '/';
@@ -121,53 +126,71 @@ describe('Post', () => {
     });
   });
 
-  it('full_source - virtual', () => Post.insert({
-    source: 'foo.md',
-    slug: 'bar'
-  }).then(data => {
-    data.full_source.should.eql(pathFn.join(hexo.source_dir, data.source));
-    return Post.removeById(data._id);
-  }));
+  it('full_source - virtual', () =>
+    Post.insert({
+      source: 'foo.md',
+      slug: 'bar'
+    }).then(data => {
+      data.full_source.should.eql(pathFn.join(hexo.source_dir, data.source));
+      return Post.removeById(data._id);
+    }));
 
-  it('asset_dir - virtual', () => Post.insert({
-    source: 'foo.md',
-    slug: 'bar'
-  }).then(data => {
-    data.asset_dir.should.eql(pathFn.join(hexo.source_dir, 'foo') + pathFn.sep);
-    return Post.removeById(data._id);
-  }));
+  it('asset_dir - virtual', () =>
+    Post.insert({
+      source: 'foo.md',
+      slug: 'bar'
+    }).then(data => {
+      data.asset_dir.should.eql(
+        pathFn.join(hexo.source_dir, 'foo') + pathFn.sep
+      );
+      return Post.removeById(data._id);
+    }));
 
-  it('tags - virtual', () => Post.insert({
-    source: 'foo.md',
-    slug: 'bar'
-  }).then(post => post.setTags(['foo', 'bar', 'baz'])
-    .thenReturn(Post.findById(post._id))).then(post => {
-    post.tags.map(tag => tag.name).should.have.members(['bar', 'baz', 'foo']);
+  it('tags - virtual', () =>
+    Post.insert({
+      source: 'foo.md',
+      slug: 'bar'
+    })
+      .then(post =>
+        post.setTags(['foo', 'bar', 'baz']).thenReturn(Post.findById(post._id))
+      )
+      .then(post => {
+        post.tags
+          .map(tag => tag.name)
+          .should.have.members(['bar', 'baz', 'foo']);
 
-    return Post.removeById(post._id);
-  }));
+        return Post.removeById(post._id);
+      }));
 
-  it('categories - virtual', () => Post.insert({
-    source: 'foo.md',
-    slug: 'bar'
-  }).then(post => post.setCategories(['foo', 'bar', 'baz'])
-    .thenReturn(Post.findById(post._id))).then(post => {
-    const cats = post.categories;
+  it('categories - virtual', () =>
+    Post.insert({
+      source: 'foo.md',
+      slug: 'bar'
+    })
+      .then(post =>
+        post
+          .setCategories(['foo', 'bar', 'baz'])
+          .thenReturn(Post.findById(post._id))
+      )
+      .then(post => {
+        const cats = post.categories;
 
-    // Make sure the order of categories is correct
-    cats.map((cat, i) => {
-      // Make sure the parent reference is correct
-      if (i) {
-        cat.parent.should.eql(cats.eq(i - 1)._id);
-      } else {
-        should.not.exist(cat.parent);
-      }
+        // Make sure the order of categories is correct
+        cats
+          .map((cat, i) => {
+            // Make sure the parent reference is correct
+            if (i) {
+              cat.parent.should.eql(cats.eq(i - 1)._id);
+            } else {
+              should.not.exist(cat.parent);
+            }
 
-      return cat.name;
-    }).should.eql(['foo', 'bar', 'baz']);
+            return cat.name;
+          })
+          .should.eql(['foo', 'bar', 'baz']);
 
-    return Post.removeById(post._id);
-  }));
+        return Post.removeById(post._id);
+      }));
 
   it('setTags() - old tags should be removed', () => {
     let id;
@@ -175,32 +198,41 @@ describe('Post', () => {
     return Post.insert({
       source: 'foo.md',
       slug: 'foo'
-    }).then(post => {
-      id = post._id;
-      return post.setTags(['foo', 'bar']);
-    }).then(() => {
-      const post = Post.findById(id);
-      return post.setTags(['bar', 'baz']);
-    }).then(() => {
-      const post = Post.findById(id);
+    })
+      .then(post => {
+        id = post._id;
+        return post.setTags(['foo', 'bar']);
+      })
+      .then(() => {
+        const post = Post.findById(id);
+        return post.setTags(['bar', 'baz']);
+      })
+      .then(() => {
+        const post = Post.findById(id);
 
-      post.tags.map(tag => tag.name).should.eql(['bar', 'baz']);
+        post.tags.map(tag => tag.name).should.eql(['bar', 'baz']);
 
-      return Post.removeById(id);
-    });
+        return Post.removeById(id);
+      });
   });
 
-  it('setTags() - sync problem', () => Post.insert([
-    {source: 'foo.md', slug: 'foo'},
-    {source: 'bar.md', slug: 'bar'}
-  ]).then(posts => Promise.all([
-    posts[0].setTags(['foo', 'bar']),
-    posts[1].setTags(['bar', 'baz'])
-  ]).thenReturn(posts)).then(posts => {
-    Tag.map(tag => tag.name).should.have.members(['foo', 'bar', 'baz']);
+  it('setTags() - sync problem', () =>
+    Post.insert([
+      { source: 'foo.md', slug: 'foo' },
+      { source: 'bar.md', slug: 'bar' }
+    ])
+      .then(posts =>
+        Promise.all([
+          posts[0].setTags(['foo', 'bar']),
+          posts[1].setTags(['bar', 'baz'])
+        ]).thenReturn(posts)
+      )
+      .then(posts => {
+        Tag.map(tag => tag.name).should.have.members(['foo', 'bar', 'baz']);
 
-    return posts;
-  }).map(post => Post.removeById(post._id)));
+        return posts;
+      })
+      .map(post => Post.removeById(post._id)));
 
   it('setTags() - empty tag', () => {
     let id;
@@ -208,14 +240,17 @@ describe('Post', () => {
     return Post.insert({
       source: 'foo.md',
       slug: 'foo'
-    }).then(post => {
-      id = post._id;
-      return post.setTags(['', undefined, null, false, 0, 'normal']);
-    }).then(() => {
-      const post = Post.findById(id);
+    })
+      .then(post => {
+        id = post._id;
+        return post.setTags(['', undefined, null, false, 0, 'normal']);
+      })
+      .then(() => {
+        const post = Post.findById(id);
 
-      post.tags.map(tag => tag.name).should.eql(['false', '0', 'normal']);
-    }).finally(() => Post.removeById(id));
+        post.tags.map(tag => tag.name).should.eql(['false', '0', 'normal']);
+      })
+      .finally(() => Post.removeById(id));
   });
 
   it('setCategories() - old categories should be removed', () => {
@@ -224,19 +259,22 @@ describe('Post', () => {
     return Post.insert({
       source: 'foo.md',
       slug: 'foo'
-    }).then(post => {
-      id = post._id;
-      return post.setCategories(['foo', 'bar']);
-    }).then(() => {
-      const post = Post.findById(id);
-      return post.setCategories(['foo', 'baz']);
-    }).then(() => {
-      const post = Post.findById(id);
+    })
+      .then(post => {
+        id = post._id;
+        return post.setCategories(['foo', 'bar']);
+      })
+      .then(() => {
+        const post = Post.findById(id);
+        return post.setCategories(['foo', 'baz']);
+      })
+      .then(() => {
+        const post = Post.findById(id);
 
-      post.categories.map(cat => cat.name).should.eql(['foo', 'baz']);
+        post.categories.map(cat => cat.name).should.eql(['foo', 'baz']);
 
-      return Post.removeById(id);
-    });
+        return Post.removeById(id);
+      });
   });
 
   it('setCategories() - shared category should be same', () => {
@@ -245,26 +283,33 @@ describe('Post', () => {
     return Post.insert({
       source: 'foo.md',
       slug: 'foo'
-    }).then(post => {
-      postIdA = post._id;
-      return post.setCategories(['foo', 'bar']);
-    }).then(() => Post.insert({
-      source: 'bar.md',
-      slug: 'bar'
-    }).then(post => {
-      postIdB = post._id;
-      return post.setCategories(['foo', 'bar']);
-    })).then(() => {
-      const postA = Post.findById(postIdA);
-      const postB = Post.findById(postIdB);
+    })
+      .then(post => {
+        postIdA = post._id;
+        return post.setCategories(['foo', 'bar']);
+      })
+      .then(() =>
+        Post.insert({
+          source: 'bar.md',
+          slug: 'bar'
+        }).then(post => {
+          postIdB = post._id;
+          return post.setCategories(['foo', 'bar']);
+        })
+      )
+      .then(() => {
+        const postA = Post.findById(postIdA);
+        const postB = Post.findById(postIdB);
 
-      postA.categories.map(cat => cat._id).should.eql(postB.categories.map(cat => cat._id));
+        postA.categories
+          .map(cat => cat._id)
+          .should.eql(postB.categories.map(cat => cat._id));
 
-      return Promise.all([
-        Post.removeById(postIdA),
-        Post.removeById(postIdB)
-      ]);
-    });
+        return Promise.all([
+          Post.removeById(postIdA),
+          Post.removeById(postIdB)
+        ]);
+      });
   });
 
   it('setCategories() - category not shared should be different', () => {
@@ -273,36 +318,41 @@ describe('Post', () => {
     return Post.insert({
       source: 'foo.md',
       slug: 'foo'
-    }).then(post => {
-      postIdA = post._id;
-      return post.setCategories(['foo', 'bar']);
-    }).then(() => Post.insert({
-      source: 'bar.md',
-      slug: 'bar'
-    }).then(post => {
-      postIdB = post._id;
-      return post.setCategories(['baz', 'bar']);
-    })).then(() => {
-      const postA = Post.findById(postIdA);
-      const postB = Post.findById(postIdB);
+    })
+      .then(post => {
+        postIdA = post._id;
+        return post.setCategories(['foo', 'bar']);
+      })
+      .then(() =>
+        Post.insert({
+          source: 'bar.md',
+          slug: 'bar'
+        }).then(post => {
+          postIdB = post._id;
+          return post.setCategories(['baz', 'bar']);
+        })
+      )
+      .then(() => {
+        const postA = Post.findById(postIdA);
+        const postB = Post.findById(postIdB);
 
-      const postCategoriesA = postA.categories.map(cat => cat._id);
+        const postCategoriesA = postA.categories.map(cat => cat._id);
 
-      const postCategoriesB = postB.categories.map(cat => cat._id);
+        const postCategoriesB = postB.categories.map(cat => cat._id);
 
-      postCategoriesA.forEach(catId => {
-        postCategoriesB.should.not.include(catId);
+        postCategoriesA.forEach(catId => {
+          postCategoriesB.should.not.include(catId);
+        });
+
+        postCategoriesB.forEach(catId => {
+          postCategoriesA.should.not.include(catId);
+        });
+
+        return Promise.all([
+          Post.removeById(postIdA),
+          Post.removeById(postIdB)
+        ]);
       });
-
-      postCategoriesB.forEach(catId => {
-        postCategoriesA.should.not.include(catId);
-      });
-
-      return Promise.all([
-        Post.removeById(postIdA),
-        Post.removeById(postIdB)
-      ]);
-    });
   });
 
   it('setCategories() - empty category', () => {
@@ -311,14 +361,17 @@ describe('Post', () => {
     return Post.insert({
       source: 'foo.md',
       slug: 'foo'
-    }).then(post => {
-      id = post._id;
-      return post.setCategories(['test', null]);
-    }).then(() => {
-      const post = Post.findById(id);
+    })
+      .then(post => {
+        id = post._id;
+        return post.setCategories(['test', null]);
+      })
+      .then(() => {
+        const post = Post.findById(id);
 
-      post.categories.map(cat => cat.name).should.eql(['test']);
-    }).finally(() => Post.removeById(id));
+        post.categories.map(cat => cat.name).should.eql(['test']);
+      })
+      .finally(() => Post.removeById(id));
   });
 
   it('setCategories() - empty category in middle', () => {
@@ -327,84 +380,117 @@ describe('Post', () => {
     return Post.insert({
       source: 'foo.md',
       slug: 'foo'
-    }).then(post => {
-      id = post._id;
-      return post.setCategories(['foo', null, 'bar']);
-    }).then(() => {
-      const post = Post.findById(id);
+    })
+      .then(post => {
+        id = post._id;
+        return post.setCategories(['foo', null, 'bar']);
+      })
+      .then(() => {
+        const post = Post.findById(id);
 
-      post.categories.map(cat => cat.name).should.eql(['foo', 'bar']);
-    }).finally(() => Post.removeById(id));
+        post.categories.map(cat => cat.name).should.eql(['foo', 'bar']);
+      })
+      .finally(() => Post.removeById(id));
   });
 
-  it('setCategories() - multiple hierarchies', () => Post.insert({
-    source: 'foo.md',
-    slug: 'bar'
-  }).then(post => post.setCategories([['foo', '', 'bar'], '', 'baz'])
-    .thenReturn(Post.findById(post._id))).then(post => {
-    const cats = post.categories.toArray();
+  it('setCategories() - multiple hierarchies', () =>
+    Post.insert({
+      source: 'foo.md',
+      slug: 'bar'
+    })
+      .then(post =>
+        post
+          .setCategories([['foo', '', 'bar'], '', 'baz'])
+          .thenReturn(Post.findById(post._id))
+      )
+      .then(post => {
+        const cats = post.categories.toArray();
 
-    // There should have been 3 categories set; blanks eliminated
-    cats.should.have.lengthOf(3);
+        // There should have been 3 categories set; blanks eliminated
+        cats.should.have.lengthOf(3);
 
-    // Category 1 should be foo, no parent
-    cats[0].name.should.eql('foo');
-    should.not.exist(cats[0].parent);
+        // Category 1 should be foo, no parent
+        cats[0].name.should.eql('foo');
+        should.not.exist(cats[0].parent);
 
-    // Category 2 should be bar, foo as parent
-    cats[1].name.should.eql('bar');
-    cats[1].parent.should.eql(cats[0]._id);
+        // Category 2 should be bar, foo as parent
+        cats[1].name.should.eql('bar');
+        cats[1].parent.should.eql(cats[0]._id);
 
-    // Category 3 should be baz, no parent
-    cats[2].name.should.eql('baz');
-    should.not.exist(cats[2].parent);
+        // Category 3 should be baz, no parent
+        cats[2].name.should.eql('baz');
+        should.not.exist(cats[2].parent);
 
-    return Post.removeById(post._id);
-  }));
+        return Post.removeById(post._id);
+      }));
 
-  it('setCategories() - multiple hierarchies (dedupes repeated parent)', () => Post.insert({
-    source: 'foo.md',
-    slug: 'bar'
-  }).then(post => post.setCategories([['foo', 'bar'], ['foo', 'baz']])
-    .thenReturn(Post.findById(post._id))).then(post => {
-    const cats = post.categories.toArray();
+  it('setCategories() - multiple hierarchies (dedupes repeated parent)', () =>
+    Post.insert({
+      source: 'foo.md',
+      slug: 'bar'
+    })
+      .then(post =>
+        post
+          .setCategories([['foo', 'bar'], ['foo', 'baz']])
+          .thenReturn(Post.findById(post._id))
+      )
+      .then(post => {
+        const cats = post.categories.toArray();
 
-    // There should have been 3 categories set (foo is dupe)
-    cats.should.have.lengthOf(3);
+        // There should have been 3 categories set (foo is dupe)
+        cats.should.have.lengthOf(3);
 
-    return Post.removeById(post._id);
-  }));
+        return Post.removeById(post._id);
+      }));
 
-  it('remove PostTag references when a post is removed', () => Post.insert({
-    source: 'foo.md',
-    slug: 'bar'
-  }).then(post => post.setTags(['foo', 'bar', 'baz'])
-    .thenReturn(Post.findById(post._id))).then(post => Post.removeById(post._id)).then(post => {
-    PostTag.find({post_id: post._id}).length.should.eql(0);
-    Tag.findOne({name: 'foo'}).posts.length.should.eql(0);
-    Tag.findOne({name: 'bar'}).posts.length.should.eql(0);
-    Tag.findOne({name: 'baz'}).posts.length.should.eql(0);
-  }));
+  it('remove PostTag references when a post is removed', () =>
+    Post.insert({
+      source: 'foo.md',
+      slug: 'bar'
+    })
+      .then(post =>
+        post.setTags(['foo', 'bar', 'baz']).thenReturn(Post.findById(post._id))
+      )
+      .then(post => Post.removeById(post._id))
+      .then(post => {
+        PostTag.find({ post_id: post._id }).length.should.eql(0);
+        Tag.findOne({ name: 'foo' }).posts.length.should.eql(0);
+        Tag.findOne({ name: 'bar' }).posts.length.should.eql(0);
+        Tag.findOne({ name: 'baz' }).posts.length.should.eql(0);
+      }));
 
-  it('remove PostCategory references when a post is removed', () => Post.insert({
-    source: 'foo.md',
-    slug: 'bar'
-  }).then(post => post.setCategories(['foo', 'bar', 'baz'])
-    .thenReturn(Post.findById(post._id))).then(post => Post.removeById(post._id)).then(post => {
-    PostCategory.find({post_id: post._id}).length.should.eql(0);
-    Category.findOne({name: 'foo'}).posts.length.should.eql(0);
-    Category.findOne({name: 'bar'}).posts.length.should.eql(0);
-    Category.findOne({name: 'baz'}).posts.length.should.eql(0);
-  }));
+  it('remove PostCategory references when a post is removed', () =>
+    Post.insert({
+      source: 'foo.md',
+      slug: 'bar'
+    })
+      .then(post =>
+        post
+          .setCategories(['foo', 'bar', 'baz'])
+          .thenReturn(Post.findById(post._id))
+      )
+      .then(post => Post.removeById(post._id))
+      .then(post => {
+        PostCategory.find({ post_id: post._id }).length.should.eql(0);
+        Category.findOne({ name: 'foo' }).posts.length.should.eql(0);
+        Category.findOne({ name: 'bar' }).posts.length.should.eql(0);
+        Category.findOne({ name: 'baz' }).posts.length.should.eql(0);
+      }));
 
-  it('remove related assets when a post is removed', () => Post.insert({
-    source: 'foo.md',
-    slug: 'bar'
-  }).then(post => Promise.all([
-    Asset.insert({_id: 'foo', path: 'foo'}),
-    Asset.insert({_id: 'bar', path: 'bar'}),
-    Asset.insert({_id: 'baz', path: 'bar'})
-  ]).thenReturn(post)).then(post => Post.removeById(post._id)).then(post => {
-    Asset.find({post: post._id}).length.should.eql(0);
-  }));
+  it('remove related assets when a post is removed', () =>
+    Post.insert({
+      source: 'foo.md',
+      slug: 'bar'
+    })
+      .then(post =>
+        Promise.all([
+          Asset.insert({ _id: 'foo', path: 'foo' }),
+          Asset.insert({ _id: 'bar', path: 'bar' }),
+          Asset.insert({ _id: 'baz', path: 'bar' })
+        ]).thenReturn(post)
+      )
+      .then(post => Post.removeById(post._id))
+      .then(post => {
+        Asset.find({ post: post._id }).length.should.eql(0);
+      }));
 });

@@ -9,18 +9,15 @@ describe('code', () => {
   const codeTag = require('../../../lib/plugins/tag/code')(hexo);
   const escapeHTML = util.escapeHTML;
 
-  const fixture = [
-    'if (tired && night){',
-    '  sleep();',
-    '}'
-  ].join('\n');
+  const fixture = ['if (tired && night){', '  sleep();', '}'].join('\n');
 
   function code(args, content) {
     return codeTag(args.split(' '), content);
   }
 
   function highlight(code, options) {
-    return util.highlight(code, options || {})
+    return util
+      .highlight(code, options || {})
       .replace(/{/g, '&#123;')
       .replace(/}/g, '&#125;');
   }
@@ -45,20 +42,26 @@ describe('code', () => {
 
   it('lang', () => {
     const result = code('lang:js', fixture);
-    result.should.eql(highlight(fixture, {
-      lang: 'js'
-    }));
+    result.should.eql(
+      highlight(fixture, {
+        lang: 'js'
+      })
+    );
   });
 
   it('line_number', () => {
     let result = code('line_number:false', fixture);
-    result.should.eql(highlight(fixture, {
-      gutter: false
-    }));
+    result.should.eql(
+      highlight(fixture, {
+        gutter: false
+      })
+    );
     result = code('line_number:true', fixture);
-    result.should.eql(highlight(fixture, {
-      gutter: true
-    }));
+    result.should.eql(
+      highlight(fixture, {
+        gutter: true
+      })
+    );
   });
 
   it('highlight disable', () => {
@@ -68,9 +71,11 @@ describe('code', () => {
 
   it('title', () => {
     const result = code('Hello world', fixture);
-    result.should.eql(highlight(fixture, {
-      caption: '<span>Hello world</span>'
-    }));
+    result.should.eql(
+      highlight(fixture, {
+        caption: '<span>Hello world</span>'
+      })
+    );
   });
 
   it('link', () => {
@@ -102,33 +107,39 @@ describe('code', () => {
 
   it('first_line', () => {
     let result = code('first_line:1234', fixture);
-    result.should.eql(highlight(fixture, {
-      firstLine: 1234
-    }));
+    result.should.eql(
+      highlight(fixture, {
+        firstLine: 1234
+      })
+    );
     result = code('', fixture);
-    result.should.eql(highlight(fixture, {
-      firstLine: 1
-    }));
+    result.should.eql(
+      highlight(fixture, {
+        firstLine: 1
+      })
+    );
   });
 
   it('mark', () => {
     const source = [
-      'const http = require(\'http\');',
+      "const http = require('http');",
       '',
-      'const hostname = \'127.0.0.1\';',
+      "const hostname = '127.0.0.1';",
       'const port = 1337;',
       '',
       'http.createServer((req, res) => {',
-      '  res.writeHead(200, { \'Content-Type\': \'text/plain\' });',
-      '  res.end(\'Hello World\n\');',
+      "  res.writeHead(200, { 'Content-Type': 'text/plain' });",
+      "  res.end('Hello World\n');",
       '}).listen(port, hostname, () => {',
       '  console.log(`Server running at http://${hostname}:${port}/`);',
       '});'
     ].join('\n');
     const result = code('mark:1,7-8,10', source);
-    result.should.eql(highlight(source, {
-      mark: [1, 7, 8, 10]
-    }));
+    result.should.eql(
+      highlight(source, {
+        mark: [1, 7, 8, 10]
+      })
+    );
   });
 
   it('# lines', () => {

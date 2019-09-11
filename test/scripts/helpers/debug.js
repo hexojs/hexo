@@ -20,9 +20,15 @@ describe('debug', () => {
   });
 
   it('inspect deep object', () => {
-    const obj = { baz: { thud: 'narf', dur: { foo: 'bar', baz: { bang: 'zoom' } } } };
-    debug.inspectObject(obj, {depth: 2}).should.not.eql(inspect(obj, {depth: 5}));
-    debug.inspectObject(obj, {depth: 5}).should.eql(inspect(obj, {depth: 5}));
+    const obj = {
+      baz: { thud: 'narf', dur: { foo: 'bar', baz: { bang: 'zoom' } } }
+    };
+    debug
+      .inspectObject(obj, { depth: 2 })
+      .should.not.eql(inspect(obj, { depth: 5 }));
+    debug
+      .inspectObject(obj, { depth: 5 })
+      .should.eql(inspect(obj, { depth: 5 }));
   });
 
   it('log should print to console', () => {

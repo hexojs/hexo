@@ -10,9 +10,15 @@ describe('markdown', () => {
 
   const markdown = require('../../../lib/plugins/helper/markdown').bind(ctx);
 
-  before(() => hexo.init().then(() => hexo.loadPlugin(require.resolve('hexo-renderer-marked'))));
+  before(() =>
+    hexo
+      .init()
+      .then(() => hexo.loadPlugin(require.resolve('hexo-renderer-marked')))
+  );
 
   it('default', () => {
-    markdown('123456 **bold** and *italic*').should.eql('<p>123456 <strong>bold</strong> and <em>italic</em></p>\n');
+    markdown('123456 **bold** and *italic*').should.eql(
+      '<p>123456 <strong>bold</strong> and <em>italic</em></p>\n'
+    );
   });
 });

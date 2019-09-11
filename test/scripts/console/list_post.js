@@ -8,7 +8,9 @@ describe('Console list', () => {
   const hexo = new Hexo(__dirname);
   const Post = hexo.model('Post');
 
-  const listPosts = require('../../../lib/plugins/console/list/post').bind(hexo);
+  const listPosts = require('../../../lib/plugins/console/list/post').bind(
+    hexo
+  );
 
   before(() => {
     const log = console.log;
@@ -33,12 +35,14 @@ describe('Console list', () => {
 
   it('post', () => {
     const posts = [
-      {source: 'foo', slug: 'foo', title: 'Its', date: 1e8},
-      {source: 'bar', slug: 'bar', title: 'Math', date: 1e8 + 1},
-      {source: 'baz', slug: 'baz', title: 'Dude', date: 1e8 - 1}
+      { source: 'foo', slug: 'foo', title: 'Its', date: 1e8 },
+      { source: 'bar', slug: 'bar', title: 'Math', date: 1e8 + 1 },
+      { source: 'baz', slug: 'baz', title: 'Dude', date: 1e8 - 1 }
     ];
-    return hexo.init()
-      .then(() => Post.insert(posts)).then(() => {
+    return hexo
+      .init()
+      .then(() => Post.insert(posts))
+      .then(() => {
         hexo.locals.invalidate();
       })
       .then(() => {
@@ -49,9 +53,11 @@ describe('Console list', () => {
         expect(console.log.calledWith(sinon.match('Category'))).to.be.true;
         expect(console.log.calledWith(sinon.match('Tags'))).to.be.true;
         for (let i = 0; i < posts.length; i++) {
-          expect(console.log.calledWith(sinon.match(posts[i].source))).to.be.true;
+          expect(console.log.calledWith(sinon.match(posts[i].source))).to.be
+            .true;
           expect(console.log.calledWith(sinon.match(posts[i].slug))).to.be.true;
-          expect(console.log.calledWith(sinon.match(posts[i].title))).to.be.true;
+          expect(console.log.calledWith(sinon.match(posts[i].title))).to.be
+            .true;
         }
       });
   });

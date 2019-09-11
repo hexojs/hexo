@@ -34,7 +34,7 @@ describe('Migrator', () => {
     const d = new Migrator();
 
     d.register('test', (args, callback) => {
-      args.should.eql({foo: 'bar'});
+      args.should.eql({ foo: 'bar' });
       callback(null, 'foo');
     });
 
@@ -49,7 +49,7 @@ describe('Migrator', () => {
     const d = new Migrator();
 
     d.register('test', args => {
-      args.should.eql({foo: 'bar'});
+      args.should.eql({ foo: 'bar' });
       return 'foo';
     });
 

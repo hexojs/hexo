@@ -22,15 +22,18 @@ describe('Router', () => {
     return new Promise((resolve, reject) => {
       const hash = crypto.createHash('sha1');
 
-      stream.on('readable', () => {
-        let chunk;
+      stream
+        .on('readable', () => {
+          let chunk;
 
-        while ((chunk = stream.read()) !== null) {
-          hash.update(chunk);
-        }
-      }).on('end', () => {
-        resolve(hash.digest('hex'));
-      }).on('error', reject);
+          while ((chunk = stream.read()) !== null) {
+            hash.update(chunk);
+          }
+        })
+        .on('end', () => {
+          resolve(hash.digest('hex'));
+        })
+        .on('error', reject);
     });
   }
 
@@ -156,15 +159,16 @@ describe('Router', () => {
       err.should.have.property('message', 'error test');
     });
 
-    return testUtil.stream.read(router.get('test')).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
-    });
+    return testUtil.stream
+      .read(router.get('test'))
+      .catch(errorCallback)
+      .finally(() => {
+        errorCallback.calledOnce.should.be.true;
+      });
   });
 
   it('get() - no data', () => {
-    router.set('test', () => {
-
-    });
+    router.set('test', () => {});
 
     return checkStream(router.get('test'), '');
   });
@@ -206,7 +210,7 @@ describe('Router', () => {
   });
 
   it('get() - export stringified JSON object', () => {
-    const obj = {foo: 1, bar: 2};
+    const obj = { foo: 1, bar: 2 };
 
     router.set('test', () => obj);
 

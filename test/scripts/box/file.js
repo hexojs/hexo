@@ -28,23 +28,29 @@ describe('File', () => {
   const path = 'test.yml';
 
   function makeFile(path, props) {
-    return new File(Object.assign({
-      source: pathFn.join(box.base, path),
-      path
-    }, props));
+    return new File(
+      Object.assign(
+        {
+          source: pathFn.join(box.base, path),
+          path
+        },
+        props
+      )
+    );
   }
 
   const file = makeFile(path, {
     source: pathFn.join(box.base, path),
     path,
     type: 'create',
-    params: {foo: 'bar'}
+    params: { foo: 'bar' }
   });
 
-  before(() => Promise.all([
-    fs.writeFile(file.source, body),
-    hexo.init()
-  ]).then(() => fs.stat(file.source)));
+  before(() =>
+    Promise.all([fs.writeFile(file.source, body), hexo.init()]).then(() =>
+      fs.stat(file.source)
+    )
+  );
 
   after(() => fs.rmdir(box.base));
 
@@ -62,12 +68,10 @@ describe('File', () => {
     file.readSync().should.eql(body);
   });
 
-  it('stat()', () => Promise.all([
-    fs.stat(file.source),
-    file.stat()
-  ]).then(stats => {
-    stats[0].should.eql(stats[1]);
-  }));
+  it('stat()', () =>
+    Promise.all([fs.stat(file.source), file.stat()]).then(stats => {
+      stats[0].should.eql(stats[1]);
+    }));
 
   it('stat() - callback', callback => {
     file.stat((err, fileStats) => {

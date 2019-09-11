@@ -45,7 +45,7 @@ describe('Console', () => {
     }
 
     // name, desc, options, fn
-    c.register('test', 'this is a test', {init: true}, () => {});
+    c.register('test', 'this is a test', { init: true }, () => {});
 
     c.get('test').should.exist;
     c.get('test').desc.should.eql('this is a test');
@@ -53,7 +53,7 @@ describe('Console', () => {
 
     // name, desc, options, not fn
     try {
-      c.register('test', 'this is a test', {init: true});
+      c.register('test', 'this is a test', { init: true });
     } catch (err) {
       err.should.be
         .instanceOf(TypeError)
@@ -78,7 +78,7 @@ describe('Console', () => {
     const c = new Console();
 
     c.register('test', (args, callback) => {
-      args.should.eql({foo: 'bar'});
+      args.should.eql({ foo: 'bar' });
       callback(null, 'foo');
     });
 

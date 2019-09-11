@@ -7,11 +7,15 @@ describe('gist', () => {
 
   it('id', () => {
     const $ = cheerio.load(gist(['foo']));
-    $('script').attr('src').should.eql('//gist.github.com/foo.js');
+    $('script')
+      .attr('src')
+      .should.eql('//gist.github.com/foo.js');
   });
 
   it('file', () => {
     const $ = cheerio.load(gist(['foo', 'bar']));
-    $('script').attr('src').should.eql('//gist.github.com/foo.js?file=bar');
+    $('script')
+      .attr('src')
+      .should.eql('//gist.github.com/foo.js?file=bar');
   });
 });

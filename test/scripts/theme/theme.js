@@ -6,13 +6,15 @@ const Promise = require('bluebird');
 
 describe('Theme', () => {
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(pathFn.join(__dirname, 'theme_test'), {silent: true});
+  const hexo = new Hexo(pathFn.join(__dirname, 'theme_test'), { silent: true });
   const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
 
-  before(() => Promise.all([
-    fs.mkdirs(themeDir),
-    fs.writeFile(hexo.config_path, 'theme: test')
-  ]).then(() => hexo.init()));
+  before(() =>
+    Promise.all([
+      fs.mkdirs(themeDir),
+      fs.writeFile(hexo.config_path, 'theme: test')
+    ]).then(() => hexo.init())
+  );
 
   after(() => fs.rmdir(hexo.base_dir));
 
@@ -34,7 +36,9 @@ describe('Theme', () => {
   it('getView() - escape backslashes', () => {
     hexo.theme.setView('foo/bar.swig', '');
 
-    hexo.theme.getView('foo\\bar.swig').should.have.property('path', 'foo/bar.swig');
+    hexo.theme
+      .getView('foo\\bar.swig')
+      .should.have.property('path', 'foo/bar.swig');
 
     hexo.theme.removeView('foo/bar.swig');
   });

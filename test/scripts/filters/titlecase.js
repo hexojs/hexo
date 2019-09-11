@@ -3,11 +3,13 @@
 describe('Titlecase', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
-  const titlecase = require('../../../lib/plugins/filter/before_post_render/titlecase').bind(hexo);
+  const titlecase = require('../../../lib/plugins/filter/before_post_render/titlecase').bind(
+    hexo
+  );
 
   it('disabled', () => {
     const title = 'Today is a good day';
-    const data = {title};
+    const data = { title };
     hexo.config.titlecase = false;
 
     titlecase(data);
@@ -16,7 +18,7 @@ describe('Titlecase', () => {
 
   it('enabled', () => {
     const title = 'Today is a good day';
-    const data = {title};
+    const data = { title };
     hexo.config.titlecase = true;
 
     titlecase(data);

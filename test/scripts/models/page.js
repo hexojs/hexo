@@ -35,9 +35,11 @@ describe('Page', () => {
       err.should.have.property('message', '`source` is required!');
     });
 
-    return Page.insert({}).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
-    });
+    return Page.insert({})
+      .catch(errorCallback)
+      .finally(() => {
+        errorCallback.calledOnce.should.be.true;
+      });
   });
 
   it('path - required', () => {
@@ -47,24 +49,28 @@ describe('Page', () => {
 
     return Page.insert({
       source: 'foo'
-    }).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
-    });
+    })
+      .catch(errorCallback)
+      .finally(() => {
+        errorCallback.calledOnce.should.be.true;
+      });
   });
 
-  it('permalink - virtual', () => Page.insert({
-    source: 'foo',
-    path: 'bar'
-  }).then(data => {
-    data.permalink.should.eql(hexo.config.url + '/' + data.path);
-    return Page.removeById(data._id);
-  }));
+  it('permalink - virtual', () =>
+    Page.insert({
+      source: 'foo',
+      path: 'bar'
+    }).then(data => {
+      data.permalink.should.eql(hexo.config.url + '/' + data.path);
+      return Page.removeById(data._id);
+    }));
 
-  it('full_source - virtual', () => Page.insert({
-    source: 'foo',
-    path: 'bar'
-  }).then(data => {
-    data.full_source.should.eql(pathFn.join(hexo.source_dir, data.source));
-    return Page.removeById(data._id);
-  }));
+  it('full_source - virtual', () =>
+    Page.insert({
+      source: 'foo',
+      path: 'bar'
+    }).then(data => {
+      data.full_source.should.eql(pathFn.join(hexo.source_dir, data.source));
+      return Page.removeById(data._id);
+    }));
 });

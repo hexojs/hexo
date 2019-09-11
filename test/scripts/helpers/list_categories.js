@@ -14,67 +14,82 @@ describe('list_categories', () => {
 
   ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
 
-  const listCategories = require('../../../lib/plugins/helper/list_categories').bind(ctx);
+  const listCategories = require('../../../lib/plugins/helper/list_categories').bind(
+    ctx
+  );
 
-  before(() => hexo.init().then(() => Post.insert([
-    {source: 'foo', slug: 'foo'},
-    {source: 'bar', slug: 'bar'},
-    {source: 'baz', slug: 'baz'},
-    {source: 'boo', slug: 'boo'},
-    {source: 'bat', slug: 'bat'}
-  ])).then(posts => Promise.each([
-    ['baz'],
-    ['baz', 'bar'],
-    ['foo'],
-    ['baz'],
-    ['bat', ['baz', 'bar']]
-  ], (cats, i) => posts[i].setCategories(cats))).then(() => {
-    hexo.locals.invalidate();
-    ctx.site = hexo.locals.toObject();
-    ctx.page = ctx.site.posts.data[1];
-  }));
+  before(() =>
+    hexo
+      .init()
+      .then(() =>
+        Post.insert([
+          { source: 'foo', slug: 'foo' },
+          { source: 'bar', slug: 'bar' },
+          { source: 'baz', slug: 'baz' },
+          { source: 'boo', slug: 'boo' },
+          { source: 'bat', slug: 'bat' }
+        ])
+      )
+      .then(posts =>
+        Promise.each(
+          [['baz'], ['baz', 'bar'], ['foo'], ['baz'], ['bat', ['baz', 'bar']]],
+          (cats, i) => posts[i].setCategories(cats)
+        )
+      )
+      .then(() => {
+        hexo.locals.invalidate();
+        ctx.site = hexo.locals.toObject();
+        ctx.page = ctx.site.posts.data[1];
+      })
+  );
 
   it('default', () => {
     const result = listCategories();
 
-    result.should.eql([
-      '<ul class="category-list">',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/bat/">bat</a><span class="category-list-count">1</span>',
-      '</li>',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/baz/">baz</a><span class="category-list-count">4</span>',
-      '<ul class="category-list-child">',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/baz/bar/">bar</a><span class="category-list-count">2</span>',
-      '</li>',
-      '</ul>',
-      '</li>',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/foo/">foo</a><span class="category-list-count">1</span>',
-      '</li>',
-      '</ul>'
-    ].join(''));
+    result.should.eql(
+      [
+        '<ul class="category-list">',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/bat/">bat</a><span class="category-list-count">1</span>',
+        '</li>',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/baz/">baz</a><span class="category-list-count">4</span>',
+        '<ul class="category-list-child">',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/baz/bar/">bar</a><span class="category-list-count">2</span>',
+        '</li>',
+        '</ul>',
+        '</li>',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/foo/">foo</a><span class="category-list-count">1</span>',
+        '</li>',
+        '</ul>'
+      ].join('')
+    );
   });
 
   it('specified collection', () => {
-    const result = listCategories(Category.find({
-      parent: {$exists: false}
-    }));
+    const result = listCategories(
+      Category.find({
+        parent: { $exists: false }
+      })
+    );
 
-    result.should.eql([
-      '<ul class="category-list">',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/bat/">bat</a><span class="category-list-count">1</span>',
-      '</li>',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/baz/">baz</a><span class="category-list-count">4</span>',
-      '</li>',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/foo/">foo</a><span class="category-list-count">1</span>',
-      '</li>',
-      '</ul>'
-    ].join(''));
+    result.should.eql(
+      [
+        '<ul class="category-list">',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/bat/">bat</a><span class="category-list-count">1</span>',
+        '</li>',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/baz/">baz</a><span class="category-list-count">4</span>',
+        '</li>',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/foo/">foo</a><span class="category-list-count">1</span>',
+        '</li>',
+        '</ul>'
+      ].join('')
+    );
   });
 
   it('style: false', () => {
@@ -82,12 +97,14 @@ describe('list_categories', () => {
       style: false
     });
 
-    result.should.eql([
-      '<a class="category-link" href="/categories/bat/">bat<span class="category-count">1</span></a>',
-      '<a class="category-link" href="/categories/baz/">baz<span class="category-count">4</span></a>',
-      '<a class="category-link" href="/categories/baz/bar/">bar<span class="category-count">2</span></a>',
-      '<a class="category-link" href="/categories/foo/">foo<span class="category-count">1</span></a>'
-    ].join(', '));
+    result.should.eql(
+      [
+        '<a class="category-link" href="/categories/bat/">bat<span class="category-count">1</span></a>',
+        '<a class="category-link" href="/categories/baz/">baz<span class="category-count">4</span></a>',
+        '<a class="category-link" href="/categories/baz/bar/">bar<span class="category-count">2</span></a>',
+        '<a class="category-link" href="/categories/foo/">foo<span class="category-count">1</span></a>'
+      ].join(', ')
+    );
   });
 
   it('show_count: false', () => {
@@ -95,24 +112,26 @@ describe('list_categories', () => {
       show_count: false
     });
 
-    result.should.eql([
-      '<ul class="category-list">',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/bat/">bat</a>',
-      '</li>',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/baz/">baz</a>',
-      '<ul class="category-list-child">',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/baz/bar/">bar</a>',
-      '</li>',
-      '</ul>',
-      '</li>',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/foo/">foo</a>',
-      '</li>',
-      '</ul>'
-    ].join(''));
+    result.should.eql(
+      [
+        '<ul class="category-list">',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/bat/">bat</a>',
+        '</li>',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/baz/">baz</a>',
+        '<ul class="category-list-child">',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/baz/bar/">bar</a>',
+        '</li>',
+        '</ul>',
+        '</li>',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/foo/">foo</a>',
+        '</li>',
+        '</ul>'
+      ].join('')
+    );
   });
 
   it('class', () => {
@@ -120,24 +139,26 @@ describe('list_categories', () => {
       class: 'test'
     });
 
-    result.should.eql([
-      '<ul class="test-list">',
-      '<li class="test-list-item">',
-      '<a class="test-list-link" href="/categories/bat/">bat</a><span class="test-list-count">1</span>',
-      '</li>',
-      '<li class="test-list-item">',
-      '<a class="test-list-link" href="/categories/baz/">baz</a><span class="test-list-count">4</span>',
-      '<ul class="test-list-child">',
-      '<li class="test-list-item">',
-      '<a class="test-list-link" href="/categories/baz/bar/">bar</a><span class="test-list-count">2</span>',
-      '</li>',
-      '</ul>',
-      '</li>',
-      '<li class="test-list-item">',
-      '<a class="test-list-link" href="/categories/foo/">foo</a><span class="test-list-count">1</span>',
-      '</li>',
-      '</ul>'
-    ].join(''));
+    result.should.eql(
+      [
+        '<ul class="test-list">',
+        '<li class="test-list-item">',
+        '<a class="test-list-link" href="/categories/bat/">bat</a><span class="test-list-count">1</span>',
+        '</li>',
+        '<li class="test-list-item">',
+        '<a class="test-list-link" href="/categories/baz/">baz</a><span class="test-list-count">4</span>',
+        '<ul class="test-list-child">',
+        '<li class="test-list-item">',
+        '<a class="test-list-link" href="/categories/baz/bar/">bar</a><span class="test-list-count">2</span>',
+        '</li>',
+        '</ul>',
+        '</li>',
+        '<li class="test-list-item">',
+        '<a class="test-list-link" href="/categories/foo/">foo</a><span class="test-list-count">1</span>',
+        '</li>',
+        '</ul>'
+      ].join('')
+    );
   });
 
   it('depth', () => {
@@ -145,19 +166,21 @@ describe('list_categories', () => {
       depth: 1
     });
 
-    result.should.eql([
-      '<ul class="category-list">',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/bat/">bat</a><span class="category-list-count">1</span>',
-      '</li>',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/baz/">baz</a><span class="category-list-count">4</span>',
-      '</li>',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/foo/">foo</a><span class="category-list-count">1</span>',
-      '</li>',
-      '</ul>'
-    ].join(''));
+    result.should.eql(
+      [
+        '<ul class="category-list">',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/bat/">bat</a><span class="category-list-count">1</span>',
+        '</li>',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/baz/">baz</a><span class="category-list-count">4</span>',
+        '</li>',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/foo/">foo</a><span class="category-list-count">1</span>',
+        '</li>',
+        '</ul>'
+      ].join('')
+    );
   });
 
   it('orderby', () => {
@@ -165,24 +188,26 @@ describe('list_categories', () => {
       orderby: 'length'
     });
 
-    result.should.eql([
-      '<ul class="category-list">',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/foo/">foo</a><span class="category-list-count">1</span>',
-      '</li>',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/bat/">bat</a><span class="category-list-count">1</span>',
-      '</li>',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/baz/">baz</a><span class="category-list-count">4</span>',
-      '<ul class="category-list-child">',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/baz/bar/">bar</a><span class="category-list-count">2</span>',
-      '</li>',
-      '</ul>',
-      '</li>',
-      '</ul>'
-    ].join(''));
+    result.should.eql(
+      [
+        '<ul class="category-list">',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/foo/">foo</a><span class="category-list-count">1</span>',
+        '</li>',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/bat/">bat</a><span class="category-list-count">1</span>',
+        '</li>',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/baz/">baz</a><span class="category-list-count">4</span>',
+        '<ul class="category-list-child">',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/baz/bar/">bar</a><span class="category-list-count">2</span>',
+        '</li>',
+        '</ul>',
+        '</li>',
+        '</ul>'
+      ].join('')
+    );
   });
 
   it('order', () => {
@@ -190,24 +215,26 @@ describe('list_categories', () => {
       order: -1
     });
 
-    result.should.eql([
-      '<ul class="category-list">',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/foo/">foo</a><span class="category-list-count">1</span>',
-      '</li>',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/baz/">baz</a><span class="category-list-count">4</span>',
-      '<ul class="category-list-child">',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/baz/bar/">bar</a><span class="category-list-count">2</span>',
-      '</li>',
-      '</ul>',
-      '</li>',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/bat/">bat</a><span class="category-list-count">1</span>',
-      '</li>',
-      '</ul>'
-    ].join(''));
+    result.should.eql(
+      [
+        '<ul class="category-list">',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/foo/">foo</a><span class="category-list-count">1</span>',
+        '</li>',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/baz/">baz</a><span class="category-list-count">4</span>',
+        '<ul class="category-list-child">',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/baz/bar/">bar</a><span class="category-list-count">2</span>',
+        '</li>',
+        '</ul>',
+        '</li>',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/bat/">bat</a><span class="category-list-count">1</span>',
+        '</li>',
+        '</ul>'
+      ].join('')
+    );
   });
 
   it('transform', () => {
@@ -217,24 +244,26 @@ describe('list_categories', () => {
       }
     });
 
-    result.should.eql([
-      '<ul class="category-list">',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/bat/">BAT</a><span class="category-list-count">1</span>',
-      '</li>',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/baz/">BAZ</a><span class="category-list-count">4</span>',
-      '<ul class="category-list-child">',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/baz/bar/">BAR</a><span class="category-list-count">2</span>',
-      '</li>',
-      '</ul>',
-      '</li>',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/foo/">FOO</a><span class="category-list-count">1</span>',
-      '</li>',
-      '</ul>'
-    ].join(''));
+    result.should.eql(
+      [
+        '<ul class="category-list">',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/bat/">BAT</a><span class="category-list-count">1</span>',
+        '</li>',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/baz/">BAZ</a><span class="category-list-count">4</span>',
+        '<ul class="category-list-child">',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/baz/bar/">BAR</a><span class="category-list-count">2</span>',
+        '</li>',
+        '</ul>',
+        '</li>',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/foo/">FOO</a><span class="category-list-count">1</span>',
+        '</li>',
+        '</ul>'
+      ].join('')
+    );
   });
 
   it('separator (blank)', () => {
@@ -243,12 +272,14 @@ describe('list_categories', () => {
       separator: ''
     });
 
-    result.should.eql([
-      '<a class="category-link" href="/categories/bat/">bat<span class="category-count">1</span></a>',
-      '<a class="category-link" href="/categories/baz/">baz<span class="category-count">4</span></a>',
-      '<a class="category-link" href="/categories/baz/bar/">bar<span class="category-count">2</span></a>',
-      '<a class="category-link" href="/categories/foo/">foo<span class="category-count">1</span></a>'
-    ].join(''));
+    result.should.eql(
+      [
+        '<a class="category-link" href="/categories/bat/">bat<span class="category-count">1</span></a>',
+        '<a class="category-link" href="/categories/baz/">baz<span class="category-count">4</span></a>',
+        '<a class="category-link" href="/categories/baz/bar/">bar<span class="category-count">2</span></a>',
+        '<a class="category-link" href="/categories/foo/">foo<span class="category-count">1</span></a>'
+      ].join('')
+    );
   });
 
   it('separator (non-blank)', () => {
@@ -257,12 +288,14 @@ describe('list_categories', () => {
       separator: '|'
     });
 
-    result.should.eql([
-      '<a class="category-link" href="/categories/bat/">bat<span class="category-count">1</span></a>|',
-      '<a class="category-link" href="/categories/baz/">baz<span class="category-count">4</span></a>|',
-      '<a class="category-link" href="/categories/baz/bar/">bar<span class="category-count">2</span></a>|',
-      '<a class="category-link" href="/categories/foo/">foo<span class="category-count">1</span></a>'
-    ].join(''));
+    result.should.eql(
+      [
+        '<a class="category-link" href="/categories/bat/">bat<span class="category-count">1</span></a>|',
+        '<a class="category-link" href="/categories/baz/">baz<span class="category-count">4</span></a>|',
+        '<a class="category-link" href="/categories/baz/bar/">bar<span class="category-count">2</span></a>|',
+        '<a class="category-link" href="/categories/foo/">foo<span class="category-count">1</span></a>'
+      ].join('')
+    );
   });
 
   it('children-indicator', () => {
@@ -270,24 +303,26 @@ describe('list_categories', () => {
       children_indicator: 'has-children'
     });
 
-    result.should.eql([
-      '<ul class="category-list">',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/bat/">bat</a><span class="category-list-count">1</span>',
-      '</li>',
-      '<li class="category-list-item has-children">',
-      '<a class="category-list-link" href="/categories/baz/">baz</a><span class="category-list-count">4</span>',
-      '<ul class="category-list-child">',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/baz/bar/">bar</a><span class="category-list-count">2</span>',
-      '</li>',
-      '</ul>',
-      '</li>',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/foo/">foo</a><span class="category-list-count">1</span>',
-      '</li>',
-      '</ul>'
-    ].join(''));
+    result.should.eql(
+      [
+        '<ul class="category-list">',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/bat/">bat</a><span class="category-list-count">1</span>',
+        '</li>',
+        '<li class="category-list-item has-children">',
+        '<a class="category-list-link" href="/categories/baz/">baz</a><span class="category-list-count">4</span>',
+        '<ul class="category-list-child">',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/baz/bar/">bar</a><span class="category-list-count">2</span>',
+        '</li>',
+        '</ul>',
+        '</li>',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/foo/">foo</a><span class="category-list-count">1</span>',
+        '</li>',
+        '</ul>'
+      ].join('')
+    );
   });
 
   it('show-current', () => {
@@ -295,23 +330,25 @@ describe('list_categories', () => {
       show_current: true
     });
 
-    result.should.eql([
-      '<ul class="category-list">',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/bat/">bat</a><span class="category-list-count">1</span>',
-      '</li>',
-      '<li class="category-list-item">',
-      '<a class="category-list-link current" href="/categories/baz/">baz</a><span class="category-list-count">4</span>',
-      '<ul class="category-list-child">',
-      '<li class="category-list-item">',
-      '<a class="category-list-link current" href="/categories/baz/bar/">bar</a><span class="category-list-count">2</span>',
-      '</li>',
-      '</ul>',
-      '</li>',
-      '<li class="category-list-item">',
-      '<a class="category-list-link" href="/categories/foo/">foo</a><span class="category-list-count">1</span>',
-      '</li>',
-      '</ul>'
-    ].join(''));
+    result.should.eql(
+      [
+        '<ul class="category-list">',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/bat/">bat</a><span class="category-list-count">1</span>',
+        '</li>',
+        '<li class="category-list-item">',
+        '<a class="category-list-link current" href="/categories/baz/">baz</a><span class="category-list-count">4</span>',
+        '<ul class="category-list-child">',
+        '<li class="category-list-item">',
+        '<a class="category-list-link current" href="/categories/baz/bar/">bar</a><span class="category-list-count">2</span>',
+        '</li>',
+        '</ul>',
+        '</li>',
+        '<li class="category-list-item">',
+        '<a class="category-list-link" href="/categories/foo/">foo</a><span class="category-list-count">1</span>',
+        '</li>',
+        '</ul>'
+      ].join('')
+    );
   });
 });

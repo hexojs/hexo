@@ -63,7 +63,9 @@ describe('Filter', () => {
 
     f.register('test', () => {}, 15);
 
-    f.list('test').map(item => item.priority).should.eql([5, 10, 15]);
+    f.list('test')
+      .map(item => item.priority)
+      .should.eql([5, 10, 15]);
   });
 
   it('unregister()', () => {
@@ -151,7 +153,7 @@ describe('Filter', () => {
 
     const filter2 = sinon.spy(data => {
       filter1.calledOnce.should.be.true;
-      data.should.eql({foo: 1});
+      data.should.eql({ foo: 1 });
       data.bar = 2;
     });
 
@@ -161,7 +163,7 @@ describe('Filter', () => {
     return f.exec('test', {}).then(data => {
       filter1.calledOnce.should.be.true;
       filter2.calledOnce.should.be.true;
-      data.should.eql({foo: 1, bar: 2});
+      data.should.eql({ foo: 1, bar: 2 });
     });
   });
 
@@ -181,17 +183,23 @@ describe('Filter', () => {
     f.register('test', filter1);
     f.register('test', filter2);
 
-    return f.exec('test', {}, {
-      args: [1, 2]
-    }).then(() => {
-      filter1.calledOnce.should.be.true;
-      filter2.calledOnce.should.be.true;
-    });
+    return f
+      .exec(
+        'test',
+        {},
+        {
+          args: [1, 2]
+        }
+      )
+      .then(() => {
+        filter1.calledOnce.should.be.true;
+        filter2.calledOnce.should.be.true;
+      });
   });
 
   it('exec() - context', () => {
     const f = new Filter();
-    const ctx = {foo: 1, bar: 2};
+    const ctx = { foo: 1, bar: 2 };
 
     const filter1 = sinon.spy(function(data) {
       this.should.eql(ctx);
@@ -204,7 +212,7 @@ describe('Filter', () => {
     f.register('test', filter1);
     f.register('test', filter2);
 
-    return f.exec('test', {}, {context: ctx}).then(() => {
+    return f.exec('test', {}, { context: ctx }).then(() => {
       filter1.calledOnce.should.be.true;
       filter2.calledOnce.should.be.true;
     });
@@ -242,14 +250,14 @@ describe('Filter', () => {
 
     const filter2 = sinon.spy(data => {
       filter1.calledOnce.should.be.true;
-      data.should.eql({foo: 1});
+      data.should.eql({ foo: 1 });
       data.bar = 2;
     });
 
     f.register('test', filter1);
     f.register('test', filter2);
 
-    f.execSync('test', {}).should.eql({foo: 1, bar: 2});
+    f.execSync('test', {}).should.eql({ foo: 1, bar: 2 });
     filter1.calledOnce.should.be.true;
     filter2.calledOnce.should.be.true;
   });
@@ -270,9 +278,13 @@ describe('Filter', () => {
     f.register('test', filter1);
     f.register('test', filter2);
 
-    f.execSync('test', {}, {
-      args: [1, 2]
-    });
+    f.execSync(
+      'test',
+      {},
+      {
+        args: [1, 2]
+      }
+    );
 
     filter1.calledOnce.should.be.true;
     filter2.calledOnce.should.be.true;
@@ -280,7 +292,7 @@ describe('Filter', () => {
 
   it('execSync() - context', () => {
     const f = new Filter();
-    const ctx = {foo: 1, bar: 2};
+    const ctx = { foo: 1, bar: 2 };
 
     const filter1 = sinon.spy(function(data) {
       this.should.eql(ctx);
@@ -293,7 +305,7 @@ describe('Filter', () => {
     f.register('test', filter1);
     f.register('test', filter2);
 
-    f.execSync('test', {}, {context: ctx});
+    f.execSync('test', {}, { context: ctx });
     filter1.calledOnce.should.be.true;
     filter2.calledOnce.should.be.true;
   });

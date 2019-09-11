@@ -11,6 +11,6 @@ describe('json', () => {
       }
     };
 
-    r({text: JSON.stringify(data)}).should.eql(data);
+    r({ text: JSON.stringify(data) }).should.eql(data);
   });
 });

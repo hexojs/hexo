@@ -7,7 +7,9 @@ const PERMALINK = ':year/:month/:day/:title/';
 describe('post_permalink', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
-  const postPermalink = require('../../../lib/plugins/filter/post_permalink').bind(hexo);
+  const postPermalink = require('../../../lib/plugins/filter/post_permalink').bind(
+    hexo
+  );
   const Post = hexo.model('Post');
   let post;
 
@@ -16,16 +18,22 @@ describe('post_permalink', () => {
   before(() => {
     let id;
 
-    return hexo.init().then(() => Post.insert({
-      source: 'foo.md',
-      slug: 'foo',
-      date: moment('2014-01-02')
-    })).then(post => {
-      id = post._id;
-      return post.setCategories(['foo', 'bar']);
-    }).then(() => {
-      post = Post.findById(id);
-    });
+    return hexo
+      .init()
+      .then(() =>
+        Post.insert({
+          source: 'foo.md',
+          slug: 'foo',
+          date: moment('2014-01-02')
+        })
+      )
+      .then(post => {
+        id = post._id;
+        return post.setCategories(['foo', 'bar']);
+      })
+      .then(() => {
+        post = Post.findById(id);
+      });
   });
 
   it('default', () => {

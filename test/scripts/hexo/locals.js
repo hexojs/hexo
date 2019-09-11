@@ -92,7 +92,7 @@ describe('Locals', () => {
     locals.set('foo', 'foo');
     locals.set('bar', 'bar');
     locals.remove('bar');
-    locals.toObject().should.eql({foo: 'foo'});
+    locals.toObject().should.eql({ foo: 'foo' });
   });
 
   it('invalidate()', () => {
