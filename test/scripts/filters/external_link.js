@@ -178,9 +178,7 @@ describe('External link - post', () => {
   };
 
   it('disabled', () => {
-    const content = 'foo'
-      + '<a href="https://hexo.io/">Hexo</a>'
-      + 'bar';
+    const content = 'foo<a href="https://hexo.io/">Hexo</a>bar';
 
     const data = {content};
     hexo.config.external_link.enable = false;

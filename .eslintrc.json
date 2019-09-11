@@ -1,19 +1,6 @@
 {
   "extends": "hexo",
   "root": true,
-  "rules": {
-    "one-var": 0,
-    "operator-linebreak": [
-      2,
-      "after"
-    ],
-    "comma-spacing": [
-      2,
-      {
-        "after": true
-      }
-    ]
-  },
   "parserOptions": {
     "ecmaVersion": 2018
   }
