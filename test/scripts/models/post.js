@@ -122,7 +122,7 @@ describe('Post', () => {
   });
 
   it('permalink - canonical_url', () => {
-    hexo.config.trailing_url.trailing_index = false;
+    hexo.config.pretty_urls.trailing_index = false;
     return Post.insert({
       source: 'foo.md',
       slug: 'bar'

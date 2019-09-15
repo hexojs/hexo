@@ -105,7 +105,7 @@ describe('Category', () => {
   }));
 
   it('permalink - trailing_index', () => {
-    hexo.config.trailing_url.trailing_index = false;
+    hexo.config.pretty_urls.trailing_index = false;
     return Category.insert({
       name: 'foo'
     }).then(data => {

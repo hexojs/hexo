@@ -61,7 +61,7 @@ describe('Page', () => {
   }));
 
   it('permalink - canonical_url', () => {
-    hexo.config.trailing_url.trailing_index = false;
+    hexo.config.pretty_urls.trailing_index = false;
     return Page.insert({
       source: 'foo.md',
       path: 'bar/index.html'
