@@ -104,6 +104,7 @@ describe('Post', () => {
       slug: 'bar'
     }).then(data => {
       data.permalink.should.eql(hexo.config.url + '/' + data.path);
+      hexo.config.relative_link = false;
       return Post.removeById(data._id);
     });
   });

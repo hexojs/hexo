@@ -121,6 +121,7 @@ describe('Category', () => {
       name: 'bár'
     }).then(data => {
       data.permalink.should.eql('http://xn--fo-8ja.com/' + data.path);
+      hexo.config.url = 'http://yoursite.com';
       return Category.removeById(data._id);
     });
   });
