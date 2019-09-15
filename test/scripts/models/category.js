@@ -110,6 +110,7 @@ describe('Category', () => {
       name: 'foo'
     }).then(data => {
       data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/index\.html$/, ''));
+      hexo.config.pretty_urls.trailing_index = true;
       return Category.removeById(data._id);
     });
   });
