@@ -27,6 +27,10 @@ describe('post_link', () => {
     postLink(['foo', 'test']).should.eql('<a href="/foo/" title="test">test</a>');
   });
 
+  it('should escape tag in title by default', () => {
+    postLink(['title-with-tag']).should.eql('<a href="/title-with-tag/" title="&quot;Hello&quot; &lt;new world&gt;!">&quot;Hello&quot; &lt;new world&gt;!</a>');
+  });
+
   it('should escape tag in title', () => {
     postLink(['title-with-tag', 'true']).should.eql('<a href="/title-with-tag/" title="&quot;Hello&quot; &lt;new world&gt;!">&quot;Hello&quot; &lt;new world&gt;!</a>');
   });
@@ -37,10 +41,6 @@ describe('post_link', () => {
 
   it('should not escape tag in title', () => {
     postLink(['title-with-tag', 'false']).should.eql('<a href="/title-with-tag/" title="&quot;Hello&quot; &lt;new world&gt;!">"Hello" <new world>!</a>');
-  });
-
-  it('should not escape tag in title by default', () => {
-    postLink(['title-with-tag']).should.eql('<a href="/title-with-tag/" title="&quot;Hello&quot; &lt;new world&gt;!">"Hello" <new world>!</a>');
   });
 
   it('should not escape tag in custom title', () => {
