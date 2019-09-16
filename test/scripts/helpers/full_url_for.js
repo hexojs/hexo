@@ -2,18 +2,16 @@
 
 describe('full_url_for', () => {
   const ctx = {
-    config: {}
+    config: { url: 'https://example.com' }
   };
 
   const fullUrlFor = require('../../../lib/plugins/helper/full_url_for').bind(ctx);
 
-  it('internal url', () => {
-    ctx.config.root = '/';
-    fullUrlFor('index.html').should.eql(ctx.config.url + '/index.html');
-    fullUrlFor('/').should.eql(ctx.config.url + '/');
-    fullUrlFor('/index.html').should.eql(ctx.config.url + '/index.html');
+  it('no path input', () => {
+    fullUrlFor().should.eql(ctx.config.url + '/');
+  });
 
-    ctx.config.root = '/blog/';
+  it('internal url', () => {
     fullUrlFor('index.html').should.eql(ctx.config.url + '/index.html');
     fullUrlFor('/').should.eql(ctx.config.url + '/');
     fullUrlFor('/index.html').should.eql(ctx.config.url + '/index.html');
