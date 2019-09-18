@@ -89,6 +89,17 @@ describe('Tag', () => {
     return Tag.removeById(data._id);
   }));
 
+  it('permalink - trailing_index', () => {
+    hexo.config.pretty_urls.trailing_index = false;
+    return Tag.insert({
+      name: 'foo'
+    }).then(data => {
+      data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/index\.html$/, ''));
+      hexo.config.pretty_urls.trailing_index = true;
+      return Tag.removeById(data._id);
+    });
+  });
+
   it('posts - virtual', () => Post.insert([
     {source: 'foo.md', slug: 'foo'},
     {source: 'bar.md', slug: 'bar'},

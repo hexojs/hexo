@@ -121,6 +121,18 @@ describe('Post', () => {
     });
   });
 
+  it('permalink - trailing_index', () => {
+    hexo.config.pretty_urls.trailing_index = false;
+    return Post.insert({
+      source: 'foo.md',
+      slug: 'bar'
+    }).then(data => {
+      data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/index\.html$/, ''));
+      hexo.config.pretty_urls.trailing_index = true;
+      return Post.removeById(data._id);
+    });
+  });
+
   it('full_source - virtual', () => Post.insert({
     source: 'foo.md',
     slug: 'bar'
