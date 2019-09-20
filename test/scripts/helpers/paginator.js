@@ -280,4 +280,26 @@ describe('paginator', () => {
 
     result.should.eql('');
   });
+
+  it('escape', () => {
+    const result = paginator({
+      current: 2,
+      prev_text: '<i class="fa fa-angle-left"</i>',
+      next_text: '<i class="fa fa-angle-right"</i>',
+      escape: false
+    });
+
+    result.should.eql([
+      '<a class="extend prev" rel="prev" href="/">',
+      '<i class="fa fa-angle-left"</i></a>',
+      '<a class="page-number" href="/">1</a>',
+      '<span class="page-number current">2</span>',
+      '<a class="page-number" href="/page/3/">3</a>',
+      '<a class="page-number" href="/page/4/">4</a>',
+      '<span class="space">&hellip;</span>',
+      '<a class="page-number" href="/page/10/">10</a>',
+      '<a class="extend next" rel="next" href="/page/3/">',
+      '<i class="fa fa-angle-right"</i></a>'
+    ].join(''));
+  });
 });
