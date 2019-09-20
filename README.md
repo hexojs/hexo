@@ -70,6 +70,10 @@ Also, we welcome PR or issue to [official-plugins](https://github.com/hexojs).
 
 [![Backers](https://opencollective.com/hexo/tiers/backers.svg?avatarHeight=36&width=600)](https://opencollective.com/hexo)
 
+## Supported by
+
+[![JetBrains](/.github/jetbrains-variant-4.svg)](https://www.jetbrains.com)
+
 ## License
 
 MIT
