@@ -84,6 +84,18 @@ describe('Post', () => {
     });
   });
 
+  it('permalink - should be encoded', () => {
+    hexo.config.url = 'http://fôo.com';
+    return Post.insert({
+      source: 'foo.md',
+      slug: 'bár'
+    }).then(data => {
+      data.permalink.should.eql('http://xn--fo-8ja.com/b%C3%A1r');
+      hexo.config.url = 'http://yoursite.com';
+      return Post.removeById(data._id);
+    });
+  });
+
   it('permalink - virtual - when set relative_link', () => {
     hexo.config.root = '/';
     hexo.config.relative_link = true;
@@ -92,6 +104,7 @@ describe('Post', () => {
       slug: 'bar'
     }).then(data => {
       data.permalink.should.eql(hexo.config.url + '/' + data.path);
+      hexo.config.relative_link = false;
       return Post.removeById(data._id);
     });
   });

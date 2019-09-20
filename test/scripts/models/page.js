@@ -72,6 +72,18 @@ describe('Page', () => {
     });
   });
 
+  it('permalink - should be encoded', () => {
+    hexo.config.url = 'http://fôo.com';
+    return Page.insert({
+      source: 'foo',
+      path: 'bár'
+    }).then(data => {
+      data.permalink.should.eql('http://xn--fo-8ja.com/b%C3%A1r');
+      hexo.config.url = 'http://yoursite.com';
+      return Page.removeById(data._id);
+    });
+  });
+
   it('full_source - virtual', () => Page.insert({
     source: 'foo',
     path: 'bar'
