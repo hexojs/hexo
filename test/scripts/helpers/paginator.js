@@ -284,14 +284,14 @@ describe('paginator', () => {
   it('escape', () => {
     const result = paginator({
       current: 2,
-      prev_text: '<i class="fa fa-angle-left"</i>',
-      next_text: '<i class="fa fa-angle-right"</i>',
+      prev_text: '<foo>',
+      next_text: '<bar>',
       escape: false
     });
 
     result.should.eql([
       '<a class="extend prev" rel="prev" href="/">',
-      '<i class="fa fa-angle-left"</i></a>',
+      '<foo></a>',
       '<a class="page-number" href="/">1</a>',
       '<span class="page-number current">2</span>',
       '<a class="page-number" href="/page/3/">3</a>',
@@ -299,7 +299,7 @@ describe('paginator', () => {
       '<span class="space">&hellip;</span>',
       '<a class="page-number" href="/page/10/">10</a>',
       '<a class="extend next" rel="next" href="/page/3/">',
-      '<i class="fa fa-angle-right"</i></a>'
+      '<bar></a>'
     ].join(''));
   });
 });
