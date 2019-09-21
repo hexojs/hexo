@@ -280,6 +280,33 @@ describe('asset', () => {
     });
   });
 
+  it('page - use the date for updated if use_date_for_updated is set', () => {
+    const file = newFile({
+      path: 'hello.swig',
+      type: 'create',
+      renderable: true
+    });
+
+    hexo.config.use_date_for_updated = true;
+
+    return fs.writeFile(file.source, '').then(() => Promise.all([
+      fs.stat(file.source),
+      process(file)
+    ])).spread(stats => {
+      const page = Page.findOne({source: file.path});
+
+      page.date.toDate().should.eql(stats.ctime);
+      page.updated.toDate().should.eql(page.date.toDate());
+
+      return Promise.all([
+        page.remove(),
+        fs.unlink(file.source)
+      ]);
+    }).finally(() => {
+      hexo.config.use_date_for_updated = undefined;
+    });
+  });
+
   it('page - permalink', () => {
     const body = [
       'title: "Hello world"',
@@ -449,7 +476,7 @@ describe('asset', () => {
       const page = Page.findOne({source: file.path});
 
       page.date.toDate().should.eql(stats.ctime);
-      page.updated.toDate().should.eql(stats.mtime);
+      page.updated.toDate().should.eql(page.date.toDate());
 
       return Promise.all([
         page.remove(),

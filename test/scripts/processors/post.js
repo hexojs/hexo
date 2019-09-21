@@ -537,6 +537,37 @@ describe('post', () => {
     }).finally(() => fs.unlink(file.source));
   });
 
+  it('post - use date when no updated and use_date_for_updated', () => {
+    const body = [
+      'title: "Hello world"',
+      '---'
+    ].join('\n');
+
+    const file = newFile({
+      path: 'foo.html',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+
+    hexo.config.use_date_for_updated = true;
+
+    return fs.writeFile(file.source, body).then(() => Promise.all([
+      file.stat(),
+      process(file)
+    ])).spread(stats => {
+      const post = Post.findOne({source: file.path});
+
+      post.date.toDate().setMilliseconds(0).should.eql(stats.birthtime.setMilliseconds(0));
+      post.updated.toDate().setMilliseconds(0).should.eql(stats.birthtime.setMilliseconds(0));
+
+      return post.remove();
+    }).finally(() => {
+      hexo.config.use_date_for_updated = undefined;
+      fs.unlink(file.source);
+    });
+  });
+
   it('post - photo is an alias for photos', () => {
     const body = [
       'title: "Hello world"',
