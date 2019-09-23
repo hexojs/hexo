@@ -114,9 +114,10 @@ describe('open_graph', () => {
   });
 
   it('url - should not ends with index.html', () => {
+    hexo.config.pretty_urls.trailing_index = false;
     const result = openGraph.call({
       page: {},
-      config: { pretty_urls: { trailing_index: false } },
+      config: hexo.config,
       is_post: isPost,
       url: 'http://yoursite.com/page/index.html'
     });
@@ -124,6 +125,8 @@ describe('open_graph', () => {
     const $ = cheerio.load(result);
 
     $('meta[property="og:url"]').attr('content').endsWith('index.html').should.be.false;
+
+    hexo.config.pretty_urls.trailing_index = true;
   });
 
   it('images - content', () => {
