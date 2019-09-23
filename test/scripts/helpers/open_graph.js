@@ -116,7 +116,7 @@ describe('open_graph', () => {
   it('url - should not ends with index.html', () => {
     const result = openGraph.call({
       page: {},
-      config: hexo.config,
+      config: { pretty_urls: { trailing_index: false } },
       is_post: isPost,
       url: 'http://yoursite.com/page/index.html'
     });
