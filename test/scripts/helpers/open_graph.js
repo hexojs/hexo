@@ -418,7 +418,7 @@ describe('open_graph', () => {
   it('updated - options', () => {
     const result = openGraph.call({
       page: { updated: moment('2016-05-23T21:20:21.372Z') },
-      config: {},
+      config: hexo.config,
       is_post: isPost
     }, { });
 
@@ -428,7 +428,7 @@ describe('open_graph', () => {
   it('updated - options - allow overriding og:updated_time', () => {
     const result = openGraph.call({
       page: { updated: moment('2016-05-23T21:20:21.372Z') },
-      config: {},
+      config: hexo.config,
       is_post: isPost
     }, { updated: moment('2015-04-22T20:19:20.371Z') });
 
@@ -438,7 +438,7 @@ describe('open_graph', () => {
   it('updated - options - allow disabling og:updated_time', () => {
     const result = openGraph.call({
       page: { updated: moment('2016-05-23T21:20:21.372Z') },
-      config: {},
+      config: hexo.config,
       is_post: isPost
     }, { updated: false });
 
@@ -448,7 +448,7 @@ describe('open_graph', () => {
   it('description - do not add /(?:og:)?description/ meta tags if there is no description', () => {
     const result = openGraph.call({
       page: { },
-      config: {},
+      config: hexo.config,
       is_post: isPost
     }, { });
 
@@ -459,7 +459,7 @@ describe('open_graph', () => {
   it('keywords - page keywords string', () => {
     const ctx = {
       page: { keywords: 'optimize,web' },
-      config: {},
+      config: hexo.config,
       is_post: isPost
     };
 
@@ -472,7 +472,7 @@ describe('open_graph', () => {
   it('keywords - page keywords array', () => {
     const ctx = {
       page: { keywords: ['optimize', 'web'] },
-      config: {},
+      config: hexo.config,
       is_post: isPost
     };
 
@@ -485,7 +485,7 @@ describe('open_graph', () => {
   it('keywords - page tags', () => {
     const ctx = {
       page: { tags: ['optimize', 'web'] },
-      config: {},
+      config: hexo.config,
       is_post: isPost
     };
 
@@ -496,9 +496,10 @@ describe('open_graph', () => {
   });
 
   it('keywords - config keywords string', () => {
+    hexo.config.keywords = 'optimize,web';
     const ctx = {
       page: {},
-      config: { keywords: 'optimize,web' },
+      config: hexo.config,
       is_post: isPost
     };
 
@@ -509,9 +510,10 @@ describe('open_graph', () => {
   });
 
   it('keywords - config keywords array', () => {
+    hexo.config.keywords = ['optimize', 'web'];
     const ctx = {
       page: {},
-      config: { keywords: ['optimize', 'web'] },
+      config: hexo.config,
       is_post: isPost
     };
 
@@ -522,12 +524,13 @@ describe('open_graph', () => {
   });
 
   it('keywords - page keywords first', () => {
+    hexo.config.keywords = 'web5,web6';
     const ctx = {
       page: {
         keywords: ['web1', 'web2'],
         tags: ['web3', 'web4']
       },
-      config: { keywords: 'web5,web6' },
+      config: hexo.config,
       is_post: isPost
     };
 
@@ -538,9 +541,10 @@ describe('open_graph', () => {
   });
 
   it('keywords - page tags second', () => {
+    hexo.config.keywords = 'web5,web6';
     const ctx = {
       page: { tags: ['optimize', 'web'] },
-      config: { keywords: 'web5,web6' },
+      config: hexo.config,
       is_post: isPost
     };
 
@@ -551,9 +555,10 @@ describe('open_graph', () => {
   });
 
   it('keywords - page tags empty', () => {
+    hexo.config.keywords = 'web5,web6';
     const ctx = {
       page: { tags: [] },
-      config: { keywords: 'web5,web6' },
+      config: hexo.config,
       is_post: isPost
     };
 
@@ -566,7 +571,7 @@ describe('open_graph', () => {
   it('keywords - escape', () => {
     const ctx = {
       page: { keywords: 'optimize,web&<>"\'/,site' },
-      config: {},
+      config: hexo.config,
       is_post: isPost
     };
 
