@@ -90,7 +90,7 @@ describe('External link', () => {
     ].join('\n'));
   });
 
-  it('backward compatibility', () => {
+  it('old option - false', () => {
     const content = 'foo'
       + '<a href="https://hexo.io/">Hexo</a>'
       + 'bar';
@@ -99,6 +99,21 @@ describe('External link', () => {
 
     const result = typeof externalLink(content);
     result.should.eql('undefined');
+
+    hexo.config.external_link = {
+      enable: true,
+      field: 'site',
+      exclude: ''
+    };
+  });
+
+  it('old option - true', () => {
+    const content = '<a href="https://hexo.io/">Hexo</a>';
+
+    hexo.config.external_link = true;
+
+    const result = externalLink(content);
+    result.should.eql('<a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>');
 
     hexo.config.external_link = {
       enable: true,
