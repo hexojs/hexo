@@ -1,6 +1,5 @@
 'use strict';
 
-
 describe('External link', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
