@@ -158,9 +158,9 @@ describe('External link', () => {
       '<a href="https://bar.com/">Hexo</a>',
       '<a href="https://baz.com/" target="_blank" rel="noopener">Hexo</a>'
     ].join('\n'));
-  });
 
-  hexo.config.external_link.exclude = '';
+    hexo.config.external_link.exclude = '';
+  });
 });
 
 describe('External link - post', () => {
@@ -313,7 +313,7 @@ describe('External link - post', () => {
       '<a href="https://bar.com/">Hexo</a>',
       '<a href="https://baz.com/" target="_blank" rel="noopener">Hexo</a>'
     ].join('\n'));
-  });
 
-  hexo.config.external_link.exclude = '';
+    hexo.config.external_link.exclude = '';
+  });
 });
