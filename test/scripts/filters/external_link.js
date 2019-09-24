@@ -90,6 +90,63 @@ describe('External link', () => {
       '<a href="https://example.com">Example Domain</a>'
     ].join('\n'));
   });
+
+  it('backward compatibility', () => {
+    const content = 'foo'
+      + '<a href="https://hexo.io/">Hexo</a>'
+      + 'bar';
+
+    hexo.config.external_link = false;
+
+    const result = typeof externalLink(content);
+    result.should.eql('undefined');
+
+    hexo.config.external_link = {
+      enable: true,
+      field: 'site',
+      exclude: ''
+    };
+  });
+
+  it('exclude - string', () => {
+    const content = [
+      '<a href="https://foo.com/">Hexo</a>',
+      '<a href="https://bar.com/">Hexo</a>',
+      '<a href="https://baz.com/">Hexo</a>'
+    ].join('\n');
+
+    hexo.config.external_link.exclude = 'foo.com';
+
+    const result = externalLink(content);
+
+    result.should.eql([
+      '<a href="https://foo.com/">Hexo</a>',
+      '<a href="https://bar.com/" target="_blank" rel="noopener">Hexo</a>',
+      '<a href="https://baz.com/" target="_blank" rel="noopener">Hexo</a>'
+    ].join('\n'));
+
+    hexo.config.external_link.exclude = '';
+  });
+
+  it('exclude - array', () => {
+    const content = [
+      '<a href="https://foo.com/">Hexo</a>',
+      '<a href="https://bar.com/">Hexo</a>',
+      '<a href="https://baz.com/">Hexo</a>'
+    ].join('\n');
+
+    hexo.config.external_link.exclude = ['foo.com', 'bar.com'];
+
+    const result = externalLink(content);
+
+    result.should.eql([
+      '<a href="https://foo.com/">Hexo</a>',
+      '<a href="https://bar.com/">Hexo</a>',
+      '<a href="https://baz.com/" target="_blank" rel="noopener">Hexo</a>'
+    ].join('\n'));
+  });
+
+  hexo.config.external_link.exclude = '';
 });
 
 describe('External link - post', () => {
@@ -184,4 +241,65 @@ describe('External link - post', () => {
       '<a href="https://example.com">Example Domain</a>'
     ].join('\n'));
   });
+
+
+  it('backward compatibility', () => {
+    const content = 'foo'
+      + '<a href="https://hexo.io/">Hexo</a>'
+      + 'bar';
+
+    const data = {content};
+    hexo.config.external_link = false;
+
+    externalLink(data);
+    data.content.should.eql(content);
+
+    hexo.config.external_link = {
+      enable: true,
+      field: 'post',
+      exclude: ''
+    };
+  });
+
+  it('exclude - string', () => {
+    const content = [
+      '<a href="https://foo.com/">Hexo</a>',
+      '<a href="https://bar.com/">Hexo</a>',
+      '<a href="https://baz.com/">Hexo</a>'
+    ].join('\n');
+
+    hexo.config.external_link.exclude = 'foo.com';
+
+    const data = {content};
+    externalLink(data);
+
+    data.content.should.eql([
+      '<a href="https://foo.com/">Hexo</a>',
+      '<a href="https://bar.com/" target="_blank" rel="noopener">Hexo</a>',
+      '<a href="https://baz.com/" target="_blank" rel="noopener">Hexo</a>'
+    ].join('\n'));
+
+    hexo.config.external_link.exclude = '';
+  });
+
+  it('exclude - array', () => {
+    const content = [
+      '<a href="https://foo.com/">Hexo</a>',
+      '<a href="https://bar.com/">Hexo</a>',
+      '<a href="https://baz.com/">Hexo</a>'
+    ].join('\n');
+
+    hexo.config.external_link.exclude = ['foo.com', 'bar.com'];
+
+    const data = {content};
+    externalLink(data);
+
+    data.content.should.eql([
+      '<a href="https://foo.com/">Hexo</a>',
+      '<a href="https://bar.com/">Hexo</a>',
+      '<a href="https://baz.com/" target="_blank" rel="noopener">Hexo</a>'
+    ].join('\n'));
+  });
+
+  hexo.config.external_link.exclude = '';
 });
