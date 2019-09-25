@@ -10,6 +10,7 @@ describe('open_graph', () => {
   const isPost = require('../../../lib/plugins/helper/is').post;
   const tag = require('hexo-util').htmlTag;
   const Post = hexo.model('Post');
+  const cheerio = require('cheerio');
 
   function meta(options) {
     return tag('meta', options);
@@ -591,7 +592,8 @@ describe('open_graph', () => {
     const result = openGraph.call(ctx);
     const keywords = 'optimize,web&amp;&lt;&gt;&quot;&#39;&#x2F;,site';
 
-    result.should.contain(meta({name: 'keywords', content: keywords}));
+    const $ = cheerio.load(result, { decodeEntities: false });
+    $('meta[name="keywords"]').attr('content').should.eql(keywords);
   });
 
   it('og:locale - options.language', () => {
