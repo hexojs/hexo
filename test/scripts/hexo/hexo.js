@@ -452,17 +452,41 @@ describe('Hexo', () => {
   it('_generate() - reset cache for new route', () => {
     let count = 0;
 
-    hexo.theme.setView('test.swig', '{{ page.count }}');
+    hexo.theme.setView('test.swig', '{{ page.count() }}');
 
     hexo.extend.generator.register('test', () => ({
       path: 'test',
       layout: 'test',
-      data: {count: count++}
+      data: {count: () => count++}
     }));
 
     // First generation
-    return hexo._generate({cache: true}).then(() => checkStream(route.get('test'), '0')).then(() => // Second generation
-      hexo._generate({cache: true})).then(() => checkStream(route.get('test'), '1'));
+    return hexo._generate({cache: true})
+      .then(() => checkStream(route.get('test'), '0'))
+      .then(() => checkStream(route.get('test'), '0')) // should return cached result
+      .then(() => hexo._generate({cache: true})) // Second generation
+      .then(() => checkStream(route.get('test'), '1'))
+      .then(() => checkStream(route.get('test'), '1')); // should return cached result
+  });
+
+  it('_generate() - cache disabled and use new route', () => {
+    let count = 0;
+
+    hexo.theme.setView('test.swig', '{{ page.count() }}');
+
+    hexo.extend.generator.register('test', () => ({
+      path: 'test',
+      layout: 'test',
+      data: {count: () => count++}
+    }));
+
+    // First generation
+    return hexo._generate({cache: false})
+      .then(() => checkStream(route.get('test'), '0'))
+      .then(() => checkStream(route.get('test'), '1'))
+      .then(() => hexo._generate({cache: false})) // Second generation
+      .then(() => checkStream(route.get('test'), '2'))
+      .then(() => checkStream(route.get('test'), '3'));
   });
 
   it('_generate() - cache disabled & update template', () => {
@@ -473,10 +497,24 @@ describe('Hexo', () => {
       layout: 'test'
     }));
 
-    return hexo._generate({cache: false}).then(() => checkStream(route.get('test'), '0')).then(() => {
-      hexo.theme.setView('test.swig', '1');
-      return checkStream(route.get('test'), '1');
-    });
+    return hexo._generate({cache: false})
+      .then(() => checkStream(route.get('test'), '0'))
+      .then(() => hexo.theme.setView('test.swig', '1'))
+      .then(() => checkStream(route.get('test'), '1'));
+  });
+
+  it('_generate() - cache enabled & update template', () => {
+    hexo.theme.setView('test.swig', '0');
+
+    hexo.extend.generator.register('test', () => ({
+      path: 'test',
+      layout: 'test'
+    }));
+
+    return hexo._generate({cache: true})
+      .then(() => checkStream(route.get('test'), '0'))
+      .then(() => hexo.theme.setView('test.swig', '1'))
+      .then(() => checkStream(route.get('test'), '0')); // should return cached result
   });
 
   it('execFilter()', () => {
