@@ -62,6 +62,7 @@ describe('Hexo', () => {
       silent: false,
       env: process.env.NODE_ENV || 'development',
       version,
+      cmd: '',
       init: false
     });
     hexo.config_path.should.eql(pathFn.join(__dirname, '_config.yml'));
