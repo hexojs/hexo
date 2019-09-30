@@ -158,8 +158,7 @@ describe('Box', () => {
     box.addProcessor(processor);
 
     return fs.writeFile(path, 'a').then(() => fs.stat(path)).then(stats => box.Cache.insert({
-      _id: cacheId,
-      modified: stats.mtime
+      _id: cacheId
     })).then(() => box.process()).then(() => {
       const file = processor.args[0][0];
       file.type.should.eql('update');
