@@ -14,11 +14,11 @@
 [![NPM version](https://badge.fury.io/js/hexo.svg)](https://www.npmjs.com/package/hexo)
 ![Required Node version](https://img.shields.io/node/v/hexo)
 [![Build Status](https://travis-ci.org/hexojs/hexo.svg?branch=master)](https://travis-ci.org/hexojs/hexo)
-[![Build status](https://ci.appveyor.com/api/projects/status/hpx3lduqjj2t6uqq/branch/master?svg=true)](https://ci.appveyor.com/project/tommy351/hexo/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/hexojs/hexo?branch=master&svg=true)](https://ci.appveyor.com/project/tommy351/hexo/branch/master)
 [![dependencies Status](https://david-dm.org/hexojs/hexo/status.svg)](https://david-dm.org/hexojs/hexo)
 [![devDependencies Status](https://david-dm.org/hexojs/hexo/dev-status.svg)](https://david-dm.org/hexojs/hexo?type=dev)
 [![Coverage Status](https://coveralls.io/repos/hexojs/hexo/badge.svg?branch=master)](https://coveralls.io/r/hexojs/hexo?branch=master)
-[![Gitter](https://badges.gitter.im/hexojs/hexo.svg)](https://gitter.im/hexojs/hexo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Gitter](https://badges.gitter.im/hexojs/hexo.svg)](https://gitter.im/hexojs/hexo)
 [![Discord Chat](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/teM2Anj)
 [![Telegram Chat](https://img.shields.io/badge/chat-on%20telegram-32afed.svg)](https://t.me/hexojs)
 
@@ -68,7 +68,7 @@ $ hexo generate
 - Read the [documentation](https://hexo.io/)
 - Visit the [Awesome Hexo](https://github.com/hexojs/awesome-hexo) list
 - Find solutions in [troubleshooting](https://hexo.io/docs/troubleshooting.html)
-- Join discussion on [Google Group](https://groups.google.com/group/hexo), [Discord](https://discord.gg/teM2Anj), [Gitter](https://gitter.im/hexojs/hexo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge) or [Telegram](https://t.me/hexojs)
+- Join discussion on [Google Group](https://groups.google.com/group/hexo), [Discord](https://discord.gg/teM2Anj), [Gitter](https://gitter.im/hexojs/hexo) or [Telegram](https://t.me/hexojs)
 - See the [plugin list](https://hexo.io/plugins/) and the [theme list](https://hexo.io/themes/) on wiki
 - Follow [@hexojs](https://twitter.com/hexojs) for latest news
 
@@ -92,4 +92,4 @@ Also, we welcome PR or issue to [official-plugins](https://github.com/hexojs).
 
 ## License
 
-Hexo is open-sourced under [MIT License](./LICENSE).
+[MIT License](./LICENSE).
