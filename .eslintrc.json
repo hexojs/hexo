@@ -12,7 +12,6 @@
       {
         "after": true
       }
-    ],
-    "prefer-arrow-callback": "error"
+    ]
   }
 }
