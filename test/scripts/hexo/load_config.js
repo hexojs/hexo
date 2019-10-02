@@ -49,7 +49,8 @@ describe('Load config', () => {
   });
 
   it('custom config path', () => {
-    const configPath = hexo.config_path = pathFn.join(__dirname, 'werwerwer.yml');
+    const configPath = pathFn.join(__dirname, 'werwerwer.yml');
+    hexo.config_path = pathFn.join(__dirname, 'werwerwer.yml');
 
     return fs.writeFile(configPath, 'foo: 1').then(() => loadConfig(hexo)).then(() => {
       hexo.config.foo.should.eql(1);

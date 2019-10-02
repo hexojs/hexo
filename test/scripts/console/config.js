@@ -91,7 +91,8 @@ describe('config', () => {
   }));
 
   it('write config: json', () => {
-    const configPath = hexo.config_path = pathFn.join(hexo.base_dir, '_config.json');
+    const configPath = pathFn.join(hexo.base_dir, '_config.json');
+    hexo.config_path = pathFn.join(hexo.base_dir, '_config.json');
 
     return fs.writeFile(configPath, '{}').then(() => config({_: ['title', 'My Blog']})).then(() => fs.readFile(configPath)).then(content => {
       const json = JSON.parse(content);
