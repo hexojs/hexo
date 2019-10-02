@@ -167,7 +167,7 @@ describe('config flag handling', () => {
   });
 
   it('1 not found file warning absolute', () => {
-    let notFile = '/tmp/not_a_file.json';
+    const notFile = '/tmp/not_a_file.json';
 
     mcp(base, notFile).should.eql(pathFn.join(base, '_config.yml'));
     hexo.log.reader[0].type.should.eql('warning');
@@ -256,8 +256,8 @@ describe('config flag handling', () => {
   });
 
   it('write multiconfig to specified path', () => {
-    let outputPath = osFn.tmpdir();
-    let combinedPath = pathFn.join(outputPath, '_multiconfig.yml');
+    const outputPath = osFn.tmpdir();
+    const combinedPath = pathFn.join(outputPath, '_multiconfig.yml');
 
     mcp(base, 'test1.yml', outputPath).should.not.eql(combinedPath);
     mcp(base, 'test1.yml,test2.yml', outputPath).should.eql(combinedPath);
