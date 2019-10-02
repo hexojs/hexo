@@ -40,7 +40,7 @@
     "bluebird": "^3.5.2",
     "chalk": "^2.4.1",
     "cheerio": "0.22.0",
-    "hexo-cli": "^2.0.0",
+    "hexo-cli": "^3.0.0",
     "hexo-front-matter": "^1.0.0",
     "hexo-fs": "^2.0.0",
     "hexo-i18n": "^1.0.0",
