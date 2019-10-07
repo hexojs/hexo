@@ -27,4 +27,8 @@ describe('relative_url', () => {
     relativeURL('foo/', '/').should.eql('../index.html');
     relativeURL('foo/index.html', '/').should.eql('../index.html');
   });
+
+  it('should encode path', () => {
+    relativeURL('foo/', 'css/fôo.css').should.eql('../css/f%C3%B4o.css');
+  });
 });

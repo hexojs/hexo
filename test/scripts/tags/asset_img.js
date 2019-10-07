@@ -29,6 +29,11 @@ describe('asset_img', () => {
         post: post._id
       }),
       PostAsset.insert({
+        _id: 'bár',
+        slug: 'bár',
+        post: post._id
+      }),
+      PostAsset.insert({
         _id: 'spaced asset',
         slug: 'spaced asset',
         post: post._id
@@ -38,6 +43,10 @@ describe('asset_img', () => {
 
   it('default', () => {
     assetImg('bar').should.eql('<img src="/foo/bar" class="">');
+  });
+
+  it('should encode path', () => {
+    assetImg('bár').should.eql('<img src="/foo/b%C3%A1r" class="">');
   });
 
   it('default', () => {

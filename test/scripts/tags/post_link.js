@@ -17,10 +17,19 @@ describe('post_link', () => {
     source: 'title-with-tag',
     slug: 'title-with-tag',
     title: '"Hello" <new world>!'
+  },
+  {
+    source: 'fôo',
+    slug: 'fôo',
+    title: 'Hello world'
   }])));
 
   it('default', () => {
     postLink(['foo']).should.eql('<a href="/foo/" title="Hello world">Hello world</a>');
+  });
+
+  it('should encode path', () => {
+    postLink(['fôo']).should.eql('<a href="/f%C3%B4o/" title="Hello world">Hello world</a>');
   });
 
   it('title', () => {
