@@ -129,6 +129,19 @@ describe('open_graph', () => {
     hexo.config.pretty_urls.trailing_index = true;
   });
 
+  it('url - IDN', () => {
+    const ctx = {
+      page: {},
+      config: hexo.config,
+      is_post: isPost,
+      url: 'https://foô.com/bár'
+    };
+
+    const result = openGraph.call(ctx);
+
+    result.should.contain(meta({property: 'og:url', content: 'https://xn--fo-9ja.com/b%C3%A1r'}));
+  });
+
   it('images - content', () => {
     const result = openGraph.call({
       page: {
