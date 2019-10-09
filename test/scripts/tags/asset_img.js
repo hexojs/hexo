@@ -29,6 +29,11 @@ describe('asset_img', () => {
         post: post._id
       }),
       PostAsset.insert({
+        _id: 'bár',
+        slug: 'bár',
+        post: post._id
+      }),
+      PostAsset.insert({
         _id: 'spaced asset',
         slug: 'spaced asset',
         post: post._id
@@ -40,8 +45,12 @@ describe('asset_img', () => {
     assetImg('bar').should.eql('<img src="/foo/bar" class="">');
   });
 
+  it('should encode path', () => {
+    assetImg('bár').should.eql('<img src="/foo/b%C3%A1r" class="">');
+  });
+
   it('default', () => {
-    assetImg('bar title').should.eql('<img src="/foo/bar" class="" title="title">');
+    assetImg('bar "a title"').should.eql('<img src="/foo/bar" class="" title="a title">');
   });
 
   it('with space', () => {
@@ -51,13 +60,13 @@ describe('asset_img', () => {
   });
 
   it('with alt and title', () => {
-    assetImgTag.call(post, ['bar', '"title"', '"alt"'])
-      .should.eql('<img src="/foo/bar" class="" title="title" alt="alt">');
+    assetImgTag.call(post, ['bar', '"a title"', '"an alt"'])
+      .should.eql('<img src="/foo/bar" class="" title="a title" alt="an alt">');
   });
 
   it('with width height alt and title', () => {
-    assetImgTag.call(post, ['bar', '100', '200', '"title"', '"alt"'])
-      .should.eql('<img src="/foo/bar" class="" width="100" height="200" title="title" alt="alt">');
+    assetImgTag.call(post, ['bar', '100', '200', '"a title"', '"an alt"'])
+      .should.eql('<img src="/foo/bar" class="" width="100" height="200" title="a title" alt="an alt">');
   });
 
   it('no slug', () => {

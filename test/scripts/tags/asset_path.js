@@ -29,6 +29,11 @@ describe('asset_path', () => {
         post: post._id
       }),
       PostAsset.insert({
+        _id: 'bár',
+        slug: 'bár',
+        post: post._id
+      }),
+      PostAsset.insert({
         _id: 'spaced asset',
         slug: 'spaced asset',
         post: post._id
@@ -38,6 +43,10 @@ describe('asset_path', () => {
 
   it('default', () => {
     assetPath('bar').should.eql('/foo/bar');
+  });
+
+  it('should encode path', () => {
+    assetPath('bár').should.eql('/foo/b%C3%A1r');
   });
 
   it('with space', () => {

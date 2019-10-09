@@ -12,7 +12,7 @@ describe('Console list', () => {
 
   before(() => {
     const log = console.log;
-    sinon.stub(console, 'log').callsFake(function(...args) {
+    sinon.stub(console, 'log').callsFake((...args) => {
       return log.apply(log, args);
     });
   });
