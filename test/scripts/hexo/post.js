@@ -687,7 +687,7 @@ describe('Post', () => {
     });
   });
 
-  // test for PR [#3573](https://github.com/hexojs/hexo/pull/3573)
+  // test for PR #3573
   it('render() - (disableNunjucks === true)', () => {
     const renderer = hexo.render.renderer.get('markdown');
     renderer.disableNunjucks = true;
@@ -702,7 +702,7 @@ describe('Post', () => {
     });
   });
 
-  // test for PR [#3573](https://github.com/hexojs/hexo/pull/3573)
+  // test for PR #3573
   it('render() - (disableNunjucks === false)', () => {
     const renderer = hexo.render.renderer.get('markdown');
     renderer.disableNunjucks = false;
@@ -717,8 +717,8 @@ describe('Post', () => {
     });
   });
 
-  // test for Issue [#2318](https://github.com/hexojs/hexo/issues/2318)
-  it('render() - allow backtick code block in "blockquote" tag plugn (Issue#2318)', () => {
+  // test for PR #2321
+  it('render() - allow backtick code block in "blockquote" tag plugin', () => {
     const code = 'alert("Hello world")';
     const highlighted = util.highlight(code);
 
