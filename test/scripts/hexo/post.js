@@ -717,4 +717,26 @@ describe('Post', () => {
     });
   });
 
+  // test for Issue [#2318](https://github.com/hexojs/hexo/issues/2318)
+  it('render() - allow backtick code block in "blockquote" tag plugn (Issue#2318)', () => {
+    const code = 'alert("Hello world")';
+    const highlighted = util.highlight(code);
+
+    const content = [
+      '{% blockquote %}',
+      '```',
+      code,
+      '```',
+      '{% endblockquote %}'
+    ].join('\n');
+
+    return post.render(null, {
+      content
+    }).then(data => {
+      data.content.trim().should.eql([
+        '<blockquote>' + highlighted,
+        '</blockquote>'
+      ].join('\n'));
+    });
+  });
 });
