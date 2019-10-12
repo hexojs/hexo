@@ -126,7 +126,7 @@ describe('Box', () => {
     }).finally(() => fs.rmdir(box.base));
   });
 
-  it('process() - mtime changed', () => {
+  it('process() - update (mtime changed and hash changed)', () => {
     const box = newBox('test');
     const name = 'a.txt';
     const path = pathFn.join(box.base, name);
@@ -139,7 +139,8 @@ describe('Box', () => {
       fs.writeFile(path, 'a'),
       box.Cache.insert({
         _id: cacheId,
-        modified: 0
+        modified: 0,
+        hash: util.hash('b').toString('hex')
       })
     ]).then(() => box.process()).then(() => {
       const file = processor.args[0][0];
@@ -148,7 +149,7 @@ describe('Box', () => {
     }).finally(() => fs.rmdir(box.base));
   });
 
-  it('process() - hash changed', () => {
+  it('process() - skip (mtime changed but hash matched)', () => {
     const box = newBox('test');
     const name = 'a.txt';
     const path = pathFn.join(box.base, name);
@@ -158,15 +159,38 @@ describe('Box', () => {
     box.addProcessor(processor);
 
     return fs.writeFile(path, 'a').then(() => fs.stat(path)).then(stats => box.Cache.insert({
-      _id: cacheId
+      _id: cacheId,
+      modified: 0,
+      hash: util.hash('a').toString('hex')
     })).then(() => box.process()).then(() => {
       const file = processor.args[0][0];
-      file.type.should.eql('update');
+      file.type.should.eql('skip');
+      file.path.should.eql(name);
+    }).finally(() => fs.rmdir(box.base));
+
+  });
+
+  it('process() - skip (hash changed but mtime matched)', () => {
+    const box = newBox('test');
+    const name = 'a.txt';
+    const path = pathFn.join(box.base, name);
+    const cacheId = 'test/' + name;
+
+    const processor = sinon.spy();
+    box.addProcessor(processor);
+
+    return fs.writeFile(path, 'a').then(() => fs.stat(path)).then(stats => box.Cache.insert({
+      _id: cacheId,
+      modified: stats.mtime,
+      hash: util.hash('b').toString('hex')
+    })).then(() => box.process()).then(() => {
+      const file = processor.args[0][0];
+      file.type.should.eql('skip');
       file.path.should.eql(name);
     }).finally(() => fs.rmdir(box.base));
   });
 
-  it('process() - skip', () => {
+  it('process() - skip (mtime matched and hash matched)', () => {
     const box = newBox('test');
     const name = 'a.txt';
     const path = pathFn.join(box.base, name);
