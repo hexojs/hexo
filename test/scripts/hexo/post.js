@@ -739,4 +739,67 @@ describe('Post', () => {
       ].join('\n'));
     });
   });
+
+  // test for Issue #2969
+  it('render() - backtick cocde block in blockquote', () => {
+    const code = 'alert("Hello world")';
+    const highlighted = util.highlight(code);
+    const quotedContent = [
+      'This is a code-block',
+      '',
+      '```',
+      code,
+      '```'
+    ];
+
+    const content = [
+      'Hello',
+      '',
+      ...quotedContent.map(s => '> ' + s)
+    ].join('\n');
+
+    return post.render(null, {
+      content,
+      engine: 'markdown'
+    }).then(data => {
+      data.content.trim().should.eql([
+        '<p>Hello</p>',
+        '<blockquote>',
+        '<p>This is a code-block</p>',
+        highlighted + '</blockquote>'
+      ].join('\n'));
+    });
+  });
+
+  // test derived from Issue #2969
+  it('render() - "lang=dos" backtick cocde block in blockquote', () => {
+    const code = '> dir';
+    const highlighted = util.highlight(code);
+    const quotedContent = [
+      'This is a code-block',
+      '',
+      '```',
+      code,
+      '```'
+    ];
+
+    const content = [
+      'Hello',
+      '',
+      ...quotedContent.map(s => '> ' + s)
+    ].join('\n');
+
+    return post.render(null, {
+      content,
+      engine: 'markdown'
+    }).then(data => {
+      data.content.trim().should.eql([
+        '<p>Hello</p>',
+        '<blockquote>',
+        '<p>This is a code-block</p>',
+        highlighted + '</blockquote>'
+      ].join('\n'));
+    });
+  });
+
 });
