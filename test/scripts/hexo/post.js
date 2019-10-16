@@ -837,4 +837,55 @@ describe('Post', () => {
     });
   });
 
+  // test for Issue #3769
+  it('render() - blank lines in backtick cocde block in blockquote', () => {
+    const code = [
+      '',
+      '',
+      '',
+      '{',
+      '  "test": 123',
+      '',
+      '',
+      '}',
+      ''
+    ];
+    const highlighted = util.highlight(code.join('\n'));
+    const addQuote = s => '>' + (s ? ` ${s}` : '');
+    const code2 = code.map((s, i) => {
+      if (i === 0 || i === 2 || i === 6) return addQuote(s);
+      return s;
+    });
+    const quotedContent = [
+      'This is a code-block',
+      '',
+      '> ```',
+      ...code2,
+      '```',
+      '',
+      'This is a following paragraph'
+    ];
+    const content = [
+      'Hello',
+      '',
+      ...quotedContent.map(addQuote)
+    ].join('\n');
+
+    return post.render(null, {
+      content,
+      engine: 'markdown'
+    }).then(data => {
+      data.content.trim().should.eql([
+        '<p>Hello</p>',
+        '<blockquote>',
+        '<p>This is a code-block</p>',
+        '<blockquote>',
+        highlighted.replace('{', '&#123;').replace('}', '&#125;'),
+        '</blockquote>',
+        '<p>This is a following paragraph</p>',
+        '</blockquote>'
+      ].join('\n'));
+    });
+  });
+
 });
