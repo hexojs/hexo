@@ -734,8 +734,7 @@ describe('Post', () => {
       content
     }).then(data => {
       data.content.trim().should.eql([
-        '<blockquote>' + highlighted,
-        '</blockquote>'
+        '<blockquote>' + highlighted + '</blockquote>'
       ].join('\n'));
     });
   });
@@ -798,6 +797,42 @@ describe('Post', () => {
         '<blockquote>',
         '<p>This is a code-block</p>',
         highlighted + '</blockquote>'
+      ].join('\n'));
+    });
+  });
+
+  // test for Issue #3767
+  it('render() - backtick cocde block (followed by a paragraph) in blockquote', () => {
+    const code = 'alert("Hello world")';
+    const highlighted = util.highlight(code);
+    const quotedContent = [
+      'This is a code-block',
+      '',
+      '```',
+      code,
+      '```',
+      '',
+      'This is a following paragraph'
+    ];
+
+    const content = [
+      'Hello',
+      '',
+      ...quotedContent.map(s => '> ' + s)
+    ].join('\n');
+
+    return post.render(null, {
+      content,
+      engine: 'markdown'
+    }).then(data => {
+      data.content.trim().should.eql([
+        '<p>Hello</p>',
+        '<blockquote>',
+        '<p>This is a code-block</p>',
+        highlighted,
+        '',
+        '<p>This is a following paragraph</p>',
+        '</blockquote>'
       ].join('\n'));
     });
   });
