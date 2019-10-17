@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo "========== Hexo Benchmark =========="
+echo "============== Hexo Benchmark =============="
 
 echo "- Set up dummy Hexo site"
 cd $TRAVIS_BUILD_DIR
@@ -23,14 +23,22 @@ ln -sf $TRAVIS_BUILD_DIR node_modules/hexo
 
 echo "- Start test run"
 
-echo "-------------- Test 1 --------------"
+echo "------------- Cold processing --------------"
 npx --no-install hexo g --debug > build.log
 cat build.log | grep "Hexo version"
 cat build.log | grep "Start processing"
 cat build.log | grep "loaded in"
 cat build.log | grep "generated in"
 cat build.log | grep "Database saved"
-echo "-------------- Test 2 --------------"
+echo "-------------- Hot processing --------------"
+npx --no-install hexo g --debug > build.log
+cat build.log | grep "Hexo version"
+cat build.log | grep "Start processing"
+cat build.log | grep "loaded in"
+cat build.log | grep "generated in"
+cat build.log | grep "Database saved"
+echo "--------- Another Cold processing ----------"
+npx --no-install hexo clean > build.log
 npx --no-install hexo g --debug > build.log
 cat build.log | grep "Hexo version"
 cat build.log | grep "Start processing"
