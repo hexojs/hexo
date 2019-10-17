@@ -1,30 +1,42 @@
+<img src="https://raw.githubusercontent.com/hexojs/awesome-hexo/master/hexo-logo.png" alt="Hexo logo" width="100" height="100" align="right" />
+
 # Hexo
 
-[![Build Status](https://travis-ci.org/hexojs/hexo.svg?branch=master)](https://travis-ci.org/hexojs/hexo)
+> A fast, simple & powerful blog framework, powered by [Node.js](https://nodejs.org).
+
+[Website](https://hexo.io) |
+[Documentation](https://hexo.io/docs/) |
+[Installation Guide](https://hexo.io/docs/#Installation) |
+[Contribution Guide](https://hexo.io/docs/contributing) |
+[API](https://hexo.io/api/) |
+[Twitter](https://twitter.com/hexojs)
+
 [![NPM version](https://badge.fury.io/js/hexo.svg)](https://www.npmjs.com/package/hexo)
-[![Coverage Status](https://coveralls.io/repos/hexojs/hexo/badge.svg?branch=master)](https://coveralls.io/r/hexojs/hexo?branch=master)
-[![Build status](https://ci.appveyor.com/api/projects/status/hpx3lduqjj2t6uqq/branch/master?svg=true)](https://ci.appveyor.com/project/tommy351/hexo/branch/master)
-[![Gitter](https://badges.gitter.im/hexojs/hexo.svg)](https://gitter.im/hexojs/hexo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-[![Discord Chat](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/teM2Anj)
+![Required Node version](https://img.shields.io/node/v/hexo)
+[![Build Status](https://travis-ci.com/hexojs/hexo.svg?branch=master)](https://travis-ci.com/hexojs/hexo)
+[![Build status](https://ci.appveyor.com/api/projects/status/github/hexojs/hexo?branch=master&svg=true)](https://ci.appveyor.com/project/tommy351/hexo/branch/master)
 [![dependencies Status](https://david-dm.org/hexojs/hexo/status.svg)](https://david-dm.org/hexojs/hexo)
 [![devDependencies Status](https://david-dm.org/hexojs/hexo/dev-status.svg)](https://david-dm.org/hexojs/hexo?type=dev)
-
-A fast, simple & powerful blog framework, powered by [Node.js](https://nodejs.org).
+[![Coverage Status](https://coveralls.io/repos/hexojs/hexo/badge.svg?branch=master)](https://coveralls.io/r/hexojs/hexo?branch=master)
+[![Gitter](https://badges.gitter.im/hexojs/hexo.svg)](https://gitter.im/hexojs/hexo)
+[![Discord Chat](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/teM2Anj)
+[![Telegram Chat](https://img.shields.io/badge/chat-on%20telegram-32afed.svg)](https://t.me/hexojs)
 
 ## Features
 
 - Blazing fast generating
 - Support for GitHub Flavored Markdown and most Octopress plugins
 - One-command deploy to GitHub Pages, Heroku, etc.
-- Powerful plugin system
+- Powerful API for limitless extensibility
+- Hundreds of [themes](https://hexo.io/themes/) & [plugins](https://hexo.io/plugins/)
 
-## Installation
+## Quick Start
+
+**Install Hexo**
 
 ``` bash
 $ npm install hexo-cli -g
 ```
-
-## Quick Start
 
 **Setup your blog**
 
@@ -53,10 +65,10 @@ $ hexo generate
 
 ## More Information
 
-- Visit the [Awesome Hexo](https://github.com/hexojs/awesome-hexo) list
 - Read the [documentation](https://hexo.io/)
+- Visit the [Awesome Hexo](https://github.com/hexojs/awesome-hexo) list
 - Find solutions in [troubleshooting](https://hexo.io/docs/troubleshooting.html)
-- Join discussion on [Google Group](https://groups.google.com/group/hexo)
+- Join discussion on [Google Group](https://groups.google.com/group/hexo), [Discord](https://discord.gg/teM2Anj), [Gitter](https://gitter.im/hexojs/hexo) or [Telegram](https://t.me/hexojs)
 - See the [plugin list](https://hexo.io/plugins/) and the [theme list](https://hexo.io/themes/) on wiki
 - Follow [@hexojs](https://twitter.com/hexojs) for latest news
 
@@ -66,14 +78,18 @@ We welcome you to join the development of Hexo. Please see [contributing documen
 
 Also, we welcome PR or issue to [official-plugins](https://github.com/hexojs).
 
+## Contributors
+
+[![](https://opencollective.com/Hexo/contributors.svg?width=890)](https://github.com/hexojs/hexo/graphs/contributors)
+
 ## Backers
 
 [![Backers](https://opencollective.com/hexo/tiers/backers.svg?avatarHeight=36&width=600)](https://opencollective.com/hexo)
 
-## Supported by
+## Sponsors
 
 [![JetBrains](/.github/jetbrains-variant-4.svg)](https://www.jetbrains.com)
 
 ## License
 
-MIT
+[MIT License](./LICENSE).
