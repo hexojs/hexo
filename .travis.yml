@@ -15,6 +15,7 @@ node_js:
 script:
   - npm run eslint
   - npm run test-cov
+  - ./test/benchmark.sh
 
 after_script:
   - npm install coveralls
