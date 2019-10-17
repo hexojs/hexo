@@ -38,7 +38,6 @@ describe('open_graph', () => {
         meta({property: 'og:site_name', content: hexo.config.title}),
         meta({property: 'og:locale', content: 'en'}),
         meta({property: 'article:published_time', content: post.date.toISOString()}),
-        meta({property: 'article:modified_time', content: post.updated.toISOString()}),
         meta({property: 'og:updated_time', content: post.updated.toISOString()}),
         meta({name: 'twitter:card', content: 'summary'})
       ].join('\n'));
