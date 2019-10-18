@@ -85,6 +85,7 @@ Also, we welcome PR or issue to [official-plugins](https://github.com/hexojs).
 ## Backers
 
 [![Backers](https://opencollective.com/hexo/tiers/backers.svg?avatarHeight=36&width=600)](https://opencollective.com/hexo)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fhexojs%2Fhexo.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fhexojs%2Fhexo?ref=badge_shield)
 
 ## Sponsors
 
@@ -93,3 +94,6 @@ Also, we welcome PR or issue to [official-plugins](https://github.com/hexojs).
 ## License
 
 [MIT License](./LICENSE).
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fhexojs%2Fhexo.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fhexojs%2Fhexo?ref=badge_large)
