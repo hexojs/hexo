@@ -65,4 +65,18 @@ describe('Meta Generator', () => {
     + '<head><link></head>';
     result.should.eql(expected);
   });
+
+  // Test for Issue #3777
+  it('multi-line head', () => {
+    const content = '<head>\n<link>\n</head>';
+    hexo.config.meta_generator = true;
+    const result = metaGenerator(content);
+
+    const $ = cheerio.load(result);
+    $('meta[name="generator"]').length.should.eql(1);
+
+    const expected = '<head>\n<link>\n<meta name="generator" content="Hexo ' + hexo.version + '"></head>';
+
+    result.should.eql(expected);
+  });
 });
