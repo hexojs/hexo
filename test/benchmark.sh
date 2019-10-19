@@ -4,6 +4,10 @@ _SUBSTRUCTION () {
     echo | awk "{print $1-$2}"
 }
 
+_MESSAGE_FORMATTER () {
+    awk '{printf "| %-29s | %7.3fs |\n",$1" "$2,$3"s"}'
+}
+
 LOG_TABLE () {
     time_begin=$(date +%s -d "$(awk '/.*DEBUG Hexo version/{print $1}' build.log)")
     time_process_start=$(date +%s.%3N -d "$(awk '/.*INFO  Start processing/{print $1}' build.log)")
@@ -11,7 +15,11 @@ LOG_TABLE () {
     time_render_finish=$(date +%s.%3N -d "$(awk '/.*INFO.*generated in /{print $1}' build.log)")
     time_database_saved=$(date +%s.%3N -d "$(awk '/.*DEBUG Database saved/{print $1}' build.log)")
 
-    echo "Load Plugin/Scripts/Database $(_SUBSTRUCTION $time_process_start $time_begin)\nProcess Source $(_SUBSTRUCTION $time_render_start $time_process_start)\nRender Files $(_SUBSTRUCTION $time_render_finish $time_render_start)\nSave Database $(_SUBSTRUCTION $time_database_saved $time_render_finish)" | awk '{printf "| %-28s | %7.3fs |\n",$1" "$2,$3"s"}'
+    echo "Load Plugin/Scripts/Database $(_SUBSTRUCTION $time_process_start $time_begin)" | _MESSAGE_FORMATTER
+    echo "Process Source $(_SUBSTRUCTION $time_render_start $time_process_start)" | _MESSAGE_FORMATTER
+    echo "Render Files $(_SUBSTRUCTION $time_render_finish $time_render_start)" | _MESSAGE_FORMATTER
+    echo "Save Database $(_SUBSTRUCTION $time_database_saved $time_render_finish)" | _MESSAGE_FORMATTER
+    echo "Total time $(_SUBSTRUCTION $time_database_saved $time_begin)" | _MESSAGE_FORMATTER
 }
 
 echo "============== Hexo Benchmark =============="
