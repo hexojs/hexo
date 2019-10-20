@@ -1,11 +1,11 @@
 #!/bin/sh
 
 _SUBSTRUCTION () {
-    echo | awk "{print $1-$2}"
+    echo | awk "{printf \"%.3f\", $1-$2}"
 }
 
 _MESSAGE_FORMATTER () {
-    awk '{printf "| %-29s | %7.3f |\n",$1" "$2,$3}'
+    awk '{printf "| %-28s | %9s |\n",$1" "$2,$3}'
 }
 
 LOG_TABLE () {
@@ -22,7 +22,7 @@ LOG_TABLE () {
     echo "Render Files $(_SUBSTRUCTION $time_render_finish $time_render_start)s" | _MESSAGE_FORMATTER
     echo "Save Database $(_SUBSTRUCTION $time_database_saved $time_render_finish)s" | _MESSAGE_FORMATTER
     echo "Total time $(_SUBSTRUCTION $time_database_saved $time_begin)s" | _MESSAGE_FORMATTER
-    echo "Memory Usage(RSS) $(echo | awk "{print $memory_usage/1024}")MB" | _MESSAGE_FORMATTER
+    echo "Memory Usage(RSS) $(echo | awk "{printf \"%.3f\", $memory_usage/1024}")MB" | _MESSAGE_FORMATTER
 }
 
 echo "============== Hexo Benchmark =============="
