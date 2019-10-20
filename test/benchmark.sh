@@ -5,7 +5,7 @@ _SUBSTRUCTION () {
 }
 
 _MESSAGE_FORMATTER () {
-    awk '{printf "| %-29s | %7.3fs |\n",$1" "$2,$3"s"}'
+    awk '{printf "| %-29s | %7.3fs |\n",$1" "$2,$3}'
 }
 
 LOG_TABLE () {
@@ -15,11 +15,14 @@ LOG_TABLE () {
     time_render_finish=$(date +%s.%3N -d "$(awk '/.*INFO.*generated in /{print $1}' build.log)")
     time_database_saved=$(date +%s.%3N -d "$(awk '/.*DEBUG Database saved/{print $1}' build.log)")
 
-    echo "Load Plugin/Scripts/Database $(_SUBSTRUCTION $time_process_start $time_begin)" | _MESSAGE_FORMATTER
-    echo "Process Source $(_SUBSTRUCTION $time_render_start $time_process_start)" | _MESSAGE_FORMATTER
-    echo "Render Files $(_SUBSTRUCTION $time_render_finish $time_render_start)" | _MESSAGE_FORMATTER
-    echo "Save Database $(_SUBSTRUCTION $time_database_saved $time_render_finish)" | _MESSAGE_FORMATTER
-    echo "Total time $(_SUBSTRUCTION $time_database_saved $time_begin)" | _MESSAGE_FORMATTER
+    memory_usage=$(awk '/.*Maximum resident set size/{print $6}' build.log)
+
+    echo "Load Plugin/Scripts/Database $(_SUBSTRUCTION $time_process_start $time_begin)s" | _MESSAGE_FORMATTER
+    echo "Process Source $(_SUBSTRUCTION $time_render_start $time_process_start)s" | _MESSAGE_FORMATTER
+    echo "Render Files $(_SUBSTRUCTION $time_render_finish $time_render_start)s" | _MESSAGE_FORMATTER
+    echo "Save Database $(_SUBSTRUCTION $time_database_saved $time_render_finish)s" | _MESSAGE_FORMATTER
+    echo "Total time $(_SUBSTRUCTION $time_database_saved $time_begin)s" | _MESSAGE_FORMATTER
+    echo "Memory Usage (RSS) $(echo | awk "{print $memory_usage/1024}")MB" | _MESSAGE_FORMATTER
 }
 
 echo "============== Hexo Benchmark =============="
@@ -47,18 +50,19 @@ ln -sf $TRAVIS_BUILD_DIR node_modules/hexo
 echo "- Start test run"
 
 echo "------------- Cold processing --------------"
-npx --no-install hexo g --debug > build.log
+{ /usr/bin/time -v npx --no-install hexo g --debug > build.log 2>&1 ; } 2> build.log
 LOG_TABLE
 
 echo "-------------- Hot processing --------------"
-npx --no-install hexo g --debug > build.log
+{ /usr/bin/time -v npx --no-install hexo g --debug > build.log 2>&1 ; } 2> build.log
 LOG_TABLE
 
 echo "--------- Another Cold processing ----------"
 npx --no-install hexo clean > build.log
-npx --no-install hexo g --debug > build.log
+{ /usr/bin/time -v npx --no-install hexo g --debug > build.log 2>&1 ; } 2> build.log
 LOG_TABLE
 
+echo "--------------------------------------------"
 rm -rf build.log
 
 cd $TRAVIS_BUILD_DIR
