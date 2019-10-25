@@ -12,5 +12,6 @@ describe('youtube', () => {
     $('iframe').attr('src').should.eql('//www.youtube.com/embed/foo');
     $('iframe').attr('frameborder').should.eql('0');
     $('iframe').attr('allowfullscreen').should.eql('');
+    $('iframe').attr('loading').should.eql('lazy');
   });
 });
