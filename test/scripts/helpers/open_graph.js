@@ -37,7 +37,8 @@ describe('open_graph', () => {
         meta({property: 'og:url'}),
         meta({property: 'og:site_name', content: hexo.config.title}),
         meta({property: 'og:locale', content: 'en'}),
-        meta({property: 'og:updated_time', content: post.updated.toISOString()}),
+        meta({property: 'article:published_time', content: post.date.toISOString()}),
+        meta({property: 'article:modified_time', content: post.updated.toISOString()}),
         meta({name: 'twitter:card', content: 'summary'})
       ].join('\n'));
 
@@ -435,27 +436,27 @@ describe('open_graph', () => {
       is_post: isPost
     }, { });
 
-    result.should.contain(meta({property: 'og:updated_time', content: '2016-05-23T21:20:21.372Z'}));
+    result.should.contain(meta({property: 'article:modified_time', content: '2016-05-23T21:20:21.372Z'}));
   });
 
-  it('updated - options - allow overriding og:updated_time', () => {
+  it('updated - options - allow overriding article:modified_time', () => {
     const result = openGraph.call({
       page: { updated: moment('2016-05-23T21:20:21.372Z') },
       config: hexo.config,
       is_post: isPost
     }, { updated: moment('2015-04-22T20:19:20.371Z') });
 
-    result.should.contain(meta({property: 'og:updated_time', content: '2015-04-22T20:19:20.371Z'}));
+    result.should.contain(meta({property: 'article:modified_time', content: '2015-04-22T20:19:20.371Z'}));
   });
 
-  it('updated - options - allow disabling og:updated_time', () => {
+  it('updated - options - allow disabling article:modified_time', () => {
     const result = openGraph.call({
       page: { updated: moment('2016-05-23T21:20:21.372Z') },
       config: hexo.config,
       is_post: isPost
     }, { updated: false });
 
-    result.should.not.contain(meta({property: 'og:updated_time', content: '2016-05-23T21:20:21.372Z'}));
+    result.should.not.contain(meta({property: 'article:modified_time', content: '2016-05-23T21:20:21.372Z'}));
   });
 
   it('description - do not add /(?:og:)?description/ meta tags if there is no description', () => {
