@@ -13,7 +13,8 @@ cache:
 node_js:
   - "8"
   - "10"
-  - "node"
+  - "12"
+  - "13"
 
 script:
   - npm run eslint
