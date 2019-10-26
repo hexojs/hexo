@@ -266,6 +266,9 @@ describe('config flag handling', () => {
     mcp(base, 'notafile.yml,test1.json', outputPath).should.eql(combinedPath);
     mcp(base, 'notafile.yml,alsonotafile.json', outputPath).should.not.eql(combinedPath);
 
+    // delete /tmp/_multiconfig.yml
+    fs.unlinkSync(combinedPath);
+
     hexo.log.reader[1].type.should.eql('debug');
     hexo.log.reader[1].msg.should.eql(`Writing _multiconfig.yml to ${combinedPath}`);
     hexo.log.reader[2].type.should.eql('info');
