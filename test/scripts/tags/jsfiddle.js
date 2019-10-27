@@ -8,27 +8,27 @@ describe('jsfiddle', () => {
   it('id', () => {
     const $ = cheerio.load(jsfiddle(['foo']));
 
-    $('iframe').attr('src').should.eql('//jsfiddle.net/foo/embedded/js,resources,html,css,result/light');
+    $('iframe').attr('src').should.eql('https://jsfiddle.net/foo/embedded/js,resources,html,css,result/light');
   });
 
   it('tabs', () => {
     let $ = cheerio.load(jsfiddle(['foo', 'default']));
 
-    $('iframe').attr('src').should.eql('//jsfiddle.net/foo/embedded/js,resources,html,css,result/light');
+    $('iframe').attr('src').should.eql('https://jsfiddle.net/foo/embedded/js,resources,html,css,result/light');
 
     $ = cheerio.load(jsfiddle(['foo', 'html,css']));
 
-    $('iframe').attr('src').should.eql('//jsfiddle.net/foo/embedded/html,css/light');
+    $('iframe').attr('src').should.eql('https://jsfiddle.net/foo/embedded/html,css/light');
   });
 
   it('skin', () => {
     let $ = cheerio.load(jsfiddle(['foo', 'default', 'default']));
 
-    $('iframe').attr('src').should.eql('//jsfiddle.net/foo/embedded/js,resources,html,css,result/light');
+    $('iframe').attr('src').should.eql('https://jsfiddle.net/foo/embedded/js,resources,html,css,result/light');
 
     $ = cheerio.load(jsfiddle(['foo', 'default', 'dark']));
 
-    $('iframe').attr('src').should.eql('//jsfiddle.net/foo/embedded/js,resources,html,css,result/dark');
+    $('iframe').attr('src').should.eql('https://jsfiddle.net/foo/embedded/js,resources,html,css,result/dark');
   });
 
   it('width', () => {
