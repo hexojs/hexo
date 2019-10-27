@@ -687,6 +687,6 @@ describe('open_graph', () => {
       is_post: isPost
     });
 
-    result.should.not.contain(meta({property: 'og:locale'}));
+    result.should.not.contain(meta({property: 'article:author'}));
   });
 });
