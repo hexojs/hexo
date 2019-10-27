@@ -19,6 +19,7 @@ describe('Helpers', () => {
   require('./list_tags');
   require('./mail_to');
   require('./markdown');
+  require('./meta_generator');
   require('./number_format');
   require('./open_graph');
   require('./paginator');
