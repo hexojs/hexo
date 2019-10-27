@@ -479,9 +479,10 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const escaped = 'optimize,web';
+    const escaped = ['optimize', 'web'];
 
-    result.should.contain(meta({property: 'article:tag', content: escaped}));
+    result.should.contain(meta({property: 'article:tag', content: escaped[0]}));
+    result.should.contain(meta({property: 'article:tag', content: escaped[1]}));
   });
 
   it('keywords - page keywords array', () => {
@@ -492,9 +493,10 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const keywords = 'optimize,web';
+    const keywords = ['optimize', 'web'];
 
-    result.should.contain(meta({property: 'article:tag', content: keywords}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[0]}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[1]}));
   });
 
   it('keywords - page tags', () => {
@@ -505,9 +507,10 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const keywords = 'optimize,web';
+    const keywords = ['optimize', 'web'];
 
-    result.should.contain(meta({property: 'article:tag', content: keywords}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[0]}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[1]}));
   });
 
   it('keywords - config keywords string', () => {
@@ -519,9 +522,10 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const keywords = 'optimize,web';
+    const keywords = ['optimize', 'web'];
 
-    result.should.contain(meta({property: 'article:tag', content: keywords}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[0]}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[1]}));
   });
 
   it('keywords - config keywords array', () => {
@@ -533,9 +537,10 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const keywords = 'optimize,web';
+    const keywords = ['optimize', 'web'];
 
-    result.should.contain(meta({property: 'article:tag', content: keywords}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[0]}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[1]}));
   });
 
   it('keywords - page keywords first', () => {
@@ -550,9 +555,10 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const keywords = 'web1,web2';
+    const keywords = ['web1', 'web2'];
 
-    result.should.contain(meta({property: 'article:tag', content: keywords}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[0]}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[1]}));
   });
 
   it('keywords - page tags second', () => {
@@ -564,9 +570,10 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const keywords = 'optimize,web';
+    const keywords = ['optimize', 'web'];
 
-    result.should.contain(meta({property: 'article:tag', content: keywords}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[0]}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[1]}));
   });
 
   it('keywords - page tags empty', () => {
@@ -578,9 +585,10 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const keywords = 'web5,web6';
+    const keywords = ['web5', 'web6'];
 
-    result.should.contain(meta({property: 'article:tag', content: keywords}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[0]}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[1]}));
   });
 
   it('keywords - escape', () => {
@@ -591,9 +599,11 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const keywords = 'optimize,web&amp;&lt;&gt;&quot;&#39;&#x2F;,site';
+    const keywords = 'optimize,web&amp;&lt;&gt;&quot;&#39;&#x2F;,site'.split(',');
 
-    result.should.contain(meta({property: 'article:tag', content: keywords}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[0]}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[1]}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[2]}));
   });
 
   it('og:locale - options.language', () => {
