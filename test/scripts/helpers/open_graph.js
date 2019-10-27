@@ -31,7 +31,6 @@ describe('open_graph', () => {
         config: hexo.config,
         is_post: isPost
       }).should.eql([
-        meta({name: 'keywords', content: 'optimize,web'}),
         meta({property: 'og:type', content: 'website'}),
         meta({property: 'og:title', content: hexo.config.title}),
         meta({property: 'og:url'}),
@@ -39,6 +38,8 @@ describe('open_graph', () => {
         meta({property: 'og:locale', content: 'en'}),
         meta({property: 'article:published_time', content: post.date.toISOString()}),
         meta({property: 'article:modified_time', content: post.updated.toISOString()}),
+        meta({property: 'article:author', content: hexo.config.author}),
+        meta({property: 'article:tag', content: 'optimize,web'}),
         meta({name: 'twitter:card', content: 'summary'})
       ].join('\n'));
 
@@ -478,9 +479,10 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const escaped = 'optimize,web';
+    const escaped = ['optimize', 'web'];
 
-    result.should.contain(meta({name: 'keywords', content: escaped}));
+    result.should.contain(meta({property: 'article:tag', content: escaped[0]}));
+    result.should.contain(meta({property: 'article:tag', content: escaped[1]}));
   });
 
   it('keywords - page keywords array', () => {
@@ -491,9 +493,10 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const keywords = 'optimize,web';
+    const keywords = ['optimize', 'web'];
 
-    result.should.contain(meta({name: 'keywords', content: keywords}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[0]}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[1]}));
   });
 
   it('keywords - page tags', () => {
@@ -504,9 +507,10 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const keywords = 'optimize,web';
+    const keywords = ['optimize', 'web'];
 
-    result.should.contain(meta({name: 'keywords', content: keywords}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[0]}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[1]}));
   });
 
   it('keywords - config keywords string', () => {
@@ -518,9 +522,10 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const keywords = 'optimize,web';
+    const keywords = ['optimize', 'web'];
 
-    result.should.contain(meta({name: 'keywords', content: keywords}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[0]}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[1]}));
   });
 
   it('keywords - config keywords array', () => {
@@ -532,9 +537,10 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const keywords = 'optimize,web';
+    const keywords = ['optimize', 'web'];
 
-    result.should.contain(meta({name: 'keywords', content: keywords}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[0]}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[1]}));
   });
 
   it('keywords - page keywords first', () => {
@@ -549,9 +555,10 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const keywords = 'web1,web2';
+    const keywords = ['web1', 'web2'];
 
-    result.should.contain(meta({name: 'keywords', content: keywords}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[0]}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[1]}));
   });
 
   it('keywords - page tags second', () => {
@@ -563,9 +570,10 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const keywords = 'optimize,web';
+    const keywords = ['optimize', 'web'];
 
-    result.should.contain(meta({name: 'keywords', content: keywords}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[0]}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[1]}));
   });
 
   it('keywords - page tags empty', () => {
@@ -577,9 +585,10 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const keywords = 'web5,web6';
+    const keywords = ['web5', 'web6'];
 
-    result.should.contain(meta({name: 'keywords', content: keywords}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[0]}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[1]}));
   });
 
   it('keywords - escape', () => {
@@ -590,9 +599,11 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const keywords = 'optimize,web&amp;&lt;&gt;&quot;&#39;&#x2F;,site';
+    const keywords = 'optimize,web&amp;&lt;&gt;&quot;&#39;&#x2F;,site'.split(',');
 
-    result.should.contain(meta({name: 'keywords', content: keywords}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[0]}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[1]}));
+    result.should.contain(meta({property: 'article:tag', content: keywords[2]}));
   });
 
   it('og:locale - options.language', () => {
@@ -645,5 +656,37 @@ describe('open_graph', () => {
     });
 
     result.should.not.contain(meta({property: 'og:locale'}));
+  });
+
+  it('article:author - options.author', () => {
+    const result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    }, {author: 'Jane Doe'});
+
+    result.should.contain(meta({property: 'article:author', content: 'Jane Doe'}));
+  });
+
+  it('article:author - config.language', () => {
+    hexo.config.language = 'es-pa';
+
+    const result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    });
+
+    result.should.contain(meta({property: 'article:author', content: 'John Doe'}));
+  });
+
+  it('article:author - no author set', () => {
+    const result = openGraph.call({
+      page: {},
+      config: { author: undefined },
+      is_post: isPost
+    });
+
+    result.should.not.contain(meta({property: 'article:author'}));
   });
 });
