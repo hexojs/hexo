@@ -6,14 +6,13 @@ addons:
     - time
 
 cache:
-  apt: true
-  directories:
-    - node_modules
+  npm: true
 
 node_js:
   - "8"
   - "10"
-  - "node"
+  - "12"
+  - "13"
 
 script:
   - npm run eslint
