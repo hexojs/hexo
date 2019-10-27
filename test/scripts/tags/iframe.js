@@ -13,6 +13,7 @@ describe('iframe', () => {
     $('iframe').attr('height').should.eql('300');
     $('iframe').attr('frameborder').should.eql('0');
     $('iframe').attr('allowfullscreen').should.eql('');
+    $('iframe').attr('loading').should.eql('lazy');
   });
 
   it('width', () => {
@@ -23,6 +24,7 @@ describe('iframe', () => {
     $('iframe').attr('height').should.eql('300');
     $('iframe').attr('frameborder').should.eql('0');
     $('iframe').attr('allowfullscreen').should.eql('');
+    $('iframe').attr('loading').should.eql('lazy');
   });
 
   it('height', () => {
@@ -33,5 +35,6 @@ describe('iframe', () => {
     $('iframe').attr('height').should.eql('600');
     $('iframe').attr('frameborder').should.eql('0');
     $('iframe').attr('allowfullscreen').should.eql('');
+    $('iframe').attr('loading').should.eql('lazy');
   });
 });
