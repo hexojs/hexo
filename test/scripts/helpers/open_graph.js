@@ -39,7 +39,8 @@ describe('open_graph', () => {
         meta({property: 'article:published_time', content: post.date.toISOString()}),
         meta({property: 'article:modified_time', content: post.updated.toISOString()}),
         meta({property: 'article:author', content: hexo.config.author}),
-        meta({property: 'article:tag', content: 'optimize,web'}),
+        meta({property: 'article:tag', content: 'optimize'}),
+        meta({property: 'article:tag', content: 'web'}),
         meta({name: 'twitter:card', content: 'summary'})
       ].join('\n'));
 
