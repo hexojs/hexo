@@ -437,6 +437,78 @@ describe('Box', () => {
     });
   });
 
+  it('watch() - update with simple "ignore" option', () => {
+    const box = newBox('test', {ignore: '**/ignore_me'});
+    const path1 = 'a.txt';
+    const path2 = 'b.txt';
+    const src1 = pathFn.join(box.base, path1);
+    const src2 = pathFn.join(box.base, 'ignore_me', path2);
+    const cacheId1 = 'test/' + path1;
+    const cacheId2 = 'test/ignore_me/' + path2;
+    const Cache = box.Cache;
+    const processor = sinon.spy();
+
+    box.addProcessor(processor);
+
+    let file;
+    return Promise.all([
+      fs.writeFile(src1, 'a'),
+      Cache.insert({_id: cacheId1})
+    ]).then(() => Promise.all([
+      fs.writeFile(src2, 'b'),
+      Cache.insert({_id: cacheId2})
+    ])).then(() => box.watch()).then(() => fs.appendFile(src1, 'aaa')).delay(500).then(() => {
+      file = processor.lastCall.args[0];
+
+      file.source.should.eql(src1);
+      file.path.should.eql(path1);
+      file.type.should.eql('update');
+      file.params.should.eql({});
+    }).then(() => fs.appendFile(src2, 'bbb')).delay(500).then(() => {
+      const file2 = processor.lastCall.args[0];
+      file2.should.eql(file); // not changed
+    }).finally(() => {
+      box.unwatch();
+      return fs.rmdir(box.base);
+    });
+  });
+
+  it('watch() - update with complex "ignore" option', () => {
+    const box = newBox('test', {ignore: ['**/ignore_me', '**/ignore_me_too']});
+    const path1 = 'a.txt';
+    const path2 = 'b.txt';
+    const src1 = pathFn.join(box.base, path1);
+    const src2 = pathFn.join(box.base, 'ignore_me', path2);
+    const cacheId1 = 'test/' + path1;
+    const cacheId2 = 'test/ignore_me/' + path2;
+    const Cache = box.Cache;
+    const processor = sinon.spy();
+
+    box.addProcessor(processor);
+
+    let file;
+    return Promise.all([
+      fs.writeFile(src1, 'a'),
+      Cache.insert({_id: cacheId1})
+    ]).then(() => Promise.all([
+      fs.writeFile(src2, 'b'),
+      Cache.insert({_id: cacheId2})
+    ])).then(() => box.watch()).then(() => fs.appendFile(src1, 'aaa')).delay(500).then(() => {
+      file = processor.lastCall.args[0];
+
+      file.source.should.eql(src1);
+      file.path.should.eql(path1);
+      file.type.should.eql('update');
+      file.params.should.eql({});
+    }).then(() => fs.appendFile(src2, 'bbb')).delay(500).then(() => {
+      const file2 = processor.lastCall.args[0];
+      file2.should.eql(file); // not changed
+    }).finally(() => {
+      box.unwatch();
+      return fs.rmdir(box.base);
+    });
+  });
+
   it('watch() - watcher has started', () => {
     const box = newBox();
 
