@@ -96,7 +96,7 @@ describe('post_permalink', () => {
     });
   });
 
-  it('post_title', () => {
+  it('hour and minute', () => {
     hexo.config.permalink = ':year/:month/:day/:hour/:minute/:post_title/';
 
     return Post.insert({
