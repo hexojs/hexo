@@ -11,6 +11,7 @@ describe('Save database', () => {
 
   it('default', () => {
     hexo.env.init = true;
+    hexo._dbLoaded = true;
 
     return saveDatabase().then(() => fs.exists(dbPath)).then(exist => {
       exist.should.be.true;
@@ -20,6 +21,16 @@ describe('Save database', () => {
 
   it('do nothing if hexo is not initialized', () => {
     hexo.env.init = false;
+    hexo._dbLoaded = true;
+
+    return saveDatabase().then(() => fs.exists(dbPath)).then(exist => {
+      exist.should.be.false;
+    });
+  });
+
+  it('do nothing if database is not loaded', () => {
+    hexo.env.init = true;
+    hexo._dbLoaded = false;
 
     return saveDatabase().then(() => fs.exists(dbPath)).then(exist => {
       exist.should.be.false;
