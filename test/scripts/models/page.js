@@ -2,6 +2,7 @@
 
 const sinon = require('sinon');
 const pathFn = require('path');
+const { full_url_for } = require('hexo-util');
 
 describe('Page', () => {
   const Hexo = require('../../../lib/hexo');
@@ -74,11 +75,12 @@ describe('Page', () => {
 
   it('permalink - should be encoded', () => {
     hexo.config.url = 'http://fôo.com';
+    const path = 'bár';
     return Page.insert({
       source: 'foo',
-      path: 'bár'
+      path
     }).then(data => {
-      data.permalink.should.eql('http://xn--fo-8ja.com/b%C3%A1r');
+      data.permalink.should.eql(full_url_for.call(hexo, data.path));
       hexo.config.url = 'http://yoursite.com';
       return Page.removeById(data._id);
     });
