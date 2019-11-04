@@ -87,6 +87,25 @@ describe('new', () => {
     });
   });
 
+  it('slug(2)', () => {
+    const date = moment(now);
+    const path = pathFn.join(hexo.source_dir, '_posts', 'foo.md');
+    const body = [
+      'title: Hello World',
+      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+      'tags:',
+      '---'
+    ].join('\n') + '\n';
+
+    return n({
+      _: ['Hello World'],
+      s: 'foo'
+    }).then(() => fs.readFile(path)).then(content => {
+      content.should.eql(body);
+      return fs.unlink(path);
+    });
+  });
+
   it('path', () => {
     const date = moment(now);
     const path = pathFn.join(hexo.source_dir, '_posts', 'bar.md');
@@ -125,7 +144,14 @@ describe('new', () => {
   });
 
   it('replace existing files', () => {
+    const date = moment(now);
     const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const body = [
+      'title: Hello World',
+      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+      'tags:',
+      '---'
+    ].join('\n') + '\n';
 
     return post.create({
       title: 'Hello World'
@@ -134,8 +160,31 @@ describe('new', () => {
       replace: true
     })).then(() => fs.exists(pathFn.join(hexo.source_dir, '_posts', 'Hello-World-1.md'))).then(exist => {
       exist.should.be.false;
-      return fs.unlink(path);
-    });
+    }).then(() => fs.readFile(path)).then(content => {
+      content.should.eql(body);
+    }).finally(() => fs.unlink(path));
+  });
+
+  it('replace existing files (2)', () => {
+    const date = moment(now);
+    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const body = [
+      'title: Hello World',
+      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+      'tags:',
+      '---'
+    ].join('\n') + '\n';
+
+    return post.create({
+      title: 'Hello World'
+    }).then(() => n({
+      _: ['Hello World'],
+      r: true
+    })).then(() => fs.exists(pathFn.join(hexo.source_dir, '_posts', 'Hello-World-1.md'))).then(exist => {
+      exist.should.be.false;
+    }).then(() => fs.readFile(path)).then(content => {
+      content.should.eql(body);
+    }).finally(() => fs.unlink(path));
   });
 
   it('extra data', () => {
