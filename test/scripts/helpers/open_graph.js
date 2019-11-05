@@ -2,6 +2,7 @@
 
 const moment = require('moment');
 const cheerio = require('cheerio');
+const { encodeURL } = require('hexo-util');
 
 describe('open_graph', () => {
   const Hexo = require('../../../lib/hexo');
@@ -35,7 +36,6 @@ describe('open_graph', () => {
         meta({property: 'og:title', content: hexo.config.title}),
         meta({property: 'og:url'}),
         meta({property: 'og:site_name', content: hexo.config.title}),
-        meta({property: 'og:locale', content: 'en'}),
         meta({property: 'article:published_time', content: post.date.toISOString()}),
         meta({property: 'article:modified_time', content: post.updated.toISOString()}),
         meta({property: 'article:author', content: hexo.config.author}),
@@ -142,7 +142,7 @@ describe('open_graph', () => {
 
     const result = openGraph.call(ctx);
 
-    result.should.contain(meta({property: 'og:url', content: 'https://xn--fo-9ja.com/b%C3%A1r'}));
+    result.should.contain(meta({property: 'og:url', content: encodeURL(ctx.url)}));
   });
 
   it('images - content', () => {
@@ -614,7 +614,7 @@ describe('open_graph', () => {
       is_post: isPost
     }, {language: 'es-cr'});
 
-    result.should.contain(meta({property: 'og:locale', content: 'es-cr'}));
+    result.should.contain(meta({property: 'og:locale', content: 'es_CR'}));
   });
 
   it('og:locale - page.lang', () => {
@@ -624,7 +624,7 @@ describe('open_graph', () => {
       is_post: isPost
     });
 
-    result.should.contain(meta({property: 'og:locale', content: 'es-mx'}));
+    result.should.contain(meta({property: 'og:locale', content: 'es_MX'}));
   });
 
   it('og:locale - page.language', () => {
@@ -634,7 +634,7 @@ describe('open_graph', () => {
       is_post: isPost
     });
 
-    result.should.contain(meta({property: 'og:locale', content: 'es-gt'}));
+    result.should.contain(meta({property: 'og:locale', content: 'es_GT'}));
   });
 
   it('og:locale - config.language', () => {
@@ -646,10 +646,34 @@ describe('open_graph', () => {
       is_post: isPost
     });
 
-    result.should.contain(meta({property: 'og:locale', content: 'es-pa'}));
+    result.should.contain(meta({property: 'og:locale', content: 'es_PA'}));
+  });
+
+  it('og:locale - convert territory to uppercase', () => {
+    hexo.config.language = 'fr-fr';
+
+    const result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    });
+
+    result.should.contain(meta({property: 'og:locale', content: 'fr_FR'}));
   });
 
   it('og:locale - no language set', () => {
+    const result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    });
+
+    result.should.not.contain(meta({property: 'og:locale'}));
+  });
+
+  it('og:locale - language is not in lang-territory format', () => {
+    hexo.config.language = 'en';
+
     const result = openGraph.call({
       page: {},
       config: hexo.config,
