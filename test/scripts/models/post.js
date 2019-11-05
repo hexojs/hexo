@@ -3,6 +3,7 @@
 const sinon = require('sinon');
 const pathFn = require('path');
 const Promise = require('bluebird');
+const { full_url_for } = require('hexo-util');
 
 describe('Post', () => {
   const Hexo = require('../../../lib/hexo');
@@ -85,12 +86,13 @@ describe('Post', () => {
   });
 
   it('permalink - should be encoded', () => {
+    const slug = 'bár';
     hexo.config.url = 'http://fôo.com';
     return Post.insert({
       source: 'foo.md',
-      slug: 'bár'
+      slug
     }).then(data => {
-      data.permalink.should.eql('http://xn--fo-8ja.com/b%C3%A1r');
+      data.permalink.should.eql(full_url_for.call(hexo, slug));
       hexo.config.url = 'http://yoursite.com';
       return Post.removeById(data._id);
     });

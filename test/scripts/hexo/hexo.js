@@ -6,6 +6,7 @@ const Promise = require('bluebird');
 const sinon = require('sinon');
 const sep = pathFn.sep;
 const testUtil = require('../../util');
+const { full_url_for } = require('hexo-util');
 
 describe('Hexo', () => {
   const base_dir = pathFn.join(__dirname, 'hexo_test');
@@ -427,17 +428,18 @@ describe('Hexo', () => {
   });
 
   it('_generate() - should encode url', () => {
+    const path = 'bár';
     hexo.config.url = 'http://fôo.com';
 
     hexo.theme.setView('test.swig', '{{ url }}');
 
     hexo.extend.generator.register('test', () => ({
-      path: 'bár',
+      path,
       layout: 'test'
     }));
 
-    return hexo._generate().then(() => checkStream(route.get('bár'),
-      'http://xn--fo-8ja.com/b%C3%A1r'));
+    return hexo._generate().then(() => checkStream(route.get(path),
+      full_url_for.call(hexo, path)));
   });
 
   it('_generate() - do nothing if it\'s generating', () => {
