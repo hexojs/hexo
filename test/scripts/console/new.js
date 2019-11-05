@@ -126,6 +126,26 @@ describe('new', () => {
     });
   });
 
+  it('path (2)', () => {
+    const date = moment(now);
+    const path = pathFn.join(hexo.source_dir, '_posts', 'bar.md');
+    const body = [
+      'title: Hello World',
+      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+      'tags:',
+      '---'
+    ].join('\n') + '\n';
+
+    return n({
+      _: ['Hello World'],
+      slug: 'foo',
+      p: 'bar'
+    }).then(() => fs.readFile(path)).then(content => {
+      content.should.eql(body);
+      return fs.unlink(path);
+    });
+  });
+
   it('rename if target existed', () => {
     const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World-1.md');
 
