@@ -649,18 +649,6 @@ describe('open_graph', () => {
     result.should.contain(meta({property: 'og:locale', content: 'es_PA'}));
   });
 
-  it('og:locale - convert territory to uppercase', () => {
-    hexo.config.language = 'fr-fr';
-
-    const result = openGraph.call({
-      page: {},
-      config: hexo.config,
-      is_post: isPost
-    });
-
-    result.should.contain(meta({property: 'og:locale', content: 'fr_FR'}));
-  });
-
   it('og:locale - no language set', () => {
     const result = openGraph.call({
       page: {},
