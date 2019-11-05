@@ -614,7 +614,7 @@ describe('open_graph', () => {
       is_post: isPost
     }, {language: 'es-cr'});
 
-    result.should.contain(meta({property: 'og:locale', content: 'es_CR'}));
+    result.should.contain(meta({property: 'og:locale', content: 'es_cr'}));
   });
 
   it('og:locale - page.lang', () => {
@@ -624,7 +624,7 @@ describe('open_graph', () => {
       is_post: isPost
     });
 
-    result.should.contain(meta({property: 'og:locale', content: 'es_MX'}));
+    result.should.contain(meta({property: 'og:locale', content: 'es_mx'}));
   });
 
   it('og:locale - page.language', () => {
@@ -634,7 +634,7 @@ describe('open_graph', () => {
       is_post: isPost
     });
 
-    result.should.contain(meta({property: 'og:locale', content: 'es_GT'}));
+    result.should.contain(meta({property: 'og:locale', content: 'es_gt'}));
   });
 
   it('og:locale - config.language', () => {
@@ -646,7 +646,7 @@ describe('open_graph', () => {
       is_post: isPost
     });
 
-    result.should.contain(meta({property: 'og:locale', content: 'es_PA'}));
+    result.should.contain(meta({property: 'og:locale', content: 'es_pa'}));
   });
 
   it('og:locale - no language set', () => {
