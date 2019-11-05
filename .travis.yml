@@ -18,8 +18,8 @@ node_js:
   - "node"
 
 script:
-  - npm run eslint
-  - npm run test-cov
+  #- npm run eslint
+  #- npm run test-cov
   - ./test/benchmark.sh
 
 after_script:
