@@ -90,6 +90,7 @@ Also, we welcome PR or issue to [official-plugins](https://github.com/hexojs).
 ## Sponsors
 
 [![JetBrains](/.github/jetbrains-variant-4.svg)](https://www.jetbrains.com)
+[![CMS Critic](/.github/CMS-Critic_logo-3.png)](https://www.cmscritic.com/)
 
 ## License
 
