@@ -1,7 +1,6 @@
 'use strict';
 
 const util = require('hexo-util');
-const cloneDeep = require('lodash/cloneDeep');
 const defaultConfig = require('../../../lib/hexo/default_config');
 
 describe('Backtick code block', () => {
@@ -23,7 +22,7 @@ describe('Backtick code block', () => {
 
   beforeEach(() => {
     // Reset config
-    hexo.config.highlight = cloneDeep(defaultConfig.highlight);
+    hexo.config.highlight = Object.assign({}, defaultConfig.highlight);
   });
 
   it('disabled', () => {
