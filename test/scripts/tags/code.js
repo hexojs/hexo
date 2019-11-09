@@ -136,4 +136,15 @@ describe('code', () => {
     const $ = cheerio.load(result);
     $('.gutter .line').length.should.eql(3);
   });
+
+  it('wrap', () => {
+    let result = code('wrap:false', fixture);
+    result.should.eql(highlight(fixture, {
+      wrap: false
+    }));
+    result = code('wrap:true', fixture);
+    result.should.eql(highlight(fixture, {
+      wrap: true
+    }));
+  });
 });
