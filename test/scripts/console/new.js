@@ -87,7 +87,7 @@ describe('new', () => {
     });
   });
 
-  it('slug(2)', () => {
+  it('slug - s', () => {
     const date = moment(now);
     const path = pathFn.join(hexo.source_dir, '_posts', 'foo.md');
     const body = [
@@ -126,7 +126,7 @@ describe('new', () => {
     });
   });
 
-  it('path (2)', () => {
+  it('path - p', () => {
     const date = moment(now);
     const path = pathFn.join(hexo.source_dir, '_posts', 'bar.md');
     const body = [
@@ -185,7 +185,7 @@ describe('new', () => {
     }).finally(() => fs.unlink(path));
   });
 
-  it('replace existing files (2)', () => {
+  it('replace existing files - r', () => {
     const date = moment(now);
     const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
     const body = [
