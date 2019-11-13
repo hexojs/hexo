@@ -54,7 +54,7 @@
     "nunjucks": "^3.1.3",
     "pretty-hrtime": "^1.0.3",
     "resolve": "^1.8.1",
-    "strip-ansi": "^5.0.0",
+    "strip-ansi": "^6.0.0",
     "strip-indent": "^3.0.0",
     "swig-extras": "0.0.1",
     "swig-templates": "^2.0.3",
