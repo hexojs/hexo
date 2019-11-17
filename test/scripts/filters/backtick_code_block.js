@@ -384,5 +384,7 @@ describe('Backtick code block', () => {
 
     codeBlock(data);
     data.content.should.eql('<escape>' + highlight(code, { lang: 'js', wrap: false }) + '</escape>');
+
+    hexo.config.highlight.wrap = true;
   });
 });
