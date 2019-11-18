@@ -90,8 +90,10 @@ Also, we welcome PR or issue to [official-plugins](https://github.com/hexojs).
 ## Sponsors
 
 <a href="https://www.jetbrains.com/"><img src="/.github/jetbrains-variant-4.svg" alt="JetBrains" width="200"/></a>
-<a href="https://www.cmscritic.com/"><img src="/.github/CMS-Critic_logo-3.png" alt="CMS Critic" width="200"/>
-<a href="https://getform.io/"><img src="/.github/getform-logo.svg" alt="Getform" width="100"/>
+
+<a href="https://www.cmscritic.com/"><img src="/.github/CMS-Critic_logo-3.png" alt="CMS Critic" width="200"/></a>
+
+<a href="https://getform.io/"><img src="/.github/getform-logo.svg" alt="Getform" width="200"/></a>
 
 ## License
 
