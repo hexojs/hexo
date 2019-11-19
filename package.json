@@ -22,6 +22,10 @@
   ],
   "repository": "hexojs/hexo",
   "homepage": "https://hexo.io/",
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/hexo"
+  },
   "keywords": [
     "website",
     "blog",
