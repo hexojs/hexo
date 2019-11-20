@@ -265,7 +265,7 @@ describe('Box', () => {
   });
 
   it('process() - skip files if they match any of the glob expressions in ignore', () => {
-    const box = newBox('test', {ignore: ['**/ignore_me', '**/ignore_me_too']});
+    const box = newBox('test', {ignore: ['**/ignore_me', '**/ignore_me_too.txt']});
     const data = {};
 
     box.addProcessor(file => {
@@ -274,7 +274,8 @@ describe('Box', () => {
 
     return Promise.all([
       fs.writeFile(pathFn.join(box.base, 'foo.txt'), 'foo'),
-      fs.writeFile(pathFn.join(box.base, 'ignore_me', 'bar.txt'), 'ignore_me')
+      fs.writeFile(pathFn.join(box.base, 'ignore_me', 'bar.txt'), 'ignore_me'),
+      fs.writeFile(pathFn.join(box.base, 'ignore_me_too.txt'), 'ignore_me_too')
     ]).then(() => box.process()).then(() => {
       const keys = Object.keys(data);
 
@@ -474,13 +475,16 @@ describe('Box', () => {
   });
 
   it('watch() - update with complex "ignore" option', () => {
-    const box = newBox('test', {ignore: ['**/ignore_me', '**/ignore_me_too']});
+    const box = newBox('test', {ignore: ['**/ignore_me', '**/ignore_me_too.txt']});
     const path1 = 'a.txt';
     const path2 = 'b.txt';
+    const path3 = 'ignore_me_too.txt';
     const src1 = pathFn.join(box.base, path1);
     const src2 = pathFn.join(box.base, 'ignore_me', path2);
+    const src3 = pathFn.join(box.base, path3);
     const cacheId1 = 'test/' + path1;
     const cacheId2 = 'test/ignore_me/' + path2;
+    const cacheId3 = 'test/' + path3;
     const Cache = box.Cache;
     const processor = sinon.spy();
 
@@ -493,6 +497,9 @@ describe('Box', () => {
     ]).then(() => Promise.all([
       fs.writeFile(src2, 'b'),
       Cache.insert({_id: cacheId2})
+    ])).then(() => Promise.all([
+      fs.writeFile(src3, 'c'),
+      Cache.insert({_id: cacheId3})
     ])).then(() => box.watch()).then(() => fs.appendFile(src1, 'aaa')).delay(500).then(() => {
       file = processor.lastCall.args[0];
 
@@ -503,6 +510,9 @@ describe('Box', () => {
     }).then(() => fs.appendFile(src2, 'bbb')).delay(500).then(() => {
       const file2 = processor.lastCall.args[0];
       file2.should.eql(file); // not changed
+    }).then(() => fs.appendFile(src3, 'ccc')).delay(500).then(() => {
+      const file3 = processor.lastCall.args[0];
+      file3.should.eql(file); // not changed
     }).finally(() => {
       box.unwatch();
       return fs.rmdir(box.base);
