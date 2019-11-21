@@ -2,7 +2,6 @@
 
 const pathFn = require('path');
 const fs = require('hexo-fs');
-const cloneDeep = require('lodash/cloneDeep');
 
 describe('Load config', () => {
   const Hexo = require('../../../lib/hexo');
@@ -17,7 +16,7 @@ describe('Load config', () => {
   after(() => fs.rmdir(hexo.base_dir));
 
   beforeEach(() => {
-    hexo.config = cloneDeep(defaultConfig);
+    hexo.config = JSON.parse(JSON.stringify(defaultConfig));
   });
 
   it('config file does not exist', () => loadConfig(hexo).then(() => {
