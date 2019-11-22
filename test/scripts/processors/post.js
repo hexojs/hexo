@@ -791,6 +791,8 @@ describe('post', () => {
 
   it('post - post_asset_folder enabled', () => {
     hexo.config.post_asset_folder = true;
+    hexo.config.exclude = ['**.png'];
+    hexo.config.include = ['**/_fizz.*'];
 
     const body = [
       'title: "Hello world"',
@@ -804,27 +806,52 @@ describe('post', () => {
       renderable: true
     });
 
-    const assetId = 'source/_posts/foo/bar.jpg';
-    const assetPath = pathFn.join(hexo.base_dir, assetId);
+    const assetFiles = [
+      'bar.jpg',
+      'baz.png',
+      '_fizz.jpg',
+      '_buzz.jpg'
+    ].map(filename => {
+      const id = `source/_posts/foo/${filename}`;
+      const path = pathFn.join(hexo.base_dir, id);
+      const contents = filename.replace(/\.\w+$/, '');
+      return {
+        id,
+        path,
+        contents
+      };
+    });
 
     return Promise.all([
       fs.writeFile(file.source, body),
-      fs.writeFile(assetPath, '')
+      ...assetFiles.map(obj => fs.writeFile(obj.path, obj.contents))
     ]).then(() => process(file)).then(() => {
       const post = Post.findOne({source: file.path});
-      const asset = PostAsset.findById(assetId);
+      const assets = assetFiles.map(obj => PostAsset.findById(obj.id));
 
-      asset._id.should.eql(assetId);
-      asset.post.should.eql(post._id);
-      asset.modified.should.be.true;
+      [assets[0]].should.not.eql([undefined]);
+      assets[0]._id.should.eql(assetFiles[0].id);
+      assets[0].post.should.eql(post._id);
+      assets[0].modified.should.be.true;
+
+      [assets[1]].should.eql([undefined]);
+
+      [assets[2]].should.not.eql([undefined]);
+      assets[2]._id.should.eql(assetFiles[2].id);
+      assets[2].post.should.eql(post._id);
+      assets[2].modified.should.be.true;
+
+      [assets[3]].should.eql([undefined]);
 
       return post.remove();
     }).finally(() => {
       hexo.config.post_asset_folder = false;
+      hexo.config.exclude = undefined;
+      hexo.config.include = undefined;
 
       return Promise.all([
         fs.unlink(file.source),
-        fs.unlink(assetPath)
+        ...assetFiles.map(obj => fs.unlink(obj.path))
       ]);
     });
   });
