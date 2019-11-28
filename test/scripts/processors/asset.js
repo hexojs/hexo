@@ -303,7 +303,34 @@ describe('asset', () => {
         fs.unlink(file.source)
       ]);
     }).finally(() => {
-      hexo.config.use_date_for_updated = undefined;
+      hexo.config.use_date_for_updated = false;
+    });
+  });
+
+  it('page - leave updated date empty if optional_updated is set', () => {
+    const file = newFile({
+      path: 'hello.swig',
+      type: 'create',
+      renderable: true
+    });
+
+    hexo.config.optional_updated = true;
+
+    return fs.writeFile(file.source, '').then(() => Promise.all([
+      fs.stat(file.source),
+      process(file)
+    ])).spread(stats => {
+      const page = Page.findOne({source: file.path});
+      const result = typeof page.updated;
+
+      result.should.eql('undefined');
+
+      return Promise.all([
+        page.remove(),
+        fs.unlink(file.source)
+      ]);
+    }).finally(() => {
+      hexo.config.optional_updated = false;
     });
   });
 

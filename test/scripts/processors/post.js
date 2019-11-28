@@ -563,7 +563,38 @@ describe('post', () => {
 
       return post.remove();
     }).finally(() => {
-      hexo.config.use_date_for_updated = undefined;
+      hexo.config.use_date_for_updated = false;
+      fs.unlink(file.source);
+    });
+  });
+
+  it('post - leave updated date empty if optional_updated is set', () => {
+    const body = [
+      'title: "Hello world"',
+      '---'
+    ].join('\n');
+
+    const file = newFile({
+      path: 'foo.html',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+
+    hexo.config.optional_updated = true;
+
+    return fs.writeFile(file.source, body).then(() => Promise.all([
+      file.stat(),
+      process(file)
+    ])).spread(stats => {
+      const post = Post.findOne({source: file.path});
+      const result = typeof post.updated;
+
+      result.should.eql('undefined');
+
+      return post.remove();
+    }).finally(() => {
+      hexo.config.optional_updated = false;
       fs.unlink(file.source);
     });
   });

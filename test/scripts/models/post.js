@@ -29,13 +29,13 @@ describe('Post', () => {
     }).then(data => {
       data.title.should.eql('');
       data.date.valueOf().should.gte(now);
-      data.updated.valueOf().should.gte(now);
       data.comments.should.be.true;
       data.layout.should.eql('post');
       data._content.should.eql('');
       data.link.should.eql('');
       data.raw.should.eql('');
       data.published.should.be.true;
+      should.not.exist(data.updated);
       should.not.exist(data.content);
       should.not.exist(data.excerpt);
       should.not.exist(data.more);
