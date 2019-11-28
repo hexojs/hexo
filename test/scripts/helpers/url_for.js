@@ -2,7 +2,7 @@
 
 describe('url_for', () => {
   const ctx = {
-    config: {},
+    config: { url: 'https://example.com' },
     relative_url: require('../../../lib/plugins/helper/relative_url')
   };
 
