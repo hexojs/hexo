@@ -1,0 +1,6 @@
+#!/bin/sh
+docker run \
+  --interactive --tty --rm \
+  --volume "$PWD":/hexosite \
+  --workdir /hexosite \
+  bestony/hexojs:latest "$@"
