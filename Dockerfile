@@ -1,5 +1,7 @@
-FROM node:10
+FROM node:current-alpine
 
+RUN apk update && apk add bash git
 RUN npm install -g hexo-cli
 
-CMD ["/bin/bash","-c","hexo"]
+
+CMD ["/bin/bash"]

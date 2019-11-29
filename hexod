@@ -1,7 +1,7 @@
 #!/bin/sh
 docker run \
   --interactive --tty --rm \
-  --volume "$PWD":/hexosite \
-  --workdir /hexosite \
+  --volume "$PWD":/app \
+  --workdir /app \
   -p 4000:4000 \
-  bestony/hexojs:latest "$@"
+  bestony/hexojs:latest "hexo" "$@"
