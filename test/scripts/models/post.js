@@ -140,10 +140,34 @@ describe('Post', () => {
     hexo.config.pretty_urls.trailing_index = false;
     return Post.insert({
       source: 'foo.md',
-      slug: 'bar'
+      slug: 'bar/index.html'
     }).then(data => {
       data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/index\.html$/, ''));
       hexo.config.pretty_urls.trailing_index = true;
+      return Post.removeById(data._id);
+    });
+  });
+
+  it('permalink - trailing_html', () => {
+    hexo.config.pretty_urls.trailing_html = false;
+    return Post.insert({
+      source: 'foo.md',
+      slug: 'bar/foo.html'
+    }).then(data => {
+      data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/\.html$/, '/'));
+      hexo.config.pretty_urls.trailing_html = true;
+      return Post.removeById(data._id);
+    });
+  });
+
+  it('permalink - trailing_html - index.html', () => {
+    hexo.config.pretty_urls.trailing_html = false;
+    return Post.insert({
+      source: 'foo.md',
+      slug: 'bar/index.html'
+    }).then(data => {
+      data.permalink.should.eql(hexo.config.url + '/' + data.path);
+      hexo.config.pretty_urls.trailing_html = true;
       return Post.removeById(data._id);
     });
   });

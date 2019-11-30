@@ -73,6 +73,30 @@ describe('Page', () => {
     });
   });
 
+  it('permalink - trailing_html', () => {
+    hexo.config.pretty_urls.trailing_html = false;
+    return Page.insert({
+      source: 'foo.md',
+      path: 'bar/foo.html'
+    }).then(data => {
+      data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/\.html$/, '/'));
+      hexo.config.pretty_urls.trailing_html = true;
+      return Page.removeById(data._id);
+    });
+  });
+
+  it('permalink - trailing_html - index.html', () => {
+    hexo.config.pretty_urls.trailing_html = false;
+    return Page.insert({
+      source: 'foo.md',
+      path: 'bar/index.html'
+    }).then(data => {
+      data.permalink.should.eql(hexo.config.url + '/' + data.path);
+      hexo.config.pretty_urls.trailing_html = true;
+      return Page.removeById(data._id);
+    });
+  });
+
   it('permalink - should be encoded', () => {
     hexo.config.url = 'http://fôo.com';
     const path = 'bár';

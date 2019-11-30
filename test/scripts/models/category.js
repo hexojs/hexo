@@ -116,6 +116,17 @@ describe('Category', () => {
     });
   });
 
+  it('permalink - trailing_html', () => {
+    hexo.config.pretty_urls.trailing_html = false;
+    return Category.insert({
+      name: 'foo'
+    }).then(data => {
+      data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/\.html$/, '/'));
+      hexo.config.pretty_urls.trailing_html = true;
+      return Category.removeById(data._id);
+    });
+  });
+
   it('permalink - should be encoded', () => {
     hexo.config.url = 'http://fôo.com';
     return Category.insert({
