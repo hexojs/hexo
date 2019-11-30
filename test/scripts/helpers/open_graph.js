@@ -355,7 +355,7 @@ describe('open_graph', () => {
     };
 
     const result = openGraph.call(ctx);
-    const escaped = 'Important! Today is &quot;not&quot; &apos;Xmas&apos;!';
+    const escaped = 'Important! Today is &quot;not&quot; &#39;Xmas&#39;!';
 
     result.should.contain(meta({name: 'description', content: escaped}));
     result.should.contain(meta({property: 'og:description', content: escaped}));
