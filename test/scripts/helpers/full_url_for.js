@@ -17,10 +17,19 @@ describe('full_url_for', () => {
     fullUrlFor('/index.html').should.eql(ctx.config.url + '/index.html');
   });
 
+  it('internel url (pretty_urls.trailing_index disabled)', () => {
+    ctx.config.pretty_urls = { trailing_index: false };
+    fullUrlFor('index.html').should.eql(ctx.config.url + '/');
+    fullUrlFor('/index.html').should.eql(ctx.config.url + '/');
+  });
+
+
   it('external url', () => {
     [
       'https://hexo.io/',
-      '//google.com/'
+      '//google.com/',
+      // 'index.html' in external link should not be removed
+      '//google.com/index.html'
     ].forEach(url => {
       fullUrlFor(url).should.eql(url);
     });

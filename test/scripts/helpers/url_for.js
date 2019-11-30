@@ -2,7 +2,7 @@
 
 describe('url_for', () => {
   const ctx = {
-    config: {},
+    config: { url: 'https://example.com' },
     relative_url: require('../../../lib/plugins/helper/relative_url')
   };
 
@@ -50,10 +50,24 @@ describe('url_for', () => {
     ctx.config.relative_link = false;
   });
 
+  it('internel url (pretty_urls.trailing_index disabled)', () => {
+    ctx.config.pretty_urls = { trailing_index: false };
+    ctx.path = '';
+    ctx.config.root = '/';
+    urlFor('index.html').should.eql('/');
+    urlFor('/index.html').should.eql('/');
+
+    ctx.config.root = '/blog/';
+    urlFor('index.html').should.eql('/blog/');
+    urlFor('/index.html').should.eql('/blog/');
+  });
+
   it('external url', () => {
     [
       'https://hexo.io/',
-      '//google.com/'
+      '//google.com/',
+      // 'index.html' in external link should not be removed
+      '//google.com/index.html'
     ].forEach(url => {
       urlFor(url).should.eql(url);
     });
