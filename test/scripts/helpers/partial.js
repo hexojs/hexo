@@ -60,13 +60,6 @@ describe('partial', () => {
     partial('test', {foo: 'bar'}).should.eql('bar');
   });
 
-  it('cache', () => {
-    hexo.theme.setView('test.swig', '{{ foo }}');
-
-    partial('test', {foo: 'bar'}, {cache: true}).should.eql('bar');
-    partial('test', {}, {cache: true}).should.eql('bar');
-  });
-
   it('only', () => {
     hexo.theme.setView('test.swig', '{{ foo }}{{ bar }}');
 
@@ -93,5 +86,28 @@ describe('partial', () => {
     }
 
     errorCallback.calledOnce.should.be.true;
+  });
+
+  it('cache - default', () => {
+    hexo.theme.setView('test.swig', '{{ foo }}');
+
+    partial('test', {foo: 'bar'}, { cache: true }).should.eql('bar');
+    partial('test', {}, { cache: true }).should.eql('bar');
+    partial('test', {foo: 'bar'}, { cache: 'test-cache-id' }).should.eql('bar');
+    partial('test', {}, { cache: 'test-cache-id' }).should.eql('bar');
+  });
+
+  it('cache - enhance cache', () => {
+    hexo.config.enhance_cache = true;
+    hexo.theme.setView('test.swig', '{{ foo }}');
+
+    // enhance cache should only cache partial when the locals unchanged
+    partial('test', {foo: 'bar'}).should.eql('bar');
+    partial('test', {foo: 'baz'}).should.eql('baz');
+    // when {cache: true} is set, enhance cache should cache the partial even the locals changed
+    partial('test', {foo: 'bar'}, { cache: true }).should.eql('bar');
+    partial('test', {foo: 'baz'}, { cache: true }).should.eql('bar');
+    partial('test', {foo: 'bar'}, { cache: 'test-cache-id' }).should.eql('bar');
+    partial('test', {foo: 'baz'}, { cache: 'test-cache-id' }).should.eql('bar');
   });
 });
