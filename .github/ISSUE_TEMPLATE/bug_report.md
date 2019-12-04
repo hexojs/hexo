@@ -9,9 +9,13 @@ assignees: ''
 
 <!-- NOTE:
 
+Those information will be helpful for us to investigate the problem. So please, follow the steps we provided exactly when submitting your issue, and do not remove the issue template.
+
 If you find that markdown files are not rendered as expected, please go to https://marked.js.org/demo/ to see if it can be reproduced there. If it can be reproduced, please file a bug to https://github.com/markedjs/marked.
 
 If you want help on your bug, please also send us the git repository (GitHub, GitLab, Bitbucket etc...) where your hexo code is stored. It would greatly help. If you prefer not to have your hexo code out in public, please upload to a private GitHub repository and grant read-only access to hexojs/core.
+
+针对简体中文用户的额外提示：请在提交 issue 时完全按照我们提供的步骤进行操作，不要删除问题模板。按照步骤提供相关信息将有助于我们调查问题。Hexo 维护团队并非全部是简体中文使用者，使用英语描述你的问题可以让更多的人帮助到你。下述步骤使用英语写就，必要时请使用翻译网站或软件。
 
 -->
 
@@ -35,16 +39,33 @@ Please check followings before submitting a new issue.
 * Step2
 * etc...
 
+## Is the problem still there under "Safe mode"?
+
+<!--
+https://hexo.io/docs/commands#Safe-mode
+
+"Safe mode" will disable all the plugins and scripts.
+If your problem disappear under "Safe mode" means the problem is probably at your newly installed plugins, not at hexo.
+-->
+
 ## Environment & Settings
 
-**Node.js & npm version**
+**Node.js & npm version(`node -v && npm -v`)**
+
+<!--
+Please paste the output between two "```" provided below
+-->
 
 ```
 ```
 
 **Your site `_config.yml`** (Optional)
 
-```
+<!--
+Please paste the content of your _config.yml between two "```" provided below
+-->
+
+```yaml
 ```
 
 **Your theme `_config.yml`** (Optional)
@@ -54,10 +75,18 @@ Please check followings before submitting a new issue.
 
 **Hexo and Plugin version(`npm ls --depth 0`)**
 
+<!--
+Please paste the output between two "```" provided below
+-->
+
 ```
 ```
 
 **Your package.json `package.json`**
+
+<!--
+Please paste the content of package.json between two "```" provided below
+-->
 
 ```
 ```
