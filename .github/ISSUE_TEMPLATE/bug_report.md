@@ -15,6 +15,8 @@ If you find that markdown files are not rendered as expected, please go to https
 
 If you want help on your bug, please also send us the git repository (GitHub, GitLab, Bitbucket etc...) where your hexo code is stored. It would greatly help. If you prefer not to have your hexo code out in public, please upload to a private GitHub repository and grant read-only access to hexojs/core.
 
+Please DO NOT CONTAINS SECRET INFORMATION (likes password or GitHub Personal Access Token) when submit a new issue.
+
 针对简体中文用户的额外提示：请在提交 issue 时完全按照我们提供的步骤进行操作，不要删除问题模板。按照步骤提供相关信息将有助于我们调查问题。Hexo 维护团队并非全部是简体中文使用者，使用英语描述你的问题可以让更多的人帮助到你。下述步骤使用英语写就，必要时请使用翻译网站或软件。
 
 -->
