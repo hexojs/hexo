@@ -245,6 +245,24 @@ describe('Box', () => {
     }).finally(() => fs.rmdir(box.base));
   });
 
+  it('process() - handle null ignore', () => {
+    const box = newBox('test', { ignore: null });
+    const data = {};
+
+    box.addProcessor(file => {
+      data[file.path] = file;
+    });
+
+    return Promise.all([
+      fs.writeFile(pathFn.join(box.base, 'foo.txt'), 'foo')
+    ]).then(() => box.process()).then(() => {
+      const keys = Object.keys(data);
+
+      keys.length.should.eql(1);
+      keys[0].should.eql('foo.txt');
+    }).finally(() => fs.rmdir(box.base));
+  });
+
   it('process() - skip files if they match a glob epression in ignore', () => {
     const box = newBox('test', {ignore: '**/ignore_me'});
     const data = {};
