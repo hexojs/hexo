@@ -44,7 +44,6 @@
     "bluebird": "^3.5.2",
     "chalk": "^3.0.0",
     "cheerio": "0.22.0",
-    "deepmerge": "^4.2.2",
     "hexo-cli": "^3.0.0",
     "hexo-front-matter": "^1.0.0",
     "hexo-fs": "^2.0.0",
