@@ -48,6 +48,7 @@ describe('Tag', () => {
   it('slug - filename_case: 0', () => Tag.insert({
     name: 'WahAHa'
   }).then(data => {
+    data.name.should.eql('WahAHa');
     data.slug.should.eql('WahAHa');
     return Tag.removeById(data._id);
   }));
@@ -58,6 +59,7 @@ describe('Tag', () => {
     return Tag.insert({
       name: 'WahAHa'
     }).then(data => {
+      data.name.should.eql('wahaha');
       data.slug.should.eql('wahaha');
       hexo.config.filename_case = 0;
       return Tag.removeById(data._id);
@@ -70,6 +72,7 @@ describe('Tag', () => {
     return Tag.insert({
       name: 'WahAHa'
     }).then(data => {
+      data.name.should.eql('WAHAHA');
       data.slug.should.eql('WAHAHA');
       hexo.config.filename_case = 0;
       return Tag.removeById(data._id);
