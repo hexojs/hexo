@@ -23,7 +23,9 @@ script:
       npm run eslint;
     fi
   - npm run test-cov
-  - ./test/benchmark.sh
+  - if [[ $TRAVIS_OS_NAME == "linux" ]]; then
+      ./test/benchmark.sh;
+    fi
 
 after_script:
   - npm install coveralls
