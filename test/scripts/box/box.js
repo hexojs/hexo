@@ -264,7 +264,7 @@ describe('Box', () => {
   });
 
   it('process() - skip files if they match a glob epression in ignore', () => {
-    const box = newBox('test', {ignore: '**/ignore_me'});
+    const box = newBox('test', { ignore: '**/ignore_me' });
     const data = {};
 
     box.addProcessor(file => {
@@ -283,7 +283,7 @@ describe('Box', () => {
   });
 
   it('process() - skip files if they match any of the glob expressions in ignore', () => {
-    const box = newBox('test', {ignore: ['**/ignore_me', '**/ignore_me_too.txt']});
+    const box = newBox('test', { ignore: ['**/ignore_me', '**/ignore_me_too.txt'] });
     const data = {};
 
     box.addProcessor(file => {
@@ -294,6 +294,45 @@ describe('Box', () => {
       fs.writeFile(pathFn.join(box.base, 'foo.txt'), 'foo'),
       fs.writeFile(pathFn.join(box.base, 'ignore_me', 'bar.txt'), 'ignore_me'),
       fs.writeFile(pathFn.join(box.base, 'ignore_me_too.txt'), 'ignore_me_too')
+    ]).then(() => box.process()).then(() => {
+      const keys = Object.keys(data);
+
+      keys.length.should.eql(1);
+      keys[0].should.eql('foo.txt');
+    }).finally(() => fs.rmdir(box.base));
+  });
+
+  it('process() - skip node_modules of theme by default', () => {
+    const box = newBox('test', { ignore: null });
+    const data = {};
+
+    box.addProcessor(file => {
+      data[file.path] = file;
+    });
+
+    return Promise.all([
+      fs.writeFile(pathFn.join(box.base, 'foo.txt'), 'foo'),
+      fs.writeFile(pathFn.join(box.base, 'themes', 'bar', 'node_modules', 'bar_library', 'bar.js'), 'themes')
+    ]).then(() => box.process()).then(() => {
+      const keys = Object.keys(data);
+
+      keys.length.should.eql(1);
+      keys[0].should.eql('foo.txt');
+    }).finally(() => fs.rmdir(box.base));
+  });
+
+  it('process() - always skip node_modules of theme', () => {
+    const box = newBox('test', { ignore: '**/ignore_me' });
+    const data = {};
+
+    box.addProcessor(file => {
+      data[file.path] = file;
+    });
+
+    return Promise.all([
+      fs.writeFile(pathFn.join(box.base, 'foo.txt'), 'foo'),
+      fs.writeFile(pathFn.join(box.base, 'ignore_me', 'bar.txt'), 'ignore_me'),
+      fs.writeFile(pathFn.join(box.base, 'themes', 'bar', 'node_modules', 'bar_library', 'bar.js'), 'themes')
     ]).then(() => box.process()).then(() => {
       const keys = Object.keys(data);
 
