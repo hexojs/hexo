@@ -671,7 +671,7 @@ describe('open_graph', () => {
     result.should.not.contain(meta({property: 'og:locale'}));
   });
 
-  it('og:locale - language is not in lang-territory format', () => {
+  it('og:locale - language is not in lang-TERRITORY format', () => {
     hexo.config.language = 'en';
 
     const result = openGraph.call({
@@ -680,7 +680,7 @@ describe('open_graph', () => {
       is_post: isPost
     });
 
-    result.should.not.contain(meta({property: 'og:locale'}));
+    result.should.contain(meta({property: 'og:locale', content: 'en_US'}));
   });
 
   it('article:author - options.author', () => {
