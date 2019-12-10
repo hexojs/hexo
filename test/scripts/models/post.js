@@ -39,7 +39,6 @@ describe('Post', () => {
       should.not.exist(data.content);
       should.not.exist(data.excerpt);
       should.not.exist(data.more);
-      should.not.exist(data.hash);
 
       return Post.removeById(data._id);
     });
