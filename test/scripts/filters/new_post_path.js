@@ -6,7 +6,6 @@ const moment = require('moment');
 const Promise = require('bluebird');
 const fs = require('hexo-fs');
 const { createSha1Hash } = require('hexo-util');
-const sha1 = createSha1Hash();
 
 const NEW_POST_NAME = ':title.md';
 
@@ -111,6 +110,7 @@ describe('new_post_path', () => {
 
   it('hash', () => {
     const slug = 'foo';
+    const sha1 = createSha1Hash();
     const hash = sha1.update(slug).digest('hex').slice(0, 6);
     hexo.config.new_post_name = ':title-:hash';
 
