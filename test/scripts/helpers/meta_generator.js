@@ -7,6 +7,10 @@ describe('meta_generator', () => {
   const metaGeneratorHelper = require('../../../lib/plugins/helper/meta_generator').bind(hexo);
 
   it('default', () => {
-    metaGeneratorHelper().should.eql(`<meta name="generator" content="Hexo ${hexo.version}">`);
+    const version = hexo.env.version;
+    const versionType = typeof version;
+
+    versionType.should.not.eql('undefined');
+    metaGeneratorHelper().should.eql(`<meta name="generator" content="Hexo ${version}">`);
   });
 });
