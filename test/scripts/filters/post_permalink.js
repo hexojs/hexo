@@ -125,4 +125,28 @@ describe('post_permalink', () => {
       return Post.removeById(post._id);
     });
   });
+
+  it('permalink_defaults', () => {
+    hexo.config.permalink = 'posts/:lang/:title/';
+    const orgPermalinkDefaults = hexo.config.permalink_defaults;
+    hexo.config.permalink_defaults = {lang: 'en'};
+
+    return Post.insert([{
+      source: 'my-new-post.md',
+      slug: 'my-new-post',
+      title: 'My New Post1'
+    }, {
+      source: 'my-new-fr-post.md',
+      slug: 'my-new-fr-post',
+      title: 'My New Post2',
+      lang: 'fr'
+    }]).then(posts => {
+      postPermalink(posts[0]).should.eql('posts/en/my-new-post/');
+      postPermalink(posts[1]).should.eql('posts/fr/my-new-fr-post/');
+
+      hexo.config.permalink = PERMALINK;
+      hexo.config.permalink_defaults = orgPermalinkDefaults;
+      return Promise.all(posts.map(post => Post.removeById(post._id)));
+    }).then();
+  });
 });
