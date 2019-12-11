@@ -109,13 +109,16 @@ describe('new_post_path', () => {
   });
 
   it('hash', () => {
+    const now = moment();
     const slug = 'foo';
     const sha1 = createSha1Hash();
-    const hash = sha1.update(slug).digest('hex').slice(0, 6);
+    const hash = sha1.update(now.unix().toString()).digest('hex').slice(0, 6);
     hexo.config.new_post_name = ':title-:hash';
 
     return newPostPath({
-      slug
+      slug,
+      title: 'tree',
+      date: now.format('YYYY-MM-DD HH:mm:ss')
     }).then(target => {
       target.should.eql(pathFn.join(postDir, `${slug}-${hash}.md`));
       hexo.config.new_post_name = NEW_POST_NAME;
