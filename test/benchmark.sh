@@ -50,16 +50,16 @@ ln -sf $TRAVIS_BUILD_DIR node_modules/hexo
 echo "- Start test run"
 
 echo "------------- Cold processing --------------"
-{ /usr/bin/time -v npx --no-install hexo g --debug > build.log 2>&1 ; } 2> build.log
+{ /usr/bin/time -v npx --no-install hexo g --debug > build.log 2>&1 ; } 1> build.log
 LOG_TABLE
 
 echo "-------------- Hot processing --------------"
-{ /usr/bin/time -v npx --no-install hexo g --debug > build.log 2>&1 ; } 2> build.log
+{ /usr/bin/time -v npx --no-install hexo g --debug > build.log 2>&1 ; } 1> build.log
 LOG_TABLE
 
 echo "--------- Another Cold processing ----------"
 npx --no-install hexo clean > build.log
-{ /usr/bin/time -v npx --no-install hexo g --debug > build.log 2>&1 ; } 2> build.log
+{ /usr/bin/time -v npx --no-install hexo g --debug > build.log 2>&1 ; } 1> build.log
 LOG_TABLE
 
 echo "--------------------------------------------"
