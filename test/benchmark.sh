@@ -23,6 +23,14 @@ LOG_TABLE () {
     echo "Save Database $(_SUBSTRUCTION $time_database_saved $time_render_finish)s" | _MESSAGE_FORMATTER
     echo "Total time $(_SUBSTRUCTION $time_database_saved $time_begin)s" | _MESSAGE_FORMATTER
     echo "Memory Usage(RSS) $(echo | awk "{printf \"%.3f\", $memory_usage/1024}")MB" | _MESSAGE_FORMATTER
+
+    total_time=$(_SUBSTRUCTION $time_database_saved $time_begin)
+    total_time_int=$(printf "%.0f" ${total_time})
+
+    if [ $total_time_int -lt 10 ]; then
+        echo "Build failed"
+        exit 1
+    fi
 }
 
 echo "============== Hexo Benchmark =============="
@@ -50,16 +58,16 @@ ln -sf $TRAVIS_BUILD_DIR node_modules/hexo
 echo "- Start test run"
 
 echo "------------- Cold processing --------------"
-{ /usr/bin/time -v npx --no-install hexo g --debug > build.log 2>&1 ; } 1> build.log
+{ /usr/bin/time -v npx --no-install hexo g --debug > build.log 2>&1 ; } 2> build.log
 LOG_TABLE
 
 echo "-------------- Hot processing --------------"
-{ /usr/bin/time -v npx --no-install hexo g --debug > build.log 2>&1 ; } 1> build.log
+{ /usr/bin/time -v npx --no-install hexo g --debug > build.log 2>&1 ; } 2> build.log
 LOG_TABLE
 
 echo "--------- Another Cold processing ----------"
 npx --no-install hexo clean > build.log
-{ /usr/bin/time -v npx --no-install hexo g --debug > build.log 2>&1 ; } 1> build.log
+{ /usr/bin/time -v npx --no-install hexo g --debug > build.log 2>&1 ; } 2> build.log
 LOG_TABLE
 
 echo "--------------------------------------------"
