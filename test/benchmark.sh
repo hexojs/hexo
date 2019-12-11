@@ -28,8 +28,14 @@ LOG_TABLE () {
     total_time_int=$(printf "%.0f" ${total_time})
 
     if [ $total_time_int -lt 10 ]; then
-        echo "Build failed"
+        echo "--------------------------------------------"
+        echo -e "\033[41;37m !! Build failed !! \033[0m"
+        cat build.log
         exit 1
+    fi
+    
+    if [ $total_time_int -gt 40 ]; then
+        echo -e "\033[34m !! Performance regression detected !! \033[0m"
     fi
 }
 
