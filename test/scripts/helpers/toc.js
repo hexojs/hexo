@@ -24,11 +24,13 @@ describe('toc', () => {
     options = Object.assign({
       class: 'toc',
       list_number: true,
+      min_depth: 1,
       max_depth: 6
     }, options);
 
     const className = options.class;
     const listNumber = options.list_number;
+    const minDepth = options.min_depth;
     const maxDepth = options.max_depth;
 
     const resultTitle_1_1_1 = [
@@ -142,6 +144,15 @@ describe('toc', () => {
   it('list_number', () => {
     const options = {
       list_number: false
+    };
+
+    genResult(options).should.eql(toc(html, options));
+  });
+
+
+  it('min_depth', () => {
+    const options = {
+      min_depth: 5
     };
 
     genResult(options).should.eql(toc(html, options));
