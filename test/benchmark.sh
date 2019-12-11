@@ -24,17 +24,9 @@ LOG_TABLE () {
     echo "Total time $(_SUBSTRUCTION $time_database_saved $time_begin)s" | _MESSAGE_FORMATTER
     echo "Memory Usage(RSS) $(echo | awk "{printf \"%.3f\", $memory_usage/1024}")MB" | _MESSAGE_FORMATTER
 
-    total_time=$(_SUBSTRUCTION $time_database_saved $time_begin)
-    total_time_int=$(printf "%.0f" ${total_time})
+    total_time=$(_SUBSTRUCTION $time_database_saved $time_begin | xargs -0 printf "%.0f")
 
-    if [ $total_time_int -lt 10 ]; then
-        echo "--------------------------------------------"
-        echo -e "\033[41;37m !! Build failed !! \033[0m"
-        cat build.log
-        exit 1
-    fi
-    
-    if [ $total_time_int -gt 40 ]; then
+    if [ $total_time -gt 40 ]; then
         echo -e "\033[34m !! Performance regression detected !! \033[0m"
     fi
 }
