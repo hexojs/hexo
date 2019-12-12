@@ -113,7 +113,7 @@ describe('new_post_path', () => {
     const slug = 'foo';
     const sha1 = createSha1Hash();
     const hash = sha1.update(slug + now.unix().toString())
-      .digest('hex').slice(0, 6);
+      .digest('hex').slice(0, 12);
     hexo.config.new_post_name = ':title-:hash';
 
     return newPostPath({
