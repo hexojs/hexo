@@ -29,14 +29,14 @@ LOG_TABLE () {
 
     if [ $total_time -lt 10 ] || ([ $line_number -lt 300 ] && [ $1 != "HOT" ]); then
         echo "--------------------------------------------"
-        echo -e "\033[41;37m !! Build failed !! \033[0m"
-        cat build.log
+        echo -e '\033[41;37m !! Build failed !! \033[0m'
+        head -n 400 build.log
         exit 1
     fi
 
     if [ $total_time -gt 40 ]; then
         echo "--------------------------------------------"
-        echo -e "\033[41;37m !! Performance regression detected !! \033[0m"
+        echo -e '\033[41;37m !! Performance regression detected !! \033[0m'
         exit 1
     fi
 }
