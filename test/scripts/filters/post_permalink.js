@@ -147,31 +147,6 @@ describe('post_permalink', () => {
       hexo.config.permalink = PERMALINK;
       hexo.config.permalink_defaults = orgPermalinkDefaults;
       return Promise.all(posts.map(post => Post.removeById(post._id)));
-    });
-  });
-
-  it('permalink_defaults - null', () => {
-    hexo.config.permalink = 'posts/:lang/:title/';
-    const orgPermalinkDefaults = hexo.config.permalink_defaults;
-    hexo.config.permalink_defaults = null;
-
-    return Post.insert([{
-      source: 'my-new-post.md',
-      slug: 'my-new-post',
-      title: 'My New Post1',
-      lang: 'en'
-    }, {
-      source: 'my-new-post-2.md',
-      slug: 'my-new-post-2',
-      title: 'My New Post2',
-      lang: 'fr'
-    }]).then(posts => {
-      postPermalink(posts[0]).should.eql('posts/en/my-new-post/');
-      postPermalink(posts[1]).should.eql('posts/fr/my-new-post-2/');
-
-      hexo.config.permalink = PERMALINK;
-      hexo.config.permalink_defaults = orgPermalinkDefaults;
-      return Promise.all(posts.map(post => Post.removeById(post._id)));
-    });
+    }).then();
   });
 });
