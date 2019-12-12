@@ -9,6 +9,13 @@ _MESSAGE_FORMATTER () {
 }
 
 LOG_TABLE () {
+    if [ $? != 0 ]; then
+        echo "--------------------------------------------"
+        echo -e "\033[41;37m !! Build failed !! \033[0m"
+        cat build.log
+        exit 1
+    fi
+
     time_begin=$(date +%s -d "$(awk '/.*DEBUG Hexo version/{print $1}' build.log)")
     time_process_start=$(date +%s.%3N -d "$(awk '/.*INFO  Start processing/{print $1}' build.log)")
     time_render_start=$(date +%s.%3N -d "$(awk '/.*INFO  Files loaded in/{print $1}' build.log)")
@@ -27,7 +34,9 @@ LOG_TABLE () {
     total_time=$(_SUBSTRUCTION $time_database_saved $time_begin | xargs -0 printf "%.0f")
 
     if [ $total_time -gt 40 ]; then
-        echo -e "\033[34m !! Performance regression detected !! \033[0m"
+        echo "--------------------------------------------"
+        echo -e "\033[41;37m !! Performance regression detected !! \033[0m"
+        exit 1
     fi
 }
 
