@@ -23,6 +23,22 @@ LOG_TABLE () {
     echo "Save Database $(_SUBSTRUCTION $time_database_saved $time_render_finish)s" | _MESSAGE_FORMATTER
     echo "Total time $(_SUBSTRUCTION $time_database_saved $time_begin)s" | _MESSAGE_FORMATTER
     echo "Memory Usage(RSS) $(echo | awk "{printf \"%.3f\", $memory_usage/1024}")MB" | _MESSAGE_FORMATTER
+
+    total_time=$(_SUBSTRUCTION $time_database_saved $time_begin | xargs -0 printf "%.0f")
+    line_number=$(wc -l build.log | cut -d" " -f1)
+
+    if [ $total_time -lt 10 ] || ([ $line_number -lt 300 ] && [ $1 != "HOT" ]); then
+        echo "--------------------------------------------"
+        echo -e "\033[41;37m !! Build failed !! \033[0m"
+        cat build.log
+        exit 1
+    fi
+
+    if [ $total_time -gt 40 ]; then
+        echo "--------------------------------------------"
+        echo -e "\033[41;37m !! Performance regression detected !! \033[0m"
+        exit 1
+    fi
 }
 
 echo "============== Hexo Benchmark =============="
@@ -55,7 +71,7 @@ LOG_TABLE
 
 echo "-------------- Hot processing --------------"
 { /usr/bin/time -v npx --no-install hexo g --debug > build.log 2>&1 ; } 2> build.log
-LOG_TABLE
+LOG_TABLE "HOT"
 
 echo "--------- Another Cold processing ----------"
 npx --no-install hexo clean > build.log
