@@ -27,7 +27,7 @@ LOG_TABLE () {
     total_time=$(_SUBSTRUCTION $time_database_saved $time_begin | xargs -0 printf "%.0f")
     line_number=$(wc -l build.log | cut -d" " -f1)
 
-if [ $total_time -lt 10 ] || ([ $line_number -lt 300 ] && [ $1 != "HOT" ]); then
+    if [ $total_time -lt 10 ] || ([ $line_number -lt 300 ] && [ $1 != "HOT" ]); then
         echo "--------------------------------------------"
         echo -e "\033[41;37m !! Build failed !! \033[0m"
         cat build.log
