@@ -26,12 +26,12 @@ describe('File', () => {
   const obj = load(body);
   const path = 'test.yml';
 
-  function makeFile(path, props) {
+  const makeFile = (path, props) => {
     return new File(Object.assign({
       source: join(box.base, path),
       path
     }, props));
-  }
+  };
 
   const file = makeFile(path, {
     source: join(box.base, path),
