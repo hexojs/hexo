@@ -1,7 +1,6 @@
 'use strict';
 
 const pathFn = require('path');
-const Promise = require('bluebird');
 const fs = require('hexo-fs');
 const yaml = require('js-yaml');
 
@@ -41,14 +40,20 @@ describe('File', () => {
     params: {foo: 'bar'}
   });
 
-  before(() => Promise.all([
-    fs.writeFile(file.source, body),
-    hexo.init()
-  ]).then(() => fs.stat(file.source)));
+  before(async() => {
+    await Promise.all([
+      fs.writeFile(file.source, body),
+      hexo.init()
+    ]);
+    fs.stat(file.source);
+  });
 
   after(() => fs.rmdir(box.base));
 
-  it('read()', () => file.read().should.eventually.eql(body));
+  it('read()', async() => {
+    const result = await file.read();
+    result.should.eql(body);
+  });
 
   it('read() - callback', callback => {
     file.read((err, content) => {
@@ -62,12 +67,13 @@ describe('File', () => {
     file.readSync().should.eql(body);
   });
 
-  it('stat()', () => Promise.all([
-    fs.stat(file.source),
-    file.stat()
-  ]).then(stats => {
+  it('stat()', async() => {
+    const stats = await Promise.all([
+      fs.stat(file.source),
+      file.stat()
+    ]);
     stats[0].should.eql(stats[1]);
-  }));
+  });
 
   it('stat() - callback', callback => {
     file.stat((err, fileStats) => {
@@ -82,7 +88,10 @@ describe('File', () => {
     file.statSync().should.eql(fs.statSync(file.source));
   });
 
-  it('render()', () => file.render().should.eventually.eql(obj));
+  it('render()', async() => {
+    const result = await file.render();
+    result.should.eql(obj);
+  });
 
   it('render() - callback', callback => {
     file.render((err, data) => {
