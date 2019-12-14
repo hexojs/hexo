@@ -1,6 +1,6 @@
 'use strict';
 
-const sinon = require('sinon');
+const { spy } = require('sinon');
 
 describe('migrate', () => {
   const Hexo = require('../../../lib/hexo');
@@ -8,7 +8,7 @@ describe('migrate', () => {
   const migrate = require('../../../lib/plugins/console/migrate').bind(hexo);
 
   it('default', async() => {
-    const migrator = sinon.spy(args => {
+    const migrator = spy(args => {
       args.foo.should.eql(1);
       args.bar.should.eql(2);
     });
