@@ -1,25 +1,25 @@
 'use strict';
 
-const fs = require('hexo-fs');
-const pathFn = require('path');
-const yaml = require('js-yaml');
+const { mkdirs, readFile, rmdir, unlink, writeFile } = require('hexo-fs');
+const { join } = require('path');
+const { load } = require('js-yaml');
 const rewire = require('rewire');
 const sinon = require('sinon');
 
 describe('config', () => {
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
+  const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
   const config = require('../../../lib/plugins/console/config').bind(hexo);
   const configModule = rewire('../../../lib/plugins/console/config');
 
   before(async() => {
-    await fs.mkdirs(hexo.base_dir);
+    await mkdirs(hexo.base_dir);
     hexo.init();
   });
 
-  beforeEach(() => fs.writeFile(hexo.config_path, ''));
+  beforeEach(() => writeFile(hexo.config_path, ''));
 
-  after(() => fs.rmdir(hexo.base_dir));
+  after(() => rmdir(hexo.base_dir));
 
   it('read all config', async() => {
     const spy = sinon.spy();
@@ -67,8 +67,8 @@ describe('config', () => {
     const args = Array.from(arguments);
 
     await config({_: args});
-    const content = await fs.readFile(hexo.config_path);
-    return yaml.load(content);
+    const content = await readFile(hexo.config_path);
+    return load(content);
   }
 
   it('write config', async() => {
@@ -102,24 +102,24 @@ describe('config', () => {
   });
 
   it('write config: json', async() => {
-    const configPath = pathFn.join(hexo.base_dir, '_config.json');
-    hexo.config_path = pathFn.join(hexo.base_dir, '_config.json');
+    const configPath = join(hexo.base_dir, '_config.json');
+    hexo.config_path = join(hexo.base_dir, '_config.json');
 
-    await fs.writeFile(configPath, '{}');
+    await writeFile(configPath, '{}');
     await config({_: ['title', 'My Blog']});
 
-    return fs.readFile(configPath).then(content => {
+    return readFile(configPath).then(content => {
       const json = JSON.parse(content);
 
       json.title.should.eql('My Blog');
 
-      hexo.config_path = pathFn.join(hexo.base_dir, '_config.yml');
-      return fs.unlink(configPath);
+      hexo.config_path = join(hexo.base_dir, '_config.yml');
+      return unlink(configPath);
     });
   });
 
   it('create config if not exist', async() => {
-    await fs.unlink(hexo.config_path);
+    await unlink(hexo.config_path);
     const config = await writeConfig('subtitle', 'Hello world');
     config.subtitle.should.eql('Hello world');
   });
