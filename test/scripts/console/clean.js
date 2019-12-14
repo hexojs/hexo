@@ -11,31 +11,37 @@ describe('clean', () => {
     clean = require('../../../lib/plugins/console/clean').bind(hexo);
   });
 
-  it('delete database', () => {
+  it('delete database', async() => {
     const dbPath = hexo.database.options.path;
 
-    return fs.writeFile(dbPath, '').then(() => clean()).then(() => fs.exists(dbPath)).then(exist => {
-      exist.should.be.false;
-    });
+    await fs.writeFile(dbPath, '');
+    await clean();
+    const exist = await fs.exists(dbPath);
+
+    exist.should.eql(false);
   });
 
-  it('delete public folder', () => {
+  it('delete public folder', async() => {
     const publicDir = hexo.public_dir;
 
-    return fs.mkdirs(publicDir).then(() => clean()).then(() => fs.exists(publicDir)).then(exist => {
-      exist.should.be.false;
-    });
+    await fs.mkdirs(publicDir);
+    await clean();
+    const exist = await fs.exists(publicDir);
+
+    exist.should.eql(false);
   });
 
-  it('execute corresponding filter', () => {
+  it('execute corresponding filter', async() => {
     const extraDbPath = hexo.database.options.path + '.tmp';
 
     hexo.extend.filter.register('after_clean', () => {
       return fs.unlink(extraDbPath);
     });
 
-    return fs.writeFile(extraDbPath, '').then(() => clean()).then(() => fs.exists(extraDbPath)).then(exist => {
-      exist.should.be.false;
-    });
+    await fs.writeFile(extraDbPath, '');
+    await clean();
+    const exist = await fs.exists(extraDbPath);
+
+    exist.should.eql(false);
   });
 });
