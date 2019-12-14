@@ -1,6 +1,6 @@
 'use strict';
 
-const fs = require('hexo-fs');
+const { exists, mkdirs, unlink, writeFile } = require('hexo-fs');
 
 describe('clean', () => {
   const Hexo = require('../../../lib/hexo');
@@ -14,9 +14,9 @@ describe('clean', () => {
   it('delete database', async() => {
     const dbPath = hexo.database.options.path;
 
-    await fs.writeFile(dbPath, '');
+    await writeFile(dbPath, '');
     await clean();
-    const exist = await fs.exists(dbPath);
+    const exist = await exists(dbPath);
 
     exist.should.eql(false);
   });
@@ -24,9 +24,9 @@ describe('clean', () => {
   it('delete public folder', async() => {
     const publicDir = hexo.public_dir;
 
-    await fs.mkdirs(publicDir);
+    await mkdirs(publicDir);
     await clean();
-    const exist = await fs.exists(publicDir);
+    const exist = await exists(publicDir);
 
     exist.should.eql(false);
   });
@@ -35,12 +35,12 @@ describe('clean', () => {
     const extraDbPath = hexo.database.options.path + '.tmp';
 
     hexo.extend.filter.register('after_clean', () => {
-      return fs.unlink(extraDbPath);
+      return unlink(extraDbPath);
     });
 
-    await fs.writeFile(extraDbPath, '');
+    await writeFile(extraDbPath, '');
     await clean();
-    const exist = await fs.exists(extraDbPath);
+    const exist = await exists(extraDbPath);
 
     exist.should.eql(false);
   });
