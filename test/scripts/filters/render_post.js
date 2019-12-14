@@ -1,6 +1,6 @@
 'use strict';
 
-const fixture = require('../../fixtures/post_render');
+const { content, expected } = require('../../fixtures/post_render');
 
 describe('Render post', () => {
   const Hexo = require('../../../lib/hexo');
@@ -18,14 +18,14 @@ describe('Render post', () => {
     let post = await Post.insert({
       source: 'foo.md',
       slug: 'foo',
-      _content: fixture.content
+      _content: content
     });
 
     const id = post._id;
     await renderPost();
 
     post = Post.findById(id);
-    post.content.trim().should.eql(fixture.expected);
+    post.content.trim().should.eql(expected);
 
     post.remove();
   });
@@ -34,14 +34,14 @@ describe('Render post', () => {
     let page = await Page.insert({
       source: 'foo.md',
       path: 'foo.html',
-      _content: fixture.content
+      _content: content
     });
 
     const id = page._id;
     await renderPost();
 
     page = Page.findById(id);
-    page.content.trim().should.eql(fixture.expected);
+    page.content.trim().should.eql(expected);
 
     page.remove();
   });
