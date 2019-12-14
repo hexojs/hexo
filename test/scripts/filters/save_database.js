@@ -1,6 +1,6 @@
 'use strict';
 
-const fs = require('hexo-fs');
+const { exists, unlink } = require('hexo-fs');
 const Promise = require('bluebird');
 
 describe('Save database', () => {
@@ -14,10 +14,10 @@ describe('Save database', () => {
     hexo._dbLoaded = true;
 
     await saveDatabase();
-    const exist = await fs.exists(dbPath);
+    const exist = await exists(dbPath);
     exist.should.eql(true);
 
-    fs.unlink(dbPath);
+    unlink(dbPath);
   });
 
   it('do nothing if hexo is not initialized', async() => {
@@ -25,7 +25,7 @@ describe('Save database', () => {
     hexo._dbLoaded = true;
 
     await saveDatabase();
-    const exist = await fs.exists(dbPath);
+    const exist = await exists(dbPath);
     exist.should.eql(false);
   });
 
@@ -34,7 +34,7 @@ describe('Save database', () => {
     hexo._dbLoaded = false;
 
     await saveDatabase();
-    const exist = await fs.exists(dbPath);
+    const exist = await exists(dbPath);
     exist.should.eql(false);
   });
 });
