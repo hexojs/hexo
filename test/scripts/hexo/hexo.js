@@ -86,7 +86,7 @@ describe('Hexo', () => {
     theme.a.b.should.eql(3);
   });
 
-  it('theme_config - null theme.config', async() => {
+  it('theme_config - null theme.config', () => {
     const hexo = new Hexo(__dirname);
     hexo.theme.config = null;
     hexo.config = { a: 1, b: 2 };
