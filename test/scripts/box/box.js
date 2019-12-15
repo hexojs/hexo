@@ -11,12 +11,12 @@ describe('Box', () => {
   const baseDir = join(__dirname, 'box_tmp');
   const Box = require('../../../lib/box');
 
-  function newBox(path, config) {
-    const hexo = new Hexo(baseDir, {silent: true});
+  const newBox = (path, config) => {
+    const hexo = new Hexo(baseDir, { silent: true });
     hexo.config = Object.assign(hexo.config, config);
     const base = path ? join(baseDir, path) : baseDir;
     return new Box(hexo, base);
-  }
+  };
 
   before(() => mkdir(baseDir));
 
@@ -77,7 +77,7 @@ describe('Box', () => {
     errorCallback.calledOnce.should.be.true;
   });
 
-  it('process()', async() => {
+  it('process()', async () => {
     const box = newBox('test');
     const data = {};
 
@@ -108,13 +108,13 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('process() - do nothing if target does not exist', async() => {
+  it('process() - do nothing if target does not exist', async () => {
     const box = newBox('test');
 
     return box.process();
   });
 
-  it('process() - create', async() => {
+  it('process() - create', async () => {
     const box = newBox('test');
     const name = 'a.txt';
     const path = join(box.base, name);
@@ -132,7 +132,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('process() - update (mtime changed and hash changed)', async() => {
+  it('process() - update (mtime changed and hash changed)', async () => {
     const box = newBox('test');
     const name = 'a.txt';
     const path = join(box.base, name);
@@ -158,7 +158,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('process() - skip (mtime changed but hash matched)', async() => {
+  it('process() - skip (mtime changed but hash matched)', async () => {
     const box = newBox('test');
     const name = 'a.txt';
     const path = join(box.base, name);
@@ -183,7 +183,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('process() - skip (hash changed but mtime matched)', async() => {
+  it('process() - skip (hash changed but mtime matched)', async () => {
     const box = newBox('test');
     const name = 'a.txt';
     const path = join(box.base, name);
@@ -208,7 +208,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('process() - skip (mtime matched and hash matched)', async() => {
+  it('process() - skip (mtime matched and hash matched)', async () => {
     const box = newBox('test');
     const name = 'a.txt';
     const path = join(box.base, name);
@@ -233,7 +233,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('process() - delete', async() => {
+  it('process() - delete', async () => {
     const box = newBox('test');
     const cacheId = 'test/a.txt';
 
@@ -256,7 +256,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('process() - params', async() => {
+  it('process() - params', async () => {
     const box = newBox('test');
     const path = join(box.base, 'posts', '123456');
 
@@ -274,7 +274,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('process() - handle null ignore', async() => {
+  it('process() - handle null ignore', async () => {
     const box = newBox('test', { ignore: null });
     const data = {};
 
@@ -295,7 +295,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('process() - skip files if they match a glob epression in ignore', async() => {
+  it('process() - skip files if they match a glob epression in ignore', async () => {
     const box = newBox('test', { ignore: '**/ignore_me' });
     const data = {};
 
@@ -317,7 +317,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('process() - skip files if they match any of the glob expressions in ignore', async() => {
+  it('process() - skip files if they match any of the glob expressions in ignore', async () => {
     const box = newBox('test', { ignore: ['**/ignore_me', '**/ignore_me_too.txt'] });
     const data = {};
 
@@ -340,7 +340,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('process() - skip node_modules of theme by default', async() => {
+  it('process() - skip node_modules of theme by default', async () => {
     const box = newBox('test', { ignore: null });
     const data = {};
 
@@ -362,7 +362,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('process() - always skip node_modules of theme', async() => {
+  it('process() - always skip node_modules of theme', async () => {
     const box = newBox('test', { ignore: '**/ignore_me' });
     const data = {};
 
@@ -385,7 +385,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('watch() - create', async() => {
+  it('watch() - create', async () => {
     const box = newBox('test');
     const path = 'a.txt';
     const src = join(box.base, path);
@@ -409,7 +409,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('watch() - update', async() => {
+  it('watch() - update', async () => {
     const box = newBox('test');
     const path = 'a.txt';
     const src = join(box.base, path);
@@ -438,7 +438,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('watch() - delete', async() => {
+  it('watch() - delete', async () => {
     const box = newBox('test');
     const path = 'a.txt';
     const src = join(box.base, path);
@@ -467,7 +467,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('watch() - rename file', async() => {
+  it('watch() - rename file', async () => {
     const box = newBox('test');
     const path = 'a.txt';
     const src = join(box.base, path);
@@ -509,7 +509,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('watch() - rename folder', async() => {
+  it('watch() - rename folder', async () => {
     const box = newBox('test');
     const path = 'a/b.txt';
     const src = join(box.base, path);
@@ -551,7 +551,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('watch() - update with simple "ignore" option', async() => {
+  it('watch() - update with simple "ignore" option', async () => {
     const box = newBox('test', {ignore: '**/ignore_me'});
     const path1 = 'a.txt';
     const path2 = 'b.txt';
@@ -593,7 +593,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('watch() - update with complex "ignore" option', async() => {
+  it('watch() - update with complex "ignore" option', async () => {
     const box = newBox('test', {ignore: ['**/ignore_me', '**/ignore_me_too.txt']});
     const path1 = 'a.txt';
     const path2 = 'b.txt';
@@ -648,7 +648,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('watch() - watcher has started', async() => {
+  it('watch() - watcher has started', async () => {
     const box = newBox();
 
     await box.watch();
@@ -662,7 +662,7 @@ describe('Box', () => {
     box.unwatch();
   });
 
-  it('watch() - run process() before start watching', async() => {
+  it('watch() - run process() before start watching', async () => {
     const box = newBox('test');
     const data = [];
 
@@ -681,7 +681,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('unwatch()', async() => {
+  it('unwatch()', async () => {
     const box = newBox('test');
     const processor = spy();
 
@@ -696,7 +696,7 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('isWatching()', async() => {
+  it('isWatching()', async () => {
     const box = newBox();
 
     box.isWatching().should.eql(false);
@@ -710,7 +710,7 @@ describe('Box', () => {
     box.unwatch();
   });
 
-  it('processBefore & processAfter events', async() => {
+  it('processBefore & processAfter events', async () => {
     const box = newBox('test');
 
     const beforeSpy = spy(file => {
