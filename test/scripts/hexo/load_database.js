@@ -29,33 +29,42 @@ describe('Load database', () => {
     hexo._dbLoaded = false;
   });
 
-  after(() => fs.rmdir(hexo.base_dir));
+  after(async() => {
+    const exist = await fs.exists(dbPath);
+    if (exist) await fs.unlink(dbPath);
+    fs.rmdir(hexo.base_dir);
+  });
 
   it('database does not exist', () => loadDatabase(hexo));
 
-  it('database load success', () => fs.writeFile(dbPath, JSON.stringify(fixture)).then(() => loadDatabase(hexo)).then(() => {
-    hexo._dbLoaded.should.be.true;
+  it('database load success', async() => {
+    await fs.writeFile(dbPath, JSON.stringify(fixture));
+    await loadDatabase(hexo);
+    hexo._dbLoaded.should.eql(true);
     hexo.model('Test').toArray({lean: true}).should.eql(fixture.models.Test);
     hexo.model('Test').destroy();
 
-    return fs.unlink(dbPath);
-  }));
+    await fs.unlink(dbPath);
+  });
 
-  it('don\'t load database if loaded', () => {
+  it('don\'t load database if loaded', async() => {
     hexo._dbLoaded = true;
 
-    return fs.writeFile(dbPath, JSON.stringify(fixture)).then(() => loadDatabase(hexo)).then(() => {
-      hexo.model('Test').length.should.eql(0);
-      return fs.unlink(dbPath);
-    });
+    await fs.writeFile(dbPath, JSON.stringify(fixture));
+    await loadDatabase(hexo);
+
+    hexo.model('Test').length.should.eql(0);
+
+    await fs.unlink(dbPath);
   });
 
   // I don't know why this test case can't pass on Windows
   // It always throws EPERM error
-  it('database load failed', () => fs.writeFile(dbPath, '{1423432: 324').then(() => loadDatabase(hexo)).then(() => {
-    hexo._dbLoaded.should.be.false;
-    return fs.exists(dbPath);
-  }).then(exist => {
-    exist.should.be.false;
-  }));
+  it('database load failed', async() => {
+    await fs.writeFile(dbPath, '{1423432: 324');
+    await loadDatabase(hexo);
+    hexo._dbLoaded.should.eql(false);
+    const exist = await fs.exists(dbPath);
+    exist.should.eql(false);
+  });
 });
