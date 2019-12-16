@@ -1,11 +1,11 @@
 'use strict';
 
-const pathFn = require('path');
-const fs = require('hexo-fs');
+const { join } = require('path');
+const { exists, mkdirs, rmdir, unlink, writeFile } = require('hexo-fs');
 
 describe('Load database', () => {
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(pathFn.join(__dirname, 'db_test'), {silent: true});
+  const hexo = new Hexo(join(__dirname, 'db_test'), {silent: true});
   const loadDatabase = require('../../../lib/hexo/load_database');
   const dbPath = hexo.database.options.path;
 
@@ -23,46 +23,46 @@ describe('Load database', () => {
     }
   };
 
-  before(() => fs.mkdirs(hexo.base_dir));
+  before(() => mkdirs(hexo.base_dir));
 
   beforeEach(() => {
     hexo._dbLoaded = false;
   });
 
   after(async() => {
-    const exist = await fs.exists(dbPath);
-    if (exist) await fs.unlink(dbPath);
-    fs.rmdir(hexo.base_dir);
+    const exist = await exists(dbPath);
+    if (exist) await unlink(dbPath);
+    rmdir(hexo.base_dir);
   });
 
   it('database does not exist', () => loadDatabase(hexo));
 
   it('database load success', async() => {
-    await fs.writeFile(dbPath, JSON.stringify(fixture));
+    await writeFile(dbPath, JSON.stringify(fixture));
     await loadDatabase(hexo);
     hexo._dbLoaded.should.eql(true);
     hexo.model('Test').toArray({lean: true}).should.eql(fixture.models.Test);
     hexo.model('Test').destroy();
 
-    await fs.unlink(dbPath);
+    await unlink(dbPath);
   });
 
   it('don\'t load database if loaded', async() => {
     hexo._dbLoaded = true;
 
-    await fs.writeFile(dbPath, JSON.stringify(fixture));
+    await writeFile(dbPath, JSON.stringify(fixture));
     await loadDatabase(hexo);
 
     hexo.model('Test').length.should.eql(0);
 
-    await fs.unlink(dbPath);
+    await unlink(dbPath);
   });
 
   it('database load failed', async() => {
-    await fs.writeFile(dbPath, '{1423432: 324');
+    await writeFile(dbPath, '{1423432: 324');
     await loadDatabase(hexo);
     hexo._dbLoaded.should.eql(false);
-    const exist = await fs.exists(dbPath);
+    const exist = await exists(dbPath);
     exist.should.eql(false);
   });
 });
