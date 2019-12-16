@@ -1,16 +1,16 @@
 'use strict';
 
-const fs = require('hexo-fs');
-const pathFn = require('path');
-const sinon = require('sinon');
+const { exists, mkdirs, readFile, rmdir, writeFile } = require('hexo-fs');
+const { join } = require('path');
+const { spy } = require('sinon');
 
 describe('deploy', () => {
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(pathFn.join(__dirname, 'deploy_test'), {silent: true});
+  const hexo = new Hexo(join(__dirname, 'deploy_test'), { silent: true });
   const deploy = require('../../../lib/plugins/console/deploy').bind(hexo);
 
   before(async() => {
-    await fs.mkdirs(hexo.public_dir);
+    await mkdirs(hexo.public_dir);
     hexo.init();
   });
 
@@ -19,7 +19,7 @@ describe('deploy', () => {
     hexo.extend.deployer.register('foo', () => {});
   });
 
-  after(() => fs.rmdir(hexo.base_dir));
+  after(() => rmdir(hexo.base_dir));
 
   it('no deploy config', () => {
     delete hexo.config.deploy;
@@ -33,7 +33,7 @@ describe('deploy', () => {
       foo: 'bar'
     };
 
-    const deployer = sinon.spy(args => {
+    const deployer = spy(args => {
       args.should.eql({
         type: 'foo',
         foo: 'foo',
@@ -41,8 +41,8 @@ describe('deploy', () => {
       });
     });
 
-    const beforeListener = sinon.spy();
-    const afterListener = sinon.spy();
+    const beforeListener = spy();
+    const afterListener = spy();
 
     hexo.once('deployBefore', beforeListener);
     hexo.once('deployAfter', afterListener);
@@ -55,7 +55,7 @@ describe('deploy', () => {
   });
 
   it('multiple deploy setting', async() => {
-    const deployer1 = sinon.spy(args => {
+    const deployer1 = spy(args => {
       args.should.eql({
         type: 'foo',
         foo: 'foo',
@@ -63,7 +63,7 @@ describe('deploy', () => {
       });
     });
 
-    const deployer2 = sinon.spy(args => {
+    const deployer2 = spy(args => {
       args.should.eql({
         type: 'bar',
         bar: 'bar',
@@ -87,19 +87,19 @@ describe('deploy', () => {
   // it('deployer not found'); missing-unit-test
 
   it('generate', async() => {
-    await fs.writeFile(pathFn.join(hexo.source_dir, 'test.txt'), 'test');
-    await deploy({generate: true});
-    const content = await fs.readFile(pathFn.join(hexo.public_dir, 'test.txt'));
+    await writeFile(join(hexo.source_dir, 'test.txt'), 'test');
+    await deploy({ generate: true });
+    const content = await readFile(join(hexo.public_dir, 'test.txt'));
 
     content.should.eql('test');
 
-    await fs.rmdir(hexo.source_dir);
+    await rmdir(hexo.source_dir);
   });
 
   it('run generate if public directory not exist', async() => {
-    await fs.rmdir(hexo.public_dir);
+    await rmdir(hexo.public_dir);
     await deploy({});
-    const exist = await fs.exists(hexo.public_dir);
+    const exist = await exists(hexo.public_dir);
 
     exist.should.be.true;
   });
