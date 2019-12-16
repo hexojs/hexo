@@ -20,7 +20,7 @@ describe('generate', () => {
 
   afterEach(() => rmdir(hexo.base_dir));
 
-  async function testGenerate(options) {
+  const testGenerate = async options => {
     await Promise.all([
       // Add some source files
       writeFile(join(hexo.source_dir, 'test.txt'), 'test'),
@@ -44,7 +44,7 @@ describe('generate', () => {
     // Old files should not be deleted
     result[2].should.eql(true);
     result[3].should.eql(true);
-  }
+  };
 
   it('default', () => testGenerate());
 
