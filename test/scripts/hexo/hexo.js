@@ -138,7 +138,7 @@ describe('Hexo', () => {
     });
   });
 
-  it('model()');
+  // it('model()');
 
   it('_showDrafts()', () => {
     hexo._showDrafts().should.be.false;
@@ -188,7 +188,7 @@ describe('Hexo', () => {
 
   it('watch() - theme', () => testWatch(pathFn.join(hexo.theme_dir, 'source')));
 
-  it('unwatch()');
+  // it('unwatch()');
 
   it('exit()', () => {
     const hook = sinon.spy();

@@ -23,7 +23,7 @@ describe('Category', () => {
     });
   });
 
-  it.skip('parent - reference');
+  // it('parent - reference');
 
   it('slug - virtual', () => Category.insert({
     name: 'foo'
