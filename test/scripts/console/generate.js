@@ -1,9 +1,9 @@
 'use strict';
 
-const pathFn = require('path');
-const fs = require('hexo-fs');
+const { join } = require('path');
+const { exists, mkdirs, readFile, rmdir, stat, unlink, writeFile } = require('hexo-fs');
 const Promise = require('bluebird');
-const sinon = require('sinon');
+const { spy } = require('sinon');
 
 describe('generate', () => {
   const Hexo = require('../../../lib/hexo');
@@ -11,31 +11,31 @@ describe('generate', () => {
   let hexo, generate;
 
   beforeEach(async() => {
-    hexo = new Hexo(pathFn.join(__dirname, 'generate_test'), {silent: true});
+    hexo = new Hexo(join(__dirname, 'generate_test'), {silent: true});
     generate = generateConsole.bind(hexo);
 
-    await fs.mkdirs(hexo.base_dir);
+    await mkdirs(hexo.base_dir);
     hexo.init();
   });
 
-  afterEach(() => fs.rmdir(hexo.base_dir));
+  afterEach(() => rmdir(hexo.base_dir));
 
   async function testGenerate(options) {
     await Promise.all([
       // Add some source files
-      fs.writeFile(pathFn.join(hexo.source_dir, 'test.txt'), 'test'),
-      fs.writeFile(pathFn.join(hexo.source_dir, 'faz', 'yo.txt'), 'yoooo'),
+      writeFile(join(hexo.source_dir, 'test.txt'), 'test'),
+      writeFile(join(hexo.source_dir, 'faz', 'yo.txt'), 'yoooo'),
       // Add some files to public folder
-      fs.writeFile(pathFn.join(hexo.public_dir, 'foo.txt'), 'foo'),
-      fs.writeFile(pathFn.join(hexo.public_dir, 'bar', 'boo.txt'), 'boo'),
-      fs.writeFile(pathFn.join(hexo.public_dir, 'faz', 'yo.txt'), 'yo')
+      writeFile(join(hexo.public_dir, 'foo.txt'), 'foo'),
+      writeFile(join(hexo.public_dir, 'bar', 'boo.txt'), 'boo'),
+      writeFile(join(hexo.public_dir, 'faz', 'yo.txt'), 'yo')
     ]);
     await generate(options);
     const result = await Promise.all([
-      fs.readFile(pathFn.join(hexo.public_dir, 'test.txt')),
-      fs.readFile(pathFn.join(hexo.public_dir, 'faz', 'yo.txt')),
-      fs.exists(pathFn.join(hexo.public_dir, 'foo.txt')),
-      fs.exists(pathFn.join(hexo.public_dir, 'bar', 'boo.txt'))
+      readFile(join(hexo.public_dir, 'test.txt')),
+      readFile(join(hexo.public_dir, 'faz', 'yo.txt')),
+      exists(join(hexo.public_dir, 'foo.txt')),
+      exists(join(hexo.public_dir, 'bar', 'boo.txt'))
     ]);
     // Check the new file
     result[0].should.eql('test');
@@ -49,107 +49,107 @@ describe('generate', () => {
   it('default', () => testGenerate());
 
   it('write file if not exist', async() => {
-    const src = pathFn.join(hexo.source_dir, 'test.txt');
-    const dest = pathFn.join(hexo.public_dir, 'test.txt');
+    const src = join(hexo.source_dir, 'test.txt');
+    const dest = join(hexo.public_dir, 'test.txt');
     const content = 'test';
 
     // Add some source files
-    await fs.writeFile(src, content);
+    await writeFile(src, content);
 
     // First generation
     await generate();
 
     // Delete generated files
-    await fs.unlink(dest);
+    await unlink(dest);
 
     // Second generation
     await generate();
 
-    const result = await fs.readFile(dest);
+    const result = await readFile(dest);
 
     result.should.eql(content);
 
     // Remove source files and generated files
     await Promise.all([
-      fs.unlink(src),
-      fs.unlink(dest)
+      unlink(src),
+      unlink(dest)
     ]);
   });
 
   it('don\'t write if file unchanged', async() => {
-    const src = pathFn.join(hexo.source_dir, 'test.txt');
-    const dest = pathFn.join(hexo.public_dir, 'test.txt');
+    const src = join(hexo.source_dir, 'test.txt');
+    const dest = join(hexo.public_dir, 'test.txt');
     const content = 'test';
     const newContent = 'newtest';
 
     // Add some source files
-    await fs.writeFile(src, content);
+    await writeFile(src, content);
 
     // First generation
     await generate();
 
     // Change the generated file
-    await fs.writeFile(dest, newContent);
+    await writeFile(dest, newContent);
 
     // Second generation
     await generate();
 
     // Read the generated file
-    const result = await fs.readFile(dest);
+    const result = await readFile(dest);
 
     // Make sure the generated file didn't change
     result.should.eql(newContent);
 
     // Remove source files and generated files
     await Promise.all([
-      fs.unlink(src),
-      fs.unlink(dest)
+      unlink(src),
+      unlink(dest)
     ]);
   });
 
   it('force regenerate', async() => {
-    const src = pathFn.join(hexo.source_dir, 'test.txt');
-    const dest = pathFn.join(hexo.public_dir, 'test.txt');
+    const src = join(hexo.source_dir, 'test.txt');
+    const dest = join(hexo.public_dir, 'test.txt');
     const content = 'test';
 
-    await fs.writeFile(src, content);
+    await writeFile(src, content);
 
     // First generation
     await generate();
 
     // Read file status
-    let stats = await fs.stat(dest);
+    let stats = await stat(dest);
     const mtime = stats.mtime.getTime();
 
     await Promise.delay(1000);
 
     // Force regenerate
     await generate({ force: true });
-    stats = await fs.stat(dest);
+    stats = await stat(dest);
 
     stats.mtime.getTime().should.above(mtime);
 
     // Remove source files and generated files
     await Promise.all([
-      fs.unlink(src),
-      fs.unlink(dest)
+      unlink(src),
+      unlink(dest)
     ]);
   });
 
   it('watch - update', async() => {
-    const src = pathFn.join(hexo.source_dir, 'test.txt');
-    const dest = pathFn.join(hexo.public_dir, 'test.txt');
+    const src = join(hexo.source_dir, 'test.txt');
+    const dest = join(hexo.public_dir, 'test.txt');
     const content = 'test';
 
     await testGenerate({ watch: true });
 
     // Update the file
-    await fs.writeFile(src, content);
+    await writeFile(src, content);
 
     await Promise.delay(300);
 
     // Check the updated file
-    const result = await fs.readFile(dest);
+    const result = await readFile(dest);
     result.should.eql(content);
 
     // Stop watching
@@ -159,15 +159,15 @@ describe('generate', () => {
   it('watch - delete', async() => {
     await testGenerate({ watch: true });
 
-    await fs.unlink(pathFn.join(hexo.source_dir, 'test.txt'));
+    await unlink(join(hexo.source_dir, 'test.txt'));
     await Promise.delay(300);
 
-    const exist = await fs.exists(pathFn.join(hexo.public_dir, 'test.txt'));
+    const exist = await exists(join(hexo.public_dir, 'test.txt'));
     exist.should.eql(false);
   });
 
   it('deploy', async() => {
-    const deployer = sinon.spy();
+    const deployer = spy();
 
     hexo.extend.deployer.register('test', deployer);
 
@@ -184,16 +184,16 @@ describe('generate', () => {
     // Add some source files
     await Promise.all([
       // Add some source files
-      fs.writeFile(pathFn.join(hexo.theme_dir, 'source', 'a.txt'), 'a'),
-      fs.writeFile(pathFn.join(hexo.theme_dir, 'source', 'b.txt'), 'b'),
-      fs.writeFile(pathFn.join(hexo.theme_dir, 'source', 'c.swig'), 'c')
+      writeFile(join(hexo.theme_dir, 'source', 'a.txt'), 'a'),
+      writeFile(join(hexo.theme_dir, 'source', 'b.txt'), 'b'),
+      writeFile(join(hexo.theme_dir, 'source', 'c.swig'), 'c')
     ]);
     await generate();
 
     // Update source file
     await Promise.all([
-      fs.writeFile(pathFn.join(hexo.theme_dir, 'source', 'b.txt'), 'bb'),
-      fs.writeFile(pathFn.join(hexo.theme_dir, 'source', 'c.swig'), 'cc')
+      writeFile(join(hexo.theme_dir, 'source', 'b.txt'), 'bb'),
+      writeFile(join(hexo.theme_dir, 'source', 'c.swig'), 'cc')
     ]);
 
     // Generate again
@@ -201,8 +201,8 @@ describe('generate', () => {
 
     // Read the updated source file
     const result = await Promise.all([
-      fs.readFile(pathFn.join(hexo.public_dir, 'b.txt')),
-      fs.readFile(pathFn.join(hexo.public_dir, 'c.html'))
+      readFile(join(hexo.public_dir, 'b.txt')),
+      readFile(join(hexo.public_dir, 'c.html'))
     ]);
 
     result[0].should.eql('bb');
@@ -222,7 +222,7 @@ describe('generate', () => {
     );
 
     await Promise.all([
-      fs.writeFile(pathFn.join(hexo.theme_dir, 'layout', 'post.err'), 'post')
+      writeFile(join(hexo.theme_dir, 'layout', 'post.err'), 'post')
     ]);
     return generate();
   });
@@ -240,7 +240,7 @@ describe('generate', () => {
     );
 
     await Promise.all([
-      fs.writeFile(pathFn.join(hexo.theme_dir, 'layout', 'post.err'), 'post')
+      writeFile(join(hexo.theme_dir, 'layout', 'post.err'), 'post')
     ]);
     return generate({ bail: false });
   });
@@ -257,12 +257,12 @@ describe('generate', () => {
       ]
     );
 
-    const errorCallback = sinon.spy(err => {
+    const errorCallback = spy(err => {
       err.should.have.property('message', 'Testing unhandled exception');
     });
 
     await Promise.all([
-      fs.writeFile(pathFn.join(hexo.theme_dir, 'layout', 'post.err'), 'post')
+      writeFile(join(hexo.theme_dir, 'layout', 'post.err'), 'post')
     ]);
 
     return generate({ bail: true }).catch(errorCallback).finally(() => {
