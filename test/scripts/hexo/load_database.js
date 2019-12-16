@@ -52,10 +52,10 @@ describe('Load database', () => {
 
   // I don't know why this test case can't pass on Windows
   // It always throws EPERM error
-  // it('database load failed', () => fs.writeFile(dbPath, '{1423432: 324').then(() => loadDatabase(hexo)).then(() => {
-  //   hexo._dbLoaded.should.be.false;
-  //   return fs.exists(dbPath);
-  // }).then(exist => {
-  //   exist.should.be.false;
-  // }));
+  it('database load failed', () => fs.writeFile(dbPath, '{1423432: 324').then(() => loadDatabase(hexo)).then(() => {
+    hexo._dbLoaded.should.be.false;
+    return fs.exists(dbPath);
+  }).then(exist => {
+    exist.should.be.false;
+  }));
 });
