@@ -58,8 +58,6 @@ describe('Load database', () => {
     await fs.unlink(dbPath);
   });
 
-  // I don't know why this test case can't pass on Windows
-  // It always throws EPERM error
   it('database load failed', async() => {
     await fs.writeFile(dbPath, '{1423432: 324');
     await loadDatabase(hexo);
