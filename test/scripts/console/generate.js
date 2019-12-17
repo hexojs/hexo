@@ -19,7 +19,8 @@ describe('generate', () => {
   });
 
   afterEach(async() => {
-    if (exists(hexo.base_dir)) {
+    const exist = await exists(hexo.base_dir);
+    if (exist) {
       await emptyDir(hexo.base_dir);
       await rmdir(hexo.base_dir);
     }
