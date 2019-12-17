@@ -29,17 +29,17 @@ describe('Console list', () => {
     expect(console.log.calledWith(sinon.match('No pages.'))).be.true;
   });
 
-  it('page', () => Page.insert({
-    source: 'foo',
-    title: 'Hello World',
-    path: 'bar'
-  })
-    .then(() => {
-      listPages();
-      expect(console.log.calledWith(sinon.match('Date'))).be.true;
-      expect(console.log.calledWith(sinon.match('Title'))).be.true;
-      expect(console.log.calledWith(sinon.match('Path'))).be.true;
-      expect(console.log.calledWith(sinon.match('Hello World'))).be.true;
-      expect(console.log.calledWith(sinon.match('foo'))).be.true;
-    }));
+  it('page', async () => {
+    await Page.insert({
+      source: 'foo',
+      title: 'Hello World',
+      path: 'bar'
+    });
+    listPages();
+    expect(console.log.calledWith(sinon.match('Date'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('Title'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('Path'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('Hello World'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('foo'))).to.be.true;
+  });
 });

@@ -31,29 +31,29 @@ describe('Console list', () => {
     expect(console.log.calledWith(sinon.match('No tags.'))).be.true;
   });
 
-  it('tags', () => {
+  it('tags', async () => {
     const posts = [
       {source: 'foo', slug: 'foo', title: 'Its', date: 1e8},
       {source: 'bar', slug: 'bar', title: 'Math', date: 1e8 + 1},
       {source: 'baz', slug: 'baz', title: 'Dude', date: 1e8 - 1}
     ];
-    return hexo.init()
-      .then(() => Post.insert(posts)).then(posts => Promise.each([
-        ['foo'],
-        ['baz'],
-        ['baz']
-      ], (tags, i) => posts[i].setTags(tags))).then(() => {
-        hexo.locals.invalidate();
-      })
-      .then(() => {
-        listTags();
-        expect(console.log.calledWith(sinon.match('Name'))).be.true;
-        expect(console.log.calledWith(sinon.match('Posts'))).be.true;
-        expect(console.log.calledWith(sinon.match('Path'))).be.true;
-        expect(console.log.calledWith(sinon.match('baz'))).be.true;
-        expect(console.log.calledWith(sinon.match('foo'))).be.true;
-        expect(console.log.calledWith(sinon.match('tags/baz'))).be.true;
-        expect(console.log.calledWith(sinon.match('tags/foo'))).be.true;
-      });
+
+    await hexo.init();
+    const output = await Post.insert(posts);
+    await Promise.each([
+      ['foo'],
+      ['baz'],
+      ['baz']
+    ], (tags, i) => output[i].setTags(tags));
+    await hexo.locals.invalidate();
+
+    listTags();
+    expect(console.log.calledWith(sinon.match('Name'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('Posts'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('Path'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('baz'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('foo'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('tags/baz'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('tags/foo'))).to.be.true;
   });
 });
