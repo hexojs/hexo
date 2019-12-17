@@ -81,7 +81,9 @@ describe('Hexo', () => {
     const hexo = new Hexo(__dirname);
     hexo.theme.config = { a: { b: 1, c: 2 } };
     hexo.config.theme_config = { a: { b: 3 } };
-    const theme = hexo._generateLocals().prototype.theme;
+    const Locals = hexo._generateLocals();
+    const { theme } = new Locals();
+
     Object.prototype.hasOwnProperty.call(theme.a, 'c').should.eql(true);
     theme.a.b.should.eql(3);
   });
@@ -89,10 +91,12 @@ describe('Hexo', () => {
   it('theme_config - null theme.config', () => {
     const hexo = new Hexo(__dirname);
     hexo.theme.config = null;
-    hexo.config = { a: 1, b: 2 };
     hexo.config.theme_config = { c: 3 };
-    const theme = hexo._generateLocals().prototype.theme;
+    const Locals = hexo._generateLocals();
+    const { theme } = new Locals();
+
     Object.prototype.hasOwnProperty.call(theme, 'c').should.eql(true);
+    theme.c.should.eql(3);
   });
 
   it('call()', () => hexo.call('test', {foo: 'bar'}).then(data => {
