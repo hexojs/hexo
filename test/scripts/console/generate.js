@@ -19,8 +19,10 @@ describe('generate', () => {
   });
 
   afterEach(async() => {
-    await emptyDir(hexo.base_dir);
-    await rmdir(hexo.base_dir);
+    if (exists(hexo.base_dir)) {
+      await emptyDir(hexo.base_dir);
+      await rmdir(hexo.base_dir);
+    }
   });
 
   const testGenerate = async options => {
