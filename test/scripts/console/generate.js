@@ -1,7 +1,7 @@
 'use strict';
 
 const { join } = require('path');
-const { exists, mkdirs, readFile, rmdir, stat, unlink, writeFile } = require('hexo-fs');
+const { emptyDir, exists, mkdirs, readFile, rmdir, stat, unlink, writeFile } = require('hexo-fs');
 const Promise = require('bluebird');
 const { spy } = require('sinon');
 
@@ -18,7 +18,10 @@ describe('generate', () => {
     hexo.init();
   });
 
-  afterEach(() => rmdir(hexo.base_dir));
+  afterEach(async() => {
+    await emptyDir(hexo.base_dir);
+    await rmdir(hexo.base_dir);
+  });
 
   const testGenerate = async options => {
     await Promise.all([
