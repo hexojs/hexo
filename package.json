@@ -72,7 +72,7 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "eslint": "^6.0.1",
-    "eslint-config-hexo": "^4.0.0",
+    "eslint-config-hexo": "^4.1.0",
     "hexo-renderer-marked": "^2.0.0",
     "husky": "^3.0.0",
     "lint-staged": "^9.1.0",
