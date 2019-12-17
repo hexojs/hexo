@@ -14,23 +14,24 @@ describe('new', () => {
   const now = Date.now();
   let clock;
 
-  before(async() => {
+  before(async () => {
     clock = useFakeTimers(now);
 
     await mkdirs(hexo.base_dir);
     await hexo.init();
-    await hexo.scaffold.set('post', [
-      'title: {{ title }}',
-      'date: {{ date }}',
-      'tags:',
-      '---'
-    ].join('\n'));
-
-    hexo.scaffold.set('draft', [
-      'title: {{ title }}',
-      'tags:',
-      '---'
-    ].join('\n'));
+    await Promise.all([
+      hexo.scaffold.set('post', [
+        'title: {{ title }}',
+        'date: {{ date }}',
+        'tags:',
+        '---'
+      ].join('\n')),
+      hexo.scaffold.set('draft', [
+        'title: {{ title }}',
+        'tags:',
+        '---'
+      ].join('\n'))
+    ]);
   });
 
   after(() => {
@@ -38,7 +39,7 @@ describe('new', () => {
     return rmdir(hexo.base_dir);
   });
 
-  it('title', async() => {
+  it('title', async () => {
     const date = moment(now);
     const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const body = [
@@ -57,7 +58,7 @@ describe('new', () => {
     await unlink(path);
   });
 
-  it('layout', async() => {
+  it('layout', async () => {
     const path = join(hexo.source_dir, '_drafts', 'Hello-World.md');
     const body = [
       'title: Hello World',
@@ -74,7 +75,7 @@ describe('new', () => {
     await unlink(path);
   });
 
-  it('slug', async() => {
+  it('slug', async () => {
     const date = moment(now);
     const path = join(hexo.source_dir, '_posts', 'foo.md');
     const body = [
@@ -94,7 +95,7 @@ describe('new', () => {
     await unlink(path);
   });
 
-  it('slug - s', async() => {
+  it('slug - s', async () => {
     const date = moment(now);
     const path = join(hexo.source_dir, '_posts', 'foo.md');
     const body = [
@@ -114,7 +115,7 @@ describe('new', () => {
     await unlink(path);
   });
 
-  it('path', async() => {
+  it('path', async () => {
     const date = moment(now);
     const path = join(hexo.source_dir, '_posts', 'bar.md');
     const body = [
@@ -135,7 +136,7 @@ describe('new', () => {
     await unlink(path);
   });
 
-  it('path - p', async() => {
+  it('path - p', async () => {
     const date = moment(now);
     const path = join(hexo.source_dir, '_posts', 'bar.md');
     const body = [
@@ -156,7 +157,7 @@ describe('new', () => {
     await unlink(path);
   });
 
-  it('rename if target existed', async() => {
+  it('rename if target existed', async () => {
     const path = join(hexo.source_dir, '_posts', 'Hello-World-1.md');
 
     await post.create({
@@ -174,7 +175,7 @@ describe('new', () => {
     ]);
   });
 
-  it('replace existing files', async() => {
+  it('replace existing files', async () => {
     const date = moment(now);
     const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const body = [
@@ -200,7 +201,7 @@ describe('new', () => {
     await unlink(path);
   });
 
-  it('replace existing files - r', async() => {
+  it('replace existing files - r', async () => {
     const date = moment(now);
     const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const body = [
@@ -226,7 +227,7 @@ describe('new', () => {
     await unlink(path);
   });
 
-  it('extra data', async() => {
+  it('extra data', async () => {
     const date = moment(now);
     const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const body = [
