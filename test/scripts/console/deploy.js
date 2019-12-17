@@ -77,7 +77,7 @@ describe('deploy', () => {
     });
   });
 
-  // it('deployer not found');
+  // it('deployer not found'); missing-unit-test
 
   it('generate', () => fs.writeFile(pathFn.join(hexo.source_dir, 'test.txt'), 'test').then(() => deploy({generate: true})).then(() => fs.readFile(pathFn.join(hexo.public_dir, 'test.txt'))).then(content => {
     content.should.eql('test');

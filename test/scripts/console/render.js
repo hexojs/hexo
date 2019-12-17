@@ -76,7 +76,7 @@ describe('render', () => {
     });
   });
 
-  // it('output');
+  // it('output'); missing-unit-test
 
   it('engine', () => {
     const src = pathFn.join(hexo.base_dir, 'test');

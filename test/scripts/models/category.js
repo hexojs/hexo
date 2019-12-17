@@ -23,7 +23,7 @@ describe('Category', () => {
     });
   });
 
-  // it('parent - reference');
+  // it('parent - reference'); missing-unit-test
 
   it('slug - virtual', () => Category.insert({
     name: 'foo'
