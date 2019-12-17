@@ -31,6 +31,7 @@ describe('generate', () => {
       writeFile(join(hexo.public_dir, 'faz', 'yo.txt'), 'yo')
     ]);
     await generate(options);
+
     const result = await Promise.all([
       readFile(join(hexo.public_dir, 'test.txt')),
       readFile(join(hexo.public_dir, 'faz', 'yo.txt')),
