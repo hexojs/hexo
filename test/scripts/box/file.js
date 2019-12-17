@@ -40,7 +40,7 @@ describe('File', () => {
     params: {foo: 'bar'}
   });
 
-  before(async() => {
+  before(async () => {
     await Promise.all([
       writeFile(file.source, body),
       hexo.init()
@@ -50,7 +50,7 @@ describe('File', () => {
 
   after(() => rmdir(box.base));
 
-  it('read()', async() => {
+  it('read()', async () => {
     const result = await file.read();
     result.should.eql(body);
   });
@@ -67,7 +67,7 @@ describe('File', () => {
     file.readSync().should.eql(body);
   });
 
-  it('stat()', async() => {
+  it('stat()', async () => {
     const stats = await Promise.all([
       stat(file.source),
       file.stat()
@@ -88,7 +88,7 @@ describe('File', () => {
     file.statSync().should.eql(statSync(file.source));
   });
 
-  it('render()', async() => {
+  it('render()', async () => {
     const result = await file.render();
     result.should.eql(obj);
   });
