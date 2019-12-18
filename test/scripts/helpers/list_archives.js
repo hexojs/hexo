@@ -178,5 +178,20 @@ describe('list_archives', () => {
     ].join(''));
   });
 
-  it('timezone');
+  it('timezone', () => {
+    ctx.config.timezone = 'Asia/Tokyo';
+    const result = listArchives({
+      format: 'YYYY MM ZZ'
+    });
+
+    result.should.eql([
+      '<ul class="archive-list">',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">2014 02 +0900</a><span class="archive-list-count">1</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">2013 10 +0900</a><span class="archive-list-count">1</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">2013 06 +0900</a><span class="archive-list-count">2</span></li>',
+      '</ul>'
+    ].join(''));
+
+    ctx.config.timezone = '';
+  });
 });
