@@ -34,7 +34,7 @@ describe('open_graph', () => {
       }).should.eql([
         meta({property: 'og:type', content: 'website'}),
         meta({property: 'og:title', content: hexo.config.title}),
-        meta({property: 'og:url', content: escapeHTML(hexo.config.url)}),
+        meta({property: 'og:url'}),
         meta({property: 'og:site_name', content: hexo.config.title}),
         meta({property: 'og:locale', content: 'en_US'}),
         meta({property: 'article:published_time', content: post.date.toISOString()}),
