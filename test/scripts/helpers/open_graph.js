@@ -2,7 +2,7 @@
 
 const moment = require('moment');
 const cheerio = require('cheerio');
-const { encodeURL } = require('hexo-util');
+const { escapeHTML } = require('hexo-util');
 
 describe('open_graph', () => {
   const Hexo = require('../../../lib/hexo');
@@ -34,7 +34,7 @@ describe('open_graph', () => {
       }).should.eql([
         meta({property: 'og:type', content: 'website'}),
         meta({property: 'og:title', content: hexo.config.title}),
-        meta({property: 'og:url'}),
+        meta({property: 'og:url', content: escapeHTML(hexo.config.url)}),
         meta({property: 'og:site_name', content: hexo.config.title}),
         meta({property: 'og:locale', content: 'en_US'}),
         meta({property: 'article:published_time', content: post.date.toISOString()}),
@@ -117,7 +117,7 @@ describe('open_graph', () => {
     result.should.contain(meta({property: 'og:url', content: 'https://hexo.io/bar'}));
   });
 
-  it('url - should not ends with index.html', () => {
+  it('url - pretty_urls.trailing_index', () => {
     hexo.config.pretty_urls.trailing_index = false;
     const result = openGraph.call({
       page: {},
@@ -128,9 +128,45 @@ describe('open_graph', () => {
 
     const $ = cheerio.load(result);
 
-    $('meta[property="og:url"]').attr('content').endsWith('index.html').should.be.false;
+    $('meta[property="og:url"]').attr('content').endsWith('index.html').should.eql(false);
 
     hexo.config.pretty_urls.trailing_index = true;
+  });
+
+  it('url - pretty_urls.trailing_html', () => {
+    hexo.config.pretty_urls.trailing_html = false;
+    const result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost,
+      url: 'http://yoursite.com/page/about.html'
+    });
+
+    const $ = cheerio.load(result);
+
+    $('meta[property="og:url"]').attr('content').endsWith('.html').should.eql(false);
+
+    hexo.config.pretty_urls.trailing_html = true;
+  });
+
+  it('url - null pretty_urls', () => {
+    hexo.config.pretty_urls = null;
+    const url = 'http://yoursite.com/page/about.html';
+    const result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost,
+      url
+    });
+
+    const $ = cheerio.load(result);
+
+    $('meta[property="og:url"]').attr('content').should.eql(url);
+
+    hexo.config.pretty_urls = {
+      trailing_index: true,
+      trailing_html: true
+    };
   });
 
   it('url - IDN', () => {
@@ -143,7 +179,7 @@ describe('open_graph', () => {
 
     const result = openGraph.call(ctx);
 
-    result.should.contain(meta({property: 'og:url', content: encodeURL(ctx.url)}));
+    result.should.contain(meta({property: 'og:url', content: escapeHTML(ctx.url)}));
   });
 
   it('images - content', () => {
