@@ -2,7 +2,7 @@
 
 const moment = require('moment');
 const cheerio = require('cheerio');
-const { escapeHTML } = require('hexo-util');
+const { encodeURL } = require('hexo-util');
 
 describe('open_graph', () => {
   const Hexo = require('../../../lib/hexo');
@@ -179,7 +179,7 @@ describe('open_graph', () => {
 
     const result = openGraph.call(ctx);
 
-    result.should.contain(meta({property: 'og:url', content: escapeHTML(ctx.url)}));
+    result.should.contain(meta({property: 'og:url', content: encodeURL(ctx.url)}));
   });
 
   it('images - content', () => {
