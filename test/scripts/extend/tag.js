@@ -1,6 +1,6 @@
 'use strict';
 
-const sinon = require('sinon');
+const { spy } = require('sinon');
 const Promise = require('bluebird');
 
 describe('Tag', () => {
@@ -126,7 +126,7 @@ describe('Tag', () => {
   });
 
   it('register() - name is required', () => {
-    const errorCallback = sinon.spy(err => {
+    const errorCallback = spy(err => {
       err.should.have.property('message', 'name is required');
     });
 
@@ -140,7 +140,7 @@ describe('Tag', () => {
   });
 
   it('register() - fn must be a function', () => {
-    const errorCallback = sinon.spy(err => {
+    const errorCallback = spy(err => {
       err.should.have.property('message', 'fn must be a function');
     });
 
