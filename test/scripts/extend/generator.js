@@ -26,16 +26,15 @@ describe('Generator', () => {
     }
   });
 
-  it('register() - promisify', () => {
+  it('register() - promisify', async () => {
     const g = new Generator();
 
     g.register('test', (locals, render, callback) => {
       callback(null, 'foo');
     });
 
-    g.get('test')({}, {}).then(result => {
-      result.should.eql('foo');
-    });
+    const result = await g.get('test')({}, {});
+    result.should.eql('foo');
   });
 
   it('get()', () => {
