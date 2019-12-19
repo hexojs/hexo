@@ -1,7 +1,5 @@
 'use strict';
 
-const expect = require('chai').expect;
-
 describe('Tag Errors', () => {
   const Tag = require('../../../lib/extend/tag');
 
@@ -45,7 +43,7 @@ describe('Tag Errors', () => {
     } catch (err) {
       err.should.have.property('name', 'Template render error');
       err.should.have.property('message');
-      expect(err.message).to.contain('unexpected end of file');
+      err.message.includes('unexpected end of file').should.eql(true);
     }
   });
 
@@ -67,7 +65,7 @@ describe('Tag Errors', () => {
     } catch (err) {
       err.should.have.property('name', 'Template render error');
       err.should.have.property('message');
-      expect(err.message).to.contain('unexpected end of file');
+      err.message.includes('unexpected end of file').should.eql(true);
     }
   });
 
