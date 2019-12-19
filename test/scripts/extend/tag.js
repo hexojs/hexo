@@ -7,27 +7,25 @@ describe('Tag', () => {
   const Tag = require('../../../lib/extend/tag');
   const tag = new Tag();
 
-  it('register()', () => {
+  it('register()', async () => {
     const tag = new Tag();
 
     tag.register('test', (args, content) => args.join(' '));
 
-    return tag.render('{% test foo.bar | abcdef > fn(a, b, c) < fn() %}').then(result => {
-      result.should.eql('foo.bar | abcdef > fn(a, b, c) < fn()');
-    });
+    const result = await tag.render('{% test foo.bar | abcdef > fn(a, b, c) < fn() %}');
+    result.should.eql('foo.bar | abcdef > fn(a, b, c) < fn()');
   });
 
-  it('register() - async', () => {
+  it('register() - async', async () => {
     const tag = new Tag();
 
-    tag.register('test', (args, content) => Promise.resolve(args.join(' ')), {async: true});
+    tag.register('test', (args, content) => Promise.resolve(args.join(' ')), { async: true });
 
-    return tag.render('{% test foo bar %}').then(result => {
-      result.should.eql('foo bar');
-    });
+    const result = await tag.render('{% test foo bar %}');
+    result.should.eql('foo bar');
   });
 
-  it('register() - block', () => {
+  it('register() - block', async () => {
     const tag = new Tag();
 
     tag.register('test', (args, content) => args.join(' ') + ' ' + content, true);
@@ -38,15 +36,14 @@ describe('Tag', () => {
       '{% endtest %}'
     ].join('\n');
 
-    return tag.render(str).then(result => {
-      result.should.eql('foo bar test content');
-    });
+    const result = await tag.render(str);
+    result.should.eql('foo bar test content');
   });
 
-  it('register() - async block', () => {
+  it('register() - async block', async () => {
     const tag = new Tag();
 
-    tag.register('test', (args, content) => Promise.resolve(args.join(' ') + ' ' + content), {ends: true, async: true});
+    tag.register('test', (args, content) => Promise.resolve(args.join(' ') + ' ' + content), { ends: true, async: true });
 
     const str = [
       '{% test foo bar %}',
@@ -54,12 +51,11 @@ describe('Tag', () => {
       '{% endtest %}'
     ].join('\n');
 
-    return tag.render(str).then(result => {
-      result.should.eql('foo bar test content');
-    });
+    const result = await tag.render(str);
+    result.should.eql('foo bar test content');
   });
 
-  it('register() - nested test', () => {
+  it('register() - nested test', async () => {
     const tag = new Tag();
 
     tag.register('test', (args, content) => content, true);
@@ -77,18 +73,17 @@ describe('Tag', () => {
       '{% endtest %}'
     ].join('\n');
 
-    return tag.render(str).then(result => {
-      result.replace(/\s/g, '').should.eql('123456rawtest789012');
-    });
+    const result = await tag.render(str);
+    result.replace(/\s/g, '').should.eql('123456rawtest789012');
   });
 
-  it('register() - nested async / async test', () => {
+  it('register() - nested async / async test', async () => {
     const tag = new Tag();
 
     tag.register('test', (args, content) => content, {ends: true, async: true});
     tag.register('async', (args, content) => {
       return Promise.resolve(args.join(' ') + ' ' + content);
-    }, {ends: true, async: true});
+    }, { ends: true, async: true });
 
     const str = [
       '{% test %}',
@@ -100,12 +95,11 @@ describe('Tag', () => {
       '{% endtest %}'
     ].join('\n');
 
-    return tag.render(str).then(result => {
-      result.replace(/\s/g, '').should.eql('123456async789012');
-    });
+    const result = await tag.render(str);
+    result.replace(/\s/g, '').should.eql('123456async789012');
   });
 
-  it('register() - strip indention', () => {
+  it('register() - strip indention', async () => {
     const tag = new Tag();
 
     tag.register('test', (args, content) => content, true);
@@ -116,21 +110,19 @@ describe('Tag', () => {
       '{% endtest %}'
     ].join('\n');
 
-    return tag.render(str).then(result => {
-      result.should.eql('test content');
-    });
+    const result = await tag.render(str);
+    result.should.eql('test content');
   });
 
-  it('register() - async callback', () => {
+  it('register() - async callback', async () => {
     const tag = new Tag();
 
     tag.register('test', (args, content, callback) => {
       callback(null, args.join(' '));
-    }, {async: true});
+    }, { async: true });
 
-    return tag.render('{% test foo bar %}').then(result => {
-      result.should.eql('foo bar');
-    });
+    const result = await tag.render('{% test foo bar %}');
+    result.should.eql('foo bar');
   });
 
   it('register() - name is required', () => {
@@ -161,15 +153,14 @@ describe('Tag', () => {
     errorCallback.calledOnce.should.be.true;
   });
 
-  it('render() - context', () => {
+  it('render() - context', async () => {
     const tag = new Tag();
 
     tag.register('test', function() {
       return this.foo;
     });
 
-    return tag.render('{% test %}', {foo: 'bar'}).then(result => {
-      result.should.eql('bar');
-    });
+    const result = await tag.render('{% test %}', { foo: 'bar' });
+    result.should.eql('bar');
   });
 });
