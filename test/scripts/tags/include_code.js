@@ -2,7 +2,7 @@
 
 const pathFn = require('path');
 const fs = require('hexo-fs');
-const highlight = require('hexo-util').highlight;
+const { highlight } = require('hexo-util');
 const Promise = require('bluebird');
 
 describe('include_code', () => {
