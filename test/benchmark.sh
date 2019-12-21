@@ -87,14 +87,7 @@ npx --no-install hexo clean > build.log
 echo ""
 echo "- Generating flamegraph..."
 
-0x -- node ./node_modules/.bin/hexo g > build.log 2>&1 ;
-
-flamegraph_dir=$(ls | grep *.0x)
-
-mkdir -p "${TRAVIS_BUILD_DIR}/0x"
-cp -r -f $flamegraph_dir "${TRAVIS_BUILD_DIR}/0x"
-
-echo "- Flamegraph is generated under ${TRAVIS_BUILD_DIR}/0x"
+0x --output-dir "${TRAVIS_BUILD_DIR}/0x" -- node ./node_modules/.bin/hexo g > build.log 2>&1 ;
 
 rm -rf build.log
 cd $TRAVIS_BUILD_DIR
