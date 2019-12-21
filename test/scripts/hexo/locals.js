@@ -24,10 +24,10 @@ describe('Locals', () => {
     locals.set('foo', () => 'foo');
 
     // cache should be clear after new data is set
-    should.not.exist(locals.cache.foo);
+    locals.cache.has('foo').should.eql(false);
     locals.get('foo').should.eql('foo');
     // cache should be saved once it's get
-    locals.cache.foo.should.eql('foo');
+    locals.cache.get('foo').should.eql('foo');
   });
 
   it('set() - not function', () => {
@@ -69,7 +69,7 @@ describe('Locals', () => {
     locals.remove('foo');
 
     should.not.exist(locals.getters.foo);
-    should.not.exist(locals.cache.foo);
+    locals.cache.has('foo').should.eql(false);
   });
 
   it('remove() - name must be a string', () => {
@@ -100,6 +100,6 @@ describe('Locals', () => {
     locals.get('foo');
     locals.invalidate();
 
-    should.not.exist(locals.cache.foo);
+    locals.cache.has('foo').should.eql(false);
   });
 });
