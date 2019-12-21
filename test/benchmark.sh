@@ -66,6 +66,7 @@ rm -rf node_modules/hexo
 ln -sf $TRAVIS_BUILD_DIR node_modules/hexo
 
 echo "- Start test run"
+echo ""
 
 echo "------------- Cold processing --------------"
 { /usr/bin/time -v npx --no-install hexo g --debug > build.log 2>&1 ; } 2> build.log
@@ -81,6 +82,19 @@ npx --no-install hexo clean > build.log
 LOG_TABLE
 
 echo "--------------------------------------------"
-rm -rf build.log
+npx --no-install hexo clean > build.log
 
+echo ""
+echo "- Generating flamegraph..."
+
+0x -- node ./node_modules/.bin/hexo g > build.log 2>&1 ;
+
+flamegraph_dir=$(ls | grep *.0x)
+
+mkdir -p "${TRAVIS_BUILD_DIR}/0x"
+cp -r -f $flamegraph_dir "${TRAVIS_BUILD_DIR}/0x"
+
+echo "- Flamegraph is generated under ${TRAVIS_BUILD_DIR}/0x"
+
+rm -rf build.log
 cd $TRAVIS_BUILD_DIR
