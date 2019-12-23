@@ -87,7 +87,9 @@ npx --no-install hexo clean > build.log
 echo ""
 echo "- Generating flamegraph..."
 
-0x --output-dir "${TRAVIS_BUILD_DIR}/0x" -- node ./node_modules/.bin/hexo g > build.log 2>&1 ;
+node ./node_modules/.bin/0x --output-dir "${TRAVIS_BUILD_DIR}/0x" -- node ./node_modules/.bin/hexo g > build.log 2>&1 ;
+
+echo "Flamegraph will be deployed to: https://${TRAVIS_COMMIT}-${TRAVIS_NODE_VERSION}-hexo.surge.sh/flamegraph.html"
 
 rm -rf build.log
 cd $TRAVIS_BUILD_DIR

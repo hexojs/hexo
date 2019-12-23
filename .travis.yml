@@ -17,9 +17,17 @@ node_js:
 script:
   - npm run eslint
   - npm run test-cov
-  - npm install 0x -g
+  - npm install 0x
   - ./test/benchmark.sh
 
 after_script:
   - npm install coveralls
   - nyc report --reporter=text-lcov | coveralls
+
+deploy:
+  provider: surge
+  project: ./0x/
+  skip_cleanup: true
+  domain: "${TRAVIS_COMMIT}-${TRAVIS_NODE_VERSION}-hexo.surge.sh"
+  on:
+    all_branches: true
