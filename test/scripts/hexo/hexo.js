@@ -76,6 +76,29 @@ describe('Hexo', () => {
     hexo.config_path.should.eql(pathFn.join(base_dir, '_multiconfig.yml'));
   });
 
+  // Issue #3964
+  it('theme_config - deep clone', () => {
+    const hexo = new Hexo(__dirname);
+    hexo.theme.config = { a: { b: 1, c: 2 } };
+    hexo.config.theme_config = { a: { b: 3 } };
+    const Locals = hexo._generateLocals();
+    const { theme } = new Locals();
+
+    Object.prototype.hasOwnProperty.call(theme.a, 'c').should.eql(true);
+    theme.a.b.should.eql(3);
+  });
+
+  it('theme_config - null theme.config', () => {
+    const hexo = new Hexo(__dirname);
+    hexo.theme.config = null;
+    hexo.config.theme_config = { c: 3 };
+    const Locals = hexo._generateLocals();
+    const { theme } = new Locals();
+
+    Object.prototype.hasOwnProperty.call(theme, 'c').should.eql(true);
+    theme.c.should.eql(3);
+  });
+
   it('call()', () => hexo.call('test', {foo: 'bar'}).then(data => {
     data.should.eql({foo: 'bar'});
   }));
@@ -119,7 +142,7 @@ describe('Hexo', () => {
     });
   });
 
-  it('model()');
+  // it('model()'); missing-unit-test
 
   it('_showDrafts()', () => {
     hexo._showDrafts().should.be.false;
@@ -169,7 +192,7 @@ describe('Hexo', () => {
 
   it('watch() - theme', () => testWatch(pathFn.join(hexo.theme_dir, 'source')));
 
-  it('unwatch()');
+  // it('unwatch()'); missing-unit-test
 
   it('exit()', () => {
     const hook = sinon.spy();

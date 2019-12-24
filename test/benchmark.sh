@@ -27,14 +27,16 @@ LOG_TABLE () {
     total_time=$(_SUBSTRUCTION $time_database_saved $time_begin | xargs -0 printf "%.0f")
     line_number=$(wc -l build.log | cut -d" " -f1)
 
-    if [ $total_time -lt 10 ] || ([ $line_number -lt 300 ] && [ $1 != "HOT" ]); then
-        echo "--------------------------------------------"
-        echo -e '\033[41;37m !! Build failed !! \033[0m'
-        head -n 400 build.log
-        exit 1
+    if [ "$1" != "HOT" ]; then
+        if [ "$total_time" -lt 10 ] || [ "$line_number" -lt 300 ]; then
+            echo "--------------------------------------------"
+            echo -e '\033[41;37m !! Build failed !! \033[0m'
+            head -n 400 build.log
+            exit 1
+        fi
     fi
 
-    if [ $total_time -gt 40 ]; then
+    if [ "$total_time" -gt 40 ]; then
         echo "--------------------------------------------"
         echo -e '\033[41;37m !! Performance regression detected !! \033[0m'
         exit 1
