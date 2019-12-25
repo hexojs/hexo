@@ -1,6 +1,6 @@
 'use strict';
 
-const pathFn = require('path');
+const { join } = require('path');
 const moment = require('moment');
 const Promise = require('bluebird');
 const { createSha1Hash } = require('hexo-util');
@@ -8,27 +8,27 @@ const { mkdirs, rmdir, unlink, writeFile } = require('hexo-fs');
 
 describe('new_post_path', () => {
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(pathFn.join(__dirname, 'new_post_path_test'));
+  const hexo = new Hexo(join(__dirname, 'new_post_path_test'));
   const newPostPath = require('../../../lib/plugins/filter/new_post_path').bind(hexo);
   const sourceDir = hexo.source_dir;
-  const draftDir = pathFn.join(sourceDir, '_drafts');
-  const postDir = pathFn.join(sourceDir, '_posts');
+  const draftDir = join(sourceDir, '_drafts');
+  const postDir = join(sourceDir, '_posts');
 
   before(async () => {
     hexo.config.new_post_name = ':title.md';
 
-    await fs.mkdirs(hexo.base_dir);
+    await mkdirs(hexo.base_dir);
     hexo.init();
   });
 
-  after(() => fs.rmdir(hexo.base_dir));
+  after(() => rmdir(hexo.base_dir));
 
   it('page layout + path', async () => {
     const target = await newPostPath({
       path: 'foo',
       layout: 'page'
     });
-    target.should.eql(pathFn.join(sourceDir, 'foo.md'));
+    target.should.eql(join(sourceDir, 'foo.md'));
   });
 
   it('draft layout + path', async () => {
@@ -36,14 +36,14 @@ describe('new_post_path', () => {
       path: 'foo',
       layout: 'draft'
     });
-    target.should.eql(pathFn.join(draftDir, 'foo.md'));
+    target.should.eql(join(draftDir, 'foo.md'));
   });
 
   it('default layout + path', async () => {
     const target = await newPostPath({
       path: 'foo'
     });
-    target.should.eql(pathFn.join(postDir, 'foo.md'));
+    target.should.eql(join(postDir, 'foo.md'));
   });
 
   it('page layout + slug', async () => {
@@ -51,7 +51,7 @@ describe('new_post_path', () => {
       slug: 'foo',
       layout: 'page'
     });
-    target.should.eql(pathFn.join(sourceDir, 'foo', 'index.md'));
+    target.should.eql(join(sourceDir, 'foo', 'index.md'));
   });
 
   it('draft layout + slug', async () => {
@@ -59,7 +59,7 @@ describe('new_post_path', () => {
       slug: 'foo',
       layout: 'draft'
     });
-    target.should.eql(pathFn.join(draftDir, 'foo.md'));
+    target.should.eql(join(draftDir, 'foo.md'));
   });
 
   it('default layout + slug', async () => {
@@ -69,7 +69,7 @@ describe('new_post_path', () => {
     const target = await newPostPath({
       slug: 'foo'
     });
-    target.should.eql(pathFn.join(postDir, now.format('YYYY-MM-DD') + '-foo.md'));
+    target.should.eql(join(postDir, now.format('YYYY-MM-DD') + '-foo.md'));
   });
 
   it('date', async () => {
@@ -80,7 +80,7 @@ describe('new_post_path', () => {
       slug: 'foo',
       date: date.toDate()
     });
-    target.should.eql(pathFn.join(postDir, date.format('YYYY-M-D') + '-foo.md'));
+    target.should.eql(join(postDir, date.format('YYYY-M-D') + '-foo.md'));
   });
 
   it('extra data', async () => {
@@ -91,7 +91,7 @@ describe('new_post_path', () => {
       foo: 'oh',
       bar: 'ya'
     });
-    target.should.eql(pathFn.join(postDir, 'oh-ya-foo.md'));
+    target.should.eql(join(postDir, 'oh-ya-foo.md'));
   });
 
   it('append extension name if not existed', async () => {
@@ -100,7 +100,7 @@ describe('new_post_path', () => {
     const target = await newPostPath({
       slug: 'foo'
     });
-    target.should.eql(pathFn.join(postDir, 'foo.md'));
+    target.should.eql(join(postDir, 'foo.md'));
   });
 
   it('hash', async () => {
@@ -124,20 +124,20 @@ describe('new_post_path', () => {
     const target = await newPostPath({
       path: 'foo.markdown'
     });
-    target.should.eql(pathFn.join(postDir, 'foo.markdown'));
+    target.should.eql(join(postDir, 'foo.markdown'));
   });
 
   it('replace existing files', async () => {
     const filename = 'test.md';
-    const path = pathFn.join(postDir, filename);
+    const path = join(postDir, filename);
 
-    await fs.writeFile(path, '');
+    await writeFile(path, '');
     const target = await newPostPath({
       path: filename
     }, true);
 
     target.should.eql(path);
-    await fs.unlink(path);
+    await unlink(path);
   });
 
   it('rename if target existed', async () => {
@@ -148,15 +148,15 @@ describe('new_post_path', () => {
       'test-foo.md'
     ];
 
-    const path = filename.map(item => pathFn.join(postDir, item));
+    const path = filename.map(item => join(postDir, item));
 
-    await Promise.map(path, item => fs.writeFile(item, ''));
+    await Promise.map(path, item => writeFile(item, ''));
     const target = await newPostPath({
       path: filename[0]
     });
-    target.should.eql(pathFn.join(postDir, 'test-3.md'));
+    target.should.eql(join(postDir, 'test-3.md'));
 
-    await Promise.map(path, item => fs.unlink(item));
+    await Promise.map(path, item => unlink(item));
   });
 
   it('data is required', async () => {
