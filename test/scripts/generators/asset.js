@@ -11,10 +11,10 @@ describe('asset', () => {
   const generator = require('../../../lib/plugins/generator/asset').bind(hexo);
   const Asset = hexo.model('Asset');
 
-  async function checkStream(stream, expected) {
+  const checkStream = async (stream, expected) => {
     const data = await testUtil.stream.read(stream);
     data.should.eql(expected);
-  }
+  };
 
   before(async () => {
     await fs.mkdirs(hexo.base_dir);
