@@ -2,7 +2,6 @@
 
 const { join } = require('path');
 const moment = require('moment');
-const Promise = require('bluebird');
 const { createSha1Hash } = require('hexo-util');
 const { mkdirs, rmdir, unlink, writeFile } = require('hexo-fs');
 
@@ -150,13 +149,13 @@ describe('new_post_path', () => {
 
     const path = filename.map(item => join(postDir, item));
 
-    await Promise.map(path, item => writeFile(item, ''));
+    await Promise.all(path.map(item => writeFile(item, '')));
     const target = await newPostPath({
       path: filename[0]
     });
     target.should.eql(join(postDir, 'test-3.md'));
 
-    await Promise.map(path, item => unlink(item));
+    await Promise.all(path.map(item => unlink(item)));
   });
 
   it('data is required', async () => {
