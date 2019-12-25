@@ -1,5 +1,7 @@
 'use strict';
 
+const { encodeURL, escapeHTML } = require('hexo-util');
+
 describe('toc', () => {
   const toc = require('../../../lib/plugins/helper/toc');
 
@@ -360,5 +362,76 @@ describe('toc', () => {
     ].join('');
 
     toc(html, { min_depth: 2 }).should.eql(expected);
+  });
+
+  it('No id attribute', () => {
+    const className = 'f';
+    const input = [
+      '<h1>foo</h1>',
+      '<h1 id="">bar</h1>'
+    ].join('');
+
+    const expected = [
+      `<ol class="${className}">`,
+      `<li class="${className}-item ${className}-level-1">`,
+      `<a class="${className}-link"><span class="${className}-text">foo</span></a>`,
+      '</li>',
+      `<li class="${className}-item ${className}-level-1">`,
+      `<a class="${className}-link"><span class="${className}-text">bar</span></a>`,
+      '</li></ol>'
+    ].join('');
+
+    toc(input, { list_number: false, class: className }).should.eql(expected);
+  });
+
+  it('non-ASCII id', () => {
+    const className = 'f';
+    const zh = '这是-H1-标题';
+    const zhs = zh.replace(/-/g, ' ');
+    const de = 'Ich-♥-Deutsch';
+    const des = de.replace(/-/g, ' ');
+    const ru = 'Я-люблю-русский';
+    const rus = ru.replace(/-/g, ' ');
+    const input = [
+      `<h1 id="${zh}">${zhs}</h1>`,
+      `<h1 id="${de}">${des}</h1>`,
+      `<h1 id="${ru}">${rus}</h1>`
+    ].join('');
+
+    const expected = [
+      `<ol class="${className}">`,
+      `<li class="${className}-item ${className}-level-1">`,
+      `<a class="${className}-link" href="#${encodeURL(zh)}"><span class="${className}-text">${zhs}</span></a>`,
+      '</li>',
+      `<li class="${className}-item ${className}-level-1">`,
+      `<a class="${className}-link" href="#${encodeURL(de)}"><span class="${className}-text">${des}</span></a>`,
+      '</li>',
+      `<li class="${className}-item ${className}-level-1">`,
+      `<a class="${className}-link" href="#${encodeURL(ru)}"><span class="${className}-text">${rus}</span></a>`,
+      '</li></ol>'
+    ].join('');
+
+    toc(input, { list_number: false, class: className }).should.eql(expected);
+  });
+
+  it('escape unsafe class name', () => {
+    const className = 'f"b';
+    const esClass = escapeHTML(className);
+    const input = '<h1>bar</h1>';
+
+    const expected = [
+      `<ol class="${esClass}">`,
+      `<li class="${esClass}-item ${esClass}-level-1">`,
+      `<a class="${esClass}-link"><span class="${esClass}-text">bar</span></a>`,
+      '</li></ol>'
+    ].join('');
+
+    toc(input, { list_number: false, class: className }).should.eql(expected);
+  });
+
+  it('invalid input', () => {
+    const input = '<h9000>bar</h9000>';
+
+    toc(input).should.eql('');
   });
 });
