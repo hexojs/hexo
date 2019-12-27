@@ -94,7 +94,7 @@ describe('tagcloud', () => {
     ].join(' '));
   });
 
-  it('orderby', () => {
+  it('orderby - length', () => {
     const result = tagcloud({
       orderby: 'length'
     });
@@ -105,6 +105,25 @@ describe('tagcloud', () => {
       '<a href="/tags/cde/" style="font-size: 16.67px;">cde</a>',
       '<a href="/tags/bcd/" style="font-size: 20px;">bcd</a>'
     ].join(' '));
+  });
+
+  it('orderby - random', () => {
+    const result1 = tagcloud({
+      orderby: 'random'
+    });
+
+    const result2 = tagcloud({
+      orderby: 'rand'
+    });
+
+    result1.should.contains('<a href="/tags/def/" style="font-size: 10px;">def</a>');
+    result1.should.contains('<a href="/tags/abc/" style="font-size: 13.33px;">abc</a>');
+    result1.should.contains('<a href="/tags/cde/" style="font-size: 16.67px;">cde</a>');
+    result1.should.contains('<a href="/tags/bcd/" style="font-size: 20px;">bcd</a>');
+    result2.should.contains('<a href="/tags/def/" style="font-size: 10px;">def</a>');
+    result2.should.contains('<a href="/tags/abc/" style="font-size: 13.33px;">abc</a>');
+    result2.should.contains('<a href="/tags/cde/" style="font-size: 16.67px;">cde</a>');
+    result2.should.contains('<a href="/tags/bcd/" style="font-size: 20px;">bcd</a>');
   });
 
   it('order', () => {
