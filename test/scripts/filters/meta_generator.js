@@ -25,13 +25,11 @@ describe('Meta Generator', () => {
   });
 
   it('no duplicate generator tag', () => {
-    const content = '<head><link>'
-      + '<meta name="generator" content="foo"></head>';
     hexo.config.meta_generator = true;
-    const result = metaGenerator(content);
+    const resultType = str => typeof metaGenerator(str);
 
-    const resultType = typeof result;
-    resultType.should.eql('undefined');
+    resultType('<head><link><meta name="generator" content="foo"></head>').should.eql('undefined');
+    resultType('<head><link><meta content="foo" name="generator"></head>').should.eql('undefined');
   });
 
   it('ignore empty head tag', () => {
