@@ -1,6 +1,6 @@
 'use strict';
 
-const pathFn = require('path');
+const { join } = require('path');
 
 describe('PostAsset', () => {
   const Hexo = require('../../../lib/hexo');
@@ -8,6 +8,7 @@ describe('PostAsset', () => {
   const PostAsset = hexo.model('PostAsset');
   const Post = hexo.model('Post');
   let post;
+  const defaults = require('../../../lib/hexo/default_config');
 
   before(async () => {
     await hexo.init();
@@ -15,6 +16,10 @@ describe('PostAsset', () => {
       source: 'foo.md',
       slug: 'bar'
     });
+  });
+
+  beforeEach(() => {
+    hexo.config = Object.assign({}, defaults);
   });
 
   it('default values', async () => {
@@ -51,7 +56,7 @@ describe('PostAsset', () => {
       slug: 'foo.jpg',
       post: post._id
     });
-    data.path.should.eql(pathFn.join(post.path, data.slug));
+    data.path.should.eql(join(post.path, data.slug));
 
     PostAsset.removeById(data._id);
   });
@@ -63,7 +68,7 @@ describe('PostAsset', () => {
       slug: 'foo.htm',
       post: post._id
     });
-    data.path.should.eql(pathFn.join(post.path, data.slug));
+    data.path.should.eql(join(post.path, data.slug));
 
     PostAsset.removeById(data._id);
   });
@@ -75,7 +80,7 @@ describe('PostAsset', () => {
       slug: 'foo.htm',
       post: post._id
     });
-    data.path.should.eql(pathFn.join(post.path, data.slug));
+    data.path.should.eql(join(post.path, data.slug));
 
     PostAsset.removeById(data._id);
   });
@@ -87,7 +92,7 @@ describe('PostAsset', () => {
       slug: 'foo.html',
       post: post._id
     });
-    data.path.should.eql(pathFn.join(post.path + '.htm-foo/', data.slug));
+    data.path.should.eql(join(post.path + '.htm-foo/', data.slug));
 
     PostAsset.removeById(data._id);
   });
@@ -98,7 +103,7 @@ describe('PostAsset', () => {
       slug: 'foo.jpg',
       post: post._id
     });
-    data.source.should.eql(pathFn.join(hexo.base_dir, data._id));
+    data.source.should.eql(join(hexo.base_dir, data._id));
 
     PostAsset.removeById(data._id);
   });
