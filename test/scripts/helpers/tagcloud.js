@@ -16,21 +16,25 @@ describe('tagcloud', () => {
 
   const tagcloud = require('../../../lib/plugins/helper/tagcloud').bind(ctx);
 
-  before(() => hexo.init().then(() => Post.insert([
-    {source: 'foo', slug: 'foo'},
-    {source: 'bar', slug: 'bar'},
-    {source: 'baz', slug: 'baz'},
-    {source: 'boo', slug: 'boo'}
-  ])).then(posts => // TODO: Warehouse needs to add a mutex lock when writing data to avoid data sync problem
-    Promise.each([
+  before(async () => {
+    await hexo.init();
+    const posts = await Post.insert([
+      {source: 'foo', slug: 'foo'},
+      {source: 'bar', slug: 'bar'},
+      {source: 'baz', slug: 'baz'},
+      {source: 'boo', slug: 'boo'}
+    ]);
+    // TODO: Warehouse needs to add a mutex lock when writing data to avoid data sync problem
+    await Promise.all([
       ['bcd'],
       ['bcd', 'cde'],
       ['bcd', 'cde', 'abc'],
       ['bcd', 'cde', 'abc', 'def']
-    ], (tags, i) => posts[i].setTags(tags))).then(() => {
+    ].map((tags, i) => posts[i].setTags(tags)));
+
     hexo.locals.invalidate();
     ctx.site = hexo.locals.toObject();
-  }));
+  });
 
   it('default', () => {
     const result = tagcloud();
