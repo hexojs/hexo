@@ -9,9 +9,9 @@ describe('render', () => {
   const hexo = new Hexo(join(__dirname, 'render_test'), {silent: true});
   const render = require('../../../lib/plugins/console/render').bind(hexo);
 
-  before(async() => {
+  before(async () => {
     await mkdirs(hexo.base_dir);
-    await hexo.init();
+    hexo.init();
   });
 
   after(() => rmdir(hexo.base_dir));
@@ -22,7 +22,7 @@ describe('render', () => {
     '  boo: 2'
   ].join('\n');
 
-  it('relative path', async() => {
+  it('relative path', async () => {
     const src = join(hexo.base_dir, 'test.yml');
     const dest = join(hexo.base_dir, 'result.json');
 
@@ -42,7 +42,7 @@ describe('render', () => {
     ]);
   });
 
-  it('absolute path', async() => {
+  it('absolute path', async () => {
     const src = join(hexo.base_dir, 'test.yml');
     const dest = join(hexo.base_dir, 'result.json');
 
@@ -63,7 +63,7 @@ describe('render', () => {
     ]);
   });
 
-  it('absolute output', async() => {
+  it('absolute output', async () => {
     const src = join(hexo.base_dir, 'test.yml');
     const dest = join(hexo.base_dir, 'result.json');
 
@@ -86,7 +86,7 @@ describe('render', () => {
 
   // it('output'); missing-unit-test
 
-  it('engine', async() => {
+  it('engine', async () => {
     const src = join(hexo.base_dir, 'test');
     const dest = join(hexo.base_dir, 'result.json');
 
@@ -107,7 +107,7 @@ describe('render', () => {
     ]);
   });
 
-  it('pretty', async() => {
+  it('pretty', async () => {
     const src = join(hexo.base_dir, 'test.yml');
     const dest = join(hexo.base_dir, 'result.json');
 
