@@ -14,6 +14,8 @@ describe('data', () => {
   const File = source.File;
   const Data = hexo.model('Data');
 
+  const typeOf = str => typeof str;
+
   function newFile(options) {
     const path = options.path;
 
@@ -27,19 +29,32 @@ describe('data', () => {
     return new File(options);
   }
 
-  before(() => fs.mkdirs(baseDir).then(() => hexo.init()));
+  before(async () => {
+    await fs.mkdirs(baseDir);
+    hexo.init();
+  });
 
   after(() => fs.rmdir(baseDir));
 
   it('pattern', () => {
     const pattern = processor.pattern;
 
-    pattern.match('_data/users.json').should.be.ok;
-    pattern.match('_data/users.yaml').should.be.ok;
-    should.not.exist(pattern.match('users.json'));
+    pattern.match('_data/users.json').should.eql({
+      0: '_data/users.json',
+      1: 'users.json',
+      path: 'users.json'
+    });
+
+    pattern.match('_data/users.yaml').should.eql({
+      0: '_data/users.yaml',
+      1: 'users.yaml',
+      path: 'users.yaml'
+    });
+
+    typeOf(pattern.match('users.json')).should.eql('undefined');
   });
 
-  it('type: create - yaml', () => {
+  it('type: create - yaml', async () => {
     const body = 'foo: bar';
 
     const file = newFile({
@@ -47,16 +62,17 @@ describe('data', () => {
       type: 'create'
     });
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      const data = Data.findById('users');
+    await fs.writeFile(file.source, body);
+    await process(file);
+    const data = Data.findById('users');
 
-      data.data.should.eql({foo: 'bar'});
+    data.data.should.eql({foo: 'bar'});
 
-      return data.remove();
-    }).finally(() => fs.unlink(file.source));
+    data.remove();
+    fs.unlink(file.source);
   });
 
-  it('type: create - json', () => {
+  it('type: create - json', async () => {
     const body = '{"foo": 1}';
 
     const file = newFile({
@@ -64,31 +80,33 @@ describe('data', () => {
       type: 'create'
     });
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      const data = Data.findById('users');
+    await fs.writeFile(file.source, body);
+    await process(file);
+    const data = Data.findById('users');
 
-      data.data.should.eql({foo: 1});
+    data.data.should.eql({foo: 1});
 
-      return data.remove();
-    }).finally(() => fs.unlink(file.source));
+    data.remove();
+    fs.unlink(file.source);
   });
 
-  it('type: create - others', () => {
+  it('type: create - others', async () => {
     const file = newFile({
       path: 'users.txt',
       type: 'create'
     });
 
-    return fs.writeFile(file.source, 'text').then(() => process(file)).then(() => {
-      const data = Data.findById('users');
+    await fs.writeFile(file.source, 'text');
+    await process(file);
+    const data = Data.findById('users');
 
-      data.data.should.eql('text');
+    data.data.should.eql('text');
 
-      return data.remove();
-    }).finally(() => fs.unlink(file.source));
+    data.remove();
+    fs.unlink(file.source);
   });
 
-  it('type: update', () => {
+  it('type: update', async () => {
     const body = 'foo: bar';
 
     const file = newFile({
@@ -96,32 +114,33 @@ describe('data', () => {
       type: 'update'
     });
 
-    return Promise.all([
+    await Promise.all([
       fs.writeFile(file.source, body),
       Data.insert({
         _id: 'users',
         data: {}
       })
-    ]).then(() => process(file)).then(() => {
-      const data = Data.findById('users');
+    ]);
+    await process(file);
+    const data = Data.findById('users');
 
-      data.data.should.eql({foo: 'bar'});
+    data.data.should.eql({foo: 'bar'});
 
-      return data.remove();
-    }).finally(() => fs.unlink(file.source));
+    data.remove();
+    fs.unlink(file.source);
   });
 
-  it('type: delete', () => {
+  it('type: delete', async () => {
     const file = newFile({
       path: 'users.yml',
       type: 'delete'
     });
 
-    return Data.insert({
+    await Data.insert({
       _id: 'users',
       data: {foo: 'bar'}
-    }).then(() => process(file)).then(() => {
-      should.not.exist(Data.findById('users'));
     });
+    await process(file);
+    typeOf(Data.findById('users')).should.eql('undefined');
   });
 });
