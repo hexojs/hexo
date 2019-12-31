@@ -12,7 +12,7 @@ describe('config', () => {
   const config = require('../../../lib/plugins/console/config').bind(hexo);
   const configModule = rewire('../../../lib/plugins/console/config');
 
-  before(async() => {
+  before(async () => {
     await mkdirs(hexo.base_dir);
     hexo.init();
   });
@@ -21,7 +21,7 @@ describe('config', () => {
 
   after(() => rmdir(hexo.base_dir));
 
-  it('read all config', async() => {
+  it('read all config', async () => {
     const spy = sinon.spy();
 
     await configModule.__with__({
@@ -33,7 +33,7 @@ describe('config', () => {
     spy.args[0][0].should.eql(hexo.config);
   });
 
-  it('read config', async() => {
+  it('read config', async () => {
     const spy = sinon.spy();
 
     await configModule.__with__({
@@ -71,37 +71,37 @@ describe('config', () => {
     return load(content);
   }
 
-  it('write config', async() => {
+  it('write config', async () => {
     const config = await writeConfig('title', 'My Blog');
     config.title.should.eql('My Blog');
   });
 
-  it('write config: number', async() => {
+  it('write config: number', async () => {
     const config = await writeConfig('server.port', '5000');
     config.server.port.should.eql(5000);
   });
 
-  it('write config: false', async() => {
+  it('write config: false', async () => {
     const config = await writeConfig('post_asset_folder', 'false');
     config.post_asset_folder.should.eql(false);
   });
 
-  it('write config: true', async() => {
+  it('write config: true', async () => {
     const config = await writeConfig('post_asset_folder', 'true');
     config.post_asset_folder.should.eql(true);
   });
 
-  it('write config: null', async() => {
+  it('write config: null', async () => {
     const config = await writeConfig('language', 'null');
     should.not.exist(config.language);
   });
 
-  it('write config: regex', async() => {
+  it('write config: regex', async () => {
     const config = await writeConfig('include', /^pattern$/gim);
     config.include.should.eql(/^pattern$/gim);
   });
 
-  it('write config: json', async() => {
+  it('write config: json', async () => {
     const configPath = join(hexo.base_dir, '_config.json');
     hexo.config_path = join(hexo.base_dir, '_config.json');
 
@@ -118,7 +118,7 @@ describe('config', () => {
     });
   });
 
-  it('create config if not exist', async() => {
+  it('create config if not exist', async () => {
     await unlink(hexo.config_path);
     const config = await writeConfig('subtitle', 'Hello world');
     config.subtitle.should.eql('Hello world');
