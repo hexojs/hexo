@@ -27,12 +27,14 @@ describe('partial', () => {
 
   const partial = require('../../../lib/plugins/helper/partial')(hexo).bind(ctx);
 
-  before(() => Promise.all([
-    fs.mkdirs(themeDir),
-    fs.writeFile(hexo.config_path, 'theme: test')
-  ]).then(() => hexo.init()).then(() => {
+  before(async () => {
+    await Promise.all([
+      fs.mkdirs(themeDir),
+      fs.writeFile(hexo.config_path, 'theme: test')
+    ]);
+    await hexo.init();
     hexo.theme.setView('widget/tag.swig', 'tag widget');
-  }));
+  });
 
   after(() => fs.rmdir(hexo.base_dir));
 
