@@ -1,6 +1,6 @@
 'use strict';
 
-const pathFn = require('path');
+const { join } = require('path');
 
 describe('Asset', () => {
   const Hexo = require('../../../lib/hexo');
@@ -40,7 +40,7 @@ describe('Asset', () => {
       _id: 'foo',
       path: 'bar'
     });
-    data.source.should.eql(pathFn.join(hexo.base_dir, data._id));
+    data.source.should.eql(join(hexo.base_dir, data._id));
 
     Asset.removeById(data._id);
   });
