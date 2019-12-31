@@ -9,12 +9,12 @@ describe('Render post', () => {
   const Page = hexo.model('Page');
   const renderPost = require('../../../lib/plugins/filter/before_generate/render_post').bind(hexo);
 
-  before(async() => {
+  before(async () => {
     await hexo.init();
     await hexo.loadPlugin(require.resolve('hexo-renderer-marked'));
   });
 
-  it('post', async() => {
+  it('post', async () => {
     let post = await Post.insert({
       source: 'foo.md',
       slug: 'foo',
@@ -30,7 +30,7 @@ describe('Render post', () => {
     post.remove();
   });
 
-  it('page', async() => {
+  it('page', async () => {
     let page = await Page.insert({
       source: 'foo.md',
       path: 'foo.html',
@@ -46,7 +46,7 @@ describe('Render post', () => {
     page.remove();
   });
 
-  it('use data variables', async() => {
+  it('use data variables', async () => {
     let page = await Page.insert({
       source: 'foo.md',
       path: 'foo.html',
