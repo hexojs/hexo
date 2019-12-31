@@ -1,6 +1,5 @@
 'use strict';
 
-const sinon = require('sinon');
 const pathFn = require('path');
 
 describe('Asset', () => {
@@ -8,41 +7,41 @@ describe('Asset', () => {
   const hexo = new Hexo();
   const Asset = hexo.model('Asset');
 
-  it('default values', () => Asset.insert({
-    _id: 'foo',
-    path: 'bar'
-  }).then(data => {
-    data.modified.should.be.true;
-    return Asset.removeById(data._id);
-  }));
-
-  it('_id - required', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'ID is not defined');
+  it('default values', async () => {
+    const data = await Asset.insert({
+      _id: 'foo',
+      path: 'bar'
     });
+    data.modified.should.eql(true);
 
-    return Asset.insert({}).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
-    });
+    Asset.removeById(data._id);
   });
 
-  it('path - required', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', '`path` is required!');
-    });
-
-    return Asset.insert({
-      _id: 'foo'
-    }).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
-    });
+  it('_id - required', async () => {
+    try {
+      await Asset.insert({});
+    } catch (err) {
+      err.message.should.eql('ID is not defined');
+    }
   });
 
-  it('source - virtual', () => Asset.insert({
-    _id: 'foo',
-    path: 'bar'
-  }).then(data => {
+  it('path - required', async () => {
+    try {
+      await Asset.insert({
+        _id: 'foo'
+      });
+    } catch (err) {
+      err.message.should.eql('`path` is required!');
+    }
+  });
+
+  it('source - virtual', async () => {
+    const data = await Asset.insert({
+      _id: 'foo',
+      path: 'bar'
+    });
     data.source.should.eql(pathFn.join(hexo.base_dir, data._id));
-    return Asset.removeById(data._id);
-  }));
+
+    Asset.removeById(data._id);
+  });
 });
