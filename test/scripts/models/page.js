@@ -1,6 +1,6 @@
 'use strict';
 
-const pathFn = require('path');
+const { join } = require('path');
 const { deepMerge, full_url_for } = require('hexo-util');
 
 describe('Page', () => {
@@ -112,7 +112,7 @@ describe('Page', () => {
       source: 'foo',
       path: 'bar'
     });
-    data.full_source.should.eql(pathFn.join(hexo.source_dir, data.source));
+    data.full_source.should.eql(join(hexo.source_dir, data.source));
 
     Page.removeById(data._id);
   });
