@@ -1,6 +1,5 @@
 'use strict';
 
-const sinon = require('sinon');
 const pathFn = require('path');
 
 describe('PostAsset', () => {
@@ -10,101 +9,97 @@ describe('PostAsset', () => {
   const Post = hexo.model('Post');
   let post;
 
-  before(() => hexo.init().then(() => Post.insert({
-    source: 'foo.md',
-    slug: 'bar'
-  })).then(post_ => {
-    post = post_;
-  }));
-
-  it('default values', () => PostAsset.insert({
-    _id: 'foo',
-    slug: 'foo',
-    post: post._id
-  }).then(data => {
-    data.modified.should.be.true;
-    return PostAsset.removeById(data._id);
-  }));
-
-  it('_id - required', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'ID is not defined');
-    });
-
-    return PostAsset.insert({}).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
+  before(async () => {
+    await hexo.init();
+    post = await Post.insert({
+      source: 'foo.md',
+      slug: 'bar'
     });
   });
 
-  it('slug - required', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', '`slug` is required!');
+  it('default values', async () => {
+    const data = await PostAsset.insert({
+      _id: 'foo',
+      slug: 'foo',
+      post: post._id
     });
-
-    return PostAsset.insert({
-      _id: 'foo'
-    }).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
-    });
+    data.modified.should.eql(true);
+    PostAsset.removeById(data._id);
   });
 
-  it('path - virtual', () => PostAsset.insert({
-    _id: 'source/_posts/test/foo.jpg',
-    slug: 'foo.jpg',
-    post: post._id
-  }).then(data => {
+  it('_id - required', async () => {
+    try {
+      await PostAsset.insert({});
+    } catch (err) {
+      err.message.should.eql('ID is not defined');
+    }
+  });
+
+  it('slug - required', async () => {
+    try {
+      await PostAsset.insert({
+        _id: 'foo'
+      });
+    } catch (err) {
+      err.message.should.eql('`slug` is required!');
+    }
+  });
+
+  it('path - virtual', async () => {
+    const data = await PostAsset.insert({
+      _id: 'source/_posts/test/foo.jpg',
+      slug: 'foo.jpg',
+      post: post._id
+    });
     data.path.should.eql(pathFn.join(post.path, data.slug));
-    return PostAsset.removeById(data._id);
-  }));
 
-  it('path - virtual - when permalink is .html', () => {
+    PostAsset.removeById(data._id);
+  });
+
+  it('path - virtual - when permalink is .html', async () => {
     hexo.config.permalink = ':year/:month/:day/:title.html';
-    return PostAsset.insert({
+    const data = await PostAsset.insert({
       _id: 'source/_posts/test/foo.html',
       slug: 'foo.htm',
       post: post._id
-    }).then(data => {
-      data.path.should.eql(pathFn.join(post.path, data.slug));
-      return PostAsset.removeById(data._id);
-    }).finally(() => {
-      hexo.config.permalink = ':year/:month/:day/:title';
     });
+    data.path.should.eql(pathFn.join(post.path, data.slug));
+
+    PostAsset.removeById(data._id);
   });
 
-  it('path - virtual - when permalink is .htm', () => {
+  it('path - virtual - when permalink is .htm', async () => {
     hexo.config.permalink = ':year/:month/:day/:title.htm';
-    return PostAsset.insert({
+    const data = await PostAsset.insert({
       _id: 'source/_posts/test/foo.htm',
       slug: 'foo.htm',
       post: post._id
-    }).then(data => {
-      data.path.should.eql(pathFn.join(post.path, data.slug));
-      return PostAsset.removeById(data._id);
-    }).finally(() => {
-      hexo.config.permalink = ':year/:month/:day/:title';
     });
+    data.path.should.eql(pathFn.join(post.path, data.slug));
+
+    PostAsset.removeById(data._id);
   });
 
-  it('path - virtual - when permalink contains .htm not in the end', () => {
+  it('path - virtual - when permalink contains .htm not in the end', async () => {
     hexo.config.permalink = ':year/:month/:day/:title/.htm-foo/';
-    return PostAsset.insert({
+    const data = await PostAsset.insert({
       _id: 'source/_posts/test/foo.html',
       slug: 'foo.html',
       post: post._id
-    }).then(data => {
-      data.path.should.eql(pathFn.join(post.path + '.htm-foo/', data.slug));
-      return PostAsset.removeById(data._id);
-    }).finally(() => {
-      hexo.config.permalink = ':year/:month/:day/:title';
     });
+    data.path.should.eql(pathFn.join(post.path + '.htm-foo/', data.slug));
+
+    PostAsset.removeById(data._id);
   });
 
-  it('source - virtual', () => PostAsset.insert({
-    _id: 'source/_posts/test/foo.jpg',
-    slug: 'foo.jpg',
-    post: post._id
-  }).then(data => {
+  it('source - virtual', async () => {
+    const data = await PostAsset.insert({
+      _id: 'source/_posts/test/foo.jpg',
+      slug: 'foo.jpg',
+      post: post._id
+    });
     data.source.should.eql(pathFn.join(hexo.base_dir, data._id));
-    return PostAsset.removeById(data._id);
-  }));
+
+    PostAsset.removeById(data._id);
+  });
 });
