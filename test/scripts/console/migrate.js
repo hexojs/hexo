@@ -7,7 +7,7 @@ describe('migrate', () => {
   const hexo = new Hexo(__dirname, {silent: true});
   const migrate = require('../../../lib/plugins/console/migrate').bind(hexo);
 
-  it('default', async() => {
+  it('default', async () => {
     const migrator = spy(args => {
       args.foo.should.eql(1);
       args.bar.should.eql(2);
