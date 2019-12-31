@@ -125,9 +125,13 @@ describe('code', () => {
       '  console.log(`Server running at http://${hostname}:${port}/`);',
       '});'
     ].join('\n');
-    const result = code('mark:1,7-8,10', source);
-    result.should.eql(highlight(source, {
-      mark: [1, 7, 8, 10]
+
+    code('mark:1,7-9,11', source).should.eql(highlight(source, {
+      mark: [1, 7, 8, 9, 11]
+    }));
+
+    code('mark:11,9-7,1', source).should.eql(highlight(source, {
+      mark: [1, 7, 8, 9, 11]
     }));
   });
 
