@@ -1,6 +1,5 @@
 'use strict';
 
-const Promise = require('bluebird');
 const { deepMerge, full_url_for } = require('hexo-util');
 
 describe('Tag', () => {
