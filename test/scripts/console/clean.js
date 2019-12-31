@@ -11,7 +11,7 @@ describe('clean', () => {
     clean = require('../../../lib/plugins/console/clean').bind(hexo);
   });
 
-  it('delete database', async() => {
+  it('delete database', async () => {
     const dbPath = hexo.database.options.path;
 
     await writeFile(dbPath, '');
@@ -21,7 +21,7 @@ describe('clean', () => {
     exist.should.eql(false);
   });
 
-  it('delete public folder', async() => {
+  it('delete public folder', async () => {
     const publicDir = hexo.public_dir;
 
     await mkdirs(publicDir);
@@ -31,7 +31,7 @@ describe('clean', () => {
     exist.should.eql(false);
   });
 
-  it('execute corresponding filter', async() => {
+  it('execute corresponding filter', async () => {
     const extraDbPath = hexo.database.options.path + '.tmp';
 
     hexo.extend.filter.register('after_clean', () => {
