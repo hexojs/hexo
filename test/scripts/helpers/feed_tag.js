@@ -28,6 +28,10 @@ describe('feed_tag', () => {
     feed('rss.xml', {type: 'rss'}).should.eql('<link rel="alternate" href="/rss.xml" title="Hexo" type="application/rss+xml">');
   });
 
+  it('type - null', () => {
+    feed('foo.xml', {type: null}).should.eql('<link rel="alternate" href="/foo.xml" title="Hexo" >');
+  });
+
   it('invalid input - number', () => {
     try {
       feed(123);
