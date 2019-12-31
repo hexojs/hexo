@@ -9,7 +9,7 @@ describe('deploy', () => {
   const hexo = new Hexo(join(__dirname, 'deploy_test'), { silent: true });
   const deploy = require('../../../lib/plugins/console/deploy').bind(hexo);
 
-  before(async() => {
+  before(async () => {
     await mkdirs(hexo.public_dir);
     hexo.init();
   });
@@ -27,7 +27,7 @@ describe('deploy', () => {
     should.not.exist(deploy({ test: true }));
   });
 
-  it('single deploy setting', async() => {
+  it('single deploy setting', async () => {
     hexo.config.deploy = {
       type: 'foo',
       foo: 'bar'
@@ -54,7 +54,7 @@ describe('deploy', () => {
     afterListener.calledOnce.should.eql(true);
   });
 
-  it('multiple deploy setting', async() => {
+  it('multiple deploy setting', async () => {
     const deployer1 = spy(args => {
       args.should.eql({
         type: 'foo',
@@ -86,7 +86,7 @@ describe('deploy', () => {
 
   // it('deployer not found'); missing-unit-test
 
-  it('generate', async() => {
+  it('generate', async () => {
     await writeFile(join(hexo.source_dir, 'test.txt'), 'test');
     await deploy({ generate: true });
     const content = await readFile(join(hexo.public_dir, 'test.txt'));
@@ -96,11 +96,11 @@ describe('deploy', () => {
     await rmdir(hexo.source_dir);
   });
 
-  it('run generate if public directory not exist', async() => {
+  it('run generate if public directory not exist', async () => {
     await rmdir(hexo.public_dir);
     await deploy({});
     const exist = await exists(hexo.public_dir);
 
-    exist.should.be.true;
+    exist.should.eql(true);
   });
 });
