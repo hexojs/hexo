@@ -29,7 +29,7 @@ describe('Load database', () => {
     hexo._dbLoaded = false;
   });
 
-  after(async() => {
+  after(async () => {
     const exist = await exists(dbPath);
     if (exist) await unlink(dbPath);
     rmdir(hexo.base_dir);
@@ -37,7 +37,7 @@ describe('Load database', () => {
 
   it('database does not exist', () => loadDatabase(hexo));
 
-  it('database load success', async() => {
+  it('database load success', async () => {
     await writeFile(dbPath, JSON.stringify(fixture));
     await loadDatabase(hexo);
     hexo._dbLoaded.should.eql(true);
@@ -47,7 +47,7 @@ describe('Load database', () => {
     await unlink(dbPath);
   });
 
-  it('don\'t load database if loaded', async() => {
+  it('don\'t load database if loaded', async () => {
     hexo._dbLoaded = true;
 
     await writeFile(dbPath, JSON.stringify(fixture));
@@ -58,7 +58,7 @@ describe('Load database', () => {
     await unlink(dbPath);
   });
 
-  it('database load failed', async() => {
+  it('database load failed', async () => {
     await writeFile(dbPath, '{1423432: 324');
     await loadDatabase(hexo);
     hexo._dbLoaded.should.eql(false);
