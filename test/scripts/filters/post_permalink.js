@@ -14,18 +14,17 @@ describe('post_permalink', () => {
     hexo.config.permalink_defaults = {};
 
     await hexo.init();
-    post = await Post.insert({
+    const apost = await Post.insert({
       source: 'foo.md',
       slug: 'foo',
       date: moment('2014-01-02')
     });
-    const id = post._id;
-    await post.setCategories(['foo', 'bar']);
+    const id = apost._id;
+    await apost.setCategories(['foo', 'bar']);
     post = Post.findById(id);
   });
 
   it('default', () => {
-    console.log(hexo.config.permalink_defaults);
     postPermalink(post).should.eql('2014/01/02/foo/');
   });
 
