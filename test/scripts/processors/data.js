@@ -1,17 +1,17 @@
 'use strict';
 
 const Promise = require('bluebird');
-const fs = require('hexo-fs');
-const pathFn = require('path');
+const { mkdirs, rmdir, unlink, writeFile } = require('hexo-fs');
+const { join } = require('path');
 
 describe('data', () => {
   const Hexo = require('../../../lib/hexo');
-  const baseDir = pathFn.join(__dirname, 'data_test');
+  const baseDir = join(__dirname, 'data_test');
   const hexo = new Hexo(baseDir);
   const processor = require('../../../lib/plugins/processor/data')(hexo);
   const process = Promise.method(processor.process).bind(hexo);
-  const source = hexo.source;
-  const File = source.File;
+  const { source } = hexo;
+  const { File } = source;
   const Data = hexo.model('Data');
 
   const typeOf = str => typeof str;
@@ -24,17 +24,17 @@ describe('data', () => {
     };
 
     options.path = '_data/' + path;
-    options.source = pathFn.join(source.base, options.path);
+    options.source = join(source.base, options.path);
 
     return new File(options);
   }
 
   before(async () => {
-    await fs.mkdirs(baseDir);
+    await mkdirs(baseDir);
     hexo.init();
   });
 
-  after(() => fs.rmdir(baseDir));
+  after(() => rmdir(baseDir));
 
   it('pattern', () => {
     const pattern = processor.pattern;
@@ -62,14 +62,14 @@ describe('data', () => {
       type: 'create'
     });
 
-    await fs.writeFile(file.source, body);
+    await writeFile(file.source, body);
     await process(file);
     const data = Data.findById('users');
 
     data.data.should.eql({foo: 'bar'});
 
     data.remove();
-    fs.unlink(file.source);
+    unlink(file.source);
   });
 
   it('type: create - json', async () => {
@@ -80,14 +80,14 @@ describe('data', () => {
       type: 'create'
     });
 
-    await fs.writeFile(file.source, body);
+    await writeFile(file.source, body);
     await process(file);
     const data = Data.findById('users');
 
     data.data.should.eql({foo: 1});
 
     data.remove();
-    fs.unlink(file.source);
+    unlink(file.source);
   });
 
   it('type: create - others', async () => {
@@ -96,14 +96,14 @@ describe('data', () => {
       type: 'create'
     });
 
-    await fs.writeFile(file.source, 'text');
+    await writeFile(file.source, 'text');
     await process(file);
     const data = Data.findById('users');
 
     data.data.should.eql('text');
 
     data.remove();
-    fs.unlink(file.source);
+    unlink(file.source);
   });
 
   it('type: update', async () => {
@@ -115,7 +115,7 @@ describe('data', () => {
     });
 
     await Promise.all([
-      fs.writeFile(file.source, body),
+      writeFile(file.source, body),
       Data.insert({
         _id: 'users',
         data: {}
@@ -127,7 +127,7 @@ describe('data', () => {
     data.data.should.eql({foo: 'bar'});
 
     data.remove();
-    fs.unlink(file.source);
+    unlink(file.source);
   });
 
   it('type: delete', async () => {
