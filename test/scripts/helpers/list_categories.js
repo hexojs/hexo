@@ -1,7 +1,5 @@
 'use strict';
 
-const Promise = require('bluebird');
-
 describe('list_categories', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo(__dirname);
@@ -16,23 +14,27 @@ describe('list_categories', () => {
 
   const listCategories = require('../../../lib/plugins/helper/list_categories').bind(ctx);
 
-  before(() => hexo.init().then(() => Post.insert([
-    {source: 'foo', slug: 'foo'},
-    {source: 'bar', slug: 'bar'},
-    {source: 'baz', slug: 'baz'},
-    {source: 'boo', slug: 'boo'},
-    {source: 'bat', slug: 'bat'}
-  ])).then(posts => Promise.each([
-    ['baz'],
-    ['baz', 'bar'],
-    ['foo'],
-    ['baz'],
-    ['bat', ['baz', 'bar']]
-  ], (cats, i) => posts[i].setCategories(cats))).then(() => {
+  before(async () => {
+    await hexo.init();
+    const posts = await Post.insert([
+      {source: 'foo', slug: 'foo'},
+      {source: 'bar', slug: 'bar'},
+      {source: 'baz', slug: 'baz'},
+      {source: 'boo', slug: 'boo'},
+      {source: 'bat', slug: 'bat'}
+    ]);
+    await Promise.all([
+      ['baz'],
+      ['baz', 'bar'],
+      ['foo'],
+      ['baz'],
+      ['bat', ['baz', 'bar']]
+    ].map((cats, i) => posts[i].setCategories(cats)));
+
     hexo.locals.invalidate();
     ctx.site = hexo.locals.toObject();
     ctx.page = ctx.site.posts.data[1];
-  }));
+  });
 
   it('default', () => {
     const result = listCategories();

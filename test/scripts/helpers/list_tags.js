@@ -1,7 +1,5 @@
 'use strict';
 
-const Promise = require('bluebird');
-
 describe('list_tags', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo(__dirname);
@@ -16,21 +14,25 @@ describe('list_tags', () => {
 
   const listTags = require('../../../lib/plugins/helper/list_tags').bind(ctx);
 
-  before(() => hexo.init().then(() => Post.insert([
-    {source: 'foo', slug: 'foo'},
-    {source: 'bar', slug: 'bar'},
-    {source: 'baz', slug: 'baz'},
-    {source: 'boo', slug: 'boo'}
-  ])).then(posts => // TODO: Warehouse needs to add a mutex lock when writing data to avoid data sync problem
-    Promise.each([
+  before(async () => {
+    await hexo.init();
+    const posts = await Post.insert([
+      {source: 'foo', slug: 'foo'},
+      {source: 'bar', slug: 'bar'},
+      {source: 'baz', slug: 'baz'},
+      {source: 'boo', slug: 'boo'}
+    ]);
+    // TODO: Warehouse needs to add a mutex lock when writing data to avoid data sync problem
+    await Promise.all([
       ['foo'],
       ['baz'],
       ['baz'],
       ['bar']
-    ], (tags, i) => posts[i].setTags(tags))).then(() => {
+    ].map((tags, i) => posts[i].setTags(tags)));
+
     hexo.locals.invalidate();
     ctx.site = hexo.locals.toObject();
-  }));
+  });
 
   it('default', () => {
     const result = listTags();
