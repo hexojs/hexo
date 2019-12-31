@@ -10,7 +10,7 @@ describe('generate', () => {
   const generateConsole = require('../../../lib/plugins/console/generate');
   let hexo, generate;
 
-  beforeEach(async() => {
+  beforeEach(async () => {
     hexo = new Hexo(join(__dirname, 'generate_test'), {silent: true});
     generate = generateConsole.bind(hexo);
 
@@ -18,7 +18,7 @@ describe('generate', () => {
     hexo.init();
   });
 
-  afterEach(async() => {
+  afterEach(async () => {
     const exist = await exists(hexo.base_dir);
     if (exist) {
       await emptyDir(hexo.base_dir);
@@ -55,7 +55,7 @@ describe('generate', () => {
 
   it('default', () => testGenerate());
 
-  it('write file if not exist', async() => {
+  it('write file if not exist', async () => {
     const src = join(hexo.source_dir, 'test.txt');
     const dest = join(hexo.public_dir, 'test.txt');
     const content = 'test';
@@ -83,7 +83,7 @@ describe('generate', () => {
     ]);
   });
 
-  it('don\'t write if file unchanged', async() => {
+  it('don\'t write if file unchanged', async () => {
     const src = join(hexo.source_dir, 'test.txt');
     const dest = join(hexo.public_dir, 'test.txt');
     const content = 'test';
@@ -114,7 +114,7 @@ describe('generate', () => {
     ]);
   });
 
-  it('force regenerate', async() => {
+  it('force regenerate', async () => {
     const src = join(hexo.source_dir, 'test.txt');
     const dest = join(hexo.public_dir, 'test.txt');
     const content = 'test';
@@ -143,7 +143,7 @@ describe('generate', () => {
     ]);
   });
 
-  it('watch - update', async() => {
+  it('watch - update', async () => {
     const src = join(hexo.source_dir, 'test.txt');
     const dest = join(hexo.public_dir, 'test.txt');
     const content = 'test';
@@ -163,7 +163,7 @@ describe('generate', () => {
     await hexo.unwatch();
   });
 
-  it('watch - delete', async() => {
+  it('watch - delete', async () => {
     await testGenerate({ watch: true });
 
     await unlink(join(hexo.source_dir, 'test.txt'));
@@ -173,7 +173,7 @@ describe('generate', () => {
     exist.should.eql(false);
   });
 
-  it('deploy', async() => {
+  it('deploy', async () => {
     const deployer = spy();
 
     hexo.extend.deployer.register('test', deployer);
@@ -187,7 +187,7 @@ describe('generate', () => {
     deployer.calledOnce.should.eql(true);
   });
 
-  it('update theme source files', async() => {
+  it('update theme source files', async () => {
     // Add some source files
     await Promise.all([
       // Add some source files
@@ -216,7 +216,7 @@ describe('generate', () => {
     result[1].should.eql('cc');
   });
 
-  it('proceeds after error when bail option is not set', async() => {
+  it('proceeds after error when bail option is not set', async () => {
     hexo.extend.renderer.register('err', 'html', () => Promise.reject(new Error('Testing unhandled exception')));
     hexo.extend.generator.register('test_page', () =>
       [
@@ -234,7 +234,7 @@ describe('generate', () => {
     return generate();
   });
 
-  it('proceeds after error when bail option is set to false', async() => {
+  it('proceeds after error when bail option is set to false', async () => {
     hexo.extend.renderer.register('err', 'html', () => Promise.reject(new Error('Testing unhandled exception')));
     hexo.extend.generator.register('test_page', () =>
       [
@@ -252,7 +252,7 @@ describe('generate', () => {
     return generate({ bail: false });
   });
 
-  it('breaks after error when bail option is set to true', async() => {
+  it('breaks after error when bail option is set to true', async () => {
     hexo.extend.renderer.register('err', 'html', () => Promise.reject(new Error('Testing unhandled exception')));
     hexo.extend.generator.register('test_page', () =>
       [
@@ -277,7 +277,7 @@ describe('generate', () => {
     });
   });
 
-  it('should generate all files even when concurrency is set', async() => {
+  it('should generate all files even when concurrency is set', async () => {
     await generate({ concurrency: 1 });
     return generate({ concurrency: 2 });
   });
