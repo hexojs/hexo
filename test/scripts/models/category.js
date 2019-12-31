@@ -1,7 +1,6 @@
 'use strict';
 
-const Promise = require('bluebird');
-const { full_url_for } = require('hexo-util');
+const { deepMerge, full_url_for } = require('hexo-util');
 
 describe('Category', () => {
   const Hexo = require('../../../lib/hexo');
@@ -14,7 +13,7 @@ describe('Category', () => {
   before(() => hexo.init());
 
   beforeEach(() => {
-    hexo.config = Object.assign({}, defaults);
+    hexo.config = deepMerge({}, defaults);
   });
 
   it('name - required', async () => {
