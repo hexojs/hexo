@@ -23,10 +23,13 @@ describe('view', () => {
     return new hexo.theme.File(options);
   }
 
-  before(() => Promise.all([
-    fs.mkdirs(themeDir),
-    fs.writeFile(hexo.config_path, 'theme: test')
-  ]).then(() => hexo.init()));
+  before(async () => {
+    await Promise.all([
+      fs.mkdirs(themeDir),
+      fs.writeFile(hexo.config_path, 'theme: test')
+    ]);
+    await hexo.init();
+  });
 
   after(() => fs.rmdir(hexo.base_dir));
 
@@ -38,7 +41,7 @@ describe('view', () => {
     should.not.exist(pattern.match('view/index.swig'));
   });
 
-  it('type: create', () => {
+  it('type: create', async () => {
     const body = [
       'foo: bar',
       '---',
@@ -50,29 +53,27 @@ describe('view', () => {
       type: 'create'
     });
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      const view = hexo.theme.getView('index.swig');
+    await fs.writeFile(file.source, body);
+    await process(file);
+    const view = hexo.theme.getView('index.swig');
 
-      view.path.should.eql('index.swig');
-      view.source.should.eql(pathFn.join(themeDir, 'layout', 'index.swig'));
-      view.data.should.eql({
-        foo: 'bar',
-        _content: 'test'
-      });
-    }).finally(() => {
-      hexo.theme.removeView('index.swig');
-      return fs.unlink(file.source);
+    view.path.should.eql('index.swig');
+    view.source.should.eql(pathFn.join(themeDir, 'layout', 'index.swig'));
+    view.data.should.eql({
+      foo: 'bar',
+      _content: 'test'
     });
+    hexo.theme.removeView('index.swig');
+    fs.unlink(file.source);
   });
 
-  it('type: delete', () => {
+  it('type: delete', async () => {
     const file = newFile({
       path: 'index.swig',
       type: 'delete'
     });
 
-    return process(file).then(() => {
-      should.not.exist(hexo.theme.getView('index.swig'));
-    });
+    await process(file);
+    should.not.exist(hexo.theme.getView('index.swig'));
   });
 });
