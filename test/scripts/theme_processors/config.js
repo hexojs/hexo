@@ -1,33 +1,33 @@
 'use strict';
 
-const sinon = require('sinon');
-const pathFn = require('path');
-const fs = require('hexo-fs');
+const { spy } = require('sinon');
+const { join } = require('path');
+const { mkdirs, rmdir, unlink, writeFile} = require('hexo-fs');
 const Promise = require('bluebird');
 
 describe('config', () => {
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
+  const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
   const processor = require('../../../lib/theme/processors/config');
   const process = Promise.method(processor.process.bind(hexo));
-  const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
+  const themeDir = join(hexo.base_dir, 'themes', 'test');
 
   function newFile(options) {
-    options.source = pathFn.join(themeDir, options.path);
+    options.source = join(themeDir, options.path);
     return new hexo.theme.File(options);
   }
 
   before(async () => {
     await Promise.all([
-      fs.mkdirs(themeDir),
-      fs.writeFile(hexo.config_path, 'theme: test')
+      mkdirs(themeDir),
+      writeFile(hexo.config_path, 'theme: test')
     ]);
     hexo.init();
   });
 
   beforeEach(() => { hexo.theme.config = {}; });
 
-  after(() => fs.rmdir(hexo.base_dir));
+  after(() => rmdir(hexo.base_dir));
 
   it('pattern', () => {
     const pattern = processor.pattern;
@@ -51,13 +51,13 @@ describe('config', () => {
       content: body
     });
 
-    await fs.writeFile(file.source, body);
+    await writeFile(file.source, body);
     await process(file);
     hexo.theme.config.should.eql({
       name: {first: 'John', last: 'Doe'}
     });
 
-    fs.unlink(file.source);
+    unlink(file.source);
   });
 
   it('type: delete', async () => {
@@ -78,7 +78,7 @@ describe('config', () => {
       type: 'create'
     });
 
-    const errorCallback = sinon.spy(err => {
+    const errorCallback = spy(err => {
       err.should.have.property('message', 'Theme config load failed.');
     });
 
