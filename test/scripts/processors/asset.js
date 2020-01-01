@@ -2,7 +2,6 @@
 
 const { dirname, join } = require('path');
 const { mkdirs, rmdir, stat, unlink, writeFile } = require('hexo-fs');
-const Promise = require('bluebird');
 
 const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 
