@@ -9,10 +9,13 @@ describe('Theme', () => {
   const hexo = new Hexo(pathFn.join(__dirname, 'theme_test'), {silent: true});
   const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
 
-  before(() => Promise.all([
-    fs.mkdirs(themeDir),
-    fs.writeFile(hexo.config_path, 'theme: test')
-  ]).then(() => hexo.init()));
+  before(async () => {
+    await Promise.all([
+      fs.mkdirs(themeDir),
+      fs.writeFile(hexo.config_path, 'theme: test')
+    ]);
+    hexo.init();
+  });
 
   after(() => fs.rmdir(hexo.base_dir));
 
