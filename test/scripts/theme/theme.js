@@ -2,7 +2,6 @@
 
 const { join } = require('path');
 const { mkdirs, rmdir, writeFile } = require('hexo-fs');
-const Promise = require('bluebird');
 
 describe('Theme', () => {
   const Hexo = require('../../../lib/hexo');
