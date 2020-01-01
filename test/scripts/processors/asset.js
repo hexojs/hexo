@@ -1,7 +1,7 @@
 'use strict';
 
-const pathFn = require('path');
-const fs = require('hexo-fs');
+const { dirname, join } = require('path');
+const { mkdirs, rmdir, stat, unlink, writeFile } = require('hexo-fs');
 const Promise = require('bluebird');
 
 const dateFormat = 'YYYY-MM-DD HH:mm:ss';
@@ -9,18 +9,18 @@ const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 describe('asset', () => {
   const Hexo = require('../../../lib/hexo');
   const defaults = require('../../../lib/hexo/default_config');
-  const baseDir = pathFn.join(__dirname, 'asset_test');
+  const baseDir = join(__dirname, 'asset_test');
   const hexo = new Hexo(baseDir);
   const asset = require('../../../lib/plugins/processor/asset')(hexo);
   const process = asset.process.bind(hexo);
-  const pattern = asset.pattern;
-  const source = hexo.source;
-  const File = source.File;
+  const { pattern } = asset;
+  const { source } = hexo;
+  const { File } = source;
   const Asset = hexo.model('Asset');
   const Page = hexo.model('Page');
 
   function newFile(options) {
-    options.source = pathFn.join(source.base, options.path);
+    options.source = join(source.base, options.path);
     options.params = {
       renderable: options.renderable
     };
@@ -35,7 +35,7 @@ describe('asset', () => {
 
   beforeEach(() => { hexo.config = Object.assign({}, defaults); });
 
-  after(() => fs.rmdir(baseDir));
+  after(() => rmdir(baseDir));
 
   it('pattern', () => {
     // Renderable files
@@ -77,7 +77,7 @@ describe('asset', () => {
       renderable: false
     });
 
-    await fs.writeFile(file.source, 'foo');
+    await writeFile(file.source, 'foo');
     await process(file);
     const id = 'source/' + file.path;
     const asset = Asset.findById(id);
@@ -88,7 +88,7 @@ describe('asset', () => {
     asset.renderable.should.be.false;
 
     asset.remove();
-    fs.unlink(file.source);
+    unlink(file.source);
   });
 
   it('asset - type: create (when source path is configed to parent directory)', async () => {
@@ -98,7 +98,7 @@ describe('asset', () => {
       renderable: false
     });
 
-    await fs.writeFile(file.source, 'foo');
+    await writeFile(file.source, 'foo');
     await process(file);
     const id = '../source/foo.jpg'; // The id should a relative path,because the 'lib/models/assets.js' use asset path by joining base path with "_id" directly.
     const asset = Asset.findById(id);
@@ -108,8 +108,8 @@ describe('asset', () => {
     asset.renderable.should.be.false;
 
     asset.remove();
-    await fs.unlink(file.source);
-    fs.rmdir(pathFn.dirname(file.source));
+    await unlink(file.source);
+    rmdir(dirname(file.source));
   });
 
   it('asset - type: update', async () => {
@@ -122,7 +122,7 @@ describe('asset', () => {
     const id = 'source/' + file.path;
 
     await Promise.all([
-      fs.writeFile(file.source, 'test'),
+      writeFile(file.source, 'test'),
       Asset.insert({
         _id: id,
         path: file.path,
@@ -138,7 +138,7 @@ describe('asset', () => {
     asset.renderable.should.be.false;
 
     asset.remove();
-    fs.unlink(file.source);
+    unlink(file.source);
   });
 
   it('asset - type: skip', async () => {
@@ -151,7 +151,7 @@ describe('asset', () => {
     const id = 'source/' + file.path;
 
     await Promise.all([
-      fs.writeFile(file.source, 'test'),
+      writeFile(file.source, 'test'),
       Asset.insert({
         _id: id,
         path: file.path,
@@ -163,7 +163,7 @@ describe('asset', () => {
     asset.modified.should.be.false;
     await Promise.all([
       Asset.removeById(id),
-      fs.unlink(file.source)
+      unlink(file.source)
     ]);
   });
 
@@ -200,7 +200,7 @@ describe('asset', () => {
       renderable: true
     });
 
-    await fs.writeFile(file.source, body);
+    await writeFile(file.source, body);
     await process(file);
 
     const page = Page.findOne({ source: file.path });
@@ -215,7 +215,7 @@ describe('asset', () => {
 
     await Promise.all([
       page.remove(),
-      fs.unlink(file.source)
+      unlink(file.source)
     ]);
   });
 
@@ -233,7 +233,7 @@ describe('asset', () => {
 
 
     const doc = await Page.insert({ source: file.path, path: 'hello.html' });
-    await fs.writeFile(file.source, body);
+    await writeFile(file.source, body);
     const id = doc._id;
     await process(file);
     const page = Page.findOne({ source: file.path });
@@ -242,7 +242,7 @@ describe('asset', () => {
 
     await Promise.all([
       page.remove(),
-      fs.unlink(file.source)
+      unlink(file.source)
     ]);
   });
 
@@ -268,9 +268,9 @@ describe('asset', () => {
       renderable: true
     });
 
-    await fs.writeFile(file.source, '');
+    await writeFile(file.source, '');
     await process(file);
-    const stats = await fs.stat(file.source);
+    const stats = await stat(file.source);
     const page = Page.findOne({source: file.path});
 
     page.date.toDate().should.eql(stats.ctime);
@@ -278,7 +278,7 @@ describe('asset', () => {
 
     await Promise.all([
       page.remove(),
-      fs.unlink(file.source)
+      unlink(file.source)
     ]);
   });
 
@@ -291,9 +291,9 @@ describe('asset', () => {
 
     hexo.config.use_date_for_updated = true;
 
-    await fs.writeFile(file.source, '');
+    await writeFile(file.source, '');
     await process(file);
-    const stats = await fs.stat(file.source);
+    const stats = await stat(file.source);
     const page = Page.findOne({source: file.path});
 
     page.date.toDate().should.eql(stats.ctime);
@@ -301,7 +301,7 @@ describe('asset', () => {
 
     await Promise.all([
       page.remove(),
-      fs.unlink(file.source)
+      unlink(file.source)
     ]);
   });
 
@@ -318,14 +318,14 @@ describe('asset', () => {
       renderable: true
     });
 
-    await fs.writeFile(file.source, body);
+    await writeFile(file.source, body);
     await process(file);
     const page = Page.findOne({ source: file.path });
     page.path.should.eql('foo.html');
 
     await Promise.all([
       page.remove(),
-      fs.unlink(file.source)
+      unlink(file.source)
     ]);
   });
 
@@ -342,14 +342,14 @@ describe('asset', () => {
       renderable: true
     });
 
-    await fs.writeFile(file.source, body);
+    await writeFile(file.source, body);
     await process(file);
     const page = Page.findOne({ source: file.path });
     page.path.should.eql('foo.html');
 
     await Promise.all([
       page.remove(),
-      fs.unlink(file.source)
+      unlink(file.source)
     ]);
   });
 
@@ -366,14 +366,14 @@ describe('asset', () => {
       renderable: true
     });
 
-    await fs.writeFile(file.source, body);
+    await writeFile(file.source, body);
     await process(file);
     const page = Page.findOne({ source: file.path });
     page.path.should.eql('foo/index.html');
 
     await Promise.all([
       page.remove(),
-      fs.unlink(file.source)
+      unlink(file.source)
     ]);
   });
 
@@ -386,14 +386,14 @@ describe('asset', () => {
       renderable: true
     });
 
-    await fs.writeFile(file.source, body);
+    await writeFile(file.source, body);
     await process(file);
     const page = Page.findOne({ source: file.path });
     page.layout.should.eql('false');
 
     await Promise.all([
       page.remove(),
-      fs.unlink(file.source)
+      unlink(file.source)
     ]);
   });
 
@@ -410,14 +410,14 @@ describe('asset', () => {
       renderable: true
     });
 
-    await fs.writeFile(file.source, body);
+    await writeFile(file.source, body);
     await process(file);
     const page = Page.findOne({ source: file.path });
     page.layout.should.eql('something');
 
     await Promise.all([
       page.remove(),
-      fs.unlink(file.source)
+      unlink(file.source)
     ]);
   });
 
@@ -435,7 +435,7 @@ describe('asset', () => {
       renderable: true
     });
 
-    await fs.writeFile(file.source, body);
+    await writeFile(file.source, body);
     await process(file);
     const page = Page.findOne({ source: file.path });
     page.date.format(dateFormat).should.eql('2014-04-24 00:00:00');
@@ -443,7 +443,7 @@ describe('asset', () => {
 
     await Promise.all([
       page.remove(),
-      fs.unlink(file.source)
+      unlink(file.source)
     ]);
   });
 
@@ -461,7 +461,7 @@ describe('asset', () => {
       renderable: true
     });
 
-    await fs.writeFile(file.source, body);
+    await writeFile(file.source, body);
     await process(file);
     const stats = await file.stat();
     const page = Page.findOne({source: file.path});
@@ -471,7 +471,7 @@ describe('asset', () => {
 
     await Promise.all([
       page.remove(),
-      fs.unlink(file.source)
+      unlink(file.source)
     ]);
   });
 
@@ -484,14 +484,14 @@ describe('asset', () => {
       renderable: true
     });
 
-    await fs.writeFile(file.source, body);
+    await writeFile(file.source, body);
     await process(file);
     const page = Page.findOne({ source: file.path });
     page.path.should.eql('test.min.js');
 
     await Promise.all([
       page.remove(),
-      fs.unlink(file.source)
+      unlink(file.source)
     ]);
   });
 
@@ -511,7 +511,7 @@ describe('asset', () => {
 
     hexo.config.timezone = 'UTC';
 
-    await fs.writeFile(file.source, body);
+    await writeFile(file.source, body);
     await process(file);
     const page = Page.findOne({source: file.path});
 
@@ -520,7 +520,7 @@ describe('asset', () => {
 
     await Promise.all([
       page.remove(),
-      fs.unlink(file.source)
+      unlink(file.source)
     ]);
   });
 });
