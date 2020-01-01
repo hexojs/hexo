@@ -2,7 +2,6 @@
 
 const { join } = require('path');
 const { mkdirs, rmdir, writeFile } = require('hexo-fs');
-const Promise = require('bluebird');
 const moment = require('moment');
 const { spy } = require('sinon');
 
