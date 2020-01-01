@@ -9,6 +9,7 @@ describe('View', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo(join(__dirname, 'theme_test'));
   const themeDir = join(hexo.base_dir, 'themes', 'test');
+  const { compile } = Object.assign({}, hexo.extend.renderer.store.swig);
 
   hexo.env.init = true;
 
@@ -28,6 +29,11 @@ describe('View', () => {
       '{{ body }}',
       'post'
     ].join('\n'));
+  });
+
+  beforeEach(() => {
+    // Restore compile function
+    hexo.extend.renderer.store.swig.compile = compile;
   });
 
   after(() => rmdir(hexo.base_dir));
@@ -74,7 +80,6 @@ describe('View', () => {
 
   it('generate precompiled function even if renderer does not provide compile function', async () => {
     // Remove compile function
-    const compile = hexo.extend.renderer.store.swig.compile;
     delete hexo.extend.renderer.store.swig.compile;
 
     const body = 'Hello {{ name }}';
@@ -88,8 +93,6 @@ describe('View', () => {
       name: 'Hexo'
     });
     result.should.eql('Hello Hexo');
-
-    hexo.extend.renderer.store.swig.compile = compile;
   });
 
   it('render()', async () => {
