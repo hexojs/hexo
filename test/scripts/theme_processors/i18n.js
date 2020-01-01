@@ -1,38 +1,36 @@
 'use strict';
 
-const pathFn = require('path');
-const fs = require('hexo-fs');
+const { join } = require('path');
+const { mkdirs, rmdir, unlink, writeFile } = require('hexo-fs');
 const Promise = require('bluebird');
 
 describe('i18n', () => {
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
+  const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
   const processor = require('../../../lib/theme/processors/i18n');
   const process = Promise.method(processor.process.bind(hexo));
-  const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
+  const themeDir = join(hexo.base_dir, 'themes', 'test');
 
   function newFile(options) {
-    const path = options.path;
+    const { path } = options;
 
-    options.params = {
-      path
-    };
+    options.params = { path };
 
     options.path = 'languages/' + path;
-    options.source = pathFn.join(themeDir, options.path);
+    options.source = join(themeDir, options.path);
 
     return new hexo.theme.File(options);
   }
 
   before(async () => {
     await Promise.all([
-      fs.mkdirs(themeDir),
-      fs.writeFile(hexo.config_path, 'theme: test')
+      mkdirs(themeDir),
+      writeFile(hexo.config_path, 'theme: test')
     ]);
     hexo.init();
   });
 
-  after(() => fs.rmdir(hexo.base_dir));
+  after(() => rmdir(hexo.base_dir));
 
   it('pattern', () => {
     const pattern = processor.pattern;
@@ -54,13 +52,13 @@ describe('i18n', () => {
       type: 'create'
     });
 
-    await fs.writeFile(file.source, body);
+    await writeFile(file.source, body);
     await process(file);
     const __ = hexo.theme.i18n.__('en');
 
     __('ok').should.eql('OK');
     __('index.title').should.eql('Home');
-    fs.unlink(file.source);
+    unlink(file.source);
   });
 
   it('type: delete', async () => {
