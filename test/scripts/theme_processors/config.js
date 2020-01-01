@@ -17,10 +17,15 @@ describe('config', () => {
     return new hexo.theme.File(options);
   }
 
-  before(() => Promise.all([
-    fs.mkdirs(themeDir),
-    fs.writeFile(hexo.config_path, 'theme: test')
-  ]).then(() => hexo.init()));
+  before(async () => {
+    await Promise.all([
+      fs.mkdirs(themeDir),
+      fs.writeFile(hexo.config_path, 'theme: test')
+    ]);
+    hexo.init();
+  });
+
+  beforeEach(() => { hexo.theme.config = {}; });
 
   after(() => fs.rmdir(hexo.base_dir));
 
@@ -33,7 +38,7 @@ describe('config', () => {
     should.not.exist(pattern.match('foo.yml'));
   });
 
-  it('type: create', () => {
+  it('type: create', async () => {
     const body = [
       'name:',
       '  first: John',
@@ -46,17 +51,16 @@ describe('config', () => {
       content: body
     });
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      hexo.theme.config.should.eql({
-        name: {first: 'John', last: 'Doe'}
-      });
-    }).finally(() => {
-      hexo.theme.config = {};
-      return fs.unlink(file.source);
+    await fs.writeFile(file.source, body);
+    await process(file);
+    hexo.theme.config.should.eql({
+      name: {first: 'John', last: 'Doe'}
     });
+
+    fs.unlink(file.source);
   });
 
-  it('type: delete', () => {
+  it('type: delete', async () => {
     const file = newFile({
       path: '_config.yml',
       type: 'delete'
@@ -64,9 +68,8 @@ describe('config', () => {
 
     hexo.theme.config = {foo: 'bar'};
 
-    return process(file).then(() => {
-      hexo.theme.config.should.eql({});
-    });
+    await process(file);
+    hexo.theme.config.should.eql({});
   });
 
   it('load failed', () => {
