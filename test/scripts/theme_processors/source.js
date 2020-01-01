@@ -1,39 +1,39 @@
 'use strict';
 
-const pathFn = require('path');
-const fs = require('hexo-fs');
+const { join } = require('path');
+const { mkdirs, rmdir, unlink, writeFile } = require('hexo-fs');
 const Promise = require('bluebird');
 
 describe('source', () => {
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(pathFn.join(__dirname, 'source_test'), {silent: true});
+  const hexo = new Hexo(join(__dirname, 'source_test'), {silent: true});
   const processor = require('../../../lib/theme/processors/source');
   const process = Promise.method(processor.process.bind(hexo));
-  const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
+  const themeDir = join(hexo.base_dir, 'themes', 'test');
   const Asset = hexo.model('Asset');
 
   function newFile(options) {
-    const path = options.path;
+    const { path } = options;
 
     options.params = {path};
     options.path = 'source/' + path;
-    options.source = pathFn.join(themeDir, options.path);
+    options.source = join(themeDir, options.path);
 
     return new hexo.theme.File(options);
   }
 
   before(async () => {
     await Promise.all([
-      fs.mkdirs(themeDir),
-      fs.writeFile(hexo.config_path, 'theme: test')
+      mkdirs(themeDir),
+      writeFile(hexo.config_path, 'theme: test')
     ]);
     hexo.init();
   });
 
-  after(() => fs.rmdir(hexo.base_dir));
+  after(() => rmdir(hexo.base_dir));
 
   it('pattern', () => {
-    const pattern = processor.pattern;
+    const { pattern } = processor;
 
     pattern.match('source/foo.jpg').should.eql({path: 'foo.jpg'});
     pattern.match('source/_foo.jpg').should.be.false;
@@ -54,7 +54,7 @@ describe('source', () => {
 
     const id = 'themes/test/' + file.path;
 
-    await fs.writeFile(file.source, 'test');
+    await writeFile(file.source, 'test');
     await process(file);
     const asset = Asset.findById(id);
 
@@ -64,7 +64,7 @@ describe('source', () => {
 
     asset.remove();
 
-    fs.unlink(file.source);
+    unlink(file.source);
   });
 
   it('type: update', async () => {
@@ -76,7 +76,7 @@ describe('source', () => {
     const id = 'themes/test/' + file.path;
 
     await Promise.all([
-      fs.writeFile(file.source, 'test'),
+      writeFile(file.source, 'test'),
       Asset.insert({
         _id: id,
         path: file.params.path,
@@ -89,7 +89,7 @@ describe('source', () => {
     asset.modified.should.be.true;
 
     await Promise.all([
-      fs.unlink(file.source),
+      unlink(file.source),
       Asset.removeById(id)
     ]);
   });
@@ -103,7 +103,7 @@ describe('source', () => {
     const id = 'themes/test/' + file.path;
 
     await Promise.all([
-      fs.writeFile(file.source, 'test'),
+      writeFile(file.source, 'test'),
       Asset.insert({
         _id: id,
         path: file.params.path,
@@ -115,7 +115,7 @@ describe('source', () => {
 
     asset.modified.should.be.false;
     await Promise.all([
-      fs.unlink(file.source),
+      unlink(file.source),
       Asset.removeById(id)
     ]);
   });
