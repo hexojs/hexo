@@ -224,4 +224,16 @@ describe('date', () => {
     timeTag(Date.now(), 'LLL').should.eql('<time datetime="' + moment().toISOString() + '">' + moment().tz('UTC').format('LLL') + '</time>');
     ctx.config.timezone = '';
   });
+
+  it('toMomentLocale', () => {
+    const toMomentLocale = dateHelper.toMomentLocale;
+
+    (toMomentLocale(undefined) === undefined).should.eql(true);
+    toMomentLocale(null).should.eql('en');
+    toMomentLocale('').should.eql('en');
+    toMomentLocale('en').should.eql('en');
+    toMomentLocale('default').should.eql('en');
+    toMomentLocale('zh-CN').should.eql('zh-cn');
+    toMomentLocale('zh_CN').should.eql('zh-cn');
+  });
 });

@@ -76,6 +76,8 @@ describe('render', () => {
     });
   });
 
+  // it('output'); missing-unit-test
+
   it('engine', () => {
     const src = pathFn.join(hexo.base_dir, 'test');
     const dest = pathFn.join(hexo.base_dir, 'result.json');

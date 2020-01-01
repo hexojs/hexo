@@ -1,8 +1,6 @@
 'use strict';
 
-function ifTrue(cond, yes, no) {
-  return cond ? yes : no;
-}
+const { encodeURL, escapeHTML } = require('hexo-util');
 
 describe('toc', () => {
   const toc = require('../../../lib/plugins/helper/toc');
@@ -20,138 +18,420 @@ describe('toc', () => {
     '<h1 id="title_4"><a name="chapter1">Chapter 1 should be printed to toc</a></h1>'
   ].join('');
 
-  const genResult = options => {
-    options = Object.assign({
-      class: 'toc',
-      list_number: true,
-      max_depth: 6
-    }, options);
-
-    const className = options.class;
-    const listNumber = options.list_number;
-    const maxDepth = options.max_depth;
-
-    const resultTitle_1_1_1 = [
-      '<ol class="' + className + '-child">',
-      '<li class="' + className + '-item ' + className + '-level-3">',
-      '<a class="' + className + '-link" href="#title_1_1_1">',
-      ifTrue(listNumber, '<span class="' + className + '-number">1.1.1.</span> ', ''),
-      '<span class="' + className + '-text">Title 1.1.1</span>',
+  it('default', () => {
+    const className = 'toc';
+    const expected = [
+      '<ol class="' + className + '">',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_1">',
+      '<span class="' + className + '-number">1.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 1</span>',
       '</a>',
-      '</li>',
-      '</ol>'
-    ].join('');
-
-    const resultTitle_1_3_1 = [
-      '<ol class="' + className + '-child">',
-      '<li class="' + className + '-item ' + className + '-level-3">',
-      '<a class="' + className + '-link" href="#title_1_3_1">',
-      ifTrue(listNumber, '<span class="' + className + '-number">1.3.1.</span> ', ''),
-      '<span class="' + className + '-text">Title 1.3.1</span>',
-      '</a>',
-      '</li>',
-      '</ol>'
-    ].join('');
-
-    const resultTitle_1_1 = [
       '<ol class="' + className + '-child">',
       '<li class="' + className + '-item ' + className + '-level-2">',
       '<a class="' + className + '-link" href="#title_1_1">',
-      ifTrue(listNumber, '<span class="' + className + '-number">1.1.</span> ', ''),
+      '<span class="' + className + '-number">1.1.</span> ', // list_number enabled
       '<span class="' + className + '-text">Title 1.1</span>',
       '</a>',
-      ifTrue(maxDepth >= 3, resultTitle_1_1_1, ''),
+      '<ol class="' + className + '-child">',
+      '<li class="' + className + '-item ' + className + '-level-3">',
+      '<a class="' + className + '-link" href="#title_1_1_1">',
+      '<span class="' + className + '-number">1.1.1.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 1.1.1</span>',
+      '</a>',
+      '</li>',
+      '</ol>',
       '</li>',
       '<li class="' + className + '-item ' + className + '-level-2">',
       '<a class="' + className + '-link" href="#title_1_2">',
-      ifTrue(listNumber, '<span class="' + className + '-number">1.2.</span> ', ''),
+      '<span class="' + className + '-number">1.2.</span> ', // list_number enabled
       '<span class="' + className + '-text">Title 1.2</span>',
       '</a>',
       '</li>',
       '<li class="' + className + '-item ' + className + '-level-2">',
       '<a class="' + className + '-link" href="#title_1_3">',
-      ifTrue(listNumber, '<span class="' + className + '-number">1.3.</span> ', ''),
+      '<span class="' + className + '-number">1.3.</span> ', // list_number enabled
       '<span class="' + className + '-text">Title 1.3</span>',
       '</a>',
-      ifTrue(maxDepth >= 3, resultTitle_1_3_1, ''),
+      '<ol class="' + className + '-child">',
+      '<li class="' + className + '-item ' + className + '-level-3">',
+      '<a class="' + className + '-link" href="#title_1_3_1">',
+      '<span class="' + className + '-number">1.3.1.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 1.3.1</span>',
+      '</a>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_2">',
+      '<span class="' + className + '-number">2.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 2</span>',
+      '</a>',
+      '<ol class="' + className + '-child">',
+      '<li class="' + className + '-item ' + className + '-level-2">',
+      '<a class="' + className + '-link" href="#title_2_1">',
+      '<span class="' + className + '-number">2.1.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 2.1</span>',
+      '</a>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_3">',
+      '<span class="' + className + '-number">3.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title should escape &amp;, &lt;, &#39;, and &quot;</span>',
+      '</a>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_4">',
+      '<span class="' + className + '-number">4.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Chapter 1 should be printed to toc</span>',
+      '</a>',
       '</li>',
       '</ol>'
     ].join('');
 
-    const resultTitle_2_1 = [
+    toc(html).should.eql(expected);
+  });
+
+  it('class', () => {
+    const className = 'foo';
+    const expected = [
+      '<ol class="' + className + '">',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_1">',
+      '<span class="' + className + '-number">1.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 1</span>',
+      '</a>',
+      '<ol class="' + className + '-child">',
+      '<li class="' + className + '-item ' + className + '-level-2">',
+      '<a class="' + className + '-link" href="#title_1_1">',
+      '<span class="' + className + '-number">1.1.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 1.1</span>',
+      '</a>',
+      '<ol class="' + className + '-child">',
+      '<li class="' + className + '-item ' + className + '-level-3">',
+      '<a class="' + className + '-link" href="#title_1_1_1">',
+      '<span class="' + className + '-number">1.1.1.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 1.1.1</span>',
+      '</a>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-2">',
+      '<a class="' + className + '-link" href="#title_1_2">',
+      '<span class="' + className + '-number">1.2.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 1.2</span>',
+      '</a>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-2">',
+      '<a class="' + className + '-link" href="#title_1_3">',
+      '<span class="' + className + '-number">1.3.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 1.3</span>',
+      '</a>',
+      '<ol class="' + className + '-child">',
+      '<li class="' + className + '-item ' + className + '-level-3">',
+      '<a class="' + className + '-link" href="#title_1_3_1">',
+      '<span class="' + className + '-number">1.3.1.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 1.3.1</span>',
+      '</a>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_2">',
+      '<span class="' + className + '-number">2.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 2</span>',
+      '</a>',
       '<ol class="' + className + '-child">',
       '<li class="' + className + '-item ' + className + '-level-2">',
       '<a class="' + className + '-link" href="#title_2_1">',
-      ifTrue(listNumber, '<span class="' + className + '-number">2.1.</span> ', ''),
+      '<span class="' + className + '-number">2.1.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 2.1</span>',
+      '</a>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_3">',
+      '<span class="' + className + '-number">3.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title should escape &amp;, &lt;, &#39;, and &quot;</span>',
+      '</a>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_4">',
+      '<span class="' + className + '-number">4.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Chapter 1 should be printed to toc</span>',
+      '</a>',
+      '</li>',
+      '</ol>'
+    ].join('');
+
+    toc(html, { class: 'foo' }).should.eql(expected);
+  });
+
+  it('list_number', () => {
+    const className = 'toc';
+    const expected = [
+      '<ol class="' + className + '">',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_1">',
+      // '<span class="' + className + '-number">1.</span> ',
+      '<span class="' + className + '-text">Title 1</span>',
+      '</a>',
+      '<ol class="' + className + '-child">',
+      '<li class="' + className + '-item ' + className + '-level-2">',
+      '<a class="' + className + '-link" href="#title_1_1">',
+      // '<span class="' + className + '-number">1.1.</span> ',
+      '<span class="' + className + '-text">Title 1.1</span>',
+      '</a>',
+      '<ol class="' + className + '-child">',
+      '<li class="' + className + '-item ' + className + '-level-3">',
+      '<a class="' + className + '-link" href="#title_1_1_1">',
+      // '<span class="' + className + '-number">1.1.1.</span> ',
+      '<span class="' + className + '-text">Title 1.1.1</span>',
+      '</a>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-2">',
+      '<a class="' + className + '-link" href="#title_1_2">',
+      // '<span class="' + className + '-number">1.2.</span> ',
+      '<span class="' + className + '-text">Title 1.2</span>',
+      '</a>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-2">',
+      '<a class="' + className + '-link" href="#title_1_3">',
+      // '<span class="' + className + '-number">1.3.</span> ',
+      '<span class="' + className + '-text">Title 1.3</span>',
+      '</a>',
+      '<ol class="' + className + '-child">',
+      '<li class="' + className + '-item ' + className + '-level-3">',
+      '<a class="' + className + '-link" href="#title_1_3_1">',
+      // '<span class="' + className + '-number">1.3.1.</span> ',
+      '<span class="' + className + '-text">Title 1.3.1</span>',
+      '</a>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_2">',
+      // '<span class="' + className + '-number">2.</span> ',
+      '<span class="' + className + '-text">Title 2</span>',
+      '</a>',
+      '<ol class="' + className + '-child">',
+      '<li class="' + className + '-item ' + className + '-level-2">',
+      '<a class="' + className + '-link" href="#title_2_1">',
+      // '<span class="' + className + '-number">2.1.</span> ',
+      '<span class="' + className + '-text">Title 2.1</span>',
+      '</a>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_3">',
+      // '<span class="' + className + '-number">3.</span> ',
+      '<span class="' + className + '-text">Title should escape &amp;, &lt;, &#39;, and &quot;</span>',
+      '</a>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_4">',
+      // '<span class="' + className + '-number">4.</span> ',
+      '<span class="' + className + '-text">Chapter 1 should be printed to toc</span>',
+      '</a>',
+      '</li>',
+      '</ol>'
+    ].join('');
+
+    toc(html, { list_number: false }).should.eql(expected);
+  });
+
+  it('max_depth', () => {
+    const className = 'toc';
+    const expected = [
+      '<ol class="' + className + '">',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_1">',
+      '<span class="' + className + '-number">1.</span> ',
+      '<span class="' + className + '-text">Title 1</span>',
+      '</a>',
+      '<ol class="' + className + '-child">',
+      '<li class="' + className + '-item ' + className + '-level-2">',
+      '<a class="' + className + '-link" href="#title_1_1">',
+      '<span class="' + className + '-number">1.1.</span> ',
+      '<span class="' + className + '-text">Title 1.1</span>',
+      '</a>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-2">',
+      '<a class="' + className + '-link" href="#title_1_2">',
+      '<span class="' + className + '-number">1.2.</span> ',
+      '<span class="' + className + '-text">Title 1.2</span>',
+      '</a>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-2">',
+      '<a class="' + className + '-link" href="#title_1_3">',
+      '<span class="' + className + '-number">1.3.</span> ',
+      '<span class="' + className + '-text">Title 1.3</span>',
+      '</a>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_2">',
+      '<span class="' + className + '-number">2.</span> ',
+      '<span class="' + className + '-text">Title 2</span>',
+      '</a>',
+      '<ol class="' + className + '-child">',
+      '<li class="' + className + '-item ' + className + '-level-2">',
+      '<a class="' + className + '-link" href="#title_2_1">',
+      '<span class="' + className + '-number">2.1.</span> ',
+      '<span class="' + className + '-text">Title 2.1</span>',
+      '</a>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_3">',
+      '<span class="' + className + '-number">3.</span> ',
+      '<span class="' + className + '-text">Title should escape &amp;, &lt;, &#39;, and &quot;</span>',
+      '</a>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_4">',
+      '<span class="' + className + '-number">4.</span> ',
+      '<span class="' + className + '-text">Chapter 1 should be printed to toc</span>',
+      '</a>',
+      '</li>',
+      '</ol>'
+    ].join('');
+
+    toc(html, { max_depth: 2 }).should.eql(expected);
+  });
+
+  it('min_depth', () => {
+    const className = 'toc';
+    const expected = [
+      '<ol class="' + className + '">',
+      '<li class="' + className + '-item toc-level-2">',
+      '<a class="' + className + '-link" href="#title_1_1">',
+      '<span class="' + className + '-number">1.</span> ',
+      '<span class="' + className + '-text">Title 1.1</span>',
+      '</a>',
+      '<ol class="' + className + '-child">',
+      '<li class="' + className + '-item toc-level-3">',
+      '<a class="' + className + '-link" href="#title_1_1_1">',
+      '<span class="' + className + '-number">1.1.</span> ',
+      '<span class="' + className + '-text">Title 1.1.1</span>',
+      '</a>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '<li class="' + className + '-item toc-level-2">',
+      '<a class="' + className + '-link" href="#title_1_2">',
+      '<span class="' + className + '-number">2.</span> ',
+      '<span class="' + className + '-text">Title 1.2</span>',
+      '</a>',
+      '</li>',
+      '<li class="' + className + '-item toc-level-2">',
+      '<a class="' + className + '-link" href="#title_1_3">',
+      '<span class="' + className + '-number">3.</span> ',
+      '<span class="' + className + '-text">Title 1.3</span>',
+      '</a>',
+      '<ol class="' + className + '-child">',
+      '<li class="' + className + '-item toc-level-3">',
+      '<a class="' + className + '-link" href="#title_1_3_1">',
+      '<span class="' + className + '-number">3.1.</span> ',
+      '<span class="' + className + '-text">Title 1.3.1</span>',
+      '</a>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '<li class="' + className + '-item toc-level-2">',
+      '<a class="' + className + '-link" href="#title_2_1">',
+      '<span class="' + className + '-number">4.</span> ',
       '<span class="' + className + '-text">Title 2.1</span>',
       '</a>',
       '</li>',
       '</ol>'
     ].join('');
 
-    const resultAllTitles_Level1 = [
-      '<li class="' + className + '-item ' + className + '-level-1">',
-      '<a class="' + className + '-link" href="#title_1">',
-      ifTrue(listNumber, '<span class="' + className + '-number">1.</span> ', ''),
-      '<span class="' + className + '-text">Title 1</span>',
-      '</a>',
-      ifTrue(maxDepth >= 2, resultTitle_1_1, ''),
-      '</li>',
-      '<li class="' + className + '-item ' + className + '-level-1">',
-      '<a class="' + className + '-link" href="#title_2">',
-      ifTrue(listNumber, '<span class="' + className + '-number">2.</span> ', ''),
-      '<span class="' + className + '-text">Title 2</span>',
-      '</a>',
-      ifTrue(maxDepth >= 2, resultTitle_2_1, ''),
-      '</li>',
-      '<li class="' + className + '-item ' + className + '-level-1">',
-      '<a class="' + className + '-link" href="#title_3">',
-      ifTrue(listNumber, '<span class="' + className + '-number">3.</span> ', ''),
-      '<span class="' + className + '-text">Title should escape &amp;, &lt;, &#39;, and &quot;</span>',
-      '</a>',
-      '</li>',
-      '<li class="' + className + '-item ' + className + '-level-1">',
-      '<a class="' + className + '-link" href="#title_4">',
-      ifTrue(listNumber, '<span class="' + className + '-number">4.</span> ', ''),
-      '<span class="' + className + '-text">Chapter 1 should be printed to toc</span>',
-      '</a>',
-      '</li>'
+    toc(html, { min_depth: 2 }).should.eql(expected);
+  });
+
+  it('No id attribute', () => {
+    const className = 'f';
+    const input = [
+      '<h1>foo</h1>',
+      '<h1 id="">bar</h1>'
     ].join('');
 
-    const result = [
-      '<ol class="' + className + '">',
-      ifTrue(maxDepth >= 1, resultAllTitles_Level1, ''),
-      '</ol>'
+    const expected = [
+      `<ol class="${className}">`,
+      `<li class="${className}-item ${className}-level-1">`,
+      `<a class="${className}-link"><span class="${className}-text">foo</span></a>`,
+      '</li>',
+      `<li class="${className}-item ${className}-level-1">`,
+      `<a class="${className}-link"><span class="${className}-text">bar</span></a>`,
+      '</li></ol>'
     ].join('');
 
-    return result;
-  };
-
-  it('default', () => {
-    genResult().should.eql(toc(html));
+    toc(input, { list_number: false, class: className }).should.eql(expected);
   });
 
-  it('class', () => {
-    const options = {
-      class: 'foo'
-    };
+  it('non-ASCII id', () => {
+    const className = 'f';
+    const zh = '这是-H1-标题';
+    const zhs = zh.replace(/-/g, ' ');
+    const de = 'Ich-♥-Deutsch';
+    const des = de.replace(/-/g, ' ');
+    const ru = 'Я-люблю-русский';
+    const rus = ru.replace(/-/g, ' ');
+    const input = [
+      `<h1 id="${zh}">${zhs}</h1>`,
+      `<h1 id="${de}">${des}</h1>`,
+      `<h1 id="${ru}">${rus}</h1>`
+    ].join('');
 
-    genResult(options).should.eql(toc(html, options));
+    const expected = [
+      `<ol class="${className}">`,
+      `<li class="${className}-item ${className}-level-1">`,
+      `<a class="${className}-link" href="#${encodeURL(zh)}"><span class="${className}-text">${zhs}</span></a>`,
+      '</li>',
+      `<li class="${className}-item ${className}-level-1">`,
+      `<a class="${className}-link" href="#${encodeURL(de)}"><span class="${className}-text">${des}</span></a>`,
+      '</li>',
+      `<li class="${className}-item ${className}-level-1">`,
+      `<a class="${className}-link" href="#${encodeURL(ru)}"><span class="${className}-text">${rus}</span></a>`,
+      '</li></ol>'
+    ].join('');
+
+    toc(input, { list_number: false, class: className }).should.eql(expected);
   });
 
-  it('list_number', () => {
-    const options = {
-      list_number: false
-    };
+  it('escape unsafe class name', () => {
+    const className = 'f"b';
+    const esClass = escapeHTML(className);
+    const input = '<h1>bar</h1>';
 
-    genResult(options).should.eql(toc(html, options));
+    const expected = [
+      `<ol class="${esClass}">`,
+      `<li class="${esClass}-item ${esClass}-level-1">`,
+      `<a class="${esClass}-link"><span class="${esClass}-text">bar</span></a>`,
+      '</li></ol>'
+    ].join('');
+
+    toc(input, { list_number: false, class: className }).should.eql(expected);
   });
 
-  it('max_depth', () => {
-    const options = {
-      max_depth: 2
-    };
+  it('invalid input', () => {
+    const input = '<h9000>bar</h9000>';
 
-    genResult(options).should.eql(toc(html, options));
+    toc(input).should.eql('');
   });
 });
