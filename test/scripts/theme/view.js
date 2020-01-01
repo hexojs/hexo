@@ -1,15 +1,15 @@
 'use strict';
 
-const pathFn = require('path');
-const fs = require('hexo-fs');
+const { join } = require('path');
+const { mkdirs, rmdir, writeFile } = require('hexo-fs');
 const Promise = require('bluebird');
 const moment = require('moment');
-const sinon = require('sinon');
+const { spy } = require('sinon');
 
 describe('View', () => {
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(pathFn.join(__dirname, 'theme_test'));
-  const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
+  const hexo = new Hexo(join(__dirname, 'theme_test'));
+  const themeDir = join(hexo.base_dir, 'themes', 'test');
 
   hexo.env.init = true;
 
@@ -19,8 +19,8 @@ describe('View', () => {
 
   before(async () => {
     await Promise.all([
-      fs.mkdirs(themeDir),
-      fs.writeFile(hexo.config_path, 'theme: test')
+      mkdirs(themeDir),
+      writeFile(hexo.config_path, 'theme: test')
     ]);
     await hexo.init();
     // Setup layout
@@ -31,7 +31,7 @@ describe('View', () => {
     ].join('\n'));
   });
 
-  after(() => fs.rmdir(hexo.base_dir));
+  after(() => rmdir(hexo.base_dir));
 
   it('constructor', () => {
     const data = {
@@ -40,7 +40,7 @@ describe('View', () => {
     const view = newView('index.swig', data);
 
     view.path.should.eql('index.swig');
-    view.source.should.eql(pathFn.join(themeDir, 'layout', 'index.swig'));
+    view.source.should.eql(join(themeDir, 'layout', 'index.swig'));
     view.data.should.eql(data);
   });
 
@@ -197,7 +197,7 @@ describe('View', () => {
 
     const view = newView('index.swig', body);
 
-    const filter = sinon.spy(result => {
+    const filter = spy(result => {
       result.should.eql('foo');
       return 'bar';
     });
@@ -276,7 +276,7 @@ describe('View', () => {
 
     const view = newView('index.swig', body);
 
-    const filter = sinon.spy(result => {
+    const filter = spy(result => {
       result.should.eql('foo');
       return 'bar';
     });
