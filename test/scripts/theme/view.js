@@ -17,17 +17,19 @@ describe('View', () => {
     return new hexo.theme.View(path, data);
   }
 
-  before(() => Promise.all([
-    fs.mkdirs(themeDir),
-    fs.writeFile(hexo.config_path, 'theme: test')
-  ]).then(() => hexo.init()).then(() => {
+  before(async () => {
+    await Promise.all([
+      fs.mkdirs(themeDir),
+      fs.writeFile(hexo.config_path, 'theme: test')
+    ]);
+    await hexo.init();
     // Setup layout
     hexo.theme.setView('layout.swig', [
       'pre',
       '{{ body }}',
       'post'
     ].join('\n'));
-  }));
+  });
 
   after(() => fs.rmdir(hexo.base_dir));
 
@@ -57,7 +59,7 @@ describe('View', () => {
     });
   });
 
-  it('precompile view if possible', () => {
+  it('precompile view if possible', async () => {
     const body = 'Hello {{ name }}';
     const view = newView('index.swig', body);
 
@@ -65,14 +67,13 @@ describe('View', () => {
       name: 'Hexo'
     }).should.eql('Hello Hexo');
 
-    return view._compiled({
+    const result = await view._compiled({
       name: 'Hexo'
-    }).then(result => {
-      result.should.eql('Hello Hexo');
     });
+    result.should.eql('Hello Hexo');
   });
 
-  it('generate precompiled function even if renderer does not provide compile function', () => {
+  it('generate precompiled function even if renderer does not provide compile function', async () => {
     // Remove compile function
     const compile = hexo.extend.renderer.store.swig.compile;
     delete hexo.extend.renderer.store.swig.compile;
@@ -84,30 +85,28 @@ describe('View', () => {
       name: 'Hexo'
     }).should.eql('Hello Hexo');
 
-    return view._compiled({
+    const result = await view._compiled({
       name: 'Hexo'
-    }).then(result => {
-      result.should.eql('Hello Hexo');
-    }).finally(() => {
-      hexo.extend.renderer.store.swig.compile = compile;
     });
+    result.should.eql('Hello Hexo');
+
+    hexo.extend.renderer.store.swig.compile = compile;
   });
 
-  it('render()', () => {
+  it('render()', async () => {
     const body = [
       '{{ test }}'
     ].join('\n');
 
     const view = newView('index.swig', body);
 
-    return view.render({
+    const content = await view.render({
       test: 'foo'
-    }).then(content => {
-      content.should.eql('foo');
     });
+    content.should.eql('foo');
   });
 
-  it('render() - front-matter', () => {
+  it('render() - front-matter', async () => {
     // The priority of front-matter is higher
     const body = [
       'foo: bar',
@@ -118,49 +117,45 @@ describe('View', () => {
 
     const view = newView('index.swig', body);
 
-    return view.render({
+    const content = await view.render({
       foo: 'foo',
       test: 'test'
-    }).then(content => {
-      content.should.eql('bar\ntest');
     });
+    content.should.eql('bar\ntest');
   });
 
-  it('render() - helper', () => {
+  it('render() - helper', async () => {
     const body = [
       '{{ date() }}'
     ].join('\n');
 
     const view = newView('index.swig', body);
 
-    return view.render({
+    const content = await view.render({
       config: hexo.config,
       page: {}
-    }).then(content => {
-      content.should.eql(moment().format(hexo.config.date_format));
     });
+    content.should.eql(moment().format(hexo.config.date_format));
   });
 
-  it('render() - layout', () => {
+  it('render() - layout', async () => {
     const body = 'content';
     const view = newView('index.swig', body);
 
-    return view.render({
+    const content = await view.render({
       layout: 'layout'
-    }).then(content => {
-      content.should.eql('pre\n' + body + '\npost');
     });
+    content.should.eql('pre\n' + body + '\npost');
   });
 
-  it('render() - layout not found', () => {
+  it('render() - layout not found', async () => {
     const body = 'content';
     const view = newView('index.swig', body);
 
-    return view.render({
+    const content = await view.render({
       layout: 'wtf'
-    }).then(content => {
-      content.should.eql(body);
     });
+    content.should.eql(body);
   });
 
   it('render() - callback', callback => {
@@ -195,7 +190,7 @@ describe('View', () => {
     });
   });
 
-  it('render() - execute after_render:html', () => {
+  it('render() - execute after_render:html', async () => {
     const body = [
       '{{ test }}'
     ].join('\n');
@@ -209,13 +204,12 @@ describe('View', () => {
 
     hexo.extend.filter.register('after_render:html', filter);
 
-    return view.render({
+    const content = await view.render({
       test: 'foo'
-    }).then(content => {
-      content.should.eql('bar');
-    }).finally(() => {
-      hexo.extend.filter.unregister('after_render:html', filter);
     });
+    content.should.eql('bar');
+
+    hexo.extend.filter.unregister('after_render:html', filter);
   });
 
   it('renderSync()', () => {
