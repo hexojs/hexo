@@ -24,10 +24,13 @@ describe('i18n', () => {
     return new hexo.theme.File(options);
   }
 
-  before(() => Promise.all([
-    fs.mkdirs(themeDir),
-    fs.writeFile(hexo.config_path, 'theme: test')
-  ]).then(() => hexo.init()));
+  before(async () => {
+    await Promise.all([
+      fs.mkdirs(themeDir),
+      fs.writeFile(hexo.config_path, 'theme: test')
+    ]);
+    hexo.init();
+  });
 
   after(() => fs.rmdir(hexo.base_dir));
 
@@ -39,7 +42,7 @@ describe('i18n', () => {
     should.not.exist(pattern.match('default.yml'));
   });
 
-  it('type: create', () => {
+  it('type: create', async () => {
     const body = [
       'ok: OK',
       'index:',
@@ -51,15 +54,16 @@ describe('i18n', () => {
       type: 'create'
     });
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      const __ = hexo.theme.i18n.__('en');
+    await fs.writeFile(file.source, body);
+    await process(file);
+    const __ = hexo.theme.i18n.__('en');
 
-      __('ok').should.eql('OK');
-      __('index.title').should.eql('Home');
-    }).finally(() => fs.unlink(file.source));
+    __('ok').should.eql('OK');
+    __('index.title').should.eql('Home');
+    fs.unlink(file.source);
   });
 
-  it('type: delete', () => {
+  it('type: delete', async () => {
     hexo.theme.i18n.set('en', {
       foo: 'foo',
       bar: 'bar'
@@ -70,8 +74,7 @@ describe('i18n', () => {
       type: 'delete'
     });
 
-    return process(file).then(() => {
-      hexo.theme.i18n.get('en').should.eql({});
-    });
+    await process(file);
+    hexo.theme.i18n.get('en').should.eql({});
   });
 });
