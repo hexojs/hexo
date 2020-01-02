@@ -6,6 +6,7 @@ describe('Extend', () => {
   require('./filter');
   require('./generator');
   require('./helper');
+  require('./injector');
   require('./migrator');
   require('./processor');
   require('./renderer');
