@@ -419,15 +419,15 @@ describe('Hexo', () => {
   });
 
   it('_generate() - after_route_render filter', () => {
-    const hook = sinon.spy(result => result.replace('</head>', 'content</head>'));
+    const hook = sinon.spy(result => '1');
     hexo.extend.filter.register('after_route_render', hook);
-    hexo.theme.setView('test.swig', '<head></head>');
+    hexo.theme.setView('test.swig', '0');
     hexo.extend.generator.register('test', () => ({
       path: 'test',
       layout: 'test'
     }));
     return hexo._generate()
-      .then(() => checkStream(route.get('test'), '<head>content</head>'))
+      .then(() => checkStream(route.get('test'), '1'))
       .then(() => hook.called.should.be.true);
   });
 
