@@ -22,7 +22,7 @@ describe('Injector', () => {
     const str = '<link rel="stylesheet" href="DPlayer.min.css" />';
     i.register('head_begin', str);
 
-    i.get('head_begin').should.contains(str);
+    i.get('head_begin')[0].value.should.contains(str);
   });
 
   it('register() - function', () => {
@@ -31,7 +31,7 @@ describe('Injector', () => {
     const fn = () => '<link rel="stylesheet" href="DPlayer.min.css" />';
     i.register('head_begin', fn);
 
-    i.get('head_begin').should.contains(fn());
+    i.get('head_begin')[0].value.should.contains(fn());
   });
 
   it('list()', () => {
@@ -50,6 +50,6 @@ describe('Injector', () => {
     i.register('body_end', str);
 
     i.get('body_end').should.be.instanceOf(Array);
-    i.get('body_end').should.contains(str);
+    i.get('body_end')[0].value.should.contains(str);
   });
 });
