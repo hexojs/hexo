@@ -418,6 +418,19 @@ describe('Hexo', () => {
     });
   });
 
+  it('_generate() - after_route_render filter', () => {
+    const hook = sinon.spy(result => result.replace('foo', 'bar'));
+    hexo.extend.filter.register('after_route_render', hook);
+    hexo.theme.setView('test.swig', 'foo');
+    hexo.extend.generator.register('test', () => ({
+      path: 'test',
+      layout: 'test'
+    }));
+    return hexo._generate()
+      .then(() => checkStream(route.get('test'), 'bar'))
+      .then(() => hook.called.should.be.true);
+  });
+
   it('_generate() - return nothing in generator', () => {
     hexo.extend.generator.register('test_nothing', () => {
       //
