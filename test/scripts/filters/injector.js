@@ -1,11 +1,14 @@
 'use strict';
 
+const resetCache = require('resnap')();
+
 describe('Injector', () => {
   const Hexo = require('../../../lib/hexo');
   let hexo, injectorFilter;
 
   beforeEach(() => {
     hexo = new Hexo();
+    resetCache();
     injectorFilter = require('../../../lib/plugins/filter/after_render/injector').bind(hexo);
   });
 
