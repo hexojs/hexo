@@ -113,6 +113,7 @@ describe('Injector', () => {
       '</html>'
     ].join('\n');
 
+    hexo.extend.injector.register('head_begin', '<!-- head_begin_default -->');
     hexo.extend.injector.register('head_begin', '<!-- head_begin_home -->', 'home');
     hexo.extend.injector.register('head_begin', '<!-- head_begin_post -->', 'post');
     hexo.extend.injector.register('head_begin', '<!-- head_begin_page -->', 'page');
@@ -129,22 +130,22 @@ describe('Injector', () => {
     const result7 = injectorFilter(content, { page: { tag: true } });
 
     // home
-    result1.should.not.contain('<head id="head"><!-- hexo injector head_begin start --><!-- head_begin_home --><!-- hexo injector head_begin end -->');
-    result2.should.contain('<head id="head"><!-- hexo injector head_begin start --><!-- head_begin_home --><!-- hexo injector head_begin end -->');
+    result1.should.not.contain('<!-- head_begin_home -->');
+    result2.should.contain('<!-- head_begin_home --><!-- head_begin_default -->');
     // post
-    result1.should.not.contain('<head id="head"><!-- hexo injector head_begin start --><!-- head_begin_post --><!-- hexo injector head_begin end -->');
-    result3.should.contain('<head id="head"><!-- hexo injector head_begin start --><!-- head_begin_post --><!-- hexo injector head_begin end -->');
+    result1.should.not.contain('<!-- head_begin_post -->');
+    result3.should.contain('<!-- head_begin_post --><!-- head_begin_default -->');
     // page
-    result1.should.not.contain('<head id="head"><!-- hexo injector head_begin start --><!-- head_begin_page --><!-- hexo injector head_begin end -->');
-    result4.should.contain('<head id="head"><!-- hexo injector head_begin start --><!-- head_begin_page --><!-- hexo injector head_begin end -->');
+    result1.should.not.contain('<!-- head_begin_page -->');
+    result4.should.contain('<!-- head_begin_page --><!-- head_begin_default -->');
     // archive
-    result1.should.not.contain('<head id="head"><!-- hexo injector head_begin start --><!-- head_begin_archive --><!-- hexo injector head_begin end -->');
-    result5.should.contain('<head id="head"><!-- hexo injector head_begin start --><!-- head_begin_archive --><!-- hexo injector head_begin end -->');
+    result1.should.not.contain('<!-- head_begin_archive -->');
+    result5.should.contain('<!-- head_begin_archive --><!-- head_begin_default -->');
     // category
-    result1.should.not.contain('<head id="head"><!-- hexo injector head_begin start --><!-- head_begin_category --><!-- hexo injector head_begin end -->');
-    result6.should.contain('<head id="head"><!-- hexo injector head_begin start --><!-- head_begin_category --><!-- hexo injector head_begin end -->');
+    result1.should.not.contain('<!-- head_begin_category -->');
+    result6.should.contain('<!-- head_begin_category --><!-- head_begin_default -->');
     // tag
-    result1.should.not.contain('<head id="head"><!-- hexo injector head_begin start --><!-- head_begin_tag --><!-- hexo injector head_begin end -->');
-    result7.should.contain('<head id="head"><!-- hexo injector head_begin start --><!-- head_begin_tag --><!-- hexo injector head_begin end -->');
+    result1.should.not.contain('<!-- head_begin_tag -->');
+    result7.should.contain('<!-- head_begin_tag --><!-- head_begin_default -->');
   });
 });
