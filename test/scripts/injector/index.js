@@ -1,15 +1,15 @@
 'use strict';
 
-const resetCache = require('resnap')();
+const decache = require('decache');
 
 describe('Injector', () => {
   const Hexo = require('../../../lib/hexo');
   let hexo, injectorFilter;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    await decache('../../../lib/plugins/injector');
     hexo = new Hexo();
-    resetCache();
-    injectorFilter = require('../../../lib/plugins/filter/after_render/injector').bind(hexo);
+    injectorFilter = require('../../../lib/plugins/injector').bind(hexo);
   });
 
   const content = [

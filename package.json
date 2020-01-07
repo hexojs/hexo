@@ -71,6 +71,7 @@
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
     "cheerio": "0.22.0",
+    "decache": "^4.5.1",
     "eslint": "^6.0.1",
     "eslint-config-hexo": "^4.1.0",
     "hexo-renderer-marked": "^2.0.0",
@@ -78,7 +79,6 @@
     "lint-staged": "^9.1.0",
     "mocha": "^6.0.0",
     "nyc": "^15.0.0",
-    "resnap": "^1.0.1",
     "rewire": "^4.0.1",
     "sinon": "^8.0.1"
   },
