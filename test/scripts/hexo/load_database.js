@@ -1,11 +1,11 @@
 'use strict';
 
-const pathFn = require('path');
-const fs = require('hexo-fs');
+const { join } = require('path');
+const { exists, mkdirs, rmdir, unlink, writeFile } = require('hexo-fs');
 
 describe('Load database', () => {
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(pathFn.join(__dirname, 'db_test'), {silent: true});
+  const hexo = new Hexo(join(__dirname, 'db_test'), {silent: true});
   const loadDatabase = require('../../../lib/hexo/load_database');
   const dbPath = hexo.database.options.path;
 
@@ -23,39 +23,46 @@ describe('Load database', () => {
     }
   };
 
-  before(() => fs.mkdirs(hexo.base_dir));
+  before(() => mkdirs(hexo.base_dir));
 
   beforeEach(() => {
     hexo._dbLoaded = false;
   });
 
-  after(() => fs.rmdir(hexo.base_dir));
+  after(async () => {
+    const exist = await exists(dbPath);
+    if (exist) await unlink(dbPath);
+    rmdir(hexo.base_dir);
+  });
 
   it('database does not exist', () => loadDatabase(hexo));
 
-  it('database load success', () => fs.writeFile(dbPath, JSON.stringify(fixture)).then(() => loadDatabase(hexo)).then(() => {
-    hexo._dbLoaded.should.be.true;
+  it('database load success', async () => {
+    await writeFile(dbPath, JSON.stringify(fixture));
+    await loadDatabase(hexo);
+    hexo._dbLoaded.should.eql(true);
     hexo.model('Test').toArray({lean: true}).should.eql(fixture.models.Test);
     hexo.model('Test').destroy();
 
-    return fs.unlink(dbPath);
-  }));
-
-  it('don\'t load database if loaded', () => {
-    hexo._dbLoaded = true;
-
-    return fs.writeFile(dbPath, JSON.stringify(fixture)).then(() => loadDatabase(hexo)).then(() => {
-      hexo.model('Test').length.should.eql(0);
-      return fs.unlink(dbPath);
-    });
+    await unlink(dbPath);
   });
 
-  // I don't know why this test case can't pass on Windows
-  // It always throws EPERM error
-  // it('database load failed', () => fs.writeFile(dbPath, '{1423432: 324').then(() => loadDatabase(hexo)).then(() => {
-  //   hexo._dbLoaded.should.be.false;
-  //   return fs.exists(dbPath);
-  // }).then(exist => {
-  //   exist.should.be.false;
-  // }));
+  it('don\'t load database if loaded', async () => {
+    hexo._dbLoaded = true;
+
+    await writeFile(dbPath, JSON.stringify(fixture));
+    await loadDatabase(hexo);
+
+    hexo.model('Test').length.should.eql(0);
+
+    await unlink(dbPath);
+  });
+
+  it('database load failed', async () => {
+    await writeFile(dbPath, '{1423432: 324');
+    await loadDatabase(hexo);
+    hexo._dbLoaded.should.eql(false);
+    const exist = await exists(dbPath);
+    exist.should.eql(false);
+  });
 });
