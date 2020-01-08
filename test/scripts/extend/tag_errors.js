@@ -1,21 +1,16 @@
 'use strict';
 
-const expect = require('chai').expect;
-
 describe('Tag Errors', () => {
   const Tag = require('../../../lib/extend/tag');
 
   const assertNunjucksError = (err, line, type) => {
-    console.log(err.name, err.line, err.type);
-    console.log(err.message);
-
     err.should.have.property('name', 'Nunjucks Error');
     err.should.have.property('message');
     err.should.have.property('line', line);
     err.should.have.property('type', type);
   };
 
-  it('unknown tag', () => {
+  it('unknown tag', async () => {
     const tag = new Tag();
 
     const body = [
@@ -24,17 +19,14 @@ describe('Tag Errors', () => {
       '{% endabc %}'
     ].join('\n');
 
-    return tag.render(body)
-      .then(result => {
-        console.log(result);
-        throw new Error('should return error');
-      })
-      .catch(err => {
-        assertNunjucksError(err, 1, 'unknown block tag: abc');
-      });
+    try {
+      await tag.render(body);
+    } catch (err) {
+      assertNunjucksError(err, 1, 'unknown block tag: abc');
+    }
   });
 
-  it('no closing tag 1', () => {
+  it('no closing tag 1', async () => {
     const tag = new Tag();
 
     tag.register('test',
@@ -46,19 +38,16 @@ describe('Tag Errors', () => {
       '  content'
     ].join('\n');
 
-    return tag.render(body)
-      .then(result => {
-        console.log(result);
-        throw new Error('should return error');
-      })
-      .catch(err => {
-        err.should.have.property('name', 'Template render error');
-        err.should.have.property('message');
-        expect(err.message).to.contain('unexpected end of file');
-      });
+    try {
+      await tag.render(body);
+    } catch (err) {
+      err.should.have.property('name', 'Template render error');
+      err.should.have.property('message');
+      err.message.includes('unexpected end of file').should.eql(true);
+    }
   });
 
-  it('no closing tag 2', () => {
+  it('no closing tag 2', async () => {
     const tag = new Tag();
 
     tag.register('test',
@@ -71,36 +60,30 @@ describe('Tag Errors', () => {
       '{% test %}'
     ].join('\n');
 
-    return tag.render(body)
-      .then(result => {
-        console.log(result);
-        throw new Error('should return error');
-      })
-      .catch(err => {
-        err.should.have.property('name', 'Template render error');
-        err.should.have.property('message');
-        expect(err.message).to.contain('unexpected end of file');
-      });
+    try {
+      await tag.render(body);
+    } catch (err) {
+      err.should.have.property('name', 'Template render error');
+      err.should.have.property('message');
+      err.message.includes('unexpected end of file').should.eql(true);
+    }
   });
 
-  it('curly braces', () => {
+  it('curly braces', async () => {
     const tag = new Tag();
 
     const body = [
       '<code>{{docker ps -aq | map docker inspect -f "{{.Name}} {{.Mounts}}"}}</code>'
     ].join('\n');
 
-    return tag.render(body)
-      .then(result => {
-        console.log(result);
-        throw new Error('should return error');
-      })
-      .catch(err => {
-        assertNunjucksError(err, 1, 'expected variable end');
-      });
+    try {
+      await tag.render(body);
+    } catch (err) {
+      assertNunjucksError(err, 1, 'expected variable end');
+    }
   });
 
-  it('nested curly braces', () => {
+  it('nested curly braces', async () => {
     const tag = new Tag();
 
     tag.register('test',
@@ -113,14 +96,10 @@ describe('Tag Errors', () => {
       '{% endtest %}'
     ].join('\n');
 
-    return tag.render(body)
-      .then(result => {
-        console.log(result);
-        throw new Error('should return error');
-      })
-      .catch(err => {
-        assertNunjucksError(err, 2, 'expected variable end');
-      });
+    try {
+      await tag.render(body);
+    } catch (err) {
+      assertNunjucksError(err, 2, 'expected variable end');
+    }
   });
-
 });
