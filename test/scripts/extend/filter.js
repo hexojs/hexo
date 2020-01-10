@@ -112,6 +112,7 @@ describe('Filter', () => {
 
     f.register('test', () => {});
 
+    f.list().test.should.exist;
     f.list('test')[0].should.exist;
     f.list('foo').length.should.eql(0);
   });

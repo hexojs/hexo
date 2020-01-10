@@ -96,6 +96,11 @@ describe('config', () => {
     should.not.exist(config.language);
   });
 
+  it('write config: undefined', async () => {
+    const config = await writeConfig('meta_generator', 'undefined');
+    should.not.exist(config.meta_generator);
+  });
+
   it('write config: regex', async () => {
     const config = await writeConfig('include', /^pattern$/gim);
     config.include.should.eql(/^pattern$/gim);

@@ -18,6 +18,12 @@ describe('deploy', () => {
 
   after(() => fs.rmdir(hexo.base_dir));
 
+  it('no deploy config', () => {
+    delete hexo.config.deploy;
+
+    should.not.exist(deploy({test: true}));
+  });
+
   it('single deploy setting', () => {
     hexo.config.deploy = {
       type: 'foo',

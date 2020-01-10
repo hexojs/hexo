@@ -203,4 +203,17 @@ describe('Tag', () => {
       result.should.eql('bar');
     });
   });
+
+  it('render() - callback', () => {
+    const tag = new Tag();
+
+    const callback = sinon.spy();
+
+    tag.register('test', () => 'foo');
+
+    return tag.render('{% test %}', callback()).then(result => {
+      result.should.eql('foo');
+      callback.calledOnce.should.be.true;
+    });
+  });
 });
