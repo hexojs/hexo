@@ -1,0 +1,7 @@
+color: true
+reporter: spec
+ui: bdd
+full-trace: true
+exit: true
+require: 
+  - "chai/register-should"
