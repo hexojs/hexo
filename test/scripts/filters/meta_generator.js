@@ -4,6 +4,7 @@ describe('Meta Generator', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
   const metaGenerator = require('../../../lib/plugins/filter/after_render/meta_generator').bind(hexo);
+  const metaGeneratorHelper = require('../../../lib/plugins/helper/meta_generator')(hexo);
   const cheerio = require('cheerio');
 
   it('default', () => {
@@ -70,5 +71,14 @@ describe('Meta Generator', () => {
     const expected = '<head>\n<link>\n<meta name="generator" content="Hexo ' + hexo.version + '"></head>';
 
     result.should.eql(expected);
+  });
+
+  it('no inject if meta_generator() helper is used', () => {
+    const content = '<head><link></head>';
+    hexo.config.meta_generator = true;
+    metaGeneratorHelper();
+    const result = metaGenerator(content);
+
+    should.not.exist(result);
   });
 });
