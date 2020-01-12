@@ -17,6 +17,7 @@ describe('Helper', () => {
     // no fn
     try {
       h.register('test');
+      should.fail();
     } catch (err) {
       err.should.be
         .instanceOf(TypeError)
@@ -26,6 +27,7 @@ describe('Helper', () => {
     // no name
     try {
       h.register();
+      should.fail();
     } catch (err) {
       err.should.be
         .instanceOf(TypeError)
@@ -54,6 +56,7 @@ describe('Helper', () => {
     // no name
     try {
       h.setProp();
+      should.fail();
     } catch (err) {
       err.should.be
         .instanceOf(TypeError)
@@ -63,6 +66,7 @@ describe('Helper', () => {
     // no prop
     try {
       h.setProp('test');
+      should.fail();
     } catch (err) {
       err.should.be
         .instanceOf(TypeError)
