@@ -15,7 +15,7 @@ describe('generate', () => {
     generate = generateConsole.bind(hexo);
 
     await mkdirs(hexo.base_dir);
-    hexo.init();
+    await hexo.init();
   });
 
   afterEach(async () => {
@@ -163,16 +163,6 @@ describe('generate', () => {
     await hexo.unwatch();
   });
 
-  it('watch - delete', async () => {
-    await testGenerate({ watch: true });
-
-    await unlink(join(hexo.source_dir, 'test.txt'));
-    await Promise.delay(300);
-
-    const exist = await exists(join(hexo.public_dir, 'test.txt'));
-    exist.should.eql(false);
-  });
-
   it('deploy', async () => {
     const deployer = spy();
 
@@ -205,6 +195,8 @@ describe('generate', () => {
 
     // Generate again
     await generate();
+
+    await Promise.delay(300);
 
     // Read the updated source file
     const result = await Promise.all([
@@ -280,5 +272,63 @@ describe('generate', () => {
   it('should generate all files even when concurrency is set', async () => {
     await generate({ concurrency: 1 });
     return generate({ concurrency: 2 });
+  });
+});
+
+// #3975 workaround for Windows
+describe('generate - watch (delete)', () => {
+  const Hexo = require('../../../lib/hexo');
+  const generateConsole = require('../../../lib/plugins/console/generate');
+  const hexo = new Hexo(join(__dirname, 'generate_test'), {silent: true});
+  const generate = generateConsole.bind(hexo);
+
+  beforeEach(async () => {
+    await mkdirs(hexo.base_dir);
+    await hexo.init();
+  });
+
+  afterEach(async () => {
+    const exist = await exists(hexo.base_dir);
+    if (exist) {
+      await emptyDir(hexo.base_dir);
+      await rmdir(hexo.base_dir);
+    }
+  });
+
+  const testGenerate = async options => {
+    await Promise.all([
+      // Add some source files
+      writeFile(join(hexo.source_dir, 'test.txt'), 'test'),
+      writeFile(join(hexo.source_dir, 'faz', 'yo.txt'), 'yoooo'),
+      // Add some files to public folder
+      writeFile(join(hexo.public_dir, 'foo.txt'), 'foo'),
+      writeFile(join(hexo.public_dir, 'bar', 'boo.txt'), 'boo'),
+      writeFile(join(hexo.public_dir, 'faz', 'yo.txt'), 'yo')
+    ]);
+    await generate(options);
+
+    const result = await Promise.all([
+      readFile(join(hexo.public_dir, 'test.txt')),
+      readFile(join(hexo.public_dir, 'faz', 'yo.txt')),
+      exists(join(hexo.public_dir, 'foo.txt')),
+      exists(join(hexo.public_dir, 'bar', 'boo.txt'))
+    ]);
+    // Check the new file
+    result[0].should.eql('test');
+    // Check the updated file
+    result[1].should.eql('yoooo');
+    // Old files should not be deleted
+    result[2].should.eql(true);
+    result[3].should.eql(true);
+  };
+
+  it('watch - delete', async () => {
+    await testGenerate({ watch: true });
+
+    await unlink(join(hexo.source_dir, 'test.txt'));
+    await Promise.delay(300);
+
+    const exist = await exists(join(hexo.public_dir, 'test.txt'));
+    exist.should.eql(false);
   });
 });

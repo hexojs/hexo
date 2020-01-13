@@ -57,8 +57,20 @@ describe('Load database', () => {
 
     await unlink(dbPath);
   });
+});
+
+// #3975 workaround for Windows
+// Clean-up is not necessary (unlike the above tests),
+// because the db file is already removed if invalid
+describe('Load database - load failed', () => {
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(join(__dirname), {silent: true});
+  const loadDatabase = require('../../../lib/hexo/load_database');
+  const dbPath = hexo.database.options.path;
 
   it('database load failed', async () => {
+    hexo._dbLoaded = false;
+
     await writeFile(dbPath, '{1423432: 324');
     await loadDatabase(hexo);
     hexo._dbLoaded.should.eql(false);

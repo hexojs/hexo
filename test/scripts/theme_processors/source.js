@@ -27,7 +27,7 @@ describe('source', () => {
       mkdirs(themeDir),
       writeFile(hexo.config_path, 'theme: test')
     ]);
-    hexo.init();
+    await hexo.init();
   });
 
   after(() => rmdir(hexo.base_dir));
