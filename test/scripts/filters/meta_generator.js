@@ -9,8 +9,8 @@ describe('Meta Generator', () => {
   const metaGeneratorHelper = require('../../../lib/plugins/helper/meta_generator')(hexo);
   const cheerio = require('cheerio');
 
-  beforeEach(async () => {
-    await decache('../../../lib/plugins/filter/after_render/meta_generator');
+  beforeEach(() => {
+    decache('../../../lib/plugins/filter/after_render/meta_generator');
     metaGenerator = require('../../../lib/plugins/filter/after_render/meta_generator').bind(hexo);
   });
 
