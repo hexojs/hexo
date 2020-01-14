@@ -24,7 +24,7 @@ describe('Meta Generator', () => {
     resultType.should.eql('undefined');
   });
 
-  it('no duplicate generator tag', () => {
+  it.skip('no duplicate generator tag', () => {
     hexo.config.meta_generator = true;
     const resultType = str => typeof metaGenerator(str);
 
@@ -32,7 +32,7 @@ describe('Meta Generator', () => {
     resultType('<head><link><meta content="foo" name="generator"></head>').should.eql('undefined');
   });
 
-  it('ignore empty head tag', () => {
+  it.skip('ignore empty head tag', () => {
     const content = '<head></head><head><link></head><head></head>';
     hexo.config.meta_generator = true;
     const result = metaGenerator(content);
@@ -45,7 +45,7 @@ describe('Meta Generator', () => {
     result.should.eql(expected);
   });
 
-  it('apply to first non-empty head tag only', () => {
+  it.skip('apply to first non-empty head tag only', () => {
     const content = '<head></head><head><link></head><head><link></head>';
     hexo.config.meta_generator = true;
     const result = metaGenerator(content);
