@@ -1,120 +1,119 @@
 'use strict';
 
-const sinon = require('sinon');
-const pathFn = require('path');
-const { full_url_for } = require('hexo-util');
+const { join } = require('path');
+const { deepMerge, full_url_for } = require('hexo-util');
 
 describe('Page', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
   const Page = hexo.model('Page');
+  const defaults = require('../../../lib/hexo/default_config');
 
-  it('default values', () => {
+  beforeEach(() => { hexo.config = deepMerge({}, defaults); });
+
+  it('default values', async () => {
     const now = Date.now();
 
-    return Page.insert({
+    const data = await Page.insert({
       source: 'foo',
       path: 'bar'
-    }).then(data => {
-      data.title.should.eql('');
-      data.date.valueOf().should.gte(now);
-      data.updated.valueOf().should.gte(now);
-      data.comments.should.be.true;
-      data.layout.should.eql('page');
-      data._content.should.eql('');
-      data.raw.should.eql('');
-      should.not.exist(data.content);
-      should.not.exist(data.excerpt);
-      should.not.exist(data.more);
-
-      return Page.removeById(data._id);
     });
+
+    data.title.should.eql('');
+    data.date.valueOf().should.gte(now);
+    data.updated.valueOf().should.gte(now);
+    data.comments.should.be.true;
+    data.layout.should.eql('page');
+    data._content.should.eql('');
+    data.raw.should.eql('');
+    should.not.exist(data.content);
+    should.not.exist(data.excerpt);
+    should.not.exist(data.more);
+
+    Page.removeById(data._id);
   });
 
-  it('source - required', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', '`source` is required!');
-    });
-
-    return Page.insert({}).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
-    });
+  it('source - required', async () => {
+    try {
+      await Page.insert({});
+    } catch (err) {
+      err.message.should.eql('`source` is required!');
+    }
   });
 
-  it('path - required', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', '`path` is required!');
-    });
-
-    return Page.insert({
-      source: 'foo'
-    }).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
-    });
+  it('path - required', async () => {
+    try {
+      await Page.insert({
+        source: 'foo'
+      });
+    } catch (err) {
+      err.message.should.eql('`path` is required!');
+    }
   });
 
-  it('permalink - virtual', () => Page.insert({
-    source: 'foo',
-    path: 'bar'
-  }).then(data => {
+  it('permalink - virtual', async () => {
+    const data = await Page.insert({
+      source: 'foo',
+      path: 'bar'
+    });
     data.permalink.should.eql(hexo.config.url + '/' + data.path);
-    return Page.removeById(data._id);
-  }));
 
-  it('permalink - trailing_index', () => {
+    Page.removeById(data._id);
+  });
+
+  it('permalink - trailing_index', async () => {
     hexo.config.pretty_urls.trailing_index = false;
-    return Page.insert({
+    const data = await Page.insert({
       source: 'foo.md',
       path: 'bar/index.html'
-    }).then(data => {
-      data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/index\.html$/, ''));
-      hexo.config.pretty_urls.trailing_index = true;
-      return Page.removeById(data._id);
     });
+    data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/index\.html$/, ''));
+
+    Page.removeById(data._id);
   });
 
-  it('permalink - trailing_html', () => {
+  it('permalink - trailing_html', async () => {
     hexo.config.pretty_urls.trailing_html = false;
-    return Page.insert({
+    const data = await Page.insert({
       source: 'foo.md',
       path: 'bar/foo.html'
-    }).then(data => {
-      data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/\.html$/, ''));
-      hexo.config.pretty_urls.trailing_html = true;
-      return Page.removeById(data._id);
     });
+    data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/\.html$/, ''));
+
+    Page.removeById(data._id);
   });
 
-  it('permalink - trailing_html - index.html', () => {
+  it('permalink - trailing_html - index.html', async () => {
     hexo.config.pretty_urls.trailing_html = false;
-    return Page.insert({
+
+    const data = await Page.insert({
       source: 'foo.md',
-      path: 'bar/index.html'
-    }).then(data => {
-      data.permalink.should.eql(hexo.config.url + '/' + data.path);
-      hexo.config.pretty_urls.trailing_html = true;
-      return Page.removeById(data._id);
+      path: 'bar/foo/index.html'
     });
+    data.permalink.should.eql(hexo.config.url + '/' + data.path);
+
+    Page.removeById(data._id);
   });
 
-  it('permalink - should be encoded', () => {
+  it('permalink - should be encoded', async () => {
     hexo.config.url = 'http://fôo.com';
     const path = 'bár';
-    return Page.insert({
+    const data = await Page.insert({
       source: 'foo',
       path
-    }).then(data => {
-      data.permalink.should.eql(full_url_for.call(hexo, data.path));
-      hexo.config.url = 'http://yoursite.com';
-      return Page.removeById(data._id);
     });
+    data.permalink.should.eql(full_url_for.call(hexo, data.path));
+
+    Page.removeById(data._id);
   });
 
-  it('full_source - virtual', () => Page.insert({
-    source: 'foo',
-    path: 'bar'
-  }).then(data => {
-    data.full_source.should.eql(pathFn.join(hexo.source_dir, data.source));
-    return Page.removeById(data._id);
-  }));
+  it('full_source - virtual', async () => {
+    const data = await Page.insert({
+      source: 'foo',
+      path: 'bar'
+    });
+    data.full_source.should.eql(join(hexo.source_dir, data.source));
+
+    Page.removeById(data._id);
+  });
 });

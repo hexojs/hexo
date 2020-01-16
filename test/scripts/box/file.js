@@ -1,16 +1,15 @@
 'use strict';
 
-const pathFn = require('path');
-const Promise = require('bluebird');
-const fs = require('hexo-fs');
-const yaml = require('js-yaml');
+const { join } = require('path');
+const { rmdir, stat, statSync, writeFile } = require('hexo-fs');
+const { load } = require('js-yaml');
 
 describe('File', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo(__dirname);
   const Box = require('../../../lib/box');
-  const box = new Box(hexo, pathFn.join(hexo.base_dir, 'file_test'));
-  const File = box.File;
+  const box = new Box(hexo, join(hexo.base_dir, 'file_test'));
+  const { File } = box;
 
   const body = [
     'name:',
@@ -24,31 +23,37 @@ describe('File', () => {
     '- Banana'
   ].join('\n');
 
-  const obj = yaml.load(body);
+  const obj = load(body);
   const path = 'test.yml';
 
-  function makeFile(path, props) {
+  const makeFile = (path, props) => {
     return new File(Object.assign({
-      source: pathFn.join(box.base, path),
+      source: join(box.base, path),
       path
     }, props));
-  }
+  };
 
   const file = makeFile(path, {
-    source: pathFn.join(box.base, path),
+    source: join(box.base, path),
     path,
     type: 'create',
     params: {foo: 'bar'}
   });
 
-  before(() => Promise.all([
-    fs.writeFile(file.source, body),
-    hexo.init()
-  ]).then(() => fs.stat(file.source)));
+  before(async () => {
+    await Promise.all([
+      writeFile(file.source, body),
+      hexo.init()
+    ]);
+    stat(file.source);
+  });
 
-  after(() => fs.rmdir(box.base));
+  after(() => rmdir(box.base));
 
-  it('read()', () => file.read().should.eventually.eql(body));
+  it('read()', async () => {
+    const result = await file.read();
+    result.should.eql(body);
+  });
 
   it('read() - callback', callback => {
     file.read((err, content) => {
@@ -62,27 +67,31 @@ describe('File', () => {
     file.readSync().should.eql(body);
   });
 
-  it('stat()', () => Promise.all([
-    fs.stat(file.source),
-    file.stat()
-  ]).then(stats => {
+  it('stat()', async () => {
+    const stats = await Promise.all([
+      stat(file.source),
+      file.stat()
+    ]);
     stats[0].should.eql(stats[1]);
-  }));
+  });
 
   it('stat() - callback', callback => {
     file.stat((err, fileStats) => {
       if (err) return callback(err);
 
-      fileStats.should.eql(fs.statSync(file.source));
+      fileStats.should.eql(statSync(file.source));
       callback();
     });
   });
 
   it('statSync()', () => {
-    file.statSync().should.eql(fs.statSync(file.source));
+    file.statSync().should.eql(statSync(file.source));
   });
 
-  it('render()', () => file.render().should.eventually.eql(obj));
+  it('render()', async () => {
+    const result = await file.render();
+    result.should.eql(obj);
+  });
 
   it('render() - callback', callback => {
     file.render((err, data) => {

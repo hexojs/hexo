@@ -44,6 +44,12 @@ describe('Console', () => {
         .property('message', 'fn must be a function');
     }
 
+    // name, options, fn
+    c.register('test', {init: true}, () => {});
+
+    c.get('test').should.exist;
+    c.get('test').options.init.should.be.true;
+
     // name, desc, options, fn
     c.register('test', 'this is a test', {init: true}, () => {});
 

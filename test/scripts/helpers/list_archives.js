@@ -19,14 +19,16 @@ describe('list_archives', () => {
     ctx.site = hexo.locals.toObject();
   }
 
-  before(() => hexo.init().then(() => Post.insert([
-    {source: 'foo', slug: 'foo', date: new Date(2014, 1, 2)},
-    {source: 'bar', slug: 'bar', date: new Date(2013, 5, 6)},
-    {source: 'baz', slug: 'baz', date: new Date(2013, 9, 10)},
-    {source: 'boo', slug: 'boo', date: new Date(2013, 5, 8)}
-  ])).then(() => {
+  before(async () => {
+    await hexo.init();
+    await Post.insert([
+      {source: 'foo', slug: 'foo', date: new Date(2014, 1, 2)},
+      {source: 'bar', slug: 'bar', date: new Date(2013, 5, 6)},
+      {source: 'baz', slug: 'baz', date: new Date(2013, 9, 10)},
+      {source: 'boo', slug: 'boo', date: new Date(2013, 5, 8)}
+    ]);
     resetLocals();
-  }));
+  });
 
   it('default', () => {
     const result = listArchives();
@@ -93,6 +95,19 @@ describe('list_archives', () => {
     ].join(''));
   });
 
+  it('show_count + style: false', () => {
+    const result = listArchives({
+      style: false,
+      show_count: false
+    });
+
+    result.should.eql([
+      '<a class="archive-link" href="/archives/2014/02/">February 2014</a>',
+      '<a class="archive-link" href="/archives/2013/10/">October 2013</a>',
+      '<a class="archive-link" href="/archives/2013/06/">June 2013</a>'
+    ].join(', '));
+  });
+
   it('order', () => {
     const result = listArchives({
       order: 1
@@ -121,6 +136,21 @@ describe('list_archives', () => {
       '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">JUNE 2013</a><span class="archive-list-count">2</span></li>',
       '</ul>'
     ].join(''));
+  });
+
+  it('transform + style: false', () => {
+    const result = listArchives({
+      style: false,
+      transform(str) {
+        return str.toUpperCase();
+      }
+    });
+
+    result.should.eql([
+      '<a class="archive-link" href="/archives/2014/02/">FEBRUARY 2014<span class="archive-count">1</span></a>',
+      '<a class="archive-link" href="/archives/2013/10/">OCTOBER 2013<span class="archive-count">1</span></a>',
+      '<a class="archive-link" href="/archives/2013/06/">JUNE 2013<span class="archive-count">2</span></a>'
+    ].join(', '));
   });
 
   it('separator', () => {

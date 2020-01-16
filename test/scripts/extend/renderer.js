@@ -48,7 +48,7 @@ describe('Renderer', () => {
     }
   });
 
-  it('register() - promisify', () => {
+  it('register() - promisify', async () => {
     const r = new Renderer();
 
     // async
@@ -56,16 +56,14 @@ describe('Renderer', () => {
       callback(null, 'foo');
     });
 
-    r.get('yaml')({}, {}).then(result => {
-      result.should.eql('foo');
-    });
+    const yaml = await r.get('yaml')({}, {});
+    yaml.should.eql('foo');
 
     // sync
     r.register('swig', 'html', (data, options) => 'foo', true);
 
-    r.get('swig')({}, {}).then(result => {
-      result.should.eql('foo');
-    });
+    const swig = await r.get('swig')({}, {});
+    swig.should.eql('foo');
   });
 
   it('register() - compile', () => {

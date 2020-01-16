@@ -21,32 +21,36 @@ describe('open_graph', () => {
     return hexo.init();
   });
 
-  it('default', () => {
-    Post.insert({
+  it('default', async () => {
+    let post = await Post.insert({
       source: 'foo.md',
       slug: 'bar'
-    }).then(post => post.setTags(['optimize', 'web'])
-      .thenReturn(Post.findById(post._id))).then(post => {
-      openGraph.call({
-        page: post,
-        config: hexo.config,
-        is_post: isPost
-      }).should.eql([
-        meta({property: 'og:type', content: 'website'}),
-        meta({property: 'og:title', content: hexo.config.title}),
-        meta({property: 'og:url'}),
-        meta({property: 'og:site_name', content: hexo.config.title}),
-        meta({property: 'og:locale', content: 'en_US'}),
-        meta({property: 'article:published_time', content: post.date.toISOString()}),
-        meta({property: 'article:modified_time', content: post.updated.toISOString()}),
-        meta({property: 'article:author', content: hexo.config.author}),
-        meta({property: 'article:tag', content: 'optimize'}),
-        meta({property: 'article:tag', content: 'web'}),
-        meta({name: 'twitter:card', content: 'summary'})
-      ].join('\n'));
-
-      return Post.removeById(post._id);
     });
+    await post.setTags(['optimize', 'web']);
+
+    post = await Post.findById(post._id);
+
+    const result = openGraph.call({
+      page: post,
+      config: hexo.config,
+      is_post: isPost
+    });
+
+    result.should.eql([
+      meta({property: 'og:type', content: 'website'}),
+      meta({property: 'og:title', content: hexo.config.title}),
+      meta({property: 'og:url'}),
+      meta({property: 'og:site_name', content: hexo.config.title}),
+      meta({property: 'og:locale', content: 'en_US'}),
+      meta({property: 'article:published_time', content: post.date.toISOString()}),
+      meta({property: 'article:modified_time', content: post.updated.toISOString()}),
+      meta({property: 'article:author', content: hexo.config.author}),
+      meta({property: 'article:tag', content: 'optimize'}),
+      meta({property: 'article:tag', content: 'web'}),
+      meta({name: 'twitter:card', content: 'summary'})
+    ].join('\n'));
+
+    await Post.removeById(post._id);
   });
 
   it('title - page', () => {

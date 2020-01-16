@@ -8,15 +8,17 @@ describe('page', () => {
   const Page = hexo.model('Page');
   const generator = Promise.method(require('../../../lib/plugins/generator/page').bind(hexo));
 
-  function locals() {
+  const locals = () => {
     hexo.locals.invalidate();
     return hexo.locals.toObject();
-  }
+  };
 
-  it('default layout', () => Page.insert({
-    source: 'foo',
-    path: 'bar'
-  }).then(page => generator(locals()).then(data => {
+  it('default layout', async () => {
+    const page = await Page.insert({
+      source: 'foo',
+      path: 'bar'
+    });
+    const data = await generator(locals());
     page.__page = true;
 
     data.should.eql([
@@ -27,26 +29,32 @@ describe('page', () => {
       }
     ]);
 
-    return page.remove();
-  })));
+    page.remove();
+  });
 
-  it('custom layout', () => Page.insert({
-    source: 'foo',
-    path: 'bar',
-    layout: 'photo'
-  }).then(page => generator(locals()).then(data => {
-    data[0].layout.should.eql(['photo', 'page', 'post', 'index']);
-
-    return page.remove();
-  })));
-
-  [false, 'false', 'off'].forEach(layout => {
-    it('layout = ' + JSON.stringify(layout), () => Page.insert({
+  it('custom layout', async () => {
+    const page = await Page.insert({
       source: 'foo',
       path: 'bar',
-      layout
-    }).then(page => generator(locals()).then(data => {
+      layout: 'photo'
+    });
+    const data = await generator(locals());
+    data[0].layout.should.eql(['photo', 'page', 'post', 'index']);
+
+    page.remove();
+  });
+
+  [false, 'false', 'off'].forEach(layout => {
+    it('layout = ' + JSON.stringify(layout), async () => {
+      const page = await Page.insert({
+        source: 'foo',
+        path: 'bar',
+        layout
+      });
+      const data = await generator(locals());
       should.not.exist(data[0].layout);
-    }).finally(() => page.remove())));
+
+      page.remove();
+    });
   });
 });

@@ -45,7 +45,7 @@ describe('Migrator', () => {
     });
   });
 
-  it('register() - Promise.method', () => {
+  it('register() - Promise.method', async () => {
     const d = new Migrator();
 
     d.register('test', args => {
@@ -53,11 +53,11 @@ describe('Migrator', () => {
       return 'foo';
     });
 
-    d.get('test')({
+    const result = await d.get('test')({
       foo: 'bar'
-    }).then(result => {
-      result.should.eql('foo');
     });
+
+    result.should.eql('foo');
   });
 
   it('list()', () => {

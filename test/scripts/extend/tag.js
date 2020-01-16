@@ -161,6 +161,37 @@ describe('Tag', () => {
     errorCallback.calledOnce.should.be.true;
   });
 
+  it('unregister()', () => {
+    const tag = new Tag();
+
+    tag.register('test', (args, content) => Promise.resolve(args.join(' ')), {async: true});
+    tag.unregister('test');
+
+    return tag.render('{% test foo bar %}')
+      .then(result => {
+        console.log(result);
+        throw new Error('should return error');
+      })
+      .catch(err => {
+        err.should.have.property('type', 'unknown block tag: test');
+      });
+  });
+
+  it('unregister() - name is required', () => {
+    const errorCallback = sinon.spy(err => {
+      err.should.have.property('message', 'name is required');
+    });
+
+    try {
+      tag.unregister();
+    } catch (err) {
+      errorCallback(err);
+    }
+
+    errorCallback.calledOnce.should.be.true;
+  });
+
+
   it('render() - context', () => {
     const tag = new Tag();
 
@@ -170,6 +201,19 @@ describe('Tag', () => {
 
     return tag.render('{% test %}', {foo: 'bar'}).then(result => {
       result.should.eql('bar');
+    });
+  });
+
+  it('render() - callback', () => {
+    const tag = new Tag();
+
+    const callback = sinon.spy();
+
+    tag.register('test', () => 'foo');
+
+    return tag.render('{% test %}', callback()).then(result => {
+      result.should.eql('foo');
+      callback.calledOnce.should.be.true;
     });
   });
 });

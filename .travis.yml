@@ -1,3 +1,6 @@
+os:
+  - linux
+
 language: node_js
 
 addons:
@@ -15,10 +18,13 @@ node_js:
   - "13"
 
 script:
-  - npm run eslint
+  - if [[ $TRAVIS_OS_NAME == "linux" ]]; then
+      npm run eslint;
+    fi
   - npm run test-cov
-  - npm install 0x
-  - ./test/benchmark.sh
+  - if [[ $TRAVIS_OS_NAME == "linux" ]]; then
+      npm install 0x && ./test/benchmark.sh;
+    fi
 
 after_script:
   - npm install coveralls
