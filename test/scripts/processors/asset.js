@@ -194,7 +194,7 @@ describe('asset', () => {
     ].join('\n');
 
     const file = newFile({
-      path: 'hello.swig',
+      path: 'hello.njk',
       type: 'create',
       renderable: true
     });
@@ -225,7 +225,7 @@ describe('asset', () => {
     ].join('\n');
 
     const file = newFile({
-      path: 'hello.swig',
+      path: 'hello.njk',
       type: 'update',
       renderable: true
     });
@@ -247,7 +247,7 @@ describe('asset', () => {
 
   it('page - type: delete', async () => {
     const file = newFile({
-      path: 'hello.swig',
+      path: 'hello.njk',
       type: 'delete',
       renderable: true
     });
@@ -262,7 +262,7 @@ describe('asset', () => {
 
   it('page - use the status of the source file if date not set', async () => {
     const file = newFile({
-      path: 'hello.swig',
+      path: 'hello.njk',
       type: 'create',
       renderable: true
     });
@@ -283,7 +283,7 @@ describe('asset', () => {
 
   it('page - use the date for updated if use_date_for_updated is set', async () => {
     const file = newFile({
-      path: 'hello.swig',
+      path: 'hello.njk',
       type: 'create',
       renderable: true
     });
@@ -312,7 +312,7 @@ describe('asset', () => {
     ].join('\n');
 
     const file = newFile({
-      path: 'hello.swig',
+      path: 'hello.njk',
       type: 'create',
       renderable: true
     });
@@ -336,7 +336,7 @@ describe('asset', () => {
     ].join('\n');
 
     const file = newFile({
-      path: 'hello.swig',
+      path: 'hello.njk',
       type: 'create',
       renderable: true
     });
@@ -360,7 +360,7 @@ describe('asset', () => {
     ].join('\n');
 
     const file = newFile({
-      path: 'hello.swig',
+      path: 'hello.njk',
       type: 'create',
       renderable: true
     });
@@ -429,7 +429,7 @@ describe('asset', () => {
     ].join('\n');
 
     const file = newFile({
-      path: 'hello.swig',
+      path: 'hello.njk',
       type: 'create',
       renderable: true
     });
@@ -455,7 +455,7 @@ describe('asset', () => {
     ].join('\n');
 
     const file = newFile({
-      path: 'hello.swig',
+      path: 'hello.njk',
       type: 'create',
       renderable: true
     });
@@ -503,7 +503,7 @@ describe('asset', () => {
     ].join('\n');
 
     const file = newFile({
-      path: 'hello.swig',
+      path: 'hello.njk',
       type: 'create',
       renderable: true
     });

@@ -608,7 +608,7 @@ describe('Post', () => {
     });
   });
 
-  it('render() - skip render phase if it\'s swig file', () => {
+  it('render() - skip render phase if it\'s nunjucks file', () => {
     const content = [
       '{% quote Hello World %}',
       'quote content',
@@ -617,7 +617,7 @@ describe('Post', () => {
 
     return post.render(null, {
       content,
-      engine: 'swig'
+      engine: 'njk'
     }).then(data => {
       data.content.trim().should.eql([
         '<blockquote><p>quote content</p>\n',
@@ -626,7 +626,7 @@ describe('Post', () => {
     });
   });
 
-  it('render() - escaping swig blocks with similar names', () => {
+  it('render() - escaping nunjucks blocks with similar names', () => {
     const code = 'alert("Hello world")';
     const highlighted = highlight(code);
 
@@ -651,7 +651,7 @@ describe('Post', () => {
     });
   });
 
-  it('render() - recover escaped swig blocks which is html escaped', () => {
+  it('render() - recover escaped nunjucks blocks which is html escaped', () => {
     const content = '`{% raw %}{{ test }}{% endraw %}`';
 
     return post.render(null, {
@@ -662,7 +662,7 @@ describe('Post', () => {
     });
   });
 
-  it('render() - recover escaped swig blocks which is html escaped before post_render', () => {
+  it('render() - recover escaped nunjucks blocks which is html escaped before post_render', () => {
     const content = '`{% raw %}{{ test }}{% endraw %}`';
 
     const filter = spy();

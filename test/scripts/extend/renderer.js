@@ -90,11 +90,11 @@ describe('Renderer', () => {
 
     r.isRenderableSync('yaml').should.be.false;
 
-    r.register('swig', 'html', () => {}, true);
+    r.register('njk', 'html', () => {}, true);
 
-    r.isRenderableSync('swig').should.be.true;
-    r.isRenderableSync('.swig').should.be.true;
-    r.isRenderableSync('layout.swig').should.be.true;
+    r.isRenderableSync('njk').should.be.true;
+    r.isRenderableSync('.njk').should.be.true;
+    r.isRenderableSync('layout.njk').should.be.true;
     r.isRenderableSync('foo.html').should.be.false;
   });
 
