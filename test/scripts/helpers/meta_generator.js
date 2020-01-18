@@ -12,11 +12,11 @@ describe('meta_generator', () => {
     const { version } = hexo;
     const versionType = typeof version;
 
-    should.not.exist(hexo.extend.helper.getProp('meta_generator'));
+    should.not.exist(hexo.extend.helper.getProp('meta_generator_used'));
 
     versionType.should.not.eql('undefined');
     metaGeneratorHelper().should.eql(`<meta name="generator" content="Hexo ${version}">`);
 
-    hexo.extend.helper.getProp('meta_generator').should.eql(true);
+    hexo.extend.helper.getProp('meta_generator_used').should.eql(true);
   });
 });
