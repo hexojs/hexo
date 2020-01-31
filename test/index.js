@@ -10,7 +10,6 @@ describe('Hexo', () => {
   require('./scripts/generators');
   require('./scripts/helpers');
   require('./scripts/hexo');
-  require('./scripts/injector');
   require('./scripts/models');
   require('./scripts/processors');
   require('./scripts/renderers');
