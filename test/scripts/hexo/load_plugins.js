@@ -6,7 +6,7 @@ const Promise = require('bluebird');
 
 describe('Load plugins', () => {
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(pathFn.join(__dirname, 'plugin_test'), {silent: true});
+  const hexo = new Hexo(pathFn.join(__dirname, 'plugin_test'), { silent: true });
   const loadPlugins = require('../../../lib/hexo/load_plugins');
 
   const script = [
@@ -128,6 +128,24 @@ describe('Load plugins', () => {
     });
   });
 
+  it('ignore plugin whose name is "hexo-theme-[hexo.config.theme]"', async () => {
+    hexo.config.theme = 'test_theme';
+
+    const script = 'hexo._script_test = true';
+    const name = 'hexo-theme-test_theme';
+    const path = pathFn.join(hexo.plugin_dir, name, 'index.js');
+
+    Promise.all([
+      createPackageFile(name),
+      fs.writeFile(path, script)
+    ]);
+    await loadPlugins(hexo);
+
+    should.not.exist(hexo._script_test);
+    delete hexo.config.theme;
+    return fs.unlink(path);
+  });
+
   it('ignore plugins whose name is not started with "hexo-"', () => {
     const script = 'hexo._script_test = true';
     const name = 'another-plugin';
@@ -140,6 +158,20 @@ describe('Load plugins', () => {
       should.not.exist(hexo._script_test);
       return fs.unlink(path);
     });
+  });
+
+  it('ignore plugins which is typescript definition', async () => {
+    const script = 'hexo._script_test = true';
+    const name = '@types/hexo-test-plugin';
+    const path = pathFn.join(hexo.plugin_dir, name, 'index.js');
+
+    Promise.all([
+      createPackageFile(name),
+      fs.writeFile(path, script)
+    ]);
+    await loadPlugins(hexo);
+    should.not.exist(hexo._script_test);
+    return fs.unlink(path);
   });
 
   it('ignore plugins which are in package.json but not exist actually', () => createPackageFile('hexo-plugin-test').then(() => loadPlugins(hexo)));
