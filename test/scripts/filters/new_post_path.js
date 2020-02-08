@@ -162,7 +162,7 @@ describe('new_post_path', () => {
     try {
       await newPostPath();
     } catch (err) {
-      err.message.includes('Either data.path or data.slug is required!').should.eql(true);
+      err.message.should.to.have.string('Either data.path or data.slug is required!');
     }
   });
 });
