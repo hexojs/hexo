@@ -220,9 +220,7 @@ describe('generate', () => {
       ]
     );
 
-    await Promise.all([
-      writeFile(join(hexo.theme_dir, 'layout', 'post.err'), 'post')
-    ]);
+    await writeFile(join(hexo.theme_dir, 'layout', 'post.err'), 'post');
     return generate();
   });
 
@@ -238,9 +236,7 @@ describe('generate', () => {
       ]
     );
 
-    await Promise.all([
-      writeFile(join(hexo.theme_dir, 'layout', 'post.err'), 'post')
-    ]);
+    await writeFile(join(hexo.theme_dir, 'layout', 'post.err'), 'post');
     return generate({ bail: false });
   });
 
@@ -260,9 +256,7 @@ describe('generate', () => {
       err.should.have.property('message', 'Testing unhandled exception');
     });
 
-    await Promise.all([
-      writeFile(join(hexo.theme_dir, 'layout', 'post.err'), 'post')
-    ]);
+    await writeFile(join(hexo.theme_dir, 'layout', 'post.err'), 'post');
 
     return generate({ bail: true }).catch(errorCallback).finally(() => {
       errorCallback.calledOnce.should.be.true;

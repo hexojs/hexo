@@ -267,9 +267,7 @@ describe('Box', () => {
       data[file.path] = file;
     });
 
-    await Promise.all([
-      writeFile(join(box.base, 'foo.txt'), 'foo')
-    ]);
+    await writeFile(join(box.base, 'foo.txt'), 'foo');
     await box.process();
 
     data.should.to.have.all.keys(['foo.txt']);
@@ -363,7 +361,7 @@ describe('Box', () => {
 
     box.addProcessor(processor);
 
-    await Promise.all([writeFile(src, 'a')]);
+    await writeFile(src, 'a');
     await box.watch();
     box.isWatching().should.to.be.true;
     await Promise.delay(500);
