@@ -20,16 +20,15 @@ describe('Meta Generator', () => {
     hexo.config.meta_generator = false;
     const result = metaGenerator(content);
 
-    const resultType = typeof result;
-    resultType.should.eql('undefined');
+    should.equal(result, undefined);
   });
 
   it('no duplicate generator tag', () => {
     hexo.config.meta_generator = true;
-    const resultType = str => typeof metaGenerator(str);
+    const result = str => metaGenerator(str);
 
-    resultType('<head><link><meta name="generator" content="foo"></head>').should.eql('undefined');
-    resultType('<head><link><meta content="foo" name="generator"></head>').should.eql('undefined');
+    should.equal(result('<head><link><meta name="generator" content="foo"></head>'), undefined);
+    should.equal(result('<head><link><meta content="foo" name="generator"></head>'), undefined);
   });
 
   it('ignore empty head tag', () => {

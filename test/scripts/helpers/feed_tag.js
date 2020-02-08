@@ -39,10 +39,7 @@ describe('feed_tag', () => {
   it('invalid input - undefined', () => {
     ctx.config.feed = {};
     const result = feed();
-    const typeOf = str => typeof str;
-
-    typeOf(result).should.eql('string');
-    result.should.to.have.lengthOf(0);
+    result.should.eql('');
   });
 
   it('feed - parse argument if available', () => {
