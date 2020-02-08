@@ -21,7 +21,7 @@ describe('External link', () => {
 
     hexo.config.external_link.enable = false;
 
-    should.equal(externalLink(content), undefined);
+    should.not.exist(externalLink(content));
     hexo.config.external_link.enable = true;
   });
 
