@@ -63,9 +63,7 @@ describe('config', () => {
     });
   });
 
-  async function writeConfig() {
-    const args = Array.from(arguments);
-
+  async function writeConfig(...args) {
     await config({_: args});
     const content = await readFile(hexo.config_path);
     return load(content);
