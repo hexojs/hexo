@@ -33,11 +33,7 @@ describe('feed_tag', () => {
   });
 
   it('invalid input - number', () => {
-    try {
-      feed(123);
-    } catch (err) {
-      err.message.should.eql('path must be a string!');
-    }
+    should.throw(() => feed(123), 'path must be a string!');
   });
 
   it('invalid input - undefined', () => {

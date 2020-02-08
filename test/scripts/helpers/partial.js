@@ -1,6 +1,5 @@
 'use strict';
 
-const sinon = require('sinon');
 const pathFn = require('path');
 const fs = require('hexo-fs');
 const Promise = require('bluebird');
@@ -46,14 +45,10 @@ describe('partial', () => {
     partial('widget/tag').should.eql('tag widget');
 
     // not found
-    try {
-      partial('foo');
-    } catch (err) {
-      err.should.have.property(
-        'message',
-        `Partial foo does not exist. (in ${pathFn.join('post', viewName)})`
-      );
-    }
+    should.throw(
+      () => partial('foo'),
+      `Partial foo does not exist. (in ${pathFn.join('post', viewName)})`
+    );
   });
 
   it('locals', () => {
@@ -84,16 +79,6 @@ describe('partial', () => {
   });
 
   it('name must be a string', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'name must be a string!');
-    });
-
-    try {
-      partial();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => partial(), 'name must be a string!');
   });
 });

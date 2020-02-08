@@ -17,13 +17,7 @@ describe('Generator', () => {
     g.get('generator-0').should.exist;
 
     // no fn
-    try {
-      g.register('test');
-    } catch (err) {
-      err.should.be
-        .instanceOf(TypeError)
-        .property('message', 'fn must be a function');
-    }
+    should.throw(() => g.register('test'), TypeError, 'fn must be a function');
   });
 
   it('register() - promisify', async () => {

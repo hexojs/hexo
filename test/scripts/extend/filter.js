@@ -31,13 +31,7 @@ describe('Filter', () => {
     f.list('after_post_render')[1].priority.should.eql(50);
 
     // no fn
-    try {
-      f.register();
-    } catch (err) {
-      err.should.be
-        .instanceOf(TypeError)
-        .property('message', 'fn must be a function');
-    }
+    should.throw(() => f.register(), TypeError, 'fn must be a function');
   });
 
   it('register() - type alias', () => {
@@ -79,32 +73,12 @@ describe('Filter', () => {
 
   it('unregister() - type is required', () => {
     const f = new Filter();
-    const errorCallback = spy(err => {
-      err.should.have.property('message', 'type is required');
-    });
-
-    try {
-      f.unregister();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => f.unregister(), 'type is required');
   });
 
   it('unregister() - fn must be a function', () => {
     const f = new Filter();
-    const errorCallback = spy(err => {
-      err.should.have.property('message', 'fn must be a function');
-    });
-
-    try {
-      f.unregister('test');
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => f.unregister('test'), 'fn must be a function');
   });
 
   it('list()', () => {

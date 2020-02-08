@@ -12,22 +12,10 @@ describe('Helper', () => {
     h.get('test').should.exist;
 
     // no fn
-    try {
-      h.register('test');
-    } catch (err) {
-      err.should.be
-        .instanceOf(TypeError)
-        .property('message', 'fn must be a function');
-    }
+    should.throw(() => h.register('test'), TypeError, 'fn must be a function');
 
     // no name
-    try {
-      h.register();
-    } catch (err) {
-      err.should.be
-        .instanceOf(TypeError)
-        .property('message', 'name is required');
-    }
+    should.throw(() => h.register(), TypeError, 'name is required');
   });
 
   it('list()', () => {

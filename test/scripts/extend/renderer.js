@@ -21,31 +21,13 @@ describe('Renderer', () => {
     r.get('yaml', true).output.should.eql('json');
 
     // no fn
-    try {
-      r.register('yaml', 'json');
-    } catch (err) {
-      err.should.be
-        .instanceOf(TypeError)
-        .property('message', 'fn must be a function');
-    }
+    should.throw(() => r.register('yaml', 'json'), TypeError, 'fn must be a function');
 
     // no output
-    try {
-      r.register('yaml');
-    } catch (err) {
-      err.should.be
-        .instanceOf(TypeError)
-        .property('message', 'output is required');
-    }
+    should.throw(() => r.register('yaml'), TypeError, 'output is required');
 
     // no name
-    try {
-      r.register();
-    } catch (err) {
-      err.should.be
-        .instanceOf(TypeError)
-        .property('message', 'name is required');
-    }
+    should.throw(() => r.register(), TypeError, 'name is required');
   });
 
   it('register() - promisify', async () => {

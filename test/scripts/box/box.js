@@ -64,17 +64,8 @@ describe('Box', () => {
 
   it('addProcessor() - no fn', () => {
     const box = newBox();
-    const errorCallback = spy(err => {
-      err.should.have.property('message', 'fn must be a function');
-    });
 
-    try {
-      box.addProcessor('test');
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => box.addProcessor('test'), 'fn must be a function');
   });
 
   it('process()', async () => {

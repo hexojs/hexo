@@ -207,17 +207,7 @@ describe('Render', () => {
   });
 
   it('renderSync() - no path and text', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'No input file or string!');
-    });
-
-    try {
-      hexo.render.renderSync();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => hexo.render.renderSync(), 'No input file or string!');
   });
 
   it('renderSync() - options', () => {
