@@ -83,13 +83,7 @@ describe('Box', () => {
 
     await box.process();
 
-    const keys = Object.keys(data);
-    let key, item;
-
-    for (let i = 0, len = keys.length; i < len; i++) {
-      key = keys[i];
-      item = data[key];
-
+    for (const [key, item] of Object.entries(data)) {
       item.path.should.eql(key);
       item.source.should.eql(join(box.base, key));
       item.type.should.eql('create');
@@ -278,10 +272,7 @@ describe('Box', () => {
     ]);
     await box.process();
 
-    const keys = Object.keys(data);
-
-    keys.length.should.eql(1);
-    keys[0].should.eql('foo.txt');
+    data.should.to.have.all.keys(['foo.txt']);
 
     await rmdir(box.base);
   });
@@ -300,10 +291,7 @@ describe('Box', () => {
     ]);
     await box.process();
 
-    const keys = Object.keys(data);
-
-    keys.length.should.eql(1);
-    keys[0].should.eql('foo.txt');
+    data.should.to.have.all.keys(['foo.txt']);
 
     await rmdir(box.base);
   });
@@ -323,10 +311,7 @@ describe('Box', () => {
     ]);
     await box.process();
 
-    const keys = Object.keys(data);
-
-    keys.length.should.eql(1);
-    keys[0].should.eql('foo.txt');
+    data.should.to.have.all.keys(['foo.txt']);
 
     await rmdir(box.base);
   });
@@ -345,10 +330,7 @@ describe('Box', () => {
     ]);
     await box.process();
 
-    const keys = Object.keys(data);
-
-    keys.length.should.eql(1);
-    keys[0].should.eql('foo.txt');
+    data.should.to.have.all.keys(['foo.txt']);
 
     await rmdir(box.base);
   });
@@ -368,10 +350,7 @@ describe('Box', () => {
     ]);
     await box.process();
 
-    const keys = Object.keys(data);
-
-    keys.length.should.eql(1);
-    keys[0].should.eql('foo.txt');
+    data.should.to.have.all.keys(['foo.txt']);
 
     await rmdir(box.base);
   });

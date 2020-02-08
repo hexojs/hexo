@@ -76,7 +76,7 @@ describe('Console', () => {
 
     c.register('test', () => {});
 
-    c.list().should.have.keys(['test']);
+    c.list().should.to.have.all.keys(['test']);
   });
 
   it('get()', () => {

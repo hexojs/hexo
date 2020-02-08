@@ -23,7 +23,7 @@ describe('Helper', () => {
 
     h.register('test', () => {});
 
-    h.list().should.have.keys(['test']);
+    h.list().should.to.have.all.keys(['test']);
   });
 
   it('get()', () => {

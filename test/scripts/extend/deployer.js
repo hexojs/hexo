@@ -53,7 +53,7 @@ describe('Deployer', () => {
 
     d.register('test', () => {});
 
-    d.list().should.have.keys(['test']);
+    d.list().should.to.have.all.keys(['test']);
   });
 
   it('get()', () => {
