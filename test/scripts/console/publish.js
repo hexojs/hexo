@@ -14,7 +14,7 @@ describe('publish', () => {
   const now = Date.now();
   let clock;
 
-  before(async() => {
+  before(async () => {
     clock = useFakeTimers(now);
 
     await mkdirs(hexo.base_dir);
@@ -44,7 +44,7 @@ describe('publish', () => {
     layout: 'draft'
   }));
 
-  it('slug', async() => {
+  it('slug', async () => {
     const draftPath = join(hexo.source_dir, '_drafts', 'Hello-World.md');
     const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
@@ -70,7 +70,7 @@ describe('publish', () => {
     await unlink(path);
   });
 
-  it('layout', async() => {
+  it('layout', async () => {
     const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
 
@@ -92,7 +92,7 @@ describe('publish', () => {
     await unlink(path);
   });
 
-  it('rename if target existed', async() => {
+  it('rename if target existed', async () => {
     const path = join(hexo.source_dir, '_posts', 'Hello-World-1.md');
 
     await post.create({
@@ -111,7 +111,7 @@ describe('publish', () => {
     ]);
   });
 
-  it('replace existing target', async() => {
+  it('replace existing target', async () => {
     const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
 
     await post.create({
