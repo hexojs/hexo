@@ -236,7 +236,7 @@ describe('Box', () => {
     ]);
     await box.process();
 
-    processor.calledOnce.should.eql(true);
+    processor.calledOnce.should.to.be.true;
 
     await rmdir(box.base);
   });
@@ -254,7 +254,7 @@ describe('Box', () => {
     await writeFile(path, 'a');
     await box.process();
 
-    processor.calledOnce.should.eql(true);
+    processor.calledOnce.should.to.be.true;
 
     await rmdir(box.base);
   });
@@ -365,7 +365,7 @@ describe('Box', () => {
 
     await Promise.all([writeFile(src, 'a')]);
     await box.watch();
-    box.isWatching().should.eql(true);
+    box.isWatching().should.to.be.true;
     await Promise.delay(500);
 
     const file = processor.args[0][0];
@@ -627,7 +627,7 @@ describe('Box', () => {
     });
 
     await box.watch().catch(errorCallback);
-    errorCallback.calledOnce.should.eql(true);
+    errorCallback.calledOnce.should.to.be.true;
 
     box.unwatch();
   });
@@ -660,7 +660,7 @@ describe('Box', () => {
     box.unwatch();
 
     await writeFile(join(box.base, 'a.txt'), 'a');
-    processor.called.should.eql(false);
+    processor.called.should.to.be.false;
 
     box.unwatch();
     await rmdir(box.base);
@@ -669,13 +669,13 @@ describe('Box', () => {
   it('isWatching()', async () => {
     const box = newBox();
 
-    box.isWatching().should.eql(false);
+    box.isWatching().should.to.be.false;
 
     await box.watch();
-    box.isWatching().should.eql(true);
+    box.isWatching().should.to.be.true;
 
     box.unwatch();
-    box.isWatching().should.eql(false);
+    box.isWatching().should.to.be.false;
 
     box.unwatch();
   });
@@ -699,8 +699,8 @@ describe('Box', () => {
     await writeFile(join(box.base, 'a.txt'), 'a');
     await box.process();
 
-    beforeSpy.calledOnce.should.eql(true);
-    afterSpy.calledOnce.should.eql(true);
+    beforeSpy.calledOnce.should.to.be.true;
+    afterSpy.calledOnce.should.to.be.true;
 
     await rmdir(box.base);
   });

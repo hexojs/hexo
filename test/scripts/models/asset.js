@@ -12,7 +12,7 @@ describe('Asset', () => {
       _id: 'foo',
       path: 'bar'
     });
-    data.modified.should.eql(true);
+    data.modified.should.to.be.true;
 
     Asset.removeById(data._id);
   });

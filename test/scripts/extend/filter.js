@@ -68,7 +68,7 @@ describe('Filter', () => {
     f.unregister('test', filter);
 
     await f.exec('test');
-    filter.called.should.eql(false);
+    filter.called.should.to.be.false;
   });
 
   it('unregister() - type is required', () => {
@@ -109,8 +109,8 @@ describe('Filter', () => {
     f.register('test', filter2);
 
     const data = await f.exec('test', '');
-    filter1.calledOnce.should.eql(true);
-    filter2.calledOnce.should.eql(true);
+    filter1.calledOnce.should.to.be.true;
+    filter2.calledOnce.should.to.be.true;
     data.should.eql('foobar');
   });
 
@@ -132,8 +132,8 @@ describe('Filter', () => {
     f.register('test', filter2);
 
     const data = await f.exec('test', {});
-    filter1.calledOnce.should.eql(true);
-    filter2.calledOnce.should.eql(true);
+    filter1.calledOnce.should.to.be.true;
+    filter2.calledOnce.should.to.be.true;
     data.should.eql({ foo: 1, bar: 2 });
   });
 
@@ -156,8 +156,8 @@ describe('Filter', () => {
     await f.exec('test', {}, {
       args: [1, 2]
     });
-    filter1.calledOnce.should.eql(true);
-    filter2.calledOnce.should.eql(true);
+    filter1.calledOnce.should.to.be.true;
+    filter2.calledOnce.should.to.be.true;
   });
 
   it('exec() - context', async () => {
@@ -176,8 +176,8 @@ describe('Filter', () => {
     f.register('test', filter2);
 
     await f.exec('test', {}, { context: ctx });
-    filter1.calledOnce.should.eql(true);
-    filter2.calledOnce.should.eql(true);
+    filter1.calledOnce.should.to.be.true;
+    filter2.calledOnce.should.to.be.true;
   });
 
   it('execSync()', () => {

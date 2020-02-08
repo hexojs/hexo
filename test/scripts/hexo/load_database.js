@@ -40,7 +40,7 @@ describe('Load database', () => {
   it('database load success', async () => {
     await writeFile(dbPath, JSON.stringify(fixture));
     await loadDatabase(hexo);
-    hexo._dbLoaded.should.eql(true);
+    hexo._dbLoaded.should.to.be.true;
     hexo.model('Test').toArray({lean: true}).should.eql(fixture.models.Test);
     hexo.model('Test').destroy();
 
@@ -73,8 +73,8 @@ describe('Load database - load failed', () => {
 
     await writeFile(dbPath, '{1423432: 324');
     await loadDatabase(hexo);
-    hexo._dbLoaded.should.eql(false);
+    hexo._dbLoaded.should.to.be.false;
     const exist = await exists(dbPath);
-    exist.should.eql(false);
+    exist.should.to.be.false;
   });
 });

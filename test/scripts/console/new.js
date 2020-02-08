@@ -167,7 +167,7 @@ describe('new', () => {
       _: ['Hello World']
     });
     const exist = await exists(path);
-    exist.should.eql(true);
+    exist.should.to.be.true;
 
     await Promise.all([
       unlink(path),
@@ -193,7 +193,7 @@ describe('new', () => {
       replace: true
     });
     const exist = await exists(join(hexo.source_dir, '_posts', 'Hello-World-1.md'));
-    exist.should.eql(false);
+    exist.should.to.be.false;
 
     const content = await readFile(path);
     content.should.eql(body);
@@ -219,7 +219,7 @@ describe('new', () => {
       r: true
     });
     const exist = await exists(join(hexo.source_dir, '_posts', 'Hello-World-1.md'));
-    exist.should.eql(false);
+    exist.should.to.be.false;
 
     const content = await readFile(path);
     content.should.eql(body);
