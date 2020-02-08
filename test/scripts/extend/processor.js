@@ -25,6 +25,6 @@ describe('Processor', () => {
 
     p.register('test', () => {});
 
-    p.list().length.should.eql(1);
+    p.list().should.to.have.lengthOf(1);
   });
 });

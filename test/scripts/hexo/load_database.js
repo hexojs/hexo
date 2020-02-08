@@ -53,7 +53,7 @@ describe('Load database', () => {
     await writeFile(dbPath, JSON.stringify(fixture));
     await loadDatabase(hexo);
 
-    hexo.model('Test').length.should.eql(0);
+    hexo.model('Test').should.to.have.lengthOf(0);
 
     await unlink(dbPath);
   });

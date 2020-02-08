@@ -42,7 +42,7 @@ describe('feed_tag', () => {
     const typeOf = str => typeof str;
 
     typeOf(result).should.eql('string');
-    result.length.should.eql(0);
+    result.should.to.have.lengthOf(0);
   });
 
   it('feed - parse argument if available', () => {
