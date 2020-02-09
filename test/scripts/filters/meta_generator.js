@@ -25,10 +25,9 @@ describe('Meta Generator', () => {
 
   it('no duplicate generator tag', () => {
     hexo.config.meta_generator = true;
-    const result = str => metaGenerator(str);
 
-    should.not.exist(result('<head><link><meta name="generator" content="foo"></head>'));
-    should.not.exist(result('<head><link><meta content="foo" name="generator"></head>'));
+    should.not.exist(metaGenerator('<head><link><meta name="generator" content="foo"></head>'));
+    should.not.exist(metaGenerator('<head><link><meta content="foo" name="generator"></head>'));
   });
 
   it('ignore empty head tag', () => {
