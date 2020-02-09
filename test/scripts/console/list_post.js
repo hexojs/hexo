@@ -23,12 +23,12 @@ describe('Console list', () => {
 
   it('no post', () => {
     listPosts();
-    expect(console.log.calledWith(sinon.match('Date'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Title'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Path'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Category'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Tags'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('No posts.'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('Date'))).be.true;
+    expect(console.log.calledWith(sinon.match('Title'))).be.true;
+    expect(console.log.calledWith(sinon.match('Path'))).be.true;
+    expect(console.log.calledWith(sinon.match('Category'))).be.true;
+    expect(console.log.calledWith(sinon.match('Tags'))).be.true;
+    expect(console.log.calledWith(sinon.match('No posts.'))).be.true;
   });
 
   it('post', () => {
@@ -43,15 +43,15 @@ describe('Console list', () => {
       })
       .then(() => {
         listPosts();
-        expect(console.log.calledWith(sinon.match('Date'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('Title'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('Path'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('Category'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('Tags'))).to.be.true;
+        expect(console.log.calledWith(sinon.match('Date'))).be.true;
+        expect(console.log.calledWith(sinon.match('Title'))).be.true;
+        expect(console.log.calledWith(sinon.match('Path'))).be.true;
+        expect(console.log.calledWith(sinon.match('Category'))).be.true;
+        expect(console.log.calledWith(sinon.match('Tags'))).be.true;
         for (let i = 0; i < posts.length; i++) {
-          expect(console.log.calledWith(sinon.match(posts[i].source))).to.be.true;
-          expect(console.log.calledWith(sinon.match(posts[i].slug))).to.be.true;
-          expect(console.log.calledWith(sinon.match(posts[i].title))).to.be.true;
+          expect(console.log.calledWith(sinon.match(posts[i].source))).be.true;
+          expect(console.log.calledWith(sinon.match(posts[i].slug))).be.true;
+          expect(console.log.calledWith(sinon.match(posts[i].title))).be.true;
         }
       });
   });

@@ -49,7 +49,7 @@ describe('data', () => {
       path: 'users.yaml'
     });
 
-    should.equal(pattern.match('users.json'), undefined);
+    should.not.exist(pattern.match('users.json'));
   });
 
   it('type: create - yaml', async () => {
@@ -139,6 +139,6 @@ describe('data', () => {
       data: {foo: 'bar'}
     });
     await process(file);
-    should.equal(Data.findById('users'), undefined);
+    should.not.exist(Data.findById('users'));
   });
 });

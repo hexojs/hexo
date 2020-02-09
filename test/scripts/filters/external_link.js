@@ -32,7 +32,7 @@ describe('External link', () => {
 
     hexo.config.external_link.field = 'post';
 
-    should.equal(externalLink(content), undefined);
+    should.not.exist(externalLink(content));
     hexo.config.external_link.field = 'site';
   });
 
@@ -95,7 +95,7 @@ describe('External link', () => {
 
     hexo.config.external_link = false;
 
-    should.equal(externalLink(content), undefined);
+    should.not.exist(externalLink(content));
     hexo.config.external_link = {
       enable: true,
       field: 'site',

@@ -9,7 +9,7 @@ describe('meta_generator', () => {
   it('default', () => {
     const { version } = hexo;
 
-    should.not.equal(version, undefined);
+    should.exist(version);
     metaGeneratorHelper().should.eql(`<meta name="generator" content="Hexo ${version}">`);
   });
 });

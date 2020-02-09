@@ -228,7 +228,7 @@ describe('date', () => {
   it('toMomentLocale', () => {
     const toMomentLocale = dateHelper.toMomentLocale;
 
-    (toMomentLocale(undefined) === undefined).should.to.be.true;
+    (toMomentLocale(undefined) === undefined).should.be.true;
     toMomentLocale(null).should.eql('en');
     toMomentLocale('').should.eql('en');
     toMomentLocale('en').should.eql('en');

@@ -132,7 +132,7 @@ describe('open_graph', () => {
 
     const $ = cheerio.load(result);
 
-    $('meta[property="og:url"]').attr('content').endsWith('index.html').should.to.be.false;
+    $('meta[property="og:url"]').attr('content').endsWith('index.html').should.be.false;
 
     hexo.config.pretty_urls.trailing_index = true;
   });
@@ -148,7 +148,7 @@ describe('open_graph', () => {
 
     const $ = cheerio.load(result);
 
-    $('meta[property="og:url"]').attr('content').endsWith('.html').should.to.be.false;
+    $('meta[property="og:url"]').attr('content').endsWith('.html').should.be.false;
 
     hexo.config.pretty_urls.trailing_html = true;
   });

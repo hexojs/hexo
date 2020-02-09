@@ -49,8 +49,8 @@ describe('generate', () => {
     // Check the updated file
     result[1].should.eql('yoooo');
     // Old files should not be deleted
-    result[2].should.to.be.true;
-    result[3].should.to.be.true;
+    result[2].should.be.true;
+    result[3].should.be.true;
   };
 
   it('default', () => testGenerate());
@@ -174,7 +174,7 @@ describe('generate', () => {
 
     await generate({ deploy: true });
 
-    deployer.calledOnce.should.to.be.true;
+    deployer.calledOnce.should.be.true;
   });
 
   it('update theme source files', async () => {
@@ -312,8 +312,8 @@ describe('generate - watch (delete)', () => {
     // Check the updated file
     result[1].should.eql('yoooo');
     // Old files should not be deleted
-    result[2].should.to.be.true;
-    result[3].should.to.be.true;
+    result[2].should.be.true;
+    result[3].should.be.true;
   };
 
   it('watch - delete', async () => {
@@ -323,6 +323,6 @@ describe('generate - watch (delete)', () => {
     await Promise.delay(300);
 
     const exist = await exists(join(hexo.public_dir, 'test.txt'));
-    exist.should.to.be.false;
+    exist.should.be.false;
   });
 });
