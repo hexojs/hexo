@@ -95,7 +95,7 @@ describe('Box', () => {
     const keys = Object.keys(data);
     let key, item;
 
-    for (let i = 0, len = keys.length; i < len; i++) {
+    for (let i = 0; i < keys.length; i++) {
       key = keys[i];
       item = data[key];
 

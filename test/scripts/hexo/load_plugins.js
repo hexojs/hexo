@@ -37,7 +37,7 @@ describe('Load plugins', () => {
       dependencies: {}
     };
 
-    for (let i = 0, len = args.length; i < len; i++) {
+    for (let i = 0; i < args.length; i++) {
       pkg.dependencies[args[i]] = '*';
     }
 
@@ -53,7 +53,7 @@ describe('Load plugins', () => {
       devDependencies: {}
     };
 
-    for (let i = 0, len = args.length; i < len; i++) {
+    for (let i = 0; i < args.length; i++) {
       pkg.devDependencies[args[i]] = '*';
     }
 

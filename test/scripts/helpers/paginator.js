@@ -34,7 +34,7 @@ describe('paginator', () => {
       expected += '<a class="extend prev" rel="prev" href="' + link(current - 1) + '">Prev</a>';
     }
 
-    for (let i = 0, len = pages.length; i < len; i++) {
+    for (let i = 0; i < pages.length; i++) {
       num = pages[i];
 
       if (!num) {
