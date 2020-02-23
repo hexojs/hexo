@@ -57,22 +57,22 @@ describe('partial', () => {
   });
 
   it('locals', () => {
-    hexo.theme.setView('test.swig', '{{ foo }}');
+    hexo.theme.setView('test1.swig', '{{ foo }}');
 
-    partial('test', {foo: 'bar'}).should.eql('bar');
+    partial('test1', {foo: 'bar'}).should.eql('bar');
   });
 
   it('cache', () => {
-    hexo.theme.setView('test.swig', '{{ foo }}');
+    hexo.theme.setView('test1.swig', '{{ foo }}');
 
-    partial('test', {foo: 'bar'}, {cache: true}).should.eql('bar');
-    partial('test', {}, {cache: true}).should.eql('bar');
+    partial('test1', {foo: 'bar'}, {cache: true}).should.eql('bar');
+    partial('test1', {}, {cache: true}).should.eql('bar');
   });
 
   it('only', () => {
-    hexo.theme.setView('test.swig', '{{ foo }}{{ bar }}');
+    hexo.theme.setView('test2.swig', '{{ foo }}{{ bar }}');
 
-    partial('test', {bar: 'bar'}, {only: true}).should.eql('bar');
+    partial('test2', {bar: 'bar'}, {only: true}).should.eql('bar');
   });
 
   it('a partial in another partial', () => {
