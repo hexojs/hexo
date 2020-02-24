@@ -23,7 +23,7 @@ script:
     fi
   - npm run test-cov
   - if [[ $TRAVIS_OS_NAME == "linux" ]]; then
-      npm install 0x && ./test/benchmark.sh;
+      ./test/benchmark.sh;
     fi
 
 after_script:

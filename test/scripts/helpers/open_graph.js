@@ -714,14 +714,25 @@ describe('open_graph', () => {
 
   it('og:locale - language is not in lang-TERRITORY format', () => {
     hexo.config.language = 'en';
-
-    const result = openGraph.call({
+    openGraph.call({
       page: {},
       config: hexo.config,
       is_post: isPost
-    });
+    }).should.have.string(meta({property: 'og:locale', content: 'en_US'}));
 
-    result.should.have.string(meta({property: 'og:locale', content: 'en_US'}));
+    hexo.config.language = 'Fr_fr';
+    openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    }).should.have.string(meta({property: 'og:locale', content: 'fr_FR'}));
+
+    hexo.config.language = 'zh-CN';
+    openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    }).should.have.string(meta({property: 'og:locale', content: 'zh_CN'}));
   });
 
   it('article:author - options.author', () => {
