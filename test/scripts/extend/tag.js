@@ -167,7 +167,7 @@ describe('Tag', () => {
   it('render() - callback', () => {
     const tag = new Tag();
 
-    const callback = sinon.spy();
+    const callback = spy();
 
     tag.register('test', () => 'foo');
 
