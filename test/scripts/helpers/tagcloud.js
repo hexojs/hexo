@@ -243,6 +243,18 @@ describe('tagcloud', () => {
     ].join(' '));
   });
 
+  it('color - missing start_color', () => {
+    try {
+      tagcloud({
+        color: true,
+        end_color: 'pink'
+      });
+      should.fail();
+    } catch (err) {
+      err.message.should.eql('start_color is required!');
+    }
+  });
+
   it('separator', () => {
     const result = tagcloud({
       separator: ', '
