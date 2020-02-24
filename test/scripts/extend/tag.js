@@ -134,31 +134,11 @@ describe('Tag', () => {
   });
 
   it('register() - name is required', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'name is required');
-    });
-
-    try {
-      tag.register();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => tag.register(), 'name is required');
   });
 
   it('register() - fn must be a function', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'fn must be a function');
-    });
-
-    try {
-      tag.register('test');
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => tag.register('test'), 'fn must be a function');
   });
 
   it('unregister()', () => {
@@ -178,17 +158,7 @@ describe('Tag', () => {
   });
 
   it('unregister() - name is required', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'name is required');
-    });
-
-    try {
-      tag.unregister();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => tag.unregister(), 'name is required');
   });
 
 

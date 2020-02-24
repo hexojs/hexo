@@ -144,7 +144,7 @@ describe('Tag', () => {
 
     hexo.locals.invalidate();
     tag.posts.map(mapper).should.eql(posts.map(mapper));
-    tag.length.should.eql(posts.length);
+    tag.should.have.lengthOf(posts.length);
 
     await tag.remove();
     await Promise.all(posts.map(post => post.remove()));
@@ -168,14 +168,14 @@ describe('Tag', () => {
     hexo.locals.invalidate();
     tag.posts.eq(0)._id.should.eql(posts[0]._id);
     tag.posts.eq(1)._id.should.eql(posts[2]._id);
-    tag.length.should.eql(2);
+    tag.should.have.lengthOf(2);
 
     // draft on
     hexo.config.render_drafts = true;
     tag = Tag.findOne({name: 'foo'});
     hexo.locals.invalidate();
     tag.posts.map(mapper).should.eql(posts.map(mapper));
-    tag.length.should.eql(posts.length);
+    tag.should.have.lengthOf(posts.length);
     hexo.config.render_drafts = false;
 
     await tag.remove();
@@ -202,7 +202,7 @@ describe('Tag', () => {
     hexo.config.future = true;
     hexo.locals.invalidate();
     tag.posts.map(mapper).should.eql(posts.map(mapper));
-    tag.length.should.eql(posts.length);
+    tag.should.have.lengthOf(posts.length);
 
     // future off
     hexo.config.future = false;
@@ -210,7 +210,7 @@ describe('Tag', () => {
     tag = Tag.findOne({name: 'foo'});
     tag.posts.eq(0)._id.should.eql(posts[0]._id);
     tag.posts.eq(1)._id.should.eql(posts[2]._id);
-    tag.length.should.eql(2);
+    tag.should.have.lengthOf(2);
 
     await tag.remove();
     await Promise.all(posts.map(post => post.remove()));
@@ -243,7 +243,7 @@ describe('Tag', () => {
     const tag = Tag.findOne({name: 'foo'});
     await Tag.removeById(tag._id);
 
-    PostTag.find({tag_id: tag._id}).length.should.eql(0);
+    PostTag.find({tag_id: tag._id}).should.have.lengthOf(0);
 
     await Promise.all(posts.map(post => Post.removeById(post._id)));
   });

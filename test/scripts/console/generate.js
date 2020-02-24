@@ -49,8 +49,8 @@ describe('generate', () => {
     // Check the updated file
     result[1].should.eql('yoooo');
     // Old files should not be deleted
-    result[2].should.eql(true);
-    result[3].should.eql(true);
+    result[2].should.be.true;
+    result[3].should.be.true;
   };
 
   it('default', () => testGenerate());
@@ -174,7 +174,7 @@ describe('generate', () => {
 
     await generate({ deploy: true });
 
-    deployer.calledOnce.should.eql(true);
+    deployer.calledOnce.should.be.true;
   });
 
   it('update theme source files', async () => {
@@ -220,9 +220,7 @@ describe('generate', () => {
       ]
     );
 
-    await Promise.all([
-      writeFile(join(hexo.theme_dir, 'layout', 'post.err'), 'post')
-    ]);
+    await writeFile(join(hexo.theme_dir, 'layout', 'post.err'), 'post');
     return generate();
   });
 
@@ -238,9 +236,7 @@ describe('generate', () => {
       ]
     );
 
-    await Promise.all([
-      writeFile(join(hexo.theme_dir, 'layout', 'post.err'), 'post')
-    ]);
+    await writeFile(join(hexo.theme_dir, 'layout', 'post.err'), 'post');
     return generate({ bail: false });
   });
 
@@ -260,9 +256,7 @@ describe('generate', () => {
       err.should.have.property('message', 'Testing unhandled exception');
     });
 
-    await Promise.all([
-      writeFile(join(hexo.theme_dir, 'layout', 'post.err'), 'post')
-    ]);
+    await writeFile(join(hexo.theme_dir, 'layout', 'post.err'), 'post');
 
     return generate({ bail: true }).catch(errorCallback).finally(() => {
       errorCallback.calledOnce.should.be.true;
@@ -318,8 +312,8 @@ describe('generate - watch (delete)', () => {
     // Check the updated file
     result[1].should.eql('yoooo');
     // Old files should not be deleted
-    result[2].should.eql(true);
-    result[3].should.eql(true);
+    result[2].should.be.true;
+    result[3].should.be.true;
   };
 
   it('watch - delete', async () => {
@@ -329,6 +323,6 @@ describe('generate - watch (delete)', () => {
     await Promise.delay(300);
 
     const exist = await exists(join(hexo.public_dir, 'test.txt'));
-    exist.should.eql(false);
+    exist.should.be.false;
   });
 });

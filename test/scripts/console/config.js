@@ -63,9 +63,7 @@ describe('config', () => {
     });
   });
 
-  async function writeConfig() {
-    const args = Array.from(arguments);
-
+  async function writeConfig(...args) {
     await config({_: args});
     const content = await readFile(hexo.config_path);
     return load(content);
@@ -83,12 +81,12 @@ describe('config', () => {
 
   it('write config: false', async () => {
     const config = await writeConfig('post_asset_folder', 'false');
-    config.post_asset_folder.should.eql(false);
+    config.post_asset_folder.should.be.false;
   });
 
   it('write config: true', async () => {
     const config = await writeConfig('post_asset_folder', 'true');
-    config.post_asset_folder.should.eql(true);
+    config.post_asset_folder.should.be.true;
   });
 
   it('write config: null', async () => {

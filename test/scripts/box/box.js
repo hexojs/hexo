@@ -64,17 +64,8 @@ describe('Box', () => {
 
   it('addProcessor() - no fn', () => {
     const box = newBox();
-    const errorCallback = spy(err => {
-      err.should.have.property('message', 'fn must be a function');
-    });
 
-    try {
-      box.addProcessor('test');
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => box.addProcessor('test'), 'fn must be a function');
   });
 
   it('process()', async () => {
@@ -92,13 +83,7 @@ describe('Box', () => {
 
     await box.process();
 
-    const keys = Object.keys(data);
-    let key, item;
-
-    for (let i = 0, len = keys.length; i < len; i++) {
-      key = keys[i];
-      item = data[key];
-
+    for (const [key, item] of Object.entries(data)) {
       item.path.should.eql(key);
       item.source.should.eql(join(box.base, key));
       item.type.should.eql('create');
@@ -251,7 +236,7 @@ describe('Box', () => {
     ]);
     await box.process();
 
-    processor.calledOnce.should.eql(true);
+    processor.calledOnce.should.be.true;
 
     await rmdir(box.base);
   });
@@ -269,7 +254,7 @@ describe('Box', () => {
     await writeFile(path, 'a');
     await box.process();
 
-    processor.calledOnce.should.eql(true);
+    processor.calledOnce.should.be.true;
 
     await rmdir(box.base);
   });
@@ -282,15 +267,10 @@ describe('Box', () => {
       data[file.path] = file;
     });
 
-    await Promise.all([
-      writeFile(join(box.base, 'foo.txt'), 'foo')
-    ]);
+    await writeFile(join(box.base, 'foo.txt'), 'foo');
     await box.process();
 
-    const keys = Object.keys(data);
-
-    keys.length.should.eql(1);
-    keys[0].should.eql('foo.txt');
+    data.should.have.all.keys(['foo.txt']);
 
     await rmdir(box.base);
   });
@@ -309,10 +289,7 @@ describe('Box', () => {
     ]);
     await box.process();
 
-    const keys = Object.keys(data);
-
-    keys.length.should.eql(1);
-    keys[0].should.eql('foo.txt');
+    data.should.have.all.keys(['foo.txt']);
 
     await rmdir(box.base);
   });
@@ -332,10 +309,7 @@ describe('Box', () => {
     ]);
     await box.process();
 
-    const keys = Object.keys(data);
-
-    keys.length.should.eql(1);
-    keys[0].should.eql('foo.txt');
+    data.should.have.all.keys(['foo.txt']);
 
     await rmdir(box.base);
   });
@@ -354,10 +328,7 @@ describe('Box', () => {
     ]);
     await box.process();
 
-    const keys = Object.keys(data);
-
-    keys.length.should.eql(1);
-    keys[0].should.eql('foo.txt');
+    data.should.have.all.keys(['foo.txt']);
 
     await rmdir(box.base);
   });
@@ -377,10 +348,7 @@ describe('Box', () => {
     ]);
     await box.process();
 
-    const keys = Object.keys(data);
-
-    keys.length.should.eql(1);
-    keys[0].should.eql('foo.txt');
+    data.should.have.all.keys(['foo.txt']);
 
     await rmdir(box.base);
   });
@@ -393,9 +361,9 @@ describe('Box', () => {
 
     box.addProcessor(processor);
 
-    await Promise.all([writeFile(src, 'a')]);
+    await writeFile(src, 'a');
     await box.watch();
-    box.isWatching().should.eql(true);
+    box.isWatching().should.be.true;
     await Promise.delay(500);
 
     const file = processor.args[0][0];
@@ -657,7 +625,7 @@ describe('Box', () => {
     });
 
     await box.watch().catch(errorCallback);
-    errorCallback.calledOnce.should.eql(true);
+    errorCallback.calledOnce.should.be.true;
 
     box.unwatch();
   });
@@ -690,7 +658,7 @@ describe('Box', () => {
     box.unwatch();
 
     await writeFile(join(box.base, 'a.txt'), 'a');
-    processor.called.should.eql(false);
+    processor.called.should.be.false;
 
     box.unwatch();
     await rmdir(box.base);
@@ -699,13 +667,13 @@ describe('Box', () => {
   it('isWatching()', async () => {
     const box = newBox();
 
-    box.isWatching().should.eql(false);
+    box.isWatching().should.be.false;
 
     await box.watch();
-    box.isWatching().should.eql(true);
+    box.isWatching().should.be.true;
 
     box.unwatch();
-    box.isWatching().should.eql(false);
+    box.isWatching().should.be.false;
 
     box.unwatch();
   });
@@ -729,8 +697,8 @@ describe('Box', () => {
     await writeFile(join(box.base, 'a.txt'), 'a');
     await box.process();
 
-    beforeSpy.calledOnce.should.eql(true);
-    afterSpy.calledOnce.should.eql(true);
+    beforeSpy.calledOnce.should.be.true;
+    afterSpy.calledOnce.should.be.true;
 
     await rmdir(box.base);
   });

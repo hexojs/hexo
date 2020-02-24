@@ -28,7 +28,7 @@ describe('PostAsset', () => {
       slug: 'foo',
       post: post._id
     });
-    data.modified.should.eql(true);
+    data.modified.should.be.true;
     PostAsset.removeById(data._id);
   });
 

@@ -31,13 +31,7 @@ describe('Filter', () => {
     f.list('after_post_render')[1].priority.should.eql(50);
 
     // no fn
-    try {
-      f.register();
-    } catch (err) {
-      err.should.be
-        .instanceOf(TypeError)
-        .property('message', 'fn must be a function');
-    }
+    should.throw(() => f.register(), TypeError, 'fn must be a function');
   });
 
   it('register() - type alias', () => {
@@ -74,37 +68,17 @@ describe('Filter', () => {
     f.unregister('test', filter);
 
     await f.exec('test');
-    filter.called.should.eql(false);
+    filter.called.should.be.false;
   });
 
   it('unregister() - type is required', () => {
     const f = new Filter();
-    const errorCallback = spy(err => {
-      err.should.have.property('message', 'type is required');
-    });
-
-    try {
-      f.unregister();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => f.unregister(), 'type is required');
   });
 
   it('unregister() - fn must be a function', () => {
     const f = new Filter();
-    const errorCallback = spy(err => {
-      err.should.have.property('message', 'fn must be a function');
-    });
-
-    try {
-      f.unregister('test');
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => f.unregister('test'), 'fn must be a function');
   });
 
   it('list()', () => {
@@ -114,7 +88,7 @@ describe('Filter', () => {
 
     f.list().test.should.exist;
     f.list('test')[0].should.exist;
-    f.list('foo').length.should.eql(0);
+    f.list('foo').should.have.lengthOf(0);
   });
 
   it('exec()', async () => {
@@ -135,8 +109,8 @@ describe('Filter', () => {
     f.register('test', filter2);
 
     const data = await f.exec('test', '');
-    filter1.calledOnce.should.eql(true);
-    filter2.calledOnce.should.eql(true);
+    filter1.calledOnce.should.be.true;
+    filter2.calledOnce.should.be.true;
     data.should.eql('foobar');
   });
 
@@ -158,8 +132,8 @@ describe('Filter', () => {
     f.register('test', filter2);
 
     const data = await f.exec('test', {});
-    filter1.calledOnce.should.eql(true);
-    filter2.calledOnce.should.eql(true);
+    filter1.calledOnce.should.be.true;
+    filter2.calledOnce.should.be.true;
     data.should.eql({ foo: 1, bar: 2 });
   });
 
@@ -182,8 +156,8 @@ describe('Filter', () => {
     await f.exec('test', {}, {
       args: [1, 2]
     });
-    filter1.calledOnce.should.eql(true);
-    filter2.calledOnce.should.eql(true);
+    filter1.calledOnce.should.be.true;
+    filter2.calledOnce.should.be.true;
   });
 
   it('exec() - context', async () => {
@@ -202,8 +176,8 @@ describe('Filter', () => {
     f.register('test', filter2);
 
     await f.exec('test', {}, { context: ctx });
-    filter1.calledOnce.should.eql(true);
-    filter2.calledOnce.should.eql(true);
+    filter1.calledOnce.should.be.true;
+    filter2.calledOnce.should.be.true;
   });
 
   it('execSync()', () => {

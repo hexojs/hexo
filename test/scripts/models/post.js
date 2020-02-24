@@ -431,10 +431,10 @@ describe('Post', () => {
     slug: 'bar'
   }).then(post => post.setTags(['foo', 'bar', 'baz'])
     .thenReturn(Post.findById(post._id))).then(post => Post.removeById(post._id)).then(post => {
-    PostTag.find({post_id: post._id}).length.should.eql(0);
-    Tag.findOne({name: 'foo'}).posts.length.should.eql(0);
-    Tag.findOne({name: 'bar'}).posts.length.should.eql(0);
-    Tag.findOne({name: 'baz'}).posts.length.should.eql(0);
+    PostTag.find({post_id: post._id}).should.have.lengthOf(0);
+    Tag.findOne({name: 'foo'}).posts.should.have.lengthOf(0);
+    Tag.findOne({name: 'bar'}).posts.should.have.lengthOf(0);
+    Tag.findOne({name: 'baz'}).posts.should.have.lengthOf(0);
   }));
 
   it('remove PostCategory references when a post is removed', () => Post.insert({
@@ -442,10 +442,10 @@ describe('Post', () => {
     slug: 'bar'
   }).then(post => post.setCategories(['foo', 'bar', 'baz'])
     .thenReturn(Post.findById(post._id))).then(post => Post.removeById(post._id)).then(post => {
-    PostCategory.find({post_id: post._id}).length.should.eql(0);
-    Category.findOne({name: 'foo'}).posts.length.should.eql(0);
-    Category.findOne({name: 'bar'}).posts.length.should.eql(0);
-    Category.findOne({name: 'baz'}).posts.length.should.eql(0);
+    PostCategory.find({post_id: post._id}).should.have.lengthOf(0);
+    Category.findOne({name: 'foo'}).posts.should.have.lengthOf(0);
+    Category.findOne({name: 'bar'}).posts.should.have.lengthOf(0);
+    Category.findOne({name: 'baz'}).posts.should.have.lengthOf(0);
   }));
 
   it('remove related assets when a post is removed', () => Post.insert({
@@ -456,6 +456,6 @@ describe('Post', () => {
     Asset.insert({_id: 'bar', path: 'bar'}),
     Asset.insert({_id: 'baz', path: 'bar'})
   ]).thenReturn(post)).then(post => Post.removeById(post._id)).then(post => {
-    Asset.find({post: post._id}).length.should.eql(0);
+    Asset.find({post: post._id}).should.have.lengthOf(0);
   }));
 });

@@ -21,8 +21,7 @@ describe('External link', () => {
 
     hexo.config.external_link.enable = false;
 
-    const result = typeof externalLink(content);
-    result.should.eql('undefined');
+    should.not.exist(externalLink(content));
     hexo.config.external_link.enable = true;
   });
 
@@ -33,8 +32,7 @@ describe('External link', () => {
 
     hexo.config.external_link.field = 'post';
 
-    const result = typeof externalLink(content);
-    result.should.eql('undefined');
+    should.not.exist(externalLink(content));
     hexo.config.external_link.field = 'site';
   });
 
@@ -97,9 +95,7 @@ describe('External link', () => {
 
     hexo.config.external_link = false;
 
-    const result = typeof externalLink(content);
-    result.should.eql('undefined');
-
+    should.not.exist(externalLink(content));
     hexo.config.external_link = {
       enable: true,
       field: 'site',
