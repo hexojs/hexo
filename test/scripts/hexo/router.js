@@ -57,17 +57,7 @@ describe('Router', () => {
   });
 
   it('format() - path must be a string', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'path must be a string!');
-    });
-
-    try {
-      router.format(() => {});
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => router.format(() => {}), 'path must be a string!');
   });
 
   it('set() - string', () => {
@@ -120,31 +110,11 @@ describe('Router', () => {
   });
 
   it('set() - path must be a string', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'path must be a string!');
-    });
-
-    try {
-      router.set();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => router.set(), 'path must be a string!');
   });
 
   it('set() - data is required', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'data is required!');
-    });
-
-    try {
-      router.set('test');
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => router.set('test'), 'data is required!');
   });
 
   it('get() - error handling', () => {
@@ -192,17 +162,7 @@ describe('Router', () => {
   });
 
   it('get() - path must be a string', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'path must be a string!');
-    });
-
-    try {
-      router.get();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => router.get(), 'path must be a string!');
   });
 
   it('get() - export stringified JSON object', () => {
@@ -230,17 +190,7 @@ describe('Router', () => {
   });
 
   it('isModified() - path must be a string', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'path must be a string!');
-    });
-
-    try {
-      router.isModified();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => router.isModified(), 'path must be a string!');
   });
 
   it('remove()', () => {
@@ -257,16 +207,6 @@ describe('Router', () => {
   });
 
   it('remove() - path must be a string', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'path must be a string!');
-    });
-
-    try {
-      router.remove();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => router.remove(), 'path must be a string!');
   });
 });

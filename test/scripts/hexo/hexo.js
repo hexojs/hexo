@@ -84,7 +84,7 @@ describe('Hexo', () => {
     const Locals = hexo._generateLocals();
     const { theme } = new Locals();
 
-    Object.prototype.hasOwnProperty.call(theme.a, 'c').should.eql(true);
+    theme.a.should.have.own.property('c');
     theme.a.b.should.eql(3);
   });
 
@@ -95,7 +95,7 @@ describe('Hexo', () => {
     const Locals = hexo._generateLocals();
     const { theme } = new Locals();
 
-    Object.prototype.hasOwnProperty.call(theme, 'c').should.eql(true);
+    theme.should.have.own.property('c');
     theme.c.should.eql(3);
   });
 
@@ -416,6 +416,19 @@ describe('Hexo', () => {
 
       return checkStream(route.get('bar'), 'newbar');
     });
+  });
+
+  it('_generate() - after_route_render filter', () => {
+    const hook = sinon.spy(result => result.replace('foo', 'bar'));
+    hexo.extend.filter.register('after_route_render', hook);
+    hexo.theme.setView('test.swig', 'foo');
+    hexo.extend.generator.register('test', () => ({
+      path: 'test',
+      layout: 'test'
+    }));
+    return hexo._generate()
+      .then(() => checkStream(route.get('test'), 'bar'))
+      .then(() => hook.called.should.be.true);
   });
 
   it('_generate() - return nothing in generator', () => {

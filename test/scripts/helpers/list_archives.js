@@ -19,14 +19,16 @@ describe('list_archives', () => {
     ctx.site = hexo.locals.toObject();
   }
 
-  before(() => hexo.init().then(() => Post.insert([
-    {source: 'foo', slug: 'foo', date: new Date(2014, 1, 2)},
-    {source: 'bar', slug: 'bar', date: new Date(2013, 5, 6)},
-    {source: 'baz', slug: 'baz', date: new Date(2013, 9, 10)},
-    {source: 'boo', slug: 'boo', date: new Date(2013, 5, 8)}
-  ])).then(() => {
+  before(async () => {
+    await hexo.init();
+    await Post.insert([
+      {source: 'foo', slug: 'foo', date: new Date(2014, 1, 2)},
+      {source: 'bar', slug: 'bar', date: new Date(2013, 5, 6)},
+      {source: 'baz', slug: 'baz', date: new Date(2013, 9, 10)},
+      {source: 'boo', slug: 'boo', date: new Date(2013, 5, 8)}
+    ]);
     resetLocals();
-  }));
+  });
 
   it('default', () => {
     const result = listArchives();

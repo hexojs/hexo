@@ -1,6 +1,0 @@
---colors
---reporter spec
---ui bdd
---full-trace
---exit
---require chai/register-should

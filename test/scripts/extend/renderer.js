@@ -21,34 +21,16 @@ describe('Renderer', () => {
     r.get('yaml', true).output.should.eql('json');
 
     // no fn
-    try {
-      r.register('yaml', 'json');
-    } catch (err) {
-      err.should.be
-        .instanceOf(TypeError)
-        .property('message', 'fn must be a function');
-    }
+    should.throw(() => r.register('yaml', 'json'), TypeError, 'fn must be a function');
 
     // no output
-    try {
-      r.register('yaml');
-    } catch (err) {
-      err.should.be
-        .instanceOf(TypeError)
-        .property('message', 'output is required');
-    }
+    should.throw(() => r.register('yaml'), TypeError, 'output is required');
 
     // no name
-    try {
-      r.register();
-    } catch (err) {
-      err.should.be
-        .instanceOf(TypeError)
-        .property('message', 'name is required');
-    }
+    should.throw(() => r.register(), TypeError, 'name is required');
   });
 
-  it('register() - promisify', () => {
+  it('register() - promisify', async () => {
     const r = new Renderer();
 
     // async
@@ -56,16 +38,14 @@ describe('Renderer', () => {
       callback(null, 'foo');
     });
 
-    r.get('yaml')({}, {}).then(result => {
-      result.should.eql('foo');
-    });
+    const yaml = await r.get('yaml')({}, {});
+    yaml.should.eql('foo');
 
     // sync
     r.register('swig', 'html', (data, options) => 'foo', true);
 
-    r.get('swig')({}, {}).then(result => {
-      result.should.eql('foo');
-    });
+    const swig = await r.get('swig')({}, {});
+    swig.should.eql('foo');
   });
 
   it('register() - compile', () => {
@@ -142,7 +122,7 @@ describe('Renderer', () => {
 
     r.register('swig', 'html', () => {}, true);
 
-    r.list().should.have.keys(['yaml', 'swig']);
-    r.list(true).should.have.keys(['swig']);
+    r.list().should.have.all.keys(['yaml', 'swig']);
+    r.list(true).should.have.all.keys(['swig']);
   });
 });

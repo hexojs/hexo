@@ -17,25 +17,18 @@ describe('Generator', () => {
     g.get('generator-0').should.exist;
 
     // no fn
-    try {
-      g.register('test');
-    } catch (err) {
-      err.should.be
-        .instanceOf(TypeError)
-        .property('message', 'fn must be a function');
-    }
+    should.throw(() => g.register('test'), TypeError, 'fn must be a function');
   });
 
-  it('register() - promisify', () => {
+  it('register() - promisify', async () => {
     const g = new Generator();
 
     g.register('test', (locals, render, callback) => {
       callback(null, 'foo');
     });
 
-    g.get('test')({}, {}).then(result => {
-      result.should.eql('foo');
-    });
+    const result = await g.get('test')({}, {});
+    result.should.eql('foo');
   });
 
   it('get()', () => {
@@ -51,6 +44,6 @@ describe('Generator', () => {
 
     g.register('test', () => {});
 
-    g.list().should.have.keys(['test']);
+    g.list().should.have.all.keys(['test']);
   });
 });

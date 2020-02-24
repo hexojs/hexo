@@ -25,10 +25,10 @@ describe('Console list', () => {
 
   it('no tags', () => {
     listTags();
-    expect(console.log.calledWith(sinon.match('Name'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Posts'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Path'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('No tags.'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('Name'))).be.true;
+    expect(console.log.calledWith(sinon.match('Posts'))).be.true;
+    expect(console.log.calledWith(sinon.match('Path'))).be.true;
+    expect(console.log.calledWith(sinon.match('No tags.'))).be.true;
   });
 
   it('tags', () => {
@@ -47,13 +47,13 @@ describe('Console list', () => {
       })
       .then(() => {
         listTags();
-        expect(console.log.calledWith(sinon.match('Name'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('Posts'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('Path'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('baz'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('foo'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('tags/baz'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('tags/foo'))).to.be.true;
+        expect(console.log.calledWith(sinon.match('Name'))).be.true;
+        expect(console.log.calledWith(sinon.match('Posts'))).be.true;
+        expect(console.log.calledWith(sinon.match('Path'))).be.true;
+        expect(console.log.calledWith(sinon.match('baz'))).be.true;
+        expect(console.log.calledWith(sinon.match('foo'))).be.true;
+        expect(console.log.calledWith(sinon.match('tags/baz'))).be.true;
+        expect(console.log.calledWith(sinon.match('tags/foo'))).be.true;
       });
   });
 });

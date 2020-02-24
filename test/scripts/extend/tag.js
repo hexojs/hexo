@@ -126,31 +126,31 @@ describe('Tag', () => {
   });
 
   it('register() - name is required', () => {
-    const errorCallback = spy(err => {
-      err.should.have.property('message', 'name is required');
-    });
-
-    try {
-      tag.register();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => tag.register(), 'name is required');
   });
 
   it('register() - fn must be a function', () => {
-    const errorCallback = spy(err => {
-      err.should.have.property('message', 'fn must be a function');
-    });
+    should.throw(() => tag.register('test'), 'fn must be a function');
+  });
 
-    try {
-      tag.register('test');
-    } catch (err) {
-      errorCallback(err);
-    }
+  it('unregister()', () => {
+    const tag = new Tag();
 
-    errorCallback.calledOnce.should.be.true;
+    tag.register('test', (args, content) => Promise.resolve(args.join(' ')), {async: true});
+    tag.unregister('test');
+
+    return tag.render('{% test foo bar %}')
+      .then(result => {
+        console.log(result);
+        throw new Error('should return error');
+      })
+      .catch(err => {
+        err.should.have.property('type', 'unknown block tag: test');
+      });
+  });
+
+  it('unregister() - name is required', () => {
+    should.throw(() => tag.unregister(), 'name is required');
   });
 
   it('render() - context', async () => {
@@ -162,5 +162,18 @@ describe('Tag', () => {
 
     const result = await tag.render('{% test %}', { foo: 'bar' });
     result.should.eql('bar');
+  });
+
+  it('render() - callback', () => {
+    const tag = new Tag();
+
+    const callback = sinon.spy();
+
+    tag.register('test', () => 'foo');
+
+    return tag.render('{% test %}', callback()).then(result => {
+      result.should.eql('foo');
+      callback.calledOnce.should.be.true;
+    });
   });
 });

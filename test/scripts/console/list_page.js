@@ -23,10 +23,10 @@ describe('Console list', () => {
 
   it('no page', () => {
     listPages();
-    expect(console.log.calledWith(sinon.match('Date'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Title'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Path'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('No pages.'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('Date'))).be.true;
+    expect(console.log.calledWith(sinon.match('Title'))).be.true;
+    expect(console.log.calledWith(sinon.match('Path'))).be.true;
+    expect(console.log.calledWith(sinon.match('No pages.'))).be.true;
   });
 
   it('page', () => Page.insert({
@@ -36,10 +36,10 @@ describe('Console list', () => {
   })
     .then(() => {
       listPages();
-      expect(console.log.calledWith(sinon.match('Date'))).to.be.true;
-      expect(console.log.calledWith(sinon.match('Title'))).to.be.true;
-      expect(console.log.calledWith(sinon.match('Path'))).to.be.true;
-      expect(console.log.calledWith(sinon.match('Hello World'))).to.be.true;
-      expect(console.log.calledWith(sinon.match('foo'))).to.be.true;
+      expect(console.log.calledWith(sinon.match('Date'))).be.true;
+      expect(console.log.calledWith(sinon.match('Title'))).be.true;
+      expect(console.log.calledWith(sinon.match('Path'))).be.true;
+      expect(console.log.calledWith(sinon.match('Hello World'))).be.true;
+      expect(console.log.calledWith(sinon.match('foo'))).be.true;
     }));
 });

@@ -64,7 +64,7 @@
     "text-table": "^0.2.0",
     "tildify": "^2.0.0",
     "titlecase": "^1.1.2",
-    "warehouse": "^3.0.1"
+    "warehouse": "^3.0.2"
   },
   "devDependencies": {
     "@easyops/git-exec-and-restage": "^1.0.4",
@@ -76,7 +76,7 @@
     "hexo-renderer-marked": "^2.0.0",
     "husky": "^3.0.0",
     "lint-staged": "^9.1.0",
-    "mocha": "^6.0.0",
+    "mocha": "^7.0.0",
     "nyc": "^15.0.0",
     "rewire": "^4.0.1",
     "sinon": "^8.0.1"

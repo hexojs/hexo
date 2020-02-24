@@ -24,9 +24,9 @@ describe('Console list', () => {
 
   it('no categories', () => {
     listCategories();
-    expect(console.log.calledWith(sinon.match('Name'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Posts'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('No categories.'))).to.be.true;
+    expect(console.log.calledWith(sinon.match('Name'))).be.true;
+    expect(console.log.calledWith(sinon.match('Posts'))).be.true;
+    expect(console.log.calledWith(sinon.match('No categories.'))).be.true;
   });
 
   it('categories', () => {
@@ -45,10 +45,10 @@ describe('Console list', () => {
       })
       .then(() => {
         listCategories();
-        expect(console.log.calledWith(sinon.match('Name'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('Posts'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('baz'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('foo'))).to.be.true;
+        expect(console.log.calledWith(sinon.match('Name'))).be.true;
+        expect(console.log.calledWith(sinon.match('Posts'))).be.true;
+        expect(console.log.calledWith(sinon.match('baz'))).be.true;
+        expect(console.log.calledWith(sinon.match('foo'))).be.true;
       });
   });
 });
