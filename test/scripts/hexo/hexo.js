@@ -84,7 +84,7 @@ describe('Hexo', () => {
     const Locals = hexo._generateLocals();
     const { theme } = new Locals();
 
-    theme.a.should.to.have.own.property('c');
+    theme.a.should.have.own.property('c');
     theme.a.b.should.eql(3);
   });
 
@@ -95,7 +95,7 @@ describe('Hexo', () => {
     const Locals = hexo._generateLocals();
     const { theme } = new Locals();
 
-    theme.should.to.have.own.property('c');
+    theme.should.have.own.property('c');
     theme.c.should.eql(3);
   });
 

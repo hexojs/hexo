@@ -11,7 +11,7 @@ describe('Meta Generator', () => {
     const result = metaGenerator(content);
 
     const $ = cheerio.load(result);
-    $('meta[name="generator"]').should.to.have.lengthOf(1);
+    $('meta[name="generator"]').should.have.lengthOf(1);
     $('meta[name="generator"]').attr('content').should.eql(`Hexo ${hexo.version}`);
   });
 
@@ -36,7 +36,7 @@ describe('Meta Generator', () => {
     const result = metaGenerator(content);
 
     const $ = cheerio.load(result);
-    $('meta[name="generator"]').should.to.have.lengthOf(1);
+    $('meta[name="generator"]').should.have.lengthOf(1);
 
     const expected = '<head></head><head><link><meta name="generator" content="Hexo '
       + hexo.version + '"></head><head></head>';
@@ -49,7 +49,7 @@ describe('Meta Generator', () => {
     const result = metaGenerator(content);
 
     const $ = cheerio.load(result);
-    $('meta[name="generator"]').should.to.have.lengthOf(1);
+    $('meta[name="generator"]').should.have.lengthOf(1);
 
     const expected = '<head></head><head><link><meta name="generator" content="Hexo '
       + hexo.version + '"></head><head><link></head>';
@@ -63,7 +63,7 @@ describe('Meta Generator', () => {
     const result = metaGenerator(content);
 
     const $ = cheerio.load(result);
-    $('meta[name="generator"]').should.to.have.lengthOf(1);
+    $('meta[name="generator"]').should.have.lengthOf(1);
 
     const expected = '<head>\n<link>\n<meta name="generator" content="Hexo ' + hexo.version + '"></head>';
 

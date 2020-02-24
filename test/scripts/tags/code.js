@@ -138,7 +138,7 @@ describe('code', () => {
   it('# lines', () => {
     const result = code('', fixture);
     const $ = cheerio.load(result);
-    $('.gutter .line').should.to.have.lengthOf(3);
+    $('.gutter .line').should.have.lengthOf(3);
   });
 
   it('wrap', () => {

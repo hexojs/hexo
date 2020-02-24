@@ -43,7 +43,7 @@ describe('Tag Errors', () => {
     } catch (err) {
       err.should.have.property('name', 'Template render error');
       err.should.have.property('message');
-      err.message.should.to.have.string('unexpected end of file');
+      err.message.should.have.string('unexpected end of file');
     }
   });
 
@@ -65,7 +65,7 @@ describe('Tag Errors', () => {
     } catch (err) {
       err.should.have.property('name', 'Template render error');
       err.should.have.property('message');
-      err.message.should.to.have.string('unexpected end of file');
+      err.message.should.have.string('unexpected end of file');
     }
   });
 

@@ -25,6 +25,6 @@ describe('Processor', () => {
 
     p.register('test', () => {});
 
-    p.list().should.to.have.lengthOf(1);
+    p.list().should.have.lengthOf(1);
   });
 });

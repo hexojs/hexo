@@ -88,7 +88,7 @@ describe('Filter', () => {
 
     f.list().test.should.exist;
     f.list('test')[0].should.exist;
-    f.list('foo').should.to.have.lengthOf(0);
+    f.list('foo').should.have.lengthOf(0);
   });
 
   it('exec()', async () => {

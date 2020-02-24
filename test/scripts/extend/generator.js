@@ -44,6 +44,6 @@ describe('Generator', () => {
 
     g.register('test', () => {});
 
-    g.list().should.to.have.all.keys(['test']);
+    g.list().should.have.all.keys(['test']);
   });
 });

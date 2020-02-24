@@ -53,7 +53,7 @@ describe('Migrator', () => {
 
     d.register('test', () => {});
 
-    d.list().should.to.have.all.keys(['test']);
+    d.list().should.have.all.keys(['test']);
   });
 
   it('get()', () => {

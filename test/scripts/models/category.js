@@ -162,7 +162,7 @@ describe('Category', () => {
 
     hexo.locals.invalidate();
     cat.posts.map(mapper).should.eql(posts.map(mapper));
-    cat.should.to.have.lengthOf(posts.length);
+    cat.should.have.lengthOf(posts.length);
 
     await cat.remove();
     await Promise.all(posts.map(post => post.remove()));
@@ -187,14 +187,14 @@ describe('Category', () => {
     hexo.locals.invalidate();
     cat.posts.eq(0)._id.should.eql(posts[0]._id);
     cat.posts.eq(1)._id.should.eql(posts[2]._id);
-    cat.should.to.have.lengthOf(2);
+    cat.should.have.lengthOf(2);
 
     // draft on
     hexo.config.render_drafts = true;
     hexo.locals.invalidate();
     cat = Category.findOne({name: 'foo'});
     cat.posts.map(mapper).should.eql(posts.map(mapper));
-    cat.should.to.have.lengthOf(posts.length);
+    cat.should.have.lengthOf(posts.length);
     hexo.config.render_drafts = false;
 
     await cat.remove();
@@ -223,7 +223,7 @@ describe('Category', () => {
     hexo.config.future = true;
     hexo.locals.invalidate();
     cat.posts.map(mapper).should.eql(posts.map(mapper));
-    cat.should.to.have.lengthOf(posts.length);
+    cat.should.have.lengthOf(posts.length);
 
     // future off
     hexo.config.future = false;
@@ -231,7 +231,7 @@ describe('Category', () => {
     cat = Category.findOne({name: 'foo'});
     cat.posts.eq(0)._id.should.eql(posts[0]._id);
     cat.posts.eq(1)._id.should.eql(posts[2]._id);
-    cat.should.to.have.lengthOf(2);
+    cat.should.have.lengthOf(2);
 
     await cat.remove();
     await Promise.all(posts.map(post => post.remove()));
@@ -280,7 +280,7 @@ describe('Category', () => {
     const cat = Category.findOne({name: 'foo'});
     await Category.removeById(cat._id);
 
-    PostCategory.find({category_id: cat._id}).should.to.have.lengthOf(0);
+    PostCategory.find({category_id: cat._id}).should.have.lengthOf(0);
 
     await Promise.all(posts.map(post => post.remove()));
   });

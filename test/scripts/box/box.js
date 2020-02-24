@@ -270,7 +270,7 @@ describe('Box', () => {
     await writeFile(join(box.base, 'foo.txt'), 'foo');
     await box.process();
 
-    data.should.to.have.all.keys(['foo.txt']);
+    data.should.have.all.keys(['foo.txt']);
 
     await rmdir(box.base);
   });
@@ -289,7 +289,7 @@ describe('Box', () => {
     ]);
     await box.process();
 
-    data.should.to.have.all.keys(['foo.txt']);
+    data.should.have.all.keys(['foo.txt']);
 
     await rmdir(box.base);
   });
@@ -309,7 +309,7 @@ describe('Box', () => {
     ]);
     await box.process();
 
-    data.should.to.have.all.keys(['foo.txt']);
+    data.should.have.all.keys(['foo.txt']);
 
     await rmdir(box.base);
   });
@@ -328,7 +328,7 @@ describe('Box', () => {
     ]);
     await box.process();
 
-    data.should.to.have.all.keys(['foo.txt']);
+    data.should.have.all.keys(['foo.txt']);
 
     await rmdir(box.base);
   });
@@ -348,7 +348,7 @@ describe('Box', () => {
     ]);
     await box.process();
 
-    data.should.to.have.all.keys(['foo.txt']);
+    data.should.have.all.keys(['foo.txt']);
 
     await rmdir(box.base);
   });

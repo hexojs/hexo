@@ -122,7 +122,7 @@ describe('Renderer', () => {
 
     r.register('swig', 'html', () => {}, true);
 
-    r.list().should.to.have.all.keys(['yaml', 'swig']);
-    r.list(true).should.to.have.all.keys(['swig']);
+    r.list().should.have.all.keys(['yaml', 'swig']);
+    r.list(true).should.have.all.keys(['swig']);
   });
 });
