@@ -18,6 +18,7 @@ describe('Hexo', () => {
   const Page = hexo.model('Page');
   const Data = hexo.model('Data');
   const route = hexo.route;
+  const defaultConfig = require('../../../lib/hexo/default_config');
 
   function checkStream(stream, expected) {
     return testUtil.stream.read(stream).then(data => {
@@ -36,6 +37,7 @@ describe('Hexo', () => {
     hexo.extend.generator.store = {};
     // Remove all routes
     route.routes = {};
+    hexo.config = { ...defaultConfig };
   });
 
   after(() => fs.rmdir(hexo.base_dir));
@@ -76,9 +78,21 @@ describe('Hexo', () => {
     hexo.config_path.should.eql(pathFn.join(base_dir, '_multiconfig.yml'));
   });
 
+  it('theme_config - disable deep clone by default', () => {
+    const hexo = new Hexo(__dirname);
+    hexo.theme.config = { a: { b: 1, c: 2 } };
+    hexo.config.theme_config = { a: { b: 3 } };
+    const Locals = hexo._generateLocals();
+    const { theme } = new Locals();
+
+    theme.a.should.not.have.own.property('c');
+    theme.a.b.should.eql(3);
+  });
+
   // Issue #3964
   it('theme_config - deep clone', () => {
     const hexo = new Hexo(__dirname);
+    hexo.config.deepmerge_theme_configs = true;
     hexo.theme.config = { a: { b: 1, c: 2 } };
     hexo.config.theme_config = { a: { b: 3 } };
     const Locals = hexo._generateLocals();
