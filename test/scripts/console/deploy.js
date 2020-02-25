@@ -2,7 +2,7 @@
 
 const { exists, mkdirs, readFile, rmdir, writeFile } = require('hexo-fs');
 const { join } = require('path');
-const { spy } = require('sinon');
+const { spy, stub, match } = require('sinon');
 
 describe('deploy', () => {
   const Hexo = require('../../../lib/hexo');
@@ -24,7 +24,14 @@ describe('deploy', () => {
   it('no deploy config', () => {
     delete hexo.config.deploy;
 
-    should.not.exist(deploy({ test: true }));
+    const _stub = stub(console, 'log');
+
+    try {
+      should.not.exist(deploy({ test: true }));
+      _stub.calledWith(match('You should configure deployment settings in _config.yml first!')).should.eql(true);
+    } finally {
+      _stub.restore();
+    }
   });
 
   it('single deploy setting', async () => {

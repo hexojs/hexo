@@ -12,23 +12,21 @@ describe('Console list', () => {
   const listTags = require('../../../lib/plugins/console/list/tag').bind(hexo);
 
   hexo.config.permalink = ':title/';
-  before(() => {
-    const log = console.log;
-    sinon.stub(console, 'log').callsFake((...args) => {
-      return log.apply(log, args);
-    });
-  });
 
-  after(() => {
-    console.log.restore();
-  });
+  let stub;
+
+  before(() => { stub = sinon.stub(console, 'log'); });
+
+  afterEach(() => { stub.reset(); });
+
+  after(() => { stub.restore(); });
 
   it('no tags', () => {
     listTags();
-    expect(console.log.calledWith(sinon.match('Name'))).be.true;
-    expect(console.log.calledWith(sinon.match('Posts'))).be.true;
-    expect(console.log.calledWith(sinon.match('Path'))).be.true;
-    expect(console.log.calledWith(sinon.match('No tags.'))).be.true;
+    expect(stub.calledWith(sinon.match('Name'))).be.true;
+    expect(stub.calledWith(sinon.match('Posts'))).be.true;
+    expect(stub.calledWith(sinon.match('Path'))).be.true;
+    expect(stub.calledWith(sinon.match('No tags.'))).be.true;
   });
 
   it('tags', () => {
@@ -47,13 +45,13 @@ describe('Console list', () => {
       })
       .then(() => {
         listTags();
-        expect(console.log.calledWith(sinon.match('Name'))).be.true;
-        expect(console.log.calledWith(sinon.match('Posts'))).be.true;
-        expect(console.log.calledWith(sinon.match('Path'))).be.true;
-        expect(console.log.calledWith(sinon.match('baz'))).be.true;
-        expect(console.log.calledWith(sinon.match('foo'))).be.true;
-        expect(console.log.calledWith(sinon.match('tags/baz'))).be.true;
-        expect(console.log.calledWith(sinon.match('tags/foo'))).be.true;
+        expect(stub.calledWith(sinon.match('Name'))).be.true;
+        expect(stub.calledWith(sinon.match('Posts'))).be.true;
+        expect(stub.calledWith(sinon.match('Path'))).be.true;
+        expect(stub.calledWith(sinon.match('baz'))).be.true;
+        expect(stub.calledWith(sinon.match('foo'))).be.true;
+        expect(stub.calledWith(sinon.match('tags/baz'))).be.true;
+        expect(stub.calledWith(sinon.match('tags/foo'))).be.true;
       });
   });
 });

@@ -3,14 +3,12 @@
 const { mkdirs, readFile, rmdir, unlink, writeFile } = require('hexo-fs');
 const { join } = require('path');
 const { load } = require('js-yaml');
-const rewire = require('rewire');
-const sinon = require('sinon');
+const { stub } = require('sinon');
 
 describe('config', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
   const config = require('../../../lib/plugins/console/config').bind(hexo);
-  const configModule = rewire('../../../lib/plugins/console/config');
 
   before(async () => {
     await mkdirs(hexo.base_dir);
@@ -22,45 +20,43 @@ describe('config', () => {
   after(() => rmdir(hexo.base_dir));
 
   it('read all config', async () => {
-    const spy = sinon.spy();
+    const _stub = stub(console, 'log');
 
-    await configModule.__with__({
-      console: {
-        log: spy
-      }
-    })(() => configModule.call(hexo, {_: []}));
+    try {
+      await config({_: []});
+    } finally {
+      _stub.restore();
+    }
 
-    spy.args[0][0].should.eql(hexo.config);
+    _stub.args[0][0].should.eql(hexo.config);
   });
 
   it('read config', async () => {
-    const spy = sinon.spy();
+    const _stub = stub(console, 'log');
 
-    await configModule.__with__({
-      console: {
-        log: spy
-      }
-    })(() => configModule.call(hexo, {_: ['title']}));
+    try {
+      await config({_: ['title']});
+    } finally {
+      _stub.restore();
+    }
 
-    spy.args[0][0].should.eql(hexo.config.title);
+    _stub.args[0][0].should.eql(hexo.config.title);
   });
 
-  it('read nested config', () => {
-    const spy = sinon.spy();
+  it('read nested config', async () => {
+    const _stub = stub(console, 'log');
 
-    hexo.config.server = {
-      port: 12345
-    };
+    try {
+      hexo.config.server = {
+        port: 12345
+      };
 
-    return configModule.__with__({
-      console: {
-        log: spy
-      }
-    })(() => configModule.call(hexo, {_: ['server.port']})).then(() => {
-      spy.args[0][0].should.eql(hexo.config.server.port);
-    }).finally(() => {
+      await config({_: ['server.port']});
+      _stub.args[0][0].should.eql(hexo.config.server.port);
+    } finally {
       delete hexo.config.server;
-    });
+      _stub.restore();
+    }
   });
 
   async function writeConfig(...args) {
@@ -111,14 +107,14 @@ describe('config', () => {
     await writeFile(configPath, '{}');
     await config({_: ['title', 'My Blog']});
 
-    return readFile(configPath).then(content => {
-      const json = JSON.parse(content);
+    const content = await readFile(configPath);
 
-      json.title.should.eql('My Blog');
+    const json = JSON.parse(content);
 
-      hexo.config_path = join(hexo.base_dir, '_config.yml');
-      return unlink(configPath);
-    });
+    json.title.should.eql('My Blog');
+
+    hexo.config_path = join(hexo.base_dir, '_config.yml');
+    return unlink(configPath);
   });
 
   it('create config if not exist', async () => {

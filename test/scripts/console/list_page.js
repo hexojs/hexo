@@ -10,36 +10,35 @@ describe('Console list', () => {
   const listPages = require('../../../lib/plugins/console/list/page').bind(hexo);
 
   hexo.config.permalink = ':title/';
-  before(() => {
-    const log = console.log;
-    sinon.stub(console, 'log').callsFake((...args) => {
-      return log.apply(log, args);
-    });
-  });
 
-  after(() => {
-    console.log.restore();
-  });
+  let stub;
+
+  before(() => { stub = sinon.stub(console, 'log'); });
+
+  afterEach(() => { stub.reset(); });
+
+  after(() => { stub.restore(); });
 
   it('no page', () => {
     listPages();
-    expect(console.log.calledWith(sinon.match('Date'))).be.true;
-    expect(console.log.calledWith(sinon.match('Title'))).be.true;
-    expect(console.log.calledWith(sinon.match('Path'))).be.true;
-    expect(console.log.calledWith(sinon.match('No pages.'))).be.true;
+    expect(stub.calledWith(sinon.match('Date'))).be.true;
+    expect(stub.calledWith(sinon.match('Title'))).be.true;
+    expect(stub.calledWith(sinon.match('Path'))).be.true;
+    expect(stub.calledWith(sinon.match('No pages.'))).be.true;
   });
 
-  it('page', () => Page.insert({
-    source: 'foo',
-    title: 'Hello World',
-    path: 'bar'
-  })
-    .then(() => {
+  it('page', () => {
+    return Page.insert({
+      source: 'foo',
+      title: 'Hello World',
+      path: 'bar'
+    }).then(() => {
       listPages();
-      expect(console.log.calledWith(sinon.match('Date'))).be.true;
-      expect(console.log.calledWith(sinon.match('Title'))).be.true;
-      expect(console.log.calledWith(sinon.match('Path'))).be.true;
-      expect(console.log.calledWith(sinon.match('Hello World'))).be.true;
-      expect(console.log.calledWith(sinon.match('foo'))).be.true;
-    }));
+      expect(stub.calledWith(sinon.match('Date'))).be.true;
+      expect(stub.calledWith(sinon.match('Title'))).be.true;
+      expect(stub.calledWith(sinon.match('Path'))).be.true;
+      expect(stub.calledWith(sinon.match('Hello World'))).be.true;
+      expect(stub.calledWith(sinon.match('foo'))).be.true;
+    });
+  });
 });

@@ -11,22 +11,19 @@ describe('Console list', () => {
 
   const listCategories = require('../../../lib/plugins/console/list/category').bind(hexo);
 
-  before(() => {
-    const log = console.log;
-    sinon.stub(console, 'log').callsFake((...args) => {
-      return log.apply(log, args);
-    });
-  });
+  let stub;
 
-  after(() => {
-    console.log.restore();
-  });
+  before(() => { stub = sinon.stub(console, 'log'); });
+
+  afterEach(() => { stub.reset(); });
+
+  after(() => { stub.restore(); });
 
   it('no categories', () => {
     listCategories();
-    expect(console.log.calledWith(sinon.match('Name'))).be.true;
-    expect(console.log.calledWith(sinon.match('Posts'))).be.true;
-    expect(console.log.calledWith(sinon.match('No categories.'))).be.true;
+    expect(stub.calledWith(sinon.match('Name'))).be.true;
+    expect(stub.calledWith(sinon.match('Posts'))).be.true;
+    expect(stub.calledWith(sinon.match('No categories.'))).be.true;
   });
 
   it('categories', () => {
@@ -42,13 +39,12 @@ describe('Console list', () => {
         ['baz']
       ], (tags, i) => posts[i].setCategories(tags))).then(() => {
         hexo.locals.invalidate();
-      })
-      .then(() => {
+      }).then(() => {
         listCategories();
-        expect(console.log.calledWith(sinon.match('Name'))).be.true;
-        expect(console.log.calledWith(sinon.match('Posts'))).be.true;
-        expect(console.log.calledWith(sinon.match('baz'))).be.true;
-        expect(console.log.calledWith(sinon.match('foo'))).be.true;
+        expect(stub.calledWith(sinon.match('Name'))).be.true;
+        expect(stub.calledWith(sinon.match('Posts'))).be.true;
+        expect(stub.calledWith(sinon.match('baz'))).be.true;
+        expect(stub.calledWith(sinon.match('foo'))).be.true;
       });
   });
 });
