@@ -107,14 +107,14 @@ describe('config', () => {
     await writeFile(configPath, '{}');
     await config({_: ['title', 'My Blog']});
 
-    const content = await readFile(configPath);
+    return readFile(configPath).then(content => {
+      const json = JSON.parse(content);
 
-    const json = JSON.parse(content);
+      json.title.should.eql('My Blog');
 
-    json.title.should.eql('My Blog');
-
-    hexo.config_path = join(hexo.base_dir, '_config.yml');
-    return unlink(configPath);
+      hexo.config_path = join(hexo.base_dir, '_config.yml');
+      return unlink(configPath);
+    });
   });
 
   it('create config if not exist', async () => {
