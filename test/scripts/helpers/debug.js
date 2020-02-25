@@ -1,6 +1,6 @@
 'use strict';
 
-const sinon = require('sinon');
+const { stub } = require('sinon');
 
 describe('debug', () => {
   const debug = require('../../../lib/plugins/helper/debug');
@@ -24,14 +24,14 @@ describe('debug', () => {
   });
 
   it('log should print to console', () => {
-    const stub = sinon.stub(console, 'log');
+    const logStub = stub(console, 'log');
 
     try {
       debug.log('Hello %s from debug.log()!', 'World');
     } finally {
-      stub.restore();
+      logStub.restore();
     }
 
-    stub.args[0].should.eql(['Hello %s from debug.log()!', 'World']);
+    logStub.calledWithExactly('Hello %s from debug.log()!', 'World').should.be.true;
   });
 });

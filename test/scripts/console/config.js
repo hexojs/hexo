@@ -28,7 +28,7 @@ describe('config', () => {
       _stub.restore();
     }
 
-    _stub.args[0][0].should.eql(hexo.config);
+    _stub.calledWith(hexo.config).should.be.true;
   });
 
   it('read config', async () => {
@@ -40,7 +40,7 @@ describe('config', () => {
       _stub.restore();
     }
 
-    _stub.args[0][0].should.eql(hexo.config.title);
+    _stub.calledWith(hexo.config.title).should.be.true;
   });
 
   it('read nested config', async () => {
@@ -52,7 +52,7 @@ describe('config', () => {
       };
 
       await config({_: ['server.port']});
-      _stub.args[0][0].should.eql(hexo.config.server.port);
+      _stub.calledWith(hexo.config.server.port).should.be.true;
     } finally {
       delete hexo.config.server;
       _stub.restore();
