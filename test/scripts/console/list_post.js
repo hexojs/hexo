@@ -1,7 +1,7 @@
 'use strict';
 
-const sinon = require('sinon');
-const expect = require('chai').expect;
+const { stub, match } = require('sinon');
+const { expect } = require('chai');
 
 describe('Console list', () => {
   const Hexo = require('../../../lib/hexo');
@@ -10,22 +10,22 @@ describe('Console list', () => {
 
   const listPosts = require('../../../lib/plugins/console/list/post').bind(hexo);
 
-  let stub;
+  let logStub;
 
-  before(() => { stub = sinon.stub(console, 'log'); });
+  before(() => { logStub = stub(console, 'log'); });
 
-  afterEach(() => { stub.reset(); });
+  afterEach(() => { logStub.reset(); });
 
-  after(() => { stub.restore(); });
+  after(() => { logStub.restore(); });
 
   it('no post', () => {
     listPosts();
-    expect(stub.calledWith(sinon.match('Date'))).be.true;
-    expect(stub.calledWith(sinon.match('Title'))).be.true;
-    expect(stub.calledWith(sinon.match('Path'))).be.true;
-    expect(stub.calledWith(sinon.match('Category'))).be.true;
-    expect(stub.calledWith(sinon.match('Tags'))).be.true;
-    expect(stub.calledWith(sinon.match('No posts.'))).be.true;
+    expect(logStub.calledWith(match('Date'))).be.true;
+    expect(logStub.calledWith(match('Title'))).be.true;
+    expect(logStub.calledWith(match('Path'))).be.true;
+    expect(logStub.calledWith(match('Category'))).be.true;
+    expect(logStub.calledWith(match('Tags'))).be.true;
+    expect(logStub.calledWith(match('No posts.'))).be.true;
   });
 
   it('post', () => {
@@ -40,15 +40,15 @@ describe('Console list', () => {
       })
       .then(() => {
         listPosts();
-        expect(stub.calledWith(sinon.match('Date'))).be.true;
-        expect(stub.calledWith(sinon.match('Title'))).be.true;
-        expect(stub.calledWith(sinon.match('Path'))).be.true;
-        expect(stub.calledWith(sinon.match('Category'))).be.true;
-        expect(stub.calledWith(sinon.match('Tags'))).be.true;
+        expect(logStub.calledWith(match('Date'))).be.true;
+        expect(logStub.calledWith(match('Title'))).be.true;
+        expect(logStub.calledWith(match('Path'))).be.true;
+        expect(logStub.calledWith(match('Category'))).be.true;
+        expect(logStub.calledWith(match('Tags'))).be.true;
         for (let i = 0; i < posts.length; i++) {
-          expect(stub.calledWith(sinon.match(posts[i].source))).be.true;
-          expect(stub.calledWith(sinon.match(posts[i].slug))).be.true;
-          expect(stub.calledWith(sinon.match(posts[i].title))).be.true;
+          expect(logStub.calledWith(match(posts[i].source))).be.true;
+          expect(logStub.calledWith(match(posts[i].slug))).be.true;
+          expect(logStub.calledWith(match(posts[i].title))).be.true;
         }
       });
   });

@@ -1,7 +1,7 @@
 'use strict';
 
-const sinon = require('sinon');
-const expect = require('chai').expect;
+const { stub, match } = require('sinon');
+const { expect } = require('chai');
 
 describe('Console list', () => {
   const Hexo = require('../../../lib/hexo');
@@ -11,20 +11,20 @@ describe('Console list', () => {
 
   hexo.config.permalink = ':title/';
 
-  let stub;
+  let logStub;
 
-  before(() => { stub = sinon.stub(console, 'log'); });
+  before(() => { logStub = stub(console, 'log'); });
 
-  afterEach(() => { stub.reset(); });
+  afterEach(() => { logStub.reset(); });
 
-  after(() => { stub.restore(); });
+  after(() => { logStub.restore(); });
 
   it('no page', () => {
     listPages();
-    expect(stub.calledWith(sinon.match('Date'))).be.true;
-    expect(stub.calledWith(sinon.match('Title'))).be.true;
-    expect(stub.calledWith(sinon.match('Path'))).be.true;
-    expect(stub.calledWith(sinon.match('No pages.'))).be.true;
+    expect(logStub.calledWith(match('Date'))).be.true;
+    expect(logStub.calledWith(match('Title'))).be.true;
+    expect(logStub.calledWith(match('Path'))).be.true;
+    expect(logStub.calledWith(match('No pages.'))).be.true;
   });
 
   it('page', () => {
@@ -34,11 +34,11 @@ describe('Console list', () => {
       path: 'bar'
     }).then(() => {
       listPages();
-      expect(stub.calledWith(sinon.match('Date'))).be.true;
-      expect(stub.calledWith(sinon.match('Title'))).be.true;
-      expect(stub.calledWith(sinon.match('Path'))).be.true;
-      expect(stub.calledWith(sinon.match('Hello World'))).be.true;
-      expect(stub.calledWith(sinon.match('foo'))).be.true;
+      expect(logStub.calledWith(match('Date'))).be.true;
+      expect(logStub.calledWith(match('Title'))).be.true;
+      expect(logStub.calledWith(match('Path'))).be.true;
+      expect(logStub.calledWith(match('Hello World'))).be.true;
+      expect(logStub.calledWith(match('foo'))).be.true;
     });
   });
 });

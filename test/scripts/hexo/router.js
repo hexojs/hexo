@@ -1,11 +1,11 @@
 'use strict';
 
 const Promise = require('bluebird');
-const Readable = require('stream').Readable;
-const pathFn = require('path');
+const { Readable } = require('stream');
+const { join } = require('path');
 const crypto = require('crypto');
-const fs = require('hexo-fs');
-const sinon = require('sinon');
+const { createReadStream } = require('hexo-fs');
+const { spy } = require('sinon');
 const testUtil = require('../../util');
 
 describe('Router', () => {
@@ -61,7 +61,7 @@ describe('Router', () => {
   });
 
   it('set() - string', () => {
-    const listener = sinon.spy(path => {
+    const listener = spy(path => {
       path.should.eql('test');
     });
 
@@ -122,7 +122,7 @@ describe('Router', () => {
       throw new Error('error test');
     });
 
-    const errorCallback = sinon.spy(err => {
+    const errorCallback = spy(err => {
       err.should.have.property('message', 'error test');
     });
 
@@ -149,13 +149,13 @@ describe('Router', () => {
   });
 
   it('get() - large readable stream (more than 65535 bits)', () => {
-    const path = pathFn.join(__dirname, '../../fixtures/banner.jpg');
+    const path = join(__dirname, '../../fixtures/banner.jpg');
 
-    router.set('test', () => fs.createReadStream(path));
+    router.set('test', () => createReadStream(path));
 
     return Promise.all([
       checksum(router.get('test')),
-      checksum(fs.createReadStream(path))
+      checksum(createReadStream(path))
     ]).then(data => {
       data[0].should.eql(data[1]);
     });
@@ -194,7 +194,7 @@ describe('Router', () => {
   });
 
   it('remove()', () => {
-    const listener = sinon.spy(path => {
+    const listener = spy(path => {
       path.should.eql('test');
     });
 

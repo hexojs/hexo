@@ -1,8 +1,8 @@
 'use strict';
 
 const Promise = require('bluebird');
-const sinon = require('sinon');
-const expect = require('chai').expect;
+const { stub, match } = require('sinon');
+const { expect } = require('chai');
 
 describe('Console list', () => {
   const Hexo = require('../../../lib/hexo');
@@ -11,19 +11,19 @@ describe('Console list', () => {
 
   const listCategories = require('../../../lib/plugins/console/list/category').bind(hexo);
 
-  let stub;
+  let logStub;
 
-  before(() => { stub = sinon.stub(console, 'log'); });
+  before(() => { logStub = stub(console, 'log'); });
 
-  afterEach(() => { stub.reset(); });
+  afterEach(() => { logStub.reset(); });
 
-  after(() => { stub.restore(); });
+  after(() => { logStub.restore(); });
 
   it('no categories', () => {
     listCategories();
-    expect(stub.calledWith(sinon.match('Name'))).be.true;
-    expect(stub.calledWith(sinon.match('Posts'))).be.true;
-    expect(stub.calledWith(sinon.match('No categories.'))).be.true;
+    expect(logStub.calledWith(match('Name'))).be.true;
+    expect(logStub.calledWith(match('Posts'))).be.true;
+    expect(logStub.calledWith(match('No categories.'))).be.true;
   });
 
   it('categories', () => {
@@ -41,10 +41,10 @@ describe('Console list', () => {
         hexo.locals.invalidate();
       }).then(() => {
         listCategories();
-        expect(stub.calledWith(sinon.match('Name'))).be.true;
-        expect(stub.calledWith(sinon.match('Posts'))).be.true;
-        expect(stub.calledWith(sinon.match('baz'))).be.true;
-        expect(stub.calledWith(sinon.match('foo'))).be.true;
+        expect(logStub.calledWith(match('Name'))).be.true;
+        expect(logStub.calledWith(match('Posts'))).be.true;
+        expect(logStub.calledWith(match('baz'))).be.true;
+        expect(logStub.calledWith(match('foo'))).be.true;
       });
   });
 });
