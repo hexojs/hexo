@@ -1,8 +1,8 @@
 'use strict';
 
 const Promise = require('bluebird');
-const sinon = require('sinon');
-const expect = require('chai').expect;
+const { stub, match } = require('sinon');
+const { expect } = require('chai');
 
 describe('Console list', () => {
   const Hexo = require('../../../lib/hexo');
@@ -11,22 +11,19 @@ describe('Console list', () => {
 
   const listCategories = require('../../../lib/plugins/console/list/category').bind(hexo);
 
-  before(() => {
-    const log = console.log;
-    sinon.stub(console, 'log').callsFake((...args) => {
-      return log.apply(log, args);
-    });
-  });
+  let logStub;
 
-  after(() => {
-    console.log.restore();
-  });
+  before(() => { logStub = stub(console, 'log'); });
+
+  afterEach(() => { logStub.reset(); });
+
+  after(() => { logStub.restore(); });
 
   it('no categories', () => {
     listCategories();
-    expect(console.log.calledWith(sinon.match('Name'))).be.true;
-    expect(console.log.calledWith(sinon.match('Posts'))).be.true;
-    expect(console.log.calledWith(sinon.match('No categories.'))).be.true;
+    expect(logStub.calledWith(match('Name'))).be.true;
+    expect(logStub.calledWith(match('Posts'))).be.true;
+    expect(logStub.calledWith(match('No categories.'))).be.true;
   });
 
   it('categories', () => {
@@ -42,13 +39,12 @@ describe('Console list', () => {
         ['baz']
       ], (tags, i) => posts[i].setCategories(tags))).then(() => {
         hexo.locals.invalidate();
-      })
-      .then(() => {
+      }).then(() => {
         listCategories();
-        expect(console.log.calledWith(sinon.match('Name'))).be.true;
-        expect(console.log.calledWith(sinon.match('Posts'))).be.true;
-        expect(console.log.calledWith(sinon.match('baz'))).be.true;
-        expect(console.log.calledWith(sinon.match('foo'))).be.true;
+        expect(logStub.calledWith(match('Name'))).be.true;
+        expect(logStub.calledWith(match('Posts'))).be.true;
+        expect(logStub.calledWith(match('baz'))).be.true;
+        expect(logStub.calledWith(match('foo'))).be.true;
       });
   });
 });

@@ -1,11 +1,9 @@
 'use strict';
 
-const rewire = require('rewire');
-const sinon = require('sinon');
+const { stub } = require('sinon');
 
 describe('debug', () => {
   const debug = require('../../../lib/plugins/helper/debug');
-  const debugModule = rewire('../../../lib/plugins/helper/debug');
   const { inspect } = require('util');
 
   it('inspect simple object', () => {
@@ -26,16 +24,14 @@ describe('debug', () => {
   });
 
   it('log should print to console', () => {
-    const spy = sinon.spy();
+    const logStub = stub(console, 'log');
 
-    debugModule.__with__({
-      console: {
-        log: spy
-      }
-    })(() => {
-      debugModule.log('Hello %s from debug.log()!', 'World');
-    });
+    try {
+      debug.log('Hello %s from debug.log()!', 'World');
+    } finally {
+      logStub.restore();
+    }
 
-    spy.args[0].should.eql(['Hello %s from debug.log()!', 'World']);
+    logStub.calledWithExactly('Hello %s from debug.log()!', 'World').should.be.true;
   });
 });

@@ -1,7 +1,7 @@
 'use strict';
 
-const sinon = require('sinon');
-const pathFn = require('path');
+const { spy } = require('sinon');
+const { join, sep } = require('path');
 const Promise = require('bluebird');
 const { full_url_for } = require('hexo-util');
 
@@ -45,7 +45,7 @@ describe('Post', () => {
   });
 
   it('source - required', () => {
-    const errorCallback = sinon.spy(err => {
+    const errorCallback = spy(err => {
       err.should.have.property('message', '`source` is required!');
     });
 
@@ -55,7 +55,7 @@ describe('Post', () => {
   });
 
   it('slug - required', () => {
-    const errorCallback = sinon.spy(err => {
+    const errorCallback = spy(err => {
       err.should.have.property('message', '`slug` is required!');
     });
 
@@ -176,7 +176,7 @@ describe('Post', () => {
     source: 'foo.md',
     slug: 'bar'
   }).then(data => {
-    data.full_source.should.eql(pathFn.join(hexo.source_dir, data.source));
+    data.full_source.should.eql(join(hexo.source_dir, data.source));
     return Post.removeById(data._id);
   }));
 
@@ -184,7 +184,7 @@ describe('Post', () => {
     source: 'foo.md',
     slug: 'bar'
   }).then(data => {
-    data.asset_dir.should.eql(pathFn.join(hexo.source_dir, 'foo') + pathFn.sep);
+    data.asset_dir.should.eql(join(hexo.source_dir, 'foo') + sep);
     return Post.removeById(data._id);
   }));
 
