@@ -888,4 +888,48 @@ describe('Post', () => {
     });
   });
 
+  // test for PR #4161
+  it('render() - adjacent tags', () => {
+    const content = [
+      '{% pullquote %}content1{% endpullquote %}',
+      '',
+      'This is a following paragraph',
+      '',
+      '{% pullquote %}content2{% endpullquote %}'
+    ].join('\n');
+
+    return post.render(null, {
+      content,
+      engine: 'markdown'
+    }).then(data => {
+      data.content.trim().should.eql([
+        '<blockquote class="pullquote"><p>content1</p>\n</blockquote>\n',
+        '<p>This is a following paragraph</p>\n',
+        '<blockquote class="pullquote"><p>content2</p>\n</blockquote>\n'
+      ].join(''));
+    });
+  });
+
+  // test for PR #4161
+  it('render() - adjacent tags with args', () => {
+    const content = [
+      '{% pullquote center %}content1{% endpullquote %}',
+      '',
+      'This is a following paragraph',
+      '',
+      '{% pullquote center %}content2{% endpullquote %}'
+    ].join('\n');
+
+    return post.render(null, {
+      content,
+      engine: 'markdown'
+    }).then(data => {
+      data.content.trim().should.eql([
+        '<blockquote class="pullquote center"><p>content1</p>\n</blockquote>\n',
+        '<p>This is a following paragraph</p>\n',
+        '<blockquote class="pullquote center"><p>content2</p>\n</blockquote>\n'
+      ].join(''));
+    });
+  });
+
 });
