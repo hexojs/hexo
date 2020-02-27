@@ -903,9 +903,9 @@ describe('Post', () => {
       engine: 'markdown'
     }).then(data => {
       data.content.trim().should.eql([
-        '<blockquote class="pullquote"><p>content1</p>\n</blockquote>\n',
+        '<blockquote class="pullquote"><p>content1</p>\n</blockquote>\n\n',
         '<p>This is a following paragraph</p>\n',
-        '<blockquote class="pullquote"><p>content2</p>\n</blockquote>\n'
+        '<blockquote class="pullquote"><p>content2</p>\n</blockquote>'
       ].join(''));
     });
   });
@@ -925,9 +925,9 @@ describe('Post', () => {
       engine: 'markdown'
     }).then(data => {
       data.content.trim().should.eql([
-        '<blockquote class="pullquote center"><p>content1</p>\n</blockquote>\n',
+        '<blockquote class="pullquote center"><p>content1</p>\n</blockquote>\n\n',
         '<p>This is a following paragraph</p>\n',
-        '<blockquote class="pullquote center"><p>content2</p>\n</blockquote>\n'
+        '<blockquote class="pullquote center"><p>content2</p>\n</blockquote>'
       ].join(''));
     });
   });
