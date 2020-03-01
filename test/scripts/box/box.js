@@ -442,11 +442,7 @@ describe('Box', () => {
     await rename(src, newSrc);
     await Promise.delay(500);
 
-    const lastTwoCalls = processor.args.slice(processor.args.length - 2, processor.args.length);
-
-    lastTwoCalls.forEach(args => {
-      const file = args[0];
-
+    for (const [file] of processor.args.slice(-2)) {
       switch (file.type) {
         case 'create':
           file.source.should.eql(newSrc);
@@ -458,7 +454,7 @@ describe('Box', () => {
           file.path.should.eql(path);
           break;
       }
-    });
+    }
 
     box.unwatch();
     await rmdir(box.base);
@@ -471,7 +467,7 @@ describe('Box', () => {
     const newPath = 'b/b.txt';
     const newSrc = join(box.base, newPath);
     const cacheId = 'test/' + path;
-    const Cache = box.Cache;
+    const { Cache } = box;
     const processor = spy();
 
     box.addProcessor(processor);
@@ -484,11 +480,7 @@ describe('Box', () => {
     await rename(join(box.base, 'a'), join(box.base, 'b'));
     await Promise.delay(500);
 
-    const lastTwoCalls = processor.args.slice(processor.args.length - 2, processor.args.length);
-
-    lastTwoCalls.forEach(args => {
-      const file = args[0];
-
+    for (const [file] of processor.args.slice(-2)) {
       switch (file.type) {
         case 'create':
           file.source.should.eql(newSrc);
@@ -500,7 +492,7 @@ describe('Box', () => {
           file.path.should.eql(path);
           break;
       }
-    });
+    }
 
     box.unwatch();
     await rmdir(box.base);
@@ -533,10 +525,12 @@ describe('Box', () => {
 
     const file = processor.lastCall.args[0];
 
-    file.source.should.eql(src1);
-    file.path.should.eql(path1);
-    file.type.should.eql('update');
-    file.params.should.eql({});
+    file.should.deep.include({
+      source: src1,
+      path: path1,
+      type: 'update',
+      params: {}
+    });
 
     await appendFile(src2, 'bbb');
     await Promise.delay(500);
@@ -559,7 +553,7 @@ describe('Box', () => {
     const cacheId1 = 'test/' + path1;
     const cacheId2 = 'test/ignore_me/' + path2;
     const cacheId3 = 'test/' + path3;
-    const Cache = box.Cache;
+    const { Cache } = box;
     const processor = spy();
 
     box.addProcessor(processor);
@@ -582,22 +576,22 @@ describe('Box', () => {
 
     const file = processor.lastCall.args[0];
 
-    file.source.should.eql(src1);
-    file.path.should.eql(path1);
-    file.type.should.eql('update');
-    file.params.should.eql({});
+    file.should.deep.include({
+      source: src1,
+      path: path1,
+      type: 'update',
+      params: {}
+    });
 
     await appendFile(src2, 'bbb');
     await Promise.delay(500);
 
-    const file2 = processor.lastCall.args[0];
-    file2.should.eql(file); // not changed
+    processor.lastCall.args[0].should.eql(file); // not changed
 
     await appendFile(src3, 'ccc');
     await Promise.delay(500);
 
-    const file3 = processor.lastCall.args[0];
-    file3.should.eql(file); // not changed
+    processor.lastCall.args[0].should.eql(file); // not changed
 
     box.unwatch();
     await rmdir(box.base);
