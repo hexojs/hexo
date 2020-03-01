@@ -327,7 +327,7 @@ describe('Post', () => {
     });
   });
 
-  it('create() - with callback', () => {
+  it('create() - with callback', done => {
     const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
 
@@ -339,19 +339,29 @@ describe('Post', () => {
       '---'
     ].join('\n') + '\n';
 
-    const callback = spy(post => {
-      post.path.should.eql(path);
-      post.content.should.eql(content);
-    });
-
-    return post.create({
-      title: 'Hello World'
-    }, callback).then(post => {
-      callback.calledOnce.should.be.true;
-      return readFile(path);
-    }).then(data => {
-      data.should.eql(content);
-      return unlink(path);
+    post.create({ title: 'Hello World' }, (err, post) => {
+      if (err) {
+        done(err);
+        return;
+      }
+      try {
+        post.path.should.eql(path);
+        post.content.should.eql(content);
+        readFile(path).asCallback((err, data) => {
+          if (err) {
+            done(err);
+            return;
+          }
+          try {
+            data.should.eql(content);
+            unlink(path).asCallback(done);
+          } catch (e) {
+            done(e);
+          }
+        });
+      } catch (e) {
+        done(e);
+      }
     });
   });
 
