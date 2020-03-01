@@ -1,8 +1,7 @@
 'use strict';
 
 const Promise = require('bluebird');
-const { stub, match } = require('sinon');
-const { expect } = require('chai');
+const { stub, assert: sinonAssert } = require('sinon');
 
 describe('Console list', () => {
   const Hexo = require('../../../lib/hexo');
@@ -23,10 +22,10 @@ describe('Console list', () => {
 
   it('no tags', () => {
     listTags();
-    expect(logStub.calledWith(match('Name'))).be.true;
-    expect(logStub.calledWith(match('Posts'))).be.true;
-    expect(logStub.calledWith(match('Path'))).be.true;
-    expect(logStub.calledWith(match('No tags.'))).be.true;
+    sinonAssert.calledWithMatch(logStub, 'Name');
+    sinonAssert.calledWithMatch(logStub, 'Posts');
+    sinonAssert.calledWithMatch(logStub, 'Path');
+    sinonAssert.calledWithMatch(logStub, 'No tags.');
   });
 
   it('tags', () => {
@@ -45,13 +44,13 @@ describe('Console list', () => {
       })
       .then(() => {
         listTags();
-        expect(logStub.calledWith(match('Name'))).be.true;
-        expect(logStub.calledWith(match('Posts'))).be.true;
-        expect(logStub.calledWith(match('Path'))).be.true;
-        expect(logStub.calledWith(match('baz'))).be.true;
-        expect(logStub.calledWith(match('foo'))).be.true;
-        expect(logStub.calledWith(match('tags/baz'))).be.true;
-        expect(logStub.calledWith(match('tags/foo'))).be.true;
+        sinonAssert.calledWithMatch(logStub, 'Name');
+        sinonAssert.calledWithMatch(logStub, 'Posts');
+        sinonAssert.calledWithMatch(logStub, 'Path');
+        sinonAssert.calledWithMatch(logStub, 'baz');
+        sinonAssert.calledWithMatch(logStub, 'foo');
+        sinonAssert.calledWithMatch(logStub, 'tags/baz');
+        sinonAssert.calledWithMatch(logStub, 'tags/foo');
       });
   });
 });

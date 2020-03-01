@@ -1,6 +1,6 @@
 'use strict';
 
-const { spy } = require('sinon');
+const { spy, assert: sinonAssert } = require('sinon');
 const { join } = require('path');
 const { mkdirs, rmdir, unlink, writeFile} = require('hexo-fs');
 const Promise = require('bluebird');
@@ -78,12 +78,12 @@ describe('config', () => {
       type: 'create'
     });
 
-    const errorCallback = spy(err => {
-      err.should.have.property('message', 'Theme config load failed.');
-    });
+    const logSpy = spy(hexo.log, 'error');
 
-    return process(file).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
-    }).catch(() => {}); // Catch again because it throws error
+    return process(file).then(() => {
+      should.fail('Return value must be rejected');
+    }, () => {
+      sinonAssert.calledWith(logSpy, 'Theme config load failed.');
+    }).finally(() => logSpy.restore());
   });
 });

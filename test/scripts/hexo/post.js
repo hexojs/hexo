@@ -510,10 +510,7 @@ describe('Post', () => {
       '---'
     ].join('\n') + '\n';
 
-    const callback = spy(post => {
-      post.path.should.eql(path);
-      post.content.should.eql(content);
-    });
+    const callback = spy();
 
     return post.create({
       title: 'Hello World',
@@ -526,6 +523,7 @@ describe('Post', () => {
       }, callback);
     }).then(post => {
       callback.calledOnce.should.be.true;
+      callback.calledWithMatch(null, { path, content }).should.true;
 
       return Promise.all([
         exists(draftPath),

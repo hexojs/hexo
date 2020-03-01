@@ -5,7 +5,7 @@ const { Readable } = require('stream');
 const { join } = require('path');
 const crypto = require('crypto');
 const { createReadStream } = require('hexo-fs');
-const { spy } = require('sinon');
+const { spy, assert: sinonAssert } = require('sinon');
 const testUtil = require('../../util');
 
 describe('Router', () => {
@@ -61,9 +61,7 @@ describe('Router', () => {
   });
 
   it('set() - string', () => {
-    const listener = spy(path => {
-      path.should.eql('test');
-    });
+    const listener = spy();
 
     router.once('update', listener);
 
@@ -72,6 +70,7 @@ describe('Router', () => {
 
     data.modified.should.be.true;
     listener.calledOnce.should.be.true;
+    sinonAssert.calledWith(listener, 'test');
     return checkStream(data, 'foo');
   });
 
@@ -194,15 +193,14 @@ describe('Router', () => {
   });
 
   it('remove()', () => {
-    const listener = spy(path => {
-      path.should.eql('test');
-    });
+    const listener = spy();
 
     router.once('remove', listener);
 
     router.set('test', 'foo');
     router.remove('test');
     should.not.exist(router.get('test'));
+    sinonAssert.calledWith(listener, 'test');
     listener.calledOnce.should.be.true;
   });
 

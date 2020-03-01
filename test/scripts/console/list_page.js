@@ -1,7 +1,6 @@
 'use strict';
 
-const { stub, match } = require('sinon');
-const { expect } = require('chai');
+const { stub, assert: sinonAssert } = require('sinon');
 
 describe('Console list', () => {
   const Hexo = require('../../../lib/hexo');
@@ -21,10 +20,10 @@ describe('Console list', () => {
 
   it('no page', () => {
     listPages();
-    expect(logStub.calledWith(match('Date'))).be.true;
-    expect(logStub.calledWith(match('Title'))).be.true;
-    expect(logStub.calledWith(match('Path'))).be.true;
-    expect(logStub.calledWith(match('No pages.'))).be.true;
+    sinonAssert.calledWithMatch(logStub, 'Date');
+    sinonAssert.calledWithMatch(logStub, 'Title');
+    sinonAssert.calledWithMatch(logStub, 'Path');
+    sinonAssert.calledWithMatch(logStub, 'No pages.');
   });
 
   it('page', () => {
@@ -34,11 +33,11 @@ describe('Console list', () => {
       path: 'bar'
     }).then(() => {
       listPages();
-      expect(logStub.calledWith(match('Date'))).be.true;
-      expect(logStub.calledWith(match('Title'))).be.true;
-      expect(logStub.calledWith(match('Path'))).be.true;
-      expect(logStub.calledWith(match('Hello World'))).be.true;
-      expect(logStub.calledWith(match('foo'))).be.true;
+      sinonAssert.calledWithMatch(logStub, 'Date');
+      sinonAssert.calledWithMatch(logStub, 'Title');
+      sinonAssert.calledWithMatch(logStub, 'Path');
+      sinonAssert.calledWithMatch(logStub, 'Hello World');
+      sinonAssert.calledWithMatch(logStub, 'foo');
     });
   });
 });
