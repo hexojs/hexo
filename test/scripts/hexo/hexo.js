@@ -121,12 +121,10 @@ describe('Hexo', () => {
   });
 
   it('call() - console not registered', () => {
-    const errorCallback = spy(err => {
-      err.should.have.property('message', 'Console `nothing` has not been registered yet!');
-    });
-
-    return hexo.call('nothing').catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
+    return hexo.call('nothing').then(() => {
+      should.fail('Return value must be rejected');
+    }, err => {
+      err.should.property('message', 'Console `nothing` has not been registered yet!');
     });
   });
 

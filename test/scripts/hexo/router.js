@@ -121,12 +121,10 @@ describe('Router', () => {
       throw new Error('error test');
     });
 
-    const errorCallback = spy(err => {
+    return testUtil.stream.read(router.get('test')).then(() => {
+      should.fail('Return value must be rejected');
+    }, err => {
       err.should.have.property('message', 'error test');
-    });
-
-    return testUtil.stream.read(router.get('test')).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
     });
   });
 

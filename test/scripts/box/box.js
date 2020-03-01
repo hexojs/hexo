@@ -607,12 +607,12 @@ describe('Box', () => {
     const box = newBox();
 
     await box.watch();
-    const errorCallback = spy(err => {
-      err.should.have.property('message', 'Watcher has already started.');
-    });
 
-    await box.watch().catch(errorCallback);
-    errorCallback.calledOnce.should.be.true;
+    await box.watch().then(() => {
+      should.fail('Return value must be rejected');
+    }, err => {
+      err.should.property('message', 'Watcher has already started.');
+    });
 
     box.unwatch();
   });

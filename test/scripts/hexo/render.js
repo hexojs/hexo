@@ -88,12 +88,10 @@ describe('Render', () => {
   }));
 
   it('render() - no path and text', () => {
-    const errorCallback = spy(err => {
-      err.should.have.property('message', 'No input file or string!');
-    });
-
-    return hexo.render.render().catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
+    return hexo.render.render().then(() => {
+      should.fail('Return value must be rejected');
+    }, err => {
+      err.should.property('message', 'No input file or string!');
     });
   });
 
