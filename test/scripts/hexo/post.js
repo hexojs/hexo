@@ -655,9 +655,7 @@ describe('Post', () => {
   it('render() - recover escaped swig blocks which is html escaped before post_render', () => {
     const content = '`{% raw %}{{ test }}{% endraw %}`';
 
-    const filter = spy(result => {
-      result.trim().should.eql('<p><code>{{ test }}</code></p>');
-    });
+    const filter = spy();
 
     hexo.extend.filter.register('after_render:html', filter);
 
@@ -666,6 +664,7 @@ describe('Post', () => {
       engine: 'markdown'
     }).then(data => {
       filter.calledOnce.should.be.true;
+      filter.firstCall.args[0].trim().should.eql('<p><code>{{ test }}</code></p>');
       hexo.extend.filter.unregister('after_render:html', filter);
     });
   });
