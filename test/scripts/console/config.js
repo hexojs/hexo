@@ -3,7 +3,7 @@
 const { mkdirs, readFile, rmdir, unlink, writeFile } = require('hexo-fs');
 const { join } = require('path');
 const { load } = require('js-yaml');
-const { stub } = require('sinon');
+const { stub, assert: sinonAssert } = require('sinon');
 
 describe('config', () => {
   const Hexo = require('../../../lib/hexo');
@@ -20,31 +20,31 @@ describe('config', () => {
   after(() => rmdir(hexo.base_dir));
 
   it('read all config', async () => {
-    const _stub = stub(console, 'log');
+    const logStub = stub(console, 'log');
 
     try {
       await config({_: []});
     } finally {
-      _stub.restore();
+      logStub.restore();
     }
 
-    _stub.calledWith(hexo.config).should.be.true;
+    sinonAssert.calledWith(logStub, hexo.config);
   });
 
   it('read config', async () => {
-    const _stub = stub(console, 'log');
+    const logStub = stub(console, 'log');
 
     try {
       await config({_: ['title']});
     } finally {
-      _stub.restore();
+      logStub.restore();
     }
 
-    _stub.calledWith(hexo.config.title).should.be.true;
+    sinonAssert.calledWith(logStub, hexo.config.title);
   });
 
   it('read nested config', async () => {
-    const _stub = stub(console, 'log');
+    const logStub = stub(console, 'log');
 
     try {
       hexo.config.server = {
@@ -52,10 +52,10 @@ describe('config', () => {
       };
 
       await config({_: ['server.port']});
-      _stub.calledWith(hexo.config.server.port).should.be.true;
+      sinonAssert.calledWith(logStub, hexo.config.server.port);
     } finally {
       delete hexo.config.server;
-      _stub.restore();
+      logStub.restore();
     }
   });
 

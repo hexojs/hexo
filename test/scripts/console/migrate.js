@@ -1,6 +1,6 @@
 'use strict';
 
-const { spy } = require('sinon');
+const { spy, assert: sinonAssert } = require('sinon');
 
 describe('migrate', () => {
   const Hexo = require('../../../lib/hexo');
@@ -8,14 +8,13 @@ describe('migrate', () => {
   const migrate = require('../../../lib/plugins/console/migrate').bind(hexo);
 
   it('default', async () => {
-    const migrator = spy(args => {
-      args.foo.should.eql(1);
-      args.bar.should.eql(2);
-    });
+    const migrator = spy();
 
     hexo.extend.migrator.register('test', migrator);
 
     await migrate({_: ['test'], foo: 1, bar: 2});
-    migrator.calledOnce.should.eql(true);
+
+    sinonAssert.calledWithMatch(migrator, { foo: 1, bar: 2 });
+    migrator.calledOnce.should.be.true;
   });
 });

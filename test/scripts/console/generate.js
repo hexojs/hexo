@@ -252,14 +252,12 @@ describe('generate', () => {
       ]
     );
 
-    const errorCallback = spy(err => {
-      err.should.have.property('message', 'Testing unhandled exception');
-    });
-
     await writeFile(join(hexo.theme_dir, 'layout', 'post.err'), 'post');
 
-    return generate({ bail: true }).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
+    return generate({ bail: true }).then(() => {
+      should.fail('Return value must be rejected');
+    }, err => {
+      err.should.property('message', 'Testing unhandled exception');
     });
   });
 

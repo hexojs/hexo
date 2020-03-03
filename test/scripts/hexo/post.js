@@ -327,7 +327,7 @@ describe('Post', () => {
     });
   });
 
-  it('create() - with callback', () => {
+  it('create() - with callback', done => {
     const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
 
@@ -339,19 +339,29 @@ describe('Post', () => {
       '---'
     ].join('\n') + '\n';
 
-    const callback = spy(post => {
-      post.path.should.eql(path);
-      post.content.should.eql(content);
-    });
-
-    return post.create({
-      title: 'Hello World'
-    }, callback).then(post => {
-      callback.calledOnce.should.be.true;
-      return readFile(path);
-    }).then(data => {
-      data.should.eql(content);
-      return unlink(path);
+    post.create({ title: 'Hello World' }, (err, post) => {
+      if (err) {
+        done(err);
+        return;
+      }
+      try {
+        post.path.should.eql(path);
+        post.content.should.eql(content);
+        readFile(path).asCallback((err, data) => {
+          if (err) {
+            done(err);
+            return;
+          }
+          try {
+            data.should.eql(content);
+            unlink(path).asCallback(done);
+          } catch (e) {
+            done(e);
+          }
+        });
+      } catch (e) {
+        done(e);
+      }
     });
   });
 
@@ -510,10 +520,7 @@ describe('Post', () => {
       '---'
     ].join('\n') + '\n';
 
-    const callback = spy(post => {
-      post.path.should.eql(path);
-      post.content.should.eql(content);
-    });
+    const callback = spy();
 
     return post.create({
       title: 'Hello World',
@@ -526,6 +533,7 @@ describe('Post', () => {
       }, callback);
     }).then(post => {
       callback.calledOnce.should.be.true;
+      callback.calledWithMatch(null, { path, content }).should.true;
 
       return Promise.all([
         exists(draftPath),
@@ -657,9 +665,7 @@ describe('Post', () => {
   it('render() - recover escaped swig blocks which is html escaped before post_render', () => {
     const content = '`{% raw %}{{ test }}{% endraw %}`';
 
-    const filter = spy(result => {
-      result.trim().should.eql('<p><code>{{ test }}</code></p>');
-    });
+    const filter = spy();
 
     hexo.extend.filter.register('after_render:html', filter);
 
@@ -668,6 +674,7 @@ describe('Post', () => {
       engine: 'markdown'
     }).then(data => {
       filter.calledOnce.should.be.true;
+      filter.firstCall.args[0].trim().should.eql('<p><code>{{ test }}</code></p>');
       hexo.extend.filter.unregister('after_render:html', filter);
     });
   });

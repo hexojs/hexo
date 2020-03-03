@@ -1,6 +1,5 @@
 'use strict';
 
-const { spy } = require('sinon');
 const { join, sep } = require('path');
 const Promise = require('bluebird');
 const { full_url_for } = require('hexo-util');
@@ -45,24 +44,20 @@ describe('Post', () => {
   });
 
   it('source - required', () => {
-    const errorCallback = spy(err => {
+    return Post.insert({}).then(() => {
+      should.fail('Return value must be rejected');
+    }, err => {
       err.should.have.property('message', '`source` is required!');
-    });
-
-    return Post.insert({}).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
     });
   });
 
   it('slug - required', () => {
-    const errorCallback = spy(err => {
-      err.should.have.property('message', '`slug` is required!');
-    });
-
     return Post.insert({
       source: 'foo.md'
-    }).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
+    }).then(() => {
+      should.fail('Return value must be rejected');
+    }, err => {
+      err.should.have.property('message', '`slug` is required!');
     });
   });
 
