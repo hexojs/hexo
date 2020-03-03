@@ -1,7 +1,7 @@
 'use strict';
 
-const sinon = require('sinon');
-const expect = require('chai').expect;
+const { stub, match } = require('sinon');
+const { expect } = require('chai');
 
 describe('Console list', () => {
   const Hexo = require('../../../lib/hexo');
@@ -10,23 +10,21 @@ describe('Console list', () => {
   const listPages = require('../../../lib/plugins/console/list/page').bind(hexo);
 
   hexo.config.permalink = ':title/';
-  before(() => {
-    const log = console.log;
-    sinon.stub(console, 'log').callsFake((...args) => {
-      return log.apply(log, args);
-    });
-  });
 
-  after(() => {
-    console.log.restore();
-  });
+  let logStub;
+
+  before(() => { logStub = stub(console, 'log'); });
+
+  afterEach(() => { logStub.reset(); });
+
+  after(() => { logStub.restore(); });
 
   it('no page', () => {
     listPages();
-    expect(console.log.calledWith(sinon.match('Date'))).be.true;
-    expect(console.log.calledWith(sinon.match('Title'))).be.true;
-    expect(console.log.calledWith(sinon.match('Path'))).be.true;
-    expect(console.log.calledWith(sinon.match('No pages.'))).be.true;
+    expect(logStub.calledWith(match('Date'))).be.true;
+    expect(logStub.calledWith(match('Title'))).be.true;
+    expect(logStub.calledWith(match('Path'))).be.true;
+    expect(logStub.calledWith(match('No pages.'))).be.true;
   });
 
   it('page', async () => {
@@ -36,10 +34,10 @@ describe('Console list', () => {
       path: 'bar'
     });
     listPages();
-    expect(console.log.calledWith(sinon.match('Date'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Title'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Path'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Hello World'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('foo'))).to.be.true;
+    expect(logStub.calledWith(match('Date'))).be.true;
+    expect(logStub.calledWith(match('Title'))).be.true;
+    expect(logStub.calledWith(match('Path'))).be.true;
+    expect(logStub.calledWith(match('Hello World'))).be.true;
+    expect(logStub.calledWith(match('foo'))).be.true;
   });
 });

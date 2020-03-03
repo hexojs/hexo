@@ -5,6 +5,7 @@ describe('Core', () => {
   require('./load_config');
   require('./load_database');
   require('./load_plugins');
+  require('./load_theme_config');
   require('./locals');
   require('./multi_config_path');
   require('./post');

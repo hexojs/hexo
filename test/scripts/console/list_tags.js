@@ -1,8 +1,8 @@
 'use strict';
 
 const Promise = require('bluebird');
-const sinon = require('sinon');
-const expect = require('chai').expect;
+const { stub, match } = require('sinon');
+const { expect } = require('chai');
 
 describe('Console list', () => {
   const Hexo = require('../../../lib/hexo');
@@ -12,23 +12,21 @@ describe('Console list', () => {
   const listTags = require('../../../lib/plugins/console/list/tag').bind(hexo);
 
   hexo.config.permalink = ':title/';
-  before(() => {
-    const log = console.log;
-    sinon.stub(console, 'log').callsFake((...args) => {
-      return log.apply(log, args);
-    });
-  });
 
-  after(() => {
-    console.log.restore();
-  });
+  let logStub;
+
+  before(() => { logStub = stub(console, 'log'); });
+
+  afterEach(() => { logStub.reset(); });
+
+  after(() => { logStub.restore(); });
 
   it('no tags', () => {
     listTags();
-    expect(console.log.calledWith(sinon.match('Name'))).be.true;
-    expect(console.log.calledWith(sinon.match('Posts'))).be.true;
-    expect(console.log.calledWith(sinon.match('Path'))).be.true;
-    expect(console.log.calledWith(sinon.match('No tags.'))).be.true;
+    expect(logStub.calledWith(match('Name'))).be.true;
+    expect(logStub.calledWith(match('Posts'))).be.true;
+    expect(logStub.calledWith(match('Path'))).be.true;
+    expect(logStub.calledWith(match('No tags.'))).be.true;
   });
 
   it('tags', async () => {
@@ -48,12 +46,12 @@ describe('Console list', () => {
     await hexo.locals.invalidate();
 
     listTags();
-    expect(console.log.calledWith(sinon.match('Name'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Posts'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Path'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('baz'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('foo'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('tags/baz'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('tags/foo'))).to.be.true;
+    expect(logStub.calledWith(match('Name'))).be.true;
+    expect(logStub.calledWith(match('Posts'))).be.true;
+    expect(logStub.calledWith(match('Path'))).be.true;
+    expect(logStub.calledWith(match('baz'))).be.true;
+    expect(logStub.calledWith(match('foo'))).be.true;
+    expect(logStub.calledWith(match('tags/baz'))).be.true;
+    expect(logStub.calledWith(match('tags/foo'))).be.true;
   });
 });
