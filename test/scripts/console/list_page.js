@@ -26,18 +26,17 @@ describe('Console list', () => {
     sinonAssert.calledWithMatch(logStub, 'No pages.');
   });
 
-  it('page', () => {
-    return Page.insert({
+  it('page', async () => {
+    await Page.insert({
       source: 'foo',
       title: 'Hello World',
       path: 'bar'
-    }).then(() => {
-      listPages();
-      sinonAssert.calledWithMatch(logStub, 'Date');
-      sinonAssert.calledWithMatch(logStub, 'Title');
-      sinonAssert.calledWithMatch(logStub, 'Path');
-      sinonAssert.calledWithMatch(logStub, 'Hello World');
-      sinonAssert.calledWithMatch(logStub, 'foo');
     });
+    listPages();
+    sinonAssert.calledWithMatch(logStub, 'Date');
+    sinonAssert.calledWithMatch(logStub, 'Title');
+    sinonAssert.calledWithMatch(logStub, 'Path');
+    sinonAssert.calledWithMatch(logStub, 'Hello World');
+    sinonAssert.calledWithMatch(logStub, 'foo');
   });
 });

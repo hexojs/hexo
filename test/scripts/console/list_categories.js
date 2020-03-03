@@ -25,25 +25,25 @@ describe('Console list', () => {
     sinonAssert.calledWithMatch(logStub, 'No categories.');
   });
 
-  it('categories', () => {
+  it('categories', async () => {
     const posts = [
       {source: 'foo', slug: 'foo', title: 'Its', date: 1e8},
       {source: 'bar', slug: 'bar', title: 'Math', date: 1e8 + 1},
       {source: 'baz', slug: 'baz', title: 'Dude', date: 1e8 - 1}
     ];
-    return hexo.init()
-      .then(() => Post.insert(posts)).then(posts => Promise.each([
-        ['foo'],
-        ['baz'],
-        ['baz']
-      ], (tags, i) => posts[i].setCategories(tags))).then(() => {
-        hexo.locals.invalidate();
-      }).then(() => {
-        listCategories();
-        sinonAssert.calledWithMatch(logStub, 'Name');
-        sinonAssert.calledWithMatch(logStub, 'Posts');
-        sinonAssert.calledWithMatch(logStub, 'baz');
-        sinonAssert.calledWithMatch(logStub, 'foo');
-      });
+
+    await hexo.init();
+    const output = await Post.insert(posts);
+    await Promise.each([
+      ['foo'],
+      ['baz'],
+      ['baz']
+    ], (tags, i) => output[i].setCategories(tags));
+    await hexo.locals.invalidate();
+    listCategories();
+    sinonAssert.calledWithMatch(logStub, 'Name');
+    sinonAssert.calledWithMatch(logStub, 'Posts');
+    sinonAssert.calledWithMatch(logStub, 'baz');
+    sinonAssert.calledWithMatch(logStub, 'foo');
   });
 });
