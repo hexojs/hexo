@@ -27,18 +27,17 @@ describe('Console list', () => {
     expect(logStub.calledWith(match('No pages.'))).be.true;
   });
 
-  it('page', () => {
-    return Page.insert({
+  it('page', async () => {
+    await Page.insert({
       source: 'foo',
       title: 'Hello World',
       path: 'bar'
-    }).then(() => {
-      listPages();
-      expect(logStub.calledWith(match('Date'))).be.true;
-      expect(logStub.calledWith(match('Title'))).be.true;
-      expect(logStub.calledWith(match('Path'))).be.true;
-      expect(logStub.calledWith(match('Hello World'))).be.true;
-      expect(logStub.calledWith(match('foo'))).be.true;
     });
+    listPages();
+    expect(logStub.calledWith(match('Date'))).be.true;
+    expect(logStub.calledWith(match('Title'))).be.true;
+    expect(logStub.calledWith(match('Path'))).be.true;
+    expect(logStub.calledWith(match('Hello World'))).be.true;
+    expect(logStub.calledWith(match('foo'))).be.true;
   });
 });
