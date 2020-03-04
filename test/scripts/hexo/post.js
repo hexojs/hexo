@@ -939,4 +939,15 @@ describe('Post', () => {
     });
   });
 
+  // test for Issue #3346
+  it('render() - swig tag inside backtick code block', () => {
+    const content = fixture.content_for_issue_3346;
+
+    return post.render(null, {
+      content,
+      engine: 'markdown'
+    }).then(data => {
+      data.content.trim().should.eql(fixture.expected_for_issue_3346);
+    });
+  });
 });
