@@ -37,7 +37,7 @@ describe('Tag', () => {
     ].join('\n');
 
     const result = await tag.render(str);
-    result.should.eql('foo bar test content');
+    result.should.eql('foo bar test content\n');
   });
 
   it('register() - async block', async () => {
@@ -52,7 +52,7 @@ describe('Tag', () => {
     ].join('\n');
 
     const result = await tag.render(str);
-    result.should.eql('foo bar test content');
+    result.should.eql('foo bar test content\n');
   });
 
   it('register() - nested test', async () => {
@@ -111,7 +111,7 @@ describe('Tag', () => {
     ].join('\n');
 
     const result = await tag.render(str);
-    result.should.eql('test content');
+    result.should.eql('test content\n');
   });
 
   it('register() - async callback', async () => {

@@ -45,7 +45,7 @@ exports.expected = [
   '<h2 id="Another-title"><a href="#Another-title" class="headerlink" title="Another title"></a>Another title</h2>',
   '<blockquote>',
   '<p>quote content</p>\n',
-  '</blockquote>\n\n',
+  '</blockquote>\n\n\n',
   '<blockquote><p>quote content</p>\n',
   '<footer><strong>Hello World</strong></footer></blockquote>'
 ].join('');
