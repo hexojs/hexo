@@ -515,7 +515,7 @@ describe('open_graph', () => {
 
   it('keywords - page keywords array', () => {
     const ctx = {
-      page: { keywords: ['optimize', 'web'] },
+      page: { tags: ['optimize', 'web'] },
       config: hexo.config,
       is_post: isPost
     };
@@ -529,7 +529,7 @@ describe('open_graph', () => {
 
   it('keywords - page keywords string', () => {
     const ctx = {
-      page: { keywords: 'optimize' },
+      page: { tags: 'optimize' },
       config: hexo.config,
       is_post: isPost
     };
@@ -569,12 +569,11 @@ describe('open_graph', () => {
     result.should.have.string(meta({property: 'article:tag', content: keywords[1]}));
   });
 
-  it('keywords - page keywords first', () => {
-    hexo.config.keywords = ['web5', 'web6'];
+  it('keywords - page tags first', () => {
+    hexo.config.keywords = ['web3', 'web4'];
     const ctx = {
       page: {
-        keywords: ['web1', 'web2'],
-        tags: ['web3', 'web4']
+        tags: ['web1', 'web2']
       },
       config: hexo.config,
       is_post: isPost
@@ -582,21 +581,6 @@ describe('open_graph', () => {
 
     const result = openGraph.call(ctx);
     const keywords = ['web1', 'web2'];
-
-    result.should.have.string(meta({property: 'article:tag', content: keywords[0]}));
-    result.should.have.string(meta({property: 'article:tag', content: keywords[1]}));
-  });
-
-  it('keywords - page tags second', () => {
-    hexo.config.keywords = ['web5', 'web6'];
-    const ctx = {
-      page: { tags: ['optimize', 'web'] },
-      config: hexo.config,
-      is_post: isPost
-    };
-
-    const result = openGraph.call(ctx);
-    const keywords = ['optimize', 'web'];
 
     result.should.have.string(meta({property: 'article:tag', content: keywords[0]}));
     result.should.have.string(meta({property: 'article:tag', content: keywords[1]}));
@@ -619,13 +603,13 @@ describe('open_graph', () => {
 
   it('keywords - escape', () => {
     const ctx = {
-      page: { keywords: ['optimize', 'web&<>"\'/', 'site'] },
+      page: { tags: ['optimize', 'web&<>"\'/', 'site'] },
       config: hexo.config,
       is_post: isPost
     };
 
     const result = openGraph.call(ctx);
-    const keywords = ctx.page.keywords;
+    const keywords = ['optimize', 'web&<>"\'/', 'site'];
 
     result.should.have.string(meta({property: 'article:tag', content: keywords[0]}));
     result.should.have.string(meta({property: 'article:tag', content: keywords[1]}));
