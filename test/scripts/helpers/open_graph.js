@@ -527,6 +527,19 @@ describe('open_graph', () => {
     result.should.have.string(meta({property: 'article:tag', content: keywords[1]}));
   });
 
+  it('keywords - page keywords string', () => {
+    const ctx = {
+      page: { keywords: 'optimize' },
+      config: hexo.config,
+      is_post: isPost
+    };
+
+    const result = openGraph.call(ctx);
+    const keywords = ['optimize'];
+
+    result.should.have.string(meta({property: 'article:tag', content: keywords[0]}));
+  });
+
   it('keywords - page tags', () => {
     const ctx = {
       page: { tags: ['optimize', 'web'] },
