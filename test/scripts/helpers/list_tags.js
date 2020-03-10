@@ -99,6 +99,25 @@ describe('list_tags', () => {
     ].join(''));
   });
 
+  it('custom class', () => {
+    const result = listTags({
+      class: {
+        ul: 'lorem',
+        li: 'ipsum',
+        a: 'tempor',
+        count: 'dolor'
+      }
+    });
+
+    result.should.eql([
+      '<ul class="lorem" itemprop="keywords">',
+      '<li class="ipsum"><a class="tempor" href="/tags/bar/" rel="tag">bar</a><span class="dolor">1</span></li>',
+      '<li class="ipsum"><a class="tempor" href="/tags/baz/" rel="tag">baz</a><span class="dolor">2</span></li>',
+      '<li class="ipsum"><a class="tempor" href="/tags/foo/" rel="tag">foo</a><span class="dolor">1</span></li>',
+      '</ul>'
+    ].join(''));
+  });
+
   it('orderby', () => {
     const result = listTags({
       orderby: 'length'
