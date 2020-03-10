@@ -29,7 +29,7 @@ describe('Indented code block', () => {
   it('disabled', () => {
     const content = [
       ...code_raw
-    ].map(x => `   ${x}`).join('\n');
+    ].map(x => `    ${x}`).join('\n');
 
     const data = {content};
 
@@ -41,7 +41,7 @@ describe('Indented code block', () => {
   it('with no config (disabled)', () => {
     const content = [
       ...code_raw
-    ].map(x => `   ${x}`).join('\n');
+    ].map(x => `    ${x}`).join('\n');
 
     const data = {content};
 
@@ -58,7 +58,7 @@ describe('Indented code block', () => {
     const data = {
       content: [
         ...code_raw
-      ].map(x => `   ${x}`).join('\n')
+      ].map(x => `    ${x}`).join('\n')
     };
 
     codeBlock(data);
@@ -69,7 +69,7 @@ describe('Indented code block', () => {
     const data = {
       content: [
         ...code_raw
-      ].map(x => `   ${x}`).join('\n')
+      ].map(x => `    ${x}`).join('\n')
     };
 
     const expected = highlight(code);
@@ -82,7 +82,7 @@ describe('Indented code block', () => {
     const data = {
       content: [
         ...code_raw
-      ].map(x => `   ${x}`).join('\n')
+      ].map(x => `    ${x}`).join('\n')
     };
 
     const expected = highlight(code);
@@ -97,7 +97,7 @@ describe('Indented code block', () => {
     const data = {
       content: [
         ...indentCode
-      ].map(x => `   ${x}`).join('\n')
+      ].map(x => `    ${x}`).join('\n')
     };
 
     const expected = highlight(code, {
@@ -113,7 +113,7 @@ describe('Indented code block', () => {
     const data = {
       content: [
         ...code_raw
-      ].map(x => `   ${x}`).join('\n')
+      ].map(x => `    ${x}`).join('\n')
     };
 
     const expected = highlight(code, {
@@ -131,7 +131,7 @@ describe('Indented code block', () => {
     const data = {
       content: [
         ...code_raw
-      ].map(x => `   ${x}`).join('\n')
+      ].map(x => `    ${x}`).join('\n')
     };
 
     const expected = highlight(code, {
@@ -149,7 +149,7 @@ describe('Indented code block', () => {
     const data = {
       content: [
         ...code_raw
-      ].map(x => `   ${x}`).join('\n')
+      ].map(x => `    ${x}`).join('\n')
     };
 
     const expected = highlight(code, {
@@ -166,7 +166,7 @@ describe('Indented code block', () => {
     const data = {
       content: [
         ...code_raw
-      ].map(x => `   ${x}`).join('\n')
+      ].map(x => `    ${x}`).join('\n')
     };
 
     const expected = highlight(code, {
@@ -190,7 +190,7 @@ describe('Indented code block', () => {
     const data = {
       content: [
         ...code_raw
-      ].map(x => `   ${x}`).join('\n')
+      ].map(x => `    ${x}`).join('\n')
     };
 
     const expected = highlight(code, {
@@ -207,7 +207,7 @@ describe('Indented code block', () => {
     const data = {
       content: [
         ...code_raw
-      ].map(x => `   ${x}`).join('\n')
+      ].map(x => `    ${x}`).join('\n')
     };
 
     codeBlock(data);
