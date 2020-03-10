@@ -21,6 +21,13 @@ describe('Indented code block', () => {
       .replace(/}/g, '&#125;');
   }
 
+  function wrap(code) {
+    return '<pre><code>' + code
+      .replace(/{/g, '&#123;')
+      .replace(/}/g, '&#125;')
+      + '</code></pre>';
+  }
+
   beforeEach(() => {
     // Reset config
     hexo.config.highlight = Object.assign({}, defaultConfig.highlight);
@@ -35,7 +42,7 @@ describe('Indented code block', () => {
 
     hexo.config.highlight.enable = false;
     codeBlock(data);
-    data.content.should.eql(content);
+    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->');
   });
 
   it('with no config (disabled)', () => {
@@ -49,7 +56,7 @@ describe('Indented code block', () => {
     delete hexo.config.highlight;
 
     codeBlock(data);
-    data.content.should.eql(content);
+    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->');
 
     hexo.config.highlight = oldConfig;
   });
