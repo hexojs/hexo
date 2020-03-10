@@ -3,6 +3,7 @@
 const moment = require('moment');
 const cheerio = require('cheerio');
 const { encodeURL } = require('hexo-util');
+const defaultConfig = require('../../../lib/hexo/default_config');
 
 describe('open_graph', () => {
   const Hexo = require('../../../lib/hexo');
@@ -17,8 +18,13 @@ describe('open_graph', () => {
   }
 
   before(() => {
-    hexo.config.permalink = ':title';
     return hexo.init();
+  });
+
+  beforeEach(() => {
+    // Reset config
+    hexo.config = { ...defaultConfig };
+    hexo.config.permalink = ':title';
   });
 
   it('default', async () => {
@@ -586,7 +592,7 @@ describe('open_graph', () => {
     result.should.have.string(meta({property: 'article:tag', content: keywords[1]}));
   });
 
-  it('keywords - page tags empty', () => {
+  it('keywords - use config.keywords if no tags', () => {
     hexo.config.keywords = ['web5', 'web6'];
     const ctx = {
       page: { tags: [] },
@@ -599,6 +605,18 @@ describe('open_graph', () => {
 
     result.should.have.string(meta({property: 'article:tag', content: keywords[0]}));
     result.should.have.string(meta({property: 'article:tag', content: keywords[1]}));
+  });
+
+  it('keywords - null', () => {
+    const ctx = {
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    };
+
+    const result = openGraph.call(ctx);
+
+    result.should.not.have.string('<meta property="article:tag"');
   });
 
   it('keywords - escape', () => {
