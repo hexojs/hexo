@@ -5,6 +5,7 @@ describe('Filters', () => {
   require('./excerpt');
   require('./external_link');
   require('./i18n_locals');
+  require('./indented_code_block');
   require('./meta_generator');
   require('./new_post_path');
   require('./post_permalink');
