@@ -56,7 +56,7 @@ describe('Backtick code block', () => {
     hexo.config.highlight.enable = false;
     hexo.config.prismjs.enable = false;
     codeBlock(data);
-    data.content.should.eql(content);
+    data.content.should.eql(content.replace(/{/g, '&#123;').replace(/}/g, '&#125;'));
   });
 
   it('with no config (disabled)', () => {
@@ -74,7 +74,7 @@ describe('Backtick code block', () => {
     delete hexo.config.prismjs;
 
     codeBlock(data);
-    data.content.should.eql(content);
+    data.content.should.eql(content.replace(/{/g, '&#123;').replace(/}/g, '&#125;'));
 
     hexo.config.highlight = oldHljsCfg;
     hexo.config.prismjs = oldPrismCfg;
