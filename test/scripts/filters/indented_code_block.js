@@ -77,6 +77,26 @@ describe('Indented code block', () => {
     data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->');
   });
 
+  it('include blank line', () => {
+    const code_raw = [
+      'if (tired && night){',
+      '',
+      '  sleep();',
+      '',
+      '}'
+    ];
+    const code = code_raw.join('\n');
+
+    const data = {
+      content: [
+        ...code_raw
+      ].map(x => `    ${x}`).join('\n')
+    };
+
+    codeBlock(data);
+    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->');
+  });
+
   it('include quote mark as content', () => {
     const code_raw = [
       '> if (tired && night){',
