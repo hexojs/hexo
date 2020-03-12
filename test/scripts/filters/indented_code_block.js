@@ -22,6 +22,15 @@ describe('Indented code block', () => {
     return '<pre><code>' + content + '</code></pre>';
   }
 
+  function wrap_with_quote(code) {
+    const content = util.escapeHTML(util.stripIndent(code))
+      .replace(/{/g, '&#123;')
+      .replace(/}/g, '&#125;')
+      .replace(/^/mg, '> ')
+      .replace(/^> /, '');
+    return '<pre><code>' + content + '</code></pre>';
+  }
+
   beforeEach(() => {
   });
 
@@ -208,7 +217,7 @@ describe('Indented code block', () => {
     };
 
     const expected = [
-      '> <!--hexoPostRenderEscape:' + wrap(code).replace(/^/mg, '> ') + ':hexoPostRenderEscape-->'
+      '> <!--hexoPostRenderEscape:' + wrap_with_quote(code) + ':hexoPostRenderEscape-->'
     ].join('\n') + '\n';
 
     codeBlock(data);
@@ -229,7 +238,7 @@ describe('Indented code block', () => {
     const expected = [
       '> aaa',
       '> ',
-      '> <!--hexoPostRenderEscape:' + wrap(code).replace(/^/mg, '> ') + ':hexoPostRenderEscape-->',
+      '> <!--hexoPostRenderEscape:' + wrap_with_quote(code) + ':hexoPostRenderEscape-->',
       '> ',
       '> bbb'
     ].join('\n') + '\n';
@@ -277,7 +286,7 @@ describe('Indented code block', () => {
     const expected = [
       '> aaa',
       '> ',
-      '> <!--hexoPostRenderEscape:' + wrap(code).replace(/^/mg, '> ') + ':hexoPostRenderEscape-->',
+      '> <!--hexoPostRenderEscape:' + wrap_with_quote(code) + ':hexoPostRenderEscape-->',
       '> ',
       '> bbb'
     ].join('\n') + '\n';
@@ -348,7 +357,7 @@ describe('Indented code block', () => {
     const expected = [
       '> aaa',
       '> ',
-      '> <!--hexoPostRenderEscape:' + wrap(code).replace(/^/mg, '> ') + ':hexoPostRenderEscape-->',
+      '> <!--hexoPostRenderEscape:' + wrap_with_quote(code) + ':hexoPostRenderEscape-->',
       '> ',
       '> bbb'
     ].join('\n') + '\n';
