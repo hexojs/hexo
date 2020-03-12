@@ -12,7 +12,9 @@ describe('Indented code block', () => {
     '  sleep();',
     '}'
   ];
-  const code = code_raw.join('\n');
+  const code = code_raw.join('\n') + '\n';
+  const code_cooked = code_raw.map(x => `    ${x}`);
+  const code_trimmed = code.trim();
 
   function wrap(code) {
     const content = util.escapeHTML(code)
@@ -28,22 +30,22 @@ describe('Indented code block', () => {
     const data = {
       content: [
         ...code_raw
-      ].map(x => `    ${x}`).join('\n')
+      ].map(x => `    ${x}`).join('\n') + '\n'
     };
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n');
   });
 
   it('single tab indent', () => {
     const data = {
       content: [
         ...code_raw
-      ].map(x => `\t${x}`).join('\n')
+      ].map(x => `\t${x}`).join('\n') + '\n'
     };
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n');
   });
 
   it('extra indent', () => {
@@ -52,11 +54,11 @@ describe('Indented code block', () => {
     const data = {
       content: [
         ...indentCode
-      ].map(x => `    ${x}`).join('\n')
+      ].map(x => `    ${x}`).join('\n') + '\n'
     };
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n');
   });
 
   it('include tab', () => {
@@ -65,16 +67,16 @@ describe('Indented code block', () => {
       '\tsleep();',
       '}'
     ];
-    const code = code_raw.join('\n');
+    const code = code_raw.join('\n') + '\n';
 
     const data = {
       content: [
         ...code_raw
-      ].map(x => `    ${x}`).join('\n')
+      ].map(x => `    ${x}`).join('\n') + '\n'
     };
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n');
   });
 
   it('include blank line', () => {
@@ -85,16 +87,16 @@ describe('Indented code block', () => {
       '',
       '}'
     ];
-    const code = code_raw.join('\n');
+    const code = code_raw.join('\n') + '\n';
 
     const data = {
       content: [
         ...code_raw
-      ].map(x => `    ${x}`).join('\n')
+      ].map(x => `    ${x}`).join('\n') + '\n'
     };
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n');
   });
 
   it('include quote mark as content', () => {
@@ -103,30 +105,34 @@ describe('Indented code block', () => {
       '>   sleep();',
       '> }'
     ];
-    const code = code_raw.join('\n');
+    const code = code_raw.join('\n') + '\n';
 
     const data = {
       content: [
         ...code_raw
-      ].map(x => `    ${x}`).join('\n')
+      ].map(x => `    ${x}`).join('\n') + '\n'
     };
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n');
   });
 
-  it('included by blockquote', () => {
-    const code_raw = [
-      'if (tired && night){',
-      '  sleep();',
-      '}'
-    ];
-    const code = code_raw.join('\n');
+  it('included by blockquote (target, only itself)', () => {
+    const data = {
+      content: [
+        ...code_cooked
+      ].map(x => `> ${x}`).join('\n') + '\n'
+    };
 
-    const code_cooked = [
-      ...code_raw
-    ].map(x => `    ${x}`);
+    const expected = [
+      '> <!--hexoPostRenderEscape:' + wrap(code_trimmed).replace(/^/mg, '> ') + ':hexoPostRenderEscape-->'
+    ].join('\n') + '\n';
 
+    codeBlock(data);
+    data.content.should.eql(expected);
+  });
+
+  it('included by blockquote (target)', () => {
     const data = {
       content: [
         'aaa',
@@ -134,16 +140,39 @@ describe('Indented code block', () => {
         ...code_cooked,
         '',
         'bbb'
-      ].map(x => `> ${x}`).join('\n')
+      ].map(x => `> ${x}`).join('\n') + '\n'
     };
 
     const expected = [
       '> aaa',
       '> ',
-      '> <!--hexoPostRenderEscape:' + wrap(code).replace(/^/mg, '> ') + ':hexoPostRenderEscape-->',
+      '> <!--hexoPostRenderEscape:' + wrap(code_trimmed).replace(/^/mg, '> ') + ':hexoPostRenderEscape-->',
       '> ',
       '> bbb'
-    ].join('\n');
+    ].join('\n') + '\n';
+
+    codeBlock(data);
+    data.content.should.eql(expected);
+  });
+
+  it('included by blockquote (target, vague notation)', () => {
+    const data = {
+      content: [
+        '> aaa',
+        '> ',
+        ...code_cooked,
+        '> ',
+        '> bbb'
+      ].join('\n') + '\n'
+    };
+
+    const expected = [
+      '> aaa',
+      '> ',
+      '<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->',
+      '> ',
+      '> bbb'
+    ].join('\n') + '\n';
 
     codeBlock(data);
     data.content.should.eql(expected);
