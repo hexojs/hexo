@@ -14,7 +14,6 @@ describe('Indented code block', () => {
   ];
   const code = code_raw.join('\n') + '\n';
   const code_cooked = code_raw.map(x => `    ${x}`);
-  const code_trimmed = code.replace(/\n$/, '');
 
   function wrap(code) {
     const content = util.escapeHTML(util.stripIndent(code))
@@ -209,7 +208,7 @@ describe('Indented code block', () => {
     };
 
     const expected = [
-      '> <!--hexoPostRenderEscape:' + wrap(code_trimmed).replace(/^/mg, '> ') + ':hexoPostRenderEscape-->'
+      '> <!--hexoPostRenderEscape:' + wrap(code).replace(/^/mg, '> ') + ':hexoPostRenderEscape-->'
     ].join('\n') + '\n';
 
     codeBlock(data);
@@ -230,7 +229,7 @@ describe('Indented code block', () => {
     const expected = [
       '> aaa',
       '> ',
-      '> <!--hexoPostRenderEscape:' + wrap(code_trimmed).replace(/^/mg, '> ') + ':hexoPostRenderEscape-->',
+      '> <!--hexoPostRenderEscape:' + wrap(code).replace(/^/mg, '> ') + ':hexoPostRenderEscape-->',
       '> ',
       '> bbb'
     ].join('\n') + '\n';
@@ -264,8 +263,6 @@ describe('Indented code block', () => {
     ];
     const code = code_raw.join('\n') + '\n';
     const code_cooked = code_raw.map(x => `    ${x}`);
-    const code_trimmed = code.replace(/\n$/, '');
-
 
     const data = {
       content: [
@@ -280,7 +277,7 @@ describe('Indented code block', () => {
     const expected = [
       '> aaa',
       '> ',
-      '> <!--hexoPostRenderEscape:' + wrap(code_trimmed).replace(/^/mg, '> ') + ':hexoPostRenderEscape-->',
+      '> <!--hexoPostRenderEscape:' + wrap(code).replace(/^/mg, '> ') + ':hexoPostRenderEscape-->',
       '> ',
       '> bbb'
     ].join('\n') + '\n';
@@ -337,7 +334,6 @@ describe('Indented code block', () => {
     ];
     const code = code_raw.join('\n') + '\n';
     const code_cooked = code_raw.map(x => `    ${x}`);
-    const code_trimmed = code.replace(/\n$/, '');
 
     const data = {
       content: [
@@ -352,7 +348,7 @@ describe('Indented code block', () => {
     const expected = [
       '> aaa',
       '> ',
-      '> <!--hexoPostRenderEscape:' + wrap(code_trimmed).replace(/^/mg, '> ') + ':hexoPostRenderEscape-->',
+      '> <!--hexoPostRenderEscape:' + wrap(code).replace(/^/mg, '> ') + ':hexoPostRenderEscape-->',
       '> ',
       '> bbb'
     ].join('\n') + '\n';
