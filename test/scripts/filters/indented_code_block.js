@@ -22,7 +22,7 @@ describe('Indented code block', () => {
     return '<pre><code>' + content + '</code></pre>';
   }
 
-  function wrap_with_hack(code) {
+  function wrapWithHack(code) {
     const content = util.escapeHTML(util.stripIndent(code))
       .replace(/{/g, '&#123;')
       .replace(/}/g, '&#125;')
@@ -217,7 +217,7 @@ describe('Indented code block', () => {
     };
 
     const expected = [
-      '> <!--hexoPostRenderEscape:' + wrap_with_hack(code) + ':hexoPostRenderEscape-->'
+      '> <!--hexoPostRenderEscape:' + wrapWithHack(code) + ':hexoPostRenderEscape-->'
     ].join('\n') + '\n';
 
     codeBlock(data);
@@ -238,7 +238,7 @@ describe('Indented code block', () => {
     const expected = [
       '> aaa',
       '> ',
-      '> <!--hexoPostRenderEscape:' + wrap_with_hack(code) + ':hexoPostRenderEscape-->',
+      '> <!--hexoPostRenderEscape:' + wrapWithHack(code) + ':hexoPostRenderEscape-->',
       '> ',
       '> bbb'
     ].join('\n') + '\n';
@@ -286,7 +286,7 @@ describe('Indented code block', () => {
     const expected = [
       '> aaa',
       '> ',
-      '> <!--hexoPostRenderEscape:' + wrap_with_hack(code) + ':hexoPostRenderEscape-->',
+      '> <!--hexoPostRenderEscape:' + wrapWithHack(code) + ':hexoPostRenderEscape-->',
       '> ',
       '> bbb'
     ].join('\n') + '\n';
@@ -357,7 +357,7 @@ describe('Indented code block', () => {
     const expected = [
       '> aaa',
       '> ',
-      '> <!--hexoPostRenderEscape:' + wrap_with_hack(code) + ':hexoPostRenderEscape-->',
+      '> <!--hexoPostRenderEscape:' + wrapWithHack(code) + ':hexoPostRenderEscape-->',
       '> ',
       '> bbb'
     ].join('\n') + '\n';
