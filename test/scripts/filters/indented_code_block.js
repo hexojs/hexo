@@ -140,7 +140,7 @@ describe('Indented code block', () => {
     const expected = [
       '> aaa',
       '> ',
-      '> <!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->',
+      '> <!--hexoPostRenderEscape:' + wrap(code).replace(/^/mg, '> ') + ':hexoPostRenderEscape-->',
       '> ',
       '> bbb'
     ].join('\n');
