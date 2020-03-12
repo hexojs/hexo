@@ -37,6 +37,42 @@ describe('Indented code block', () => {
     data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n');
   });
 
+  it('indent in paragraph (not target)', () => {
+    const code_raw = [
+      'test test test',
+      '    hello world',
+      'test test',
+      '    hello',
+      '    world',
+      'test test test'
+    ];
+    const code = code_raw.join('\n') + '\n';
+
+    const data = {
+      content: code
+    };
+
+    codeBlock(data);
+    data.content.should.eql(code);
+  });
+
+  it('nested list items (not target)', () => {
+    const code_raw = [
+      '- aaa',
+      '  - bbb',
+      '    - ccc',
+      '      - ddd'
+    ];
+    const code = code_raw.join('\n') + '\n';
+
+    const data = {
+      content: code
+    };
+
+    codeBlock(data);
+    data.content.should.eql(code);
+  });
+
   it('single tab indent', () => {
     const data = {
       content: [
