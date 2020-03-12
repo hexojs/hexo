@@ -17,7 +17,7 @@ describe('Indented code block', () => {
   const code_trimmed = code.trim();
 
   function wrap(code) {
-    const content = util.escapeHTML(code)
+    const content = util.escapeHTML(util.stripIndent(code))
       .replace(/{/g, '&#123;')
       .replace(/}/g, '&#125;');
     return '<pre><code>' + content + '</code></pre>';
@@ -135,10 +135,38 @@ describe('Indented code block', () => {
     data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n');
   });
 
+  it('include blank line (latter half only is target', () => {
+    const code_raw = [
+      'aaa',
+      '    if (tired && night){',
+      '    ',
+      '      sleep();',
+      '    }'
+    ];
+    const code = code_raw.slice(3).join('\n') + '\n';
+
+    const data = {
+      content: [
+        ...code_raw
+      ].join('\n') + '\n'
+    };
+
+    const expected = [
+      'aaa',
+      '    if (tired && night){',
+      '    ',
+      '<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->'
+    ].join('\n') + '\n';
+
+    codeBlock(data);
+    data.content.should.eql(expected);
+  });
+
   it('include quote mark as content', () => {
     const code_raw = [
       '> if (tired && night){',
       '>   sleep();',
+      '> ',
       '> }'
     ];
     const code = code_raw.join('\n') + '\n';
@@ -151,6 +179,26 @@ describe('Indented code block', () => {
 
     codeBlock(data);
     data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n');
+  });
+
+  it('include quote mark as content (not target)', () => {
+    const code_raw = [
+      'aaa',
+      '    > if (tired && night){',
+      '    >   sleep();',
+      '    > ',
+      '    > }'
+    ];
+    const code = code_raw.join('\n') + '\n';
+
+    const data = {
+      content: [
+        ...code_raw
+      ].join('\n') + '\n'
+    };
+
+    codeBlock(data);
+    data.content.should.eql(code);
   });
 
   it('included by blockquote (target, only itself)', () => {
