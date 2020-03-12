@@ -14,7 +14,7 @@ describe('Indented code block', () => {
   ];
   const code = code_raw.join('\n') + '\n';
   const code_cooked = code_raw.map(x => `    ${x}`);
-  const code_trimmed = code.trim();
+  const code_trimmed = code.replace(/\n$/, '');
 
   function wrap(code) {
     const content = util.escapeHTML(util.stripIndent(code))
@@ -138,7 +138,7 @@ describe('Indented code block', () => {
   it('include blank line (latter half only is target', () => {
     const code_raw = [
       'aaa',
-      '    if (tired && night){',
+      '    if (tired && night){', // lack of preceding blank line
       '    ',
       '      sleep();',
       '    }'
@@ -184,7 +184,7 @@ describe('Indented code block', () => {
   it('include quote mark as content (not target)', () => {
     const code_raw = [
       'aaa',
-      '    > if (tired && night){',
+      '    > if (tired && night){', // lack of preceding blank line
       '    >   sleep();',
       '    > ',
       '    > }'
@@ -216,7 +216,7 @@ describe('Indented code block', () => {
     data.content.should.eql(expected);
   });
 
-  it('included by blockquote (target)', () => {
+  it('included by blockquote (intermediate target)', () => {
     const data = {
       content: [
         'aaa',
@@ -239,12 +239,62 @@ describe('Indented code block', () => {
     data.content.should.eql(expected);
   });
 
-  it('included by blockquote (target, vague notation)', () => {
+  it('included by blockquote (not target)', () => {
+    const data = {
+      content: [
+        'aaa',
+        ...code_cooked, // lack of preceding blank line
+        '',
+        'bbb'
+      ].map(x => `> ${x}`).join('\n') + '\n'
+    };
+
+    const expected = data.content;
+
+    codeBlock(data);
+    data.content.should.eql(expected);
+  });
+
+  it('included by blockquote (intermediate target, last line is a blank line)', () => {
+    const code_raw = [
+      'if (tired && night){',
+      '  sleep();',
+      '}',
+      '' // last line is a blank line
+    ];
+    const code = code_raw.join('\n') + '\n';
+    const code_cooked = code_raw.map(x => `    ${x}`);
+    const code_trimmed = code.replace(/\n$/, '');
+
+
+    const data = {
+      content: [
+        'aaa',
+        '',
+        ...code_cooked,
+        '',
+        'bbb'
+      ].map(x => `> ${x}`).join('\n') + '\n'
+    };
+
+    const expected = [
+      '> aaa',
+      '> ',
+      '> <!--hexoPostRenderEscape:' + wrap(code_trimmed).replace(/^/mg, '> ') + ':hexoPostRenderEscape-->',
+      '> ',
+      '> bbb'
+    ].join('\n') + '\n';
+
+    codeBlock(data);
+    data.content.should.eql(expected);
+  });
+
+  it('included by blockquote (vague notation, intermediate target)', () => {
     const data = {
       content: [
         '> aaa',
         '> ',
-        ...code_cooked,
+        ...code_cooked, // lack of quote mark
         '> ',
         '> bbb'
       ].join('\n') + '\n'
@@ -254,6 +304,55 @@ describe('Indented code block', () => {
       '> aaa',
       '> ',
       '<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->',
+      '> ',
+      '> bbb'
+    ].join('\n') + '\n';
+
+    codeBlock(data);
+    data.content.should.eql(expected);
+  });
+
+  it('included by blockquote (vague notation, not target)', () => {
+    const data = {
+      content: [
+        '> aaa',
+        ...code_cooked, // lack of preceding blank line, lack of quote mark
+        '> ',
+        '> bbb'
+      ].join('\n') + '\n'
+    };
+
+    const expected = data.content;
+
+    codeBlock(data);
+    data.content.should.eql(expected);
+  });
+
+  it('included by blockquote (intermediate blank line, intermediate target)', () => {
+    const code_raw = [
+      'if (tired && night){',
+      '  sleep();',
+      '', // intermediate blank line
+      '}'
+    ];
+    const code = code_raw.join('\n') + '\n';
+    const code_cooked = code_raw.map(x => `    ${x}`);
+    const code_trimmed = code.replace(/\n$/, '');
+
+    const data = {
+      content: [
+        'aaa',
+        '',
+        ...code_cooked,
+        '',
+        'bbb'
+      ].map(x => `> ${x}`).join('\n') + '\n'
+    };
+
+    const expected = [
+      '> aaa',
+      '> ',
+      '> <!--hexoPostRenderEscape:' + wrap(code_trimmed).replace(/^/mg, '> ') + ':hexoPostRenderEscape-->',
       '> ',
       '> bbb'
     ].join('\n') + '\n';
