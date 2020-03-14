@@ -96,7 +96,7 @@ describe('post_permalink', () => {
   });
 
   it('time is omitted in front-matter', async () => {
-    hexo.config.permalink = ':year/:month/:day/:hour/:minute/:post_title/';
+    hexo.config.permalink = ':year/:month/:day/:hour/:minute/:second/:post_title/';
 
     const post = await Post.insert({
       source: 'sub/2015-05-06-my-new-post.md',
@@ -104,7 +104,7 @@ describe('post_permalink', () => {
       title: 'My New Post',
       date: moment('2015-05-06')
     });
-    postPermalink(post).should.eql('2015/05/06/00/00/my-new-post/');
+    postPermalink(post).should.eql('2015/05/06/00/00/00/my-new-post/');
     Post.removeById(post._id);
   });
 
