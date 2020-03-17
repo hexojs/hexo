@@ -126,7 +126,7 @@ describe('Indented code block', () => {
     data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n\n');
   });
 
-  it('include blank line', () => {
+  it('include indented blank line', () => {
     const code_raw = [
       'if (tired && night){',
       '',
@@ -144,6 +144,30 @@ describe('Indented code block', () => {
 
     codeBlock(data);
     data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n\n');
+  });
+
+  it('include non-indented blank line', () => {
+    const code_raw = [
+      'if (tired && night){',
+      '  sleep();',
+      '',
+      '}'
+    ];
+    const code_cooked = code_raw.map(x => `    ${x}`).map(x => x.replace(/^ {4}$/, ''));
+
+    const data = {
+      content: [
+        ...code_cooked
+      ].join('\n') + '\n'
+    };
+
+    const expected = [
+      '<!--hexoPostRenderEscape:' + wrap(code_cooked.slice(0, 2).join('\n') + '\n') + ':hexoPostRenderEscape-->\n',
+      '<!--hexoPostRenderEscape:' + wrap('\n' + code_cooked.slice(3, 4).join('\n') + '\n') + ':hexoPostRenderEscape-->\n'
+    ].join('\n') + '\n';
+
+    codeBlock(data);
+    data.content.should.eql(expected);
   });
 
   it('include blank line (latter half only is target', () => {
