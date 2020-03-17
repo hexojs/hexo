@@ -163,7 +163,8 @@ describe('Indented code block', () => {
 
     const expected = [
       '<!--hexoPostRenderEscape:' + wrap(code_cooked.slice(0, 2).join('\n') + '\n') + ':hexoPostRenderEscape-->\n',
-      '<!--hexoPostRenderEscape:' + wrap('\n' + code_cooked.slice(3, 4).join('\n') + '\n') + ':hexoPostRenderEscape-->\n'
+      '',
+      '<!--hexoPostRenderEscape:' + wrap(code_cooked.slice(3, 4).join('\n') + '\n') + ':hexoPostRenderEscape-->\n'
     ].join('\n') + '\n';
 
     codeBlock(data);
@@ -178,7 +179,7 @@ describe('Indented code block', () => {
       '      sleep();',
       '    }'
     ];
-    const code = code_raw.slice(2).join('\n') + '\n';
+    const code = code_raw.slice(3).join('\n') + '\n';
 
     const data = {
       content: [
@@ -189,7 +190,8 @@ describe('Indented code block', () => {
     const expected = [
       'aaa',
       '    if (tired && night){',
-      ' <!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n'
+      '    ',
+      '<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n'
     ].join('\n') + '\n';
 
     codeBlock(data);
@@ -263,7 +265,8 @@ describe('Indented code block', () => {
 
     const expected = [
       '> aaa',
-      '> > <!--hexoPostRenderEscape:' + wrapWithHack('\n' + code) + ':hexoPostRenderEscape-->\n',
+      '> ',
+      '> <!--hexoPostRenderEscape:' + wrapWithHack(code) + ':hexoPostRenderEscape-->\n',
       '> ',
       '> bbb'
     ].join('\n') + '\n';
@@ -310,7 +313,8 @@ describe('Indented code block', () => {
 
     const expected = [
       '> aaa',
-      '> > <!--hexoPostRenderEscape:' + wrapWithHack('\n' + code) + ':hexoPostRenderEscape-->\n',
+      '> ',
+      '> <!--hexoPostRenderEscape:' + wrapWithHack(code) + ':hexoPostRenderEscape-->\n',
       '> ',
       '> bbb'
     ].join('\n') + '\n';
@@ -332,7 +336,8 @@ describe('Indented code block', () => {
 
     const expected = [
       '> aaa',
-      '> <!--hexoPostRenderEscape:' + wrap('\n' + code) + ':hexoPostRenderEscape-->\n',
+      '> ',
+      '<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n',
       '> ',
       '> bbb'
     ].join('\n') + '\n';
@@ -379,7 +384,8 @@ describe('Indented code block', () => {
 
     const expected = [
       '> aaa',
-      '> > <!--hexoPostRenderEscape:' + wrapWithHack('\n' + code) + ':hexoPostRenderEscape-->\n',
+      '> ',
+      '> <!--hexoPostRenderEscape:' + wrapWithHack(code) + ':hexoPostRenderEscape-->\n',
       '> ',
       '> bbb'
     ].join('\n') + '\n';
