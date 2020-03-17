@@ -18,7 +18,8 @@ describe('Indented code block', () => {
   function wrap(code) {
     const content = util.escapeHTML(util.stripIndent(code))
       .replace(/{/g, '&#123;')
-      .replace(/}/g, '&#125;');
+      .replace(/}/g, '&#125;')
+      .replace(/\n$/, '');
     return '<pre><code>' + content + '</code></pre>';
   }
 
@@ -27,7 +28,9 @@ describe('Indented code block', () => {
       .replace(/{/g, '&#123;')
       .replace(/}/g, '&#125;')
       .replace(/^/mg, '> ')
-      .replace(/^> /, '');
+      .replace(/^> /, '')
+      .replace(/> $/, '')
+      .replace(/\n$/, '');
     return '<pre><code>' + content + '</code></pre>';
   }
 
@@ -42,7 +45,7 @@ describe('Indented code block', () => {
     };
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n\n');
   });
 
   it('indent in paragraph (not target)', () => {
@@ -89,7 +92,7 @@ describe('Indented code block', () => {
     };
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n\n');
   });
 
   it('extra indent', () => {
@@ -102,7 +105,7 @@ describe('Indented code block', () => {
     };
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n\n');
   });
 
   it('include tab', () => {
@@ -120,7 +123,7 @@ describe('Indented code block', () => {
     };
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n\n');
   });
 
   it('include blank line', () => {
@@ -140,7 +143,7 @@ describe('Indented code block', () => {
     };
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n\n');
   });
 
   it('include blank line (latter half only is target', () => {
@@ -151,7 +154,7 @@ describe('Indented code block', () => {
       '      sleep();',
       '    }'
     ];
-    const code = code_raw.slice(3).join('\n') + '\n';
+    const code = code_raw.slice(2).join('\n') + '\n';
 
     const data = {
       content: [
@@ -162,8 +165,7 @@ describe('Indented code block', () => {
     const expected = [
       'aaa',
       '    if (tired && night){',
-      '    ',
-      '<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->'
+      ' <!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n'
     ].join('\n') + '\n';
 
     codeBlock(data);
@@ -186,7 +188,7 @@ describe('Indented code block', () => {
     };
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->\n\n');
   });
 
   it('include quote mark as content (not target)', () => {
@@ -217,7 +219,7 @@ describe('Indented code block', () => {
     };
 
     const expected = [
-      '> <!--hexoPostRenderEscape:' + wrapWithHack(code) + ':hexoPostRenderEscape-->'
+      '> <!--hexoPostRenderEscape:' + wrapWithHack(code) + ':hexoPostRenderEscape-->\n'
     ].join('\n') + '\n';
 
     codeBlock(data);
@@ -237,8 +239,7 @@ describe('Indented code block', () => {
 
     const expected = [
       '> aaa',
-      '> ',
-      '> <!--hexoPostRenderEscape:' + wrapWithHack(code) + ':hexoPostRenderEscape-->',
+      '> > <!--hexoPostRenderEscape:' + wrapWithHack('\n' + code) + ':hexoPostRenderEscape-->\n',
       '> ',
       '> bbb'
     ].join('\n') + '\n';
@@ -285,8 +286,7 @@ describe('Indented code block', () => {
 
     const expected = [
       '> aaa',
-      '> ',
-      '> <!--hexoPostRenderEscape:' + wrapWithHack(code) + ':hexoPostRenderEscape-->',
+      '> > <!--hexoPostRenderEscape:' + wrapWithHack('\n' + code) + ':hexoPostRenderEscape-->\n',
       '> ',
       '> bbb'
     ].join('\n') + '\n';
@@ -308,8 +308,7 @@ describe('Indented code block', () => {
 
     const expected = [
       '> aaa',
-      '> ',
-      '<!--hexoPostRenderEscape:' + wrap(code) + ':hexoPostRenderEscape-->',
+      '> <!--hexoPostRenderEscape:' + wrap('\n' + code) + ':hexoPostRenderEscape-->\n',
       '> ',
       '> bbb'
     ].join('\n') + '\n';
@@ -356,8 +355,7 @@ describe('Indented code block', () => {
 
     const expected = [
       '> aaa',
-      '> ',
-      '> <!--hexoPostRenderEscape:' + wrapWithHack(code) + ':hexoPostRenderEscape-->',
+      '> > <!--hexoPostRenderEscape:' + wrapWithHack('\n' + code) + ':hexoPostRenderEscape-->\n',
       '> ',
       '> bbb'
     ].join('\n') + '\n';
