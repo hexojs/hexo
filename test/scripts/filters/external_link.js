@@ -1,9 +1,16 @@
 'use strict';
 
+const decache = require('decache');
+
 describe('External link', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
-  const externalLink = require('../../../lib/plugins/filter/after_render/external_link').bind(hexo);
+  let externalLink;
+
+  beforeEach(() => {
+    decache('../../../lib/plugins/filter/after_render/external_link');
+    externalLink = require('../../../lib/plugins/filter/after_render/external_link').bind(hexo);
+  });
 
   hexo.config = {
     url: 'https://example.com',
@@ -162,7 +169,13 @@ describe('External link', () => {
 describe('External link - post', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
-  const externalLink = require('../../../lib/plugins/filter/after_post_render/external_link').bind(hexo);
+
+  let externalLink;
+
+  beforeEach(() => {
+    decache('../../../lib/plugins/filter/after_post_render/external_link');
+    externalLink = require('../../../lib/plugins/filter/after_post_render/external_link').bind(hexo);
+  });
 
   hexo.config = {
     url: 'https://example.com',
