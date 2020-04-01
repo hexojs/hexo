@@ -1,10 +1,17 @@
 'use strict';
 
+const decache = require('decache');
+
 describe('Meta Generator', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
-  const metaGenerator = require('../../../lib/plugins/filter/after_render/meta_generator').bind(hexo);
+  let metaGenerator;
   const cheerio = require('cheerio');
+
+  beforeEach(() => {
+    decache('../../../lib/plugins/filter/after_render/meta_generator');
+    metaGenerator = require('../../../lib/plugins/filter/after_render/meta_generator').bind(hexo);
+  });
 
   it('default', () => {
     const content = '<head><link></head>';
