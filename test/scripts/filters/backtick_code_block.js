@@ -386,4 +386,38 @@ describe('Backtick code block', () => {
 
     hexo.config.highlight.wrap = true;
   });
+
+  // test for Issue #4220
+  it('skip a Swig template', () => {
+    const data = {
+      content: [
+        '```foo```',
+        '',
+        '```',
+        code,
+        '```'
+      ].join('\n')
+    };
+
+    codeBlock(data);
+    data.content.should.eql('```foo```\n\n<escape>' + highlight(code, {}) + '</escape>');
+  });
+
+  // test for Issue #4190
+  it('ignore triple backticks at the line which is started by extra characters', () => {
+    const data = {
+      content: [
+        '```',
+        code,
+        'foo```',
+        '',
+        'bar```',
+        'baz',
+        '```'
+      ].join('\n')
+    };
+
+    codeBlock(data);
+    data.content.should.eql('<escape>' + highlight(code + '\nfoo```\n\nbar```\nbaz', {}) + '</escape>');
+  });
 });
