@@ -939,4 +939,52 @@ describe('Post', () => {
     });
   });
 
+  // test for Issue #3346
+  it('render() - swig tag inside backtick code block', async () => {
+    const content = fixture.content_for_issue_3346;
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.trim().should.eql(fixture.expected_for_issue_3346);
+  });
+
+  // test for https://github.com/hexojs/hexo/pull/4171#issuecomment-594412367
+  it('render() - markdown content right after swig tag', async () => {
+    const content = [
+      '{% pullquote warning %}',
+      'Text',
+      '{% endpullquote %}',
+      '# Title 0',
+      '{% pullquote warning %}',
+      'Text',
+      '{% endpullquote %}',
+      '{% pullquote warning %}',
+      'Text',
+      '{% endpullquote %}',
+      '# Title 1',
+      '{% pullquote warning %}',
+      'Text',
+      '{% endpullquote %}',
+      '{% pullquote warning %}Text{% endpullquote %}',
+      '# Title 2',
+      '{% pullquote warning %}Text{% endpullquote %}',
+      '{% pullquote warning %}Text{% endpullquote %}',
+      '# Title 3',
+      '{% pullquote warning %}Text{% endpullquote %}'
+    ].join('\n');
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    // We only to make sure markdown content is rendered correctly
+    data.content.trim().should.include('<h1 id="Title-0"><a href="#Title-0" class="headerlink" title="Title 0"></a>Title 0</h1>');
+    data.content.trim().should.include('<h1 id="Title-1"><a href="#Title-1" class="headerlink" title="Title 1"></a>Title 1</h1>');
+    data.content.trim().should.include('<h1 id="Title-2"><a href="#Title-2" class="headerlink" title="Title 2"></a>Title 2</h1>');
+    data.content.trim().should.include('<h1 id="Title-3"><a href="#Title-3" class="headerlink" title="Title 3"></a>Title 3</h1>');
+  });
 });
