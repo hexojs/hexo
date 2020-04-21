@@ -67,7 +67,7 @@ describe('Backtick code block', () => {
     };
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + highlight(code, {lang: 'js'}) + '</escape>');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + highlight(code, {lang: 'js'}) + ':hexoPostRenderEscape-->');
   });
 
   it('without language name', () => {
@@ -82,7 +82,7 @@ describe('Backtick code block', () => {
     const expected = highlight(code);
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
   });
 
   it('without language name - ignore tab character', () => {
@@ -97,7 +97,7 @@ describe('Backtick code block', () => {
     const expected = highlight(code);
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
   });
 
   it('title', () => {
@@ -115,7 +115,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
   });
 
   it('url', () => {
@@ -133,7 +133,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
   });
 
   it('link text', () => {
@@ -151,7 +151,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
   });
 
   it('indent', () => {
@@ -171,7 +171,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
   });
 
   it('line number false', () => {
@@ -191,7 +191,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
   });
 
   it('line number false, don`t first_line_number always1', () => {
@@ -212,7 +212,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
   });
 
   it('line number false, don`t care first_line_number inilne', () => {
@@ -233,7 +233,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
   });
 
   it('line number true', () => {
@@ -253,7 +253,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
   });
 
   it('line number, first_line_number always1, js=', () => {
@@ -275,7 +275,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
   });
 
   it('line number, first_line_number inline, js', () => {
@@ -297,7 +297,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
   });
 
   it('line number, first_line_number inline, js=1', () => {
@@ -319,7 +319,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
   });
 
   it('line number, first_line_number inline, js=2', () => {
@@ -341,7 +341,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
   });
 
   it('tab replace', () => {
@@ -367,7 +367,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
   });
 
   it('wrap', () => {
@@ -382,7 +382,7 @@ describe('Backtick code block', () => {
     };
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + highlight(code, { lang: 'js', wrap: false }) + '</escape>');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + highlight(code, { lang: 'js', wrap: false }) + ':hexoPostRenderEscape-->');
 
     hexo.config.highlight.wrap = true;
   });
@@ -400,7 +400,7 @@ describe('Backtick code block', () => {
     };
 
     codeBlock(data);
-    data.content.should.eql('```foo```\n\n<escape>' + highlight(code, {}) + '</escape>');
+    data.content.should.eql('```foo```\n\n<!--hexoPostRenderEscape:' + highlight(code, {}) + ':hexoPostRenderEscape-->');
   });
 
   // test for Issue #4190
@@ -418,6 +418,6 @@ describe('Backtick code block', () => {
     };
 
     codeBlock(data);
-    data.content.should.eql('<escape>' + highlight(code + '\nfoo```\n\nbar```\nbaz', {}) + '</escape>');
+    data.content.should.eql('<!--hexoPostRenderEscape:' + highlight(code + '\nfoo```\n\nbar```\nbaz', {}) + ':hexoPostRenderEscape-->');
   });
 });
