@@ -120,14 +120,14 @@ describe('tagcloud', () => {
       orderby: 'rand'
     });
 
-    result1.should.contains('<a href="/tags/def/" style="font-size: 10px;">def</a>');
-    result1.should.contains('<a href="/tags/abc/" style="font-size: 13.33px;">abc</a>');
-    result1.should.contains('<a href="/tags/cde/" style="font-size: 16.67px;">cde</a>');
-    result1.should.contains('<a href="/tags/bcd/" style="font-size: 20px;">bcd</a>');
-    result2.should.contains('<a href="/tags/def/" style="font-size: 10px;">def</a>');
-    result2.should.contains('<a href="/tags/abc/" style="font-size: 13.33px;">abc</a>');
-    result2.should.contains('<a href="/tags/cde/" style="font-size: 16.67px;">cde</a>');
-    result2.should.contains('<a href="/tags/bcd/" style="font-size: 20px;">bcd</a>');
+    result1.should.have.string('<a href="/tags/def/" style="font-size: 10px;">def</a>');
+    result1.should.have.string('<a href="/tags/abc/" style="font-size: 13.33px;">abc</a>');
+    result1.should.have.string('<a href="/tags/cde/" style="font-size: 16.67px;">cde</a>');
+    result1.should.have.string('<a href="/tags/bcd/" style="font-size: 20px;">bcd</a>');
+    result2.should.have.string('<a href="/tags/def/" style="font-size: 10px;">def</a>');
+    result2.should.have.string('<a href="/tags/abc/" style="font-size: 13.33px;">abc</a>');
+    result2.should.have.string('<a href="/tags/cde/" style="font-size: 16.67px;">cde</a>');
+    result2.should.have.string('<a href="/tags/bcd/" style="font-size: 20px;">bcd</a>');
   });
 
   it('order', () => {
@@ -241,6 +241,18 @@ describe('tagcloud', () => {
     result.should.eql([
       '<a href="/tags/abc/" style="font-size: 10px; color: #f00">abc</a>'
     ].join(' '));
+  });
+
+  it('color - missing start_color', () => {
+    try {
+      tagcloud({
+        color: true,
+        end_color: 'pink'
+      });
+      should.fail();
+    } catch (err) {
+      err.message.should.eql('start_color is required!');
+    }
   });
 
   it('separator', () => {

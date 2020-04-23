@@ -17,13 +17,7 @@ describe('Processor', () => {
     p.list()[1].should.exist;
 
     // no fn
-    try {
-      p.register();
-    } catch (err) {
-      err.should.be
-        .instanceOf(TypeError)
-        .property('message', 'fn must be a function');
-    }
+    should.throw(() => p.register(), TypeError, 'fn must be a function');
   });
 
   it('list()', () => {
@@ -31,6 +25,6 @@ describe('Processor', () => {
 
     p.register('test', () => {});
 
-    p.list().length.should.eql(1);
+    p.list().should.have.lengthOf(1);
   });
 });

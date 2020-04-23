@@ -1,9 +1,16 @@
 'use strict';
 
+const decache = require('decache');
+
 describe('External link', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
-  const externalLink = require('../../../lib/plugins/filter/after_render/external_link').bind(hexo);
+  let externalLink;
+
+  beforeEach(() => {
+    decache('../../../lib/plugins/filter/after_render/external_link');
+    externalLink = require('../../../lib/plugins/filter/after_render/external_link').bind(hexo);
+  });
 
   hexo.config = {
     url: 'https://example.com',
@@ -21,8 +28,7 @@ describe('External link', () => {
 
     hexo.config.external_link.enable = false;
 
-    const result = typeof externalLink(content);
-    result.should.eql('undefined');
+    should.not.exist(externalLink(content));
     hexo.config.external_link.enable = true;
   });
 
@@ -33,8 +39,7 @@ describe('External link', () => {
 
     hexo.config.external_link.field = 'post';
 
-    const result = typeof externalLink(content);
-    result.should.eql('undefined');
+    should.not.exist(externalLink(content));
     hexo.config.external_link.field = 'site';
   });
 
@@ -68,17 +73,17 @@ describe('External link', () => {
     result.should.eql([
       '# External link test',
       '1. External link',
-      '<a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>',
+      '<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>',
       '2. External link with "rel" Attribute',
-      '<a rel="external noopener" href="https://hexo.io/" target="_blank">Hexo</a>',
-      '<a href="https://hexo.io/" target="_blank" rel="external noopener">Hexo</a>',
-      '<a rel="noopenner" href="https://hexo.io/" target="_blank">Hexo</a>',
-      '<a href="https://hexo.io/" target="_blank" rel="noopenner">Hexo</a>',
-      '<a rel="external noopenner" href="https://hexo.io/" target="_blank">Hexo</a>',
-      '<a href="https://hexo.io/" target="_blank" rel="external noopenner">Hexo</a>',
+      '<a rel="external noopener" target="_blank" href="https://hexo.io/">Hexo</a>',
+      '<a target="_blank" href="https://hexo.io/" rel="external noopener">Hexo</a>',
+      '<a rel="noopenner" target="_blank" href="https://hexo.io/">Hexo</a>',
+      '<a target="_blank" href="https://hexo.io/" rel="noopenner">Hexo</a>',
+      '<a rel="external noopenner" target="_blank" href="https://hexo.io/">Hexo</a>',
+      '<a target="_blank" href="https://hexo.io/" rel="external noopenner">Hexo</a>',
       '3. External link with Other Attributes',
-      '<a class="img" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>',
-      '<a href="https://hexo.io/" target="_blank" rel="noopener" class="img">Hexo</a>',
+      '<a class="img" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>',
+      '<a target="_blank" rel="noopener" href="https://hexo.io/" class="img">Hexo</a>',
       '4. Internal link',
       '<a href="/archives/foo.html">Link</a>',
       '5. Ignore links have "target" attribute',
@@ -97,9 +102,7 @@ describe('External link', () => {
 
     hexo.config.external_link = false;
 
-    const result = typeof externalLink(content);
-    result.should.eql('undefined');
-
+    should.not.exist(externalLink(content));
     hexo.config.external_link = {
       enable: true,
       field: 'site',
@@ -113,7 +116,7 @@ describe('External link', () => {
     hexo.config.external_link = true;
 
     const result = externalLink(content);
-    result.should.eql('<a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>');
+    result.should.eql('<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>');
 
     hexo.config.external_link = {
       enable: true,
@@ -135,8 +138,8 @@ describe('External link', () => {
 
     result.should.eql([
       '<a href="https://foo.com/">Hexo</a>',
-      '<a href="https://bar.com/" target="_blank" rel="noopener">Hexo</a>',
-      '<a href="https://baz.com/" target="_blank" rel="noopener">Hexo</a>'
+      '<a target="_blank" rel="noopener" href="https://bar.com/">Hexo</a>',
+      '<a target="_blank" rel="noopener" href="https://baz.com/">Hexo</a>'
     ].join('\n'));
 
     hexo.config.external_link.exclude = '';
@@ -156,7 +159,7 @@ describe('External link', () => {
     result.should.eql([
       '<a href="https://foo.com/">Hexo</a>',
       '<a href="https://bar.com/">Hexo</a>',
-      '<a href="https://baz.com/" target="_blank" rel="noopener">Hexo</a>'
+      '<a target="_blank" rel="noopener" href="https://baz.com/">Hexo</a>'
     ].join('\n'));
 
     hexo.config.external_link.exclude = '';
@@ -166,7 +169,13 @@ describe('External link', () => {
 describe('External link - post', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
-  const externalLink = require('../../../lib/plugins/filter/after_post_render/external_link').bind(hexo);
+
+  let externalLink;
+
+  beforeEach(() => {
+    decache('../../../lib/plugins/filter/after_post_render/external_link');
+    externalLink = require('../../../lib/plugins/filter/after_post_render/external_link').bind(hexo);
+  });
 
   hexo.config = {
     url: 'https://example.com',
@@ -236,21 +245,21 @@ describe('External link - post', () => {
     data.content.should.eql([
       '# External link test',
       '1. External link',
-      '<a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>',
+      '<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>',
       '2. Link with hash (#), mailto: , javascript: shouldn\'t be processed',
       '<a href="#top">Hexo</a>',
       '<a href="mailto:hi@hexo.io">Hexo</a>',
       '<a href="javascript:alert(\'Hexo is awesome!\');">Hexo</a>',
       '3. External link with "rel" Attribute',
-      '<a rel="external noopener" href="https://hexo.io/" target="_blank">Hexo</a>',
-      '<a href="https://hexo.io/" target="_blank" rel="external noopener">Hexo</a>',
-      '<a rel="noopenner" href="https://hexo.io/" target="_blank">Hexo</a>',
-      '<a href="https://hexo.io/" target="_blank" rel="noopenner">Hexo</a>',
-      '<a rel="external noopenner" href="https://hexo.io/" target="_blank">Hexo</a>',
-      '<a href="https://hexo.io/" target="_blank" rel="external noopenner">Hexo</a>',
+      '<a rel="external noopener" target="_blank" href="https://hexo.io/">Hexo</a>',
+      '<a target="_blank" href="https://hexo.io/" rel="external noopener">Hexo</a>',
+      '<a rel="noopenner" target="_blank" href="https://hexo.io/">Hexo</a>',
+      '<a target="_blank" href="https://hexo.io/" rel="noopenner">Hexo</a>',
+      '<a rel="external noopenner" target="_blank" href="https://hexo.io/">Hexo</a>',
+      '<a target="_blank" href="https://hexo.io/" rel="external noopenner">Hexo</a>',
       '4. External link with Other Attributes',
-      '<a class="img" href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>',
-      '<a href="https://hexo.io/" target="_blank" rel="noopener" class="img">Hexo</a>',
+      '<a class="img" target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>',
+      '<a target="_blank" rel="noopener" href="https://hexo.io/" class="img">Hexo</a>',
       '5. Internal link',
       '<a href="/archives/foo.html">Link</a>',
       '6. Ignore links have "target" attribute',
@@ -295,8 +304,8 @@ describe('External link - post', () => {
 
     data.content.should.eql([
       '<a href="https://foo.com/">Hexo</a>',
-      '<a href="https://bar.com/" target="_blank" rel="noopener">Hexo</a>',
-      '<a href="https://baz.com/" target="_blank" rel="noopener">Hexo</a>'
+      '<a target="_blank" rel="noopener" href="https://bar.com/">Hexo</a>',
+      '<a target="_blank" rel="noopener" href="https://baz.com/">Hexo</a>'
     ].join('\n'));
 
     hexo.config.external_link.exclude = '';
@@ -317,7 +326,7 @@ describe('External link - post', () => {
     data.content.should.eql([
       '<a href="https://foo.com/">Hexo</a>',
       '<a href="https://bar.com/">Hexo</a>',
-      '<a href="https://baz.com/" target="_blank" rel="noopener">Hexo</a>'
+      '<a target="_blank" rel="noopener" href="https://baz.com/">Hexo</a>'
     ].join('\n'));
 
     hexo.config.external_link.exclude = '';

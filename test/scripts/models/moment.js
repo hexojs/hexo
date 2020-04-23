@@ -37,11 +37,10 @@ describe('SchemaTypeMoment', () => {
   });
 
   function shouldThrowError(value) {
-    try {
-      type.validate(value);
-    } catch (err) {
-      err.should.have.property('message', '`' + value + '` is not a valid date!');
-    }
+    should.throw(
+      () => type.validate(value),
+      '`' + value + '` is not a valid date!'
+    );
   }
 
   it('validate()', () => {
@@ -52,11 +51,7 @@ describe('SchemaTypeMoment', () => {
   it('validate() - required', () => {
     const type = new SchemaTypeMoment('test', {required: true});
 
-    try {
-      type.validate();
-    } catch (err) {
-      err.should.have.property('message', '`test` is required!');
-    }
+    should.throw(() => type.validate(), '`test` is required!');
   });
 
   it('match()', () => {

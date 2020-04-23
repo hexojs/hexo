@@ -1,11 +1,11 @@
 'use strict';
 
 const Promise = require('bluebird');
-const Readable = require('stream').Readable;
-const pathFn = require('path');
+const { Readable } = require('stream');
+const { join } = require('path');
 const crypto = require('crypto');
-const fs = require('hexo-fs');
-const sinon = require('sinon');
+const { createReadStream } = require('hexo-fs');
+const { spy, assert: sinonAssert } = require('sinon');
 const testUtil = require('../../util');
 
 describe('Router', () => {
@@ -57,23 +57,11 @@ describe('Router', () => {
   });
 
   it('format() - path must be a string', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'path must be a string!');
-    });
-
-    try {
-      router.format(() => {});
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => router.format(() => {}), 'path must be a string!');
   });
 
   it('set() - string', () => {
-    const listener = sinon.spy(path => {
-      path.should.eql('test');
-    });
+    const listener = spy();
 
     router.once('update', listener);
 
@@ -82,6 +70,7 @@ describe('Router', () => {
 
     data.modified.should.be.true;
     listener.calledOnce.should.be.true;
+    sinonAssert.calledWith(listener, 'test');
     return checkStream(data, 'foo');
   });
 
@@ -120,31 +109,11 @@ describe('Router', () => {
   });
 
   it('set() - path must be a string', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'path must be a string!');
-    });
-
-    try {
-      router.set();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => router.set(), 'path must be a string!');
   });
 
   it('set() - data is required', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'data is required!');
-    });
-
-    try {
-      router.set('test');
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => router.set('test'), 'data is required!');
   });
 
   it('get() - error handling', () => {
@@ -152,12 +121,10 @@ describe('Router', () => {
       throw new Error('error test');
     });
 
-    const errorCallback = sinon.spy(err => {
+    return testUtil.stream.read(router.get('test')).then(() => {
+      should.fail('Return value must be rejected');
+    }, err => {
       err.should.have.property('message', 'error test');
-    });
-
-    return testUtil.stream.read(router.get('test')).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
     });
   });
 
@@ -179,30 +146,20 @@ describe('Router', () => {
   });
 
   it('get() - large readable stream (more than 65535 bits)', () => {
-    const path = pathFn.join(__dirname, '../../fixtures/banner.jpg');
+    const path = join(__dirname, '../../fixtures/banner.jpg');
 
-    router.set('test', () => fs.createReadStream(path));
+    router.set('test', () => createReadStream(path));
 
     return Promise.all([
       checksum(router.get('test')),
-      checksum(fs.createReadStream(path))
+      checksum(createReadStream(path))
     ]).then(data => {
       data[0].should.eql(data[1]);
     });
   });
 
   it('get() - path must be a string', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'path must be a string!');
-    });
-
-    try {
-      router.get();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => router.get(), 'path must be a string!');
   });
 
   it('get() - export stringified JSON object', () => {
@@ -230,43 +187,22 @@ describe('Router', () => {
   });
 
   it('isModified() - path must be a string', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'path must be a string!');
-    });
-
-    try {
-      router.isModified();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => router.isModified(), 'path must be a string!');
   });
 
   it('remove()', () => {
-    const listener = sinon.spy(path => {
-      path.should.eql('test');
-    });
+    const listener = spy();
 
     router.once('remove', listener);
 
     router.set('test', 'foo');
     router.remove('test');
     should.not.exist(router.get('test'));
+    sinonAssert.calledWith(listener, 'test');
     listener.calledOnce.should.be.true;
   });
 
   it('remove() - path must be a string', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'path must be a string!');
-    });
-
-    try {
-      router.remove();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => router.remove(), 'path must be a string!');
   });
 });

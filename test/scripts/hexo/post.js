@@ -1,25 +1,25 @@
 'use strict';
 
-const pathFn = require('path');
+const { join } = require('path');
 const moment = require('moment');
 const Promise = require('bluebird');
-const fs = require('hexo-fs');
-const util = require('hexo-util');
-const sinon = require('sinon');
+const { readFile, mkdirs, unlink, rmdir, writeFile, exists, stat, listDir } = require('hexo-fs');
+const { highlight } = require('hexo-util');
+const { spy, useFakeTimers } = require('sinon');
 const frontMatter = require('hexo-front-matter');
 const fixture = require('../../fixtures/post_render');
 
 describe('Post', () => {
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(pathFn.join(__dirname, 'post_test'));
-  const post = hexo.post;
+  const hexo = new Hexo(join(__dirname, 'post_test'));
+  const { post } = hexo;
   const now = Date.now();
   let clock;
 
   before(() => {
-    clock = sinon.useFakeTimers(now);
+    clock = useFakeTimers(now);
 
-    return fs.mkdirs(hexo.base_dir, () => hexo.init()).then(() => // Load marked renderer for testing
+    return mkdirs(hexo.base_dir, () => hexo.init()).then(() => // Load marked renderer for testing
       hexo.loadPlugin(require.resolve('hexo-renderer-marked'))).then(() => hexo.scaffold.set('post', [
       '---',
       'title: {{ title }}',
@@ -36,13 +36,13 @@ describe('Post', () => {
 
   after(() => {
     clock.restore();
-    return fs.rmdir(hexo.base_dir);
+    return rmdir(hexo.base_dir);
   });
 
   it('create()', () => {
-    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
-    const listener = sinon.spy();
+    const listener = spy();
 
     const content = [
       '---',
@@ -61,15 +61,15 @@ describe('Post', () => {
       post.content.should.eql(content);
       listener.calledOnce.should.be.true;
 
-      return fs.readFile(path);
+      return readFile(path);
     }).then(data => {
       data.should.eql(content);
-      return fs.unlink(path);
+      return unlink(path);
     });
   });
 
   it('create() - slug', () => {
-    const path = pathFn.join(hexo.source_dir, '_posts', 'foo.md');
+    const path = join(hexo.source_dir, '_posts', 'foo.md');
     const date = moment(now);
 
     const content = [
@@ -87,17 +87,17 @@ describe('Post', () => {
       post.path.should.eql(path);
       post.content.should.eql(content);
 
-      return fs.readFile(path);
+      return readFile(path);
     }).then(data => {
       data.should.eql(content);
-      return fs.unlink(path);
+      return unlink(path);
     });
   });
 
   it('create() - filename_case', () => {
     hexo.config.filename_case = 1;
 
-    const path = pathFn.join(hexo.source_dir, '_posts', 'hello-world.md');
+    const path = join(hexo.source_dir, '_posts', 'hello-world.md');
     const date = moment(now);
 
     const content = [
@@ -115,15 +115,15 @@ describe('Post', () => {
       post.content.should.eql(content);
       hexo.config.filename_case = 0;
 
-      return fs.readFile(path);
+      return readFile(path);
     }).then(data => {
       data.should.eql(content);
-      return fs.unlink(path);
+      return unlink(path);
     });
   });
 
   it('create() - layout', () => {
-    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
 
     const content = [
@@ -142,15 +142,15 @@ describe('Post', () => {
       post.path.should.eql(path);
       post.content.should.eql(content);
 
-      return fs.readFile(path);
+      return readFile(path);
     }).then(data => {
       data.should.eql(content);
-      return fs.unlink(path);
+      return unlink(path);
     });
   });
 
   it('create() - extra data', () => {
-    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
 
     const content = [
@@ -169,15 +169,15 @@ describe('Post', () => {
       post.path.should.eql(path);
       post.content.should.eql(content);
 
-      return fs.readFile(path);
+      return readFile(path);
     }).then(data => {
       data.should.eql(content);
-      return fs.unlink(path);
+      return unlink(path);
     });
   });
 
   it('create() - rename if target existed', () => {
-    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World-1.md');
+    const path = join(hexo.source_dir, '_posts', 'Hello-World-1.md');
 
     return post.create({
       title: 'Hello World'
@@ -185,19 +185,19 @@ describe('Post', () => {
       title: 'Hello World'
     })).then(post => {
       post.path.should.eql(path);
-      return fs.exists(path);
+      return exists(path);
     }).then(exist => {
       exist.should.be.true;
 
       return Promise.all([
-        fs.unlink(path),
-        fs.unlink(pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md'))
+        unlink(path),
+        unlink(join(hexo.source_dir, '_posts', 'Hello-World.md'))
       ]);
     });
   });
 
   it('create() - replace existing files', () => {
-    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
 
     return post.create({
       title: 'Hello World'
@@ -205,12 +205,12 @@ describe('Post', () => {
       title: 'Hello World'
     }, true)).then(post => {
       post.path.should.eql(path);
-      return fs.unlink(path);
+      return unlink(path);
     });
   });
 
   it('create() - asset folder', () => {
-    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World');
+    const path = join(hexo.source_dir, '_posts', 'Hello-World');
 
     hexo.config.post_asset_folder = true;
 
@@ -218,10 +218,10 @@ describe('Post', () => {
       title: 'Hello World'
     }).then(post => {
       hexo.config.post_asset_folder = false;
-      return fs.stat(path);
+      return stat(path);
     }).then(stats => {
       stats.isDirectory().should.be.true;
-      return fs.unlink(path + '.md');
+      return unlink(path + '.md');
     });
   });
 
@@ -260,7 +260,7 @@ describe('Post', () => {
       ].join('\n') + '\n');
 
       return Promise.all([
-        fs.unlink(post.path),
+        unlink(post.path),
         hexo.scaffold.remove('test')
       ]);
     });
@@ -284,7 +284,7 @@ describe('Post', () => {
       ].join('\n') + '\n');
 
       return Promise.all([
-        fs.unlink(post.path),
+        unlink(post.path),
         hexo.scaffold.remove('test')
       ]);
     });
@@ -292,13 +292,13 @@ describe('Post', () => {
 
   // https://github.com/hexojs/hexo/issues/1100
   it('create() - non-string title', () => {
-    const path = pathFn.join(hexo.source_dir, '_posts', '12345.md');
+    const path = join(hexo.source_dir, '_posts', '12345.md');
 
     return post.create({
       title: 12345
     }).then(data => {
       data.path.should.eql(path);
-      return fs.unlink(path);
+      return unlink(path);
     });
   });
 
@@ -313,11 +313,11 @@ describe('Post', () => {
       'tags:',
       '---'
     ].join('\n') + '\n');
-    return fs.unlink(data.path);
+    return unlink(data.path);
   }));
 
   it('create() - with content', () => {
-    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
 
     const content = [
@@ -337,15 +337,15 @@ describe('Post', () => {
       post.path.should.eql(path);
       post.content.should.eql(content);
 
-      return fs.readFile(path);
+      return readFile(path);
     }).then(data => {
       data.should.eql(content);
-      return fs.unlink(path);
+      return unlink(path);
     });
   });
 
-  it('create() - with callback', () => {
-    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+  it('create() - with callback', done => {
+    const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
 
     const content = [
@@ -356,25 +356,35 @@ describe('Post', () => {
       '---'
     ].join('\n') + '\n';
 
-    const callback = sinon.spy(post => {
-      post.path.should.eql(path);
-      post.content.should.eql(content);
-    });
-
-    return post.create({
-      title: 'Hello World'
-    }, callback).then(post => {
-      callback.calledOnce.should.be.true;
-      return fs.readFile(path);
-    }).then(data => {
-      data.should.eql(content);
-      return fs.unlink(path);
+    post.create({ title: 'Hello World' }, (err, post) => {
+      if (err) {
+        done(err);
+        return;
+      }
+      try {
+        post.path.should.eql(path);
+        post.content.should.eql(content);
+        readFile(path).asCallback((err, data) => {
+          if (err) {
+            done(err);
+            return;
+          }
+          try {
+            data.should.eql(content);
+            unlink(path).asCallback(done);
+          } catch (e) {
+            done(e);
+          }
+        });
+      } catch (e) {
+        done(e);
+      }
     });
   });
 
   it('publish()', () => {
     let draftPath = '';
-    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
 
     const content = [
@@ -399,19 +409,19 @@ describe('Post', () => {
       post.content.should.eql(content);
 
       return Promise.all([
-        fs.exists(draftPath),
-        fs.readFile(path)
+        exists(draftPath),
+        readFile(path)
       ]);
     }).spread((exist, data) => {
       exist.should.be.false;
       data.should.eql(content);
 
-      return fs.unlink(path);
+      return unlink(path);
     });
   });
 
   it('publish() - layout', () => {
-    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
 
     const content = [
@@ -433,16 +443,16 @@ describe('Post', () => {
       post.path.should.eql(path);
       post.content.should.eql(content);
 
-      return fs.readFile(path);
+      return readFile(path);
     }).then(data => {
       data.should.eql(content);
 
-      return fs.unlink(path);
+      return unlink(path);
     });
   });
 
   it('publish() - rename if target existed', () => {
-    const paths = [pathFn.join(hexo.source_dir, '_posts', 'Hello-World-1.md')];
+    const paths = [join(hexo.source_dir, '_posts', 'Hello-World-1.md')];
 
     return Promise.all([
       post.create({title: 'Hello World', layout: 'draft'}),
@@ -456,11 +466,11 @@ describe('Post', () => {
     }).then(data => {
       data.path.should.eql(paths[0]);
       return paths;
-    }).map(item => fs.unlink(item));
+    }).map(item => unlink(item));
   });
 
   it('publish() - replace existing files', () => {
-    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
 
     return Promise.all([
       post.create({title: 'Hello World', layout: 'draft'}),
@@ -469,13 +479,13 @@ describe('Post', () => {
       slug: 'Hello-World'
     }, true)).then(data => {
       data.path.should.eql(path);
-      return fs.unlink(path);
+      return unlink(path);
     });
   });
 
   it('publish() - asset folder', () => {
-    const assetDir = pathFn.join(hexo.source_dir, '_drafts', 'Hello-World');
-    const newAssetDir = pathFn.join(hexo.source_dir, '_posts', 'Hello-World');
+    const assetDir = join(hexo.source_dir, '_drafts', 'Hello-World');
+    const newAssetDir = join(hexo.source_dir, '_posts', 'Hello-World');
     hexo.config.post_asset_folder = true;
 
     return post.create({
@@ -483,25 +493,25 @@ describe('Post', () => {
       layout: 'draft'
     }).then(data => // Put some files into the asset folder
       Promise.all([
-        fs.writeFile(pathFn.join(assetDir, 'a.txt'), 'a'),
-        fs.writeFile(pathFn.join(assetDir, 'b.txt'), 'b')
+        writeFile(join(assetDir, 'a.txt'), 'a'),
+        writeFile(join(assetDir, 'b.txt'), 'b')
       ])).then(() => post.publish({
       slug: 'Hello-World'
     })).then(post => Promise.all([
-      fs.exists(assetDir),
-      fs.listDir(newAssetDir),
-      fs.unlink(post.path)
+      exists(assetDir),
+      listDir(newAssetDir),
+      unlink(post.path)
     ])).spread((exist, files) => {
       hexo.config.post_asset_folder = false;
       exist.should.be.false;
       files.should.have.members(['a.txt', 'b.txt']);
-      return fs.rmdir(newAssetDir);
+      return rmdir(newAssetDir);
     });
   });
 
   // https://github.com/hexojs/hexo/issues/1100
   it('publish() - non-string title', () => {
-    const path = pathFn.join(hexo.source_dir, '_posts', '12345.md');
+    const path = join(hexo.source_dir, '_posts', '12345.md');
 
     return post.create({
       title: 12345,
@@ -510,13 +520,13 @@ describe('Post', () => {
       slug: 12345
     })).then(data => {
       data.path.should.eql(path);
-      return fs.unlink(path);
+      return unlink(path);
     });
   });
 
   it('publish() - with callback', () => {
     let draftPath = '';
-    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
 
     const content = [
@@ -527,10 +537,7 @@ describe('Post', () => {
       '---'
     ].join('\n') + '\n';
 
-    const callback = sinon.spy(post => {
-      post.path.should.eql(path);
-      post.content.should.eql(content);
-    });
+    const callback = spy();
 
     return post.create({
       title: 'Hello World',
@@ -543,16 +550,17 @@ describe('Post', () => {
       }, callback);
     }).then(post => {
       callback.calledOnce.should.be.true;
+      callback.calledWithMatch(null, { path, content }).should.true;
 
       return Promise.all([
-        fs.exists(draftPath),
-        fs.readFile(path)
+        exists(draftPath),
+        readFile(path)
       ]);
     }).spread((exist, data) => {
       exist.should.be.false;
       data.should.eql(content);
 
-      return fs.unlink(path);
+      return unlink(path);
     });
   });
 
@@ -566,13 +574,13 @@ describe('Post', () => {
   })).then(data => {
     const meta = frontMatter(data.content);
     meta.tags.should.eql(['tag', 'test']);
-    return fs.unlink(data.path);
+    return unlink(data.path);
   }));
 
   it('render()', () => {
     // TODO: validate data
-    const beforeHook = sinon.spy();
-    const afterHook = sinon.spy();
+    const beforeHook = spy();
+    const afterHook = spy();
 
     hexo.extend.filter.register('before_post_render', beforeHook);
     hexo.extend.filter.register('after_post_render', afterHook);
@@ -598,11 +606,11 @@ describe('Post', () => {
 
   it('render() - file', () => {
     const content = '**file test**';
-    const path = pathFn.join(hexo.base_dir, 'render_test.md');
+    const path = join(hexo.base_dir, 'render_test.md');
 
-    return fs.writeFile(path, content).then(() => post.render(path)).then(data => {
+    return writeFile(path, content).then(() => post.render(path)).then(data => {
       data.content.trim().should.eql('<p><strong>file test</strong></p>');
-      return fs.unlink(path);
+      return unlink(path);
     });
   });
 
@@ -637,7 +645,7 @@ describe('Post', () => {
 
   it('render() - escaping swig blocks with similar names', () => {
     const code = 'alert("Hello world")';
-    const highlighted = util.highlight(code);
+    const highlighted = highlight(code);
 
     const content = [
       '{% codeblock %}',
@@ -674,9 +682,7 @@ describe('Post', () => {
   it('render() - recover escaped swig blocks which is html escaped before post_render', () => {
     const content = '`{% raw %}{{ test }}{% endraw %}`';
 
-    const filter = sinon.spy(result => {
-      result.trim().should.eql('<p><code>{{ test }}</code></p>');
-    });
+    const filter = spy();
 
     hexo.extend.filter.register('after_render:html', filter);
 
@@ -685,6 +691,7 @@ describe('Post', () => {
       engine: 'markdown'
     }).then(data => {
       filter.calledOnce.should.be.true;
+      filter.firstCall.args[0].trim().should.eql('<p><code>{{ test }}</code></p>');
       hexo.extend.filter.unregister('after_render:html', filter);
     });
   });
@@ -737,7 +744,7 @@ describe('Post', () => {
   // test for PR #2321
   it('render() - allow backtick code block in "blockquote" tag plugin', () => {
     const code = 'alert("Hello world")';
-    const highlighted = util.highlight(code);
+    const highlighted = highlight(code);
 
     const content = [
       '{% blockquote %}',
@@ -759,7 +766,7 @@ describe('Post', () => {
   // test for Issue #2969
   it('render() - backtick cocde block in blockquote', () => {
     const code = 'alert("Hello world")';
-    const highlighted = util.highlight(code);
+    const highlighted = highlight(code);
     const quotedContent = [
       'This is a code-block',
       '',
@@ -790,7 +797,7 @@ describe('Post', () => {
   // test derived from Issue #2969
   it('render() - "lang=dos" backtick cocde block in blockquote', () => {
     const code = '> dir';
-    const highlighted = util.highlight(code);
+    const highlighted = highlight(code);
     const quotedContent = [
       'This is a code-block',
       '',
@@ -821,7 +828,7 @@ describe('Post', () => {
   // test for Issue #3767
   it('render() - backtick cocde block (followed by a paragraph) in blockquote', () => {
     const code = 'alert("Hello world")';
-    const highlighted = util.highlight(code);
+    const highlighted = highlight(code);
     const quotedContent = [
       'This is a code-block',
       '',
@@ -867,7 +874,7 @@ describe('Post', () => {
       '}',
       ''
     ];
-    const highlighted = util.highlight(code.join('\n'));
+    const highlighted = highlight(code.join('\n'));
     const addQuote = s => '>' + (s ? ` ${s}` : '');
     const code2 = code.map((s, i) => {
       if (i === 0 || i === 2 || i === 6) return addQuote(s);
@@ -905,4 +912,96 @@ describe('Post', () => {
     });
   });
 
+  // test for PR #4161
+  it('render() - adjacent tags', () => {
+    const content = [
+      '{% pullquote %}content1{% endpullquote %}',
+      '',
+      'This is a following paragraph',
+      '',
+      '{% pullquote %}content2{% endpullquote %}'
+    ].join('\n');
+
+    return post.render(null, {
+      content,
+      engine: 'markdown'
+    }).then(data => {
+      data.content.trim().should.eql([
+        '<blockquote class="pullquote"><p>content1</p>\n</blockquote>\n\n',
+        '<p>This is a following paragraph</p>\n',
+        '<blockquote class="pullquote"><p>content2</p>\n</blockquote>'
+      ].join(''));
+    });
+  });
+
+  // test for PR #4161
+  it('render() - adjacent tags with args', () => {
+    const content = [
+      '{% pullquote center %}content1{% endpullquote %}',
+      '',
+      'This is a following paragraph',
+      '',
+      '{% pullquote center %}content2{% endpullquote %}'
+    ].join('\n');
+
+    return post.render(null, {
+      content,
+      engine: 'markdown'
+    }).then(data => {
+      data.content.trim().should.eql([
+        '<blockquote class="pullquote center"><p>content1</p>\n</blockquote>\n\n',
+        '<p>This is a following paragraph</p>\n',
+        '<blockquote class="pullquote center"><p>content2</p>\n</blockquote>'
+      ].join(''));
+    });
+  });
+
+  // test for Issue #3346
+  it('render() - swig tag inside backtick code block', async () => {
+    const content = fixture.content_for_issue_3346;
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.trim().should.eql(fixture.expected_for_issue_3346);
+  });
+
+  // test for https://github.com/hexojs/hexo/pull/4171#issuecomment-594412367
+  it('render() - markdown content right after swig tag', async () => {
+    const content = [
+      '{% pullquote warning %}',
+      'Text',
+      '{% endpullquote %}',
+      '# Title 0',
+      '{% pullquote warning %}',
+      'Text',
+      '{% endpullquote %}',
+      '{% pullquote warning %}',
+      'Text',
+      '{% endpullquote %}',
+      '# Title 1',
+      '{% pullquote warning %}',
+      'Text',
+      '{% endpullquote %}',
+      '{% pullquote warning %}Text{% endpullquote %}',
+      '# Title 2',
+      '{% pullquote warning %}Text{% endpullquote %}',
+      '{% pullquote warning %}Text{% endpullquote %}',
+      '# Title 3',
+      '{% pullquote warning %}Text{% endpullquote %}'
+    ].join('\n');
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    // We only to make sure markdown content is rendered correctly
+    data.content.trim().should.include('<h1 id="Title-0"><a href="#Title-0" class="headerlink" title="Title 0"></a>Title 0</h1>');
+    data.content.trim().should.include('<h1 id="Title-1"><a href="#Title-1" class="headerlink" title="Title 1"></a>Title 1</h1>');
+    data.content.trim().should.include('<h1 id="Title-2"><a href="#Title-2" class="headerlink" title="Title 2"></a>Title 2</h1>');
+    data.content.trim().should.include('<h1 id="Title-3"><a href="#Title-3" class="headerlink" title="Title 3"></a>Title 3</h1>');
+  });
 });
