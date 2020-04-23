@@ -226,19 +226,19 @@ describe('Post', () => {
   });
 
   it('create() - page', () => {
-    const path = pathFn.join(hexo.source_dir, 'Hello-World/index.md');
+    const path = join(hexo.source_dir, 'Hello-World/index.md');
     hexo.config.post_asset_folder = true;
     return post.create({
       title: 'Hello World',
       layout: 'page'
     }).then(post => {
       post.path.should.eql(path);
-      return fs.stat(pathFn.join(hexo.source_dir, 'Hello-World/index'));
+      return stat(join(hexo.source_dir, 'Hello-World/index'));
     }).catch(err => {
       err.code.should.eql('ENOENT');
     }).finally(() => {
       hexo.config.post_asset_folder = false;
-      fs.unlink(path);
+      unlink(path);
     });
   });
 
