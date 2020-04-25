@@ -135,7 +135,7 @@ describe('Load plugins', () => {
     const name = 'hexo-theme-test_theme';
     const path = join(hexo.plugin_dir, name, 'index.js');
 
-    Promise.all([
+    await Promise.all([
       createPackageFile(name),
       fs.writeFile(path, script)
     ]);
@@ -151,7 +151,7 @@ describe('Load plugins', () => {
     const name = 'another-plugin';
     const path = join(hexo.plugin_dir, name, 'index.js');
 
-    Promise.all([
+    await Promise.all([
       createPackageFile(name),
       fs.writeFile(path, script)
     ]);
