@@ -22,6 +22,7 @@ script:
       npm run eslint;
     fi
   - npm i sukkaw/hexo-fs#node-14
+  - npm i curbengh/hexo-util#cache-destroy
   - npm run test-cov
   - if [[ $TRAVIS_OS_NAME == "linux" ]]; then
       ./test/benchmark.sh;
