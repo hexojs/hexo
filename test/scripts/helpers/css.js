@@ -40,6 +40,8 @@ describe('css', () => {
   });
 
   it('an array', () => {
+    assertResult(css(['//hexo.io/style.css']), '//hexo.io/style.css');
+
     assertResult(css(['foo', 'bar', 'baz']), ['/foo.css', '/bar.css', '/baz.css']);
   });
 
@@ -58,6 +60,7 @@ describe('css', () => {
   it('an object', () => {
     assertResult(css({href: 'script.css'}), {href: '/script.css'});
     assertResult(css({href: '/script.css'}), {href: '/script.css'});
+    assertResult(css({href: 'script'}), {href: '/script.css'});
     assertResult(css({href: '/script.css', foo: 'bar'}), {href: '/script.css', foo: 'bar'});
   });
 
