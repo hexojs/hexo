@@ -351,7 +351,7 @@ describe('Hexo', () => {
   });
 
   it('_generate() - layout', () => {
-    hexo.theme.setView('test.swig', [
+    hexo.theme.setView('test.njk', [
       '{{ config.title }}',
       '{{ page.foo }}',
       '{{ layout }}',
@@ -378,7 +378,7 @@ describe('Hexo', () => {
   });
 
   it('_generate() - layout array', () => {
-    hexo.theme.setView('baz.swig', 'baz');
+    hexo.theme.setView('baz.njk', 'baz');
 
     hexo.extend.generator.register('test', () => ({
       path: 'test',
@@ -418,7 +418,7 @@ describe('Hexo', () => {
   it('_generate() - after_route_render filter', () => {
     const hook = spy(result => result.replace('foo', 'bar'));
     hexo.extend.filter.register('after_route_render', hook);
-    hexo.theme.setView('test.swig', 'foo');
+    hexo.theme.setView('test.njk', 'foo');
     hexo.extend.generator.register('test', () => ({
       path: 'test',
       layout: 'test'
@@ -442,7 +442,7 @@ describe('Hexo', () => {
   });
 
   it('_generate() - validate locals', () => {
-    hexo.theme.setView('test.swig', [
+    hexo.theme.setView('test.njk', [
       '{{ path }}',
       '{{ url }}',
       '{{ view_dir }}'
@@ -464,7 +464,7 @@ describe('Hexo', () => {
     const path = 'bár';
     hexo.config.url = 'http://fôo.com';
 
-    hexo.theme.setView('test.swig', '{{ url }}');
+    hexo.theme.setView('test.njk', '{{ url }}');
 
     hexo.extend.generator.register('test', () => ({
       path,
@@ -488,7 +488,7 @@ describe('Hexo', () => {
   it('_generate() - reset cache for new route', () => {
     let count = 0;
 
-    hexo.theme.setView('test.swig', '{{ page.count() }}');
+    hexo.theme.setView('test.njk', '{{ page.count() }}');
 
     hexo.extend.generator.register('test', () => ({
       path: 'test',
@@ -508,7 +508,7 @@ describe('Hexo', () => {
   it('_generate() - cache disabled and use new route', () => {
     let count = 0;
 
-    hexo.theme.setView('test.swig', '{{ page.count() }}');
+    hexo.theme.setView('test.njk', '{{ page.count() }}');
 
     hexo.extend.generator.register('test', () => ({
       path: 'test',
@@ -526,7 +526,7 @@ describe('Hexo', () => {
   });
 
   it('_generate() - cache disabled & update template', () => {
-    hexo.theme.setView('test.swig', '0');
+    hexo.theme.setView('test.njk', '0');
 
     hexo.extend.generator.register('test', () => ({
       path: 'test',
@@ -535,12 +535,12 @@ describe('Hexo', () => {
 
     return hexo._generate({cache: false})
       .then(() => checkStream(route.get('test'), '0'))
-      .then(() => hexo.theme.setView('test.swig', '1'))
+      .then(() => hexo.theme.setView('test.njk', '1'))
       .then(() => checkStream(route.get('test'), '1'));
   });
 
   it('_generate() - cache enabled & update template', () => {
-    hexo.theme.setView('test.swig', '0');
+    hexo.theme.setView('test.njk', '0');
 
     hexo.extend.generator.register('test', () => ({
       path: 'test',
@@ -549,7 +549,7 @@ describe('Hexo', () => {
 
     return hexo._generate({cache: true})
       .then(() => checkStream(route.get('test'), '0'))
-      .then(() => hexo.theme.setView('test.swig', '1'))
+      .then(() => hexo.theme.setView('test.njk', '1'))
       .then(() => checkStream(route.get('test'), '0')); // should return cached result
   });
 

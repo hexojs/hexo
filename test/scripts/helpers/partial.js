@@ -9,7 +9,7 @@ describe('partial', () => {
   const hexo = new Hexo(pathFn.join(__dirname, 'partial_test'), {silent: true});
   const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
   const viewDir = pathFn.join(themeDir, 'layout') + pathFn.sep;
-  const viewName = 'article.swig';
+  const viewName = 'article.njk';
 
   const ctx = {
     site: hexo.locals,
@@ -32,7 +32,7 @@ describe('partial', () => {
       fs.writeFile(hexo.config_path, 'theme: test')
     ]);
     await hexo.init();
-    hexo.theme.setView('widget/tag.swig', 'tag widget');
+    hexo.theme.setView('widget/tag.njk', 'tag widget');
   });
 
   after(() => fs.rmdir(hexo.base_dir));
@@ -52,28 +52,28 @@ describe('partial', () => {
   });
 
   it('locals', () => {
-    hexo.theme.setView('test.swig', '{{ foo }}');
+    hexo.theme.setView('test.njk', '{{ foo }}');
 
     partial('test', {foo: 'bar'}).should.eql('bar');
   });
 
   it('cache', () => {
-    hexo.theme.setView('test.swig', '{{ foo }}');
+    hexo.theme.setView('test.njk', '{{ foo }}');
 
     partial('test', {foo: 'bar'}, {cache: true}).should.eql('bar');
     partial('test', {}, {cache: true}).should.eql('bar');
   });
 
   it('only', () => {
-    hexo.theme.setView('test.swig', '{{ foo }}{{ bar }}');
+    hexo.theme.setView('test.njk', '{{ foo }}{{ bar }}');
 
     partial('test', {bar: 'bar'}, {only: true}).should.eql('bar');
   });
 
   it('a partial in another partial', () => {
-    hexo.theme.setView('partial/a.swig', '{{ partial("b") }}');
-    hexo.theme.setView('partial/b.swig', '{{ partial("c") }}');
-    hexo.theme.setView('partial/c.swig', 'c');
+    hexo.theme.setView('partial/a.njk', '{{ partial("b") }}');
+    hexo.theme.setView('partial/b.njk', '{{ partial("c") }}');
+    hexo.theme.setView('partial/c.njk', 'c');
 
     partial('partial/a').should.eql('c');
   });

@@ -183,14 +183,14 @@ describe('generate', () => {
       // Add some source files
       writeFile(join(hexo.theme_dir, 'source', 'a.txt'), 'a'),
       writeFile(join(hexo.theme_dir, 'source', 'b.txt'), 'b'),
-      writeFile(join(hexo.theme_dir, 'source', 'c.swig'), 'c')
+      writeFile(join(hexo.theme_dir, 'source', 'c.njk'), 'c')
     ]);
     await generate();
 
     // Update source file
     await Promise.all([
       writeFile(join(hexo.theme_dir, 'source', 'b.txt'), 'bb'),
-      writeFile(join(hexo.theme_dir, 'source', 'c.swig'), 'cc')
+      writeFile(join(hexo.theme_dir, 'source', 'c.njk'), 'cc')
     ]);
 
     // Generate again

@@ -36,9 +36,9 @@ describe('view', () => {
   it('pattern', () => {
     const { pattern } = processor;
 
-    pattern.match('layout/index.swig').path.should.eql('index.swig');
-    should.not.exist(pattern.match('index.swig'));
-    should.not.exist(pattern.match('view/index.swig'));
+    pattern.match('layout/index.njk').path.should.eql('index.njk');
+    should.not.exist(pattern.match('index.njk'));
+    should.not.exist(pattern.match('view/index.njk'));
   });
 
   it('type: create', async () => {
@@ -49,31 +49,31 @@ describe('view', () => {
     ].join('\n');
 
     const file = newFile({
-      path: 'index.swig',
+      path: 'index.njk',
       type: 'create'
     });
 
     await writeFile(file.source, body);
     await process(file);
-    const view = hexo.theme.getView('index.swig');
+    const view = hexo.theme.getView('index.njk');
 
-    view.path.should.eql('index.swig');
-    view.source.should.eql(join(themeDir, 'layout', 'index.swig'));
+    view.path.should.eql('index.njk');
+    view.source.should.eql(join(themeDir, 'layout', 'index.njk'));
     view.data.should.eql({
       foo: 'bar',
       _content: 'test'
     });
-    hexo.theme.removeView('index.swig');
+    hexo.theme.removeView('index.njk');
     unlink(file.source);
   });
 
   it('type: delete', async () => {
     const file = newFile({
-      path: 'index.swig',
+      path: 'index.njk',
       type: 'delete'
     });
 
     await process(file);
-    should.not.exist(hexo.theme.getView('index.swig'));
+    should.not.exist(hexo.theme.getView('index.njk'));
   });
 });
