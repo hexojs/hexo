@@ -212,7 +212,7 @@ describe('code', () => {
     enablePrismjs();
 
     const result = code('highlight:false', fixture);
-    result.should.eql(prism(fixture));
+    result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
   });
 
   it('prismjs - disabled', () => {
