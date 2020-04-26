@@ -499,7 +499,7 @@ describe('Box', () => {
   });
 
   it('watch() - update with simple "ignore" option', async () => {
-    const box = newBox('test', {ignore: '**/ignore_me'});
+    const box = newBox('test', {ignore: '**/ignore_me/**'});
     const path1 = 'a.txt';
     const path2 = 'b.txt';
     const src1 = join(box.base, path1);
@@ -543,7 +543,7 @@ describe('Box', () => {
   });
 
   it('watch() - update with complex "ignore" option', async () => {
-    const box = newBox('test', {ignore: ['**/ignore_me', '**/ignore_me_too.txt']});
+    const box = newBox('test', {ignore: ['**/ignore_me/**', '**/ignore_me_too.txt']});
     const path1 = 'a.txt';
     const path2 = 'b.txt';
     const path3 = 'ignore_me_too.txt';
