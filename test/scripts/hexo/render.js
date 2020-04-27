@@ -38,7 +38,8 @@ describe('Render', () => {
     hexo.render.isRenderable('test.html').should.be.true;
 
     // swig
-    hexo.render.isRenderable('test.swig').should.be.true;
+    hexo.render.isRenderable('test.swig').should.be.false;
+    hexo.render.isRenderable('test.njk').should.be.true;
 
     // yaml
     hexo.render.isRenderable('test.yml').should.be.true;
@@ -53,7 +54,8 @@ describe('Render', () => {
     hexo.render.isRenderableSync('test.html').should.be.true;
 
     // swig
-    hexo.render.isRenderableSync('test.swig').should.be.true;
+    hexo.render.isRenderableSync('test.swig').should.be.false;
+    hexo.render.isRenderableSync('test.njk').should.be.true;
 
     // yaml
     hexo.render.isRenderableSync('test.yml').should.be.true;
@@ -68,7 +70,7 @@ describe('Render', () => {
     hexo.render.getOutput('test.html').should.eql('html');
 
     // swig
-    hexo.render.getOutput('test.swig').should.eql('html');
+    hexo.render.getOutput('test.njk').should.eql('html');
 
     // yaml
     hexo.render.getOutput('test.yml').should.eql('json');
@@ -100,7 +102,7 @@ describe('Render', () => {
       '<title>{{ title }}</title>',
       '<body>{{ content }}</body>'
     ].join('\n'),
-    engine: 'swig'
+    engine: 'njk'
   }, {
     title: 'Hello world',
     content: 'foobar'
@@ -132,7 +134,7 @@ describe('Render', () => {
   it('render() - after_render filter', () => {
     const data = {
       text: '  <strong>123456</strong>  ',
-      engine: 'swig'
+      engine: 'njk'
     };
 
     const filter = spy((result, obj) => {
@@ -213,7 +215,7 @@ describe('Render', () => {
         '<title>{{ title }}</title>',
         '<body>{{ content }}</body>'
       ].join('\n'),
-      engine: 'swig'
+      engine: 'njk'
     }, {
       title: 'Hello world',
       content: 'foobar'
@@ -250,7 +252,7 @@ describe('Render', () => {
   it('renderSync() - after_render filter', () => {
     const data = {
       text: '  <strong>123456</strong>  ',
-      engine: 'swig'
+      engine: 'njk'
     };
 
     const filter = spy(result => result.trim());

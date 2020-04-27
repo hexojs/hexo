@@ -135,7 +135,7 @@ describe('Load plugins', () => {
     const name = 'hexo-theme-test_theme';
     const path = join(hexo.plugin_dir, name, 'index.js');
 
-    Promise.all([
+    await Promise.all([
       createPackageFile(name),
       fs.writeFile(path, script)
     ]);
@@ -151,7 +151,7 @@ describe('Load plugins', () => {
     const name = 'another-plugin';
     const path = join(hexo.plugin_dir, name, 'index.js');
 
-    Promise.all([
+    await Promise.all([
       createPackageFile(name),
       fs.writeFile(path, script)
     ]);
@@ -187,7 +187,7 @@ describe('Load plugins', () => {
     return fs.unlink(path);
   });
 
-  it('load theme scripts', async () => {
+  it('load theme scripts', () => {
     const path = join(hexo.theme_script_dir, 'test.js');
 
     return fs.writeFile(path, script).then(() => loadPlugins(hexo)).then(() => {
@@ -208,5 +208,23 @@ describe('Load plugins', () => {
       should.not.exist(hexo._script_test);
       return fs.unlink(path);
     });
+  });
+
+  // Issue #4251
+  it('load scripts with sourcemap EOF', async () => {
+    const path = join(hexo.script_dir, 'test.js');
+
+    const script = [
+      '(() => {',
+      '  hexo._script_test = true;',
+      '})();',
+      '//# sourceMappingURL=data:application/json;<redacted>'
+    ].join('\n');
+
+    fs.writeFile(path, script);
+    await loadPlugins(hexo);
+
+    hexo._script_test.should.eql(true);
+    return fs.unlink(path);
   });
 });
