@@ -21,11 +21,11 @@ describe('Page', () => {
 
     data.title.should.eql('');
     data.date.valueOf().should.gte(now);
-    data.updated.valueOf().should.gte(now);
     data.comments.should.be.true;
     data.layout.should.eql('page');
     data._content.should.eql('');
     data.raw.should.eql('');
+    should.not.exist(data.updated);
     should.not.exist(data.content);
     should.not.exist(data.excerpt);
     should.not.exist(data.more);
