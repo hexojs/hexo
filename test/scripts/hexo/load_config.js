@@ -5,7 +5,7 @@ const fs = require('hexo-fs');
 
 describe('Load config', () => {
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
+  const hexo = new Hexo(pathFn.join(__dirname, 'config_test'), { silent: true });
   const loadConfig = require('../../../lib/hexo/load_config');
   const defaultConfig = require('../../../lib/hexo/default_config');
 
@@ -92,12 +92,39 @@ describe('Load config', () => {
     hexo.source_dir.should.eql(pathFn.resolve(hexo.base_dir, 'bar') + pathFn.sep);
   }).finally(() => fs.unlink(hexo.config_path)));
 
-  it('custom theme', () => fs.writeFile(hexo.config_path, 'theme: test').then(() => loadConfig(hexo)).then(() => {
-    hexo.config.theme.should.eql('test');
-    hexo.theme_dir.should.eql(pathFn.join(hexo.base_dir, 'themes', 'test') + pathFn.sep);
-    hexo.theme_script_dir.should.eql(pathFn.join(hexo.theme_dir, 'scripts') + pathFn.sep);
-    hexo.theme.base.should.eql(hexo.theme_dir);
-  }).finally(() => fs.unlink(hexo.config_path)));
+  it('custom theme - default theme_dir', () => fs.writeFile(hexo.config_path, 'theme: test')
+    .then(() => loadConfig(hexo)).then(() => {
+      hexo.config.theme.should.eql('test');
+      hexo.theme_dir.should.eql(pathFn.join(hexo.base_dir, 'themes', 'landscape') + pathFn.sep);
+      hexo.theme_script_dir.should.eql(pathFn.join(hexo.theme_dir, 'scripts') + pathFn.sep);
+      hexo.theme.base.should.eql(hexo.theme_dir);
+    }).finally(() => fs.unlink(hexo.config_path)));
+
+  it('custom theme - base_dir/themes/[theme]', () => fs.writeFile(hexo.config_path, 'theme: test')
+    .then(() => {
+      fs.mkdirs(pathFn.join(hexo.base_dir, 'themes', 'test'));
+    }).then(() => loadConfig(hexo)).then(() => {
+      hexo.config.theme.should.eql('test');
+      hexo.theme_dir.should.eql(pathFn.join(hexo.base_dir, 'themes', 'test') + pathFn.sep);
+      hexo.theme_script_dir.should.eql(pathFn.join(hexo.theme_dir, 'scripts') + pathFn.sep);
+      hexo.theme.base.should.eql(hexo.theme_dir);
+    }).finally(() => {
+      fs.rmdir(pathFn.join(hexo.base_dir, 'themes', 'test'));
+      fs.unlink(hexo.config_path);
+    }));
+
+  it('custom theme - base_dir/node_modules/hexo-theme-[theme]', () => fs.writeFile(hexo.config_path, 'theme: test')
+    .then(() => {
+      fs.mkdirs(pathFn.join(hexo.plugin_dir, 'hexo-theme-test'));
+    }).then(() => loadConfig(hexo)).then(() => {
+      hexo.config.theme.should.eql('test');
+      hexo.theme_dir.should.eql(pathFn.join(hexo.plugin_dir, 'hexo-theme-test') + pathFn.sep);
+      hexo.theme_script_dir.should.eql(pathFn.join(hexo.theme_dir, 'scripts') + pathFn.sep);
+      hexo.theme.base.should.eql(hexo.theme_dir);
+    }).finally(() => {
+      fs.rmdir(pathFn.join(hexo.plugin_dir, 'hexo-theme-test'));
+      fs.unlink(hexo.config_path);
+    }));
 
   it('merge config', () => {
     const content = [
