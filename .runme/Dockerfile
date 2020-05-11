@@ -1,4 +1,4 @@
 FROM node:latest
 WORKDIR /app
 COPY . .
-RUN npm install && npx hexo blog && cd blog
+RUN yarn && npx hexo init blog && cd blog
