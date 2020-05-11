@@ -65,6 +65,9 @@ $ hexo new "Hello Hexo"
 ``` bash
 $ hexo generate
 ```
+## Demo
+
+[![Runme](https://svc.runme.io/static/button.svg)](https://runme.io/run?app_id=0a18e95d-8092-4ad2-8445-d4434ead57ad)
 
 ## More Information
 
