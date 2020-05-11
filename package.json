@@ -68,7 +68,7 @@
     "chai": "^4.1.2",
     "cheerio": "0.22.0",
     "decache": "^4.5.1",
-    "eslint": "^6.0.1",
+    "eslint": "^7.0.0",
     "eslint-config-hexo": "^4.1.0",
     "hexo-renderer-marked": "^2.0.0",
     "husky": "^4.2.5",
