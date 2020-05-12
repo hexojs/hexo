@@ -108,6 +108,10 @@ describe('Load config', () => {
       hexo.theme_dir.should.eql(pathFn.join(hexo.base_dir, 'themes', 'test') + pathFn.sep);
       hexo.theme_script_dir.should.eql(pathFn.join(hexo.theme_dir, 'scripts') + pathFn.sep);
       hexo.theme.base.should.eql(hexo.theme_dir);
+      hexo.theme.options.ignored.should.eql([
+        /^(?:(?:^|[\\/]|(?:(?:(?!(?:^|[\\/])\.).)*?)[\\/])themes[\\/](?!\.)(?=.)[^\\/]*?[\\/]node_modules(?:[\\/](?!\.)(?:(?:(?!(?:^|[\\/])\.).)*?)|$))$/,
+        /^(?:(?:^|[\\/]|(?:(?:(?!(?:^|[\\/])\.).)*?)[\\/])themes[\\/](?!\.)(?=.)[^\\/]*?[\\/]\.git(?:[\\/](?!\.)(?:(?:(?!(?:^|[\\/])\.).)*?)|$))$/
+      ]);
     }).finally(() => {
       fs.rmdir(pathFn.join(hexo.base_dir, 'themes', 'test'));
       fs.unlink(hexo.config_path);
@@ -121,6 +125,10 @@ describe('Load config', () => {
       hexo.theme_dir.should.eql(pathFn.join(hexo.plugin_dir, 'hexo-theme-test') + pathFn.sep);
       hexo.theme_script_dir.should.eql(pathFn.join(hexo.theme_dir, 'scripts') + pathFn.sep);
       hexo.theme.base.should.eql(hexo.theme_dir);
+      hexo.theme.options.ignored.should.eql([
+        /^(?:(?:^|[\\/]|(?:(?:(?!(?:^|[\\/])\.).)*?)[\\/])node_modules[\\/]hexo-theme-[^\\/]*?[\\/]node_modules(?:[\\/](?!\.)(?:(?:(?!(?:^|[\\/])\.).)*?)|$))$/,
+        /^(?:(?:^|[\\/]|(?:(?:(?!(?:^|[\\/])\.).)*?)[\\/])node_modules[\\/]hexo-theme-[^\\/]*?[\\/]\.git(?:[\\/](?!\.)(?:(?:(?!(?:^|[\\/])\.).)*?)|$))$/
+      ]);
     }).finally(() => {
       fs.rmdir(pathFn.join(hexo.plugin_dir, 'hexo-theme-test'));
       fs.unlink(hexo.config_path);

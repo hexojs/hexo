@@ -301,45 +301,6 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
-  it('process() - skip node_modules of theme by default', async () => {
-    const box = newBox('test', { ignore: null });
-    const data = {};
-
-    box.addProcessor(file => {
-      data[file.path] = file;
-    });
-
-    await Promise.all([
-      writeFile(join(box.base, 'foo.txt'), 'foo'),
-      writeFile(join(box.base, 'themes', 'bar', 'node_modules', 'bar_library', 'bar.js'), 'themes')
-    ]);
-    await box.process();
-
-    data.should.have.all.keys(['foo.txt']);
-
-    await rmdir(box.base);
-  });
-
-  it('process() - always skip node_modules of theme', async () => {
-    const box = newBox('test', { ignore: '**/ignore_me' });
-    const data = {};
-
-    box.addProcessor(file => {
-      data[file.path] = file;
-    });
-
-    await Promise.all([
-      writeFile(join(box.base, 'foo.txt'), 'foo'),
-      writeFile(join(box.base, 'ignore_me', 'bar.txt'), 'ignore_me'),
-      writeFile(join(box.base, 'themes', 'bar', 'node_modules', 'bar_library', 'bar.js'), 'themes')
-    ]);
-    await box.process();
-
-    data.should.have.all.keys(['foo.txt']);
-
-    await rmdir(box.base);
-  });
-
   it('watch() - create', async () => {
     const box = newBox('test');
     const path = 'a.txt';
