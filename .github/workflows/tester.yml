@@ -20,11 +20,26 @@ jobs:
         uses: actions/cache@v1
         with:
           path: node_modules
-          key: ${{ runner.OS }}-npm-cache
-          restore-keys: ${{ runner.OS }}-npm-cache
+          key: ${{ runner.os }}-npm-cache
+          restore-keys: ${{ runner.os }}-npm-cache
       - name: Install Dependencies
         run: npm install
       - name: Test
-        run: npm test
+        run: npm run test-cov
         env:
           CI: true
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.github_token }}
+          flag-name: run-${{ runner.os }}-${{ matrix.node-version }}
+          parallel: true
+  coverall-finish:
+    needs: tester
+    runs-on: ubuntu-latest
+    steps:
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        parallel-finished: true

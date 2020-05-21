@@ -1,5 +1,4 @@
-os:
-  - linux
+os: linux
 
 language: node_js
 
@@ -17,17 +16,7 @@ node_js:
   - "14"
 
 script:
-  - if [[ $TRAVIS_OS_NAME == "linux" ]]; then
-      npm run eslint;
-    fi
-  - npm run test-cov
-  - if [[ $TRAVIS_OS_NAME == "linux" ]]; then
-      ./test/benchmark.sh;
-    fi
-
-after_script:
-  - npm install coveralls
-  - nyc report --reporter=text-lcov | coveralls
+  - ./test/benchmark.sh;
 
 deploy:
   provider: surge
