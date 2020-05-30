@@ -45,7 +45,7 @@
     "chalk": "^4.0.0",
     "hexo-cli": "^3.0.0",
     "hexo-front-matter": "^1.0.0",
-    "hexo-fs": "3.0.1",
+    "hexo-fs": "^3.1.0",
     "hexo-i18n": "^1.0.0",
     "hexo-log": "^1.0.0",
     "hexo-renderer-nunjucks": "^2.0.0",
