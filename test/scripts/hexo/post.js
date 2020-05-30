@@ -19,7 +19,7 @@ describe('Post', () => {
   before(() => {
     clock = useFakeTimers(now);
 
-    return mkdirs(hexo.base_dir, () => hexo.init()).then(() => // Load marked renderer for testing
+    return mkdirs(hexo.base_dir).then(() => hexo.init()).then(() => // Load marked renderer for testing
       hexo.loadPlugin(require.resolve('hexo-renderer-marked'))).then(() => hexo.scaffold.set('post', [
       '---',
       'title: {{ title }}',
