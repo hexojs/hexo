@@ -27,7 +27,7 @@ describe('source', () => {
       mkdirs(themeDir),
       writeFile(hexo.config_path, 'theme: test')
     ]);
-    hexo.init();
+    await hexo.init();
   });
 
   after(() => rmdir(hexo.base_dir));
@@ -41,6 +41,7 @@ describe('source', () => {
     pattern.match('source/foo.jpg~').should.be.false;
     pattern.match('source/foo.jpg%').should.be.false;
     pattern.match('layout/foo.swig').should.be.false;
+    pattern.match('layout/foo.njk').should.be.false;
     pattern.match('package.json').should.be.false;
     pattern.match('node_modules/test/test.js').should.be.false;
     pattern.match('source/node_modules/test/test.js').should.be.false;

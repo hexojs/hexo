@@ -1,8 +1,7 @@
 'use strict';
 
 const Promise = require('bluebird');
-const sinon = require('sinon');
-const expect = require('chai').expect;
+const { stub, assert: sinonAssert } = require('sinon');
 
 describe('Console list', () => {
   const Hexo = require('../../../lib/hexo');
@@ -12,48 +11,46 @@ describe('Console list', () => {
   const listTags = require('../../../lib/plugins/console/list/tag').bind(hexo);
 
   hexo.config.permalink = ':title/';
-  before(() => {
-    const log = console.log;
-    sinon.stub(console, 'log').callsFake((...args) => {
-      return log.apply(log, args);
-    });
-  });
 
-  after(() => {
-    console.log.restore();
-  });
+  let logStub;
+
+  before(() => { logStub = stub(console, 'log'); });
+
+  afterEach(() => { logStub.reset(); });
+
+  after(() => { logStub.restore(); });
 
   it('no tags', () => {
     listTags();
-    expect(console.log.calledWith(sinon.match('Name'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Posts'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Path'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('No tags.'))).to.be.true;
+    sinonAssert.calledWithMatch(logStub, 'Name');
+    sinonAssert.calledWithMatch(logStub, 'Posts');
+    sinonAssert.calledWithMatch(logStub, 'Path');
+    sinonAssert.calledWithMatch(logStub, 'No tags.');
   });
 
-  it('tags', () => {
+  it('tags', async () => {
     const posts = [
       {source: 'foo', slug: 'foo', title: 'Its', date: 1e8},
       {source: 'bar', slug: 'bar', title: 'Math', date: 1e8 + 1},
       {source: 'baz', slug: 'baz', title: 'Dude', date: 1e8 - 1}
     ];
-    return hexo.init()
-      .then(() => Post.insert(posts)).then(posts => Promise.each([
-        ['foo'],
-        ['baz'],
-        ['baz']
-      ], (tags, i) => posts[i].setTags(tags))).then(() => {
-        hexo.locals.invalidate();
-      })
-      .then(() => {
-        listTags();
-        expect(console.log.calledWith(sinon.match('Name'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('Posts'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('Path'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('baz'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('foo'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('tags/baz'))).to.be.true;
-        expect(console.log.calledWith(sinon.match('tags/foo'))).to.be.true;
-      });
+
+    await hexo.init();
+    const output = await Post.insert(posts);
+    await Promise.each([
+      ['foo'],
+      ['baz'],
+      ['baz']
+    ], (tags, i) => output[i].setTags(tags));
+    await hexo.locals.invalidate();
+
+    listTags();
+    sinonAssert.calledWithMatch(logStub, 'Name');
+    sinonAssert.calledWithMatch(logStub, 'Posts');
+    sinonAssert.calledWithMatch(logStub, 'Path');
+    sinonAssert.calledWithMatch(logStub, 'baz');
+    sinonAssert.calledWithMatch(logStub, 'foo');
+    sinonAssert.calledWithMatch(logStub, 'tags/baz');
+    sinonAssert.calledWithMatch(logStub, 'tags/foo');
   });
 });

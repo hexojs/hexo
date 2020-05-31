@@ -1,7 +1,6 @@
 'use strict';
 
-const sinon = require('sinon');
-const expect = require('chai').expect;
+const { stub, assert: sinonAssert } = require('sinon');
 
 describe('Console list', () => {
   const Hexo = require('../../../lib/hexo');
@@ -10,36 +9,34 @@ describe('Console list', () => {
   const listPages = require('../../../lib/plugins/console/list/page').bind(hexo);
 
   hexo.config.permalink = ':title/';
-  before(() => {
-    const log = console.log;
-    sinon.stub(console, 'log').callsFake((...args) => {
-      return log.apply(log, args);
-    });
-  });
 
-  after(() => {
-    console.log.restore();
-  });
+  let logStub;
+
+  before(() => { logStub = stub(console, 'log'); });
+
+  afterEach(() => { logStub.reset(); });
+
+  after(() => { logStub.restore(); });
 
   it('no page', () => {
     listPages();
-    expect(console.log.calledWith(sinon.match('Date'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Title'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Path'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('No pages.'))).to.be.true;
+    sinonAssert.calledWithMatch(logStub, 'Date');
+    sinonAssert.calledWithMatch(logStub, 'Title');
+    sinonAssert.calledWithMatch(logStub, 'Path');
+    sinonAssert.calledWithMatch(logStub, 'No pages.');
   });
 
-  it('page', () => Page.insert({
-    source: 'foo',
-    title: 'Hello World',
-    path: 'bar'
-  })
-    .then(() => {
-      listPages();
-      expect(console.log.calledWith(sinon.match('Date'))).to.be.true;
-      expect(console.log.calledWith(sinon.match('Title'))).to.be.true;
-      expect(console.log.calledWith(sinon.match('Path'))).to.be.true;
-      expect(console.log.calledWith(sinon.match('Hello World'))).to.be.true;
-      expect(console.log.calledWith(sinon.match('foo'))).to.be.true;
-    }));
+  it('page', async () => {
+    await Page.insert({
+      source: 'foo',
+      title: 'Hello World',
+      path: 'bar'
+    });
+    listPages();
+    sinonAssert.calledWithMatch(logStub, 'Date');
+    sinonAssert.calledWithMatch(logStub, 'Title');
+    sinonAssert.calledWithMatch(logStub, 'Path');
+    sinonAssert.calledWithMatch(logStub, 'Hello World');
+    sinonAssert.calledWithMatch(logStub, 'foo');
+  });
 });

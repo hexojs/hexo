@@ -82,21 +82,21 @@ describe('post_permalink', () => {
     Post.removeById(post._id);
   });
 
-  it('hour and minute', async () => {
-    hexo.config.permalink = ':year/:month/:day/:hour/:minute/:post_title/';
+  it('hour minute and second', async () => {
+    hexo.config.permalink = ':year/:month/:day/:hour/:minute/:second/:post_title/';
 
     const post = await Post.insert({
       source: 'sub/2015-05-06-my-new-post.md',
       slug: '2015-05-06-my-new-post',
       title: 'My New Post',
-      date: moment('2015-05-06 12:13')
+      date: moment('2015-05-06 12:13:14')
     });
-    postPermalink(post).should.eql('2015/05/06/12/13/my-new-post/');
+    postPermalink(post).should.eql('2015/05/06/12/13/14/my-new-post/');
     Post.removeById(post._id);
   });
 
   it('time is omitted in front-matter', async () => {
-    hexo.config.permalink = ':year/:month/:day/:hour/:minute/:post_title/';
+    hexo.config.permalink = ':year/:month/:day/:hour/:minute/:second/:post_title/';
 
     const post = await Post.insert({
       source: 'sub/2015-05-06-my-new-post.md',
@@ -104,7 +104,7 @@ describe('post_permalink', () => {
       title: 'My New Post',
       date: moment('2015-05-06')
     });
-    postPermalink(post).should.eql('2015/05/06/00/00/my-new-post/');
+    postPermalink(post).should.eql('2015/05/06/00/00/00/my-new-post/');
     Post.removeById(post._id);
   });
 

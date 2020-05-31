@@ -9,7 +9,7 @@
   "scripts": {
     "eslint": "eslint .",
     "test": "mocha test/index.js",
-    "test-cov": "nyc npm run test",
+    "test-cov": "nyc --reporter=lcovonly npm run test",
     "lint-staged": "lint-staged"
   },
   "directories": {
@@ -42,47 +42,42 @@
     "abbrev": "^1.1.1",
     "archy": "^1.0.0",
     "bluebird": "^3.5.2",
-    "chalk": "^3.0.0",
+    "chalk": "^4.0.0",
     "hexo-cli": "^3.0.0",
     "hexo-front-matter": "^1.0.0",
-    "hexo-fs": "^2.0.0",
+    "hexo-fs": "^3.1.0",
     "hexo-i18n": "^1.0.0",
     "hexo-log": "^1.0.0",
-    "hexo-util": "^1.8.1",
+    "hexo-renderer-nunjucks": "^2.0.0",
+    "hexo-util": "^2.0.0",
     "js-yaml": "^3.12.0",
-    "lodash": "^4.17.11",
     "micromatch": "^4.0.2",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
-    "nunjucks": "^3.1.3",
     "pretty-hrtime": "^1.0.3",
     "resolve": "^1.8.1",
     "strip-ansi": "^6.0.0",
-    "strip-indent": "^3.0.0",
-    "swig-extras": "0.0.1",
-    "swig-templates": "^2.0.3",
     "text-table": "^0.2.0",
     "tildify": "^2.0.0",
     "titlecase": "^1.1.2",
-    "warehouse": "^3.0.1"
+    "warehouse": "^4.0.0"
   },
   "devDependencies": {
     "@easyops/git-exec-and-restage": "^1.0.4",
     "chai": "^4.1.2",
-    "chai-as-promised": "^7.1.1",
     "cheerio": "0.22.0",
-    "eslint": "^6.0.1",
+    "decache": "^4.5.1",
+    "eslint": "^7.0.0",
     "eslint-config-hexo": "^4.1.0",
     "hexo-renderer-marked": "^2.0.0",
-    "husky": "^3.0.0",
-    "lint-staged": "^9.1.0",
-    "mocha": "^6.0.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.0",
+    "mocha": "^7.0.0",
     "nyc": "^15.0.0",
-    "rewire": "^4.0.1",
-    "sinon": "^8.0.1"
+    "sinon": "^9.0.2"
   },
   "engines": {
-    "node": ">=8.10.0"
+    "node": ">=10.13.0"
   },
   "husky": {
     "hooks": {

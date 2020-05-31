@@ -15,7 +15,7 @@ describe('Save database', () => {
 
     await saveDatabase();
     const exist = await exists(dbPath);
-    exist.should.eql(true);
+    exist.should.be.true;
 
     unlink(dbPath);
   });
@@ -26,7 +26,7 @@ describe('Save database', () => {
 
     await saveDatabase();
     const exist = await exists(dbPath);
-    exist.should.eql(false);
+    exist.should.be.false;
   });
 
   it('do nothing if database is not loaded', async () => {
@@ -35,6 +35,6 @@ describe('Save database', () => {
 
     await saveDatabase();
     const exist = await exists(dbPath);
-    exist.should.eql(false);
+    exist.should.be.false;
   });
 });

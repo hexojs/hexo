@@ -1,39 +1,42 @@
 'use strict';
 
-const fs = require('hexo-fs');
+const { exists, mkdirs, readFile, rmdir, unlink } = require('hexo-fs');
 const moment = require('moment');
-const pathFn = require('path');
+const { join } = require('path');
 const Promise = require('bluebird');
-const sinon = require('sinon');
+const { useFakeTimers } = require('sinon');
 
 describe('publish', () => {
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(pathFn.join(__dirname, 'publish_test'), {silent: true});
+  const hexo = new Hexo(join(__dirname, 'publish_test'), {silent: true});
   const publish = require('../../../lib/plugins/console/publish').bind(hexo);
   const post = hexo.post;
   const now = Date.now();
   let clock;
 
-  before(() => {
-    clock = sinon.useFakeTimers(now);
+  before(async () => {
+    clock = useFakeTimers(now);
 
-    return fs.mkdirs(hexo.base_dir).then(() => hexo.init()).then(() => hexo.scaffold.set('post', [
+    await mkdirs(hexo.base_dir);
+    await hexo.init();
+    await hexo.scaffold.set('post', [
       '---',
       'title: {{ title }}',
       'date: {{ date }}',
       'tags:',
       '---'
-    ].join('\n'))).then(() => hexo.scaffold.set('draft', [
+    ].join('\n'));
+    await hexo.scaffold.set('draft', [
       '---',
       'title: {{ title }}',
       'tags:',
       '---'
-    ].join('\n')));
+    ].join('\n'));
   });
 
   after(() => {
     clock.restore();
-    return fs.rmdir(hexo.base_dir);
+    return rmdir(hexo.base_dir);
   });
 
   beforeEach(() => post.create({
@@ -41,9 +44,9 @@ describe('publish', () => {
     layout: 'draft'
   }));
 
-  it('slug', () => {
-    const draftPath = pathFn.join(hexo.source_dir, '_drafts', 'Hello-World.md');
-    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+  it('slug', async () => {
+    const draftPath = join(hexo.source_dir, '_drafts', 'Hello-World.md');
+    const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
 
     const content = [
@@ -54,21 +57,21 @@ describe('publish', () => {
       '---'
     ].join('\n') + '\n';
 
-    return publish({
+    await publish({
       _: ['Hello-World']
-    }).then(() => Promise.all([
-      fs.exists(draftPath),
-      fs.readFile(path)
-    ])).spread((exist, data) => {
-      exist.should.be.false;
-      data.should.eql(content);
-
-      return fs.unlink(path);
     });
+
+    const exist = await exists(draftPath);
+    const data = await readFile(path);
+
+    exist.should.be.false;
+    data.should.eql(content);
+
+    await unlink(path);
   });
 
-  it('layout', () => {
-    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+  it('layout', async () => {
+    const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
 
     const content = [
@@ -80,43 +83,47 @@ describe('publish', () => {
       '---'
     ].join('\n') + '\n';
 
-    return publish({
+    await publish({
       _: ['photo', 'Hello-World']
-    }).then(() => fs.readFile(path)).then(data => {
-      data.should.eql(content);
-      return fs.unlink(path);
     });
+    const data = await readFile(path);
+    data.should.eql(content);
+
+    await unlink(path);
   });
 
-  it('rename if target existed', () => {
-    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World-1.md');
+  it('rename if target existed', async () => {
+    const path = join(hexo.source_dir, '_posts', 'Hello-World-1.md');
 
-    return post.create({
+    await post.create({
       title: 'Hello World'
-    }).then(() => publish({
+    });
+    await publish({
       _: ['Hello-World']
-    })).then(() => fs.exists(path)).then(exist => {
-      exist.should.be.true;
-
-      return Promise.all([
-        fs.unlink(path),
-        fs.unlink(pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md'))
-      ]);
     });
+
+    const exist = await exists(path);
+    exist.should.be.true;
+
+    await Promise.all([
+      unlink(path),
+      unlink(join(hexo.source_dir, '_posts', 'Hello-World.md'))
+    ]);
   });
 
-  it('replace existing target', () => {
-    const path = pathFn.join(hexo.source_dir, '_posts', 'Hello-World.md');
+  it('replace existing target', async () => {
+    const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
 
-    return post.create({
+    await post.create({
       title: 'Hello World'
-    }).then(() => publish({
+    });
+    await publish({
       _: ['Hello-World'],
       replace: true
-    })).then(() => fs.exists(pathFn.join(hexo.source_dir, '_posts', 'Hello-World-1.md'))).then(exist => {
-      exist.should.be.false;
-
-      return fs.unlink(path);
     });
+    const exist = await exists(join(hexo.source_dir, '_posts', 'Hello-World-1.md'));
+    exist.should.be.false;
+
+    await unlink(path);
   });
 });

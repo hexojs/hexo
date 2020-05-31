@@ -1,3 +1,5 @@
+os: linux
+
 language: node_js
 
 addons:
@@ -9,16 +11,17 @@ cache:
   npm: true
 
 node_js:
-  - "8"
   - "10"
   - "12"
-  - "13"
+  - "14"
 
 script:
-  - npm run eslint
-  - npm run test-cov
-  - ./test/benchmark.sh
+  - ./test/benchmark.sh;
 
-after_script:
-  - npm install coveralls
-  - nyc report --reporter=text-lcov | coveralls
+deploy:
+  provider: surge
+  project: ./0x/
+  skip_cleanup: true
+  domain: "${TRAVIS_COMMIT}-${TRAVIS_NODE_VERSION}-hexo.surge.sh"
+  on:
+    all_branches: true

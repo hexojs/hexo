@@ -1,0 +1,28 @@
+name-template: 'v$NEXT_PATCH_VERSION'
+tag-template: 'v$NEXT_PATCH_VERSION'
+categories:
+  - title: 'Breaking change'
+    labels:
+      - 'Breaking Change'
+  - title: 'Features'
+    labels:
+      - 'feature'
+      - 'enhancement'
+  - title: 'Fixes'
+    labels:
+      - 'bug'
+  - title: 'Performance'
+    labels:
+      - 'performance'
+      - '#perfmatters'
+  - title: 'Dependencies'
+    labels:
+      - 'dependencies'
+  - title: 'Refactor'
+    labels:
+      - 'refactor'
+change-template: '- $TITLE @$AUTHOR [#$NUMBER]'
+template: |
+  ## Changes
+
+  $CHANGES

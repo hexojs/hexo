@@ -14,8 +14,6 @@ describe('data', () => {
   const { File } = source;
   const Data = hexo.model('Data');
 
-  const typeOf = str => typeof str;
-
   function newFile(options) {
     const path = options.path;
 
@@ -51,7 +49,7 @@ describe('data', () => {
       path: 'users.yaml'
     });
 
-    typeOf(pattern.match('users.json')).should.eql('undefined');
+    should.not.exist(pattern.match('users.json'));
   });
 
   it('type: create - yaml', async () => {
@@ -141,6 +139,6 @@ describe('data', () => {
       data: {foo: 'bar'}
     });
     await process(file);
-    typeOf(Data.findById('users')).should.eql('undefined');
+    should.not.exist(Data.findById('users'));
   });
 });

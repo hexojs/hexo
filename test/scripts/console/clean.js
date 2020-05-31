@@ -18,7 +18,7 @@ describe('clean', () => {
     await clean();
     const exist = await exists(dbPath);
 
-    exist.should.eql(false);
+    exist.should.be.false;
   });
 
   it('delete public folder', async () => {
@@ -28,7 +28,7 @@ describe('clean', () => {
     await clean();
     const exist = await exists(publicDir);
 
-    exist.should.eql(false);
+    exist.should.be.false;
   });
 
   it('execute corresponding filter', async () => {
@@ -42,6 +42,6 @@ describe('clean', () => {
     await clean();
     const exist = await exists(extraDbPath);
 
-    exist.should.eql(false);
+    exist.should.be.false;
   });
 });

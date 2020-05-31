@@ -8,10 +8,10 @@ describe('page', () => {
   const Page = hexo.model('Page');
   const generator = Promise.method(require('../../../lib/plugins/generator/page').bind(hexo));
 
-  function locals() {
+  const locals = () => {
     hexo.locals.invalidate();
     return hexo.locals.toObject();
-  }
+  };
 
   it('default layout', async () => {
     const page = await Page.insert({

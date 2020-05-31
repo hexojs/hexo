@@ -1,23 +1,22 @@
 'use strict';
 
-const pathFn = require('path');
+const { sep, join } = require('path');
 const fs = require('hexo-fs');
 const Promise = require('bluebird');
-const sinon = require('sinon');
-const sep = pathFn.sep;
+const { spy } = require('sinon');
 const testUtil = require('../../util');
 const { full_url_for } = require('hexo-util');
 
 describe('Hexo', () => {
-  const base_dir = pathFn.join(__dirname, 'hexo_test');
+  const base_dir = join(__dirname, 'hexo_test');
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo(base_dir, {silent: true});
-  const coreDir = pathFn.join(__dirname, '../../..');
-  const version = require('../../../package.json').version;
+  const coreDir = join(__dirname, '../../..');
+  const { version } = require('../../../package.json');
   const Post = hexo.model('Post');
   const Page = hexo.model('Page');
   const Data = hexo.model('Data');
-  const route = hexo.route;
+  const { route } = hexo;
 
   function checkStream(stream, expected) {
     return testUtil.stream.read(stream).then(data => {
@@ -47,14 +46,14 @@ describe('Hexo', () => {
 
     /* eslint-disable no-path-concat */
     hexo.core_dir.should.eql(coreDir + sep);
-    hexo.lib_dir.should.eql(pathFn.join(coreDir, 'lib') + sep);
+    hexo.lib_dir.should.eql(join(coreDir, 'lib') + sep);
     hexo.version.should.eql(version);
     hexo.base_dir.should.eql(__dirname + sep);
-    hexo.public_dir.should.eql(pathFn.join(__dirname, 'public') + sep);
-    hexo.source_dir.should.eql(pathFn.join(__dirname, 'source') + sep);
-    hexo.plugin_dir.should.eql(pathFn.join(__dirname, 'node_modules') + sep);
-    hexo.script_dir.should.eql(pathFn.join(__dirname, 'scripts') + sep);
-    hexo.scaffold_dir.should.eql(pathFn.join(__dirname, 'scaffolds') + sep);
+    hexo.public_dir.should.eql(join(__dirname, 'public') + sep);
+    hexo.source_dir.should.eql(join(__dirname, 'source') + sep);
+    hexo.plugin_dir.should.eql(join(__dirname, 'node_modules') + sep);
+    hexo.script_dir.should.eql(join(__dirname, 'scripts') + sep);
+    hexo.scaffold_dir.should.eql(join(__dirname, 'scaffolds') + sep);
     /* eslint-enable no-path-concat */
     hexo.env.should.eql({
       args: {},
@@ -66,14 +65,14 @@ describe('Hexo', () => {
       cmd: '',
       init: false
     });
-    hexo.config_path.should.eql(pathFn.join(__dirname, '_config.yml'));
+    hexo.config_path.should.eql(join(__dirname, '_config.yml'));
   });
 
   it('constructs mutli-config', () => {
     const configs = ['../../../fixtures/_config.json', '../../../fixtures/_config.json'];
     const args = { _: [], config: configs.join(',') };
     const hexo = new Hexo(base_dir, args);
-    hexo.config_path.should.eql(pathFn.join(base_dir, '_multiconfig.yml'));
+    hexo.config_path.should.eql(join(base_dir, '_multiconfig.yml'));
   });
 
   // Issue #3964
@@ -84,7 +83,7 @@ describe('Hexo', () => {
     const Locals = hexo._generateLocals();
     const { theme } = new Locals();
 
-    Object.prototype.hasOwnProperty.call(theme.a, 'c').should.eql(true);
+    theme.a.should.have.own.property('c');
     theme.a.b.should.eql(3);
   });
 
@@ -95,7 +94,7 @@ describe('Hexo', () => {
     const Locals = hexo._generateLocals();
     const { theme } = new Locals();
 
-    Object.prototype.hasOwnProperty.call(theme, 'c').should.eql(true);
+    theme.should.have.own.property('c');
     theme.c.should.eql(3);
   });
 
@@ -122,18 +121,16 @@ describe('Hexo', () => {
   });
 
   it('call() - console not registered', () => {
-    const errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'Console `nothing` has not been registered yet!');
-    });
-
-    return hexo.call('nothing').catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
+    return hexo.call('nothing').then(() => {
+      should.fail('Return value must be rejected');
+    }, err => {
+      err.should.property('message', 'Console `nothing` has not been registered yet!');
     });
   });
 
   it('init()', () => {
-    const hexo = new Hexo(pathFn.join(__dirname, 'hexo_test'), {silent: true});
-    const hook = sinon.spy();
+    const hexo = new Hexo(join(__dirname, 'hexo_test'), {silent: true});
+    const hook = spy();
 
     hexo.extend.filter.register('after_init', hook);
 
@@ -161,7 +158,7 @@ describe('Hexo', () => {
   });
 
   function testLoad(path) {
-    const target = pathFn.join(path, 'test.txt');
+    const target = join(path, 'test.txt');
     const body = 'test';
 
     loadAssetGenerator();
@@ -171,10 +168,10 @@ describe('Hexo', () => {
 
   it('load() - source', () => testLoad(hexo.source_dir));
 
-  it('load() - theme', () => testLoad(pathFn.join(hexo.theme_dir, 'source')));
+  it('load() - theme', () => testLoad(join(hexo.theme_dir, 'source')));
 
   function testWatch(path) {
-    const target = pathFn.join(path, 'test.txt');
+    const target = join(path, 'test.txt');
     const body = 'test';
     const newBody = body + body;
 
@@ -190,13 +187,13 @@ describe('Hexo', () => {
 
   it('watch() - source', () => testWatch(hexo.source_dir));
 
-  it('watch() - theme', () => testWatch(pathFn.join(hexo.theme_dir, 'source')));
+  it('watch() - theme', () => testWatch(join(hexo.theme_dir, 'source')));
 
   // it('unwatch()'); missing-unit-test
 
   it('exit()', () => {
-    const hook = sinon.spy();
-    const listener = sinon.spy();
+    const hook = spy();
+    const listener = spy();
 
     hexo.extend.filter.register('before_exit', hook);
     hexo.once('exit', listener);
@@ -324,11 +321,11 @@ describe('Hexo', () => {
       ];
     });
 
-    const beforeListener = sinon.spy();
-    const afterListener = sinon.spy();
-    const afterHook = sinon.spy();
+    const beforeListener = spy();
+    const afterListener = spy();
+    const afterHook = spy();
 
-    const beforeHook = sinon.spy(() => {
+    const beforeHook = spy(() => {
       hexo.locals.set('test', 'foo');
     });
 
@@ -354,7 +351,7 @@ describe('Hexo', () => {
   });
 
   it('_generate() - layout', () => {
-    hexo.theme.setView('test.swig', [
+    hexo.theme.setView('test.njk', [
       '{{ config.title }}',
       '{{ page.foo }}',
       '{{ layout }}',
@@ -374,14 +371,14 @@ describe('Hexo', () => {
       hexo.config.title,
       'bar',
       'layout',
-      pathFn.join(hexo.theme_dir, 'layout') + pathFn.sep
+      join(hexo.theme_dir, 'layout') + sep
     ].join('\n');
 
     return hexo._generate().then(() => checkStream(route.get('test'), expected));
   });
 
   it('_generate() - layout array', () => {
-    hexo.theme.setView('baz.swig', 'baz');
+    hexo.theme.setView('baz.njk', 'baz');
 
     hexo.extend.generator.register('test', () => ({
       path: 'test',
@@ -419,9 +416,9 @@ describe('Hexo', () => {
   });
 
   it('_generate() - after_route_render filter', () => {
-    const hook = sinon.spy(result => result.replace('foo', 'bar'));
+    const hook = spy(result => result.replace('foo', 'bar'));
     hexo.extend.filter.register('after_route_render', hook);
-    hexo.theme.setView('test.swig', 'foo');
+    hexo.theme.setView('test.njk', 'foo');
     hexo.extend.generator.register('test', () => ({
       path: 'test',
       layout: 'test'
@@ -445,7 +442,7 @@ describe('Hexo', () => {
   });
 
   it('_generate() - validate locals', () => {
-    hexo.theme.setView('test.swig', [
+    hexo.theme.setView('test.njk', [
       '{{ path }}',
       '{{ url }}',
       '{{ view_dir }}'
@@ -459,7 +456,7 @@ describe('Hexo', () => {
     return hexo._generate().then(() => checkStream(route.get('test'), [
       'test',
       hexo.config.url + '/test',
-      pathFn.join(hexo.theme_dir, 'layout') + pathFn.sep
+      join(hexo.theme_dir, 'layout') + sep
     ].join('\n')));
   });
 
@@ -467,7 +464,7 @@ describe('Hexo', () => {
     const path = 'bár';
     hexo.config.url = 'http://fôo.com';
 
-    hexo.theme.setView('test.swig', '{{ url }}');
+    hexo.theme.setView('test.njk', '{{ url }}');
 
     hexo.extend.generator.register('test', () => ({
       path,
@@ -479,19 +476,19 @@ describe('Hexo', () => {
   });
 
   it('_generate() - do nothing if it\'s generating', () => {
-    const spy = sinon.spy();
-    hexo.extend.generator.register('test', spy);
+    const hook = spy();
+    hexo.extend.generator.register('test', hook);
 
     hexo._isGenerating = true;
     hexo._generate();
-    spy.called.should.be.false;
+    hook.called.should.be.false;
     hexo._isGenerating = false;
   });
 
   it('_generate() - reset cache for new route', () => {
     let count = 0;
 
-    hexo.theme.setView('test.swig', '{{ page.count() }}');
+    hexo.theme.setView('test.njk', '{{ page.count() }}');
 
     hexo.extend.generator.register('test', () => ({
       path: 'test',
@@ -511,7 +508,7 @@ describe('Hexo', () => {
   it('_generate() - cache disabled and use new route', () => {
     let count = 0;
 
-    hexo.theme.setView('test.swig', '{{ page.count() }}');
+    hexo.theme.setView('test.njk', '{{ page.count() }}');
 
     hexo.extend.generator.register('test', () => ({
       path: 'test',
@@ -529,7 +526,7 @@ describe('Hexo', () => {
   });
 
   it('_generate() - cache disabled & update template', () => {
-    hexo.theme.setView('test.swig', '0');
+    hexo.theme.setView('test.njk', '0');
 
     hexo.extend.generator.register('test', () => ({
       path: 'test',
@@ -538,12 +535,12 @@ describe('Hexo', () => {
 
     return hexo._generate({cache: false})
       .then(() => checkStream(route.get('test'), '0'))
-      .then(() => hexo.theme.setView('test.swig', '1'))
+      .then(() => hexo.theme.setView('test.njk', '1'))
       .then(() => checkStream(route.get('test'), '1'));
   });
 
   it('_generate() - cache enabled & update template', () => {
-    hexo.theme.setView('test.swig', '0');
+    hexo.theme.setView('test.njk', '0');
 
     hexo.extend.generator.register('test', () => ({
       path: 'test',
@@ -552,7 +549,7 @@ describe('Hexo', () => {
 
     return hexo._generate({cache: true})
       .then(() => checkStream(route.get('test'), '0'))
-      .then(() => hexo.theme.setView('test.swig', '1'))
+      .then(() => hexo.theme.setView('test.njk', '1'))
       .then(() => checkStream(route.get('test'), '0')); // should return cached result
   });
 
