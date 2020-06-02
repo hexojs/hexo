@@ -615,7 +615,6 @@ describe('post', () => {
     unlink(file.source);
   });
 
-
   it('post - link without title and link', async () => {
     const body = '';
 
@@ -630,7 +629,7 @@ describe('post', () => {
     await process(file);
     const post = Post.findOne({source: file.path});
 
-    post.title.should.eql('foo');
+    post.title.should.eql('');
 
     post.remove();
     unlink(file.source);
