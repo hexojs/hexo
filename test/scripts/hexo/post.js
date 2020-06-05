@@ -225,6 +225,23 @@ describe('Post', () => {
     });
   });
 
+  it('create() - page', () => {
+    const path = join(hexo.source_dir, 'Hello-World/index.md');
+    hexo.config.post_asset_folder = true;
+    return post.create({
+      title: 'Hello World',
+      layout: 'page'
+    }).then(post => {
+      post.path.should.eql(path);
+      return stat(join(hexo.source_dir, 'Hello-World/index'));
+    }).catch(err => {
+      err.code.should.eql('ENOENT');
+    }).finally(() => {
+      hexo.config.post_asset_folder = false;
+      unlink(path);
+    });
+  });
+
   it('create() - follow the separator style in the scaffold', () => {
     const scaffold = [
       '---',
