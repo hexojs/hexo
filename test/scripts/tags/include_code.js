@@ -2,7 +2,7 @@
 
 const pathFn = require('path');
 const fs = require('hexo-fs');
-const { highlight } = require('hexo-util');
+const { highlight, prismHighlight } = require('hexo-util');
 const Promise = require('bluebird');
 
 describe('include_code', () => {
@@ -17,15 +17,16 @@ describe('include_code', () => {
     '}'
   ].join('\n');
 
-  function code(args) {
-    return includeCode(args.split(' '));
-  }
+  const code = args => includeCode(args.split(' '));
 
   before(() => fs.writeFile(path, fixture));
 
   after(() => fs.rmdir(hexo.base_dir));
 
-  it('default', () => {
+  it('highlightjs - default', () => {
+    hexo.config.highlight.enable = true;
+    hexo.config.prismjs.enable = false;
+
     const expected = highlight(fixture, {
       lang: 'js',
       caption: '<span>test.js</span><a href="/downloads/code/test.js">view raw</a>'
@@ -36,7 +37,7 @@ describe('include_code', () => {
     });
   });
 
-  it('title', () => {
+  it('highlightjs - title', () => {
     const expected = highlight(fixture, {
       lang: 'js',
       caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
@@ -47,7 +48,7 @@ describe('include_code', () => {
     });
   });
 
-  it('lang', () => {
+  it('highlightjs - lang', () => {
     const expected = highlight(fixture, {
       lang: 'js',
       caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
@@ -58,7 +59,7 @@ describe('include_code', () => {
     });
   });
 
-  it('from', () => {
+  it('highlightjs - from', () => {
     const fixture = [
       '}'
     ].join('\n');
@@ -72,7 +73,7 @@ describe('include_code', () => {
     });
   });
 
-  it('to', () => {
+  it('highlightjs - to', () => {
     const fixture = [
       'if (tired && night){',
       '  sleep();'
@@ -87,7 +88,7 @@ describe('include_code', () => {
     });
   });
 
-  it('from and to', () => {
+  it('highlightjs - from and to', () => {
     const fixture = [
       'sleep();'
     ].join('\n');
@@ -101,16 +102,93 @@ describe('include_code', () => {
     });
   });
 
-  it('file not found', () => code('nothing').then(result => {
+  it('highlightjs - file not found', () => code('nothing').then(result => {
     should.not.exist(result);
   }));
 
-  it('disabled', () => {
+  it('highlightjs - disabled', () => {
     hexo.config.highlight.enable = false;
 
     return code('test.js').then(result => {
       result.should.eql('<pre><code>' + fixture + '</code></pre>');
       hexo.config.highlight.enable = true;
+    });
+  });
+
+  it('prismjs - default', () => {
+    hexo.config.highlight.enable = false;
+    hexo.config.prismjs.enable = true;
+
+    const expected = prismHighlight(fixture, {
+      lang: 'js'
+    });
+
+    return code('test.js').then(result => {
+      result.should.eql(expected);
+    });
+  });
+
+  it('prismjs - lang', () => {
+    const expected = prismHighlight(fixture, {
+      lang: 'js',
+      caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
+    });
+
+    return code('Hello world lang:js test.js').then(result => {
+      result.should.eql(expected);
+    });
+  });
+
+  it('prismjs - from', () => {
+    const fixture = [
+      '}'
+    ].join('\n');
+    const expected = prismHighlight(fixture, {
+      lang: 'js'
+    });
+
+    return code('Hello world lang:js from:3 test.js').then(result => {
+      result.should.eql(expected);
+    });
+  });
+
+  it('prismjs - to', () => {
+    const fixture = [
+      'if (tired && night){',
+      '  sleep();'
+    ].join('\n');
+    const expected = prismHighlight(fixture, {
+      lang: 'js'
+    });
+
+    return code('Hello world lang:js to:2 test.js').then(result => {
+      result.should.eql(expected);
+    });
+  });
+
+  it('prismjs - from and to', () => {
+    const fixture = [
+      'sleep();'
+    ].join('\n');
+    const expected = prismHighlight(fixture, {
+      lang: 'js'
+    });
+
+    return code('Hello world lang:js from:2 to:2 test.js').then(result => {
+      result.should.eql(expected);
+    });
+  });
+
+  it('prismjs - file not found', () => code('nothing').then(result => {
+    should.not.exist(result);
+  }));
+
+  it('prismjs - disabled', () => {
+    hexo.config.highlight.enable = false;
+    hexo.config.prismjs.enable = false;
+
+    return code('test.js').then(result => {
+      result.should.eql('<pre><code>' + fixture + '</code></pre>');
     });
   });
 });
