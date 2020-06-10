@@ -1017,4 +1017,16 @@ describe('Post', () => {
 
     data.content.trim().should.eql('<p>In Go’s templates, blocks look like this: <code>&amp;#123;&amp;#123;block &quot;template name&quot; .&amp;#125;&amp;#125; (content) &amp;#123;&amp;#123;end&amp;#125;&amp;#125;</code>.</p>');
   });
+
+  // test for https://github.com/hexojs/hexo/issues/3346#issuecomment-595497849
+  it('render() - swig var inside inline code', async () => {
+    const content = '`{{ 1 + 1 }}` {{ 1 + 1 }}';
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.trim().should.eql('<p><code>&amp;#123;&amp;#123; 1 + 1 &amp;#125;&amp;#125;</code> 2</p>');
+  });
 });
