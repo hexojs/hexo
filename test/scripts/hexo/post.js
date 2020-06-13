@@ -669,13 +669,13 @@ describe('Post', () => {
   });
 
   it('render() - recover escaped nunjucks blocks which is html escaped', () => {
-    const content = '`{% raw %}{{ test }}{% endraw %}`';
+    const content = '`{% raw %}{{ test }}{% endraw %}`, {%raw%}{{ test }}{%endraw%}';
 
     return post.render(null, {
       content,
       engine: 'markdown'
     }).then(data => {
-      data.content.trim().should.eql('<p><code>{{ test }}</code></p>');
+      data.content.trim().should.eql('<p><code>{{ test }}</code>, {{ test }}</p>');
     });
   });
 
@@ -1003,5 +1003,30 @@ describe('Post', () => {
     data.content.trim().should.include('<h1 id="Title-1"><a href="#Title-1" class="headerlink" title="Title 1"></a>Title 1</h1>');
     data.content.trim().should.include('<h1 id="Title-2"><a href="#Title-2" class="headerlink" title="Title 2"></a>Title 2</h1>');
     data.content.trim().should.include('<h1 id="Title-3"><a href="#Title-3" class="headerlink" title="Title 3"></a>Title 3</h1>');
+  });
+
+  // test for Issue #3259
+  // https://github.com/hexojs/hexo/issues/3259
+  it('render() - "{{" & "}}" inside inline code', async () => {
+    const content = 'In Go\'s templates, blocks look like this: `{{block "template name" .}} (content) {{end}}`.';
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.trim().should.eql('<p>In Go’s templates, blocks look like this: <code>&amp;#123;&amp;#123;block &quot;template name&quot; .&amp;#125;&amp;#125; (content) &amp;#123;&amp;#123;end&amp;#125;&amp;#125;</code>.</p>');
+  });
+
+  // test for https://github.com/hexojs/hexo/issues/3346#issuecomment-595497849
+  it('render() - swig var inside inline code', async () => {
+    const content = '`{{ 1 + 1 }}` {{ 1 + 1 }}';
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.trim().should.eql('<p><code>&amp;#123;&amp;#123; 1 + 1 &amp;#125;&amp;#125;</code> 2</p>');
   });
 });
