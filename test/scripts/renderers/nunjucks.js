@@ -20,7 +20,7 @@ describe('nunjucks', () => {
   it('render from path', () => {
     r({ path: fixturePath }, {
       name: 'world'
-    }).should.eql('Hello world!\n');
+    }).should.matches(/^Hello world!\s*$/);
   });
 
   it('compile from text', () => {
