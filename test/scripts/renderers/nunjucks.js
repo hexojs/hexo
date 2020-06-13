@@ -81,5 +81,46 @@ describe('nunjucks', () => {
 
       r({ text: forLoop }, data).should.eql('123');
     });
+
+    // https://github.com/lodash/lodash/blob/master/test/toArray.test.js
+    it('toArray can iterate on objects', () => {
+      const data = {
+        arr: { a: '1', b: '2', c: '3' }
+      };
+
+      r({ text: forLoop }, data).should.eql('123');
+    });
+
+    it('toArray can iterate on object string', () => {
+      const data = {
+        arr: Object('123')
+      };
+
+      r({ text: forLoop }, data).should.eql('123');
+    });
+
+    it('toArray can iterate on Map', () => {
+      const data = {
+        arr: new Map()
+      };
+
+      data.arr.set('a', 1);
+      data.arr.set('b', 2);
+      data.arr.set('c', 3);
+
+      r({ text: forLoop }, data).should.eql('123');
+    });
+
+    it('toArray can iterate on Set', () => {
+      const data = {
+        arr: new Set()
+      };
+
+      data.arr.add(1);
+      data.arr.add(2);
+      data.arr.add(3);
+
+      r({ text: forLoop }, data).should.eql('123');
+    });
   });
 });
