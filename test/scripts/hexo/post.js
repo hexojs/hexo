@@ -4,7 +4,7 @@ const { join } = require('path');
 const moment = require('moment');
 const Promise = require('bluebird');
 const { readFile, mkdirs, unlink, rmdir, writeFile, exists, stat, listDir } = require('hexo-fs');
-const { highlight } = require('hexo-util');
+const { highlight, escapeHTML } = require('hexo-util');
 const { spy, useFakeTimers } = require('sinon');
 const frontMatter = require('hexo-front-matter');
 const fixture = require('../../fixtures/post_render');
@@ -1028,5 +1028,26 @@ describe('Post', () => {
     });
 
     data.content.trim().should.eql('<p><code>&amp;#123;&amp;#123; 1 + 1 &amp;#125;&amp;#125;</code> 2</p>');
+  });
+
+  // https://github.com/hexojs/hexo/issues/4317
+  it('render() - issue #4317', async () => {
+    const content = fixture.content_for_issue_4317;
+    hexo.config.highlight.enable = false;
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    // FIXME: The behavoir of hexo-renderer-marked has been changed.
+    // class="sh" won't show up in next release of hexo-renderer-marked.
+    // See: https://github.com/hexojs/hexo-renderer-marked/pull/134
+    data.content.trim().should.contains(`<pre><code class="sh">${escapeHTML('echo "Hi"')}</code></pre>`);
+    data.content.trim().should.contains('<script src="//gist.github.com/gist_id.js"></script>');
+    data.content.trim().should.contains('<script src="//gist.github.com/gist_id_2.js"></script>');
+
+    // Re-anable highlight for other tests
+    hexo.config.highlight.enable = true;
   });
 });
