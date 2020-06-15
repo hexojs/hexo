@@ -1046,5 +1046,8 @@ describe('Post', () => {
     data.content.trim().should.contains(`<pre><code class="sh">${escapeHTML('echo "Hi"')}</code></pre>`);
     data.content.trim().should.contains('<script src="//gist.github.com/gist_id.js"></script>');
     data.content.trim().should.contains('<script src="//gist.github.com/gist_id_2.js"></script>');
+
+    // Re-anable highlight for other tests
+    hexo.config.highlight.enable = true;
   });
 });
