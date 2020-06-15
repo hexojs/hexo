@@ -122,5 +122,105 @@ describe('nunjucks', () => {
 
       r({ text: forLoop }, data).should.eql('123');
     });
+
+    it('safeDump undefined', () => {
+      const text = [
+        '{{ items | safeDump }}'
+      ].join('\n');
+
+      r({ text }).should.eql('""');
+    });
+
+    it('safeDump null', () => {
+      const text = [
+        '{% set items = null %}',
+        '{{ items | safeDump }}'
+      ].join('\n');
+
+      r({ text }).should.eql('\n""');
+    });
+
+    // Adapt from nunjucks test cases
+    // https://github.com/mozilla/nunjucks/blob/9a0ce364effd28fcdb3ab922fcffa9343b7b3630/tests/filters.js#L98
+    it('safeDump default', () => {
+      const text = [
+        '{% set items = ["a", 1, { b : true}] %}',
+        '{{ items | safeDump }}'
+      ].join('\n');
+
+      r({ text }).should.eql('\n["a",1,{"b":true}]');
+    });
+
+    it('safeDump spacer - 2', () => {
+      const text = [
+        '{% set items = ["a", 1, { b : true}] %}',
+        '{{ items | safeDump(2) }}'
+      ].join('\n');
+
+      r({ text }).should.eql([
+        '',
+        '[',
+        '  "a",',
+        '  1,',
+        '  {',
+        '    "b": true',
+        '  }',
+        ']'
+      ].join('\n'));
+    });
+
+    it('safeDump spacer - 2', () => {
+      const text = [
+        '{% set items = ["a", 1, { b : true}] %}',
+        '{{ items | safeDump(2) }}'
+      ].join('\n');
+
+      r({ text }).should.eql([
+        '',
+        '[',
+        '  "a",',
+        '  1,',
+        '  {',
+        '    "b": true',
+        '  }',
+        ']'
+      ].join('\n'));
+    });
+
+    it('safeDump spacer - 4', () => {
+      const text = [
+        '{% set items = ["a", 1, { b : true}] %}',
+        '{{ items | safeDump(4) }}'
+      ].join('\n');
+
+      r({ text }).should.eql([
+        '',
+        '[',
+        '    "a",',
+        '    1,',
+        '    {',
+        '        "b": true',
+        '    }',
+        ']'
+      ].join('\n'));
+    });
+
+    it('safeDump spacer - \\t', () => {
+      const text = [
+        '{% set items = ["a", 1, { b : true}] %}',
+        '{{ items | safeDump(\'\t\') }}'
+      ].join('\n');
+
+      r({ text }).should.eql([
+        '',
+        '[',
+        '\t"a",',
+        '\t1,',
+        '\t{',
+        '\t\t"b": true',
+        '\t}',
+        ']'
+      ].join('\n'));
+    });
   });
 });
