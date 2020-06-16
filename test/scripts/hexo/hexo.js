@@ -10,7 +10,7 @@ const { full_url_for } = require('hexo-util');
 describe('Hexo', () => {
   const base_dir = join(__dirname, 'hexo_test');
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(base_dir, {silent: true});
+  const hexo = new Hexo(base_dir, { silent: true });
   const coreDir = join(__dirname, '../../..');
   const { version } = require('../../../package.json');
   const Post = hexo.model('Post');
@@ -77,38 +77,15 @@ describe('Hexo', () => {
     hexo.config_path.should.eql(join(base_dir, '_multiconfig.yml'));
   });
 
-  // Issue #3964
-  it('theme_config - deep clone', () => {
-    const hexo = new Hexo(__dirname);
-    hexo.theme.config = { a: { b: 1, c: 2 } };
-    hexo.config.theme_config = { a: { b: 3 } };
-    const Locals = hexo._generateLocals();
-    const { theme } = new Locals();
-
-    theme.a.should.have.own.property('c');
-    theme.a.b.should.eql(3);
-  });
-
-  it('theme_config - null theme.config', () => {
-    const hexo = new Hexo(__dirname);
-    hexo.theme.config = null;
-    hexo.config.theme_config = { c: 3 };
-    const Locals = hexo._generateLocals();
-    const { theme } = new Locals();
-
-    theme.should.have.own.property('c');
-    theme.c.should.eql(3);
-  });
-
   it('call()', async () => {
     const data = await hexo.call('test', {foo: 'bar'});
     data.should.eql({foo: 'bar'});
   });
 
   it('call() - callback', callback => {
-    hexo.call('test', {foo: 'bar'}, (err, data) => {
+    hexo.call('test', { foo: 'bar' }, (err, data) => {
       should.not.exist(err);
-      data.should.eql({foo: 'bar'});
+      data.should.eql({ foo: 'bar' });
 
       callback();
     });
@@ -176,6 +153,45 @@ describe('Hexo', () => {
 
   it('load() - theme', async () => await testLoad(join(hexo.theme_dir, 'source')));
 
+  // Issue #3964
+  it('load() - merge theme config - deep clone', async () => {
+    const hexo = new Hexo(__dirname);
+    hexo.theme.config = { a: { b: 1, c: 2 } };
+    hexo.config.theme_config = { a: { b: 3 } };
+
+    await hexo.load();
+
+    const { config: themeConfig } = hexo.theme;
+
+    themeConfig.a.should.have.own.property('c');
+    themeConfig.a.b.should.eql(3);
+
+    const Locals = hexo._generateLocals();
+    const { theme: themeLocals } = new Locals();
+
+    themeLocals.a.should.have.own.property('c');
+    themeLocals.a.b.should.eql(3);
+  });
+
+  it('load() - merge theme config - null theme.config', async () => {
+    const hexo = new Hexo(__dirname);
+    hexo.theme.config = null;
+    hexo.config.theme_config = { c: 3 };
+
+    await hexo.load();
+
+    const { config: themeConfig } = hexo.theme;
+
+    themeConfig.should.have.own.property('c');
+    themeConfig.c.should.eql(3);
+
+    const Locals = hexo._generateLocals();
+    const { theme: themeLocals } = new Locals();
+
+    themeLocals.should.have.own.property('c');
+    themeLocals.c.should.eql(3);
+  });
+
   async function testWatch(path) {
     const target = join(path, 'test.txt');
     const body = 'test';
@@ -213,20 +229,20 @@ describe('Hexo', () => {
 
   it('exit() - error handling - callback', callback => {
     hexo.once('exit', err => {
-      err.should.eql({foo: 'bar'});
+      err.should.eql({ foo: 'bar' });
       callback();
     });
 
-    hexo.exit({foo: 'bar'});
+    hexo.exit({ foo: 'bar' });
   });
 
   it('exit() - error handling - promise', () => {
     return Promise.all([
-      hexo.exit({foo: 'bar'}),
+      hexo.exit({ foo: 'bar' }),
       new Promise((resolve, reject) => {
         hexo.once('exit', err => {
           try {
-            err.should.eql({foo: 'bar'});
+            err.should.eql({ foo: 'bar' });
             resolve();
           } catch (e) {
             reject(e);
@@ -305,8 +321,8 @@ describe('Hexo', () => {
     ]);
     hexo.locals.invalidate();
     hexo.locals.get('data').should.eql({
-      users: {foo: 1},
-      comments: {bar: 2}
+      users: { foo: 1 },
+      comments: { bar: 2 }
     });
 
     data.map(data => data.remove());
@@ -328,8 +344,8 @@ describe('Hexo', () => {
       locals.test.should.eql('foo');
 
       return [
-        {path: 'bar', data: 'bar'},
-        {path: 'baz', data: 'baz'}
+        { path: 'bar', data: 'bar' },
+        { path: 'baz', data: 'baz' }
       ];
     });
 
@@ -520,7 +536,7 @@ describe('Hexo', () => {
     hexo.extend.generator.register('test', () => ({
       path: 'test',
       layout: 'test',
-      data: {count: () => count++}
+      data: { count: () => count++ }
     }));
 
 
@@ -541,7 +557,7 @@ describe('Hexo', () => {
     hexo.extend.generator.register('test', () => ({
       path: 'test',
       layout: 'test',
-      data: {count: () => count++}
+      data: { count: () => count++ }
     }));
 
 
