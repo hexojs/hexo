@@ -213,6 +213,41 @@ describe('Hexo', () => {
 
   it('watch() - theme', async () => await testWatch(join(hexo.theme_dir, 'source')));
 
+  it('watch() - merge theme config', () => {
+    const theme_config_1 = [
+      'a:',
+      '  b: 1',
+      '  c: 2'
+    ].join('\n');
+    const theme_config_2 = [
+      'a:',
+      '  b: 1',
+      '  c: 3'
+    ].join('\n');
+
+    const hexo = new Hexo(__dirname, { silent: true });
+    hexo.config.theme_config = { a: { b: 3, d: 4 } };
+    const theme_config_path = join(hexo.theme_dir, '_config.yml');
+
+    return fs.writeFile(theme_config_path, theme_config_1)
+      .then(() => hexo.init())
+      .then(() => hexo.watch())
+      .then(() => {
+        hexo.theme.config.a.should.have.own.property('d');
+        hexo.theme.config.a.d.should.eql(4);
+      })
+      .then(() => fs.writeFile(theme_config_path, theme_config_2))
+      .delay(300)
+      .then(() => {
+        hexo.theme.config.a.should.have.own.property('d');
+        hexo.theme.config.a.d.should.eql(4);
+      })
+      .then(() => hexo.unwatch())
+      .delay(300)
+      .then(() => fs.unlink(theme_config_path))
+      .delay(300);
+  });
+
   // it('unwatch()'); missing-unit-test
 
   it('exit()', async () => {
