@@ -148,4 +148,27 @@ describe('post_permalink', () => {
 
     await Promise.all(posts.map(post => Post.removeById(post._id)));
   });
+
+  it('permalink - should override everything', async () => {
+    hexo.config.permalink = ':year/:month/:day/:title/';
+
+    const posts = await Post.insert([{
+      source: 'my-new-post.md',
+      slug: 'hexo/permalink-test',
+      __permalink: 'hexo/permalink-test',
+      title: 'Permalink Test',
+      date: moment('2014-01-02')
+    }, {
+      source: 'another-new-post.md',
+      slug: '/hexo-hexo/permalink-test-2',
+      __permalink: '/hexo-hexo/permalink-test-2',
+      title: 'Permalink Test',
+      date: moment('2014-01-02')
+    }]);
+
+    postPermalink(posts[0]).should.eql('/hexo/permalink-test');
+    postPermalink(posts[1]).should.eql('/hexo-hexo/permalink-test-2');
+
+    await Promise.all(posts.map(post => Post.removeById(post._id)));
+  });
 });
