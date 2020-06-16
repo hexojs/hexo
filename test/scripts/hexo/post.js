@@ -1050,4 +1050,36 @@ describe('Post', () => {
     // Re-anable highlight for other tests
     hexo.config.highlight.enable = true;
   });
+
+  // https://github.com/hexojs/hexo/issues/3543
+  it('render() - issue #3543', async () => {
+    // Adopted from https://github.com/hexojs/hexo/pull/3459/files
+    const js = 'alert("Foo")';
+    const html = '<div></div>';
+    const highlightedJs = highlight(js, { lang: 'js' });
+    const highlightedHtml = highlight(html, { lang: 'html' });
+
+    const content = [
+      '```js',
+      js,
+      '```',
+      '{% raw %}',
+      '<p>Foo</p>',
+      '{% endraw %}',
+      '```html',
+      html,
+      '```'
+    ].join('\n');
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.trim().should.contains(highlightedJs);
+    data.content.trim().should.contains('<p>Foo</p>');
+    data.content.trim().should.not.contains('{% raw %}');
+    data.content.trim().should.not.contains('{% endraw %}');
+    data.content.trim().should.contains(highlightedHtml);
+  });
 });
