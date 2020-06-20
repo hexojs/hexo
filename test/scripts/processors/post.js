@@ -979,7 +979,8 @@ describe('post', () => {
     await writeFile(file.source, body);
     await process(file);
     const post = Post.findOne({source: file.path});
-    post.slug.should.eql('foooo');
+
+    post.__permalink.should.eql('foooo');
 
     post.remove();
     unlink(file.source);
