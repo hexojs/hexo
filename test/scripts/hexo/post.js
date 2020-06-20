@@ -1082,4 +1082,42 @@ describe('Post', () => {
     data.content.trim().should.not.contains('{% endraw %}');
     data.content.trim().should.contains(highlightedHtml);
   });
+
+  // https://github.com/hexojs/hexo/issues/4087
+  it('render() - issue #4087', async () => {
+    // Adopted from https://github.com/hexojs/hexo/issues/4087#issuecomment-596999486
+    const content = [
+      '## Quote',
+      '',
+      '    {% pullquote %}foo foo foo{% endpullquote %}',
+      '',
+      'test001',
+      '',
+      '{% pullquote %}bar bar bar{% endpullquote %}',
+      '',
+      '## Insert',
+      '',
+      '    {% youtube https://example.com/demo.mp4 %}',
+      '',
+      'test002',
+      '',
+      '{% youtube https://example.com/sample.mp4 %}'
+    ].join('\n');
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    // indented pullquote
+    data.content.trim().should.contains('<pre><code>{% pullquote %}foo foo foo{% endpullquote %}</code></pre>');
+    data.content.trim().should.contains('<p>test001</p>');
+    // pullquote tag
+    data.content.trim().should.contains('<blockquote class="pullquote"><p>bar bar bar</p>\n</blockquote>');
+    data.content.trim().should.contains('<p>test002</p>');
+    // indented youtube tag
+    data.content.trim().should.contains('<pre><code>{% youtube https://example.com/demo.mp4 %}</code></pre>');
+    // youtube tag
+    data.content.trim().should.contains('<div class="video-container"><iframe src="https://www.youtube.com/embed/https://example.com/sample.mp4" frameborder="0" loading="lazy" allowfullscreen></iframe></div>');
+  });
 });
