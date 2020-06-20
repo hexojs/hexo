@@ -826,6 +826,42 @@ describe('post', () => {
     ]);
   });
 
+  it('post - post_asset_folder enabled with unpublished posts', async () => {
+    hexo.config.post_asset_folder = true;
+
+    const body = [
+      'title: "Hello world"',
+      'published: false',
+      '---'
+    ].join('\n');
+
+    const file = newFile({
+      path: 'foo.html',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+
+    const assetId = 'source/_posts/foo/bar.jpg';
+    const assetPath = join(hexo.base_dir, assetId);
+
+    await Promise.all([
+      writeFile(file.source, body),
+      writeFile(assetPath, '')
+    ]);
+    await process(file);
+    const post = Post.findOne({ source: file.path });
+
+    post.published.should.be.false;
+    should.not.exist(PostAsset.findById(assetId));
+    post.remove();
+
+    await Promise.all([
+      unlink(file.source),
+      unlink(assetPath)
+    ]);
+  });
+
   it('post - post_asset_folder disabled', async () => {
     hexo.config.post_asset_folder = false;
 
