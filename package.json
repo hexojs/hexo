@@ -54,6 +54,7 @@
     "micromatch": "^4.0.2",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
+    "node_module": "0.0.0",
     "pretty-hrtime": "^1.0.3",
     "resolve": "^1.8.1",
     "strip-ansi": "^6.0.0",
