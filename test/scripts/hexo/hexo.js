@@ -415,17 +415,30 @@ describe('Hexo', () => {
     });
   });
 
-  it('_generate() - after_route_render filter', () => {
+  it('_generate() - _after_html_render filter', async () => {
     const hook = spy(result => result.replace('foo', 'bar'));
-    hexo.extend.filter.register('after_route_render', hook);
+    hexo.extend.filter.register('after_render:html', hook);
     hexo.theme.setView('test.njk', 'foo');
     hexo.extend.generator.register('test', () => ({
       path: 'test',
       layout: 'test'
     }));
-    return hexo._generate()
-      .then(() => checkStream(route.get('test'), 'bar'))
-      .then(() => hook.called.should.be.true);
+    await hexo._generate();
+    await checkStream(route.get('test'), 'bar');
+    hook.called.should.eql(true);
+  });
+
+  it('_generate() - after_render:html is alias of _after_html_render', async () => {
+    const hook = spy(result => result.replace('foo', 'bar'));
+    hexo.extend.filter.register('after_render:html', hook);
+    hexo.theme.setView('test.njk', 'foo');
+    hexo.extend.generator.register('test', () => ({
+      path: 'test',
+      layout: 'test'
+    }));
+    await hexo._generate();
+    await checkStream(route.get('test'), 'bar');
+    hook.called.should.eql(true);
   });
 
   it('_generate() - return nothing in generator', () => {

@@ -192,7 +192,7 @@ describe('View', () => {
     });
   });
 
-  it('render() - execute after_render:html', async () => {
+  it.skip('render() - execute after_render:html', async () => {
     const body = [
       '{{ test }}'
     ].join('\n');
@@ -269,7 +269,7 @@ describe('View', () => {
     }).should.eql(body);
   });
 
-  it('renderSync() - execute after_render:html', () => {
+  it.skip('renderSync() - execute after_render:html', () => {
     const body = [
       '{{ test }}'
     ].join('\n');

@@ -680,7 +680,7 @@ describe('Post', () => {
     });
   });
 
-  it('render() - recover escaped nunjucks blocks which is html escaped before post_render', () => {
+  it.skip('render() - recover escaped nunjucks blocks which is html escaped before post_render', () => {
     const content = '`{% raw %}{{ test }}{% endraw %}`';
 
     const filter = spy();

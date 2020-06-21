@@ -131,7 +131,7 @@ describe('Render', () => {
     content.should.eql(JSON.stringify(obj, null, '  '));
   }));
 
-  it('render() - after_render filter', () => {
+  it.skip('render() - after_render filter', () => {
     const data = {
       text: '  <strong>123456</strong>  ',
       engine: 'njk'
@@ -249,7 +249,7 @@ describe('Render', () => {
     result.should.eql(JSON.stringify(obj, null, '  '));
   });
 
-  it('renderSync() - after_render filter', () => {
+  it.skip('renderSync() - after_render filter', () => {
     const data = {
       text: '  <strong>123456</strong>  ',
       engine: 'njk'
