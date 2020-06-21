@@ -49,7 +49,7 @@
     "hexo-i18n": "^1.0.0",
     "hexo-log": "^2.0.0",
     "hexo-renderer-nunjucks": "^2.0.0",
-    "hexo-util": "^2.0.0",
+    "hexo-util": "github:sukkaw/hexo-util#worker-pool",
     "js-yaml": "^3.12.0",
     "micromatch": "^4.0.2",
     "moment": "^2.22.2",

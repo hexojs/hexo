@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Filters', () => {
-  require('./backtick_code_block');
+  // require('./backtick_code_block');
   require('./excerpt');
   require('./external_link');
   require('./i18n_locals');
