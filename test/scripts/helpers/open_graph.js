@@ -43,7 +43,9 @@ describe('open_graph', () => {
       meta({property: 'og:site_name', content: hexo.config.title}),
       meta({property: 'og:locale', content: 'en_US'}),
       meta({property: 'article:published_time', content: post.date.toISOString()}),
-      meta({property: 'article:modified_time', content: post.updated.toISOString()}),
+      // page.updated will no longer exist by default
+      // See https://github.com/hexojs/hexo/pull/4278
+      // meta({property: 'article:modified_time', content: post.updated.toISOString()}),
       meta({property: 'article:author', content: hexo.config.author}),
       meta({property: 'article:tag', content: 'optimize'}),
       meta({property: 'article:tag', content: 'web'}),
