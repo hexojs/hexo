@@ -267,4 +267,17 @@ describe('tagcloud', () => {
       '<a href="/tags/def/" style="font-size: 10px;">def</a>'
     ].join(', '));
   });
+
+  it('class name', () => {
+    const result = tagcloud({
+      class: 'tag-cloud'
+    });
+
+    result.should.eql([
+      '<a href="/tags/abc/" style="font-size: 13.33px;" class="tag-cloud-3">abc</a>',
+      '<a href="/tags/bcd/" style="font-size: 20px;" class="tag-cloud-10">bcd</a>',
+      '<a href="/tags/cde/" style="font-size: 16.67px;" class="tag-cloud-7">cde</a>',
+      '<a href="/tags/def/" style="font-size: 10px;" class="tag-cloud-0">def</a>'
+    ].join(' '));
+  });
 });
