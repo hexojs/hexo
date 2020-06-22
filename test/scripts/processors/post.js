@@ -507,7 +507,88 @@ describe('post', () => {
     unlink(file.source);
   });
 
-  it('post - use date when no updated and use_date_for_updated', async () => {
+  it('post - use the date for updated if updated_option = date', async () => {
+    const body = [
+      'date: 2011-4-5 14:19:19',
+      'title: "Hello world"',
+      '---'
+    ].join('\n');
+
+    const file = newFile({
+      path: 'foo.html',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+
+    hexo.config.updated_option = 'date';
+
+    await writeFile(file.source, body);
+    const stats = await file.stat();
+    await process(file);
+    const post = Post.findOne({source: file.path});
+
+    post.updated.toDate().setMilliseconds(0).should.eql(post.date.toDate().setMilliseconds(0));
+    post.updated.toDate().setMilliseconds(0).should.not.eql(stats.mtime.setMilliseconds(0));
+
+    post.remove();
+    unlink(file.source);
+  });
+
+  it('post - use the status of the source file if updated_option = mtime', async () => {
+    const body = [
+      'date: 2011-4-5 14:19:19',
+      'title: "Hello world"',
+      '---'
+    ].join('\n');
+
+    const file = newFile({
+      path: 'foo.html',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+
+    hexo.config.updated_option = 'mtime';
+
+    await writeFile(file.source, body);
+    const stats = await file.stat();
+    await process(file);
+    const post = Post.findOne({source: file.path});
+
+    post.updated.toDate().setMilliseconds(0).should.eql(stats.mtime.setMilliseconds(0));
+    post.updated.toDate().setMilliseconds(0).should.not.eql(post.date.toDate().setMilliseconds(0));
+
+    post.remove();
+    unlink(file.source);
+  });
+
+  it('post - updated shouldn\'t exists if updated_option = empty', async () => {
+    const body = [
+      'title: "Hello world"',
+      '---'
+    ].join('\n');
+
+    const file = newFile({
+      path: 'foo.html',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+
+    hexo.config.updated_option = 'empty';
+
+    await writeFile(file.source, body);
+    await process(file);
+    const post = Post.findOne({source: file.path});
+
+    should.not.exist(post.updated);
+
+    post.remove();
+    unlink(file.source);
+  });
+
+  it('post - use use_date_for_updated as a fallback', async () => {
     const body = [
       'title: "Hello world"',
       '---'
@@ -529,6 +610,35 @@ describe('post', () => {
 
     post.date.toDate().setMilliseconds(0).should.eql(stats.birthtime.setMilliseconds(0));
     post.updated.toDate().setMilliseconds(0).should.eql(stats.birthtime.setMilliseconds(0));
+
+    post.remove();
+    unlink(file.source);
+  });
+
+  it('post - ignore updated_option when use_date_for_updated is set', async () => {
+    const body = [
+      'date: 2011-4-5 14:19:19',
+      'title: "Hello world"',
+      '---'
+    ].join('\n');
+
+    const file = newFile({
+      path: 'foo.html',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+
+    hexo.config.use_date_for_updated = true;
+    hexo.config.updated_option = 'mtime';
+
+    await writeFile(file.source, body);
+    const stats = await file.stat();
+    await process(file);
+    const post = Post.findOne({source: file.path});
+
+    post.updated.toDate().setMilliseconds(0).should.eql(post.date.toDate().setMilliseconds(0));
+    post.updated.toDate().setMilliseconds(0).should.not.eql(stats.mtime.setMilliseconds(0));
 
     post.remove();
     unlink(file.source);

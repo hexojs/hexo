@@ -281,7 +281,86 @@ describe('asset', () => {
     ]);
   });
 
-  it('page - use the date for updated if use_date_for_updated is set', async () => {
+  it('page - use the date for updated if updated_option = date', async () => {
+    const body = [
+      'date: 2011-4-5 14:19:19',
+      '---'
+    ].join('\n');
+
+    const file = newFile({
+      path: 'hello.njk',
+      type: 'create',
+      renderable: true
+    });
+
+    hexo.config.updated_option = 'date';
+
+    await writeFile(file.source, body);
+    await process(file);
+    const stats = await stat(file.source);
+    const page = Page.findOne({source: file.path});
+
+    page.updated.toDate().should.eql(page.date.toDate());
+    page.updated.toDate().should.not.eql(stats.mtime);
+
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
+  });
+
+  it('page - use the status if updated_option = mtime', async () => {
+    const file = newFile({
+      path: 'hello.njk',
+      type: 'create',
+      renderable: true
+    });
+
+    hexo.config.updated_option = 'mtime';
+
+    await writeFile(file.source, '');
+    await process(file);
+    const stats = await stat(file.source);
+    const page = Page.findOne({source: file.path});
+
+    page.date.toDate().should.eql(stats.ctime);
+    page.updated.toDate().should.eql(stats.mtime);
+
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
+  });
+
+  it('page - updated shouldn\'t exists if updated_option = empty', async () => {
+    const file = newFile({
+      path: 'hello.njk',
+      type: 'create',
+      renderable: true
+    });
+
+    hexo.config.updated_option = 'empty';
+
+    await writeFile(file.source, '');
+    await process(file);
+    const stats = await stat(file.source);
+    const page = Page.findOne({source: file.path});
+
+    page.date.toDate().should.eql(stats.ctime);
+    should.not.exist(page.updated);
+
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
+  });
+
+  it('page - use_date_for_updated as fallback', async () => {
+    const body = [
+      'date: 2011-4-5 14:19:19',
+      '---'
+    ].join('\n');
+
     const file = newFile({
       path: 'hello.njk',
       type: 'create',
@@ -290,13 +369,42 @@ describe('asset', () => {
 
     hexo.config.use_date_for_updated = true;
 
-    await writeFile(file.source, '');
+    await writeFile(file.source, body);
     await process(file);
     const stats = await stat(file.source);
     const page = Page.findOne({source: file.path});
 
-    page.date.toDate().should.eql(stats.ctime);
     page.updated.toDate().should.eql(page.date.toDate());
+    page.updated.toDate().should.not.eql(stats.mtime);
+
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
+  });
+
+  it('page - ignore updated_option when use_date_for_updated is set', async () => {
+    const body = [
+      'date: 2011-4-5 14:19:19',
+      '---'
+    ].join('\n');
+
+    const file = newFile({
+      path: 'hello.njk',
+      type: 'create',
+      renderable: true
+    });
+
+    hexo.config.use_date_for_updated = true;
+    hexo.config.updated_option = 'mtime';
+
+    await writeFile(file.source, body);
+    await process(file);
+    const stats = await stat(file.source);
+    const page = Page.findOne({source: file.path});
+
+    page.updated.toDate().should.eql(page.date.toDate());
+    page.updated.toDate().should.not.eql(stats.mtime);
 
     await Promise.all([
       page.remove(),
