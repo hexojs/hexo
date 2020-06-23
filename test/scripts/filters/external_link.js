@@ -281,6 +281,28 @@ describe('External link - post', () => {
     ].join('\n'));
   });
 
+  it('deprecated boolean config', () => {
+    const content = 'foo'
+      + '<a href="https://hexo.io/">Hexo</a>'
+      + 'bar';
+
+    const data = { content };
+    hexo.config.external_link = false;
+
+    try {
+      externalLink(data);
+    } catch (err) {
+      err.name.should.eql('TypeError');
+      err.message.should.eql('config.external_link no longer supports Boolean value, changelog: https://github.com/hexojs/hexo/releases/');
+    }
+
+    hexo.config.external_link = {
+      enable: true,
+      field: 'post',
+      exclude: ''
+    };
+  });
+
   it('exclude - string', () => {
     const content = [
       '<a href="https://foo.com/">Hexo</a>',
