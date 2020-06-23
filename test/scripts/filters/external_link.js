@@ -95,14 +95,20 @@ describe('External link', () => {
     ].join('\n'));
   });
 
-  it('old option - false', () => {
+  it('deprecated option - false', () => {
     const content = 'foo'
       + '<a href="https://hexo.io/">Hexo</a>'
       + 'bar';
 
     hexo.config.external_link = false;
 
-    should.not.exist(externalLink(content));
+    try {
+      externalLink(content);
+    } catch (err) {
+      err.name.should.eql('TypeError');
+      err.message.should.eql('config.external_link no longer supports Boolean value, changelog: https://github.com/hexojs/hexo/releases/');
+    }
+
     hexo.config.external_link = {
       enable: true,
       field: 'site',
@@ -115,8 +121,12 @@ describe('External link', () => {
 
     hexo.config.external_link = true;
 
-    const result = externalLink(content);
-    result.should.eql('<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>');
+    try {
+      externalLink(content);
+    } catch (err) {
+      err.name.should.eql('TypeError');
+      err.message.should.eql('config.external_link no longer supports Boolean value, changelog: https://github.com/hexojs/hexo/releases/');
+    }
 
     hexo.config.external_link = {
       enable: true,
@@ -269,25 +279,6 @@ describe('External link - post', () => {
       '8. Ignore links whose hostname is same as config',
       '<a href="https://example.com">Example Domain</a>'
     ].join('\n'));
-  });
-
-
-  it('backward compatibility', () => {
-    const content = 'foo'
-      + '<a href="https://hexo.io/">Hexo</a>'
-      + 'bar';
-
-    const data = {content};
-    hexo.config.external_link = false;
-
-    externalLink(data);
-    data.content.should.eql(content);
-
-    hexo.config.external_link = {
-      enable: true,
-      field: 'post',
-      exclude: ''
-    };
   });
 
   it('exclude - string', () => {
