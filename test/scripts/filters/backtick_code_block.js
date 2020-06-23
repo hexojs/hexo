@@ -80,6 +80,14 @@ describe('Backtick code block', () => {
     hexo.config.prismjs = oldPrismCfg;
   });
 
+  it('shorthand', () => {
+    const data = {
+      content: 'Hello, world!'
+    };
+
+    should.not.exist(codeBlock(data));
+  });
+
   it('highlightjs - default', () => {
     const data = {
       content: [
