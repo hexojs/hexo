@@ -55,14 +55,6 @@ describe('File', () => {
     result.should.eql(body);
   });
 
-  it('read() - callback', callback => {
-    file.read((err, content) => {
-      should.not.exist(err);
-      content.should.eql(body);
-      callback();
-    });
-  });
-
   it('readSync()', () => {
     file.readSync().should.eql(body);
   });
@@ -75,15 +67,6 @@ describe('File', () => {
     stats[0].should.eql(stats[1]);
   });
 
-  it('stat() - callback', callback => {
-    file.stat((err, fileStats) => {
-      if (err) return callback(err);
-
-      fileStats.should.eql(statSync(file.source));
-      callback();
-    });
-  });
-
   it('statSync()', () => {
     file.statSync().should.eql(statSync(file.source));
   });
@@ -91,15 +74,6 @@ describe('File', () => {
   it('render()', async () => {
     const result = await file.render();
     result.should.eql(obj);
-  });
-
-  it('render() - callback', callback => {
-    file.render((err, data) => {
-      if (err) return callback(err);
-
-      data.should.eql(obj);
-      callback();
-    });
   });
 
   it('renderSync()', () => {
