@@ -106,7 +106,7 @@ describe('External link', () => {
       externalLink(content);
     } catch (err) {
       err.name.should.eql('TypeError');
-      err.message.should.eql('config.external_link no longer supports Boolean value, changelog: https://github.com/hexojs/hexo/releases/');
+      err.message.should.eql('config.external_link no longer supports Boolean value. Changelog: https://github.com/hexojs/hexo/releases/tag/5.0.0');
     }
 
     hexo.config.external_link = {
@@ -125,7 +125,7 @@ describe('External link', () => {
       externalLink(content);
     } catch (err) {
       err.name.should.eql('TypeError');
-      err.message.should.eql('config.external_link no longer supports Boolean value, changelog: https://github.com/hexojs/hexo/releases/');
+      err.message.should.eql('config.external_link no longer supports Boolean value. Changelog: https://github.com/hexojs/hexo/releases/tag/5.0.0');
     }
 
     hexo.config.external_link = {
@@ -293,7 +293,7 @@ describe('External link - post', () => {
       externalLink(data);
     } catch (err) {
       err.name.should.eql('TypeError');
-      err.message.should.eql('config.external_link no longer supports Boolean value, changelog: https://github.com/hexojs/hexo/releases/');
+      err.message.should.eql('config.external_link no longer supports Boolean value. Changelog: https://github.com/hexojs/hexo/releases/tag/5.0.0');
     }
 
     hexo.config.external_link = {
