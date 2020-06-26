@@ -31,12 +31,12 @@ LOG_TABLE () {
         if [ "$total_time" -lt 10 ] || [ "$line_number" -lt 300 ]; then
             echo "--------------------------------------------"
             echo -e '\033[41;37m !! Build failed !! \033[0m'
-            head -n 400 build.log
+            cat build.log
             exit 1
         fi
     fi
 
-    if [ "$total_time" -gt 40 ]; then
+    if [ "$total_time" -gt 20 ]; then
         echo "--------------------------------------------"
         echo -e '\033[41;37m !! Performance regression detected !! \033[0m'
         exit 1
@@ -57,7 +57,7 @@ git clone https://github.com/hexojs/hexo-theme-landscape --depth=1 --quiet theme
 echo "- npm install"
 npm install --silent
 
-echo "- Import 300 posts"
+echo "- Import 500 posts"
 git clone https://github.com/SukkaLab/hexo-many-posts.git source/_posts/hexo-many-posts --depth=1 --quiet
 rm -rf source/_posts/hexo-many-posts/.git/
 
