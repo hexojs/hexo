@@ -1,7 +1,7 @@
 'use strict';
 
 const { sep, join } = require('path');
-const fs = require('hexo-fs');
+const { mkdirs, rmdir, unlink, writeFile } = require('hexo-fs');
 const Promise = require('bluebird');
 const { spy } = require('sinon');
 const testUtil = require('../../util');
@@ -28,7 +28,7 @@ describe('Hexo', () => {
   }
 
   before(async () => {
-    await fs.mkdirs(hexo.base_dir);
+    await mkdirs(hexo.base_dir);
     await hexo.init();
   });
 
@@ -39,7 +39,7 @@ describe('Hexo', () => {
     route.routes = {};
   });
 
-  after(() => fs.rmdir(hexo.base_dir));
+  after(() => rmdir(hexo.base_dir));
 
   hexo.extend.console.register('test', args => args);
 
@@ -166,10 +166,10 @@ describe('Hexo', () => {
 
     loadAssetGenerator();
 
-    await fs.writeFile(target, body);
+    await writeFile(target, body);
     await hexo.load();
     await checkStream(route.get('test.txt'), body);
-    await fs.unlink(target);
+    await unlink(target);
   }
 
   it('load() - source', async () => await testLoad(hexo.source_dir));
@@ -183,14 +183,14 @@ describe('Hexo', () => {
 
     loadAssetGenerator();
 
-    await fs.writeFile(target, body);
+    await writeFile(target, body);
     await hexo.watch();
     await checkStream(route.get('test.txt'), body); // Test for first generation
-    await fs.writeFile(target, newBody); // Update the file
+    await writeFile(target, newBody); // Update the file
     await Promise.delay(300);
     await checkStream(route.get('test.txt'), newBody); // Check the new route
     hexo.unwatch(); // Stop watching
-    await fs.unlink(target); // Delete the file
+    await unlink(target); // Delete the file
   }
 
   it('watch() - source', async () => await testWatch(hexo.source_dir));
