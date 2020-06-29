@@ -18,17 +18,19 @@ describe('Hexo', () => {
   const Data = hexo.model('Data');
   const { route } = hexo;
 
-  function checkStream(stream, expected) {
-    return testUtil.stream.read(stream).then(data => {
-      data.should.eql(expected);
-    });
+  async function checkStream(stream, expected) {
+    const data = await testUtil.stream.read(stream);
+    data.should.eql(expected);
   }
 
   function loadAssetGenerator() {
     hexo.extend.generator.register('asset', require('../../../lib/plugins/generator/asset'));
   }
 
-  before(() => fs.mkdirs(hexo.base_dir).then(() => hexo.init()));
+  before(async () => {
+    await fs.mkdirs(hexo.base_dir);
+    await hexo.init();
+  });
 
   beforeEach(() => {
     // Unregister all generators
@@ -98,9 +100,10 @@ describe('Hexo', () => {
     theme.c.should.eql(3);
   });
 
-  it('call()', () => hexo.call('test', {foo: 'bar'}).then(data => {
+  it('call()', async () => {
+    const data = await hexo.call('test', {foo: 'bar'});
     data.should.eql({foo: 'bar'});
-  }));
+  });
 
   it('call() - callback', callback => {
     hexo.call('test', {foo: 'bar'}, (err, data) => {
@@ -120,23 +123,23 @@ describe('Hexo', () => {
     });
   });
 
-  it('call() - console not registered', () => {
-    return hexo.call('nothing').then(() => {
+  it('call() - console not registered', async () => {
+    try {
+      await hexo.call('nothing');
       should.fail('Return value must be rejected');
-    }, err => {
+    } catch (err) {
       err.should.property('message', 'Console `nothing` has not been registered yet!');
-    });
+    }
   });
 
-  it('init()', () => {
+  it('init()', async () => {
     const hexo = new Hexo(join(__dirname, 'hexo_test'), {silent: true});
     const hook = spy();
 
     hexo.extend.filter.register('after_init', hook);
 
-    return hexo.init().then(() => {
-      hook.calledOnce.should.be.true;
-    });
+    await hexo.init();
+    hook.calledOnce.should.be.true;
   });
 
   // it('model()'); missing-unit-test
@@ -157,51 +160,55 @@ describe('Hexo', () => {
     hexo.config.render_drafts = false;
   });
 
-  function testLoad(path) {
+  async function testLoad(path) {
     const target = join(path, 'test.txt');
     const body = 'test';
 
     loadAssetGenerator();
 
-    return fs.writeFile(target, body).then(() => hexo.load()).then(() => checkStream(route.get('test.txt'), body)).then(() => fs.unlink(target));
+    await fs.writeFile(target, body);
+    await hexo.load();
+    await checkStream(route.get('test.txt'), body);
+    await fs.unlink(target);
   }
 
-  it('load() - source', () => testLoad(hexo.source_dir));
+  it('load() - source', async () => await testLoad(hexo.source_dir));
 
-  it('load() - theme', () => testLoad(join(hexo.theme_dir, 'source')));
+  it('load() - theme', async () => await testLoad(join(hexo.theme_dir, 'source')));
 
-  function testWatch(path) {
+  async function testWatch(path) {
     const target = join(path, 'test.txt');
     const body = 'test';
     const newBody = body + body;
 
     loadAssetGenerator();
 
-    return fs.writeFile(target, body).then(() => hexo.watch()).then(() => // Test for first generation
-      checkStream(route.get('test.txt'), body)).then(() => // Update the file
-      fs.writeFile(target, newBody)).delay(300).then(() => // Check the new route
-      checkStream(route.get('test.txt'), newBody)).then(() => // Stop watching
-      hexo.unwatch()).then(() => // Delete the file
-      fs.unlink(target));
+    await fs.writeFile(target, body);
+    await hexo.watch();
+    await checkStream(route.get('test.txt'), body); // Test for first generation
+    await fs.writeFile(target, newBody); // Update the file
+    await Promise.delay(300);
+    await checkStream(route.get('test.txt'), newBody); // Check the new route
+    hexo.unwatch(); // Stop watching
+    await fs.unlink(target); // Delete the file
   }
 
-  it('watch() - source', () => testWatch(hexo.source_dir));
+  it('watch() - source', async () => await testWatch(hexo.source_dir));
 
-  it('watch() - theme', () => testWatch(join(hexo.theme_dir, 'source')));
+  it('watch() - theme', async () => await testWatch(join(hexo.theme_dir, 'source')));
 
   // it('unwatch()'); missing-unit-test
 
-  it('exit()', () => {
+  it('exit()', async () => {
     const hook = spy();
     const listener = spy();
 
     hexo.extend.filter.register('before_exit', hook);
     hexo.once('exit', listener);
 
-    return hexo.exit().then(() => {
-      hook.calledOnce.should.be.true;
-      listener.calledOnce.should.be.true;
-    });
+    await hexo.exit();
+    hook.calledOnce.should.be.true;
+    listener.calledOnce.should.be.true;
   });
 
   it('exit() - error handling - callback', callback => {
@@ -229,10 +236,11 @@ describe('Hexo', () => {
     ]);
   });
 
-  it('draft visibility', () => Post.insert([
-    {source: 'foo', slug: 'foo', published: true},
-    {source: 'bar', slug: 'bar', published: false}
-  ]).then(posts => {
+  it('draft visibility', async () => {
+    const posts = await Post.insert([
+      {source: 'foo', slug: 'foo', published: true},
+      {source: 'bar', slug: 'bar', published: false}
+    ]);
     hexo.locals.invalidate();
     hexo.locals.get('posts').toArray().should.eql(posts.slice(0, 1));
 
@@ -242,13 +250,15 @@ describe('Hexo', () => {
     hexo.locals.get('posts').toArray().should.eql(posts);
     hexo.config.render_drafts = false;
 
-    return posts;
-  }).map(post => Post.removeById(post._id)));
+    posts.map(post => Post.removeById(post._id));
+  });
 
-  it('future posts', () => Post.insert([
-    {source: 'foo', slug: 'foo', date: Date.now() - 3600},
-    {source: 'bar', slug: 'bar', date: Date.now() + 3600}
-  ]).then(posts => {
+  it('future posts', async () => {
+    const posts = await Post.insert([
+      {source: 'foo', slug: 'foo', date: Date.now() - 3600},
+      {source: 'bar', slug: 'bar', date: Date.now() + 3600}
+    ]);
+
     function mapper(post) {
       return post._id;
     }
@@ -263,13 +273,14 @@ describe('Hexo', () => {
     hexo.locals.invalidate();
     hexo.locals.get('posts').map(mapper).should.eql([posts[0]._id]);
 
-    return posts;
-  }).map(post => Post.removeById(post._id)));
+    posts.map(post => Post.removeById(post._id));
+  });
 
-  it('future pages', () => Page.insert([
-    {source: 'foo', path: 'foo', date: Date.now() - 3600},
-    {source: 'bar', path: 'bar', date: Date.now() + 3600}
-  ]).then(pages => {
+  it('future pages', async () => {
+    const pages = await Page.insert([
+      {source: 'foo', path: 'foo', date: Date.now() - 3600},
+      {source: 'bar', path: 'bar', date: Date.now() + 3600}
+    ]);
     function mapper(page) {
       return page._id;
     }
@@ -284,23 +295,24 @@ describe('Hexo', () => {
     hexo.locals.invalidate();
     hexo.locals.get('pages').map(mapper).should.eql([pages[0]._id]);
 
-    return pages;
-  }).map(page => Page.removeById(page._id)));
+    pages.map(page => Page.removeById(page._id));
+  });
 
-  it('locals.data', () => Data.insert([
-    {_id: 'users', data: {foo: 1}},
-    {_id: 'comments', data: {bar: 2}}
-  ]).then(data => {
+  it('locals.data', async () => {
+    const data = await Data.insert([
+      {_id: 'users', data: {foo: 1}},
+      {_id: 'comments', data: {bar: 2}}
+    ]);
     hexo.locals.invalidate();
     hexo.locals.get('data').should.eql({
       users: {foo: 1},
       comments: {bar: 2}
     });
 
-    return data;
-  }).map(data => data.remove()));
+    data.map(data => data.remove());
+  });
 
-  it('_generate()', () => {
+  it('_generate()', async () => {
     // object
     hexo.extend.generator.register('test_obj', locals => {
       locals.test.should.eql('foo');
@@ -334,23 +346,22 @@ describe('Hexo', () => {
     hexo.extend.filter.register('before_generate', beforeHook);
     hexo.extend.filter.register('after_generate', afterHook);
 
-    return hexo._generate().then(() => {
-      route.list().should.eql(['foo', 'bar', 'baz']);
+    await hexo._generate();
 
-      beforeListener.calledOnce.should.be.true;
-      afterListener.calledOnce.should.be.true;
-      beforeHook.calledOnce.should.be.true;
-      afterHook.calledOnce.should.be.true;
+    route.list().should.eql(['foo', 'bar', 'baz']);
+    beforeListener.calledOnce.should.be.true;
+    afterListener.calledOnce.should.be.true;
+    beforeHook.calledOnce.should.be.true;
+    afterHook.calledOnce.should.be.true;
 
-      return Promise.all([
-        checkStream(route.get('foo'), 'foo'),
-        checkStream(route.get('bar'), 'bar'),
-        checkStream(route.get('baz'), 'baz')
-      ]);
-    });
+    await Promise.all([
+      checkStream(route.get('foo'), 'foo'),
+      checkStream(route.get('bar'), 'bar'),
+      checkStream(route.get('baz'), 'baz')
+    ]);
   });
 
-  it('_generate() - layout', () => {
+  it('_generate() - layout', async () => {
     hexo.theme.setView('test.njk', [
       '{{ config.title }}',
       '{{ page.foo }}',
@@ -374,10 +385,11 @@ describe('Hexo', () => {
       join(hexo.theme_dir, 'layout') + sep
     ].join('\n');
 
-    return hexo._generate().then(() => checkStream(route.get('test'), expected));
+    await hexo._generate();
+    await checkStream(route.get('test'), expected);
   });
 
-  it('_generate() - layout array', () => {
+  it('_generate() - layout array', async () => {
     hexo.theme.setView('baz.njk', 'baz');
 
     hexo.extend.generator.register('test', () => ({
@@ -385,19 +397,21 @@ describe('Hexo', () => {
       layout: ['foo', 'bar', 'baz']
     }));
 
-    return hexo._generate().then(() => checkStream(route.get('test'), 'baz'));
+    await hexo._generate();
+    await checkStream(route.get('test'), 'baz');
   });
 
-  it('_generate() - layout not exist', () => {
+  it('_generate() - layout not exist', async () => {
     hexo.extend.generator.register('test', () => ({
       path: 'test',
       layout: 'nothing'
     }));
 
-    return hexo._generate().then(() => checkStream(route.get('test'), ''));
+    await hexo._generate();
+    await checkStream(route.get('test'), '');
   });
 
-  it('_generate() - remove old routes', () => {
+  it('_generate() - remove old routes', async () => {
     hexo.extend.generator.register('test', () => ({
       path: 'bar',
       data: 'newbar'
@@ -407,12 +421,10 @@ describe('Hexo', () => {
     route.set('bar', 'bar');
     route.set('baz', 'baz');
 
-    return hexo._generate().then(() => {
-      should.not.exist(route.get('foo'));
-      should.not.exist(route.get('baz'));
-
-      return checkStream(route.get('bar'), 'newbar');
-    });
+    await hexo._generate();
+    should.not.exist(route.get('foo'));
+    should.not.exist(route.get('baz'));
+    await checkStream(route.get('bar'), 'newbar');
   });
 
   it('_generate() - _after_html_render filter', async () => {
@@ -441,7 +453,7 @@ describe('Hexo', () => {
     hook.called.should.eql(true);
   });
 
-  it('_generate() - return nothing in generator', () => {
+  it('_generate() - return nothing in generator', async () => {
     hexo.extend.generator.register('test_nothing', () => {
       //
     });
@@ -451,10 +463,11 @@ describe('Hexo', () => {
       data: 'bar'
     }));
 
-    return hexo._generate().then(() => checkStream(route.get('bar'), 'bar'));
+    await hexo._generate();
+    await checkStream(route.get('bar'), 'bar');
   });
 
-  it('_generate() - validate locals', () => {
+  it('_generate() - validate locals', async () => {
     hexo.theme.setView('test.njk', [
       '{{ path }}',
       '{{ url }}',
@@ -466,14 +479,15 @@ describe('Hexo', () => {
       layout: 'test'
     }));
 
-    return hexo._generate().then(() => checkStream(route.get('test'), [
+    await hexo._generate();
+    await checkStream(route.get('test'), [
       'test',
       hexo.config.url + '/test',
       join(hexo.theme_dir, 'layout') + sep
-    ].join('\n')));
+    ].join('\n'));
   });
 
-  it('_generate() - should encode url', () => {
+  it('_generate() - should encode url', async () => {
     const path = 'bár';
     hexo.config.url = 'http://fôo.com';
 
@@ -484,8 +498,8 @@ describe('Hexo', () => {
       layout: 'test'
     }));
 
-    return hexo._generate().then(() => checkStream(route.get(path),
-      full_url_for.call(hexo, path)));
+    await hexo._generate();
+    await checkStream(route.get(path), full_url_for.call(hexo, path));
   });
 
   it('_generate() - do nothing if it\'s generating', () => {
@@ -498,7 +512,7 @@ describe('Hexo', () => {
     hexo._isGenerating = false;
   });
 
-  it('_generate() - reset cache for new route', () => {
+  it('_generate() - reset cache for new route', async () => {
     let count = 0;
 
     hexo.theme.setView('test.njk', '{{ page.count() }}');
@@ -509,16 +523,17 @@ describe('Hexo', () => {
       data: {count: () => count++}
     }));
 
-    // First generation
-    return hexo._generate({cache: true})
-      .then(() => checkStream(route.get('test'), '0'))
-      .then(() => checkStream(route.get('test'), '0')) // should return cached result
-      .then(() => hexo._generate({cache: true})) // Second generation
-      .then(() => checkStream(route.get('test'), '1'))
-      .then(() => checkStream(route.get('test'), '1')); // should return cached result
+
+    await hexo._generate({cache: true}); // First generate
+    await checkStream(route.get('test'), '0');
+    await checkStream(route.get('test'), '0'); // should return cached result
+
+    await hexo._generate({cache: true}); // Second generate
+    await checkStream(route.get('test'), '1');
+    await checkStream(route.get('test'), '1'); // should return cached result
   });
 
-  it('_generate() - cache disabled and use new route', () => {
+  it('_generate() - cache disabled and use new route', async () => {
     let count = 0;
 
     hexo.theme.setView('test.njk', '{{ page.count() }}');
@@ -529,16 +544,17 @@ describe('Hexo', () => {
       data: {count: () => count++}
     }));
 
-    // First generation
-    return hexo._generate({cache: false})
-      .then(() => checkStream(route.get('test'), '0'))
-      .then(() => checkStream(route.get('test'), '1'))
-      .then(() => hexo._generate({cache: false})) // Second generation
-      .then(() => checkStream(route.get('test'), '2'))
-      .then(() => checkStream(route.get('test'), '3'));
+
+    await hexo._generate({ cache: false }); // First generate
+    await checkStream(route.get('test'), '0');
+    await checkStream(route.get('test'), '1');
+
+    await hexo._generate({ cache: false }); // Second generate
+    await checkStream(route.get('test'), '2');
+    await checkStream(route.get('test'), '3');
   });
 
-  it('_generate() - cache disabled & update template', () => {
+  it('_generate() - cache disabled & update template', async () => {
     hexo.theme.setView('test.njk', '0');
 
     hexo.extend.generator.register('test', () => ({
@@ -546,13 +562,13 @@ describe('Hexo', () => {
       layout: 'test'
     }));
 
-    return hexo._generate({cache: false})
-      .then(() => checkStream(route.get('test'), '0'))
-      .then(() => hexo.theme.setView('test.njk', '1'))
-      .then(() => checkStream(route.get('test'), '1'));
+    await hexo._generate({ cache: false });
+    await checkStream(route.get('test'), '0');
+    hexo.theme.setView('test.njk', '1');
+    await checkStream(route.get('test'), '1');
   });
 
-  it('_generate() - cache enabled & update template', () => {
+  it('_generate() - cache enabled & update template', async () => {
     hexo.theme.setView('test.njk', '0');
 
     hexo.extend.generator.register('test', () => ({
@@ -560,21 +576,20 @@ describe('Hexo', () => {
       layout: 'test'
     }));
 
-    return hexo._generate({cache: true})
-      .then(() => checkStream(route.get('test'), '0'))
-      .then(() => hexo.theme.setView('test.njk', '1'))
-      .then(() => checkStream(route.get('test'), '0')); // should return cached result
+    await hexo._generate({ cache: true });
+    await checkStream(route.get('test'), '0');
+    hexo.theme.setView('test.njk', '1');
+    await checkStream(route.get('test'), '0'); // should return cached result
   });
 
-  it('execFilter()', () => {
+  it('execFilter()', async () => {
     hexo.extend.filter.register('exec_test', data => {
       data.should.eql('');
       return data + 'foo';
     });
 
-    return hexo.execFilter('exec_test', '').then(result => {
-      result.should.eql('foo');
-    });
+    const result = await hexo.execFilter('exec_test', '');
+    result.should.eql('foo');
   });
 
   it('execFilterSync()', () => {
