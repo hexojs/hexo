@@ -155,7 +155,7 @@ describe('Hexo', () => {
 
   // Issue #3964
   it('load() - merge theme config - deep clone', async () => {
-    const hexo = new Hexo(__dirname);
+    const hexo = new Hexo(__dirname, { silent: true });
     hexo.theme.config = { a: { b: 1, c: 2 } };
     hexo.config.theme_config = { a: { b: 3 } };
 
@@ -174,7 +174,7 @@ describe('Hexo', () => {
   });
 
   it('load() - merge theme config - null theme.config', async () => {
-    const hexo = new Hexo(__dirname);
+    const hexo = new Hexo(__dirname, { silent: true });
     hexo.theme.config = null;
     hexo.config.theme_config = { c: 3 };
 
@@ -190,6 +190,31 @@ describe('Hexo', () => {
 
     themeLocals.should.have.own.property('c');
     themeLocals.c.should.eql(3);
+  });
+
+  // Filters should be able to read the theme_config:
+  //  - before_post_render
+  //  - after_post_render
+  //  - before_generate
+  it('load() - merge theme config - filter', async () => {
+    const hexo = new Hexo(__dirname, { silent: true });
+
+    const validateThemeConfig = function() {
+      this.theme.config.a.b.should.eql(3);
+    };
+
+    hexo.theme.config = { a: { b: 1, c: 2 } };
+    hexo.config.theme_config = { a: { b: 3 } };
+
+    hexo.extend.filter.register('before_post_render', validateThemeConfig);
+    hexo.extend.filter.register('after_post_render', validateThemeConfig);
+    hexo.extend.filter.register('before_generate', validateThemeConfig);
+
+    await hexo.load();
+
+    hexo.extend.filter.unregister('before_post_render', validateThemeConfig);
+    hexo.extend.filter.unregister('after_post_render', validateThemeConfig);
+    hexo.extend.filter.unregister('before_generate', validateThemeConfig);
   });
 
   async function testWatch(path) {
