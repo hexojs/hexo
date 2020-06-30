@@ -21,6 +21,7 @@ describe('Validate config', () => {
 
     try {
       validateConfig(hexo);
+      should.fail();
     } catch (e) {
       e.name.should.eql('TypeError');
       e.message.should.eql('Invalid config detected: "url" should be string!');
@@ -32,6 +33,7 @@ describe('Validate config', () => {
 
     try {
       validateConfig(hexo);
+      should.fail();
     } catch (e) {
       e.name.should.eql('TypeError');
       e.message.should.eql('Invalid config detected: "url" should be string!');
@@ -43,6 +45,7 @@ describe('Validate config', () => {
 
     try {
       validateConfig(hexo);
+      should.fail();
     } catch (e) {
       e.name.should.eql('TypeError');
       e.message.should.eql('Invalid config detected: "url" should not be empty!');
@@ -54,6 +57,7 @@ describe('Validate config', () => {
 
     try {
       validateConfig(hexo);
+      should.fail();
     } catch (e) {
       e.name.should.eql('TypeError');
       e.message.should.eql('Invalid config detected: "root" should be string!');
@@ -65,6 +69,7 @@ describe('Validate config', () => {
 
     try {
       validateConfig(hexo);
+      should.fail();
     } catch (e) {
       e.name.should.eql('TypeError');
       e.message.should.eql('Invalid config detected: "root" should be string!');
@@ -76,6 +81,7 @@ describe('Validate config', () => {
 
     try {
       validateConfig(hexo);
+      should.fail();
     } catch (e) {
       e.name.should.eql('TypeError');
       e.message.should.eql('Invalid config detected: "root" should not be empty!');
