@@ -49,12 +49,12 @@ describe('nunjucks', () => {
 
   describe('nunjucks filters', () => {
     const forLoop = [
-      '{% for x in arr | toArray %}',
+      '{% for x in arr | toarray %}',
       '{{ x }}',
       '{% endfor %}'
     ].join('');
 
-    it('toArray can iterate on Warehouse collections', () => {
+    it('toarray can iterate on Warehouse collections', () => {
       const data = {
         arr: {
           toArray() {
@@ -66,7 +66,7 @@ describe('nunjucks', () => {
       r({ text: forLoop }, data).should.eql('123');
     });
 
-    it('toArray can iterate on plain array', () => {
+    it('toarray can iterate on plain array', () => {
       const data = {
         arr: [1, 2, 3]
       };
@@ -74,7 +74,7 @@ describe('nunjucks', () => {
       r({ text: forLoop }, data).should.eql('123');
     });
 
-    it('toArray can iterate on string', () => {
+    it('toarray can iterate on string', () => {
       const data = {
         arr: '123'
       };
@@ -82,8 +82,8 @@ describe('nunjucks', () => {
       r({ text: forLoop }, data).should.eql('123');
     });
 
-    // https://github.com/lodash/lodash/blob/master/test/toArray.test.js
-    it('toArray can iterate on objects', () => {
+    // https://github.com/lodash/lodash/blob/master/test/toarray.test.js
+    it('toarray can iterate on objects', () => {
       const data = {
         arr: { a: '1', b: '2', c: '3' }
       };
@@ -91,7 +91,7 @@ describe('nunjucks', () => {
       r({ text: forLoop }, data).should.eql('123');
     });
 
-    it('toArray can iterate on object string', () => {
+    it('toarray can iterate on object string', () => {
       const data = {
         arr: Object('123')
       };
@@ -99,7 +99,7 @@ describe('nunjucks', () => {
       r({ text: forLoop }, data).should.eql('123');
     });
 
-    it('toArray can iterate on Map', () => {
+    it('toarray can iterate on Map', () => {
       const data = {
         arr: new Map()
       };
@@ -111,7 +111,7 @@ describe('nunjucks', () => {
       r({ text: forLoop }, data).should.eql('123');
     });
 
-    it('toArray can iterate on Set', () => {
+    it('toarray can iterate on Set', () => {
       const data = {
         arr: new Set()
       };
@@ -123,18 +123,18 @@ describe('nunjucks', () => {
       r({ text: forLoop }, data).should.eql('123');
     });
 
-    it('safeDump undefined', () => {
+    it('safedump undefined', () => {
       const text = [
-        '{{ items | safeDump }}'
+        '{{ items | safedump }}'
       ].join('\n');
 
       r({ text }).should.eql('""');
     });
 
-    it('safeDump null', () => {
+    it('safedump null', () => {
       const text = [
         '{% set items = null %}',
-        '{{ items | safeDump }}'
+        '{{ items | safedump }}'
       ].join('\n');
 
       r({ text }).should.eql('\n""');
@@ -142,19 +142,19 @@ describe('nunjucks', () => {
 
     // Adapt from nunjucks test cases
     // https://github.com/mozilla/nunjucks/blob/9a0ce364effd28fcdb3ab922fcffa9343b7b3630/tests/filters.js#L98
-    it('safeDump default', () => {
+    it('safedump default', () => {
       const text = [
         '{% set items = ["a", 1, { b : true}] %}',
-        '{{ items | safeDump }}'
+        '{{ items | safedump }}'
       ].join('\n');
 
       r({ text }).should.eql('\n["a",1,{"b":true}]');
     });
 
-    it('safeDump spacer - 2', () => {
+    it('safedump spacer - 2', () => {
       const text = [
         '{% set items = ["a", 1, { b : true}] %}',
-        '{{ items | safeDump(2) }}'
+        '{{ items | safedump(2) }}'
       ].join('\n');
 
       r({ text }).should.eql([
@@ -169,10 +169,10 @@ describe('nunjucks', () => {
       ].join('\n'));
     });
 
-    it('safeDump spacer - 2', () => {
+    it('safedump spacer - 2', () => {
       const text = [
         '{% set items = ["a", 1, { b : true}] %}',
-        '{{ items | safeDump(2) }}'
+        '{{ items | safedump(2) }}'
       ].join('\n');
 
       r({ text }).should.eql([
@@ -187,10 +187,10 @@ describe('nunjucks', () => {
       ].join('\n'));
     });
 
-    it('safeDump spacer - 4', () => {
+    it('safedump spacer - 4', () => {
       const text = [
         '{% set items = ["a", 1, { b : true}] %}',
-        '{{ items | safeDump(4) }}'
+        '{{ items | safedump(4) }}'
       ].join('\n');
 
       r({ text }).should.eql([
@@ -205,10 +205,10 @@ describe('nunjucks', () => {
       ].join('\n'));
     });
 
-    it('safeDump spacer - \\t', () => {
+    it('safedump spacer - \\t', () => {
       const text = [
         '{% set items = ["a", 1, { b : true}] %}',
-        '{{ items | safeDump(\'\t\') }}'
+        '{{ items | safedump(\'\t\') }}'
       ].join('\n');
 
       r({ text }).should.eql([
