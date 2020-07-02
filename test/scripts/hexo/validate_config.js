@@ -24,7 +24,7 @@ describe('Validate config', () => {
       should.fail();
     } catch (e) {
       e.name.should.eql('TypeError');
-      e.message.should.eql('Invalid config detected: "url" should be string!');
+      e.message.should.eql('Invalid config detected: "url" should be string, not undefined!');
     }
   });
 
@@ -36,7 +36,7 @@ describe('Validate config', () => {
       should.fail();
     } catch (e) {
       e.name.should.eql('TypeError');
-      e.message.should.eql('Invalid config detected: "url" should be string!');
+      e.message.should.eql('Invalid config detected: "url" should be string, not boolean!');
     }
   });
 
@@ -60,7 +60,7 @@ describe('Validate config', () => {
       should.fail();
     } catch (e) {
       e.name.should.eql('TypeError');
-      e.message.should.eql('Invalid config detected: "root" should be string!');
+      e.message.should.eql('Invalid config detected: "root" should be string, not undefined!');
     }
   });
 
@@ -72,7 +72,7 @@ describe('Validate config', () => {
       should.fail();
     } catch (e) {
       e.name.should.eql('TypeError');
-      e.message.should.eql('Invalid config detected: "root" should be string!');
+      e.message.should.eql('Invalid config detected: "root" should be string, not boolean!');
     }
   });
 
