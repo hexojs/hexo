@@ -283,6 +283,7 @@ describe('generate - watch (delete)', () => {
     const exist = await exists(hexo.base_dir);
     if (exist) {
       await emptyDir(hexo.base_dir);
+      await Promise.delay(500);
       await rmdir(hexo.base_dir);
     }
   });
