@@ -1041,9 +1041,6 @@ describe('Post', () => {
       engine: 'markdown'
     });
 
-    // FIXME: The behavoir of hexo-renderer-marked has been changed.
-    // class="sh" won't show up in next release of hexo-renderer-marked.
-    // See: https://github.com/hexojs/hexo-renderer-marked/pull/134
     data.content.trim().should.contains(`<pre><code class="sh">${escapeHTML('echo "Hi"')}</code></pre>`);
     data.content.trim().should.contains('<script src="//gist.github.com/gist_id.js"></script>');
     data.content.trim().should.contains('<script src="//gist.github.com/gist_id_2.js"></script>');
@@ -1149,5 +1146,27 @@ describe('Post', () => {
     data.content.trim().should.contains('<pre><code>{% youtube https://example.com/demo.mp4 %}</code></pre>');
     // youtube tag
     data.content.trim().should.contains('<div class="video-container"><iframe src="https://www.youtube.com/embed/https://example.com/sample.mp4" frameborder="0" loading="lazy" allowfullscreen></iframe></div>');
+  });
+
+  // https://github.com/hexojs/hexo/issues/4385
+  it('render() - no double escape in code block (issue #4385)', async () => {
+    const content = [
+      '```rust',
+      'fn main() {',
+      '    println!("Hello, world!");',
+      '}',
+      '```'
+    ].join('\n');
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.should.contains('<figure class="highlight rust">');
+    data.content.should.contains('&#123;');
+    data.content.should.contains('&#125;');
+    data.content.should.not.contains('&amp;#123');
+    data.content.should.not.contains('&amp;#125');
   });
 });
