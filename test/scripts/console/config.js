@@ -3,7 +3,7 @@
 const { mkdirs, readFile, rmdir, unlink, writeFile } = require('hexo-fs');
 const { join } = require('path');
 const { load } = require('js-yaml');
-const { stub, assert: sinonAssert } = require('sinon');
+const { stub } = require('sinon');
 
 describe('config', () => {
   const Hexo = require('../../../lib/hexo');
@@ -28,7 +28,7 @@ describe('config', () => {
       logStub.restore();
     }
 
-    sinonAssert.calledWith(logStub, hexo.config);
+    logStub.calledWith(hexo.config).should.be.true;
   });
 
   it('read config', async () => {
@@ -40,7 +40,7 @@ describe('config', () => {
       logStub.restore();
     }
 
-    sinonAssert.calledWith(logStub, hexo.config.title);
+    logStub.calledWith(hexo.config.title).should.be.true;
   });
 
   it('read nested config', async () => {
@@ -52,7 +52,7 @@ describe('config', () => {
       };
 
       await config({_: ['server.port']});
-      sinonAssert.calledWith(logStub, hexo.config.server.port);
+      logStub.calledWith(hexo.config.server.port).should.be.true;
     } finally {
       delete hexo.config.server;
       logStub.restore();

@@ -5,7 +5,7 @@ const { Readable } = require('stream');
 const { join } = require('path');
 const crypto = require('crypto');
 const { createReadStream } = require('hexo-fs');
-const { spy, assert: sinonAssert } = require('sinon');
+const { spy } = require('sinon');
 const testUtil = require('../../util');
 
 describe('Router', () => {
@@ -70,7 +70,7 @@ describe('Router', () => {
 
     data.modified.should.be.true;
     listener.calledOnce.should.be.true;
-    sinonAssert.calledWith(listener, 'test');
+    listener.calledWith('test').should.be.true;
     return checkStream(data, 'foo');
   });
 
@@ -198,7 +198,7 @@ describe('Router', () => {
     router.set('test', 'foo');
     router.remove('test');
     should.not.exist(router.get('test'));
-    sinonAssert.calledWith(listener, 'test');
+    listener.calledWith('test').should.be.true;
     listener.calledOnce.should.be.true;
   });
 

@@ -3,7 +3,7 @@
 const { writeFile, rmdir } = require('hexo-fs');
 const { join } = require('path');
 const yaml = require('js-yaml');
-const { spy, assert: sinonAssert } = require('sinon');
+const { spy } = require('sinon');
 
 describe('Render', () => {
   const Hexo = require('../../../lib/hexo');
@@ -184,7 +184,7 @@ describe('Render', () => {
     return hexo.render.render(data).then(result => {
       onRenderEnd.calledOnce.should.be.true;
       filter.calledOnce.should.be.true;
-      sinonAssert.calledWith(filter, 'foobar');
+      filter.calledWith('foobar').should.be.true;
 
       hexo.extend.filter.unregister('after_render:txt', filter);
     });
@@ -262,7 +262,7 @@ describe('Render', () => {
     const result = hexo.render.renderSync(data);
 
     filter.calledOnce.should.be.true;
-    sinonAssert.calledWith(filter, data.text, data);
+    filter.calledWith(data.text, data).should.be.true;
     result.should.eql(data.text.trim());
 
     hexo.extend.filter.unregister('after_render:html', filter);
