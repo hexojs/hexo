@@ -319,7 +319,7 @@ describe('generate - watch (delete)', () => {
     await testGenerate({ watch: true });
 
     await unlink(join(hexo.source_dir, 'test.txt'));
-    await Promise.delay(300);
+    await Promise.delay(500);
 
     const exist = await exists(join(hexo.public_dir, 'test.txt'));
     exist.should.be.false;
