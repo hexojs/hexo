@@ -1,7 +1,7 @@
 'use strict';
 
 const Promise = require('bluebird');
-const { stub } = require('sinon');
+const { stub, assert: sinonAssert } = require('sinon');
 
 describe('Console list', () => {
   const Hexo = require('../../../lib/hexo');
@@ -22,10 +22,10 @@ describe('Console list', () => {
 
   it('no tags', () => {
     listTags();
-    logStub.calledWithMatch('Name').should.be.true;
-    logStub.calledWithMatch('Posts').should.be.true;
-    logStub.calledWithMatch('Path').should.be.true;
-    logStub.calledWithMatch('No tags.').should.be.true;
+    sinonAssert.calledWithMatch(logStub, 'Name');
+    sinonAssert.calledWithMatch(logStub, 'Posts');
+    sinonAssert.calledWithMatch(logStub, 'Path');
+    sinonAssert.calledWithMatch(logStub, 'No tags.');
   });
 
   it('tags', async () => {
@@ -45,12 +45,12 @@ describe('Console list', () => {
     await hexo.locals.invalidate();
 
     listTags();
-    logStub.calledWithMatch('Name').should.be.true;
-    logStub.calledWithMatch('Posts').should.be.true;
-    logStub.calledWithMatch('Path').should.be.true;
-    logStub.calledWithMatch('baz').should.be.true;
-    logStub.calledWithMatch('foo').should.be.true;
-    logStub.calledWithMatch('tags/baz').should.be.true;
-    logStub.calledWithMatch('tags/foo').should.be.true;
+    sinonAssert.calledWithMatch(logStub, 'Name');
+    sinonAssert.calledWithMatch(logStub, 'Posts');
+    sinonAssert.calledWithMatch(logStub, 'Path');
+    sinonAssert.calledWithMatch(logStub, 'baz');
+    sinonAssert.calledWithMatch(logStub, 'foo');
+    sinonAssert.calledWithMatch(logStub, 'tags/baz');
+    sinonAssert.calledWithMatch(logStub, 'tags/foo');
   });
 });
