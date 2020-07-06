@@ -2,7 +2,7 @@
 
 const { exists, mkdirs, readFile, rmdir, writeFile } = require('hexo-fs');
 const { join } = require('path');
-const { spy, stub, assert: sinonAssert } = require('sinon');
+const { spy, stub } = require('sinon');
 
 describe('deploy', () => {
   const Hexo = require('../../../lib/hexo');
@@ -32,10 +32,9 @@ describe('deploy', () => {
       logStub.restore();
     }
 
-    sinonAssert.calledWithMatch(
-      logStub,
+    logStub.calledWithMatch(
       'You should configure deployment settings in _config.yml first!'
-    );
+    ).should.be.true;
   });
 
   it('single deploy setting', async () => {
@@ -57,11 +56,11 @@ describe('deploy', () => {
     beforeListener.calledOnce.should.be.true;
     afterListener.calledOnce.should.be.true;
 
-    sinonAssert.calledWith(deployer, {
+    deployer.calledWith({
       type: 'foo',
       foo: 'foo',
       bar: 'bar'
-    });
+    }).should.be.true;
   });
 
   it('multiple deploy setting', async () => {
@@ -80,16 +79,16 @@ describe('deploy', () => {
     deployer1.calledOnce.should.be.true;
     deployer2.calledOnce.should.be.true;
 
-    sinonAssert.calledWith(deployer1, {
+    deployer1.calledWith({
       type: 'foo',
       foo: 'foo',
       test: true
-    });
-    sinonAssert.calledWith(deployer2, {
+    }).should.be.true;
+    deployer2.calledWith({
       type: 'bar',
       bar: 'bar',
       test: true
-    });
+    }).should.be.true;
   });
 
   // it('deployer not found'); missing-unit-test

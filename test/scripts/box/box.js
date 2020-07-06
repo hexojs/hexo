@@ -4,7 +4,7 @@ const { join, sep } = require('path');
 const { appendFile, mkdir, mkdirs, rename, rmdir, stat, unlink, writeFile } = require('hexo-fs');
 const Promise = require('bluebird');
 const { hash, Pattern } = require('hexo-util');
-const { spy, match, assert: sinonAssert } = require('sinon');
+const { spy, match } = require('sinon');
 
 describe('Box', () => {
   const Hexo = require('../../../lib/hexo');
@@ -110,7 +110,7 @@ describe('Box', () => {
     await writeFile(path, 'a');
     await box.process();
 
-    sinonAssert.calledWithMatch(processor, { type: 'create', path: name });
+    processor.calledWithMatch({ type: 'create', path: name }).should.be.true;
 
     await rmdir(box.base);
   });
@@ -134,7 +134,7 @@ describe('Box', () => {
     ]);
     await box.process();
 
-    sinonAssert.calledWithMatch(processor, { type: 'update', path: name });
+    processor.calledWithMatch({ type: 'update', path: name }).should.be.true;
 
     await rmdir(box.base);
   });
@@ -157,7 +157,7 @@ describe('Box', () => {
     });
     await box.process();
 
-    sinonAssert.calledWithMatch(processor, { type: 'skip', path: name });
+    processor.calledWithMatch({ type: 'skip', path: name }).should.be.true;
 
     await rmdir(box.base);
   });
@@ -180,7 +180,7 @@ describe('Box', () => {
     });
     await box.process();
 
-    sinonAssert.calledWithMatch(processor, { type: 'skip', path: name });
+    processor.calledWithMatch({ type: 'skip', path: name }).should.be.true;
 
     await rmdir(box.base);
   });
@@ -203,7 +203,7 @@ describe('Box', () => {
     });
     await box.process();
 
-    sinonAssert.calledWithMatch(processor, { type: 'skip', path: name });
+    processor.calledWithMatch({ type: 'skip', path: name }).should.be.true;
 
     await rmdir(box.base);
   });
@@ -223,7 +223,7 @@ describe('Box', () => {
     ]);
     await box.process();
 
-    sinonAssert.calledWith(processor, match.has('type', 'delete'));
+    processor.calledWith(match.has('type', 'delete')).should.be.true;
     processor.calledOnce.should.be.true;
 
     await rmdir(box.base);
@@ -240,7 +240,7 @@ describe('Box', () => {
     await writeFile(path, 'a');
     await box.process();
 
-    sinonAssert.calledWith(processor, match.has('params', match.has('id', '123456')));
+    processor.calledWith(match.has('params', match.has('id', '123456'))).should.be.true;
     processor.calledOnce.should.be.true;
 
     await rmdir(box.base);
@@ -314,12 +314,12 @@ describe('Box', () => {
     box.isWatching().should.be.true;
     await Promise.delay(500);
 
-    sinonAssert.calledWithMatch(processor.firstCall, {
+    processor.firstCall.calledWithMatch({
       source: src,
       path: path,
       type: 'create',
       params: {}
-    });
+    }).should.be.true;
 
     box.unwatch();
     await rmdir(box.base);
@@ -343,12 +343,12 @@ describe('Box', () => {
     await appendFile(src, 'b');
     await Promise.delay(500);
 
-    sinonAssert.calledWithMatch(processor.lastCall, {
+    processor.lastCall.calledWithMatch({
       source: src,
       path: path,
       type: 'update',
       params: {}
-    });
+    }).should.be.true;
 
     box.unwatch();
     await rmdir(box.base);
@@ -372,12 +372,12 @@ describe('Box', () => {
     await unlink(src);
     await Promise.delay(500);
 
-    sinonAssert.calledWithMatch(processor.lastCall, {
+    processor.lastCall.calledWithMatch({
       source: src,
       path: path,
       type: 'delete',
       params: {}
-    });
+    }).should.be.true;
 
     box.unwatch();
     await rmdir(box.base);
@@ -632,8 +632,8 @@ describe('Box', () => {
     await writeFile(join(box.base, 'a.txt'), 'a');
     await box.process();
 
-    sinonAssert.calledWithMatch(beforeSpy, { type: 'create', path: 'a.txt' });
-    sinonAssert.calledWithMatch(afterSpy, { type: 'create', path: 'a.txt' });
+    beforeSpy.calledWithMatch({ type: 'create', path: 'a.txt' }).should.be.true;
+    afterSpy.calledWithMatch({ type: 'create', path: 'a.txt' }).should.be.true;
     beforeSpy.calledOnce.should.be.true;
     afterSpy.calledOnce.should.be.true;
 

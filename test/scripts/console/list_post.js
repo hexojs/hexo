@@ -1,6 +1,6 @@
 'use strict';
 
-const { stub, assert: sinonAssert } = require('sinon');
+const { stub } = require('sinon');
 
 describe('Console list', () => {
   const Hexo = require('../../../lib/hexo');
@@ -19,12 +19,12 @@ describe('Console list', () => {
 
   it('no post', () => {
     listPosts();
-    sinonAssert.calledWithMatch(logStub, 'Date');
-    sinonAssert.calledWithMatch(logStub, 'Title');
-    sinonAssert.calledWithMatch(logStub, 'Path');
-    sinonAssert.calledWithMatch(logStub, 'Category');
-    sinonAssert.calledWithMatch(logStub, 'Tags');
-    sinonAssert.calledWithMatch(logStub, 'No posts.');
+    logStub.calledWithMatch('Date').should.be.true;
+    logStub.calledWithMatch('Title').should.be.true;
+    logStub.calledWithMatch('Path').should.be.true;
+    logStub.calledWithMatch('Category').should.be.true;
+    logStub.calledWithMatch('Tags').should.be.true;
+    logStub.calledWithMatch('No posts.').should.be.true;
   });
 
   it('post', async () => {
@@ -39,15 +39,16 @@ describe('Console list', () => {
     await hexo.locals.invalidate();
 
     listPosts();
-    sinonAssert.calledWithMatch(logStub, 'Date');
-    sinonAssert.calledWithMatch(logStub, 'Title');
-    sinonAssert.calledWithMatch(logStub, 'Path');
-    sinonAssert.calledWithMatch(logStub, 'Category');
-    sinonAssert.calledWithMatch(logStub, 'Tags');
-    for (let i = 0; i < posts.length; i++) {
-      sinonAssert.calledWithMatch(logStub, posts[i].source);
-      sinonAssert.calledWithMatch(logStub, posts[i].slug);
-      sinonAssert.calledWithMatch(logStub, posts[i].title);
-    }
+    logStub.calledWithMatch('Date').should.be.true;
+    logStub.calledWithMatch('Title').should.be.true;
+    logStub.calledWithMatch('Path').should.be.true;
+    logStub.calledWithMatch('Category').should.be.true;
+    logStub.calledWithMatch('Tags').should.be.true;
+    posts.forEach(post => {
+      logStub.calledWithMatch(post.source).should.be.true;
+      logStub.calledWithMatch(post.source).should.be.true;
+      logStub.calledWithMatch(post.slug).should.be.true;
+      logStub.calledWithMatch(post.title).should.be.true;
+    });
   });
 });

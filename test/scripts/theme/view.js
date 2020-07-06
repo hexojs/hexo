@@ -3,7 +3,7 @@
 const { join } = require('path');
 const { mkdirs, rmdir, writeFile } = require('hexo-fs');
 const moment = require('moment');
-const { fake, assert: sinonAssert } = require('sinon');
+const { fake } = require('sinon');
 
 describe('View', () => {
   const Hexo = require('../../../lib/hexo');
@@ -209,7 +209,7 @@ describe('View', () => {
     content.should.eql('bar');
 
     hexo.extend.filter.unregister('after_render:html', filter);
-    sinonAssert.alwaysCalledWith(filter, 'foo');
+    filter.alwaysCalledWith('foo').should.be.true;
   });
 
   it('renderSync()', () => {
@@ -281,7 +281,7 @@ describe('View', () => {
     hexo.extend.filter.register('after_render:html', filter);
     view.renderSync({test: 'foo'}).should.eql('bar');
     hexo.extend.filter.unregister('after_render:html', filter);
-    sinonAssert.alwaysCalledWith(filter, 'foo');
+    filter.alwaysCalledWith('foo').should.be.true;
   });
 
   it('_resolveLayout()', () => {

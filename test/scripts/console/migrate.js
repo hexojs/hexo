@@ -1,6 +1,6 @@
 'use strict';
 
-const { spy, assert: sinonAssert } = require('sinon');
+const { spy } = require('sinon');
 
 describe('migrate', () => {
   const Hexo = require('../../../lib/hexo');
@@ -14,7 +14,7 @@ describe('migrate', () => {
 
     await migrate({_: ['test'], foo: 1, bar: 2});
 
-    sinonAssert.calledWithMatch(migrator, { foo: 1, bar: 2 });
+    migrator.calledWithMatch({ foo: 1, bar: 2 }).should.be.true;
     migrator.calledOnce.should.be.true;
   });
 });
