@@ -2,11 +2,6 @@ os: linux
 
 language: node_js
 
-addons:
-  apt:
-    packages:
-    - time
-
 cache:
   npm: true
 
@@ -15,8 +10,13 @@ node_js:
   - "12"
   - "14"
 
+before_script:
+  - chmod +x ./test/profiling.sh
+
 script:
-  - ./test/benchmark.sh;
+  - echo "============== Hexo Benchmark =============="
+  - node ./test/benchmark.js
+  - ./test/profiling.sh
 
 deploy:
   provider: surge
