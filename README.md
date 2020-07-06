@@ -15,7 +15,6 @@
 [![NPM version](https://badge.fury.io/js/hexo.svg)](https://www.npmjs.com/package/hexo)
 ![Required Node version](https://img.shields.io/node/v/hexo)
 [![Build Status](https://travis-ci.com/hexojs/hexo.svg?branch=master)](https://travis-ci.com/hexojs/hexo)
-[![Build status](https://ci.appveyor.com/api/projects/status/github/hexojs/hexo?branch=master&svg=true)](https://ci.appveyor.com/project/tommy351/hexo/branch/master)
 [![dependencies Status](https://david-dm.org/hexojs/hexo/status.svg)](https://david-dm.org/hexojs/hexo)
 [![devDependencies Status](https://david-dm.org/hexojs/hexo/dev-status.svg)](https://david-dm.org/hexojs/hexo?type=dev)
 [![Coverage Status](https://coveralls.io/repos/hexojs/hexo/badge.svg?branch=master)](https://coveralls.io/r/hexojs/hexo?branch=master)
