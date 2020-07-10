@@ -1,36 +1,36 @@
 'use strict';
 
 const { performance, PerformanceObserver } = require('perf_hooks');
-const { spawnSync, spawn } = require('child_process');
-const os = require('os');
-const fs = require('hexo-fs');
-const path = require('path');
-const chalk = require('chalk');
-let npmScript = 'npm';
-let npxScript = 'npx';
-const testDir = path.resolve('.tmp-hexo-theme-unit-test');
+const { spawn } = require('child_process');
+const { spawn: spawnAsync } = require('hexo-util');
+const { rmdir, exists } = require('hexo-fs');
+const { resolve } = require('path');
+const log = require('hexo-log')();
+const { red } = require('chalk');
 const hooks = [
-  { regex: /Hexo version/, tag: 'hexo-begin'},
-  { regex: /Start processing/, tag: 'processing'},
-  { regex: /Files loaded/, tag: 'file-loaded'},
-  { regex: /generated in/, tag: 'generated'},
-  { regex: /Database saved/, tag: 'database-saved'}
+  { regex: /Hexo version/, tag: 'hexo-begin' },
+  { regex: /Start processing/, tag: 'processing' },
+  { regex: /Files loaded/, tag: 'file-loaded' },
+  { regex: /generated in/, tag: 'generated' },
+  { regex: /Database saved/, tag: 'database-saved' }
 ];
 
-if (os.platform() === 'win32') {
-  npmScript = 'npm.cmd';
-  npxScript = 'npx.cmd';
-}
+const isWin32 = require('os').platform() === 'win32';
+
+const npmScript = isWin32 ? 'npm.cmd' : 'npm';
+
+const testDir = resolve('.tmp-hexo-theme-unit-test');
+const hexoBin = resolve(testDir, 'node_modules/.bin/hexo');
 
 (async () => {
-  init();
-  // make sure no cache files
-  cleanup();
+  await init();
+  log.info('Running benchmark');
+  await cleanUp();
   await run_benchmark('Cold processing');
   await run_benchmark('Hot processing');
-  cleanup();
+  await cleanUp();
   await run_benchmark('Another Cold processing');
-  cleanup();
+  await cleanUp();
 })();
 
 async function run_benchmark(name) {
@@ -43,23 +43,23 @@ async function run_benchmark(name) {
         'Cost time (s)': `${duration.toFixed(2)}s`
       };
       if (duration > 20) {
-        console.log(chalk.red('!! Performance regression detected !!'));
+        log.fatal(red('!! Performance regression detected !!'));
       }
     });
     obs.observe({ entryTypes: ['measure'] });
 
-    const npx = spawn(npxScript, ['--no-install', 'hexo', 'g', '--debug'], { cwd: testDir });
-    hooks.forEach(({ regex, tag}) => {
-      npx.stdout.on('data', function listener(data) {
+    const hexo = spawn('node', [hexoBin, 'g', '--debug'], { cwd: testDir });
+    hooks.forEach(({ regex, tag }) => {
+      hexo.stdout.on('data', function listener(data) {
         const string = data.toString('utf-8');
         if (regex.test(string)) {
           performance.mark(tag);
-          npx.stdout.removeListener('data', listener);
+          hexo.stdout.removeListener('data', listener);
         }
       });
     });
 
-    npx.on('close', () => {
+    hexo.on('close', () => {
       performance.measure('Load Plugin/Scripts/Database', 'hexo-begin', 'processing');
       performance.measure('Process Source', 'processing', 'file-loaded');
       performance.measure('Render Files', 'file-loaded', 'generated');
@@ -73,54 +73,47 @@ async function run_benchmark(name) {
   });
 }
 
-function cleanup() {
-  spawnSync(npxScript, ['--no-install', 'hexo', 'clean'], { cwd: testDir });
+async function cleanUp() {
+  return spawnAsync(hexoBin, ['clean'], { cwd: testDir });
 }
 
-function init() {
-  spawnSync('git',
-    [
-      'clone',
-      'https://github.com/hexojs/hexo-theme-unit-test.git',
-      testDir,
-      '--depth=1']);
-  spawnSync('git',
-    [
-      'clone',
-      'https://github.com/hexojs/hexo-theme-landscape',
-      path.resolve(testDir, 'themes', 'landscape'),
-      '--depth=1'
-    ]);
-  spawnSync('git',
-    [
-      'clone',
-      'https://github.com/SukkaLab/hexo-many-posts.git',
-      path.resolve(testDir, 'source', '_posts', 'hexo-many-posts'),
-      '--depth=1'
-    ]);
-  spawnSync(npmScript, ['install', '--silent'], { cwd: testDir });
-  fs.rmdirSync(path.resolve(testDir, 'node_modules', 'hexo'));
+async function gitClone(repo, dir, depth = 1) {
+  return spawnAsync('git', ['clone', repo, dir, `--depth=${depth}`]);
+}
 
-  if (os.platform() === 'win32') {
-    spawnSync('cmd', [
-      '/s', '/c',
-      'mklink',
-      '/D',
-      path.resolve(testDir, 'node_modules', 'hexo'),
-      path.resolve(__dirname, '..')
+async function init() {
+  if (await exists(testDir)) {
+    log.info(`"${testDir}" already exists, deleting`);
+    await rmdir(testDir);
+  }
+
+  log.info('Setting up a dummy hexo site with 500 posts');
+  await gitClone('https://github.com/hexojs/hexo-theme-unit-test.git', testDir);
+  await gitClone('https://github.com/hexojs/hexo-theme-landscape', resolve(testDir, 'themes', 'landscape'));
+  await gitClone('https://github.com/SukkaLab/hexo-many-posts.git', resolve(testDir, 'source', '_posts', 'hexo-many-posts'));
+
+  log.info('Installing dependencies');
+  await spawnAsync(npmScript, ['install', '--silent'], { cwd: testDir });
+
+  log.info('Replacing hexo');
+  await rmdir(resolve(testDir, 'node_modules', 'hexo'));
+
+  if (isWin32) {
+    await spawnAsync('cmd', [
+      '/s', '/c', 'mklink', '/D',
+      resolve(testDir, 'node_modules', 'hexo'),
+      resolve(__dirname, '..')
     ]);
-    spawnSync('cmd', [
-      '/s', '/c',
-      'mklink',
-      '/D',
-      path.resolve(testDir, 'node_modules', 'hexo-cli'),
-      path.resolve(__dirname, '..', 'node_modules', 'hexo-cli')
+    await spawnAsync('cmd', [
+      '/s', '/c', 'mklink', '/D',
+      resolve(testDir, 'node_modules', 'hexo-cli'),
+      resolve(__dirname, '..', 'node_modules', 'hexo-cli')
     ]);
   } else {
-    spawnSync('ln', [
+    await spawnAsync('ln', [
       '-sf',
-      path.resolve(__dirname, '..'),
-      path.resolve(testDir, 'node_modules', 'hexo')
+      resolve(__dirname, '..'),
+      resolve(testDir, 'node_modules', 'hexo')
     ]);
   }
 }
