@@ -10,13 +10,8 @@ node_js:
   - "12"
   - "14"
 
-before_script:
-  - chmod +x ./test/profiling.sh
-
 script:
-  - echo "============== Hexo Benchmark =============="
   - node ./test/benchmark.js
-  - ./test/profiling.sh
 
 deploy:
   provider: surge

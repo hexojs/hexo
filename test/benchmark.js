@@ -4,7 +4,7 @@ const { performance, PerformanceObserver } = require('perf_hooks');
 const { spawn } = require('child_process');
 const { spawn: spawnAsync } = require('hexo-util');
 const { rmdir, exists } = require('hexo-fs');
-const { resolve } = require('path');
+const { resolve, join } = require('path');
 const log = require('hexo-log')();
 const { red } = require('chalk');
 const hooks = [
@@ -20,7 +20,12 @@ const isWin32 = require('os').platform() === 'win32';
 const npmScript = isWin32 ? 'npm.cmd' : 'npm';
 
 const testDir = resolve('.tmp-hexo-theme-unit-test');
+const flamegraphDir = process.env.TRAVIS_BUILD_DIR
+  ? join(process.env.TRAVIS_BUILD_DIR, '0x')
+  : join(testDir, '0x');
+
 const hexoBin = resolve(testDir, 'node_modules/.bin/hexo');
+const _0xBin = resolve(testDir, 'node_modules/.bin/0x');
 
 (async () => {
   await init();
@@ -31,6 +36,7 @@ const hexoBin = resolve(testDir, 'node_modules/.bin/hexo');
   await cleanUp();
   await run_benchmark('Another Cold processing');
   await cleanUp();
+  await run_profiling();
 })();
 
 async function run_benchmark(name) {
@@ -116,4 +122,20 @@ async function init() {
       resolve(testDir, 'node_modules', 'hexo')
     ]);
   }
+}
+
+async function run_profiling() {
+  log.info('Installing 0x');
+  await spawnAsync(npmScript, ['install', '0x', '--silent'], { cwd: testDir });
+
+  log.info('Generating flamegraph');
+  console.log('');
+
+  await spawnAsync('node', [
+    _0xBin, '--output-dir', flamegraphDir, '--',
+    'node', hexoBin, 'g'
+  ], { cwd: testDir, verbose: true });
+
+  console.log('');
+  log.info(`Flamegraph is generated under "${flamegraphDir}"`);
 }
