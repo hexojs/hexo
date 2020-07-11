@@ -7,9 +7,10 @@ on:
 
 jobs:
   benchmark:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
         node-version: ['10.x', '12.x', '14.x']
       fail-fast: false
     steps:
@@ -28,8 +29,8 @@ jobs:
       - name: Running benchmark
         run: |
           echo "============== Hexo Benchmark ==============" > benchmark-result-${{ matrix.node-version }}.txt
-          node test/benchmark.js >> benchmark-result-${{ matrix.node-version }}.txt
+          node test/benchmark.js >> benchmark-result-${{ runner.OS }}-${{ matrix.node-version }}.txt
       - uses: actions/upload-artifact@v2
         with:
           name: benchmark-results
-          path: benchmark-result-${{ matrix.node-version }}.txt
+          path: benchmark-result-${{ runner.OS }}-${{ matrix.node-version }}.txt
