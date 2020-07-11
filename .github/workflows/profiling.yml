@@ -1,0 +1,59 @@
+name: profiling
+
+on:
+  push:
+    branchs: [ master ]
+  pull_request:
+
+jobs:
+  profiling:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ['10.x', '12.x', '14.x']
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+      - run: mkdir 0x
+      - name: npm install
+        run: npm install --silent
+      - name: Set up dummy Hexo site
+        uses: actions/checkout@v2
+        with:
+          repository: hexojs/hexo-theme-unit-test
+          path: hexo-theme-unit-test
+      - name: Install hexo-theme-landscape
+        uses: actions/checkout@v2
+        with:
+          repository: hexojs/hexo-theme-landscape
+          path: hexo-theme-unit-test/hexo-theme-landscape
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: npm install
+        run: npm install --silent
+        working-directory: hexo-theme-unit-test
+      - name: Cache NPM dependencies
+        uses: actions/cache@v1
+        with:
+          path: hexo-theme-unit-test/node_modules
+          key: ${{ runner.OS }}-profiling-npm-cache
+          restore-keys: ${{ runner.OS }}-profiling-npm-cache
+      - name: Replace node_modules/hexo
+        run: |
+          rm -rf node_modules/hexo
+          ln -sf $GITHUB_WORKSPACE node_modules/hexo
+        working-directory: hexo-theme-unit-test
+      - name: Start test run
+        run: npx --no-install hexo clean
+        working-directory: hexo-theme-unit-test
+      - name: Generating flamegraph
+        run: |
+          npm install 0x --silent
+          node ./node_modules/.bin/0x --name ${{ matrix.node-version }} --output-dir "${GITHUB_WORKSPACE}/0x" -- node ./node_modules/.bin/hexo g;
+        working-directory: hexo-theme-unit-test
+      - uses: actions/upload-artifact@v2
+        with:
+          name: profiling-results
+          path: ${{ github.workspace }}/0x/${{ matrix.node-version }}.html
