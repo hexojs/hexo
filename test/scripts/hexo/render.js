@@ -190,6 +190,19 @@ describe('Render', () => {
     });
   });
 
+  it('render() - options as callback', () => {
+    const cbSpy = spy();
+
+    const data = {
+      text: '  <strong>123456</strong>  ',
+      engine: 'njk'
+    };
+
+    return hexo.render.render(data, cbSpy).then(() => {
+      cbSpy.calledOnce.should.be.true;
+    });
+  });
+
   it('renderSync() - path', () => {
     const result = hexo.render.renderSync({path});
     result.should.eql(obj);

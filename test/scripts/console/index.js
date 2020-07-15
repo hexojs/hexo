@@ -9,6 +9,7 @@ describe('Console', () => {
   require('./new');
   require('./publish');
   require('./render');
+  require('./list');
   require('./list_post');
   require('./list_categories');
   require('./list_tags');

@@ -16,7 +16,7 @@ describe('deploy', () => {
 
   beforeEach(() => {
     hexo.config.deploy = { type: 'foo' };
-    hexo.extend.deployer.register('foo', () => {});
+    hexo.extend.deployer.register('foo', () => { });
   });
 
   after(() => rmdir(hexo.base_dir));
@@ -69,8 +69,8 @@ describe('deploy', () => {
     const deployer2 = spy();
 
     hexo.config.deploy = [
-      {type: 'foo', foo: 'foo'},
-      {type: 'bar', bar: 'bar'}
+      { type: 'foo', foo: 'foo' },
+      { type: 'bar', bar: 'bar' }
     ];
 
     hexo.extend.deployer.register('foo', deployer1);
@@ -92,7 +92,25 @@ describe('deploy', () => {
     });
   });
 
-  // it('deployer not found'); missing-unit-test
+  it('deployer not found', async () => {
+    const logSpy = spy();
+    const hexo = new Hexo(join(__dirname, 'deploy_test'));
+    hexo.log.error = logSpy;
+
+    const deploy = require('../../../lib/plugins/console/deploy').bind(hexo);
+
+    hexo.extend.deployer.register('baz', () => { });
+    hexo.config.deploy = {
+      type: 'foo',
+      foo: 'bar'
+    };
+
+    await deploy({});
+
+    logSpy.called.should.be.true;
+    logSpy.args[0][0].should.contains('Deployer not found: %s');
+    logSpy.args[0][1].should.contains('foo');
+  });
 
   it('generate', async () => {
     await writeFile(join(hexo.source_dir, 'test.txt'), 'test');

@@ -825,7 +825,7 @@ describe('post', () => {
   it('post - tag is an alias for tags', async () => {
     const body = [
       'title: "Hello world"',
-      'tags:',
+      'tag:',
       '- foo',
       '- bar',
       '---'
