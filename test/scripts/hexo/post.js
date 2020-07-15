@@ -8,7 +8,6 @@ const { highlight, escapeHTML } = require('hexo-util');
 const { spy, useFakeTimers } = require('sinon');
 const frontMatter = require('hexo-front-matter');
 const fixture = require('../../fixtures/post_render');
-const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
 describe('Post', () => {
   const Hexo = require('../../../lib/hexo');
@@ -1016,7 +1015,7 @@ describe('Post', () => {
       engine: 'markdown'
     });
 
-    data.content.trim().should.eql(`<p>In Go’s templates, blocks look like this: <code>${escapeSwigTag(escapeHTML('{{block "template name" .}} (content) {{end}}'))}</code>.</p>`);
+    data.content.trim().should.eql('<p>In Go’s templates, blocks look like this: <code>{{block "template name" .}} (content) {{end}}</code>.</p>');
   });
 
   // test for https://github.com/hexojs/hexo/issues/3346#issuecomment-595497849
@@ -1028,7 +1027,7 @@ describe('Post', () => {
       engine: 'markdown'
     });
 
-    data.content.trim().should.eql(`<p><code>${escapeSwigTag('{{ 1 + 1 }}')}</code> 2</p>`);
+    data.content.trim().should.eql('<p><code>{{ 1 + 1 }}</code> 2</p>');
   });
 
   // https://github.com/hexojs/hexo/issues/4317
@@ -1100,7 +1099,7 @@ describe('Post', () => {
     });
 
     data.content.trim().should.eql([
-      `<p><code>${escapeSwigTag('{{ 1 + 1 }}')}</code> 3 <code>${escapeSwigTag('{{ 2 + 2 }}')}</code><br>Text</p>`,
+      '<p><code>{{ 1 + 1 }}</code> 3 <code>{{ 2 + 2 }}</code><br>Text</p>',
       '',
       'Raw 1',
       '',
