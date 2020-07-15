@@ -102,4 +102,26 @@ describe('Tag Errors', () => {
       assertNunjucksError(err, 2, 'expected variable end');
     }
   });
+
+  it('source file path', async () => {
+    const source = '_posts/hello-world.md';
+    const tag = new Tag();
+
+    tag.register('test',
+      (args, content) => {},
+      { ends: true });
+
+    const body = [
+      '{% test %}',
+      '  {{docker ps -aq | map docker inspect -f "{{.Name}} {{.Mounts}}"}}',
+      '{% endtest %}'
+    ].join('\n');
+
+    try {
+      // Add { source } as option
+      await tag.render(body, { source });
+    } catch (err) {
+      err.message.should.contains(source);
+    }
+  });
 });
