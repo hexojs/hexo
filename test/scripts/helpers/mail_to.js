@@ -18,6 +18,12 @@ describe('mail_to', () => {
     mailto('abc@example.com').should.eql('<a href="mailto:abc@example.com" title="abc@example.com">abc@example.com</a>');
   });
 
+  it('path - array', () => {
+    const emails = ['abc@example.com', 'foo@example.com'];
+    const emailsStr = 'abc@example.com,foo@example.com';
+    mailto(emails).should.eql(`<a href="mailto:${emailsStr}" title="${emailsStr}">${emailsStr}</a>`);
+  });
+
   it('text', () => {
     mailto('abc@example.com', 'Email').should.eql('<a href="mailto:abc@example.com" title="Email">Email</a>');
   });

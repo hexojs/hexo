@@ -4,7 +4,7 @@ const { exists, mkdirs, readFile, rmdir, unlink } = require('hexo-fs');
 const moment = require('moment');
 const { join } = require('path');
 const Promise = require('bluebird');
-const { useFakeTimers } = require('sinon');
+const { useFakeTimers, spy } = require('sinon');
 
 describe('publish', () => {
   const Hexo = require('../../../lib/hexo');
@@ -68,6 +68,18 @@ describe('publish', () => {
     data.should.eql(content);
 
     await unlink(path);
+  });
+
+  it('no args', async () => {
+    const hexo = new Hexo(join(__dirname, 'publish_test'), {silent: true});
+    hexo.call = spy();
+    const publish = require('../../../lib/plugins/console/publish').bind(hexo);
+
+    await publish({_: []});
+
+    hexo.call.calledOnce.should.be.true;
+    hexo.call.args[0][0].should.eql('help');
+    hexo.call.args[0][1]._[0].should.eql('publish');
   });
 
   it('layout', async () => {

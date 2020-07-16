@@ -3,6 +3,7 @@
 const { mkdirs, readFile, rmdir, unlink, writeFile } = require('hexo-fs');
 const { join } = require('path');
 const Promise = require('bluebird');
+const { spy } = require('sinon');
 
 describe('render', () => {
   const Hexo = require('../../../lib/hexo');
@@ -21,6 +22,18 @@ describe('render', () => {
     'bar:',
     '  boo: 2'
   ].join('\n');
+
+  it('no args', async () => {
+    const hexo = new Hexo(join(__dirname, 'render_test'), {silent: true});
+    hexo.call = spy();
+    const render = require('../../../lib/plugins/console/render').bind(hexo);
+
+    await render({_: []});
+
+    hexo.call.calledOnce.should.be.true;
+    hexo.call.args[0][0].should.eql('help');
+    hexo.call.args[0][1]._.should.eql('render');
+  });
 
   it('relative path', async () => {
     const src = join(hexo.base_dir, 'test.yml');

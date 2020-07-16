@@ -7,6 +7,10 @@ describe('number_format', () => {
     numberFormat(1234.567).should.eql('1,234.567');
   });
 
+  it('int', () => {
+    numberFormat(1234567).should.eql('1,234,567');
+  });
+
   it('precision', () => {
     numberFormat(1234.567, {precision: false}).should.eql('1,234.567');
     numberFormat(1234.567, {precision: 0}).should.eql('1,234');

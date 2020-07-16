@@ -47,6 +47,18 @@ describe('tagcloud', () => {
     ].join(' '));
   });
 
+  it('no tags', async () => {
+    const hexo = new Hexo(__dirname);
+    await hexo.init();
+    hexo.locals.invalidate();
+    hexo.site = hexo.locals.toObject();
+    const tagcloud = require('../../../lib/plugins/helper/tagcloud').bind(hexo);
+
+    const result = tagcloud();
+
+    result.should.eql('');
+  });
+
   it('specified collection', () => {
     const result = tagcloud(Tag.find({
       name: /bc/

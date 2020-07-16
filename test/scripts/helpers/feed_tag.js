@@ -16,8 +16,12 @@ describe('feed_tag', () => {
 
   const feed = require('../../../lib/plugins/helper/feed_tag').bind(ctx);
 
-  it('path', () => {
+  it('path - atom', () => {
     feed('atom.xml').should.eql('<link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">');
+  });
+
+  it('path - rss', () => {
+    feed('rss2.xml').should.eql('<link rel="alternate" href="/rss2.xml" title="Hexo" type="application/rss+xml">');
   });
 
   it('title', () => {
@@ -37,9 +41,13 @@ describe('feed_tag', () => {
   });
 
   it('invalid input - undefined', () => {
+    delete ctx.config.feed;
+    feed().should.eql('');
+  });
+
+  it('invalid input - empty', () => {
     ctx.config.feed = {};
-    const result = feed();
-    result.should.eql('');
+    feed().should.eql('');
   });
 
   it('feed - parse argument if available', () => {
