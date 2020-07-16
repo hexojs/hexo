@@ -62,6 +62,9 @@ describe('partial', () => {
 
     partial('test', {foo: 'bar'}, {cache: true}).should.eql('bar');
     partial('test', {}, {cache: true}).should.eql('bar');
+
+    partial('test', {foo: 'baz'}, {cache: 'ash'}).should.eql('baz');
+    partial('test', {}, {cache: 'ash'}).should.eql('baz');
   });
 
   it('only', () => {

@@ -646,6 +646,16 @@ describe('open_graph', () => {
     result.should.have.string(meta({property: 'og:locale', content: 'es_CR'}));
   });
 
+  it('og:locale - options.language (incorrect format)', () => {
+    const result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    }, {language: 'foo-bar'});
+
+    result.should.have.string(meta({property: 'og:locale', content: undefined}));
+  });
+
   it('og:locale - page.lang', () => {
     const result = openGraph.call({
       page: { lang: 'es-mx' },
