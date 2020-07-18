@@ -58,10 +58,10 @@ describe('post_link', () => {
   });
 
   it('no slug', () => {
-    should.not.exist(postLink([]));
+    postLink([]).should.eql('<a href="#">Post not found: Invalid post_link</a>');
   });
 
   it('post not found', () => {
-    should.not.exist(postLink(['bar']));
+    postLink(['bar']).should.eql('<a href="#">Post not found: bar</a>');
   });
 });
