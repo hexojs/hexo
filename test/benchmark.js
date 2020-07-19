@@ -10,6 +10,7 @@ const { red } = require('chalk');
 const hooks = [
   { regex: /Hexo version/, tag: 'hexo-begin' },
   { regex: /Start processing/, tag: 'processing' },
+  { regex: /Rendering post/, tag: 'render-post' },
   { regex: /Files loaded/, tag: 'file-loaded' },
   { regex: /generated in/, tag: 'generated' },
   { regex: /Database saved/, tag: 'database-saved' }
@@ -61,7 +62,8 @@ async function run_benchmark(name) {
 
     hexo.on('close', () => {
       performance.measure('Load Plugin/Scripts/Database', 'hexo-begin', 'processing');
-      performance.measure('Process Source', 'processing', 'file-loaded');
+      performance.measure('Process Source', 'processing', 'render-post');
+      performance.measure('Render Posts', 'render-post', 'file-loaded');
       performance.measure('Render Files', 'file-loaded', 'generated');
       performance.measure('Save Database', 'generated', 'database-saved');
       performance.measure('Total time', 'hexo-begin', 'database-saved');
