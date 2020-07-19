@@ -83,16 +83,17 @@ async function gitClone(repo, dir, depth = 1) {
 
 async function init() {
   if (await exists(testDir)) {
-    log.info(`"${testDir}" already exists, deleting`);
-    await rmdir(testDir);
+    log.info(`"${testDir}" already exists. Skipping benchmark environment setup.`);
+  } else {
+    log.info('Setting up a dummy hexo site with 500 posts');
+    await gitClone('https://github.com/hexojs/hexo-theme-unit-test.git', testDir);
+    await gitClone('https://github.com/hexojs/hexo-theme-landscape', resolve(testDir, 'themes', 'landscape'));
+    await gitClone('https://github.com/SukkaLab/hexo-many-posts.git', resolve(testDir, 'source', '_posts', 'hexo-many-posts'));
   }
 
-  log.info('Setting up a dummy hexo site with 500 posts');
-  await gitClone('https://github.com/hexojs/hexo-theme-unit-test.git', testDir);
-  await gitClone('https://github.com/hexojs/hexo-theme-landscape', resolve(testDir, 'themes', 'landscape'));
-  await gitClone('https://github.com/SukkaLab/hexo-many-posts.git', resolve(testDir, 'source', '_posts', 'hexo-many-posts'));
-
   log.info('Installing dependencies');
+  // Always re-install dependencies
+  if (await exists(resolve(testDir, 'node_modules'))) await rmdir(resolve(testDir, 'node_modules'));
   await spawnAsync(npmScript, ['install', '--silent'], { cwd: testDir });
 
   log.info('Replacing hexo');
@@ -104,6 +105,9 @@ async function init() {
       resolve(testDir, 'node_modules', 'hexo'),
       resolve(__dirname, '..')
     ]);
+
+    await rmdir(resolve(testDir, 'node_modules', 'hexo-cli'));
+
     await spawnAsync('cmd', [
       '/s', '/c', 'mklink', '/D',
       resolve(testDir, 'node_modules', 'hexo-cli'),
