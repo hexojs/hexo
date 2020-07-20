@@ -106,6 +106,51 @@ describe('Load config', () => {
     }
   });
 
+  // Deprecated: config.external_link boolean option will be removed in future
+  it('migrate external_link config from boolean to object - true', async () => {
+    const content = 'external_link: true';
+
+    try {
+      await writeFile(hexo.config_path, content);
+      await loadConfig(hexo);
+      hexo.config.external_link.should.eql({
+        enable: true,
+        field: 'site',
+        exclude: ''
+      });
+    } finally {
+      await unlink(hexo.config_path);
+    }
+  });
+
+  it('migrate external_link config from boolean to object - false', async () => {
+    const content = 'external_link: false';
+
+    try {
+      await writeFile(hexo.config_path, content);
+      await loadConfig(hexo);
+      hexo.config.external_link.should.eql({
+        enable: false,
+        field: 'site',
+        exclude: ''
+      });
+    } finally {
+      await unlink(hexo.config_path);
+    }
+  });
+
+  it('migrate external_link config from boolean to object - undefined', async () => {
+    try {
+      // Test undefined
+      await writeFile(hexo.config_path, '');
+
+      await loadConfig(hexo);
+      hexo.config.external_link.should.eql(defaultConfig.external_link);
+    } finally {
+      await unlink(hexo.config_path);
+    }
+  });
+
   it('custom public_dir', async () => {
     try {
       await writeFile(hexo.config_path, 'public_dir: foo');

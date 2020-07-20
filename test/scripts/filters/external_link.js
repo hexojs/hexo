@@ -95,36 +95,6 @@ describe('External link', () => {
     ].join('\n'));
   });
 
-  it('old option - false', () => {
-    const content = 'foo'
-      + '<a href="https://hexo.io/">Hexo</a>'
-      + 'bar';
-
-    hexo.config.external_link = false;
-
-    should.not.exist(externalLink(content));
-    hexo.config.external_link = {
-      enable: true,
-      field: 'site',
-      exclude: ''
-    };
-  });
-
-  it('old option - true', () => {
-    const content = '<a href="https://hexo.io/">Hexo</a>';
-
-    hexo.config.external_link = true;
-
-    const result = externalLink(content);
-    result.should.eql('<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>');
-
-    hexo.config.external_link = {
-      enable: true,
-      field: 'site',
-      exclude: ''
-    };
-  });
-
   it('exclude - string', () => {
     const content = [
       '<a href="https://foo.com/">Hexo</a>',
