@@ -218,6 +218,28 @@ describe('asset', () => {
     ]);
   });
 
+  it('page - type: private', async () => {
+    const body = [
+      'title: "Hello world"',
+      'date: 2006-01-02 15:04:05',
+      'updated: 2014-12-13 01:02:03',
+      'private: true',
+      '---',
+      'The quick brown fox jumps over the lazy dog'
+    ].join('\n');
+
+    const file = newFile({
+      path: 'private.njk',
+      type: 'create',
+      renderable: true
+    });
+
+    await writeFile(file.source, body);
+    await process(file);
+    should.not.exist(Page.findOne({ source: file.path }));
+    unlink(file.source);
+  });
+
   it('page - type: update', async () => {
     const body = [
       'title: "Hello world"',
