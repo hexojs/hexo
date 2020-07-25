@@ -44,7 +44,7 @@
     "bluebird": "^3.5.2",
     "chalk": "^4.0.0",
     "hexo-cli": "^3.0.0",
-    "hexo-front-matter": "^1.0.0",
+    "hexo-front-matter": "^2.0.0",
     "hexo-fs": "^3.1.0",
     "hexo-i18n": "^1.0.0",
     "hexo-log": "^2.0.0",

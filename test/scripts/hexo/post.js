@@ -6,7 +6,7 @@ const Promise = require('bluebird');
 const { readFile, mkdirs, unlink, rmdir, writeFile, exists, stat, listDir } = require('hexo-fs');
 const { highlight, escapeHTML } = require('hexo-util');
 const { spy, useFakeTimers } = require('sinon');
-const frontMatter = require('hexo-front-matter');
+const { parse: yfm } = require('hexo-front-matter');
 const fixture = require('../../fixtures/post_render');
 const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
@@ -573,7 +573,7 @@ describe('Post', () => {
   }).then(data => post.publish({
     slug: 'foo'
   })).then(data => {
-    const meta = frontMatter(data.content);
+    const meta = yfm(data.content);
     meta.tags.should.eql(['tag', 'test']);
     return unlink(data.path);
   }));
