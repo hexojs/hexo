@@ -37,32 +37,6 @@ describe('Meta Generator', () => {
     should.not.exist(metaGenerator('<head><link><meta content="foo" name="generator"></head>'));
   });
 
-  it('ignore empty head tag', () => {
-    const content = '<head></head><head><link></head><head></head>';
-    hexo.config.meta_generator = true;
-    const result = metaGenerator(content);
-
-    const $ = cheerio.load(result);
-    $('meta[name="generator"]').should.have.lengthOf(1);
-
-    const expected = '<head></head><head><link><meta name="generator" content="Hexo '
-      + hexo.version + '"></head><head></head>';
-    result.should.eql(expected);
-  });
-
-  it('apply to first non-empty head tag only', () => {
-    const content = '<head></head><head><link></head><head><link></head>';
-    hexo.config.meta_generator = true;
-    const result = metaGenerator(content);
-
-    const $ = cheerio.load(result);
-    $('meta[name="generator"]').should.have.lengthOf(1);
-
-    const expected = '<head></head><head><link><meta name="generator" content="Hexo '
-      + hexo.version + '"></head><head><link></head>';
-    result.should.eql(expected);
-  });
-
   // Test for Issue #3777
   it('multi-line head', () => {
     const content = '<head>\n<link>\n</head>';
