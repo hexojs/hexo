@@ -10,7 +10,8 @@
     "eslint": "eslint .",
     "test": "mocha test/index.js",
     "test-cov": "nyc --reporter=lcovonly npm run test -- --no-parallel",
-    "lint-staged": "lint-staged"
+    "lint-staged": "lint-staged",
+    "postinstall": "node ./postinstall.js"
   },
   "directories": {
     "lib": "./lib",
@@ -18,7 +19,8 @@
   },
   "files": [
     "lib/",
-    "bin/"
+    "bin/",
+    "postinstall.js"
   ],
   "repository": "hexojs/hexo",
   "homepage": "https://hexo.io/",
