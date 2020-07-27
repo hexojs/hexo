@@ -10,8 +10,6 @@ describe('list_archives', () => {
     page: {}
   };
 
-  ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
-
   const listArchives = require('../../../lib/plugins/helper/list_archives').bind(ctx);
 
   function resetLocals() {

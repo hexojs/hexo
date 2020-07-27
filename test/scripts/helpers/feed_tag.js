@@ -12,8 +12,6 @@ describe('feed_tag', () => {
 
   beforeEach(() => { ctx.config.feed = {}; });
 
-  ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
-
   const feed = require('../../../lib/plugins/helper/feed_tag').bind(ctx);
 
   it('path - atom', () => {

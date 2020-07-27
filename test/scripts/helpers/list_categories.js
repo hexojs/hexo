@@ -10,8 +10,6 @@ describe('list_categories', () => {
     config: hexo.config
   };
 
-  ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
-
   const listCategories = require('../../../lib/plugins/helper/list_categories').bind(ctx);
 
   before(async () => {

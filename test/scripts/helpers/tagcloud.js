@@ -12,8 +12,6 @@ describe('tagcloud', () => {
     config: hexo.config
   };
 
-  ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
-
   const tagcloud = require('../../../lib/plugins/helper/tagcloud').bind(ctx);
 
   before(async () => {
