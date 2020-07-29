@@ -23,36 +23,14 @@ describe('Excerpt', () => {
   });
 
   it('with <!-- more -->', () => {
+    const _moreCases = [
+      '<!-- more -->',
+      '<!-- more-->',
+      '<!--more -->',
+      '<!--more-->'
+    ];
 
-    _moreCases().forEach(_test);
-
-    function _moreCases() {
-      const template = '<!--{{lead}}more{{tail}}-->';
-      // see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#Special_characters_meaning_in_regular_expressions
-      const spaces = ' \f\n\r\t\v\u00a0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000\ufeff';
-      const cases = [];
-      let more, lead, tail, s, e;
-
-      for (let i = 0; i < spaces.length; ++i) {
-        lead = spaces[i];
-        for (let k = 0; k < spaces.length; ++k) {
-          tail = spaces[k];
-          s = '';
-          for (let m = 0; m < 3; ++m) {
-            e = '';
-            for (let n = 0; n < 3; ++n) {
-              more = template.replace('{{lead}}', s).replace('{{tail}}', e);
-              cases.push(more);
-              e += tail;
-            }
-
-            s += lead;
-          }
-        }
-      }
-
-      return cases;
-    }
+    _moreCases.forEach(moreCase => _test(moreCase));
 
     function _test(more) {
       const content = [

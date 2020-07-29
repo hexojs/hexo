@@ -6,7 +6,7 @@ const Promise = require('bluebird');
 const { readFile, mkdirs, unlink, rmdir, writeFile, exists, stat, listDir } = require('hexo-fs');
 const { highlight, escapeHTML } = require('hexo-util');
 const { spy, useFakeTimers } = require('sinon');
-const frontMatter = require('hexo-front-matter');
+const { parse: yfm } = require('hexo-front-matter');
 const fixture = require('../../fixtures/post_render');
 const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
@@ -573,7 +573,7 @@ describe('Post', () => {
   }).then(data => post.publish({
     slug: 'foo'
   })).then(data => {
-    const meta = frontMatter(data.content);
+    const meta = yfm(data.content);
     meta.tags.should.eql(['tag', 'test']);
     return unlink(data.path);
   }));
@@ -1016,7 +1016,7 @@ describe('Post', () => {
       engine: 'markdown'
     });
 
-    data.content.trim().should.eql(`<p>In Go’s templates, blocks look like this: <code>${escapeSwigTag(escapeHTML('{{block "template name" .}} (content) {{end}}'))}</code>.</p>`);
+    data.content.trim().should.eql(`<p>In Go’s templates, blocks look like this: <code>${escapeSwigTag('{{block "template name" .}} (content) {{end}}')}</code>.</p>`);
   });
 
   // test for https://github.com/hexojs/hexo/issues/3346#issuecomment-595497849
@@ -1137,13 +1137,13 @@ describe('Post', () => {
     });
 
     // indented pullquote
-    data.content.trim().should.contains('<pre><code>{% pullquote %}foo foo foo{% endpullquote %}</code></pre>');
+    data.content.trim().should.contains(`<pre><code>${escapeSwigTag('{% pullquote %}foo foo foo{% endpullquote %}')}</code></pre>`);
     data.content.trim().should.contains('<p>test001</p>');
     // pullquote tag
     data.content.trim().should.contains('<blockquote class="pullquote"><p>bar bar bar</p>\n</blockquote>');
     data.content.trim().should.contains('<p>test002</p>');
     // indented youtube tag
-    data.content.trim().should.contains('<pre><code>{% youtube https://example.com/demo.mp4 %}</code></pre>');
+    data.content.trim().should.contains(`<pre><code>${escapeSwigTag('{% youtube https://example.com/demo.mp4 %}')}</code></pre>`);
     // youtube tag
     data.content.trim().should.contains('<div class="video-container"><iframe src="https://www.youtube.com/embed/https://example.com/sample.mp4" frameborder="0" loading="lazy" allowfullscreen></iframe></div>');
   });
