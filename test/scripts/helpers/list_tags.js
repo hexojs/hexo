@@ -10,8 +10,6 @@ describe('list_tags', () => {
     config: hexo.config
   };
 
-  ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
-
   const listTags = require('../../../lib/plugins/helper/list_tags').bind(ctx);
 
   before(async () => {

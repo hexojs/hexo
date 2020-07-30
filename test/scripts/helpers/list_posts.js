@@ -9,8 +9,6 @@ describe('list_posts', () => {
     config: hexo.config
   };
 
-  ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
-
   const listPosts = require('../../../lib/plugins/helper/list_posts').bind(ctx);
 
   hexo.config.permalink = ':title/';

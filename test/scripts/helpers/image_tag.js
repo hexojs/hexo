@@ -8,8 +8,6 @@ describe('image_tag', () => {
     config: hexo.config
   };
 
-  ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
-
   const img = require('../../../lib/plugins/helper/image_tag').bind(ctx);
 
   it('path', () => {

@@ -8,8 +8,6 @@ describe('favicon_tag', () => {
     config: hexo.config
   };
 
-  ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
-
   const favicon = require('../../../lib/plugins/helper/favicon_tag').bind(ctx);
 
   it('path', () => {
