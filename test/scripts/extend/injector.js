@@ -94,6 +94,19 @@ describe('Injector', () => {
     i.getText('body_end').should.eql('');
   });
 
+  it('getSize()', () => {
+    const i = new Injector();
+    const str = '<script src="jquery.min.js"></script>';
+
+    i.register('head_end', str);
+    i.register('body_end', str);
+    i.register('body_end', str, 'home');
+
+    i.getSize('head_begin').should.eql(0);
+    i.getSize('head_end').should.eql(1);
+    i.getSize('body_end').should.eql(2);
+  });
+
   it('exec() - default', () => {
     const i = new Injector();
     const result = i.exec(content);
