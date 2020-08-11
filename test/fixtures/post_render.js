@@ -90,3 +90,11 @@ exports.content_for_issue_4317 = [
   'echo "Hi"',
   '```'
 ].join('\n');
+
+exports.content_for_issue_4460 = [
+  '```html',
+  '<body>',
+  '<!-- here goes the rest of the page -->',
+  '</body>',
+  '```'
+].join('\n');
