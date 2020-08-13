@@ -106,28 +106,6 @@ describe('Load plugins', () => {
     });
   });
 
-  it('specify plugin list in config', () => {
-    const names = ['hexo-plugin-test', 'another-plugin'];
-    const paths = names.map(name => join(hexo.plugin_dir, name, 'index.js'));
-
-    return Promise.all([
-      createPackageFile(...names),
-      fs.writeFile(paths[0], 'hexo._script_test0 = true'),
-      fs.writeFile(paths[1], 'hexo._script_test1 = true')
-    ]).then(() => {
-      hexo.config.plugins = [names[1]];
-      return loadPlugins(hexo);
-    }).then(() => {
-      should.not.exist(hexo._script_test0);
-      hexo._script_test1.should.be.true;
-
-      delete hexo.config.plugins;
-      delete hexo._script_test1;
-
-      return Promise.map(paths, path => fs.unlink(path));
-    });
-  });
-
   it('ignore plugin whose name is "hexo-theme-[hexo.config.theme]"', async () => {
     hexo.config.theme = 'test_theme';
 
