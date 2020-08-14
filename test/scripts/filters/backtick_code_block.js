@@ -98,7 +98,7 @@ describe('Backtick code block', () => {
     };
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + highlight(code, {lang: 'js'}) + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + highlight(code, {lang: 'js'}) + '</hexoPostRenderCodeBlock>');
   });
 
   it('highlightjs - without language name', () => {
@@ -113,7 +113,7 @@ describe('Backtick code block', () => {
     const expected = highlight(code);
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
   it('highlightjs - without language name - ignore tab character', () => {
@@ -128,7 +128,7 @@ describe('Backtick code block', () => {
     const expected = highlight(code);
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
   it('highlightjs - title', () => {
@@ -146,7 +146,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
   it('highlightjs - url', () => {
@@ -164,7 +164,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
   it('highlightjs - link text', () => {
@@ -182,7 +182,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
   it('highlightjs - indent', () => {
@@ -202,7 +202,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
   it('highlightjs - line number false', () => {
@@ -222,7 +222,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
   it('highlightjs - line number false, don`t first_line_number always1', () => {
@@ -243,7 +243,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
   it('highlightjs - line number false, don`t care first_line_number inilne', () => {
@@ -264,7 +264,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
   it('highlightjs - line number true', () => {
@@ -284,7 +284,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
   it('highlightjs - line number, first_line_number always1, js=', () => {
@@ -306,7 +306,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
   it('highlightjs - line number, first_line_number inline, js', () => {
@@ -328,7 +328,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
   it('highlightjs - line number, first_line_number inline, js=1', () => {
@@ -350,7 +350,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
   it('highlightjs - line number, first_line_number inline, js=2', () => {
@@ -372,7 +372,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
   it('highlightjs - tab replace', () => {
@@ -398,7 +398,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
   it('highlightjs - wrap', () => {
@@ -413,7 +413,7 @@ describe('Backtick code block', () => {
     };
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + highlight(code, { lang: 'js', wrap: false }) + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js', wrap: false }) + '</hexoPostRenderCodeBlock>');
 
     hexo.config.highlight.wrap = true;
   });
@@ -431,7 +431,7 @@ describe('Backtick code block', () => {
     };
     codeBlock(data);
 
-    data.content.should.eql('```foo```\n\n<!--hexoPostRenderEscape:' + highlight(code, {}) + ':hexoPostRenderEscape-->');
+    data.content.should.eql('```foo```\n\n<hexoPostRenderCodeBlock>' + highlight(code, {}) + '</hexoPostRenderCodeBlock>');
   });
 
   // test for Issue #4190
@@ -449,7 +449,7 @@ describe('Backtick code block', () => {
     };
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + highlight(code + '\nfoo```\n\nbar```\nbaz', {}) + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + highlight(code + '\nfoo```\n\nbar```\nbaz', {}) + '</hexoPostRenderCodeBlock>');
 
   });
 
@@ -466,7 +466,7 @@ describe('Backtick code block', () => {
 
     codeBlock(data);
 
-    data.content.should.eql('<!--hexoPostRenderEscape:' + prism(code, {lang: 'js'}) + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + prism(code, {lang: 'js'}) + '</hexoPostRenderCodeBlock>');
   });
 
   it('prismjs - without language name', () => {
@@ -483,7 +483,7 @@ describe('Backtick code block', () => {
     const expected = prism(code);
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
 
@@ -501,7 +501,7 @@ describe('Backtick code block', () => {
     const expected = prism(code);
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
   it('prismjs - indent', () => {
@@ -520,7 +520,7 @@ describe('Backtick code block', () => {
     const expected = prism(code, { lang: 'js' });
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
   it('prismjs - line number false', () => {
@@ -542,7 +542,7 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 
   it('prismjs - tab replace', () => {
@@ -570,6 +570,6 @@ describe('Backtick code block', () => {
     });
 
     codeBlock(data);
-    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+    data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
 });
