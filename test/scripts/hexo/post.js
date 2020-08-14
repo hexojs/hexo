@@ -1169,4 +1169,21 @@ describe('Post', () => {
     data.content.should.not.contains('&amp;#123');
     data.content.should.not.contains('&amp;#125');
   });
+
+  it('render() - issue #4460', async () => {
+    hexo.config.prismjs.enable = true;
+    hexo.config.highlight.enable = false;
+
+    const content = fixture.content_for_issue_4460;
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.should.not.include('hexoPostRenderEscape');
+
+    hexo.config.prismjs.enable = false;
+    hexo.config.highlight.enable = true;
+  });
 });
