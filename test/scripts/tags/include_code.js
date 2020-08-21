@@ -120,7 +120,8 @@ describe('include_code', () => {
     hexo.config.prismjs.enable = true;
 
     const expected = prismHighlight(fixture, {
-      lang: 'js'
+      lang: 'js',
+      caption: '<span>test.js</span><a href="/downloads/code/test.js">view raw</a>'
     });
 
     return code('test.js').then(result => {
@@ -144,7 +145,8 @@ describe('include_code', () => {
       '}'
     ].join('\n');
     const expected = prismHighlight(fixture, {
-      lang: 'js'
+      lang: 'js',
+      caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
     });
 
     return code('Hello world lang:js from:3 test.js').then(result => {
@@ -158,7 +160,8 @@ describe('include_code', () => {
       '  sleep();'
     ].join('\n');
     const expected = prismHighlight(fixture, {
-      lang: 'js'
+      lang: 'js',
+      caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
     });
 
     return code('Hello world lang:js to:2 test.js').then(result => {
@@ -171,12 +174,23 @@ describe('include_code', () => {
       'sleep();'
     ].join('\n');
     const expected = prismHighlight(fixture, {
-      lang: 'js'
+      lang: 'js',
+      caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
     });
 
     return code('Hello world lang:js from:2 to:2 test.js').then(result => {
       result.should.eql(expected);
     });
+  });
+
+  it('prismjs - title', async () => {
+    const expected = prismHighlight(fixture, {
+      lang: 'js',
+      caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
+    });
+
+    const result = await code('Hello world test.js');
+    result.should.eql(expected);
   });
 
   it('prismjs - file not found', () => code('nothing').then(result => {

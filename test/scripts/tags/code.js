@@ -263,4 +263,13 @@ describe('code', () => {
       mark: [1, 7, 8, 9, 11]
     }));
   });
+
+  it('prismjs - title', () => {
+    enablePrismjs();
+
+    const result = code('Hello world', fixture);
+    result.should.eql(prism(fixture, {
+      caption: '<span>Hello world</span>'
+    }));
+  });
 });

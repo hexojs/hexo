@@ -572,4 +572,24 @@ describe('Backtick code block', () => {
     codeBlock(data);
     data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
   });
+
+  it('prismjs - title', () => {
+    enablePrismjs();
+
+    const data = {
+      content: [
+        '``` js Hello world',
+        code,
+        '```'
+      ].join('\n')
+    };
+
+    const expected = prism(code, {
+      lang: 'js',
+      caption: '<span>Hello world</span>'
+    });
+
+    codeBlock(data);
+    data.content.should.eql('<!--hexoPostRenderEscape:' + expected + ':hexoPostRenderEscape-->');
+  });
 });
