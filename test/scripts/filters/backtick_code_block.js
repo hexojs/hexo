@@ -38,43 +38,43 @@ describe('Backtick code block', () => {
     hexo.config.prismjs = defaultConfig.prismjs;
   });
 
+  it('disabled', () => {
+    const content = [
+      '``` js',
+      code,
+      '```'
+    ].join('\n');
+
+    const data = {content};
+
+    hexo.config.highlight.enable = false;
+    hexo.config.prismjs.enable = false;
+    codeBlock(data);
+    data.content.should.eql(content);
+  });
+
+  it('with no config (disabled)', () => {
+    const content = [
+      '``` js',
+      code,
+      '```'
+    ].join('\n');
+
+    const data = {content};
+
+    const oldHljsCfg = hexo.config.highlight;
+    const oldPrismCfg = hexo.config.prismjs;
+    delete hexo.config.highlight;
+    delete hexo.config.prismjs;
+
+    codeBlock(data);
+    data.content.should.eql(content);
+
+    hexo.config.highlight = oldHljsCfg;
+    hexo.config.prismjs = oldPrismCfg;
+  });
+
   describe('highlightjs', () => {
-    it('disabled', () => {
-      const content = [
-        '``` js',
-        code,
-        '```'
-      ].join('\n');
-
-      const data = {content};
-
-      hexo.config.highlight.enable = false;
-      hexo.config.prismjs.enable = false;
-      codeBlock(data);
-      data.content.should.eql(content.replace(/{/g, '&#123;').replace(/}/g, '&#125;'));
-    });
-
-    it('with no config (disabled)', () => {
-      const content = [
-        '``` js',
-        code,
-        '```'
-      ].join('\n');
-
-      const data = {content};
-
-      const oldHljsCfg = hexo.config.highlight;
-      const oldPrismCfg = hexo.config.prismjs;
-      delete hexo.config.highlight;
-      delete hexo.config.prismjs;
-
-      codeBlock(data);
-      data.content.should.eql(content.replace(/{/g, '&#123;').replace(/}/g, '&#125;'));
-
-      hexo.config.highlight = oldHljsCfg;
-      hexo.config.prismjs = oldPrismCfg;
-    });
-
     it('shorthand', () => {
       const data = {
         content: 'Hello, world!'
