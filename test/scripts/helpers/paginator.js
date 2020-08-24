@@ -1,5 +1,7 @@
 'use strict';
 
+const { url_for } = require('hexo-util');
+
 describe('paginator', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo(__dirname);
@@ -13,12 +15,10 @@ describe('paginator', () => {
     config: hexo.config
   };
 
-  ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
-
   const paginator = require('../../../lib/plugins/helper/paginator').bind(ctx);
 
   function link(i) {
-    return ctx.url_for(i === 1 ? '' : 'page/' + i + '/');
+    return url_for.call(ctx, i === 1 ? '' : 'page/' + i + '/');
   }
 
   function checkResult(result, data) {

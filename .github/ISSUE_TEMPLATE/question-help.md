@@ -27,7 +27,7 @@ Please check followings before submitting a new issue.
 - [ ] I have already searched existing issues and they are not help to me
 - [ ] I examined error or warning messages and it's difficult to solve
 - [ ] Using [the latest](https://github.com/hexojs/hexo/releases) version of Hexo (run `hexo version` to check)
-- [ ] Node.js is higher than 8.6.0
+- [ ] Node.js is higher than [minimum required version](https://hexo.io/docs/#Minimum-required-Node-js-version)
 
 ## Question
 

@@ -10,8 +10,6 @@ describe('mail_to', () => {
     config: hexo.config
   };
 
-  ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
-
   const mailto = require('../../../lib/plugins/helper/mail_to').bind(ctx);
 
   it('path', () => {
