@@ -124,6 +124,24 @@ describe('Load plugins', () => {
     return fs.unlink(path);
   });
 
+  it('ignore plugin whose name endswith "hexo-theme-[hexo.config.theme]"', async () => {
+    hexo.config.theme = 'test_theme';
+
+    const script = 'hexo._script_test = true';
+    const name = '@hexojs/hexo-theme-test_theme';
+    const path = join(hexo.plugin_dir, name, 'index.js');
+
+    await Promise.all([
+      createPackageFile(name),
+      fs.writeFile(path, script)
+    ]);
+    await loadPlugins(hexo);
+
+    should.not.exist(hexo._script_test);
+    delete hexo.config.theme;
+    return fs.unlink(path);
+  });
+
   it('ignore plugins whose name is not started with "hexo-"', async () => {
     const script = 'hexo._script_test = true';
     const name = 'another-plugin';
