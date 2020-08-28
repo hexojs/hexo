@@ -742,6 +742,28 @@ describe('Post', () => {
     });
   });
 
+  // test for PR #4498
+  it('render() - (disableNunjucks === true) - sync', async () => {
+    const content = '{% link foo http://bar.com %}';
+    const loremFn = data => { return data.text.toUpperCase(); };
+    loremFn.disableNunjucks = true;
+    hexo.extend.renderer.register('coffee', 'js', loremFn, true);
+
+    const data = await post.render(null, { content, engine: 'coffee' });
+    data.content.should.eql(content.toUpperCase());
+  });
+
+  // test for PR #4498
+  it('render() - (disableNunjucks === false) - sync', async () => {
+    const content = '{% link foo http://bar.com %}';
+    const loremFn = data => { return data.text.toUpperCase(); };
+    loremFn.disableNunjucks = false;
+    hexo.extend.renderer.register('coffee', 'js', loremFn, true);
+
+    const data = await post.render(null, { content, engine: 'coffee' });
+    data.content.should.not.eql(content.toUpperCase());
+  });
+
   // test for PR #2321
   it('render() - allow backtick code block in "blockquote" tag plugin', () => {
     const code = 'alert("Hello world")';
