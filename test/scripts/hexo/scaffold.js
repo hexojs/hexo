@@ -1,7 +1,7 @@
 'use strict';
 
-const pathFn = require('path');
-const fs = require('hexo-fs');
+const { join } = require('path');
+const { exists, readFile, rmdir, unlink, writeFile } = require('hexo-fs');
 
 describe('Scaffold', () => {
   const Hexo = require('../../../lib/hexo');
@@ -16,14 +16,14 @@ describe('Scaffold', () => {
     'test scaffold'
   ].join('\n');
 
-  const testPath = pathFn.join(scaffoldDir, 'test.md');
+  const testPath = join(scaffoldDir, 'test.md');
 
   before(async () => {
     await hexo.init();
-    await fs.writeFile(testPath, testContent);
+    await writeFile(testPath, testContent);
   });
 
-  after(() => fs.rmdir(scaffoldDir));
+  after(() => rmdir(scaffoldDir));
 
   it('get() - file exists', async () => {
     const data = await scaffold.get('test');
@@ -38,33 +38,33 @@ describe('Scaffold', () => {
   it('set() - file exists', async () => {
     await scaffold.set('test', 'foo');
 
-    const file = await fs.readFile(testPath);
+    const file = await readFile(testPath);
     const data = await scaffold.get('test');
     file.should.eql('foo');
     data.should.eql('foo');
 
-    await fs.writeFile(testPath, testContent);
+    await writeFile(testPath, testContent);
   });
 
   it('set() - file does not exist', async () => {
-    const testPath = pathFn.join(scaffoldDir, 'foo.md');
+    const testPath = join(scaffoldDir, 'foo.md');
 
     await scaffold.set('foo', 'bar');
-    const file = await fs.readFile(testPath);
+    const file = await readFile(testPath);
     const data = await scaffold.get('foo');
     file.should.eql('bar');
     data.should.eql('bar');
-    await fs.unlink(testPath);
+    await unlink(testPath);
   });
 
   it('remove() - file exist', async () => {
     await scaffold.remove('test');
-    const exist = await fs.exists(testPath);
+    const exist = await exists(testPath);
     const data = await scaffold.get('test');
     exist.should.be.false;
     should.not.exist(data);
 
-    await fs.writeFile(testPath, testContent);
+    await writeFile(testPath, testContent);
   });
 
   it('remove() - file does not exist', () => scaffold.remove('foo'));
