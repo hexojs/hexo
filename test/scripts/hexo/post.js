@@ -15,26 +15,7 @@ describe('Post', () => {
   const { post } = hexo;
   const now = Date.now();
   let clock;
-  const defaultCfg = JSON.parse(JSON.stringify(Object.assign(hexo.config, {
-    marked: {
-      gfm: true,
-      pedantic: false,
-      breaks: true,
-      smartLists: true,
-      smartypants: true,
-      modifyAnchors: 0,
-      autolink: true,
-      sanitizeUrl: false,
-      headerIds: true,
-      lazyload: false,
-      prependRoot: false,
-      external_link: {
-        enable: false,
-        exclude: [],
-        nofollow: false
-      }
-    }
-  })));
+  let defaultCfg = {};
 
   before(async () => {
     clock = useFakeTimers(now);
@@ -57,15 +38,17 @@ describe('Post', () => {
       'tags:',
       '---'
     ].join('\n'));
-  });
 
-  beforeEach(() => {
-    hexo.config = JSON.parse(JSON.stringify(defaultCfg));
+    defaultCfg = JSON.parse(JSON.stringify(hexo.config));
   });
 
   after(() => {
     clock.restore();
     return rmdir(hexo.base_dir);
+  });
+
+  afterEach(() => {
+    hexo.config = JSON.parse(JSON.stringify(defaultCfg));
   });
 
   it('create()', async () => {
