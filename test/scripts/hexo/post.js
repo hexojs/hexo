@@ -15,7 +15,26 @@ describe('Post', () => {
   const { post } = hexo;
   const now = Date.now();
   let clock;
-  const defaultCfg = JSON.parse(JSON.stringify(hexo.config));
+  const defaultCfg = JSON.parse(JSON.stringify(Object.assign(hexo.config, {
+    marked: {
+      gfm: true,
+      pedantic: false,
+      breaks: true,
+      smartLists: true,
+      smartypants: true,
+      modifyAnchors: 0,
+      autolink: true,
+      sanitizeUrl: false,
+      headerIds: true,
+      lazyload: false,
+      prependRoot: false,
+      external_link: {
+        enable: false,
+        exclude: [],
+        nofollow: false
+      }
+    }
+  })));
 
   before(async () => {
     clock = useFakeTimers(now);
@@ -1013,7 +1032,7 @@ describe('Post', () => {
       engine: 'markdown'
     });
 
-    data.content.trim().should.eql(`<p>In Go&#39;s templates, blocks look like this: <code>${escapeSwigTag('{{block "template name" .}} (content) {{end}}')}</code>.</p>`);
+    data.content.trim().should.eql(`<p>In Go’s templates, blocks look like this: <code>${escapeSwigTag('{{block "template name" .}} (content) {{end}}')}</code>.</p>`);
   });
 
   // https://github.com/hexojs/hexo/issues/3346#issuecomment-595497849
@@ -1094,8 +1113,7 @@ describe('Post', () => {
     });
 
     data.content.trim().should.eql([
-      `<p><code>${escapeSwigTag('{{ 1 + 1 }}')}</code> 3 <code>${escapeSwigTag('{{ 2 + 2 }}')}</code>`,
-      'Text</p>',
+      `<p><code>${escapeSwigTag('{{ 1 + 1 }}')}</code> 3 <code>${escapeSwigTag('{{ 2 + 2 }}')}</code><br>Text</p>`,
       '',
       'Raw 1',
       '',

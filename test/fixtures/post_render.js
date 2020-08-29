@@ -41,11 +41,11 @@ exports.expected_disable_nunjucks = [
   highlight(code, {lang: 'python'}),
   '\n<p>some content</p>\n',
   '<h2 id="Another-title"><a href="#Another-title" class="headerlink" title="Another title"></a>Another title</h2>',
-  '<p>{% blockquote %}\n',
-  'quote content\n',
+  '<p>{% blockquote %}<br>',
+  'quote content<br>',
   '{% endblockquote %}</p>\n',
-  '<p>{% quote Hello World %}\n',
-  'quote content\n',
+  '<p>{% quote Hello World %}<br>',
+  'quote content<br>',
   '{% endquote %}</p>'
 ].join('');
 
