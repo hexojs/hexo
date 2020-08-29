@@ -26,7 +26,10 @@ describe('Render', () => {
   const obj = yaml.load(body);
   const path = join(hexo.base_dir, 'test.yml');
 
-  before(() => writeFile(path, body).then(() => hexo.init()));
+  before(async () => {
+    await writeFile(path, body);
+    await hexo.init();
+  });
 
   after(() => rmdir(hexo.base_dir));
 
@@ -77,61 +80,68 @@ describe('Render', () => {
     hexo.render.getOutput('test.yaml').should.eql('json');
   });
 
-  it('render() - path', () => hexo.render.render({path}).then(result => {
+  it('render() - path', async () => {
+    const result = await hexo.render.render({path});
     result.should.eql(obj);
-  }));
-
-  it('render() - text (without engine)', () => hexo.render.render({text: body}).then(result => {
-    result.should.eql(body);
-  }));
-
-  it('render() - text (with engine)', () => hexo.render.render({text: body, engine: 'yaml'}).then(result => {
-    result.should.eql(obj);
-  }));
-
-  it('render() - no path and text', () => {
-    return hexo.render.render().then(() => {
-      should.fail('Return value must be rejected');
-    }, err => {
-      err.should.property('message', 'No input file or string!');
-    });
   });
 
-  it('render() - options', () => hexo.render.render({
-    text: [
-      '<title>{{ title }}</title>',
-      '<body>{{ content }}</body>'
-    ].join('\n'),
-    engine: 'njk'
-  }, {
-    title: 'Hello world',
-    content: 'foobar'
-  }).then(result => {
+  it('render() - text (without engine)', async () => {
+    const result = await hexo.render.render({text: body});
+    result.should.eql(body);
+  });
+
+  it('render() - text (with engine)', async () => {
+    const result = await hexo.render.render({text: body, engine: 'yaml'});
+    result.should.eql(obj);
+  });
+
+  it('render() - no path and text', async () => {
+    try {
+      await hexo.render.render();
+      should.fail('Return value must be rejected');
+    } catch (err) {
+      err.message.should.eql('No input file or string!');
+    }
+  });
+
+  it('render() - options', async () => {
+    const result = await hexo.render.render({
+      text: [
+        '<title>{{ title }}</title>',
+        '<body>{{ content }}</body>'
+      ].join('\n'),
+      engine: 'njk'
+    }, {
+      title: 'Hello world',
+      content: 'foobar'
+    });
     result.should.eql([
       '<title>Hello world</title>',
       '<body>foobar</body>'
     ].join('\n'));
-  }));
+  });
 
-  it('render() - toString', () => hexo.render.render({
-    text: body,
-    engine: 'yaml',
-    toString: true
-  }).then(content => {
+  it('render() - toString', async () => {
+    const content = await hexo.render.render({
+      text: body,
+      engine: 'yaml',
+      toString: true
+    });
     content.should.eql(JSON.stringify(obj));
-  }));
+  });
 
-  it('render() - custom toString method', () => hexo.render.render({
-    text: body,
-    engine: 'yaml',
-    toString(data) {
-      return JSON.stringify(data, null, '  ');
-    }
-  }).then(content => {
+  it('render() - custom toString method', async () => {
+    const content = await hexo.render.render({
+      text: body,
+      engine: 'yaml',
+      toString(data) {
+        return JSON.stringify(data, null, '  ');
+      }
+    });
     content.should.eql(JSON.stringify(obj, null, '  '));
-  }));
+  });
 
-  it.skip('render() - after_render filter', () => {
+  it.skip('render() - after_render filter', async () => {
     const data = {
       text: '  <strong>123456</strong>  ',
       engine: 'njk'
@@ -145,15 +155,14 @@ describe('Render', () => {
 
     hexo.extend.filter.register('after_render:html', filter);
 
-    return hexo.render.render(data).then(result => {
-      filter.calledOnce.should.be.true;
-      result.should.eql(data.text.trim());
+    const result = await hexo.render.render(data);
+    filter.calledOnce.should.be.true;
+    result.should.eql(data.text.trim());
 
-      hexo.extend.filter.unregister('after_render:html', filter);
-    });
+    hexo.extend.filter.unregister('after_render:html', filter);
   });
 
-  it('render() - after_render filter: use the given output extension if not found', () => {
+  it('render() - after_render filter: use the given output extension if not found', async () => {
     const data = {
       text: 'foo',
       engine: 'txt'
@@ -162,13 +171,12 @@ describe('Render', () => {
     const filter = spy();
     hexo.extend.filter.register('after_render:txt', filter);
 
-    return hexo.render.render(data).then(result => {
-      filter.calledOnce.should.be.true;
-      hexo.extend.filter.unregister('after_render:txt', filter);
-    });
+    await hexo.render.render(data);
+    filter.calledOnce.should.be.true;
+    hexo.extend.filter.unregister('after_render:txt', filter);
   });
 
-  it('render() - onRenderEnd method', () => {
+  it('render() - onRenderEnd method', async () => {
     const onRenderEnd = spy(result => result + 'bar');
 
     const data = {
@@ -181,16 +189,15 @@ describe('Render', () => {
 
     hexo.extend.filter.register('after_render:txt', filter);
 
-    return hexo.render.render(data).then(result => {
-      onRenderEnd.calledOnce.should.be.true;
-      filter.calledOnce.should.be.true;
-      sinonAssert.calledWith(filter, 'foobar');
+    await hexo.render.render(data);
+    onRenderEnd.calledOnce.should.be.true;
+    filter.calledOnce.should.be.true;
+    sinonAssert.calledWith(filter, 'foobar');
 
-      hexo.extend.filter.unregister('after_render:txt', filter);
-    });
+    hexo.extend.filter.unregister('after_render:txt', filter);
   });
 
-  it('render() - options as callback', () => {
+  it('render() - options as callback', async () => {
     const cbSpy = spy();
 
     const data = {
@@ -198,9 +205,8 @@ describe('Render', () => {
       engine: 'njk'
     };
 
-    return hexo.render.render(data, cbSpy).then(() => {
-      cbSpy.calledOnce.should.be.true;
-    });
+    await hexo.render.render(data, cbSpy);
+    cbSpy.calledOnce.should.be.true;
   });
 
   it('renderSync() - path', () => {
