@@ -1,13 +1,13 @@
 'use strict';
 
-const pathFn = require('path');
-const fs = require('hexo-fs');
+const { join } = require('path');
+const { readFile, unlink, writeFile } = require('hexo-fs');
 
 describe('Update package.json', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo(__dirname, {silent: true});
   const updatePkg = require('../../../lib/hexo/update_package');
-  const packagePath = pathFn.join(hexo.base_dir, 'package.json');
+  const packagePath = join(hexo.base_dir, 'package.json');
 
   beforeEach(() => {
     hexo.env.init = false;
@@ -25,13 +25,13 @@ describe('Update package.json', () => {
       }
     };
 
-    await fs.writeFile(packagePath, JSON.stringify(pkg));
+    await writeFile(packagePath, JSON.stringify(pkg));
     await updatePkg(hexo);
-    const content = await fs.readFile(packagePath);
+    const content = await readFile(packagePath);
     JSON.parse(content).hexo.version.should.eql(hexo.version);
     hexo.env.init.should.be.true;
 
-    await fs.unlink(packagePath);
+    await unlink(packagePath);
   });
 
   it('package.json exists, but don\'t have hexo data', async () => {
@@ -40,14 +40,14 @@ describe('Update package.json', () => {
       version: '0.0.1'
     };
 
-    await fs.writeFile(packagePath, JSON.stringify(pkg));
+    await writeFile(packagePath, JSON.stringify(pkg));
     await updatePkg(hexo);
-    const content = await fs.readFile(packagePath);
+    const content = await readFile(packagePath);
     // Don't change the original package.json
     JSON.parse(content).should.eql(pkg);
     hexo.env.init.should.be.false;
 
-    await fs.unlink(packagePath);
+    await unlink(packagePath);
   });
 
   it('package.json exists and everything is ok', async () => {
@@ -57,12 +57,12 @@ describe('Update package.json', () => {
       }
     };
 
-    await fs.writeFile(packagePath, JSON.stringify(pkg));
+    await writeFile(packagePath, JSON.stringify(pkg));
     await updatePkg(hexo);
-    const content = await fs.readFile(packagePath);
+    const content = await readFile(packagePath);
     JSON.parse(content).should.eql(pkg);
     hexo.env.init.should.be.true;
 
-    await fs.unlink(packagePath);
+    await unlink(packagePath);
   });
 });
