@@ -241,6 +241,26 @@ describe('Backtick code block', () => {
       data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
     });
 
+    it('only wrap with pre and code', () => {
+      hexo.config.highlight.exclude_languages = ['js'];
+      hexo.config.highlight.hljs = true;
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+      const expected = highlight(code, {
+        lang: 'js',
+        gutter: false,
+        hljs: true,
+        wrap: false
+      });
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
     it('line number false, don`t care first_line_number inilne', () => {
       hexo.config.highlight.line_number = false;
       hexo.config.highlight.first_line_number = 'inilne';
