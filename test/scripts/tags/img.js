@@ -27,7 +27,7 @@ describe('img', () => {
     let $ = cheerio.load(img(['/images/test.jpg']));
     $('img').attr('src').should.eql('/images/test.jpg');
 
-    hexo.config.url = 'http://yoursite.com/root';
+    hexo.config.url = 'http://example.com/root';
     hexo.config.root = '/root/';
     $ = cheerio.load(img(['/images/test.jpg']));
     $('img').attr('src').should.eql('/root/images/test.jpg');
@@ -46,7 +46,7 @@ describe('img', () => {
     $('img').attr('src').should.eql('/images/test.jpg');
     $('img').attr('class').should.eql('left');
 
-    hexo.config.url = 'http://yoursite.com/root';
+    hexo.config.url = 'http://example.com/root';
     hexo.config.root = '/root/';
     $ = cheerio.load(img('left /images/test.jpg'.split(' ')));
     $('img').attr('src').should.eql('/root/images/test.jpg');
@@ -66,7 +66,7 @@ describe('img', () => {
     $('img').attr('src').should.eql('/images/test.jpg');
     $('img').attr('class').should.eql('left top');
 
-    hexo.config.url = 'http://yoursite.com/root';
+    hexo.config.url = 'http://example.com/root';
     hexo.config.root = '/root/';
     $ = cheerio.load(img('left top /images/test.jpg'.split(' ')));
     $('img').attr('src').should.eql('/root/images/test.jpg');

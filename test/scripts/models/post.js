@@ -88,7 +88,7 @@ describe('Post', () => {
       slug
     }).then(data => {
       data.permalink.should.eql(full_url_for.call(hexo, slug));
-      hexo.config.url = 'http://yoursite.com';
+      hexo.config.url = 'http://example.com';
       return Post.removeById(data._id);
     });
   });
@@ -107,19 +107,19 @@ describe('Post', () => {
   });
 
   it('permalink_root_prefix - virtual', () => {
-    hexo.config.url = 'http://yoursite.com/root';
+    hexo.config.url = 'http://example.com/root';
     hexo.config.root = '/root/';
     return Post.insert({
       source: 'foo.md',
       slug: 'bar'
     }).then(data => {
-      data.permalink.should.eql('http://yoursite.com/root/' + data.path);
+      data.permalink.should.eql('http://example.com/root/' + data.path);
       return Post.removeById(data._id);
     });
   });
 
   it('permalink_root_prefix - virtual - when set relative_link', () => {
-    hexo.config.url = 'http://yoursite.com/root';
+    hexo.config.url = 'http://example.com/root';
     hexo.config.root = '/root/';
     hexo.config.relative_link = true;
     return Post.insert({
