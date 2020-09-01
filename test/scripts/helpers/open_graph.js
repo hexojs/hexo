@@ -135,7 +135,7 @@ describe('open_graph', () => {
       page: {},
       config: hexo.config,
       is_post: isPost,
-      url: 'http://yoursite.com/page/index.html'
+      url: 'http://example.com/page/index.html'
     });
 
     const $ = cheerio.load(result);
@@ -151,7 +151,7 @@ describe('open_graph', () => {
       page: {},
       config: hexo.config,
       is_post: isPost,
-      url: 'http://yoursite.com/page/about.html'
+      url: 'http://example.com/page/about.html'
     });
 
     const $ = cheerio.load(result);
@@ -163,7 +163,7 @@ describe('open_graph', () => {
 
   it('url - null pretty_urls', () => {
     hexo.config.pretty_urls = null;
-    const url = 'http://yoursite.com/page/about.html';
+    const url = 'http://example.com/page/about.html';
     const result = openGraph.call({
       page: {},
       config: hexo.config,

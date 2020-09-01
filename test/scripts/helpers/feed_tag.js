@@ -4,7 +4,7 @@ describe('feed_tag', () => {
   const ctx = {
     config: {
       title: 'Hexo',
-      url: 'http://yoursite.com',
+      url: 'http://example.com',
       root: '/',
       feed: {}
     }
