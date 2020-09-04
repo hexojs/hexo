@@ -749,6 +749,55 @@ describe('Post', () => {
     data.content.should.not.eql(content.toUpperCase());
   });
 
+  it('render() - (disableNunjucks === true) - front-matter', async () => {
+    const renderer = hexo.render.renderer.get('markdown');
+    renderer.disableNunjucks = true;
+
+    try {
+      const data = await post.render(null, {
+        content: fixture.content,
+        engine: 'markdown',
+        disableNunjucks: false
+      });
+      data.content.trim().should.eql(fixture.expected);
+    } finally {
+      renderer.disableNunjucks = false;
+    }
+  });
+
+  it('render() - (disableNunjucks === false) - front-matter', async () => {
+    const renderer = hexo.render.renderer.get('markdown');
+    renderer.disableNunjucks = false;
+
+    try {
+      const data = await post.render(null, {
+        content: fixture.content,
+        engine: 'markdown',
+        disableNunjucks: true
+      });
+      data.content.trim().should.eql(fixture.expected_disable_nunjucks);
+    } finally {
+      renderer.disableNunjucks = false;
+    }
+  });
+
+  // Only boolean type of front-matter's disableNunjucks is valid
+  it('render() - (disableNunjucks === null) - front-matter', async () => {
+    const renderer = hexo.render.renderer.get('markdown');
+    renderer.disableNunjucks = true;
+
+    try {
+      const data = await post.render(null, {
+        content: fixture.content,
+        engine: 'markdown',
+        disableNunjucks: null
+      });
+      data.content.trim().should.eql(fixture.expected_disable_nunjucks);
+    } finally {
+      renderer.disableNunjucks = false;
+    }
+  });
+
   // #2321
   it('render() - allow backtick code block in "blockquote" tag plugin', async () => {
     const code = 'alert("Hello world")';
