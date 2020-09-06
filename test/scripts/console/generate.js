@@ -261,6 +261,27 @@ describe('generate', () => {
     });
   });
 
+  it('should generate all files when bail option is set to true and no errors', async () => {
+    // Test cases for hexojs/hexo#4499
+    hexo.extend.generator.register('resource', () =>
+      [
+        {
+          path: 'resource-1',
+          data: 'string'
+        },
+        {
+          path: 'resource-2',
+          data: {}
+        },
+        {
+          path: 'resource-3',
+          data: () => Promise.resolve(Buffer.from('string'))
+        }
+      ]
+    );
+    return generate({ bail: true });
+  });
+
   it('should generate all files even when concurrency is set', async () => {
     await generate({ concurrency: 1 });
     return generate({ concurrency: 2 });
