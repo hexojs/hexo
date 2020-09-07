@@ -62,8 +62,14 @@ async function run_benchmark(name) {
 
     hexo.on('close', () => {
       performance.measure('Load Plugin/Scripts/Database', 'hexo-begin', 'processing');
-      performance.measure('Process Source', 'processing', 'render-post');
-      performance.measure('Render Posts', 'render-post', 'file-loaded');
+
+      if (name === 'Hot processing') {
+        performance.measure('Process Source', 'processing', 'file-loaded');
+      } else {
+        performance.measure('Process Source', 'processing', 'render-post');
+        performance.measure('Render Posts', 'render-post', 'file-loaded');
+      }
+
       performance.measure('Render Files', 'file-loaded', 'generated');
       performance.measure('Save Database', 'generated', 'database-saved');
       performance.measure('Total time', 'hexo-begin', 'database-saved');
