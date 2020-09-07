@@ -659,13 +659,27 @@ describe('Hexo', () => {
   });
 
   it('execFilter()', async () => {
-    hexo.extend.filter.register('exec_test', data => {
-      data.should.eql('');
-      return data + 'foo';
-    });
+    const fn = str => {
+      return str + 'foo';
+    };
+    hexo.extend.filter.register('exec_test', fn);
 
     const result = await hexo.execFilter('exec_test', '');
     result.should.eql('foo');
+    hexo.extend.filter.unregister('exec_test', fn);
+  });
+
+  it('execFilter() - promise', async () => {
+    const fn = str => {
+      return new Promise((resolve, reject) => {
+        resolve(str + 'bar');
+      });
+    };
+    hexo.extend.filter.register('exec_test', fn);
+
+    const result = await hexo.execFilter('exec_test', 'foo');
+    result.should.eql('foobar');
+    hexo.extend.filter.unregister('exec_test', fn);
   });
 
   it('execFilterSync()', () => {
