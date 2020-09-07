@@ -48,7 +48,20 @@ describe('Validate config', () => {
       should.fail();
     } catch (e) {
       e.name.should.eql('TypeError');
-      e.message.should.eql('Invalid config detected: "url" should not be empty!');
+      e.message.should.eql('Invalid config detected: "url" should be a valid URL!');
+    }
+  });
+
+  // #4510
+  it('config.url - slash', () => {
+    hexo.config.url = '/';
+
+    try {
+      validateConfig(hexo);
+      should.fail();
+    } catch (e) {
+      e.name.should.eql('TypeError');
+      e.message.should.eql('Invalid config detected: "url" should be a valid URL!');
     }
   });
 
