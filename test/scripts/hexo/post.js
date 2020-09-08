@@ -265,6 +265,88 @@ describe('Post', () => {
     ]);
   });
 
+  // #4511
+  it('create() - avoid quote if unnecessary', async () => {
+    const scaffold = [
+      '---',
+      'title: {{ title }}',
+      '---'
+    ].join('\n');
+
+    await hexo.scaffold.set('test', scaffold);
+    const result = await post.create({
+      title: 'Hello World',
+      layout: 'test'
+    });
+
+    const data = await readFile(result.path);
+    data.should.eql([
+      '---',
+      'title: Hello World',
+      '---'
+    ].join('\n') + '\n');
+
+    await Promise.all([
+      unlink(result.path),
+      hexo.scaffold.remove('test')
+    ]);
+  });
+
+  // #4511
+  it('create() - wrap with quote when necessary', async () => {
+    const scaffold = [
+      '---',
+      'title: {{ title }}',
+      '---'
+    ].join('\n');
+
+    await hexo.scaffold.set('test', scaffold);
+    const result = await post.create({
+      title: 'Hello: World',
+      layout: 'test'
+    });
+
+    const data = await readFile(result.path);
+    data.should.eql([
+      '---',
+      'title: \'Hello: World\'',
+      '---'
+    ].join('\n') + '\n');
+
+    await Promise.all([
+      unlink(result.path),
+      hexo.scaffold.remove('test')
+    ]);
+  });
+
+  // #4511
+  it('create() - wrap with quote when necessary - yaml tag', async () => {
+    const scaffold = [
+      '---',
+      'title: {{ title }}',
+      '---'
+    ].join('\n');
+
+    await hexo.scaffold.set('test', scaffold);
+    const result = await post.create({
+      // https://github.com/nodeca/js-yaml#supported-yaml-types
+      title: '!!js/regexp /pattern/gim',
+      layout: 'test'
+    });
+
+    const data = await readFile(result.path);
+    data.should.eql([
+      '---',
+      'title: \'!!js/regexp /pattern/gim\'',
+      '---'
+    ].join('\n') + '\n');
+
+    await Promise.all([
+      unlink(result.path),
+      hexo.scaffold.remove('test')
+    ]);
+  });
+
   it('create() - JSON front-matter', async () => {
     const scaffold = [
       '"title": {{ title }}',
