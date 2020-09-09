@@ -11,7 +11,7 @@ node_js:
   - "14"
 
 script:
-  - node ./test/benchmark.js --only-profiling
+  - node ./test/benchmark.js --profiling
 
 deploy:
   provider: surge

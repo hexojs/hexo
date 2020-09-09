@@ -28,12 +28,18 @@ const hexoBin = resolve(testDir, 'node_modules/.bin/hexo');
 
 const zeroEks = require('0x');
 
-const isOnlyProfiling = process.argv.join(' ').includes('--only-profiling');
+let isProfiling = process.argv.join(' ').includes('--profiling');
+let isBenchmark = process.argv.join(' ').includes('--benchmark');
+
+if (!isProfiling && !isBenchmark) {
+  isProfiling = true;
+  isBenchmark = true;
+}
 
 (async () => {
   await init();
 
-  if (!isOnlyProfiling) {
+  if (isBenchmark) {
     log.info('Running benchmark');
     await cleanUp();
     await run_benchmark('Cold processing');
@@ -42,8 +48,10 @@ const isOnlyProfiling = process.argv.join(' ').includes('--only-profiling');
     await run_benchmark('Another Cold processing');
   }
 
-  await cleanUp();
-  await profiling();
+  if (isProfiling) {
+    await cleanUp();
+    await profiling();
+  }
 })();
 
 async function run_benchmark(name) {
