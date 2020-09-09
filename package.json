@@ -63,6 +63,7 @@
     "warehouse": "^4.0.0"
   },
   "devDependencies": {
+    "0x": "^4.9.1",
     "@easyops/git-exec-and-restage": "^1.0.4",
     "chai": "^4.1.2",
     "cheerio": "0.22.0",
