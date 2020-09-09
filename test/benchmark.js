@@ -149,7 +149,8 @@ async function profiling() {
   const zeroEksOpts = {
     argv: [hexoBin, 'g', '--cwd', testDir],
     workingDir: '.', // A workaround for https://github.com/davidmarkclements/0x/issues/228
-    outputDir: zeroEksDir
+    outputDir: zeroEksDir,
+    title: 'Hexo Flamegraph'
   };
 
   log.info('Profiling');
