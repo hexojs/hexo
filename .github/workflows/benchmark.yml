@@ -32,4 +32,4 @@ jobs:
       - name: Install dependencies
         run: npm install --silent
       - name: Running benchmark
-        run: node test/benchmark.js
+        run: node test/benchmark.js --benchmark

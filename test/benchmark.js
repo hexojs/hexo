@@ -4,7 +4,7 @@ const { performance, PerformanceObserver } = require('perf_hooks');
 const { spawn } = require('child_process');
 const { spawn: spawnAsync } = require('hexo-util');
 const { rmdir, exists } = require('hexo-fs');
-const { resolve } = require('path');
+const { join, resolve } = require('path');
 const log = require('hexo-log')();
 const { red } = require('chalk');
 const hooks = [
@@ -21,17 +21,37 @@ const isWin32 = require('os').platform() === 'win32';
 const npmScript = isWin32 ? 'npm.cmd' : 'npm';
 
 const testDir = resolve('.tmp-hexo-theme-unit-test');
+const zeroEksDir = process.env.TRAVIS_BUILD_DIR
+  ? join(process.env.TRAVIS_BUILD_DIR, '0x')
+  : resolve(testDir, '0x');
 const hexoBin = resolve(testDir, 'node_modules/.bin/hexo');
+
+const zeroEks = require('0x');
+
+let isProfiling = process.argv.join(' ').includes('--profiling');
+let isBenchmark = process.argv.join(' ').includes('--benchmark');
+
+if (!isProfiling && !isBenchmark) {
+  isProfiling = true;
+  isBenchmark = true;
+}
 
 (async () => {
   await init();
-  log.info('Running benchmark');
-  await cleanUp();
-  await run_benchmark('Cold processing');
-  await run_benchmark('Hot processing');
-  await cleanUp();
-  await run_benchmark('Another Cold processing');
-  await cleanUp();
+
+  if (isBenchmark) {
+    log.info('Running benchmark');
+    await cleanUp();
+    await run_benchmark('Cold processing');
+    await run_benchmark('Hot processing');
+    await cleanUp();
+    await run_benchmark('Another Cold processing');
+  }
+
+  if (isProfiling) {
+    await cleanUp();
+    await profiling();
+  }
 })();
 
 async function run_benchmark(name) {
@@ -128,4 +148,25 @@ async function init() {
       resolve(testDir, 'node_modules', 'hexo')
     ]);
   }
+}
+
+async function profiling() {
+  // Clean up 0x dir before profiling
+  if (await exists(zeroEksDir)) await rmdir(zeroEksDir);
+
+  const zeroEksOpts = {
+    argv: [hexoBin, 'g', '--cwd', testDir],
+    workingDir: '.', // A workaround for https://github.com/davidmarkclements/0x/issues/228
+    outputDir: zeroEksDir,
+    title: 'Hexo Flamegraph'
+  };
+
+  log.info('Profiling');
+
+  const file = await zeroEks(zeroEksOpts);
+
+  // A small hack that workaround 0x's broken stdout handling
+  console.log('');
+
+  log.info(file);
 }

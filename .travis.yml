@@ -10,11 +10,8 @@ node_js:
   - "12"
   - "14"
 
-before_script:
-  - chmod +x ./test/profiling.sh
-
 script:
-  - ./test/profiling.sh
+  - node ./test/benchmark.js --profiling
 
 deploy:
   provider: surge
