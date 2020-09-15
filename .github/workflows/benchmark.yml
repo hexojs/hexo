@@ -39,6 +39,6 @@ jobs:
         uses: dswistowski/surge-sh-action@v1
         with:
           domain: ${{ github.sha }}-${{ matrix.node-version }}-hexo.sh
-          project: ./0x/
+          project: ./.tmp-hexo-theme-unit-test/0x/
           login: ${{ secrets.SURGE_LOGIN }}
           token: ${{ secrets.SURGE_TOKEN }}
