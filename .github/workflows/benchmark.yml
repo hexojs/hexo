@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: ['10.x', '12.x', '14.x']
+        node-version: ['10', '12', '14']
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
