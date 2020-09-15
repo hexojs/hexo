@@ -33,6 +33,26 @@ jobs:
         run: npm install --silent
       - name: Running benchmark
         run: node test/benchmark.js --benchmark
+  profiling:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: ['10', '12', '14']
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Cache NPM dependencies
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-${{ matrix.node-version }}-npm-cache
+      - name: Install dependencies
+        run: npm install --silent
       - name: Running profiling
         run: node test/benchmark.js --profiling
       - name: Publish flamegraph to https://${{ github.sha }}-${{ matrix.node-version }}-hexo.surge.sh/flamegraph.html
