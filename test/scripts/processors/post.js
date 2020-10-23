@@ -959,11 +959,22 @@ describe('post', () => {
       writeFile(file.source, body),
       writeFile(assetPath, '')
     ]);
+
+    // drafts disabled - no draft assets should be generated
     await process(file);
     const post = Post.findOne({ source: file.path });
 
     post.published.should.be.false;
     should.not.exist(PostAsset.findById(assetId));
+
+    // drafts enabled - all assets should be generated
+    hexo.config.render_drafts = true;
+    await process(file);
+
+    should.exist(PostAsset.findById(assetId));
+
+    hexo.config.render_drafts = false;
+
     post.remove();
 
     await Promise.all([
