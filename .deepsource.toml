@@ -1,0 +1,20 @@
+version = 1
+
+test_patterns = ["/test/**/*.js"]
+
+exclude_patterns = ["/bin/**"]
+
+[[analyzers]]
+name = "javascript"
+enabled = true
+
+  [analyzers.meta]
+  environment = [
+    "nodejs",
+    "mocha",
+    "browser"
+  ]
+  dependency_file_paths = [
+    "/package.json"
+    ]
+
