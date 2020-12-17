@@ -1,6 +1,6 @@
 {
   "name": "hexo",
-  "version": "5.2.0",
+  "version": "5.3.0",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
   "main": "lib/hexo",
   "bin": {
@@ -63,9 +63,9 @@
     "warehouse": "^4.0.0"
   },
   "devDependencies": {
-    "0x": "^4.9.1",
     "@easyops/git-exec-and-restage": "^1.0.4",
-    "chai": "^4.1.2",
+    "0x": "^4.10.2",
+    "chai": "^4.2.0",
     "cheerio": "0.22.0",
     "decache": "^4.5.1",
     "eslint": "^7.0.0",
