@@ -15,14 +15,4 @@ jobs:
           This issue has been automatically marked as stale because lack of
           recent activity. It will be closed if no further activity occurs. Thank you
           for your contributions.
-        exempt-issue-labels:
-          - bug
-          - discussion
-          - "help wanted"
-          - need-verify
-          - need-investigation
-          - pending-reply
-          - proposal
-          - feature-request
-          - enhancement
-          - documentation
+        exempt-issue-labels: bug,discussion,"help wanted",need-verify,need-investigation,pending-reply,proposal,feature-request,enhancement,documentation
