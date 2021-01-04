@@ -49,7 +49,7 @@
     "hexo-i18n": "^1.0.0",
     "hexo-log": "^2.0.0",
     "hexo-util": "^2.4.0",
-    "js-yaml": "^3.12.0",
+    "js-yaml": "^4.0.0",
     "micromatch": "^4.0.2",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
