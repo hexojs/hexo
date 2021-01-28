@@ -463,6 +463,23 @@ describe('Backtick code block', () => {
       codeBlock(data);
       data.content.should.not.contain('`');
     });
+
+    // test for Issue #4573
+    it('ignore trailing spaces but not newlines', () => {
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```',
+          '',
+          '# New line'
+        ].join('\n')
+      };
+
+      codeBlock(data);
+      console.log(data.content);
+      data.content.should.contain('\n\n# New line');
+    });
   });
 
   describe('prismjs', () => {
