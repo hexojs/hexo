@@ -49,7 +49,7 @@ describe('Excerpt', () => {
       data.content.should.eql([
         'foo',
         'bar',
-        '<a id="more"></a>',
+        '<span id="more"></span>',
         'baz'
       ].join('\n'));
 
@@ -81,7 +81,7 @@ describe('Excerpt', () => {
 
     data.content.should.eql([
       'foo',
-      '<a id="more"></a>',
+      '<span id="more"></span>',
       'bar',
       '<!-- more -->',
       'baz'
