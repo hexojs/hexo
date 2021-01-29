@@ -106,6 +106,27 @@ describe('Load config', () => {
     }
   });
 
+  it('handle root is not exist', async () => {
+    try {
+      const content = 'url: https://hexo.io/';
+      await writeFile(hexo.config_path, content);
+      await loadConfig(hexo);
+      hexo.config.url.should.eql('https://hexo.io');
+      hexo.config.root.should.eql('/');
+    } finally {
+      await unlink(hexo.config_path);
+    }
+    try {
+      const content = 'url: https://hexo.io/foo/';
+      await writeFile(hexo.config_path, content);
+      await loadConfig(hexo);
+      hexo.config.url.should.eql('https://hexo.io/foo');
+      hexo.config.root.should.eql('/foo/');
+    } finally {
+      await unlink(hexo.config_path);
+    }
+  });
+
   // Deprecated: config.external_link boolean option will be removed in future
   it('migrate external_link config from boolean to object - true', async () => {
     const content = 'external_link: true';
