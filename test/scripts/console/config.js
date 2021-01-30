@@ -95,11 +95,6 @@ describe('config', () => {
     should.not.exist(config.meta_generator);
   });
 
-  it('write config: regex', async () => {
-    const config = await writeConfig('include', /^pattern$/gim);
-    config.include.should.eql(/^pattern$/gim);
-  });
-
   it('write config: json', async () => {
     const configPath = join(hexo.base_dir, '_config.json');
     hexo.config_path = join(hexo.base_dir, '_config.json');

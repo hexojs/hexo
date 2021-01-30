@@ -477,7 +477,6 @@ describe('Backtick code block', () => {
       };
 
       codeBlock(data);
-      console.log(data.content);
       data.content.should.contain('\n\n# New line');
     });
   });
