@@ -208,14 +208,14 @@ describe('config flag handling', () => {
   it('2 YAML overwrite', () => {
     const configFile = mcp(base, 'test1.yml,test2.yml');
     let config = fs.readFileSync(configFile);
-    config = yml.safeLoad(config);
+    config = yml.load(config);
 
     config.author.should.eql('bar');
     config.favorites.food.should.eql('candy');
     config.type.should.eql('dinosaur');
 
     config = fs.readFileSync(mcp(base, 'test2.yml,test1.yml'));
-    config = yml.safeLoad(config);
+    config = yml.load(config);
 
     config.author.should.eql('foo');
     config.favorites.food.should.eql('sushi');
@@ -224,14 +224,14 @@ describe('config flag handling', () => {
 
   it('2 JSON overwrite', () => {
     let config = fs.readFileSync(mcp(base, 'test1.json,test2.json'));
-    config = yml.safeLoad(config);
+    config = yml.load(config);
 
     config.author.should.eql('waldo');
     config.favorites.food.should.eql('ice cream');
     config.type.should.eql('elephant');
 
     config = fs.readFileSync(mcp(base, 'test2.json,test1.json'));
-    config = yml.safeLoad(config);
+    config = yml.load(config);
 
     config.author.should.eql('dinosaur');
     config.favorites.food.should.eql('burgers');
@@ -240,14 +240,14 @@ describe('config flag handling', () => {
 
   it('JSON & YAML overwrite', () => {
     let config = fs.readFileSync(mcp(base, 'test1.yml,test1.json'));
-    config = yml.safeLoad(config);
+    config = yml.load(config);
 
     config.author.should.eql('dinosaur');
     config.favorites.food.should.eql('burgers');
     config.type.should.eql('elephant');
 
     config = fs.readFileSync(mcp(base, 'test1.json,test1.yml'));
-    config = yml.safeLoad(config);
+    config = yml.load(config);
 
     config.author.should.eql('foo');
     config.favorites.food.should.eql('sushi');
