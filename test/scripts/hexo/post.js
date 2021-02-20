@@ -1171,7 +1171,7 @@ describe('Post', () => {
       engine: 'markdown'
     });
 
-    data.content.trim().should.contains(`<pre><code class="sh">${escapeHTML('echo "Hi"')}</code></pre>`);
+    data.content.trim().should.contains(`<pre><code class="sh">${escapeHTML('echo "Hi"')}\n</code></pre>`);
     data.content.trim().should.contains('<script src="//gist.github.com/gist_id.js"></script>');
     data.content.trim().should.contains('<script src="//gist.github.com/gist_id_2.js"></script>');
   });
@@ -1264,13 +1264,13 @@ describe('Post', () => {
     });
 
     // indented pullquote
-    data.content.trim().should.contains(`<pre><code>${escapeSwigTag('{% pullquote %}foo foo foo{% endpullquote %}')}</code></pre>`);
+    data.content.trim().should.contains(`<pre><code>${escapeSwigTag('{% pullquote %}foo foo foo{% endpullquote %}')}\n</code></pre>`);
     data.content.trim().should.contains('<p>test001</p>');
     // pullquote tag
     data.content.trim().should.contains('<blockquote class="pullquote"><p>bar bar bar</p>\n</blockquote>');
     data.content.trim().should.contains('<p>test002</p>');
     // indented youtube tag
-    data.content.trim().should.contains(`<pre><code>${escapeSwigTag('{% youtube https://example.com/demo.mp4 %}')}</code></pre>`);
+    data.content.trim().should.contains(`<pre><code>${escapeSwigTag('{% youtube https://example.com/demo.mp4 %}')}\n</code></pre>`);
     // youtube tag
     data.content.trim().should.contains('<div class="video-container"><iframe src="https://www.youtube.com/embed/https://example.com/sample.mp4" frameborder="0" loading="lazy" allowfullscreen></iframe></div>');
   });
