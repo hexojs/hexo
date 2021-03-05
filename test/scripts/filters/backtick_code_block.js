@@ -446,6 +446,39 @@ describe('Backtick code block', () => {
       codeBlock(data);
       data.content.should.eql('<hexoPostRenderCodeBlock>' + highlight(code + '\nfoo```\n\nbar```\nbaz', {}) + '</hexoPostRenderCodeBlock>');
     });
+
+    // test for Issue #4573
+    it('ignore trailing spaces', () => {
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '``` ',
+          '``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      codeBlock(data);
+      data.content.should.not.contain('`');
+    });
+
+    // test for Issue #4573
+    it('ignore trailing spaces but not newlines', () => {
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```',
+          '',
+          '# New line'
+        ].join('\n')
+      };
+
+      codeBlock(data);
+      data.content.should.contain('\n\n# New line');
+    });
   });
 
   describe('prismjs', () => {

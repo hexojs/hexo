@@ -1,6 +1,6 @@
 {
   "name": "hexo",
-  "version": "5.1.1",
+  "version": "5.4.0",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
   "main": "lib/hexo",
   "bin": {
@@ -49,7 +49,7 @@
     "hexo-i18n": "^1.0.0",
     "hexo-log": "^2.0.0",
     "hexo-util": "^2.4.0",
-    "js-yaml": "^3.12.0",
+    "js-yaml": "^4.0.0",
     "micromatch": "^4.0.2",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
@@ -64,7 +64,8 @@
   },
   "devDependencies": {
     "@easyops/git-exec-and-restage": "^1.0.4",
-    "chai": "^4.1.2",
+    "0x": "^4.10.2",
+    "chai": "^4.2.0",
     "cheerio": "0.22.0",
     "decache": "^4.5.1",
     "eslint": "^7.0.0",

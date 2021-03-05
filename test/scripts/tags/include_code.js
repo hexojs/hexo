@@ -1,15 +1,16 @@
 'use strict';
 
-const pathFn = require('path');
-const fs = require('hexo-fs');
+const { join } = require('path');
+const { rmdir, writeFile } = require('hexo-fs');
 const { highlight, prismHighlight } = require('hexo-util');
 const Promise = require('bluebird');
 
 describe('include_code', () => {
   const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo(pathFn.join(__dirname, 'include_code_test'));
+  const hexo = new Hexo(join(__dirname, 'include_code_test'));
   const includeCode = Promise.method(require('../../../lib/plugins/tag/include_code')(hexo));
-  const path = pathFn.join(hexo.source_dir, hexo.config.code_dir, 'test.js');
+  const path = join(hexo.source_dir, hexo.config.code_dir, 'test.js');
+  const defaultCfg = JSON.parse(JSON.stringify(hexo.config));
 
   const fixture = [
     'if (tired && night){',
@@ -19,12 +20,16 @@ describe('include_code', () => {
 
   const code = args => includeCode(args.split(' '));
 
-  before(() => fs.writeFile(path, fixture));
+  before(() => writeFile(path, fixture));
 
-  after(() => fs.rmdir(hexo.base_dir));
+  beforeEach(() => {
+    hexo.config = JSON.parse(JSON.stringify(defaultCfg));
+  });
+
+  after(() => rmdir(hexo.base_dir));
 
   describe('highlightjs', () => {
-    it('default', () => {
+    it('default', async () => {
       hexo.config.highlight.enable = true;
       hexo.config.prismjs.enable = false;
 
@@ -33,34 +38,31 @@ describe('include_code', () => {
         caption: '<span>test.js</span><a href="/downloads/code/test.js">view raw</a>'
       });
 
-      return code('test.js').then(result => {
-        result.should.eql(expected);
-      });
+      const result = await code('test.js');
+      result.should.eql(expected);
     });
 
-    it('title', () => {
+    it('title', async () => {
       const expected = highlight(fixture, {
         lang: 'js',
         caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
       });
 
-      return code('Hello world test.js').then(result => {
-        result.should.eql(expected);
-      });
+      const result = await code('Hello world test.js');
+      result.should.eql(expected);
     });
 
-    it('lang', () => {
+    it('lang', async () => {
       const expected = highlight(fixture, {
         lang: 'js',
         caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
       });
 
-      return code('Hello world lang:js test.js').then(result => {
-        result.should.eql(expected);
-      });
+      const result = await code('Hello world lang:js test.js');
+      result.should.eql(expected);
     });
 
-    it('from', () => {
+    it('from', async () => {
       const fixture = [
         '}'
       ].join('\n');
@@ -69,12 +71,11 @@ describe('include_code', () => {
         caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
       });
 
-      return code('Hello world lang:js from:3 test.js').then(result => {
-        result.should.eql(expected);
-      });
+      const result = await code('Hello world lang:js from:3 test.js');
+      result.should.eql(expected);
     });
 
-    it('to', () => {
+    it('to', async () => {
       const fixture = [
         'if (tired && night){',
         '  sleep();'
@@ -84,12 +85,11 @@ describe('include_code', () => {
         caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
       });
 
-      return code('Hello world lang:js to:2 test.js').then(result => {
-        result.should.eql(expected);
-      });
+      const result = await code('Hello world lang:js to:2 test.js');
+      result.should.eql(expected);
     });
 
-    it('from and to', () => {
+    it('from and to', async () => {
       const fixture = [
         'sleep();'
       ].join('\n');
@@ -98,22 +98,20 @@ describe('include_code', () => {
         caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
       });
 
-      return code('Hello world lang:js from:2 to:2 test.js').then(result => {
-        result.should.eql(expected);
-      });
+      const result = await code('Hello world lang:js from:2 to:2 test.js');
+      result.should.eql(expected);
     });
 
-    it('file not found', () => code('nothing').then(result => {
+    it('file not found', async () => {
+      const result = await code('nothing');
       should.not.exist(result);
-    }));
+    });
 
-    it('disabled', () => {
+    it('disabled', async () => {
       hexo.config.highlight.enable = false;
 
-      return code('test.js').then(result => {
-        result.should.eql('<pre><code>' + fixture + '</code></pre>');
-        hexo.config.highlight.enable = true;
-      });
+      const result = await code('test.js');
+      result.should.eql('<pre><code>' + fixture + '</code></pre>');
     });
   });
 
@@ -123,29 +121,27 @@ describe('include_code', () => {
       hexo.config.prismjs.enable = true;
     });
 
-    it('default', () => {
+    it('default', async () => {
       const expected = prismHighlight(fixture, {
         lang: 'js',
         caption: '<span>test.js</span><a href="/downloads/code/test.js">view raw</a>'
       });
 
-      return code('test.js').then(result => {
-        result.should.eql(expected);
-      });
+      const result = await code('test.js');
+      result.should.eql(expected);
     });
 
-    it('lang', () => {
+    it('lang', async () => {
       const expected = prismHighlight(fixture, {
         lang: 'js',
         caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
       });
 
-      return code('Hello world lang:js test.js').then(result => {
-        result.should.eql(expected);
-      });
+      const result = await code('Hello world lang:js test.js');
+      result.should.eql(expected);
     });
 
-    it('from', () => {
+    it('from', async () => {
       const fixture = [
         '}'
       ].join('\n');
@@ -154,12 +150,11 @@ describe('include_code', () => {
         caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
       });
 
-      return code('Hello world lang:js from:3 test.js').then(result => {
-        result.should.eql(expected);
-      });
+      const result = await code('Hello world lang:js from:3 test.js');
+      result.should.eql(expected);
     });
 
-    it('to', () => {
+    it('to', async () => {
       const fixture = [
         'if (tired && night){',
         '  sleep();'
@@ -169,12 +164,11 @@ describe('include_code', () => {
         caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
       });
 
-      return code('Hello world lang:js to:2 test.js').then(result => {
-        result.should.eql(expected);
-      });
+      const result = await code('Hello world lang:js to:2 test.js');
+      result.should.eql(expected);
     });
 
-    it('from and to', () => {
+    it('from and to', async () => {
       const fixture = [
         'sleep();'
       ].join('\n');
@@ -183,9 +177,8 @@ describe('include_code', () => {
         caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
       });
 
-      return code('Hello world lang:js from:2 to:2 test.js').then(result => {
-        result.should.eql(expected);
-      });
+      const result = await code('Hello world lang:js from:2 to:2 test.js');
+      result.should.eql(expected);
     });
 
     it('title', async () => {
@@ -198,17 +191,17 @@ describe('include_code', () => {
       result.should.eql(expected);
     });
 
-    it('file not found', () => code('nothing').then(result => {
+    it('file not found', async () => {
+      const result = await code('nothing');
       should.not.exist(result);
-    }));
+    });
 
-    it('disabled', () => {
+    it('disabled', async () => {
       hexo.config.highlight.enable = false;
       hexo.config.prismjs.enable = false;
 
-      return code('test.js').then(result => {
-        result.should.eql('<pre><code>' + fixture + '</code></pre>');
-      });
+      const result = await code('test.js');
+      result.should.eql('<pre><code>' + fixture + '</code></pre>');
     });
   });
 });

@@ -1,0 +1,18 @@
+name: Close Stale Issues
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/stale@v3
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        stale-issue-message: >
+          This issue has been automatically marked as stale because lack of
+          recent activity. It will be closed if no further activity occurs. Thank you
+          for your contributions.
+        exempt-issue-labels: bug,discussion,help wanted,need-verify,need-investigation,pending-reply,proposal,feature-request,enhancement,documentation

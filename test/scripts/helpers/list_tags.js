@@ -116,6 +116,25 @@ describe('list_tags', () => {
     ].join(''));
   });
 
+  it('custom class not list', () => {
+    const result = listTags({
+      style: false,
+      show_count: true,
+      separator: '',
+      class: {
+        a: 'tempor',
+        label: 'lorem',
+        count: 'dolor'
+      }
+    });
+
+    result.should.eql([
+      '<a class="tempor" href="/tags/bar/" rel="tag"><span class="lorem">bar</span><span class="dolor">1</span></a>',
+      '<a class="tempor" href="/tags/baz/" rel="tag"><span class="lorem">baz</span><span class="dolor">2</span></a>',
+      '<a class="tempor" href="/tags/foo/" rel="tag"><span class="lorem">foo</span><span class="dolor">1</span></a>'
+    ].join(''));
+  });
+
   it('orderby', () => {
     const result = listTags({
       orderby: 'length'

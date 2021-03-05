@@ -13,15 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Cache NPM dependencies
-        uses: actions/cache@v1
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-npm-cache
-          restore-keys: ${{ runner.os }}-npm-cache
       - name: Install Dependencies
         run: npm install
       - name: Test
@@ -37,15 +31,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Cache NPM dependencies
-        uses: actions/cache@v1
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-npm-cache
-          restore-keys: ${{ runner.os }}-npm-cache
       - name: Install Dependencies
         run: npm install
       - name: Coverage
