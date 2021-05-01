@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: ['10', '12', '14']
+        node-version: ['12', '14', '16']
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
@@ -24,11 +24,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Cache NPM dependencies
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ runner.OS }}-${{ matrix.node-version }}-npm-cache
       - name: Install dependencies
         run: npm install --silent
       - name: Running benchmark
@@ -38,7 +33,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: ['10', '12', '14']
+        node-version: ['12', '14', '16']
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
@@ -46,11 +41,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Cache NPM dependencies
-        uses: actions/cache@v2
-        with:
-          path: node_modules
-          key: ${{ runner.OS }}-${{ matrix.node-version }}-npm-cache
       - name: Install dependencies
         run: npm install --silent
       - name: Running profiling
