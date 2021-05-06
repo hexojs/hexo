@@ -9,7 +9,7 @@
   "scripts": {
     "eslint": "eslint .",
     "test": "mocha test/index.js",
-    "test-cov": "nyc --reporter=lcovonly npm run test -- --no-parallel",
+    "test-cov": "nyc --reporter=lcovonly npm test -- --no-parallel",
     "lint-staged": "lint-staged"
   },
   "directories": {
