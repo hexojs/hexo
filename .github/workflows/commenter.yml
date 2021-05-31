@@ -1,0 +1,20 @@
+name: Commenter
+
+on: [pull_request_target]
+
+jobs:
+  tester:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: |
+            ## How to test
+
+            ```sh
+            git clone -b ${{ github.head_ref }} https://github.com/${{ github.repository }}.git
+            cd hexo
+            npm install
+            npm test
+            ```
