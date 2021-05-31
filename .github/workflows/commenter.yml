@@ -3,7 +3,7 @@ name: Commenter
 on: [pull_request_target]
 
 jobs:
-  tester:
+  commenter:
     runs-on: ubuntu-latest
     steps:
       - name: Comment PR
