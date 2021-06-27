@@ -39,6 +39,12 @@
 $ npm install hexo-cli -g
 ```
 
+Install with [brew](https://brew.sh/) on macOS and Linux:
+
+```bash
+$ brew install hexo
+```
+
 **Setup your blog**
 
 ``` bash
