@@ -89,7 +89,7 @@ Also, we welcome PR or issue to [official-plugins](https://github.com/hexojs).
 
 ## Sponsors
 
-<a href="https://www.jetbrains.com/"><img src="/.github/jetbrains-variant-4.svg" alt="JetBrains" width="200"/></a>
+<a href="https://linktr.ee/rss3"><img src="https://d1fdloi71mui9q.cloudfront.net/8xxahBqRTnecXgXKObeo_L8ks2KjC31fmM5Nd" alt="RSS3" width="200"/></a>
 
 ## License
 
