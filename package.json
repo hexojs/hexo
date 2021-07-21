@@ -9,8 +9,7 @@
   "scripts": {
     "eslint": "eslint .",
     "test": "mocha test/index.js",
-    "test-cov": "nyc --reporter=lcovonly npm run test -- --no-parallel",
-    "lint-staged": "lint-staged"
+    "test-cov": "nyc --reporter=lcovonly npm test -- --no-parallel"
   },
   "directories": {
     "lib": "./lib",
@@ -70,12 +69,12 @@
     "decache": "^4.5.1",
     "eslint": "^7.0.0",
     "eslint-config-hexo": "^4.1.0",
-    "hexo-renderer-marked": "^3.0.0",
+    "hexo-renderer-marked": "^4.0.0",
     "husky": "^4.2.5",
-    "lint-staged": "^10.2.0",
+    "lint-staged": "^11.0.0",
     "mocha": "^8.0.1",
     "nyc": "^15.0.0",
-    "sinon": "^9.0.2"
+    "sinon": "^10.0.0"
   },
   "engines": {
     "node": ">=10.13.0"

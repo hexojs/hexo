@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: ['10.x', '12.x', '14.x']
+        node-version: ['12.x', '14.x', '16.x']
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
@@ -19,7 +19,7 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Test
-        run: npm run test
+        run: npm test -- --no-parallel
         env:
           CI: true
   coverage:
@@ -27,7 +27,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: ['12.x']
+        node-version: ['14.x']
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js ${{ matrix.node-version }}
