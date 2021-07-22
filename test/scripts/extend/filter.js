@@ -94,13 +94,15 @@ describe('Filter', () => {
   it('exec()', async () => {
     const f = new Filter();
 
-    const filter1 = spy(data => {
+    const filter1 = spy((data, origin) => {
       data.should.eql('');
+      origin.should.eql('');
       return data + 'foo';
     });
 
-    const filter2 = spy(data => {
+    const filter2 = spy((data, origin) => {
       data.should.eql('foo');
+      origin.should.eql('');
       return data + 'bar';
     });
 
@@ -117,13 +119,15 @@ describe('Filter', () => {
   it('exec() - pointer', async () => {
     const f = new Filter();
 
-    const filter1 = spy(data => {
+    const filter1 = spy((data, origin) => {
       data.should.eql({});
+      origin.should.eql({});
       data.foo = 1;
     });
 
-    const filter2 = spy(data => {
+    const filter2 = spy((data, origin) => {
       data.should.eql({foo: 1});
+      origin.should.eql({foo: 1});
       data.bar = 2;
     });
 
@@ -140,14 +144,16 @@ describe('Filter', () => {
   it('exec() - args', async () => {
     const f = new Filter();
 
-    const filter1 = spy((data, arg1, arg2) => {
+    const filter1 = spy((data, arg1, arg2, arg3) => {
       arg1.should.eql(1);
       arg2.should.eql(2);
+      arg3.should.eql({});
     });
 
-    const filter2 = spy((data, arg1, arg2) => {
+    const filter2 = spy((data, arg1, arg2, arg3) => {
       arg1.should.eql(1);
       arg2.should.eql(2);
+      arg3.should.eql({});
     });
 
     f.register('test', filter1);
@@ -180,13 +186,15 @@ describe('Filter', () => {
   it('execSync()', () => {
     const f = new Filter();
 
-    const filter1 = spy(data => {
+    const filter1 = spy((data, origin) => {
       data.should.eql('');
+      origin.should.eql('');
       return data + 'foo';
     });
 
-    const filter2 = spy(data => {
+    const filter2 = spy((data, origin) => {
       data.should.eql('foo');
+      origin.should.eql('');
       return data + 'bar';
     });
 
@@ -202,13 +210,15 @@ describe('Filter', () => {
   it('execSync() - pointer', () => {
     const f = new Filter();
 
-    const filter1 = spy(data => {
+    const filter1 = spy((data, origin) => {
       data.should.eql({});
+      origin.should.eql({});
       data.foo = 1;
     });
 
-    const filter2 = spy(data => {
+    const filter2 = spy((data, origin) => {
       data.should.eql({foo: 1});
+      origin.should.eql({foo: 1});
       data.bar = 2;
     });
 
@@ -224,14 +234,16 @@ describe('Filter', () => {
   it('execSync() - args', () => {
     const f = new Filter();
 
-    const filter1 = spy((data, arg1, arg2) => {
+    const filter1 = spy((data, arg1, arg2, arg3) => {
       arg1.should.eql(1);
       arg2.should.eql(2);
+      arg3.should.eql({});
     });
 
-    const filter2 = spy((data, arg1, arg2) => {
+    const filter2 = spy((data, arg1, arg2, arg3) => {
       arg1.should.eql(1);
       arg2.should.eql(2);
+      arg3.should.eql({});
     });
 
     f.register('test', filter1);
