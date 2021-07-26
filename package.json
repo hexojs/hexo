@@ -72,7 +72,7 @@
     "hexo-renderer-marked": "^4.0.0",
     "husky": "^4.2.5",
     "lint-staged": "^11.0.0",
-    "mocha": "^8.0.1",
+    "mocha": "^9.0.3",
     "nyc": "^15.0.0",
     "sinon": "^10.0.0"
   },
