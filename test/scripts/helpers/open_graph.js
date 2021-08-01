@@ -317,6 +317,36 @@ describe('open_graph', () => {
     result.should.have.string(meta({property: 'og:image', content: urlFn.resolve(config.url, '/foo/bar/test.jpg')}));
   });
 
+  it('twitter_image - default same as og:image', () => {
+    const result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    }, {images: 'image.jpg'});
+
+    result.should.have.string(meta({name: 'twitter:image', content: hexo.config.url + '/image.jpg'}));
+  });
+
+  it('twitter_image - different URLs for og:image and twitter:image', () => {
+    const result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    }, {twitter_image: 'twitter.jpg', images: 'image.jpg'});
+
+    result.should.have.string(meta({name: 'twitter:image', content: hexo.config.url + '/twitter.jpg'}));
+  });
+
+  it('images - twitter_image absolute url', () => {
+    const result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    }, {twitter_image: 'https://hexo.io/twitter.jpg', images: 'image.jpg'});
+
+    result.should.have.string(meta({name: 'twitter:image', content: 'https://hexo.io/twitter.jpg'}));
+  });
+
   it('site_name - options', () => {
     const result = openGraph.call({
       page: {},
