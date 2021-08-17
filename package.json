@@ -55,7 +55,7 @@
     "nunjucks": "^3.2.1",
     "pretty-hrtime": "^1.0.3",
     "resolve": "^1.8.1",
-    "strip-ansi": "^6.0.0",
+    "strip-ansi": "^7.0.0",
     "text-table": "^0.2.0",
     "tildify": "^2.0.0",
     "titlecase": "^1.1.2",
