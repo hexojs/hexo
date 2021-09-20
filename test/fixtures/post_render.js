@@ -16,11 +16,11 @@ exports.content = [
   '',
   '## Another title',
   '{% blockquote %}',
-  'quote content',
+  'quote content 1',
   '{% endblockquote %}',
   '',
   '{% quote Hello World %}',
-  'quote content',
+  'quote content 2',
   '{% endquote %}'
 ].join('\n');
 
@@ -30,9 +30,9 @@ exports.expected = [
   '\n<p>some content</p>\n',
   '<h2 id="Another-title"><a href="#Another-title" class="headerlink" title="Another title"></a>Another title</h2>',
   '<blockquote>',
-  '<p>quote content</p>\n',
+  '<p>quote content 1</p>\n',
   '</blockquote>\n\n',
-  '<blockquote><p>quote content</p>\n',
+  '<blockquote><p>quote content 2</p>',
   '<footer><strong>Hello World</strong></footer></blockquote>'
 ].join('');
 
@@ -42,10 +42,10 @@ exports.expected_disable_nunjucks = [
   '\n<p>some content</p>\n',
   '<h2 id="Another-title"><a href="#Another-title" class="headerlink" title="Another title"></a>Another title</h2>',
   '<p>{% blockquote %}<br>',
-  'quote content<br>',
+  'quote content 1<br>',
   '{% endblockquote %}</p>\n',
   '<p>{% quote Hello World %}<br>',
-  'quote content<br>',
+  'quote content 2<br>',
   '{% endquote %}</p>'
 ].join('');
 
