@@ -29,33 +29,30 @@ describe('Load plugins', () => {
     delete hexo._script_test;
   }
 
-  function createPackageFile(...args) {
+  function createPackageFile(name, path) {
     const pkg = {
       name: 'hexo-site',
       version: '0.0.0',
       private: true,
-      dependencies: {}
+      dependencies: {
+        [name]: '*'
+      }
     };
 
-    for (const arg of args) {
-      pkg.dependencies[arg] = '*';
-    }
-
-    return fs.writeFile(join(hexo.base_dir, 'package.json'), JSON.stringify(pkg, null, '  '));
+    path = path || join(hexo.base_dir, 'package.json');
+    return fs.writeFile(path, JSON.stringify(pkg, null, '  '));
   }
 
-  function createPackageFileWithDevDeps(...args) {
+  function createPackageFileWithDevDeps(name) {
     const pkg = {
       name: 'hexo-site',
       version: '0.0.0',
       private: true,
       dependencies: {},
-      devDependencies: {}
+      devDependencies: {
+        [name]: '*'
+      }
     };
-
-    for (let i = 0, len = args.length; i < len; i++) {
-      pkg.devDependencies[args[i]] = '*';
-    }
 
     return fs.writeFile(join(hexo.base_dir, 'package.json'), JSON.stringify(pkg, null, '  '));
   }
@@ -66,6 +63,10 @@ describe('Load plugins', () => {
   before(() => fs.mkdir(hexo.base_dir));
 
   after(() => fs.rmdir(hexo.base_dir));
+
+  afterEach(() => {
+    createPackageFile('hexo-another-plugin');
+  });
 
   it('load plugins', () => {
     const name = 'hexo-plugin-test';
@@ -106,9 +107,19 @@ describe('Load plugins', () => {
     });
   });
 
-  it('ignore plugin whose name is "hexo-theme-[hexo.config.theme]"', async () => {
-    hexo.config.theme = 'test_theme';
+  it('load plugins in the theme\'s package.json', async () => {
+    const name = 'hexo-plugin-test';
+    const path = join(hexo.plugin_dir, name, 'index.js');
+    return Promise.all([
+      createPackageFile(name, join(hexo.theme_dir, 'package.json')),
+      fs.writeFile(path, script)
+    ]).then(() => loadPlugins(hexo)).then(() => {
+      validate(path);
+      return fs.unlink(path);
+    });
+  });
 
+  it('ignore plugin whose name is started with "hexo-theme-"', async () => {
     const script = 'hexo._script_test = true';
     const name = 'hexo-theme-test_theme';
     const path = join(hexo.plugin_dir, name, 'index.js');
@@ -124,9 +135,7 @@ describe('Load plugins', () => {
     return fs.unlink(path);
   });
 
-  it('ignore plugin whose name endswith "hexo-theme-[hexo.config.theme]"', async () => {
-    hexo.config.theme = 'test_theme';
-
+  it('ignore scoped plugin whose name is started with "hexo-theme-"', async () => {
     const script = 'hexo._script_test = true';
     const name = '@hexojs/hexo-theme-test_theme';
     const path = join(hexo.plugin_dir, name, 'index.js');
