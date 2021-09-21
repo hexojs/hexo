@@ -64,8 +64,8 @@ describe('Load plugins', () => {
 
   after(() => fs.rmdir(hexo.base_dir));
 
-  afterEach(() => {
-    createPackageFile('hexo-another-plugin');
+  afterEach(async () => {
+    await createPackageFile('hexo-another-plugin');
   });
 
   it('load plugins', () => {
