@@ -902,6 +902,28 @@ describe('Post', () => {
     ].join('\n'));
   });
 
+  it('render() - shouln\'t break curly brackets', async () => {
+    hexo.config.prismjs.enable = true;
+    hexo.config.highlight.enable = false;
+
+    const content = [
+      '\\begin{equation}',
+      'E=h\\nu',
+      '\\end{equation}'
+    ].join('\n');
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.should.include('\\begin{equation}');
+    data.content.should.include('\\end{equation}');
+
+    hexo.config.prismjs.enable = false;
+    hexo.config.highlight.enable = true;
+  });
+
   // #2321
   it('render() - allow backtick code block in "blockquote" tag plugin', async () => {
     const code = 'alert("Hello world")';
