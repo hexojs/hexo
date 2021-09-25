@@ -9,7 +9,8 @@
   "scripts": {
     "eslint": "eslint .",
     "test": "mocha test/index.js",
-    "test-cov": "nyc --reporter=lcovonly npm test -- --no-parallel"
+    "test-cov": "nyc --reporter=lcovonly npm test -- --no-parallel",
+    "prepare": "husky install"
   },
   "directories": {
     "lib": "./lib",
@@ -78,10 +79,5 @@
   },
   "engines": {
     "node": ">=12.13.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   }
 }
