@@ -9,7 +9,8 @@
   "scripts": {
     "eslint": "eslint .",
     "test": "mocha test/index.js",
-    "test-cov": "nyc --reporter=lcovonly npm test -- --no-parallel"
+    "test-cov": "nyc --reporter=lcovonly npm test -- --no-parallel",
+    "prepare": "husky install"
   },
   "directories": {
     "lib": "./lib",
@@ -70,7 +71,7 @@
     "eslint": "^7.0.0",
     "eslint-config-hexo": "^4.1.0",
     "hexo-renderer-marked": "^4.0.0",
-    "husky": "^4.2.5",
+    "husky": "^7.0.2",
     "lint-staged": "^11.0.0",
     "mocha": "^9.1.1",
     "nyc": "^15.0.0",
@@ -78,10 +79,5 @@
   },
   "engines": {
     "node": ">=12.13.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   }
 }
