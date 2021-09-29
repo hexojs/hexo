@@ -1335,4 +1335,22 @@ describe('Post', () => {
     hexo.config.prismjs.enable = false;
     hexo.config.highlight.enable = true;
   });
+
+  it('render() - empty tag name', async () => {
+    hexo.config.prismjs.enable = true;
+    hexo.config.highlight.enable = false;
+
+    const content = 'Disable rendering of Nunjucks tag `{{ }}` / `{% %}`';
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.should.include(escapeSwigTag('{{ }}'));
+    data.content.should.include(escapeSwigTag('{% %}'));
+
+    hexo.config.prismjs.enable = false;
+    hexo.config.highlight.enable = true;
+  });
 });
