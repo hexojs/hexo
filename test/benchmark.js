@@ -6,7 +6,7 @@ const { spawn: spawnAsync } = require('hexo-util');
 const { rmdir, exists } = require('hexo-fs');
 const { join, resolve } = require('path');
 const log = require('hexo-log')();
-const { red } = require('chalk');
+const { red } = require('nanocolors');
 const hooks = [
   { regex: /Hexo version/, tag: 'hexo-begin' },
   { regex: /Start processing/, tag: 'processing' },
