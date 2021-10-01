@@ -50,6 +50,7 @@
     "hexo-util": "^2.4.0",
     "js-yaml": "^4.0.0",
     "micromatch": "^4.0.2",
+    "moize": "^6.1.0",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",
     "nanocolors": "^0.2.12",
