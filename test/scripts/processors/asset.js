@@ -86,8 +86,10 @@ describe('asset', () => {
     asset.modified.should.be.true;
     asset.renderable.should.be.false;
 
-    asset.remove();
-    unlink(file.source);
+    return Promise.all([
+      asset.remove(),
+      unlink(file.source)
+    ]);
   });
 
   it('asset - type: create (when source path is configed to parent directory)', async () => {
@@ -136,8 +138,10 @@ describe('asset', () => {
     asset.modified.should.be.true;
     asset.renderable.should.be.false;
 
-    asset.remove();
-    unlink(file.source);
+    return Promise.all([
+      asset.remove(),
+      unlink(file.source)
+    ]);
   });
 
   it('asset - type: skip', async () => {
