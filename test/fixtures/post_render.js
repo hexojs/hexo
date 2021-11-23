@@ -32,7 +32,7 @@ exports.expected = [
   '<blockquote>',
   '<p>quote content 1</p>\n',
   '</blockquote>\n\n',
-  '<blockquote><p>quote content 2</p>',
+  '<blockquote><p>quote content 2</p>\n',
   '<footer><strong>Hello World</strong></footer></blockquote>'
 ].join('');
 
