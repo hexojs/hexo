@@ -65,7 +65,7 @@
   },
   "devDependencies": {
     "@easyops/git-exec-and-restage": "^1.0.4",
-    "0x": "^4.10.2",
+    "0x": "^5.0.0",
     "chai": "^4.2.0",
     "cheerio": "0.22.0",
     "decache": "^4.5.1",
