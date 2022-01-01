@@ -88,6 +88,18 @@ describe('post', () => {
     hexo.config.skip_render = ['_posts/foo/**'];
     pattern.match('_posts/foo/bar.html').should.have.property('renderable', false);
     hexo.config.skip_render = [];
+
+    // Skip render in the subdir assets if post_asset_folder is enabled
+    hexo.config.post_asset_folder = true;
+    pattern.match('_posts/foo/subdir/bar.html').should.have.property('renderable', false);
+    pattern.match('_posts/foo/subdir/bar.css').should.have.property('renderable', false);
+    pattern.match('_posts/foo/subdir/bar.js').should.have.property('renderable', false);
+    hexo.config.post_asset_folder = false;
+
+    // Render in the subdir assets if post_asset_folder is disabled
+    pattern.match('_posts/foo/subdir/bar.html').should.have.property('renderable', true);
+    pattern.match('_posts/foo/subdir/bar.css').should.have.property('renderable', true);
+    pattern.match('_posts/foo/subdir/bar.js').should.have.property('renderable', true);
   });
 
   it('asset - post_asset_folder disabled', async () => {
