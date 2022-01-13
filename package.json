@@ -49,6 +49,7 @@
     "hexo-log": "^3.0.0",
     "hexo-util": "^2.4.0",
     "js-yaml": "^4.0.0",
+    "js-yaml-js-types": "^1.0.0",
     "micromatch": "^4.0.2",
     "moize": "^6.1.0",
     "moment": "^2.22.2",
