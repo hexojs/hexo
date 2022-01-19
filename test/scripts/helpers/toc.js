@@ -434,4 +434,46 @@ describe('toc', () => {
 
     toc(input).should.eql('');
   });
+
+  it('unnumbered headings', () => {
+    const className = 'toc';
+
+    const input = [
+      '<h3>Title 1</h3>',
+      '<h3>Title 2</h3>',
+      '<h4>Title 2.1</h4>',
+      '<h3 data-toc-unnumbered="true">Reference</h3>'
+    ].join('');
+
+    const expected = [
+      `<ol class="${className}">`,
+      `<li class="${className}-item ${className}-level-3">`,
+      `<a class="${className}-link"><span class="${className}-number">1.</span> `,
+      `<span class="${className}-text">Title 1</span>`,
+      '</a>',
+      '</li>',
+      `<li class="${className}-item ${className}-level-3">`,
+      `<a class="${className}-link">`,
+      `<span class="${className}-number">2.</span> `,
+      `<span class="${className}-text">Title 2</span>`,
+      '</a>',
+      `<ol class="${className}-child">`,
+      `<li class="${className}-item ${className}-level-4">`,
+      `<a class="${className}-link">`,
+      `<span class="${className}-number">2.1.</span> `,
+      `<span class="${className}-text">Title 2.1</span>`,
+      '</a>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      `<li class="${className}-item ${className}-level-3">`,
+      `<a class="${className}-link">`,
+      `<span class="${className}-text">Reference</span>`,
+      '</a>',
+      '</li>',
+      '</ol>'
+    ].join('');
+
+    toc(input, { list_number: true, class: className }).should.eql(expected);
+  });
 });
