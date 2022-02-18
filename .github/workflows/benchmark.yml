@@ -52,3 +52,8 @@ jobs:
           project: ./.tmp-hexo-theme-unit-test/0x/
           login: ${{ secrets.SURGE_LOGIN }}
           token: ${{ secrets.SURGE_TOKEN }}
+      - name: Comment PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: |
+            Publish flamegraph to https://${{ github.sha }}-${{ matrix.node-version }}-hexo.surge.sh/flamegraph.html
