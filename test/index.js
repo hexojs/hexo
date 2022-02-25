@@ -1,6 +1,7 @@
 'use strict';
 
-require('chai');
+const chai = require('chai');
+global.should = chai.should();
 
 describe('Hexo', () => {
   require('./scripts/box');
