@@ -55,16 +55,30 @@ if (!isProfiling && !isBenchmark) {
 })();
 
 async function run_benchmark(name) {
+  let measureFinished = false;
+
   return new Promise(resolve => {
     const result = {};
     const obs = new PerformanceObserver(list => {
-      const { name, duration: _duration } = list.getEntries()[0];
-      const duration = _duration / 1000;
-      result[name] = {
-        'Cost time (s)': `${duration.toFixed(2)}s`
-      };
-      if (duration > 20) {
-        log.fatal(red('!! Performance regression detected !!'));
+      list
+        .getEntries()
+        .sort((a, b) => a.detail - b.detail)
+        .forEach(entry => {
+          const { name, duration: _duration } = entry;
+          const duration = _duration / 1000;
+          result[name] = {
+            'Cost time (s)': `${duration.toFixed(2)}s`
+          };
+          if (duration > 20) {
+            log.fatal(red('!! Performance regression detected !!'));
+          }
+        });
+
+      if (measureFinished) {
+        obs.disconnect();
+        console.log(name);
+        console.table(result);
+        resolve(result);
       }
     });
     obs.observe({ entryTypes: ['measure'] });
@@ -84,19 +98,42 @@ async function run_benchmark(name) {
       performance.measure('Load Plugin/Scripts/Database', 'hexo-begin', 'processing');
 
       if (name === 'Hot processing') {
-        performance.measure('Process Source', 'processing', 'file-loaded');
+        performance.measure('Process Source', {
+          start: 'processing',
+          end: 'file-loaded',
+          detail: 0
+        });
       } else {
-        performance.measure('Process Source', 'processing', 'render-post');
-        performance.measure('Render Posts', 'render-post', 'file-loaded');
+        performance.measure('Process Source', {
+          start: 'processing',
+          end: 'render-post',
+          detail: 1
+        });
+        performance.measure('Render Posts', {
+          start: 'render-post',
+          end: 'file-loaded',
+          detail: 2
+        });
       }
 
-      performance.measure('Render Files', 'file-loaded', 'generated');
-      performance.measure('Save Database', 'generated', 'database-saved');
-      performance.measure('Total time', 'hexo-begin', 'database-saved');
-      console.log(name);
-      console.table(result);
-      obs.disconnect();
-      resolve();
+      performance.measure('Render Files', {
+        start: 'file-loaded',
+        end: 'generated',
+        detail: 3
+      });
+      performance.measure('Save Database', {
+        start: 'generated',
+        end: 'database-saved',
+        detail: 4
+      });
+
+      performance.measure('Total time', {
+        start: 'hexo-begin',
+        end: 'database-saved',
+        detail: 5
+      });
+
+      measureFinished = true;
     });
   });
 }
