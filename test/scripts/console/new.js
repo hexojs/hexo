@@ -157,6 +157,46 @@ describe('new', () => {
     await unlink(path);
   });
 
+  it('path - number (issue #4334)', async () => {
+    const date = moment(now);
+    const path = join(hexo.source_dir, '_posts', '404.md');
+    const body = [
+      'title: Page not found',
+      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+      'tags:',
+      '---'
+    ].join('\n') + '\n';
+
+    await n({
+      _: ['Page not found'],
+      path: 404
+    });
+    const content = await readFile(path);
+    content.should.eql(body);
+
+    await unlink(path);
+  });
+
+  it('path - hexadecimal number', async () => {
+    const date = moment(now);
+    const path = join(hexo.source_dir, '_posts', '0x400.md');
+    const body = [
+      'title: test',
+      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+      'tags:',
+      '---'
+    ].join('\n') + '\n';
+
+    await n({
+      _: ['test'],
+      path: 0x400
+    });
+    const content = await readFile(path);
+    content.should.eql(body);
+
+    await unlink(path);
+  });
+
   it('rename if target existed', async () => {
     const path = join(hexo.source_dir, '_posts', 'Hello-World-1.md');
 
