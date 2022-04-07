@@ -41,11 +41,6 @@ Please check followings before submitting a new issue.
 ```
 ```
 
-**Your theme `_config.yml`** (Optional)
-
-```
-```
-
 **Hexo and Plugin version(`npm ls --depth 0`)**
 
 ```

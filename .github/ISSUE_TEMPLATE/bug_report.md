@@ -70,11 +70,6 @@ Please paste the content of your _config.yml between two "```" provided below
 ```yaml
 ```
 
-**Your theme `_config.yml`** (Optional)
-
-```
-```
-
 **Hexo and Plugin version(`npm ls --depth 0`)**
 
 <!--
