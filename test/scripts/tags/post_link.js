@@ -57,8 +57,8 @@ describe('post_link', () => {
       .should.eql('<a href="/title-with-tag/" title="This is a &lt;b&gt;Bold&lt;&#x2F;b&gt; &quot;statement&quot;">This is a <b>Bold</b> "statement"</a>');
   });
 
-  it('no slug', () => {
-    postLink([]).should.eql('<a href="#">Post not found: Invalid post_link</a>');
+  it('should throw if no slug', () => {
+    should.throw(() => postLink([]), Error, /Post not found: no slug for post_link\./);
   });
 
   it('post not found', () => {
