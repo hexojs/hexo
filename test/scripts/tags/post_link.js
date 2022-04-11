@@ -58,7 +58,7 @@ describe('post_link', () => {
   });
 
   it('should throw if no slug', () => {
-    should.throw(() => postLink([]), Error, /Post not found: no slug for post_link\./);
+    should.throw(() => postLink([]), Error, /Post not found: "undefined" doesn't exist for \{% post_link %\}/);
   });
 
   it('should throw if post not found', () => {
