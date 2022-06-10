@@ -8,6 +8,7 @@ describe('Console', () => {
   require('./migrate');
   require('./new');
   require('./publish');
+  require('./unpublish');
   require('./render');
   require('./list');
   require('./list_post');
