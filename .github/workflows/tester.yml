@@ -2,6 +2,9 @@ name: Tester
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
 jobs:
   tester:
     runs-on: ${{ matrix.os }}
@@ -23,6 +26,9 @@ jobs:
         env:
           CI: true
   coverage:
+    permissions:
+      checks: write  # for coverallsapp/github-action to create new checks
+      contents: read  # for actions/checkout to fetch code
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
