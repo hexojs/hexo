@@ -929,6 +929,32 @@ describe('post', () => {
     ]);
   });
 
+  it('post - tags (multiple tag)', async () => {
+    const body = [
+      'title: "Hello world"',
+      'tags: foo, bar, world',
+      '---'
+    ].join('\n');
+
+    const file = newFile({
+      path: 'foo.html',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+
+    await writeFile(file.source, body);
+    await process(file);
+    const post = Post.findOne({ source: file.path });
+
+    post.tags.map(item => item.name).should.eql(['foo', 'bar', 'world']);
+
+    return Promise.all([
+      post.remove(),
+      unlink(file.source)
+    ]);
+  });
+
   it('post - post_asset_folder enabled', async () => {
     hexo.config.post_asset_folder = true;
     hexo.config.exclude = ['**.png'];

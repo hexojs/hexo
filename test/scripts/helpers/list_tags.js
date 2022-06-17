@@ -18,6 +18,8 @@ describe('list_tags', () => {
       {source: 'foo', slug: 'foo'},
       {source: 'bar', slug: 'bar'},
       {source: 'baz', slug: 'baz'},
+      {source: 'boo', slug: 'boo'},
+      // Add same data to test duplicate tags
       {source: 'boo', slug: 'boo'}
     ]);
     // TODO: Warehouse needs to add a mutex lock when writing data to avoid data sync problem
