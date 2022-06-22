@@ -302,4 +302,43 @@ describe('paginator', () => {
       '<bar></a>'
     ].join(''));
   });
+
+  it('custom_class', () => {
+    const result = paginator({
+      current: 2,
+      current_class: 'current-class',
+      space_class: 'space-class',
+      page_class: 'page-class',
+      prev_class: 'prev-class',
+      next_class: 'next-class'
+    });
+
+    result.should.eql([
+      '<a class="prev-class" rel="prev" href="/">Prev</a>',
+      '<a class="page-class" href="/">1</a>',
+      '<span class="page-class current-class">2</span>',
+      '<a class="page-class" href="/page/3/">3</a>',
+      '<a class="page-class" href="/page/4/">4</a>',
+      '<span class="space-class">&hellip;</span>',
+      '<a class="page-class" href="/page/10/">10</a>',
+      '<a class="next-class" rel="next" href="/page/3/">Next</a>'
+    ].join(''));
+  });
+
+  it('force_prev_next', () => {
+    const result = paginator({
+      current: 1,
+      force_prev_next: true
+    });
+
+    result.should.eql([
+      '<span class="extend prev" rel="prev">Prev</span>',
+      '<span class="page-number current">1</span>',
+      '<a class="page-number" href="/page/2/">2</a>',
+      '<a class="page-number" href="/page/3/">3</a>',
+      '<span class="space">&hellip;</span>',
+      '<a class="page-number" href="/page/10/">10</a>',
+      '<a class="extend next" rel="next" href="/page/2/">Next</a>'
+    ].join(''));
+  });
 });
