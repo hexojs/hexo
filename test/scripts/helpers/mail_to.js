@@ -1,7 +1,5 @@
 'use strict';
 
-const qs = require('querystring');
-
 describe('mail_to', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo(__dirname);
@@ -33,7 +31,7 @@ describe('mail_to', () => {
 
   it('cc (string)', () => {
     const data = {cc: 'abc@abc.com'};
-    const querystring = qs.stringify(data);
+    const querystring = new URLSearchParams(data).toString();
 
     mailto('abc@example.com', 'Email', {cc: 'abc@abc.com'})
       .should.eql('<a href="mailto:abc@example.com?' + querystring + '" title="Email">Email</a>');
@@ -41,7 +39,7 @@ describe('mail_to', () => {
 
   it('cc (array)', () => {
     const data = {cc: 'abc@abc.com,bcd@bcd.com'};
-    const querystring = qs.stringify(data);
+    const querystring = new URLSearchParams(data).toString();
 
     mailto('abc@example.com', 'Email', {cc: ['abc@abc.com', 'bcd@bcd.com']})
       .should.eql('<a href="mailto:abc@example.com?' + querystring + '" title="Email">Email</a>');
@@ -49,7 +47,7 @@ describe('mail_to', () => {
 
   it('bcc (string)', () => {
     const data = {bcc: 'abc@abc.com'};
-    const querystring = qs.stringify(data);
+    const querystring = new URLSearchParams(data).toString();
 
     mailto('abc@example.com', 'Email', {bcc: 'abc@abc.com'})
       .should.eql('<a href="mailto:abc@example.com?' + querystring + '" title="Email">Email</a>');
@@ -57,7 +55,7 @@ describe('mail_to', () => {
 
   it('bcc (array)', () => {
     const data = {bcc: 'abc@abc.com,bcd@bcd.com'};
-    const querystring = qs.stringify(data);
+    const querystring = new URLSearchParams(data).toString();
 
     mailto('abc@example.com', 'Email', {bcc: ['abc@abc.com', 'bcd@bcd.com']})
       .should.eql('<a href="mailto:abc@example.com?' + querystring + '" title="Email">Email</a>');
