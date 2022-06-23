@@ -25,6 +25,13 @@ describe('is', () => {
     await is.home.call({page: {}}).should.be.false;
   });
 
+  it('is_index', async () => {
+    await is.index.call({page: {__index: true, current: 1}}).should.be.true;
+    await is.index.call({page: {__index: true, current: 2}}).should.be.false;
+    await is.index.call({page: {__index: true}}).should.be.false;
+    await is.index.call({page: {}}).should.be.false;
+  });
+
   it('is_post', async () => {
     await is.post.call({page: {__post: true}}).should.be.true;
     await is.post.call({page: {}}).should.be.false;
