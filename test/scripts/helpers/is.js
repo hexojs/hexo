@@ -25,11 +25,11 @@ describe('is', () => {
     await is.home.call({page: {}}).should.be.false;
   });
 
-  it('is_index', async () => {
-    await is.index.call({page: {__index: true, current: 1}}).should.be.true;
-    await is.index.call({page: {__index: true, current: 2}}).should.be.false;
-    await is.index.call({page: {__index: true}}).should.be.false;
-    await is.index.call({page: {}}).should.be.false;
+  it('is_home_first_page', async () => {
+    await is.home_first_page.call({page: {__index: true, current: 1}}).should.be.true;
+    await is.home_first_page.call({page: {__index: true, current: 2}}).should.be.false;
+    await is.home_first_page.call({page: {__index: true}}).should.be.false;
+    await is.home_first_page.call({page: {}}).should.be.false;
   });
 
   it('is_post', async () => {
