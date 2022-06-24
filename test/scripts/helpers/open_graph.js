@@ -301,11 +301,10 @@ describe('open_graph', () => {
   });
 
   it('images - resolve relative path when site is hosted in subdirectory', () => {
-    const urlFn = require('url');
     const config = hexo.config;
-    config.url = urlFn.resolve(config.url, 'blog');
+    config.url = new URL('blog', config.url).toString();
     config.root = 'blog';
-    const postUrl = urlFn.resolve(config.url, '/foo/bar/index.html');
+    const postUrl = new URL('/foo/bar/index.html', config.url).toString();
 
     const result = openGraph.call({
       page: {},
@@ -314,7 +313,7 @@ describe('open_graph', () => {
       url: postUrl
     }, {images: 'test.jpg'});
 
-    result.should.have.string(meta({property: 'og:image', content: urlFn.resolve(config.url, '/foo/bar/test.jpg')}));
+    result.should.have.string(meta({property: 'og:image', content: new URL('/foo/bar/test.jpg', config.url).toString()}));
   });
 
   it('twitter_image - default same as og:image', () => {
