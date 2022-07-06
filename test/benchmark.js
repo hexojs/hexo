@@ -4,6 +4,7 @@ const { performance, PerformanceObserver } = require('perf_hooks');
 const { spawn } = require('child_process');
 const { spawn: spawnAsync } = require('hexo-util');
 const { rmdir, exists } = require('hexo-fs');
+const { appendFileSync: appendFile } = require('fs');
 const { join, resolve } = require('path');
 const log = require('hexo-log')();
 const { red } = require('picocolors');
@@ -26,6 +27,8 @@ const zeroEksDir = process.env.TRAVIS_BUILD_DIR
   : resolve(testDir, '0x');
 const hexoBin = resolve(testDir, 'node_modules/.bin/hexo');
 
+const isGitHubActions = process.env.GITHUB_ACTIONS;
+
 const zeroEks = require('0x');
 
 let isProfiling = process.argv.join(' ').includes('--profiling');
@@ -41,6 +44,12 @@ if (!isProfiling && !isBenchmark) {
 
   if (isBenchmark) {
     log.info('Running benchmark');
+
+    if (isGitHubActions) {
+      log.info('Running in GitHub Actions.');
+      appendFile(process.env.GITHUB_STEP_SUMMARY, '# Benchmark Result\n');
+    }
+
     await cleanUp();
     await run_benchmark('Cold processing');
     await run_benchmark('Hot processing');
@@ -76,8 +85,14 @@ async function run_benchmark(name) {
 
       if (measureFinished) {
         obs.disconnect();
+
+        if (isGitHubActions) {
+          appendFile(process.env.GITHUB_STEP_SUMMARY, `\n## ${name}\n\n| Step | Cost time (s) |\n| --- | --- |\n${Object.keys(result).map(name => `| ${name} | ${result[name]['Cost time (s)']} |`).join('\n')}\n`);
+        }
+
         console.log(name);
         console.table(result);
+
         resolve(result);
       }
     });
