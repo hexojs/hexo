@@ -24,6 +24,8 @@ Please take extra precaution not to attach any secret environment variables (lik
 Please check followings before submitting a new issue.
 
 - [ ] I have already confirmed other issue template and they are not different my want
+- [ ] Not a question, feature-request, bug
+    - Please submit to [discussion](https://github.com/hexojs/hexo/discussions) if your issue is a question.
 
 ## Information
 
