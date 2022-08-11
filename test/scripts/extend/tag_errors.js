@@ -142,8 +142,8 @@ describe('Tag Errors', () => {
     try {
       await tag.render(body, { source });
     } catch (err) {
-      err.should.have.property('stack');
-      err.stack.should.contains(source);
+      err.should.have.property('message');
+      err.message.should.contains(source);
     }
   });
 });
