@@ -173,6 +173,14 @@ describe('code', () => {
         wrap: true
       }));
     });
+
+    it('language_attr', () => {
+      const result = code('lang:js language_attr:true', fixture);
+      result.should.eql(highlight(fixture, {
+        lang: 'js',
+        languageAttr: true
+      }));
+    });
   });
 
   describe('prismjs', () => {
