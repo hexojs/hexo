@@ -9,7 +9,7 @@
   "scripts": {
     "eslint": "eslint .",
     "test": "mocha test/index.js",
-    "test-cov": "nyc --reporter=lcovonly npm test -- --no-parallel",
+    "test-cov": "c8 --reporter=lcovonly npm test -- --no-parallel",
     "prepare": "husky install"
   },
   "directories": {
@@ -54,8 +54,8 @@
     "moize": "^6.1.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.34",
-    "picocolors": "^1.0.0",
     "nunjucks": "^3.2.3",
+    "picocolors": "^1.0.0",
     "pretty-hrtime": "^1.0.3",
     "resolve": "^1.22.0",
     "strip-ansi": "^6.0.0",
@@ -67,6 +67,7 @@
   "devDependencies": {
     "@easyops/git-exec-and-restage": "^1.0.4",
     "0x": "^5.1.2",
+    "c8": "^7.12.0",
     "chai": "^4.3.6",
     "cheerio": "0.22.0",
     "decache": "^4.6.1",
@@ -76,7 +77,6 @@
     "husky": "^7.0.4",
     "lint-staged": "^11.0.0",
     "mocha": "^10.0.0",
-    "nyc": "^15.1.0",
     "sinon": "^13.0.2"
   },
   "engines": {
