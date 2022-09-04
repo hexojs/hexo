@@ -290,4 +290,26 @@ describe('tagcloud', () => {
       '<a href="/tags/def/" style="font-size: 10px;" class="tag-cloud-0">def</a>'
     ].join(' '));
   });
+
+  it('show_count', () => {
+    const result = tagcloud({ show_count: true });
+
+    result.should.eql([
+      '<a href="/tags/abc/" style="font-size: 13.33px;">abc<span class="count">2</span></a>',
+      '<a href="/tags/bcd/" style="font-size: 20px;">bcd<span class="count">4</span></a>',
+      '<a href="/tags/cde/" style="font-size: 16.67px;">cde<span class="count">3</span></a>',
+      '<a href="/tags/def/" style="font-size: 10px;">def<span class="count">1</span></a>'
+    ].join(' '));
+  });
+
+  it('show_count with custom class', () => {
+    const result = tagcloud({ show_count: true, count_class: 'tag-count' });
+
+    result.should.eql([
+      '<a href="/tags/abc/" style="font-size: 13.33px;">abc<span class="tag-count">2</span></a>',
+      '<a href="/tags/bcd/" style="font-size: 20px;">bcd<span class="tag-count">4</span></a>',
+      '<a href="/tags/cde/" style="font-size: 16.67px;">cde<span class="tag-count">3</span></a>',
+      '<a href="/tags/def/" style="font-size: 10px;">def<span class="tag-count">1</span></a>'
+    ].join(' '));
+  });
 });
