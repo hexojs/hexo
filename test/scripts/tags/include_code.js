@@ -62,6 +62,22 @@ describe('include_code', () => {
       result.should.eql(expected);
     });
 
+    it('language_attr', async () => {
+      const original = hexo.config.highlight.language_attr;
+      hexo.config.highlight.language_attr = true;
+
+      const expected = highlight(fixture, {
+        lang: 'js',
+        caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>',
+        languageAttr: true
+      });
+
+      const result = await code('Hello world lang:js test.js');
+      result.should.eql(expected);
+
+      hexo.config.highlight.language_attr = original;
+    });
+
     it('from', async () => {
       const fixture = [
         '}'
