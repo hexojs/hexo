@@ -211,6 +211,18 @@ describe('open_graph', () => {
     result.should.have.string(meta({property: 'og:image', content: 'https://hexo.io/test.jpg'}));
   });
 
+  it('images - content with data-uri', () => {
+    const result = openGraph.call({
+      page: {
+        content: '<img src="data:image/svg+xml;utf8,<svg>...</svg>">'
+      },
+      config: hexo.config,
+      is_post: isPost
+    });
+
+    result.should.not.have.string(meta({property: 'og:image', content: 'data:image/svg+xml;utf8,<svg>...</svg>'}));
+  });
+
   it('images - string', () => {
     const result = openGraph.call({
       page: {
