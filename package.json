@@ -46,7 +46,7 @@
     "hexo-front-matter": "^3.0.0",
     "hexo-fs": "^3.1.0",
     "hexo-i18n": "^1.0.0",
-    "hexo-log": "^3.0.0",
+    "hexo-log": "^3.2.0",
     "hexo-util": "^2.7.0",
     "js-yaml": "^4.1.0",
     "js-yaml-js-types": "^1.0.0",
