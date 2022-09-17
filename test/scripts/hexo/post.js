@@ -1295,11 +1295,8 @@ describe('Post', () => {
       '',
       '## Insert',
       '',
-      '    {% youtube https://example.com/demo.mp4 %}',
-      '',
       'test002',
-      '',
-      '{% youtube https://example.com/sample.mp4 %}'
+      ''
     ].join('\n');
 
     const data = await post.render(null, {
@@ -1313,10 +1310,6 @@ describe('Post', () => {
     // pullquote tag
     data.content.trim().should.contains('<blockquote class="pullquote"><p>bar bar bar</p>\n</blockquote>');
     data.content.trim().should.contains('<p>test002</p>');
-    // indented youtube tag
-    data.content.trim().should.contains(`<pre><code>${escapeSwigTag('{% youtube https://example.com/demo.mp4 %}')}\n</code></pre>`);
-    // youtube tag
-    data.content.trim().should.contains('<div class="video-container"><iframe src="https://www.youtube.com/embed/https://example.com/sample.mp4" frameborder="0" loading="lazy" allowfullscreen></iframe></div>');
   });
 
   // #4385
