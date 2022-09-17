@@ -72,29 +72,3 @@ exports.expected_for_issue_3346 = [
   '<p>quote content</p>\n',
   '</blockquote>'
 ].join('');
-
-exports.content_for_issue_4317 = [
-  '```sh',
-  'echo "Hi"',
-  '',
-  '```',
-  '{% gist gist_id %}',
-  '',
-  '```sh',
-  'echo "Hi"',
-  '```',
-  '',
-  '{% gist gist_id_2 %}',
-  '',
-  '```sh',
-  'echo "Hi"',
-  '```'
-].join('\n');
-
-exports.content_for_issue_4460 = [
-  '```html',
-  '<body>',
-  '<!-- here goes the rest of the page -->',
-  '</body>',
-  '```'
-].join('\n');
