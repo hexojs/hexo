@@ -622,66 +622,6 @@ describe('post', () => {
     ]);
   });
 
-  it('post - use use_date_for_updated as a fallback', async () => {
-    const body = [
-      'title: "Hello world"',
-      '---'
-    ].join('\n');
-
-    const file = newFile({
-      path: 'foo.html',
-      published: true,
-      type: 'create',
-      renderable: true
-    });
-
-    hexo.config.use_date_for_updated = true;
-
-    await writeFile(file.source, body);
-    const stats = await file.stat();
-    await process(file);
-    const post = Post.findOne({ source: file.path });
-
-    post.date.toDate().setMilliseconds(0).should.eql(stats.birthtime.setMilliseconds(0));
-    post.updated.toDate().setMilliseconds(0).should.eql(stats.birthtime.setMilliseconds(0));
-
-    return Promise.all([
-      post.remove(),
-      unlink(file.source)
-    ]);
-  });
-
-  it('post - ignore updated_option when use_date_for_updated is set', async () => {
-    const body = [
-      'date: 2011-4-5 14:19:19',
-      'title: "Hello world"',
-      '---'
-    ].join('\n');
-
-    const file = newFile({
-      path: 'foo.html',
-      published: true,
-      type: 'create',
-      renderable: true
-    });
-
-    hexo.config.use_date_for_updated = true;
-    hexo.config.updated_option = 'mtime';
-
-    await writeFile(file.source, body);
-    const stats = await file.stat();
-    await process(file);
-    const post = Post.findOne({ source: file.path });
-
-    post.updated.toDate().setMilliseconds(0).should.eql(post.date.toDate().setMilliseconds(0));
-    post.updated.toDate().setMilliseconds(0).should.not.eql(stats.mtime.setMilliseconds(0));
-
-    return Promise.all([
-      post.remove(),
-      unlink(file.source)
-    ]);
-  });
-
   it('post - photo is an alias for photos', async () => {
     const body = [
       'title: "Hello world"',
