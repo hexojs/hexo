@@ -10,10 +10,8 @@ describe('Tags', () => {
   require('./iframe');
   require('./img');
   require('./include_code');
-  require('./jsfiddle');
   require('./link');
   require('./post_link');
   require('./post_path');
   require('./pullquote');
-  require('./vimeo');
 });
