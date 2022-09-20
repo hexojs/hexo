@@ -77,7 +77,7 @@
     "husky": "^7.0.4",
     "lint-staged": "^11.0.0",
     "mocha": "^10.0.0",
-    "sinon": "^13.0.2"
+    "sinon": "^14.0.0"
   },
   "engines": {
     "node": ">=14"
