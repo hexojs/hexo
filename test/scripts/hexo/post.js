@@ -3,7 +3,7 @@
 const { join } = require('path');
 const moment = require('moment');
 const { readFile, mkdirs, unlink, rmdir, writeFile, exists, stat, listDir } = require('hexo-fs');
-const { highlight, escapeHTML } = require('hexo-util');
+const { highlight } = require('hexo-util');
 const { spy, useFakeTimers } = require('sinon');
 const { parse: yfm } = require('hexo-front-matter');
 const fixture = require('../../fixtures/post_render');
@@ -1203,21 +1203,6 @@ describe('Post', () => {
     });
 
     data.content.trim().should.eql(`<p><code>${escapeSwigTag('{{ 1 + 1 }}')}</code> 2</p>`);
-  });
-
-  // #4317
-  it('render() - issue #4317', async () => {
-    const content = fixture.content_for_issue_4317;
-    hexo.config.highlight.enable = false;
-
-    const data = await post.render(null, {
-      content,
-      engine: 'markdown'
-    });
-
-    data.content.trim().should.contains(`<pre><code class="sh">${escapeHTML('echo "Hi"')}\n</code></pre>`);
-    data.content.trim().should.contains('<script src="//gist.github.com/gist_id.js"></script>');
-    data.content.trim().should.contains('<script src="//gist.github.com/gist_id_2.js"></script>');
   });
 
   // #3543

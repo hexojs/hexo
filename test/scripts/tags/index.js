@@ -6,7 +6,6 @@ describe('Tags', () => {
   require('./asset_path');
   require('./blockquote');
   require('./code');
-  require('./gist');
   require('./iframe');
   require('./img');
   require('./include_code');
