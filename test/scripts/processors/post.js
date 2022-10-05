@@ -402,6 +402,34 @@ describe('post', () => {
     ]);
   });
 
+  it('post - parse unusual file name', async () => {
+    const body = [
+      'title: "Hello world"',
+      '---'
+    ].join('\n');
+
+    const file = newFile({
+      path: '20060102.html',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+
+    hexo.config.new_post_name = ':year:month:day';
+
+    await writeFile(file.source, body);
+    await process(file);
+    const post = Post.findOne({ source: file.path });
+
+    post.slug.should.eql('20060102');
+    post.date.format('YYYY-MM-DD').should.eql('2006-01-02');
+
+    return Promise.all([
+      post.remove(),
+      unlink(file.source)
+    ]);
+  });
+
   it('post - extra data in file name', async () => {
     const body = [
       'title: "Hello world"',
