@@ -73,7 +73,7 @@
     "decache": "^4.6.1",
     "eslint": "^8.8.0",
     "eslint-config-hexo": "^5.0.0",
-    "hexo-renderer-marked": "^5.0.0",
+    "hexo-renderer-marked": "^6.0.0",
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "mocha": "^10.0.0",
