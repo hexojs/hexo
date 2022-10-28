@@ -43,7 +43,7 @@
     "archy": "^1.0.0",
     "bluebird": "^3.7.2",
     "hexo-cli": "^4.3.0",
-    "hexo-front-matter": "^3.0.0",
+    "hexo-front-matter": "^4.0.0",
     "hexo-fs": "^4.0.0",
     "hexo-i18n": "^1.0.0",
     "hexo-log": "^3.2.0",
