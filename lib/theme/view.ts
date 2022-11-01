@@ -19,6 +19,17 @@ const assignIn = (target, ...sources) => {
 };
 
 class View {
+	public path: any;
+	public source: any;
+	public _theme: any;
+	public data: any;
+	public _compiled: any;
+	public _compiledSync: any;
+	public _helper: any;
+	public _render: any;
+	public layout: any;
+	public _content: any;
+
   constructor(path, data) {
     this.path = path;
     this.source = join(this._theme.base, 'layout', path);

@@ -3,7 +3,7 @@
 import {url_for, escapeHTML} from 'hexo-util';
 import moize from 'moize';
 
-function listTagsHelper(tags, options) {
+function listTagsHelper(tags, options?) {
   if (!options && (!tags || !Object.prototype.hasOwnProperty.call(tags, 'length'))) {
     options = tags;
     tags = this.site.tags;

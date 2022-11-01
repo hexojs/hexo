@@ -6,6 +6,12 @@ import Stream from 'stream';
 const { Readable } = Stream;
 
 class RouteStream extends Readable {
+	public _data: any;
+	public _ended: any;
+	public modified: any;
+	public push: any;
+	public emit: any;
+
   constructor(data) {
     super({ objectMode: true });
 
@@ -89,6 +95,9 @@ const _format = path => {
 };
 
 class Router extends EventEmitter {
+	public routes: any;
+	public emit: any;
+
   constructor() {
     super();
 

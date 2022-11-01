@@ -1,6 +1,8 @@
 'use strict';
 
 class Helper {
+	public store: any;
+
   constructor() {
     this.store = {};
   }

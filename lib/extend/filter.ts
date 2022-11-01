@@ -9,6 +9,8 @@ const typeAlias = {
 };
 
 class Filter {
+	public store: any;
+
   constructor() {
     this.store = {};
   }

@@ -12,6 +12,9 @@ import abbrev from 'abbrev';
  */
 
 class Console {
+	public store: any;
+	public alias: any;
+
   constructor() {
     this.store = {};
     this.alias = {};

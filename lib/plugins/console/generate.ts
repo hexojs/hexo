@@ -10,6 +10,18 @@ import {PassThrough} from 'stream';
 import {createSha1Hash} from 'hexo-util';
 
 class Generater {
+	public context: any;
+	public force: any;
+	public bail: any;
+	public concurrency: any;
+	public watch: any;
+	public deploy: any;
+	public generatingFiles: any;
+	public start: any;
+	public args: any;
+	public route: any;
+	public log: any;
+
   constructor(ctx, args) {
     this.context = ctx;
     this.force = args.f || args.force;
@@ -48,7 +60,7 @@ class Generater {
       generatingFiles.delete(path);
     });
   }
-  writeFile(path, force) {
+  writeFile(path, force?) {
     const { route, log } = this.context;
     const publicDir = this.context.public_dir;
     const Cache = this.context.model('Cache');

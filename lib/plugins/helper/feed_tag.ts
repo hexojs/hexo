@@ -8,7 +8,7 @@ const feedFn = (str = '') => {
   return str;
 };
 
-function makeFeedTag(path, options = {}, configFeed, configTitle) {
+function makeFeedTag(path, options = {}, configFeed?, configTitle?) {
   const title = options.title || configTitle;
 
   if (path) {

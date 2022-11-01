@@ -3,7 +3,7 @@
 import {Color, url_for} from 'hexo-util';
 import moize from 'moize';
 
-function tagcloudHelper(tags, options) {
+function tagcloudHelper(tags, options?) {
   if (!options && (!tags || !Object.prototype.hasOwnProperty.call(tags, 'length'))) {
     options = tags;
     tags = this.site.tags;

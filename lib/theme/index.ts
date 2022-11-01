@@ -6,7 +6,12 @@ import View from './view';
 import I18n from 'hexo-i18n';
 
 class Theme extends Box {
-  constructor(ctx, options) {
+	public config: any;
+	public views: any;
+	public i18n: any;
+	public View: any;
+
+  constructor(ctx, options?) {
     super(ctx, ctx.theme_dir, options);
 
     this.config = {};

@@ -26,6 +26,9 @@ const toString = (result, options) => {
 };
 
 class Render {
+	public context: any;
+	public renderer: any;
+
   constructor(ctx) {
     this.context = ctx;
     this.renderer = ctx.extend.renderer;
@@ -43,7 +46,7 @@ class Render {
     return this.renderer.getOutput(path);
   }
 
-  getRenderer(ext, sync) {
+  getRenderer(ext, sync?) {
     return this.renderer.get(ext, sync);
   }
 

@@ -4,6 +4,10 @@ import {extname, join} from 'path';
 import {exists, listDir, readFile, unlink, writeFile} from 'hexo-fs';
 
 class Scaffold {
+	public context: any;
+	public scaffoldDir: any;
+	public defaults: any;
+
   constructor(context) {
     this.context = context;
     this.scaffoldDir = context.scaffold_dir;

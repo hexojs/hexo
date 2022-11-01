@@ -4,6 +4,8 @@ import Promise from 'bluebird';
 import {Pattern} from 'hexo-util';
 
 class Processor {
+	public store: any;
+
   constructor() {
     this.store = [];
   }

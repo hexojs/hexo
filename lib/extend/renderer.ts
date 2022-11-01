@@ -11,6 +11,9 @@ const getExtname = str => {
 };
 
 class Renderer {
+	public store: any;
+	public storeSync: any;
+
   constructor() {
     this.store = {};
     this.storeSync = {};
@@ -20,7 +23,7 @@ class Renderer {
     return sync ? this.storeSync : this.store;
   }
 
-  get(name, sync) {
+  get(name, sync?) {
     const store = this[sync ? 'storeSync' : 'store'];
 
     return store[getExtname(name)] || store[name];
