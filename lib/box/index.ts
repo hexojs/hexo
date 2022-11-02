@@ -1,5 +1,5 @@
 import {join, sep} from 'path';
-import Promise from 'bluebird';
+import BlueBirdPromise from 'bluebird';
 import File from './file';
 import {Pattern, createSha1Hash} from 'hexo-util';
 import {createReadStream, readdir, stat, watch} from 'hexo-fs';
@@ -9,21 +9,27 @@ import {isMatch, makeRe} from 'micromatch';
 
 const defaultPattern = new Pattern(() => ({}));
 
+interface Processor {
+  pattern: Pattern;
+  process: (file: File) => void;
+}
+
 class Box extends EventEmitter {
   public options: any;
   public context: any;
   public base: any;
-  public processors: any;
+  public processors: Processor[];
   public _processingFiles: any;
   public watcher: any;
   public Cache: any;
+  // TODO: replace runtime class _File
   public File: any;
   public ignore: any;
   public source: any;
   public emit: any;
   public ctx: any;
 
-  constructor(ctx, base, options) {
+  constructor(ctx, base, options?: object) {
     super();
 
     this.options = Object.assign({
@@ -51,10 +57,13 @@ class Box extends EventEmitter {
     this.ignore = targets;
     this.options.ignored = targets.map(s => toRegExp(ctx, s)).filter(x => x);
   }
+
   _createFileClass() {
     const ctx = this.context;
 
     class _File extends File {
+      public box: Box;
+
       render(options) {
         return ctx.render.render({
           path: this.source
@@ -132,7 +141,7 @@ class Box extends EventEmitter {
 
   _processFile(type, path) {
     if (this._processingFiles[path]) {
-      return Promise.resolve();
+      return BlueBirdPromise.resolve();
     }
 
     this._processingFiles[path] = true;
@@ -144,7 +153,7 @@ class Box extends EventEmitter {
       path
     });
 
-    return Promise.reduce(this.processors, (count, processor) => {
+    return BlueBirdPromise.reduce(this.processors, (count, processor) => {
       const params = processor.pattern.match(path);
       if (!params) return count;
 
@@ -155,7 +164,7 @@ class Box extends EventEmitter {
         type
       });
 
-      return Reflect.apply(Promise.method(processor.process), ctx, [file])
+      return Reflect.apply(BlueBirdPromise.method(processor.process), ctx, [file])
         .thenReturn(count + 1);
     }, 0).then(count => {
       if (count) {
@@ -175,7 +184,7 @@ class Box extends EventEmitter {
 
   watch(callback) {
     if (this.isWatching()) {
-      return Promise.reject(new Error('Watcher has already started.')).asCallback(callback);
+      return BlueBirdPromise.reject(new Error('Watcher has already started.')).asCallback(callback);
     }
 
     const { base } = this;
@@ -229,7 +238,7 @@ function getHash(path) {
   const src = createReadStream(path);
   const hasher = createSha1Hash();
 
-  const finishedPromise = new Promise((resolve, reject) => {
+  const finishedPromise = new BlueBirdPromise((resolve, reject) => {
     src.once('error', reject);
     src.once('end', resolve);
   });
@@ -258,9 +267,9 @@ function isIgnoreMatch(path, ignore) {
 }
 
 function readDirWalker(ctx, base, results, ignore, prefix) {
-  if (isIgnoreMatch(base, ignore)) return Promise.resolve();
+  if (isIgnoreMatch(base, ignore)) return BlueBirdPromise.resolve();
 
-  return Promise.map(readdir(base).catch(err => {
+  return BlueBirdPromise.map(readdir(base).catch(err => {
     ctx.log.error({ err }, 'Failed to read directory: %s', base);
     if (err && err.code === 'ENOENT') return [];
     throw err;

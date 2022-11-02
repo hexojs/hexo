@@ -3,14 +3,19 @@ import Promise from 'bluebird';
 import Stream from 'stream';
 const { Readable } = Stream;
 
+interface Data {
+  data: any;
+  modified: boolean;
+}
+
 class RouteStream extends Readable {
   public _data: any;
-  public _ended: any;
+  public _ended: boolean;
   public modified: any;
   public push: any;
   public emit: any;
 
-  constructor(data) {
+  constructor(data: Data) {
     super({ objectMode: true });
 
     this._data = data.data;
@@ -75,7 +80,7 @@ class RouteStream extends Readable {
   }
 }
 
-const _format = path => {
+const _format = (path: string) => {
   path = path || '';
   if (typeof path !== 'string') throw new TypeError('path must be a string!');
 
@@ -93,7 +98,9 @@ const _format = path => {
 };
 
 class Router extends EventEmitter {
-  public routes: any;
+  public routes: {
+    [key: string]: Data | null;
+  };
   public emit: any;
 
   constructor() {
@@ -107,11 +114,11 @@ class Router extends EventEmitter {
     return Object.keys(routes).filter(key => routes[key]);
   }
 
-  format(path) {
+  format(path: string) {
     return _format(path);
   }
 
-  get(path) {
+  get(path: string) {
     if (typeof path !== 'string') throw new TypeError('path must be a string!');
 
     const data = this.routes[this.format(path)];
@@ -131,7 +138,7 @@ class Router extends EventEmitter {
     if (typeof path !== 'string') throw new TypeError('path must be a string!');
     if (data == null) throw new TypeError('data is required!');
 
-    let obj;
+    let obj: Data;
 
     if (typeof data === 'object' && data.data != null) {
       obj = data;

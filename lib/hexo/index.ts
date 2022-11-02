@@ -7,7 +7,7 @@ import {EventEmitter} from 'events';
 import {readFile} from 'hexo-fs';
 import Module from 'module';
 import {runInThisContext} from 'vm';
-import {version} from '../../package.json';
+const {version} = require('../../package.json');
 import logger from 'hexo-log';
 
 import {
@@ -105,6 +105,15 @@ function debounce(func, wait) {
   };
 }
 
+interface Args {
+  debug?: any;
+  safe?: any;
+  silent?: any;
+  _?: any[];
+  output?: any;
+  config?: any;
+}
+
 class Hexo extends EventEmitter {
   public base_dir: any;
   public public_dir: any;
@@ -143,7 +152,7 @@ class Hexo extends EventEmitter {
   public alias: any;
   public data: any;
 
-  constructor(base = process.cwd(), args = {}) {
+  constructor(base = process.cwd(), args: Args = {}) {
     super();
 
     this.base_dir = base + sep;

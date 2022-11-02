@@ -16,6 +16,10 @@ const assignIn = (target, ...sources) => {
   return target;
 };
 
+class Options {
+  layout?: any;
+}
+
 class View {
   public path: any;
   public source: any;
@@ -36,13 +40,13 @@ class View {
     this._precompile();
   }
 
-  render(options = {}, callback) {
+  render(options: Options | Function = {}, callback) {
     if (!callback && typeof options === 'function') {
       callback = options;
       options = {};
     }
     const { data } = this;
-    const { layout = options.layout } = data;
+    const { layout = (options as Options).layout } = data;
     const locals = this._buildLocals(options);
 
     return this._compiled(this._bindHelpers(locals)).then(result => {
@@ -61,7 +65,7 @@ class View {
     }).asCallback(callback);
   }
 
-  renderSync(options = {}) {
+  renderSync(options: Options = {}) {
     const { data } = this;
     const { layout = options.layout } = data;
     const locals = this._buildLocals(options);

@@ -5,6 +5,10 @@ class File {
   public path: any;
   public params: any;
   public type: any;
+  static TYPE_CREATE: 'create';
+  static TYPE_UPDATE: 'update';
+  static TYPE_SKIP: 'skip';
+  static TYPE_DELETE: 'delete';
 
   constructor({ source, path, params, type }) {
     this.source = source;

@@ -218,6 +218,18 @@ const createAssetFolder = (path, assetFolder) => {
   });
 };
 
+interface Result {
+  path?: string;
+  content?: string;
+}
+
+interface Data {
+  engine?: string;
+  content?: string;
+  disableNunjucks?: boolean;
+  markdown?: object;
+}
+
 class Post {
   public context: any;
   public config: any;
@@ -329,7 +341,7 @@ class Post {
     data.slug = slug;
     const regex = new RegExp(`^${escapeRegExp(slug)}(?:[^\\/\\\\]+)`);
     let src = '';
-    const result = {};
+    const result: Result = {};
 
     data.layout = (data.layout || config.default_layout).toLowerCase();
 
@@ -367,7 +379,7 @@ class Post {
     }).thenReturn(result).asCallback(callback);
   }
 
-  render(source, data = {}, callback) {
+  render(source, data: Data = {}, callback) {
     const ctx = this.context;
     const { config } = ctx;
     const { tag } = ctx.extend;
