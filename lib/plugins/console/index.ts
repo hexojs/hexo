@@ -1,5 +1,3 @@
-'use strict';
-
 export default function(ctx) {
   const { console } = ctx.extend;
 

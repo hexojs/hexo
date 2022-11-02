@@ -1,5 +1,3 @@
-'use strict';
-
 let titlecase;
 
 function titlecaseFilter(data) {

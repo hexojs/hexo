@@ -1,5 +1,3 @@
-'use strict';
-
 import {url_for} from 'hexo-util';
 
 export default function(path, options) {

@@ -1,5 +1,3 @@
-'use strict';
-
 import {isExternalLink} from 'hexo-util';
 let EXTERNAL_LINK_POST_ENABLED = true;
 const rATag = /<a(?:\s+?|\s+?[^<>]+?\s+?)href=["']((?:https?:|\/\/)[^<>"']+)["'][^<>]*>/gi;

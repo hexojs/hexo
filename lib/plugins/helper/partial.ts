@@ -1,5 +1,3 @@
-'use strict';
-
 import {dirname, join} from 'path';
 
 export default ctx => (function partial(name, locals, options = {}) {

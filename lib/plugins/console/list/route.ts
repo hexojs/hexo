@@ -1,5 +1,3 @@
-'use strict';
-
 import archy from 'archy';
 
 function listRoute() {

@@ -1,5 +1,3 @@
-'use strict';
-
 import fs from 'hexo-fs';
 import Promise from 'bluebird';
 import {extname} from 'path';

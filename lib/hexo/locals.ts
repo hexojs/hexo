@@ -1,5 +1,3 @@
-'use strict';
-
 import {Cache} from 'hexo-util';
 
 class Locals {

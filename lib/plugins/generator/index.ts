@@ -1,5 +1,3 @@
-'use strict';
-
 export default ctx => {
   const { generator } = ctx.extend;
 

@@ -1,5 +1,3 @@
-'use strict';
-
 import moize from 'moize';
 
 function searchFormHelper(options = {}) {

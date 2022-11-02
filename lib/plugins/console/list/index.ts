@@ -1,5 +1,3 @@
-'use strict';
-
 import abbrev from 'abbrev';
 import page from './page';
 import post from './post';

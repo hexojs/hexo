@@ -1,5 +1,3 @@
-'use strict';
-
 import {toMomentLocale} from './date';
 import {url_for} from 'hexo-util';
 

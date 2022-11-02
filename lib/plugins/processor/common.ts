@@ -1,5 +1,3 @@
-'use strict';
-
 import {Pattern} from 'hexo-util';
 import moment from 'moment-timezone';
 import micromatch from 'micromatch';

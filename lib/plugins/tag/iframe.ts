@@ -1,5 +1,3 @@
-'use strict';
-
 import {htmlTag} from 'hexo-util';
 
 /**

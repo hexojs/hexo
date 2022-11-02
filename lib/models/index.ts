@@ -1,5 +1,3 @@
-'use strict';
-
 import Asset from './asset';
 import Cache from './cache';
 import Category from './category';

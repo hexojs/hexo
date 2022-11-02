@@ -1,5 +1,3 @@
-'use strict';
-
 class Helper {
 	public store: any;
 

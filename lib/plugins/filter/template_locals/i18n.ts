@@ -1,5 +1,3 @@
-'use strict';
-
 import {Pattern} from 'hexo-util';
 
 function i18nLocalsFilter(locals) {

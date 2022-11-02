@@ -1,5 +1,3 @@
-'use strict';
-
 import {inspect} from 'util';
 
 // this format object as string, resolves circular reference

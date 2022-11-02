@@ -1,5 +1,3 @@
-'use strict';
-
 import {timezone, toDate, isExcludedFile, isMatch} from './common';
 import Promise from 'bluebird';
 import {parse as yfm} from 'hexo-front-matter';

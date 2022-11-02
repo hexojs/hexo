@@ -1,5 +1,3 @@
-'use strict';
-
 import yaml from 'js-yaml';
 import fs from 'hexo-fs';
 import {extname} from 'path';

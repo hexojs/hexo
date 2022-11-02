@@ -1,5 +1,3 @@
-'use strict';
-
 import {join, extname} from 'path';
 import moment from 'moment';
 import Promise from 'bluebird';

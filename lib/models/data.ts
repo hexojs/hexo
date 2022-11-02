@@ -1,5 +1,3 @@
-'use strict';
-
 import {Schema} from 'warehouse';
 
 export default ctx => {

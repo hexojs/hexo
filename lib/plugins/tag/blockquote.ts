@@ -1,5 +1,3 @@
-'use strict';
-
 // Based on: https://raw.github.com/imathis/octopress/master/plugins/blockquote.rb
 
 import titlecase from 'titlecase';

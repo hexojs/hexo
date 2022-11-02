@@ -1,5 +1,3 @@
-'use strict';
-
 import {createSha1Hash, Permalink, slugize} from 'hexo-util';
 import {basename} from 'path';
 let permalink;

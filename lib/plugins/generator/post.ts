@@ -1,5 +1,3 @@
-'use strict';
-
 function postGenerator(locals) {
   const posts = locals.posts.sort('-date').toArray();
   const { length } = posts;

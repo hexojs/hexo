@@ -1,5 +1,3 @@
-'use strict';
-
 import img from './img';
 import {encodeURL} from 'hexo-util';
 

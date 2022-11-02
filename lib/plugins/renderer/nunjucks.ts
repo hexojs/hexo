@@ -1,6 +1,4 @@
 
-'use strict';
-
 import nunjucks from 'nunjucks';
 import {readFileSync} from 'hexo-fs';
 import {dirname} from 'path';

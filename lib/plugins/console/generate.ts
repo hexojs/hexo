@@ -1,5 +1,3 @@
-'use strict';
-
 import {exists, writeFile, unlink, stat, mkdirs} from 'hexo-fs';
 import {join} from 'path';
 import Promise from 'bluebird';

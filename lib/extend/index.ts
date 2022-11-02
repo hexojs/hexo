@@ -1,5 +1,3 @@
-'use strict';
-
 import Console from './console';
 import Deployer from './deployer';
 import Filter from './filter';

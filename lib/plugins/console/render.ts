@@ -1,5 +1,3 @@
-'use strict';
-
 import {resolve} from 'path';
 import tildify from 'tildify';
 import prettyHrtime from 'pretty-hrtime';

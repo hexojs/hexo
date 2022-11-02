@@ -1,5 +1,3 @@
-'use strict';
-
 import {isExternalLink} from 'hexo-util';
 
 let EXTERNAL_LINK_SITE_ENABLED = true;

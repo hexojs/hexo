@@ -1,5 +1,3 @@
-'use strict';
-
 import {join, parse} from 'path';
 import tildify from 'tildify';
 import {exists, readdir} from 'hexo-fs';

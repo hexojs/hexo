@@ -1,5 +1,3 @@
-'use strict';
-
 import {stripHTML, wordWrap, truncate, escapeHTML} from 'hexo-util';
 import titlecase from 'titlecase';
 export {stripHTML as strip_html};

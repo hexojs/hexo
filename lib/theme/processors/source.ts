@@ -1,5 +1,3 @@
-'use strict';
-
 import {Pattern} from 'hexo-util';
 import common from '../../plugins/processor/common';
 

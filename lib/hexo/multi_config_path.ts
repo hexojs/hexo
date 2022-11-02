@@ -1,5 +1,3 @@
-'use strict';
-
 import {isAbsolute, resolve, join, extname} from 'path';
 import fs from 'hexo-fs';
 import yml from 'js-yaml';

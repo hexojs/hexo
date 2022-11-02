@@ -1,5 +1,3 @@
-'use strict';
-
 import {underline, magenta} from 'picocolors';
 
 function migrateConsole(args) {

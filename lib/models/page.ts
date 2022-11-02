@@ -1,5 +1,3 @@
-'use strict';
-
 import {Schema} from 'warehouse';
 import {join} from 'path';
 import Moment from './types/moment';

@@ -1,5 +1,3 @@
-'use strict';
-
 import {Schema} from 'warehouse';
 import moment from 'moment';
 import {extname, join, sep} from 'path';

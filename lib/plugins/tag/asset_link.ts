@@ -1,5 +1,3 @@
-'use strict';
-
 import {encodeURL, escapeHTML} from 'hexo-util';
 
 /**

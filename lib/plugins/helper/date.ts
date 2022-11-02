@@ -1,5 +1,3 @@
-'use strict';
-
 import moment from 'moment-timezone';
 const { isMoment } = moment;
 import moize from 'moize';

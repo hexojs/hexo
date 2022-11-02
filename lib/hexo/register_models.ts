@@ -1,6 +1,4 @@
-'use strict';
-
-import models from '../models';
+import * as models from '../models';
 
 export default ctx => {
   const db = ctx.database;

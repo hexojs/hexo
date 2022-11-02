@@ -1,5 +1,3 @@
-'use strict';
-
 import yaml from 'js-yaml';
 import {escape} from 'hexo-front-matter';
 const log = require('hexo-log')();

@@ -1,5 +1,3 @@
-'use strict';
-
 import {Schema} from 'warehouse';
 import {slugize, full_url_for} from 'hexo-util';
 const { hasOwnProperty: hasOwn } = Object.prototype;

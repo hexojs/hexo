@@ -1,5 +1,3 @@
-'use strict';
-
 import tildify from 'tildify';
 import {magenta} from 'picocolors';
 

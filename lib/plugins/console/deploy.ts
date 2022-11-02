@@ -1,5 +1,3 @@
-'use strict';
-
 import {exists} from 'hexo-fs';
 import {underline, magenta} from 'picocolors';
 

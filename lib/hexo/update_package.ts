@@ -1,5 +1,3 @@
-'use strict';
-
 import {join} from 'path';
 import fs from 'hexo-fs';
 

@@ -1,5 +1,3 @@
-'use strict';
-
 import {sep, resolve, join, parse} from 'path';
 import tildify from 'tildify';
 import Theme from '../theme';

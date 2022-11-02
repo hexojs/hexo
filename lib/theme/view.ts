@@ -1,5 +1,3 @@
-'use strict';
-
 import {dirname, extname, join} from 'path';
 import {parse as yfm} from 'hexo-front-matter';
 import Promise from 'bluebird';

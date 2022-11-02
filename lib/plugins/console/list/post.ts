@@ -1,5 +1,3 @@
-'use strict';
-
 import {gray, magenta, underline} from 'picocolors';
 import table from 'text-table';
 import {stringLength} from './common';

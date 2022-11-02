@@ -1,5 +1,3 @@
-'use strict';
-
 // Based on: https://raw.github.com/imathis/octopress/master/plugins/code_block.rb
 
 import {escapeHTML} from 'hexo-util';

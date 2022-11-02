@@ -1,5 +1,3 @@
-'use strict';
-
 import {join, sep} from 'path';
 import Promise from 'bluebird';
 import File from './file';

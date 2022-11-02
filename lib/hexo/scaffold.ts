@@ -1,5 +1,3 @@
-'use strict';
-
 import {extname, join} from 'path';
 import {exists, listDir, readFile, unlink, writeFile} from 'hexo-fs';
 

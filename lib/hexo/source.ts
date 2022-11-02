@@ -1,5 +1,3 @@
-'use strict';
-
 import Box from '../box';
 
 class Source extends Box {

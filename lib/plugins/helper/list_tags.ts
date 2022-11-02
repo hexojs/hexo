@@ -1,5 +1,3 @@
-'use strict';
-
 import {url_for, escapeHTML} from 'hexo-util';
 import moize from 'moize';
 

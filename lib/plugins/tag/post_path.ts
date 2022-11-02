@@ -1,5 +1,3 @@
-'use strict';
-
 import {encodeURL} from 'hexo-util';
 import {postFindOneFactory} from './';
 

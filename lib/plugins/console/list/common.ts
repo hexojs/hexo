@@ -1,5 +1,3 @@
-'use strict';
-
 import strip from 'strip-ansi';
 
 export function stringLength(str) {

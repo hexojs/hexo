@@ -1,5 +1,3 @@
-'use strict';
-
 import {extname} from 'path';
 import Promise from 'bluebird';
 

@@ -1,5 +1,3 @@
-'use strict';
-
 import {stripIndent} from 'hexo-util';
 import {cyan, magenta, red, bold} from 'picocolors';
 import {Environment} from 'nunjucks';

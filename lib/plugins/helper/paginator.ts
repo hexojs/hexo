@@ -1,5 +1,3 @@
-'use strict';
-
 import {htmlTag, url_for} from 'hexo-util';
 
 const createLink = (options, ctx) => {

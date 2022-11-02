@@ -1,5 +1,3 @@
-'use strict';
-
 function pageGenerator(locals) {
   return locals.pages.map(page => {
     const { path, layout } = page;

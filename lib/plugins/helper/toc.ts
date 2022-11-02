@@ -1,5 +1,3 @@
-'use strict';
-
 import {tocObj, escapeHTML, encodeURL} from 'hexo-util';
 
 function tocHelper(str, options = {}) {

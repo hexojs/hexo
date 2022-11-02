@@ -1,5 +1,3 @@
-'use strict';
-
 let NEED_INJECT = true;
 let META_GENERATOR_TAG;
 

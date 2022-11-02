@@ -1,5 +1,3 @@
-'use strict';
-
 import Promise from 'bluebird';
 import {sep, join, dirname} from 'path';
 import tildify from 'tildify';

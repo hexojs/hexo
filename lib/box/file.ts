@@ -1,5 +1,3 @@
-'use strict';
-
 import {readFile, readFileSync, stat, statSync} from 'hexo-fs';
 
 class File {

@@ -1,5 +1,3 @@
-'use strict';
-
 export default ctx => {
   const { helper } = ctx.extend;
 

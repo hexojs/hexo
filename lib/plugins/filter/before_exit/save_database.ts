@@ -1,5 +1,3 @@
-'use strict';
-
 function saveDatabaseFilter() {
   if (!this.env.init || !this._dbLoaded) return;
 

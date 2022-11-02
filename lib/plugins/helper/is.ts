@@ -1,5 +1,3 @@
-'use strict';
-
 function isCurrentHelper(path = '/', strict) {
   const currentPath = this.path.replace(/^[^/].*/, '/$&');
 

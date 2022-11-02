@@ -1,5 +1,3 @@
-'use strict';
-
 import {SchemaType} from 'warehouse';
 import {moment, toMomentLocale} from '../../plugins/helper/date';
 

@@ -1,5 +1,3 @@
-'use strict';
-
 const rExcerpt = /<!-- ?more ?-->/i;
 
 function excerptFilter(data) {
