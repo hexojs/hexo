@@ -75,4 +75,4 @@ export default function(ctx) {
       {name: '--pretty', desc: 'Prettify JSON output'}
     ]
   }, require('./render'));
-};
+}

@@ -7,8 +7,8 @@ const rCodeTag = /<code[^<>]*>[\s\S]+?<\/code>/g;
 const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
 class NunjucksTag {
-	public tags: any;
-	public fn: any;
+  public tags: any;
+  public fn: any;
 
   constructor(name, fn) {
     this.tags = [name];
@@ -181,8 +181,8 @@ const formatNunjucksError = (err, input, source = '') => {
 };
 
 class Tag {
-	public env: any;
-	public source: any;
+  public env: any;
+  public source: any;
 
   constructor() {
     this.env = new Environment(null, {

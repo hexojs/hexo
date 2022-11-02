@@ -3,7 +3,7 @@ import fs from 'hexo-fs';
 import yml from 'js-yaml';
 import {deepMerge} from 'hexo-util';
 
-export default ctx => (function multiConfigPath(base, configPaths, outputDir) {
+export default ctx => function multiConfigPath(base, configPaths, outputDir) {
   const { log } = ctx;
   const defaultPath = join(base, '_config.yml');
 
@@ -72,4 +72,4 @@ export default ctx => (function multiConfigPath(base, configPaths, outputDir) {
 
   // write file and return path
   return outputPath;
-});
+};

@@ -1,4 +1,4 @@
-'use strict';
+
 import {Cache} from 'hexo-util';
 
 export default ctx => {

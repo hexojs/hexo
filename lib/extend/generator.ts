@@ -1,8 +1,8 @@
 import Promise from 'bluebird';
 
 class Generator {
-	public id: any;
-	public store: any;
+  public id: any;
+  public store: any;
 
   constructor() {
     this.id = 0;

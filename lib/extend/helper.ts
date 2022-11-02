@@ -1,5 +1,5 @@
 class Helper {
-	public store: any;
+  public store: any;
 
   constructor() {
     this.store = {};

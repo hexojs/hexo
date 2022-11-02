@@ -1,10 +1,10 @@
 import {readFile, readFileSync, stat, statSync} from 'hexo-fs';
 
 class File {
-	public source: any;
-	public path: any;
-	public params: any;
-	public type: any;
+  public source: any;
+  public path: any;
+  public params: any;
+  public type: any;
 
   constructor({ source, path, params, type }) {
     this.source = source;

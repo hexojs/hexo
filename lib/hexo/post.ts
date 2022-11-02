@@ -28,8 +28,8 @@ const isNonWhiteSpaceChar = char => char !== '\r'
   && char !== ' ';
 
 class PostRenderEscape {
-	public stored: any;
-	public length: any;
+  public stored: any;
+  public length: any;
 
   constructor() {
     this.stored = [];
@@ -219,10 +219,10 @@ const createAssetFolder = (path, assetFolder) => {
 };
 
 class Post {
-	public context: any;
-	public config: any;
-	public tag: any;
-	public separator: any;
+  public context: any;
+  public config: any;
+  public tag: any;
+  public separator: any;
 
   constructor(context) {
     this.context = context;

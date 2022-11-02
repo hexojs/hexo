@@ -1,7 +1,7 @@
 import Promise from 'bluebird';
 
 class Deployer {
-	public store: any;
+  public store: any;
 
   constructor() {
     this.store = {};

@@ -144,4 +144,4 @@ export default ctx => function codeTag(args, content) {
   });
 
   return content.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
-});
+};

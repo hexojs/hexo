@@ -24,8 +24,8 @@ const toString = (result, options) => {
 };
 
 class Render {
-	public context: any;
-	public renderer: any;
+  public context: any;
+  public renderer: any;
 
   constructor(ctx) {
     this.context = ctx;

@@ -1,9 +1,9 @@
 import {Cache} from 'hexo-util';
 
 class Injector {
-	public store: any;
-	public cache: any;
-	public page: any;
+  public store: any;
+  public cache: any;
+  public page: any;
 
   constructor() {
     this.store = {

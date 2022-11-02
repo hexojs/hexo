@@ -9,8 +9,8 @@ const getExtname = str => {
 };
 
 class Renderer {
-	public store: any;
-	public storeSync: any;
+  public store: any;
+  public storeSync: any;
 
   constructor() {
     this.store = {};

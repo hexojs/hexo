@@ -2,7 +2,7 @@ import {SchemaType} from 'warehouse';
 import {moment, toMomentLocale} from '../../plugins/helper/date';
 
 class SchemaTypeMoment extends SchemaType {
-	public options: any;
+  public options: any;
 
   constructor(name, options = {}) {
     super(name, options);

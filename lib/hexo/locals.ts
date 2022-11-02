@@ -1,8 +1,8 @@
 import {Cache} from 'hexo-util';
 
 class Locals {
-	public cache: any;
-	public getters: any;
+  public cache: any;
+  public getters: any;
 
   constructor() {
     this.cache = new Cache();

@@ -10,18 +10,18 @@ import {isMatch, makeRe} from 'micromatch';
 const defaultPattern = new Pattern(() => ({}));
 
 class Box extends EventEmitter {
-	public options: any;
-	public context: any;
-	public base: any;
-	public processors: any;
-	public _processingFiles: any;
-	public watcher: any;
-	public Cache: any;
-	public File: any;
-	public ignore: any;
-	public source: any;
-	public emit: any;
-	public ctx: any;
+  public options: any;
+  public context: any;
+  public base: any;
+  public processors: any;
+  public _processingFiles: any;
+  public watcher: any;
+  public Cache: any;
+  public File: any;
+  public ignore: any;
+  public source: any;
+  public emit: any;
+  public ctx: any;
 
   constructor(ctx, base, options) {
     super();

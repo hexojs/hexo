@@ -21,7 +21,7 @@ import {
   Migrator,
   Processor,
   Renderer,
-  Tag,
+  Tag
 } from '../extend';
 
 import Render from './render';
@@ -106,42 +106,42 @@ function debounce(func, wait) {
 }
 
 class Hexo extends EventEmitter {
-	public base_dir: any;
-	public public_dir: any;
-	public source_dir: any;
-	public plugin_dir: any;
-	public script_dir: any;
-	public scaffold_dir: any;
-	public theme_dir: any;
-	public theme_script_dir: any;
-	public env: any;
-	public extend: any;
-	public config: any;
-	public log: any;
-	public render: any;
-	public route: any;
-	public post: any;
-	public scaffold: any;
-	public _dbLoaded: any;
-	public _isGenerating: any;
-	public database: any;
-	public config_path: any;
-	public source: any;
-	public theme: any;
-	public locals: any;
-	public version: any;
-	public emit: any;
-	public _watchBox: any;
-	public page: any;
-	public path: any;
-	public url: any;
-	public layout: any;
-	public view_dir: any;
-	public site: any;
-	public args: any;
-	public cache: any;
-	public alias: any;
-	public data: any;
+  public base_dir: any;
+  public public_dir: any;
+  public source_dir: any;
+  public plugin_dir: any;
+  public script_dir: any;
+  public scaffold_dir: any;
+  public theme_dir: any;
+  public theme_script_dir: any;
+  public env: any;
+  public extend: any;
+  public config: any;
+  public log: any;
+  public render: any;
+  public route: any;
+  public post: any;
+  public scaffold: any;
+  public _dbLoaded: any;
+  public _isGenerating: any;
+  public database: any;
+  public config_path: any;
+  public source: any;
+  public theme: any;
+  public locals: any;
+  public version: any;
+  public emit: any;
+  public _watchBox: any;
+  public page: any;
+  public path: any;
+  public url: any;
+  public layout: any;
+  public view_dir: any;
+  public site: any;
+  public args: any;
+  public cache: any;
+  public alias: any;
+  public data: any;
 
   constructor(base = process.cwd(), args = {}) {
     super();

@@ -1,7 +1,7 @@
 import Promise from 'bluebird';
 
 class Migrator {
-	public store: any;
+  public store: any;
 
   constructor() {
     this.store = {};

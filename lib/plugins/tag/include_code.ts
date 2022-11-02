@@ -13,7 +13,7 @@ const rTo = /\s*to:(\d+)/i;
 *   {% include_code [title] [lang:language] path/to/file %}
 */
 
-export default ctx => (function includeCodeTag(args) {
+export default ctx => function includeCodeTag(args) {
   let codeDir = ctx.config.code_dir;
   let arg = args.join(' ');
 
@@ -74,4 +74,4 @@ export default ctx => (function includeCodeTag(args) {
 
     return `<pre><code>${code}</code></pre>`;
   });
-});
+};

@@ -8,17 +8,17 @@ import {PassThrough} from 'stream';
 import {createSha1Hash} from 'hexo-util';
 
 class Generater {
-	public context: any;
-	public force: any;
-	public bail: any;
-	public concurrency: any;
-	public watch: any;
-	public deploy: any;
-	public generatingFiles: any;
-	public start: any;
-	public args: any;
-	public route: any;
-	public log: any;
+  public context: any;
+  public force: any;
+  public bail: any;
+  public concurrency: any;
+  public watch: any;
+  public deploy: any;
+  public generatingFiles: any;
+  public start: any;
+  public args: any;
+  public route: any;
+  public log: any;
 
   constructor(ctx, args) {
     this.context = ctx;
