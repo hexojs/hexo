@@ -114,6 +114,11 @@ interface Args {
   config?: any;
 }
 
+interface Query {
+  date?: any;
+  published?: boolean;
+}
+
 class Hexo extends EventEmitter {
   public base_dir: any;
   public public_dir: any;
@@ -133,7 +138,7 @@ class Hexo extends EventEmitter {
   public scaffold: any;
   public _dbLoaded: any;
   public _isGenerating: any;
-  public database: any;
+  public database: Database;
   public config_path: any;
   public source: any;
   public theme: any;
@@ -151,6 +156,11 @@ class Hexo extends EventEmitter {
   public cache: any;
   public alias: any;
   public data: any;
+  public lib_dir: string;
+  public core_dir: string;
+  static lib_dir: string;
+  static core_dir: string;
+  static version: string;
 
   constructor(base = process.cwd(), args: Args = {}) {
     super();
@@ -227,7 +237,7 @@ class Hexo extends EventEmitter {
 
     this.source = new Source(this);
     this.theme = new Theme(this);
-    this.locals = new Locals(this);
+    this.locals = new Locals();
     this._bindLocals();
   }
 
@@ -236,7 +246,7 @@ class Hexo extends EventEmitter {
     const { locals } = this;
 
     locals.set('posts', () => {
-      const query = {};
+      const query: Query = {};
 
       if (!this.config.future) {
         query.date = { $lte: Date.now() };
@@ -250,7 +260,7 @@ class Hexo extends EventEmitter {
     });
 
     locals.set('pages', () => {
-      const query = {};
+      const query: Query = {};
 
       if (!this.config.future) {
         query.date = { $lte: Date.now() };
@@ -430,6 +440,19 @@ class Hexo extends EventEmitter {
     const localsObj = this.locals.toObject();
 
     class Locals {
+      page: {
+        path: string;
+      };
+      path: string;
+      url: string;
+      config: object;
+      theme: object;
+      layout: string;
+      env: any;
+      view_dir: string;
+      site: object;
+      cache?: boolean;
+
       constructor(path, locals) {
         this.page = { ...locals };
         if (this.page.path == null) this.page.path = path;
