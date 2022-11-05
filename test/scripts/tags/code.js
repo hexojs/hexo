@@ -33,10 +33,6 @@ describe('code', () => {
   }
 
   describe('highlightjs', () => {
-    beforeEach(() => {
-      hexo.config.highlighter = 'highlight.js';
-    });
-
     it('default', () => {
       const result = code('', fixture);
       result.should.eql(highlight(fixture));
