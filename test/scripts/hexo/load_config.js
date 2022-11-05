@@ -205,7 +205,7 @@ describe('Load config', () => {
     try {
       await writeFile(hexo.config_path, content);
       await loadConfig(hexo);
-      hexo.config.highlight.enable.should.be.true;
+      hexo.config.highlight.line_number.should.be.true;
       hexo.config.highlight.tab_replace.should.eql('yoooo');
     } finally {
       await unlink(hexo.config_path);
