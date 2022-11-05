@@ -114,12 +114,12 @@ describe('code', () => {
     });
 
     it('disabled', () => {
-      hexo.config.highlight.enable = false;
+      hexo.extend.filter.store.highlight = [];
 
       const result = code('', fixture);
       result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
 
-      hexo.config.highlight.enable = true;
+      hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/highlight')(hexo));
     });
 
     it('first_line', () => {
@@ -185,8 +185,8 @@ describe('code', () => {
 
   describe('prismjs', () => {
     beforeEach(() => {
-      hexo.config.highlight.enable = false;
-      hexo.config.prismjs.enable = true;
+      hexo.extend.filter.store.highlight = [];
+      hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/prism')(hexo));
     });
 
     it('default', () => {
@@ -246,13 +246,12 @@ describe('code', () => {
     });
 
     it('disabled', () => {
-      hexo.config.highlight.enable = false;
-      hexo.config.prismjs.enable = false;
+      hexo.extend.filter.store.highlight = [];
 
       const result = code('', fixture);
       result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
 
-      hexo.config.highlight.enable = true;
+      hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/highlight')(hexo));
     });
 
     it('first_line', () => {

@@ -30,8 +30,8 @@ describe('include_code', () => {
 
   describe('highlightjs', () => {
     it('default', async () => {
-      hexo.config.highlight.enable = true;
-      hexo.config.prismjs.enable = false;
+      hexo.extend.filter.store.highlight = [];
+      hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/highlight')(hexo));
 
       const expected = highlight(fixture, {
         lang: 'js',
@@ -124,7 +124,7 @@ describe('include_code', () => {
     });
 
     it('disabled', async () => {
-      hexo.config.highlight.enable = false;
+      hexo.extend.filter.store.highlight = [];
 
       const result = await code('test.js');
       result.should.eql('<pre><code>' + fixture + '</code></pre>');
@@ -133,8 +133,8 @@ describe('include_code', () => {
 
   describe('prismjs', () => {
     beforeEach(() => {
-      hexo.config.highlight.enable = false;
-      hexo.config.prismjs.enable = true;
+      hexo.extend.filter.store.highlight = [];
+      hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/prism')(hexo));
     });
 
     it('default', async () => {
@@ -213,8 +213,7 @@ describe('include_code', () => {
     });
 
     it('disabled', async () => {
-      hexo.config.highlight.enable = false;
-      hexo.config.prismjs.enable = false;
+      hexo.extend.filter.store.highlight = [];
 
       const result = await code('test.js');
       result.should.eql('<pre><code>' + fixture + '</code></pre>');

@@ -47,8 +47,7 @@ describe('Backtick code block', () => {
 
     const data = {content};
 
-    hexo.config.highlight.enable = false;
-    hexo.config.prismjs.enable = false;
+    hexo.extend.filter.store.highlight = [];
     codeBlock(data);
     data.content.should.eql(content);
   });
@@ -503,8 +502,8 @@ describe('Backtick code block', () => {
 
   describe('prismjs', () => {
     beforeEach(() => {
-      hexo.config.highlight.enable = false;
-      hexo.config.prismjs.enable = true;
+      hexo.extend.filter.store.highlight = [];
+      hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/prism')(hexo));
     });
 
     it('default', () => {

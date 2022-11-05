@@ -903,8 +903,8 @@ describe('Post', () => {
   });
 
   it('render() - shouln\'t break curly brackets', async () => {
-    hexo.config.prismjs.enable = true;
-    hexo.config.highlight.enable = false;
+    hexo.extend.filter.store.highlight = [];
+    hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/prism')(hexo));
 
     const content = [
       '\\begin{equation}',
@@ -920,8 +920,8 @@ describe('Post', () => {
     data.content.should.include('\\begin{equation}');
     data.content.should.include('\\end{equation}');
 
-    hexo.config.prismjs.enable = false;
-    hexo.config.highlight.enable = true;
+    hexo.extend.filter.store.highlight = [];
+    hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/highlight')(hexo));
   });
 
   // #2321
@@ -1320,8 +1320,8 @@ describe('Post', () => {
   });
 
   it('render() - issue #4460', async () => {
-    hexo.config.prismjs.enable = true;
-    hexo.config.highlight.enable = false;
+    hexo.extend.filter.store.highlight = [];
+    hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/prism')(hexo));
 
     const content = fixture.content_for_issue_4460;
 
@@ -1332,13 +1332,13 @@ describe('Post', () => {
 
     data.content.should.not.include('hexoPostRenderEscape');
 
-    hexo.config.prismjs.enable = false;
-    hexo.config.highlight.enable = true;
+    hexo.extend.filter.store.highlight = [];
+    hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/highlight')(hexo));
   });
 
   it('render() - empty tag name', async () => {
-    hexo.config.prismjs.enable = true;
-    hexo.config.highlight.enable = false;
+    hexo.extend.filter.store.highlight = [];
+    hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/prism')(hexo));
 
     const content = 'Disable rendering of Nunjucks tag `{{ }}` / `{% %}`';
 
@@ -1350,7 +1350,7 @@ describe('Post', () => {
     data.content.should.include(escapeSwigTag('{{ }}'));
     data.content.should.include(escapeSwigTag('{% %}'));
 
-    hexo.config.prismjs.enable = false;
-    hexo.config.highlight.enable = true;
+    hexo.extend.filter.store.highlight = [];
+    hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/highlight')(hexo));
   });
 });
