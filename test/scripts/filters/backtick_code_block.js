@@ -6,7 +6,7 @@ const defaultConfig = require('../../../lib/hexo/default_config');
 describe('Backtick code block', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
-  const codeBlock = require('../../../lib/plugins/filter/before_post_render/backtick_code_block').bind(hexo);
+  const codeBlock = require('../../../lib/plugins/filter/before_post_render/backtick_code_block')(hexo);
 
   const code = [
     'if (tired && night) {',
@@ -74,6 +74,11 @@ describe('Backtick code block', () => {
   });
 
   describe('highlightjs', () => {
+    beforeEach(() => {
+      hexo.extend.filter.store.highlight = [];
+      hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/highlight')(hexo));
+    });
+
     it('shorthand', () => {
       const data = {
         content: 'Hello, world!'

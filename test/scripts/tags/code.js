@@ -32,6 +32,11 @@ describe('code', () => {
   }
 
   describe('highlightjs', () => {
+    beforeEach(() => {
+      hexo.extend.filter.store.highlight = [];
+      hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/highlight')(hexo));
+    });
+
     it('default', () => {
       const result = code('', fixture);
       result.should.eql(highlight(fixture));
