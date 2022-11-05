@@ -6,6 +6,7 @@ const cheerio = require('cheerio');
 describe('code', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
+  require('../../../lib/plugins/highlight/')(hexo);
   const codeTag = require('../../../lib/plugins/tag/code')(hexo);
   const { escapeHTML } = util;
 
@@ -33,8 +34,7 @@ describe('code', () => {
 
   describe('highlightjs', () => {
     beforeEach(() => {
-      hexo.extend.filter.store.highlight = [];
-      hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/highlight')(hexo));
+      hexo.config.highlighter = 'highlight.js';
     });
 
     it('default', () => {
@@ -119,12 +119,12 @@ describe('code', () => {
     });
 
     it('disabled', () => {
-      hexo.extend.filter.store.highlight = [];
+      hexo.config.highlighter = '';
 
       const result = code('', fixture);
       result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
 
-      hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/highlight')(hexo));
+      hexo.config.highlighter = 'highlight.js';
     });
 
     it('first_line', () => {
@@ -190,8 +190,7 @@ describe('code', () => {
 
   describe('prismjs', () => {
     beforeEach(() => {
-      hexo.extend.filter.store.highlight = [];
-      hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/prism')(hexo));
+      hexo.config.highlighter = 'prismjs';
     });
 
     it('default', () => {
@@ -251,12 +250,12 @@ describe('code', () => {
     });
 
     it('disabled', () => {
-      hexo.extend.filter.store.highlight = [];
+      hexo.config.highlighter = '';
 
       const result = code('', fixture);
       result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
 
-      hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/highlight')(hexo));
+      hexo.config.highlighter = 'highlight.js';
     });
 
     it('first_line', () => {

@@ -12,6 +12,7 @@ const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;')
 describe('Post', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo(join(__dirname, 'post_test'));
+  require('../../../lib/plugins/highlight/')(hexo);
   const { post } = hexo;
   const now = Date.now();
   let clock;
@@ -903,8 +904,7 @@ describe('Post', () => {
   });
 
   it('render() - shouln\'t break curly brackets', async () => {
-    hexo.extend.filter.store.highlight = [];
-    hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/prism')(hexo));
+    hexo.config.highlighter = 'prismjs';
 
     const content = [
       '\\begin{equation}',
@@ -920,8 +920,7 @@ describe('Post', () => {
     data.content.should.include('\\begin{equation}');
     data.content.should.include('\\end{equation}');
 
-    hexo.extend.filter.store.highlight = [];
-    hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/highlight')(hexo));
+    hexo.config.highlighter = 'highlight.js';
   });
 
   // #2321
@@ -1320,8 +1319,7 @@ describe('Post', () => {
   });
 
   it('render() - issue #4460', async () => {
-    hexo.extend.filter.store.highlight = [];
-    hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/prism')(hexo));
+    hexo.config.highlighter = 'prismjs';
 
     const content = fixture.content_for_issue_4460;
 
@@ -1332,13 +1330,11 @@ describe('Post', () => {
 
     data.content.should.not.include('hexoPostRenderEscape');
 
-    hexo.extend.filter.store.highlight = [];
-    hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/highlight')(hexo));
+    hexo.config.highlighter = 'highlight.js';
   });
 
   it('render() - empty tag name', async () => {
-    hexo.extend.filter.store.highlight = [];
-    hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/prism')(hexo));
+    hexo.config.highlighter = 'prismjs';
 
     const content = 'Disable rendering of Nunjucks tag `{{ }}` / `{% %}`';
 
@@ -1350,7 +1346,6 @@ describe('Post', () => {
     data.content.should.include(escapeSwigTag('{{ }}'));
     data.content.should.include(escapeSwigTag('{% %}'));
 
-    hexo.extend.filter.store.highlight = [];
-    hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/highlight')(hexo));
+    hexo.config.highlighter = 'highlight.js';
   });
 });

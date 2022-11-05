@@ -6,6 +6,7 @@ const defaultConfig = require('../../../lib/hexo/default_config');
 describe('Backtick code block', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
+  require('../../../lib/plugins/highlight/')(hexo);
   const codeBlock = require('../../../lib/plugins/filter/before_post_render/backtick_code_block')(hexo);
 
   const code = [
@@ -47,7 +48,7 @@ describe('Backtick code block', () => {
 
     const data = {content};
 
-    hexo.extend.filter.store.highlight = [];
+    hexo.config.highlighter = '';
     codeBlock(data);
     data.content.should.eql(content);
   });
@@ -75,8 +76,7 @@ describe('Backtick code block', () => {
 
   describe('highlightjs', () => {
     beforeEach(() => {
-      hexo.extend.filter.store.highlight = [];
-      hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/highlight')(hexo));
+      hexo.config.highlighter = 'highlight.js';
     });
 
     it('shorthand', () => {
@@ -507,8 +507,7 @@ describe('Backtick code block', () => {
 
   describe('prismjs', () => {
     beforeEach(() => {
-      hexo.extend.filter.store.highlight = [];
-      hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/prism')(hexo));
+      hexo.config.highlighter = 'prismjs';
     });
 
     it('default', () => {

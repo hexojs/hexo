@@ -8,6 +8,7 @@ const Promise = require('bluebird');
 describe('include_code', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo(join(__dirname, 'include_code_test'));
+  require('../../../lib/plugins/highlight/')(hexo);
   const includeCode = Promise.method(require('../../../lib/plugins/tag/include_code')(hexo));
   const path = join(hexo.source_dir, hexo.config.code_dir, 'test.js');
   const defaultCfg = JSON.parse(JSON.stringify(hexo.config));
@@ -30,8 +31,7 @@ describe('include_code', () => {
 
   describe('highlightjs', () => {
     it('default', async () => {
-      hexo.extend.filter.store.highlight = [];
-      hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/highlight')(hexo));
+      hexo.config.highlighter = 'highlight.js';
 
       const expected = highlight(fixture, {
         lang: 'js',
@@ -124,7 +124,7 @@ describe('include_code', () => {
     });
 
     it('disabled', async () => {
-      hexo.extend.filter.store.highlight = [];
+      hexo.config.highlighter = '';
 
       const result = await code('test.js');
       result.should.eql('<pre><code>' + fixture + '</code></pre>');
@@ -133,8 +133,7 @@ describe('include_code', () => {
 
   describe('prismjs', () => {
     beforeEach(() => {
-      hexo.extend.filter.store.highlight = [];
-      hexo.extend.filter.register('highlight', require('../../../lib/plugins/filter/highlight/prism')(hexo));
+      hexo.config.highlighter = 'prismjs';
     });
 
     it('default', async () => {
@@ -213,7 +212,7 @@ describe('include_code', () => {
     });
 
     it('disabled', async () => {
-      hexo.extend.filter.store.highlight = [];
+      hexo.config.highlighter = '';
 
       const result = await code('test.js');
       result.should.eql('<pre><code>' + fixture + '</code></pre>');
