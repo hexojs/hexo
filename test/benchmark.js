@@ -6,7 +6,7 @@ const { spawn: spawnAsync } = require('hexo-util');
 const { rmdir, exists } = require('hexo-fs');
 const { appendFileSync: appendFile } = require('fs');
 const { join, resolve } = require('path');
-const log = require('hexo-log')();
+const log = require('hexo-log').default();
 const { red } = require('picocolors');
 const hooks = [
   { regex: /Hexo version/, tag: 'hexo-begin' },
