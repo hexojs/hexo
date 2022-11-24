@@ -235,7 +235,7 @@ class Tag {
     if (env.hasExtension(name)) env.removeExtension(name);
   }
 
-  render(str, options = {}, callback) {
+  render(str, options: { source?: string } = {}, callback) {
     if (!callback && typeof options === 'function') {
       callback = options;
       options = {};

@@ -119,6 +119,14 @@ interface Query {
   published?: boolean;
 }
 
+// Node.js internal APIs
+declare module 'module' {
+  function _nodeModulePaths(path: string): string[];
+  function _resolveFilename(request: string, parent: Module, isMain?: any, options?: any): string;
+  const _extensions: NodeJS.RequireExtensions;
+  const _cache: any;
+}
+
 class Hexo extends EventEmitter {
   public base_dir: any;
   public public_dir: any;
@@ -345,7 +353,7 @@ class Hexo extends EventEmitter {
     }
   }
 
-  loadPlugin(path, callback) {
+  loadPlugin(path: string, callback: Function) {
     return readFile(path).then(script => {
       // Based on: https://github.com/joyent/node/blob/v0.10.33/src/node.js#L516
       const module = new Module(path);
@@ -520,7 +528,7 @@ class Hexo extends EventEmitter {
     });
   }
 
-  _generate(options = {}) {
+  _generate(options: { cache?: boolean } = {}) {
     if (this._isGenerating) return;
 
     const useCache = options.cache;
