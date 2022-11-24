@@ -154,6 +154,12 @@ const getContext = (lines, errLine, location, type) => {
   return message;
 };
 
+class NunjucksError extends Error {
+  line?: number;
+  location?: string;
+  type?: string;
+}
+
 /**
  * Provide context for Nunjucks error
  * @param  {Error}    err Nunjucks error
@@ -171,7 +177,7 @@ const formatNunjucksError = (err, input, source = '') => {
   // trim useless info from Nunjucks Error
   const splited = err.message.split('\n');
 
-  const e = new Error();
+  const e = new NunjucksError();
   e.name = 'Nunjucks Error';
   e.line = errLine;
   e.location = splited[0];
