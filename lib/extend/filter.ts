@@ -6,22 +6,39 @@ const typeAlias = {
   'after_render:html': '_after_html_render'
 };
 
+interface FilterOptions {
+  context?: any;
+  args?: any;
+}
+
+interface StoreFunction {
+  (...args: any[]): any;
+  priority?: number;
+}
+
+interface Store {
+  [key: string]: StoreFunction[]
+}
+
 class Filter {
-  public store: any;
+  public store: Store;
 
   constructor() {
     this.store = {};
   }
 
-  list(type) {
+  list(): Store;
+  list(type: string): StoreFunction[];
+  list(type?: string) {
     if (!type) return this.store;
     return this.store[type] || [];
   }
 
-  register(type, fn, priority) {
+  register(fn: StoreFunction, priority: number);
+  register(type?: string | StoreFunction, fn?: StoreFunction | number, priority?: number) {
     if (!priority) {
       if (typeof type === 'function') {
-        priority = fn;
+        priority = fn as number;
         fn = type;
         type = 'after_post_render';
       }
@@ -29,11 +46,11 @@ class Filter {
 
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 
-    type = typeAlias[type] || type;
+    type = typeAlias[type as string] || type;
     priority = priority == null ? 10 : priority;
 
-    const store = this.store[type] || [];
-    this.store[type] = store;
+    const store = this.store[type as string] || [];
+    this.store[type as string] = store;
 
     fn.priority = priority;
     store.push(fn);
@@ -41,7 +58,7 @@ class Filter {
     store.sort((a, b) => a.priority - b.priority);
   }
 
-  unregister(type, fn) {
+  unregister(type: string, fn: StoreFunction) {
     if (!type) throw new TypeError('type is required');
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 
@@ -55,7 +72,7 @@ class Filter {
     if (index !== -1) list.splice(index, 1);
   }
 
-  exec(type, data, options = {}) {
+  exec(type: string, data, options: FilterOptions = {}) {
     const filters = this.list(type);
     if (filters.length === 0) return Promise.resolve(data);
 
@@ -70,7 +87,7 @@ class Filter {
     })).then(() => args[0]);
   }
 
-  execSync(type, data, options = {}) {
+  execSync(type: string, data, options: FilterOptions = {}) {
     const filters = this.list(type);
     const filtersLen = filters.length;
     if (filtersLen === 0) return data;
