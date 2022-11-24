@@ -1,6 +1,11 @@
 import {dirname, join} from 'path';
 
-export = ctx => function partial(name, locals, options = {}) {
+interface Options {
+  cache?: boolean | string;
+  only?: boolean;
+}
+
+export = ctx => function partial(name, locals, options: Options = {}) {
   if (typeof name !== 'string') throw new TypeError('name must be a string!');
 
   const { cache } = options;

@@ -169,7 +169,7 @@ function openGraphHelper(options: Options = {}) {
   result += meta('twitter:card', twitterCard);
 
   if (options.twitter_image) {
-    let twitter_image = options.twitter_image;
+    let twitter_image: string | URL = options.twitter_image;
     twitter_image = new URL(twitter_image, url || config.url);
     result += meta('twitter:image', twitter_image, false);
   } else if (images.length) {

@@ -1,6 +1,19 @@
 import {tocObj, escapeHTML, encodeURL} from 'hexo-util';
 
-function tocHelper(str, options = {}) {
+interface Options {
+  min_depth?: number;
+  max_depth?: number;
+  class?: string;
+  class_item?: string;
+  class_link?: string;
+  class_text?: string;
+  class_child?: string;
+  class_number?: string;
+  class_level?: string;
+  list_number?: boolean;
+}
+
+function tocHelper(str, options: Options = {}) {
   options = Object.assign({
     min_depth: 1,
     max_depth: 6,

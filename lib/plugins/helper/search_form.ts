@@ -1,6 +1,12 @@
 import moize from 'moize';
 
-function searchFormHelper(options = {}) {
+interface Options {
+  class?: string;
+  text?: string;
+  button?: string | boolean;
+}
+
+function searchFormHelper(options: Options = {}) {
   const { config } = this;
   const className = options.class || 'search-form';
   const { text = 'Search', button } = options;
