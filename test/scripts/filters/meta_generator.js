@@ -3,14 +3,14 @@
 const decache = require('decache');
 
 describe('Meta Generator', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo();
   let metaGenerator;
   const cheerio = require('cheerio');
 
   beforeEach(() => {
-    decache('../../../lib/plugins/filter/after_render/meta_generator');
-    metaGenerator = require('../../../lib/plugins/filter/after_render/meta_generator').bind(hexo);
+    decache('../../../dist/plugins/filter/after_render/meta_generator');
+    metaGenerator = require('../../../dist/plugins/filter/after_render/meta_generator').bind(hexo);
   });
 
   it('default', () => {

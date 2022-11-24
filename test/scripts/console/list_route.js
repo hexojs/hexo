@@ -3,10 +3,10 @@
 const { stub, assert: sinonAssert } = require('sinon');
 
 describe('Console list', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
 
-  const listRoutes = require('../../../lib/plugins/console/list/route').bind(hexo);
+  const listRoutes = require('../../../dist/plugins/console/list/route').bind(hexo);
   const { route } = hexo;
 
   let logStub;

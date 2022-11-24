@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Processor', () => {
-  const Processor = require('../../../lib/extend/processor');
+  const Processor = require('../../../dist/extend/processor');
 
   it('register()', () => {
     const p = new Processor();

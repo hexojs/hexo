@@ -3,13 +3,13 @@
 const { spy } = require('sinon');
 
 describe('Console list', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
 
   it('no args', () => {
     hexo.call = spy();
 
-    const list = require('../../../lib/plugins/console/list').bind(hexo);
+    const list = require('../../../dist/plugins/console/list').bind(hexo);
 
     list({ _: [''] });
 
@@ -21,7 +21,7 @@ describe('Console list', () => {
   it('list type not found', () => {
     hexo.call = spy();
 
-    const list = require('../../../lib/plugins/console/list').bind(hexo);
+    const list = require('../../../dist/plugins/console/list').bind(hexo);
 
     list({ _: ['test'] });
 

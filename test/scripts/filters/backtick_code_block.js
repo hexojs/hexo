@@ -1,13 +1,13 @@
 'use strict';
 
 const util = require('hexo-util');
-const defaultConfig = require('../../../lib/hexo/default_config');
+const defaultConfig = require('../../../dist/hexo/default_config');
 
 describe('Backtick code block', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo();
-  require('../../../lib/plugins/highlight/')(hexo);
-  const codeBlock = require('../../../lib/plugins/filter/before_post_render/backtick_code_block')(hexo);
+  require('../../../dist/plugins/highlight/')(hexo);
+  const codeBlock = require('../../../dist/plugins/filter/before_post_render/backtick_code_block')(hexo);
 
   const code = [
     'if (tired && night) {',

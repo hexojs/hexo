@@ -3,7 +3,7 @@
 const moment = require('moment-timezone');
 
 describe('SchemaTypeMoment', () => {
-  const SchemaTypeMoment = require('../../../lib/models/types/moment');
+  const SchemaTypeMoment = require('../../../dist/models/types/moment');
   const type = new warehouse.SchemaTypeMoment('test');
 
   it('cast()', () => {

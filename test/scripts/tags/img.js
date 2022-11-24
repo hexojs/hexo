@@ -4,9 +4,9 @@ const pathFn = require('path');
 const cheerio = require('cheerio');
 
 describe('img', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(pathFn.join(__dirname, 'img_test'));
-  const img = require('../../../lib/plugins/tag/img')(hexo);
+  const img = require('../../../dist/plugins/tag/img')(hexo);
 
   before(() => hexo.init());
 

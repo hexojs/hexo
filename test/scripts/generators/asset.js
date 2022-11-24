@@ -5,9 +5,9 @@ const { mkdirs, rmdir, unlink, writeFile } = require('hexo-fs');
 const testUtil = require('../../util');
 
 describe('asset', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'asset_test'), {silent: true});
-  const generator = require('../../../lib/plugins/generator/asset').bind(hexo);
+  const generator = require('../../../dist/plugins/generator/asset').bind(hexo);
   const Asset = hexo.model('Asset');
 
   const checkStream = async (stream, expected) => {

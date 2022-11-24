@@ -6,8 +6,8 @@ const Promise = require('bluebird');
 const { spy } = require('sinon');
 
 describe('generate', () => {
-  const Hexo = require('../../../lib/hexo');
-  const generateConsole = require('../../../lib/plugins/console/generate');
+  const Hexo = require('../../../dist/hexo');
+  const generateConsole = require('../../../dist/plugins/console/generate');
   let hexo, generate;
 
   beforeEach(async () => {
@@ -290,8 +290,8 @@ describe('generate', () => {
 
 // #3975 workaround for Windows
 describe('generate - watch (delete)', () => {
-  const Hexo = require('../../../lib/hexo');
-  const generateConsole = require('../../../lib/plugins/console/generate');
+  const Hexo = require('../../../dist/hexo');
+  const generateConsole = require('../../../dist/plugins/console/generate');
   const hexo = new Hexo(join(__dirname, 'generate_test'), {silent: true});
   const generate = generateConsole.bind(hexo);
 

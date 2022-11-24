@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Locals', () => {
-  const Locals = require('../../../lib/hexo/locals');
+  const Locals = require('../../../dist/hexo/locals');
   const locals = new Locals();
 
   it('get() - name must be a string', () => {

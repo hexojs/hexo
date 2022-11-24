@@ -1,7 +1,7 @@
 'use strict';
 
 require('chai').should();
-const r = require('../../../lib/plugins/renderer/nunjucks');
+const r = require('../../../dist/plugins/renderer/nunjucks');
 const { dirname, join } = require('path');
 
 describe('nunjucks', () => {

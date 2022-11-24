@@ -7,9 +7,9 @@ const Promise = require('bluebird');
 const { useFakeTimers, spy } = require('sinon');
 
 describe('publish', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'publish_test'), {silent: true});
-  const publish = require('../../../lib/plugins/console/publish').bind(hexo);
+  const publish = require('../../../dist/plugins/console/publish').bind(hexo);
   const post = hexo.post;
   const now = Date.now();
   let clock;
@@ -73,7 +73,7 @@ describe('publish', () => {
   it('no args', async () => {
     const hexo = new Hexo(join(__dirname, 'publish_test'), {silent: true});
     hexo.call = spy();
-    const publish = require('../../../lib/plugins/console/publish').bind(hexo);
+    const publish = require('../../../dist/plugins/console/publish').bind(hexo);
 
     await publish({_: []});
 

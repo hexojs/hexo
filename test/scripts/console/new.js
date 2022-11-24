@@ -7,9 +7,9 @@ const Promise = require('bluebird');
 const { useFakeTimers } = require('sinon');
 
 describe('new', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'new_test'), {silent: true});
-  const n = require('../../../lib/plugins/console/new').bind(hexo);
+  const n = require('../../../dist/plugins/console/new').bind(hexo);
   const post = hexo.post;
   const now = Date.now();
   let clock;

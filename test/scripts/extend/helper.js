@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Helper', () => {
-  const Helper = require('../../../lib/extend/helper');
+  const Helper = require('../../../dist/extend/helper');
 
   it('register()', () => {
     const h = new Helper();

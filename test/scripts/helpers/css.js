@@ -3,14 +3,14 @@
 const cheerio = require('cheerio');
 
 describe('css', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
 
   const ctx = {
     config: hexo.config
   };
 
-  const css = require('../../../lib/plugins/helper/css').bind(ctx);
+  const css = require('../../../dist/plugins/helper/css').bind(ctx);
 
   function assertResult(result, expected) {
     const $ = cheerio.load(result);

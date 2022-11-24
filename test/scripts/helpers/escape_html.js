@@ -1,7 +1,7 @@
 'use strict';
 
 describe('escape_html', () => {
-  const { escapeHTML } = require('../../../lib/plugins/helper/format');
+  const { escapeHTML } = require('../../../dist/plugins/helper/format');
 
   it('default', () => {
     escapeHTML('<p class="foo">Hello "world".</p>').should.eql('&lt;p class&#x3D;&quot;foo&quot;&gt;Hello &quot;world&quot;.&lt;&#x2F;p&gt;');

@@ -7,9 +7,9 @@ const { hash, Pattern } = require('hexo-util');
 const { spy, match, assert: sinonAssert } = require('sinon');
 
 describe('Box', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const baseDir = join(__dirname, 'box_tmp');
-  const Box = require('../../../lib/box');
+  const Box = require('../../../dist/box');
 
   const newBox = (path, config) => {
     const hexo = new Hexo(baseDir, { silent: true });
