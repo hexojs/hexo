@@ -50,7 +50,7 @@ class NunjucksTag {
     return node;
   }
 
-  run(context, args) {
+  run(context, args, body) {
     return this._run(context, args, '');
   }
 

@@ -263,7 +263,7 @@ class Post {
     ]).spread((path, content) => {
       const result = { path, content };
 
-      return Promise.all([
+      return Promise.all<void, void | string>([
         // Write content to file
         writeFile(path, content),
         // Create asset folder

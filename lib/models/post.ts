@@ -126,7 +126,7 @@ export default ctx => {
     return Category.find({_id: {$in: ids}});
   });
 
-  Post.method('setCategories', function(cats) {
+  Post.method('setCategories', function(cats: string[]) {
     if (this.notPublished()) {
       cats = [];
     }
@@ -145,7 +145,7 @@ export default ctx => {
     const hasHierarchy = cats.filter(Array.isArray).length > 0;
 
     // Add a hierarchy of categories
-    const addHierarchy = catHierarchy => {
+    const addHierarchy = (catHierarchy: string | string[]) => {
       const parentIds = [];
       if (!Array.isArray(catHierarchy)) catHierarchy = [catHierarchy];
       // Don't use "Promise.map". It doesn't run in series.
@@ -164,7 +164,7 @@ export default ctx => {
         }
 
         // Insert the category if not exist
-        const obj = {name: cat};
+        const obj: {name: string, parent?: string} = {name: cat};
         if (i) obj.parent = parentIds[i - 1];
 
         return Category.insert(obj).catch(err => {
