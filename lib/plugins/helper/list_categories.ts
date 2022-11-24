@@ -19,7 +19,7 @@ function listCategoriesHelper(categories, options) {
   const childrenIndicator = Object.prototype.hasOwnProperty.call(options, 'children_indicator') ? options.children_indicator : false;
 
   const prepareQuery = parent => {
-    const query = {};
+    const query: { parent?: any } = {};
 
     if (parent) {
       query.parent = parent;
@@ -30,7 +30,7 @@ function listCategoriesHelper(categories, options) {
     return categories.find(query).sort(orderby, order);
   };
 
-  const hierarchicalList = (level, parent) => {
+  const hierarchicalList = (level: number, parent?: any) => {
     let result = '';
 
     prepareQuery(parent).forEach((cat, i) => {
@@ -75,7 +75,7 @@ function listCategoriesHelper(categories, options) {
     return result;
   };
 
-  const flatList = (level, parent) => {
+  const flatList = (level: number, parent?: any) => {
     let result = '';
 
     prepareQuery(parent).forEach((cat, i) => {

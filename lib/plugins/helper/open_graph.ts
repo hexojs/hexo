@@ -34,7 +34,7 @@ const localeToTerritory = moize.shallow(str => {
   }
 });
 
-const meta = (name, content, escape) => {
+const meta = (name, content, escape?: boolean) => {
   if (escape !== false && typeof content === 'string') {
     content = escapeHTML(content);
   }
@@ -43,7 +43,7 @@ const meta = (name, content, escape) => {
   return `<meta name="${name}">\n`;
 };
 
-const og = (name, content, escape) => {
+const og = (name, content?: string, escape?: boolean) => {
   if (escape !== false && typeof content === 'string') {
     content = escapeHTML(content);
   }
@@ -52,7 +52,27 @@ const og = (name, content, escape) => {
   return `<meta property="${name}">\n`;
 };
 
-function openGraphHelper(options = {}) {
+interface Options {
+  image?: string;
+  images?: string[];
+  description?: string;
+  title?: string;
+  type?: string;
+  url?: string;
+  site_name?: string;
+  twitter_card?: string;
+  date?: boolean;
+  updated?: boolean;
+  language?: string;
+  author?: string;
+  twitter_image?: string;
+  twitter_id?: string;
+  twitter_site?: string;
+  fb_admins?: string;
+  fb_app_id?: string;
+}
+
+function openGraphHelper(options: Options = {}) {
   const { config, page } = this;
   const { content } = page;
   let images = options.image || options.images || page.photos || [];

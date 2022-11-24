@@ -1,7 +1,25 @@
 import {toMomentLocale} from './date';
 import {url_for} from 'hexo-util';
 
-function listArchivesHelper(options = {}) {
+interface Options {
+  format?: string;
+  type?: string;
+  style?: string;
+  transform?: (name: string) => string;
+  separator?: string;
+  show_count?: boolean;
+  class?: string;
+  order?: number;
+}
+
+interface Data {
+  name: string;
+  year: number;
+  month: number;
+  count: number;
+}
+
+function listArchivesHelper(options: Options = {}) {
   const { config } = this;
   const archiveDir = config.archive_dir;
   const { timezone } = config;
@@ -25,7 +43,7 @@ function listArchivesHelper(options = {}) {
   const posts = this.site.posts.sort('date', order);
   if (!posts.length) return result;
 
-  const data = [];
+  const data: Data[] = [];
   let length = 0;
 
   posts.forEach(post => {

@@ -6,7 +6,12 @@ const feedFn = (str = '') => {
   return str;
 };
 
-function makeFeedTag(path, options = {}, configFeed?, configTitle?) {
+interface Options {
+  title?: string;
+  type?: string;
+}
+
+function makeFeedTag(path, options: Options = {}, configFeed?, configTitle?) {
   const title = options.title || configTitle;
 
   if (path) {

@@ -1,7 +1,20 @@
 import {htmlTag} from 'hexo-util';
 import moize from 'moize';
 
-function mailToHelper(path, text, options = {}) {
+interface Options {
+  href?: string;
+  title?: string;
+  class?: string | string[];
+}
+
+interface Attrs {
+  href: string;
+  title: string;
+  class?: string;
+  [key: string]: string | boolean | null | undefined;
+}
+
+function mailToHelper(path, text, options: Options = {}) {
   if (Array.isArray(path)) path = path.join(',');
   if (!text) text = path;
 
@@ -28,7 +41,7 @@ function mailToHelper(path, text, options = {}) {
   const querystring = new URLSearchParams(data).toString();
   if (querystring) attrs.href += `?${querystring}`;
 
-  return htmlTag('a', attrs, text);
+  return htmlTag('a', attrs as Attrs, text);
 }
 
 export = moize(mailToHelper, {

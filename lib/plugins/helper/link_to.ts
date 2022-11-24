@@ -1,12 +1,31 @@
 import {htmlTag, url_for} from 'hexo-util';
 
-function linkToHelper(path, text, options = {}) {
+interface Options {
+  href?: string;
+  title?: string;
+  external?: boolean | null;
+  class?: string | string[];
+  target?: string;
+  rel?: string;
+}
+
+interface Attrs {
+  href: string;
+  title: string;
+  external?: boolean | null;
+  class?: string;
+  target?: string;
+  rel?: string;
+  [key: string]: string | boolean | null | undefined;
+}
+
+function linkToHelper(path: string, text: string, options: Options | boolean = {}) {
   if (typeof options === 'boolean') options = {external: options};
 
   if (!text) text = path.replace(/^https?:\/\/|\/$/g, '');
 
   const attrs = Object.assign({
-    href: url_for.call(this, path),
+    href: url_for.call(this, path) as string,
     title: text
   }, options);
 
@@ -20,7 +39,7 @@ function linkToHelper(path, text, options = {}) {
     attrs.class = attrs.class.join(' ');
   }
 
-  return htmlTag('a', attrs, text);
+  return htmlTag('a', attrs as Attrs, text);
 }
 
 export = linkToHelper;

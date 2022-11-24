@@ -1,15 +1,21 @@
 import fs from 'hexo-fs';
 import Promise from 'bluebird';
 import {extname} from 'path';
-import {magenta} from 'picocolors';
+import { magenta } from 'picocolors';
+import warehouse from 'warehouse';
+
+interface Data {
+  modified: boolean;
+  data?: () => any;
+}
 
 const process = (name, ctx) => {
-  return Promise.filter(ctx.model(name).toArray(), asset => fs.exists(asset.source).tap(exist => {
+  return Promise.filter(ctx.model(name).toArray(), (asset: warehouse.Schema) => fs.exists(asset.source).tap(exist => {
     if (!exist) return asset.remove();
-  })).map(asset => {
+  })).map((asset: warehouse.Schema) => {
     const { source } = asset;
     let { path } = asset;
-    const data = {
+    const data: Data = {
       modified: asset.modified
     };
 

@@ -1,10 +1,11 @@
 import Promise from 'bluebird';
+import warehouse from 'warehouse';
 
 function renderPostFilter(data) {
   const renderPosts = model => {
     const posts = model.toArray().filter(post => post.content == null);
 
-    return Promise.map(posts, post => {
+    return Promise.map(posts, (post: warehouse.Schema) => {
       post.content = post._content;
       post.site = {data};
 

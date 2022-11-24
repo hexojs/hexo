@@ -1,13 +1,19 @@
-function numberFormatHelper(num, options = {}) {
+interface Options {
+  delimiter?: string;
+  separator?: string;
+  precision?: number | string;
+}
+
+function numberFormatHelper(num: number, options: Options = {}) {
   const split = num.toString().split('.');
-  let before = split.shift();
+  let before = split.shift() as string;
   let after = split.length ? split[0] : '';
   const delimiter = options.delimiter || ',';
   const separator = options.separator || '.';
   const { precision } = options;
 
   if (delimiter) {
-    const beforeArr = [];
+    const beforeArr: string[] = [];
     const beforeLength = before.length;
     const beforeFirst = beforeLength % 3;
 

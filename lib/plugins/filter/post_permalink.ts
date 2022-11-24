@@ -27,7 +27,8 @@ function postPermalinkFilter(data) {
     second: date.format('ss'),
     i_month: date.format('M'),
     i_day: date.format('D'),
-    hash
+    hash,
+    category: config.default_category
   };
 
   if (!permalink || permalink.rule !== config.permalink) {
@@ -38,8 +39,6 @@ function postPermalinkFilter(data) {
 
   if (categories.length) {
     meta.category = categories.last().slug;
-  } else {
-    meta.category = config.default_category;
   }
 
   const keys = Object.keys(data);

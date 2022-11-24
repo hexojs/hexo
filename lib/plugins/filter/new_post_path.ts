@@ -15,7 +15,14 @@ const reservedKeys = {
   hash: true
 };
 
-function newPostPathFilter(data = {}, replace) {
+interface Data {
+  path?: string;
+  layout?: string;
+  slug?: string;
+  date?: Date;
+}
+
+function newPostPathFilter(data: Data = {}, replace) {
   const sourceDir = this.source_dir;
   const draftDir = join(sourceDir, '_drafts');
   const postDir = join(sourceDir, '_posts');
