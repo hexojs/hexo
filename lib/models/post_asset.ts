@@ -1,12 +1,12 @@
-import {Schema} from 'warehouse';
+import warehouse from 'warehouse';
 import {join} from 'path';
 
 export default ctx => {
-  const PostAsset = new Schema({
+  const PostAsset = new warehouse.Schema({
     _id: {type: String, required: true},
     slug: {type: String, required: true},
     modified: {type: Boolean, default: true},
-    post: {type: Schema.Types.CUID, ref: 'Post'},
+    post: {type: warehouse.Schema.Types.CUID, ref: 'Post'},
     renderable: {type: Boolean, default: true}
   });
 

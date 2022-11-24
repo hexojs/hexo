@@ -1,8 +1,8 @@
-import {Schema} from 'warehouse';
+import warehouse from 'warehouse';
 import {join} from 'path';
 
 export default ctx => {
-  const Asset = new Schema({
+  const Asset = new warehouse.Schema({
     _id: {type: String, required: true},
     path: {type: String, required: true},
     modified: {type: Boolean, default: true},

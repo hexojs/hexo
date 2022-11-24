@@ -1,10 +1,10 @@
-import {Schema} from 'warehouse';
+import warehouse from 'warehouse';
 import {slugize, full_url_for} from 'hexo-util';
 
 export default ctx => {
-  const Category = new Schema({
+  const Category = new warehouse.Schema({
     name: {type: String, required: true},
-    parent: {type: Schema.Types.CUID, ref: 'Category'}
+    parent: { type: warehouse.Schema.Types.CUID, ref: 'Category'}
   });
 
   Category.virtual('slug').get(function() {

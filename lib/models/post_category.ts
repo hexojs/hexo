@@ -1,9 +1,9 @@
-import {Schema} from 'warehouse';
+import warehouse from 'warehouse';
 
 export default ctx => {
-  const PostCategory = new Schema({
-    post_id: {type: Schema.Types.CUID, ref: 'Post'},
-    category_id: {type: Schema.Types.CUID, ref: 'Category'}
+  const PostCategory = new warehouse.Schema({
+    post_id: {type: warehouse.Schema.Types.CUID, ref: 'Post'},
+    category_id: {type: warehouse.Schema.Types.CUID, ref: 'Category'}
   });
 
   return PostCategory;

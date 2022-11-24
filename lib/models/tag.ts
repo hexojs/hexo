@@ -1,9 +1,9 @@
-import {Schema} from 'warehouse';
+import warehouse from 'warehouse';
 import {slugize, full_url_for} from 'hexo-util';
 const { hasOwnProperty: hasOwn } = Object.prototype;
 
 export default ctx => {
-  const Tag = new Schema({
+  const Tag = new warehouse.Schema({
     name: {type: String, required: true}
   });
 

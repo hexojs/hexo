@@ -1,7 +1,7 @@
-import {SchemaType} from 'warehouse';
+import warehouse from 'warehouse';
 import {moment, toMomentLocale} from '../../plugins/helper/date';
 
-class SchemaTypeMoment extends SchemaType {
+class SchemaTypeMoment extends warehouse.SchemaType<moment.Moment> {
   public options: any;
 
   constructor(name, options = {}) {
@@ -48,7 +48,7 @@ class SchemaTypeMoment extends SchemaType {
     return 0;
   }
 
-  parse(value, data) {
+  parse(value) {
     if (value) return toMoment(value);
   }
 

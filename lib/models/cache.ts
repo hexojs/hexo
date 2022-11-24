@@ -1,8 +1,8 @@
-import {Schema} from 'warehouse';
+import warehouse from 'warehouse';
 import Promise from 'bluebird';
 
 export default ctx => {
-  const Cache = new Schema({
+  const Cache = new warehouse.Schema({
     _id: {type: String, required: true},
     hash: {type: String, default: ''},
     modified: {type: Number, default: Date.now() } // UnixTime

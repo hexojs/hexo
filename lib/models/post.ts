@@ -1,4 +1,4 @@
-import {Schema} from 'warehouse';
+import warehouse from 'warehouse';
 import moment from 'moment';
 import {extname, join, sep} from 'path';
 import Promise from 'bluebird';
@@ -14,7 +14,7 @@ function removeEmptyTag(tags) {
 }
 
 export default ctx => {
-  const Post = new Schema({
+  const Post = new warehouse.Schema({
     id: String,
     title: {type: String, default: ''},
     date: {

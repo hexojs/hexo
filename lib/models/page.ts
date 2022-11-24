@@ -1,11 +1,11 @@
-import {Schema} from 'warehouse';
+import warehouse from 'warehouse';
 import {join} from 'path';
 import Moment from './types/moment';
 import moment from 'moment';
 import {full_url_for} from 'hexo-util';
 
 export default ctx => {
-  const Page = new Schema({
+  const Page = new warehouse.Schema({
     title: {type: String, default: ''},
     date: {
       type: Moment,
