@@ -1,14 +1,10 @@
-import Asset from './asset';
-import Cache from './cache';
-import Category from './category';
-import Data from './data';
-import Page from './page';
-import Post from './post';
-import PostAsset from './post_asset';
-import PostCategory from './post_category';
-import PostTag from './post_tag';
-import Tag from './tag';
-
-export default {
-  Asset, Cache, Category, Data, Page, Post, PostAsset, PostCategory, PostTag, Tag
-};
+export { default as Asset } from './asset';
+export { default as Cache } from './cache';
+export { default as Category } from './category';
+export { default as Data } from './data';
+export { default as Page } from './page';
+export { default as Post } from './post';
+export { default as PostAsset } from './post_asset';
+export { default as PostCategory } from './post_category';
+export { default as PostTag } from './post_tag';
+export { default as Tag } from './tag';
