@@ -53,4 +53,4 @@ function listPostsHelper(posts, options) {
   return result;
 }
 
-export default listPostsHelper;
+export = listPostsHelper;

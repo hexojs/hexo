@@ -1,7 +1,7 @@
 import warehouse from 'warehouse';
 import {join} from 'path';
 
-export default ctx => {
+export = ctx => {
   const PostAsset = new warehouse.Schema({
     _id: {type: String, required: true},
     slug: {type: String, required: true},

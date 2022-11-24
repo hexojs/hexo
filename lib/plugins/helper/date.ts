@@ -8,7 +8,7 @@ const isDate = value =>
 function getMoment(date, lang, timezone) {
   if (date == null) date = moment();
   if (!isMoment(date)) date = moment(isDate(date) ? date : new Date(date));
-  lang = toMomentLocale(lang);
+  lang = _toMomentLocale(lang);
 
   if (lang) date = date.locale(lang);
   if (timezone) date = date.tz(timezone);
@@ -72,7 +72,7 @@ function getLanguage(ctx) {
  *
  * Moment defined locales: https://github.com/moment/moment/tree/master/locale
  */
-function toMomentLocale(lang) {
+function _toMomentLocale(lang) {
   if (lang === undefined) {
     return undefined;
   }
@@ -92,4 +92,4 @@ export {fullDateHelper as full_date};
 export {relativeDateHelper as relative_date};
 export {timeTagHelper as time_tag};
 export {moment};
-export var toMomentLocale = moize.shallow(toMomentLocale);
+export var toMomentLocale = moize.shallow(_toMomentLocale);

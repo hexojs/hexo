@@ -6,7 +6,7 @@ import {encodeURL} from 'hexo-util';
  * Syntax:
  *   {% asset_path slug %}
  */
-export default ctx => {
+export = ctx => {
   const PostAsset = ctx.model('PostAsset');
 
   return function assetPathTag(args) {

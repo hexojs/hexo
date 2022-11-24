@@ -7,7 +7,7 @@ import {postFindOneFactory} from './';
  * Syntax:
  *   {% post_link slug | title [title] [escape] %}
  */
-export default ctx => {
+export = ctx => {
   return function postLinkTag(args) {
     const slug = args.shift();
     if (!slug) {

@@ -1,4 +1,4 @@
-export default ctx => {
+export = ctx => {
   const { filter } = ctx.extend;
 
   require('./after_render')(ctx);

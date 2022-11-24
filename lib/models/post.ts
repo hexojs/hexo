@@ -13,7 +13,7 @@ function removeEmptyTag(tags) {
   return tags.filter(tag => tag != null && tag !== '').map(tag => `${tag}`);
 }
 
-export default ctx => {
+export = ctx => {
   const Post = new warehouse.Schema({
     id: String,
     title: {type: String, default: ''},

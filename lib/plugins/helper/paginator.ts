@@ -148,4 +148,4 @@ function paginatorHelper(options = {}) {
   return tags.join('');
 }
 
-export default paginatorHelper;
+export = paginatorHelper;

@@ -15,4 +15,4 @@ function publishConsole(args) {
   });
 }
 
-export default publishConsole;
+export = publishConsole;

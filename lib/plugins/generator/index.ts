@@ -1,4 +1,4 @@
-export default ctx => {
+export = ctx => {
   const { generator } = ctx.extend;
 
   generator.register('asset', require('./asset'));

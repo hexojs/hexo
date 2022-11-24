@@ -5,7 +5,7 @@ import {extname, relative} from 'path';
 import {Pattern} from 'hexo-util';
 import {magenta} from 'picocolors';
 
-export default ctx => {
+export = ctx => {
   return {
     pattern: new Pattern(path => {
       if (isExcludedFile(path, ctx.config)) return;

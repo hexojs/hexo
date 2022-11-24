@@ -1,7 +1,7 @@
 import fs from 'hexo-fs';
 import Promise from 'bluebird';
 
-export default ctx => {
+export = ctx => {
   if (ctx._dbLoaded) return Promise.resolve();
 
   const db = ctx.database;

@@ -62,4 +62,4 @@ class Locals {
   }
 }
 
-export default Locals;
+export = Locals;

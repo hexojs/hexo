@@ -7,7 +7,7 @@ import {magenta} from 'picocolors';
 import {deepMerge} from 'hexo-util';
 import validateConfig from './validate_config';
 
-export default async ctx => {
+export = async ctx => {
   if (!ctx.env.init) return;
 
   const baseDir = ctx.base_dir;

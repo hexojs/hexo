@@ -1,7 +1,7 @@
 import {Pattern} from 'hexo-util';
 import {extname} from 'path';
 
-export default ctx => ({
+export = ctx => ({
   pattern: new Pattern('_data/*path'),
 
   process: function dataProcessor(file) {

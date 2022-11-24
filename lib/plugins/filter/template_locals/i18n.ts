@@ -31,4 +31,4 @@ function i18nLocalsFilter(locals) {
   locals._p = i18n._p(languages);
 }
 
-export default i18nLocalsFilter;
+export = i18nLocalsFilter;

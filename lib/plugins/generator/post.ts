@@ -28,4 +28,4 @@ function postGenerator(locals) {
   });
 }
 
-export default postGenerator;
+export = postGenerator;

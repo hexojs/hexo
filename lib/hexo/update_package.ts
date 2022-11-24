@@ -1,7 +1,7 @@
 import {join} from 'path';
 import fs from 'hexo-fs';
 
-export default ctx => {
+export = ctx => {
   const pkgPath = join(ctx.base_dir, 'package.json');
 
   return readPkg(pkgPath).then(pkg => {
@@ -23,7 +23,7 @@ function readPkg(path) {
     if (!exist) return;
 
     return fs.readFile(path).then(content => {
-      const pkg = JSON.parse(content);
+      const pkg = JSON.parse(content as string);
       if (typeof pkg.hexo !== 'object') return;
 
       return pkg;

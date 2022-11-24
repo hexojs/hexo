@@ -24,4 +24,4 @@ function migrateConsole(args) {
   return Reflect.apply(migrators[type], this, [args]);
 }
 
-export default migrateConsole;
+export = migrateConsole;

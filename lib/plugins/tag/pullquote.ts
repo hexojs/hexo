@@ -6,7 +6,7 @@
 *   Quote string
 *   {% endpullquote %}
 */
-export default ctx => function pullquoteTag(args, content) {
+export = ctx => function pullquoteTag(args, content) {
   args.unshift('pullquote');
 
   const result = ctx.render.renderSync({text: content, engine: 'markdown'});

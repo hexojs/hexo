@@ -21,4 +21,4 @@ function listTag() {
   if (data.length === 1) console.log('No tags.');
 }
 
-export default listTag;
+export = listTag;

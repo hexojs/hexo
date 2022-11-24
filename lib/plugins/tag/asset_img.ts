@@ -7,7 +7,7 @@ import {encodeURL} from 'hexo-util';
  * Syntax:
  *   {% asset_img [class names] slug [width] [height] [title text [alt text]]%}
  */
-export default ctx => {
+export = ctx => {
   const PostAsset = ctx.model('PostAsset');
 
   return function assetImgTag(args) {

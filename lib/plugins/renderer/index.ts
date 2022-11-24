@@ -1,4 +1,4 @@
-export default ctx => {
+export = ctx => {
   const { renderer } = ctx.extend;
 
   const plain = require('./plain');

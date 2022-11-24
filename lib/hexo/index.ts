@@ -581,4 +581,4 @@ Hexo.prototype.core_dir = Hexo.core_dir;
 Hexo.version = version;
 Hexo.prototype.version = Hexo.version;
 
-export default Hexo;
+export = Hexo;

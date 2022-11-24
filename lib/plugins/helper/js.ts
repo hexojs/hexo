@@ -21,7 +21,7 @@ function jsHelper(...args) {
   return result;
 }
 
-export default moize(jsHelper, {
+export = moize(jsHelper, {
   maxSize: 10,
   isDeepEqual: true
 });

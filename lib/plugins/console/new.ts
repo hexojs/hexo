@@ -51,4 +51,4 @@ function newConsole(args) {
   });
 }
 
-export default newConsole;
+export = newConsole;

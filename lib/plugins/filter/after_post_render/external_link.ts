@@ -29,4 +29,4 @@ function externalLinkFilter(data) {
   });
 }
 
-export default externalLinkFilter;
+export = externalLinkFilter;

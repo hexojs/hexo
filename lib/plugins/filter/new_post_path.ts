@@ -95,4 +95,4 @@ function newPostPathFilter(data = {}, replace) {
   return fs.ensurePath(target);
 }
 
-export default newPostPathFilter;
+export = newPostPathFilter;

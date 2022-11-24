@@ -1,6 +1,12 @@
 import warehouse from 'warehouse';
 import {moment, toMomentLocale} from '../../plugins/helper/date';
 
+declare module 'moment' {
+  export default interface Moment extends moment.Moment {
+    _d: Date;
+  }
+}
+
 class SchemaTypeMoment extends warehouse.SchemaType<moment.Moment> {
   public options: any;
 
@@ -87,4 +93,4 @@ function toMoment(value) {
   return moment(value);
 }
 
-export default SchemaTypeMoment;
+export = SchemaTypeMoment;

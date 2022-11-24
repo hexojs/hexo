@@ -55,7 +55,7 @@ const parseFooter = (args, ctx) => {
 *   {% endblockquote %}
 */
 
-export default ctx => function blockquoteTag(args, content) {
+export = ctx => function blockquoteTag(args, content) {
   const footer = parseFooter(args, ctx);
 
   let result = '<blockquote>';

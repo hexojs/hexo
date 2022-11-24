@@ -114,7 +114,7 @@ function parseArgs(args) {
   };
 }
 
-export default ctx => function codeTag(args, content) {
+export = ctx => function codeTag(args, content) {
 
   // If neither highlight.js nor prism.js is enabled, return escaped code directly
   if (!ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {

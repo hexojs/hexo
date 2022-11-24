@@ -206,4 +206,4 @@ function generateConsole(args = {}) {
   });
 }
 
-export default generateConsole;
+export = generateConsole;

@@ -1,4 +1,4 @@
-export default ctx => {
+export = ctx => {
   const { processor } = ctx.extend;
 
   function register(name) {

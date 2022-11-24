@@ -48,4 +48,4 @@ function buildNodes(tree) {
   return nodes;
 }
 
-export default listRoute;
+export = listRoute;

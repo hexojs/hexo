@@ -40,4 +40,4 @@ function assetGenerator() {
   ]).then(data => [].concat(...data));
 }
 
-export default assetGenerator;
+export = assetGenerator;

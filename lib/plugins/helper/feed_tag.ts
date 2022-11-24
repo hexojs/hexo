@@ -46,4 +46,4 @@ function feedTagHelper(path, options = {}) {
   return moize.deep(makeFeedTag.bind(this))(path, options, config.feed, config.title);
 }
 
-export default feedTagHelper;
+export = feedTagHelper;

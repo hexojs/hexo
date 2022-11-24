@@ -1,4 +1,4 @@
-export default function(ctx) {
+export = function(ctx) {
   const { console } = ctx.extend;
 
   console.register('clean', 'Remove generated files and cache.', require('./clean'));

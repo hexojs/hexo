@@ -1,4 +1,4 @@
-export default ctx => {
+export = ctx => {
   const { helper } = ctx.extend;
 
   const date = require('./date');

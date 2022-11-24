@@ -35,4 +35,4 @@ class Processor {
   }
 }
 
-export default Processor;
+export = Processor;

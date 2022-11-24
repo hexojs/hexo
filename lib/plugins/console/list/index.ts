@@ -22,4 +22,4 @@ function listConsole(args) {
   return this.load().then(() => Reflect.apply(store[alias[type]], this, [args]));
 }
 
-export default listConsole;
+export = listConsole;

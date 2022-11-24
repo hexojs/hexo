@@ -178,4 +178,4 @@ function openGraphHelper(options = {}) {
   return result.trim();
 }
 
-export default openGraphHelper;
+export = openGraphHelper;

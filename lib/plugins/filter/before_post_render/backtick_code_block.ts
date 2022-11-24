@@ -4,7 +4,7 @@ const rLangCaption = /([^\s]+)\s*(.+)?/;
 
 const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
-export default ctx => {
+export = ctx => {
   return function backtickCodeBlock(data) {
     const dataContent = data.content;
 

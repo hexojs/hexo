@@ -10,7 +10,7 @@ const rMetaSingleQuote = /'?([^']+)?'?/;
 * Syntax:
 *   {% img [class names] /path/to/image [width] [height] [title text [alt text]] %}
 */
-export default ctx => {
+export = ctx => {
 
   return function imgTag(args) {
     const classes = [];

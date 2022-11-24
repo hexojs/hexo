@@ -103,4 +103,4 @@ function listArchivesHelper(options = {}) {
   return result;
 }
 
-export default listArchivesHelper;
+export = listArchivesHelper;

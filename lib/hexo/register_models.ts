@@ -1,6 +1,6 @@
 import * as models from '../models';
 
-export default ctx => {
+export = ctx => {
   const db = ctx.database;
 
   const keys = Object.keys(models);

@@ -65,4 +65,4 @@ njkRenderer.compile = data => {
   return locals => njkCompile(data).render(locals);
 };
 
-export default njkRenderer;
+export = njkRenderer;

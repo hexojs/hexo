@@ -92,4 +92,4 @@ function tagcloudHelperFactory(tags, options) {
   }).call(this, tags, options);
 }
 
-export default tagcloudHelperFactory;
+export = tagcloudHelperFactory;

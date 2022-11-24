@@ -1,7 +1,7 @@
 import warehouse from 'warehouse';
 import Promise from 'bluebird';
 
-export default ctx => {
+export = ctx => {
   const Cache = new warehouse.Schema({
     _id: {type: String, required: true},
     hash: {type: String, default: ''},

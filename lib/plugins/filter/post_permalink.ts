@@ -65,4 +65,4 @@ function postPermalinkFilter(data) {
   return permalink.stringify(meta);
 }
 
-export default postPermalinkFilter;
+export = postPermalinkFilter;

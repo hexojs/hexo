@@ -20,7 +20,7 @@ const preservedKeys = {
   hash: true
 };
 
-export default ctx => {
+export = ctx => {
   return {
     pattern: new Pattern(path => {
       if (isTmpFile(path)) return;

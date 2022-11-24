@@ -22,4 +22,4 @@ function pageGenerator(locals) {
   });
 }
 
-export default pageGenerator;
+export = pageGenerator;

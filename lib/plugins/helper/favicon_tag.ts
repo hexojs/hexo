@@ -4,4 +4,4 @@ function faviconTagHelper(path) {
   return `<link rel="shortcut icon" href="${url_for.call(this, path)}">`;
 }
 
-export default faviconTagHelper;
+export = faviconTagHelper;

@@ -36,4 +36,4 @@ function listPost() {
   if (data.length === 1) console.log('No posts.');
 }
 
-export default listPost;
+export = listPost;

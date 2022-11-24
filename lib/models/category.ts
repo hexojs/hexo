@@ -1,7 +1,7 @@
 import warehouse from 'warehouse';
 import {slugize, full_url_for} from 'hexo-util';
 
-export default ctx => {
+export = ctx => {
   const Category = new warehouse.Schema({
     name: {type: String, required: true},
     parent: { type: warehouse.Schema.Types.CUID, ref: 'Category'}

@@ -6,4 +6,4 @@ function saveDatabaseFilter() {
   });
 }
 
-export default saveDatabaseFilter;
+export = saveDatabaseFilter;

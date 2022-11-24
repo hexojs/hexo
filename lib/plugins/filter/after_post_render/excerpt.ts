@@ -18,4 +18,4 @@ function excerptFilter(data) {
   }
 }
 
-export default excerptFilter;
+export = excerptFilter;

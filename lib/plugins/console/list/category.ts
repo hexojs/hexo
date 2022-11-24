@@ -21,4 +21,4 @@ function listCategory() {
   if (data.length === 1) console.log('No categories.');
 }
 
-export default listCategory;
+export = listCategory;

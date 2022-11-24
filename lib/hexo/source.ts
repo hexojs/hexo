@@ -8,4 +8,4 @@ class Source extends Box {
   }
 }
 
-export default Source;
+export = Source;

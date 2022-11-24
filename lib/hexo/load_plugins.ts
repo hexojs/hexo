@@ -3,7 +3,7 @@ import {exists, readFile, listDir} from 'hexo-fs';
 import Promise from 'bluebird';
 import {magenta} from 'picocolors';
 
-export default ctx => {
+export = ctx => {
   if (!ctx.env.init || ctx.env.safe) return;
 
   return loadModules(ctx).then(() => loadScripts(ctx));
@@ -18,7 +18,7 @@ function loadModuleList(ctx, basedir) {
 
     // Read package.json and find dependencies
     return readFile(packagePath).then(content => {
-      const json = JSON.parse(content);
+      const json = JSON.parse(content as string);
       const deps = Object.keys(json.dependencies || {});
       const devDeps = Object.keys(json.devDependencies || {});
 

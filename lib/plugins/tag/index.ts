@@ -1,6 +1,6 @@
 import moize from 'moize';
 
-export default ctx => {
+export = ctx => {
   const { tag } = ctx.extend;
 
   const blockquote = require('./blockquote')(ctx);

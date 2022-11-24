@@ -12,4 +12,4 @@ function imageTagHelper(path, options = {}) {
   return htmlTag('img', attrs);
 }
 
-export default imageTagHelper;
+export = imageTagHelper;

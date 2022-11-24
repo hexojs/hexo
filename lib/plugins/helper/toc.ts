@@ -89,4 +89,4 @@ function tocHelper(str, options = {}) {
   return result;
 }
 
-export default tocHelper;
+export = tocHelper;

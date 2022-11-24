@@ -23,4 +23,4 @@ function listPage() {
   if (data.length === 1) console.log('No pages.');
 }
 
-export default listPage;
+export = listPage;

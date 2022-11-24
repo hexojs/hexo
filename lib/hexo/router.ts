@@ -8,6 +8,12 @@ interface Data {
   modified: boolean;
 }
 
+declare module 'stream' {
+  export default class _Stream extends Stream {
+    readable: boolean;
+  }
+}
+
 class RouteStream extends Readable {
   public _data: any;
   public _ended: boolean;
@@ -180,4 +186,4 @@ class Router extends EventEmitter {
   }
 }
 
-export default Router;
+export = Router;

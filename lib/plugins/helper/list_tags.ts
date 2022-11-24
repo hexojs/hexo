@@ -105,4 +105,4 @@ function listTagsHelperFactory(tags, options) {
   }).call(this, tags, options);
 }
 
-export default listTagsHelperFactory;
+export = listTagsHelperFactory;

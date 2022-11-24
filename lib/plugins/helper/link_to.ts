@@ -23,4 +23,4 @@ function linkToHelper(path, text, options = {}) {
   return htmlTag('a', attrs, text);
 }
 
-export default linkToHelper;
+export = linkToHelper;

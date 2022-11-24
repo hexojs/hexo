@@ -38,4 +38,4 @@ function renderConsole(args) {
   });
 }
 
-export default renderConsole;
+export = renderConsole;

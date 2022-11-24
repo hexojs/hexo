@@ -1,4 +1,4 @@
-module.exports = ctx => {
+export = ctx => {
   const { config, log } = ctx;
 
   log.info('Validating config');

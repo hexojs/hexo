@@ -50,7 +50,7 @@ class NunjucksTag {
     return node;
   }
 
-  run(context, args, body) {
+  run(context, args, body, callback) {
     return this._run(context, args, '');
   }
 
@@ -78,7 +78,7 @@ class NunjucksBlock extends NunjucksTag {
     return body;
   }
 
-  run(context, args, body) {
+  run(context, args, body, callback) {
     return this._run(context, args, trimBody(body));
   }
 }
@@ -90,7 +90,7 @@ class NunjucksAsyncTag extends NunjucksTag {
     return new nodes.CallExtensionAsync(this, 'run', node, []);
   }
 
-  run(context, args, callback) {
+  run(context, args, body, callback) {
     return this._run(context, args, '').then(result => {
       callback(null, result);
     }, callback);
@@ -262,4 +262,4 @@ class Tag {
   }
 }
 
-export default Tag;
+export = Tag;

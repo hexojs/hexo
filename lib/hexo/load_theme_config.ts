@@ -4,7 +4,7 @@ import {exists, readdir} from 'hexo-fs';
 import {magenta} from 'picocolors';
 import {deepMerge} from 'hexo-util';
 
-export default ctx => {
+export = ctx => {
   if (!ctx.env.init) return;
   if (!ctx.config.theme) return;
 

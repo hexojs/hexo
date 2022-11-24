@@ -33,4 +33,4 @@ function deletePublicDir(ctx) {
   });
 }
 
-export default cleanConsole;
+export = cleanConsole;

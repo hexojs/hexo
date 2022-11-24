@@ -105,4 +105,4 @@ function listCategoriesHelper(categories, options) {
   return flatList(0);
 }
 
-export default listCategoriesHelper;
+export = listCategoriesHelper;

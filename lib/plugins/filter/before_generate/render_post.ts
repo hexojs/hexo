@@ -18,4 +18,4 @@ function renderPostFilter(data) {
   ]);
 }
 
-export default renderPostFilter;
+export = renderPostFilter;

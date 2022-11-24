@@ -18,4 +18,4 @@ function yamlHelper(data) {
   return yaml.load(escape(data.text), { schema });
 }
 
-export default yamlHelper;
+export = yamlHelper;

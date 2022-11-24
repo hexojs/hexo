@@ -56,4 +56,4 @@ function deployConsole(args) {
   });
 }
 
-export default deployConsole;
+export = deployConsole;

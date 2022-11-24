@@ -7,4 +7,4 @@ function titlecaseFilter(data) {
   data.title = titlecase(data.title);
 }
 
-export default titlecaseFilter;
+export = titlecaseFilter;

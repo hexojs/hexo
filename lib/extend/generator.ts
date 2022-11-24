@@ -32,4 +32,4 @@ class Generator {
   }
 }
 
-export default Generator;
+export = Generator;

@@ -44,4 +44,4 @@ function numberFormatHelper(num, options = {}) {
   return before + (after ? separator + after : '');
 }
 
-export default numberFormatHelper;
+export = numberFormatHelper;

@@ -1,7 +1,7 @@
 import warehouse from 'warehouse';
 import {join} from 'path';
 
-export default ctx => {
+export = ctx => {
   const Asset = new warehouse.Schema({
     _id: {type: String, required: true},
     path: {type: String, required: true},

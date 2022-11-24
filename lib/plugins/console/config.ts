@@ -81,4 +81,4 @@ function castValue(value) {
   return value;
 }
 
-export default configConsole;
+export = configConsole;
