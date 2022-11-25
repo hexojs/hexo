@@ -54,7 +54,7 @@ export = ctx => function includeCodeTag(args) {
 
   return exists(src).then(exist => {
     if (exist) return readFile(src);
-  }).then(code => {
+  }).then((code: string) => {
     if (!code) return;
 
     const lines = code.split('\n');

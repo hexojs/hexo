@@ -1,5 +1,5 @@
 import {Pattern} from 'hexo-util';
-import common from '../../plugins/processor/common';
+import * as common from '../../plugins/processor/common';
 
 export function process(file) {
   const Asset = this.model('Asset');
