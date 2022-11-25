@@ -491,16 +491,6 @@ describe('open_graph', () => {
     result.should.have.string(meta({name: 'twitter:site', content: 'Hello'}));
   });
 
-  it('google_plus - options', () => {
-    const result = openGraph.call({
-      page: {},
-      config: hexo.config,
-      is_post: isPost
-    }, {google_plus: '+123456789'});
-
-    result.should.have.string(tag('link', {rel: 'publisher', href: '+123456789'}));
-  });
-
   it('fb_admins - options', () => {
     const result = openGraph.call({
       page: {},
