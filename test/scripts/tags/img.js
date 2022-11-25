@@ -127,4 +127,26 @@ describe('img', () => {
     $('img').attr('title').should.eql('Place Kitten');
     $('img').attr('alt').should.eql('A cute kitten');
   });
+
+  it('single quote in double quote', () => {
+    const $ = cheerio.load(img('left https://placekitten.com/200/300 200 300 "Place Kitten" "A \'cute\' kitten"'.split(' ')));
+
+    $('img').attr('src').should.eql('https://placekitten.com/200/300');
+    $('img').attr('class').should.eql('left');
+    $('img').attr('width').should.eql('200');
+    $('img').attr('height').should.eql('300');
+    $('img').attr('title').should.eql('Place Kitten');
+    $('img').attr('alt').should.eql('A \'cute\' kitten');
+  });
+
+  it('double quote in single quote', () => {
+    const $ = cheerio.load(img('left https://placekitten.com/200/300 200 300 "Place Kitten" \'A "cute" kitten\''.split(' ')));
+
+    $('img').attr('src').should.eql('https://placekitten.com/200/300');
+    $('img').attr('class').should.eql('left');
+    $('img').attr('width').should.eql('200');
+    $('img').attr('height').should.eql('300');
+    $('img').attr('title').should.eql('Place Kitten');
+    $('img').attr('alt').should.eql('A "cute" kitten');
+  });
 });
