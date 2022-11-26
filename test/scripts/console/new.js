@@ -136,6 +136,28 @@ describe('new', () => {
     await unlink(path);
   });
 
+  // fix #4334
+  it('path with numbers', async () => {
+    const date = moment(now);
+    const path = join(hexo.source_dir, '_posts', '404.md');
+    const body = [
+      'title: Hello World',
+      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+      'tags:',
+      '---'
+    ].join('\n') + '\n';
+
+    await n({
+      _: ['Hello World'],
+      slug: 'foo',
+      path: 404
+    });
+    const content = await readFile(path);
+    content.should.eql(body);
+
+    await unlink(path);
+  });
+
   it('path - p', async () => {
     const date = moment(now);
     const path = join(hexo.source_dir, '_posts', 'bar.md');
