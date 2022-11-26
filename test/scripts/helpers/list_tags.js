@@ -205,3 +205,41 @@ describe('list_tags', () => {
     ].join(''));
   });
 });
+
+describe('list_tags transform', () => {
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
+  const Post = hexo.model('Post');
+
+  const ctx = {
+    config: hexo.config
+  };
+
+  const listTags = require('../../../lib/plugins/helper/list_tags').bind(ctx);
+
+  before(async () => {
+    await hexo.init();
+    const posts = await Post.insert([
+      {source: 'foo', slug: 'foo'}
+    ]);
+
+    // TODO: Warehouse needs to add a mutex lock when writing data to avoid data sync problem
+    await Promise.all([
+      ['bad<b>HTML</b>']
+    ].map((tags, i) => posts[i].setTags(tags)));
+
+    hexo.locals.invalidate();
+    ctx.site = hexo.locals.toObject();
+  });
+
+  // no transform should escape HTML
+  it('no transform', () => {
+    const result = listTags();
+
+    result.should.eql([
+      '<ul class="tag-list" itemprop="keywords">',
+      '<li class="tag-list-item"><a class="tag-list-link" href="/tags/bad-b-HTML-b/" rel="tag">bad&lt;b&gt;HTML&lt;&#x2F;b&gt;</a><span class="tag-list-count">1</span></li>',
+      '</ul>'
+    ].join(''));
+  });
+});

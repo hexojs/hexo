@@ -14,4 +14,5 @@ describe('Console', () => {
   require('./list_categories');
   require('./list_tags');
   require('./list_page');
+  require('./list_route');
 });

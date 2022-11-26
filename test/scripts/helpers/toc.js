@@ -434,4 +434,125 @@ describe('toc', () => {
 
     toc(input).should.eql('');
   });
+
+  it('unnumbered headings', () => {
+    const className = 'toc';
+
+    const input = [
+      '<h3>Title 1</h3>',
+      '<h3>Title 2</h3>',
+      '<h4>Title 2.1</h4>',
+      '<h3 data-toc-unnumbered="true">Reference</h3>'
+    ].join('');
+
+    const expected = [
+      `<ol class="${className}">`,
+      `<li class="${className}-item ${className}-level-3">`,
+      `<a class="${className}-link"><span class="${className}-number">1.</span> `,
+      `<span class="${className}-text">Title 1</span>`,
+      '</a>',
+      '</li>',
+      `<li class="${className}-item ${className}-level-3">`,
+      `<a class="${className}-link">`,
+      `<span class="${className}-number">2.</span> `,
+      `<span class="${className}-text">Title 2</span>`,
+      '</a>',
+      `<ol class="${className}-child">`,
+      `<li class="${className}-item ${className}-level-4">`,
+      `<a class="${className}-link">`,
+      `<span class="${className}-number">2.1.</span> `,
+      `<span class="${className}-text">Title 2.1</span>`,
+      '</a>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      `<li class="${className}-item ${className}-level-3">`,
+      `<a class="${className}-link">`,
+      `<span class="${className}-text">Reference</span>`,
+      '</a>',
+      '</li>',
+      '</ol>'
+    ].join('');
+
+    toc(input, { list_number: true, class: className }).should.eql(expected);
+  });
+
+  it('custom class', () => {
+    const className = 'foo';
+    const childClassName = 'bar';
+    const expected = [
+      '<ol class="' + className + '">',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_1">',
+      '<span class="' + className + '-number">1.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 1</span>',
+      '</a>',
+      '<ol class="' + childClassName + '">',
+      '<li class="' + className + '-item ' + className + '-level-2">',
+      '<a class="' + className + '-link" href="#title_1_1">',
+      '<span class="' + className + '-number">1.1.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 1.1</span>',
+      '</a>',
+      '<ol class="' + childClassName + '">',
+      '<li class="' + className + '-item ' + className + '-level-3">',
+      '<a class="' + className + '-link" href="#title_1_1_1">',
+      '<span class="' + className + '-number">1.1.1.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 1.1.1</span>',
+      '</a>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-2">',
+      '<a class="' + className + '-link" href="#title_1_2">',
+      '<span class="' + className + '-number">1.2.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 1.2</span>',
+      '</a>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-2">',
+      '<a class="' + className + '-link" href="#title_1_3">',
+      '<span class="' + className + '-number">1.3.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 1.3</span>',
+      '</a>',
+      '<ol class="' + childClassName + '">',
+      '<li class="' + className + '-item ' + className + '-level-3">',
+      '<a class="' + className + '-link" href="#title_1_3_1">',
+      '<span class="' + className + '-number">1.3.1.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 1.3.1</span>',
+      '</a>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_2">',
+      '<span class="' + className + '-number">2.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 2</span>',
+      '</a>',
+      '<ol class="' + childClassName + '">',
+      '<li class="' + className + '-item ' + className + '-level-2">',
+      '<a class="' + className + '-link" href="#title_2_1">',
+      '<span class="' + className + '-number">2.1.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title 2.1</span>',
+      '</a>',
+      '</li>',
+      '</ol>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_3">',
+      '<span class="' + className + '-number">3.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Title should escape &amp;, &lt;, &#39;, and &quot;</span>',
+      '</a>',
+      '</li>',
+      '<li class="' + className + '-item ' + className + '-level-1">',
+      '<a class="' + className + '-link" href="#title_4">',
+      '<span class="' + className + '-number">4.</span> ', // list_number enabled
+      '<span class="' + className + '-text">Chapter 1 should be printed to toc</span>',
+      '</a>',
+      '</li>',
+      '</ol>'
+    ].join('');
+
+    toc(html, { class: 'foo', class_child: 'bar' }).should.eql(expected);
+  });
 });

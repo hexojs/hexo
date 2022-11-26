@@ -3,7 +3,7 @@
 const { join } = require('path');
 const moment = require('moment');
 const { readFile, mkdirs, unlink, rmdir, writeFile, exists, stat, listDir } = require('hexo-fs');
-const { highlight, escapeHTML } = require('hexo-util');
+const { highlight } = require('hexo-util');
 const { spy, useFakeTimers } = require('sinon');
 const { parse: yfm } = require('hexo-front-matter');
 const fixture = require('../../fixtures/post_render');
@@ -880,6 +880,50 @@ describe('Post', () => {
     }
   });
 
+  it('render() - nested swig tag', async () => {
+    const content = [
+      '{% blockquote %}',
+      'test1',
+      '{% quote test2 %}',
+      'test3',
+      '{% endquote %}',
+      'test4',
+      '{% endblockquote %}'
+    ].join('\n');
+
+    const data = await post.render(null, {
+      content
+    });
+    data.content.trim().should.eql([
+      '<blockquote><p>test1</p>',
+      '<blockquote><p>test3</p>',
+      '<footer><strong>test2</strong></footer></blockquote>',
+      'test4</blockquote>'
+    ].join('\n'));
+  });
+
+  it('render() - shouln\'t break curly brackets', async () => {
+    hexo.config.prismjs.enable = true;
+    hexo.config.highlight.enable = false;
+
+    const content = [
+      '\\begin{equation}',
+      'E=h\\nu',
+      '\\end{equation}'
+    ].join('\n');
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.should.include('\\begin{equation}');
+    data.content.should.include('\\end{equation}');
+
+    hexo.config.prismjs.enable = false;
+    hexo.config.highlight.enable = true;
+  });
+
   // #2321
   it('render() - allow backtick code block in "blockquote" tag plugin', async () => {
     const code = 'alert("Hello world")';
@@ -1161,21 +1205,6 @@ describe('Post', () => {
     data.content.trim().should.eql(`<p><code>${escapeSwigTag('{{ 1 + 1 }}')}</code> 2</p>`);
   });
 
-  // #4317
-  it('render() - issue #4317', async () => {
-    const content = fixture.content_for_issue_4317;
-    hexo.config.highlight.enable = false;
-
-    const data = await post.render(null, {
-      content,
-      engine: 'markdown'
-    });
-
-    data.content.trim().should.contains(`<pre><code class="sh">${escapeHTML('echo "Hi"')}\n</code></pre>`);
-    data.content.trim().should.contains('<script src="//gist.github.com/gist_id.js"></script>');
-    data.content.trim().should.contains('<script src="//gist.github.com/gist_id_2.js"></script>');
-  });
-
   // #3543
   it('render() - issue #3543', async () => {
     // Adopted from #3459
@@ -1251,11 +1280,8 @@ describe('Post', () => {
       '',
       '## Insert',
       '',
-      '    {% youtube https://example.com/demo.mp4 %}',
-      '',
       'test002',
-      '',
-      '{% youtube https://example.com/sample.mp4 %}'
+      ''
     ].join('\n');
 
     const data = await post.render(null, {
@@ -1269,10 +1295,6 @@ describe('Post', () => {
     // pullquote tag
     data.content.trim().should.contains('<blockquote class="pullquote"><p>bar bar bar</p>\n</blockquote>');
     data.content.trim().should.contains('<p>test002</p>');
-    // indented youtube tag
-    data.content.trim().should.contains(`<pre><code>${escapeSwigTag('{% youtube https://example.com/demo.mp4 %}')}\n</code></pre>`);
-    // youtube tag
-    data.content.trim().should.contains('<div class="video-container"><iframe src="https://www.youtube.com/embed/https://example.com/sample.mp4" frameborder="0" loading="lazy" allowfullscreen></iframe></div>');
   });
 
   // #4385
@@ -1309,6 +1331,24 @@ describe('Post', () => {
     });
 
     data.content.should.not.include('hexoPostRenderEscape');
+
+    hexo.config.prismjs.enable = false;
+    hexo.config.highlight.enable = true;
+  });
+
+  it('render() - empty tag name', async () => {
+    hexo.config.prismjs.enable = true;
+    hexo.config.highlight.enable = false;
+
+    const content = 'Disable rendering of Nunjucks tag `{{ }}` / `{% %}`';
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.should.include(escapeSwigTag('{{ }}'));
+    data.content.should.include(escapeSwigTag('{% %}'));
 
     hexo.config.prismjs.enable = false;
     hexo.config.highlight.enable = true;

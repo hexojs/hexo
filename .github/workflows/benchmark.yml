@@ -16,12 +16,12 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: ['12', '14', '16']
+        node-version: ['14', '16', '18']
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
@@ -33,12 +33,12 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: ['12', '14', '16']
+        node-version: ['14', '16', '18']
       fail-fast: false
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
@@ -52,3 +52,8 @@ jobs:
           project: ./.tmp-hexo-theme-unit-test/0x/
           login: ${{ secrets.SURGE_LOGIN }}
           token: ${{ secrets.SURGE_TOKEN }}
+      - name: Comment PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: |
+            Publish flamegraph to https://${{ github.sha }}-${{ matrix.node-version }}-hexo.surge.sh/flamegraph.html

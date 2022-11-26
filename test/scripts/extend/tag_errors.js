@@ -124,4 +124,26 @@ describe('Tag Errors', () => {
       err.message.should.contains(source);
     }
   });
+
+  it('source file path 2', async () => {
+    const source = '_posts/hello-world.md';
+    const tag = new Tag();
+
+    tag.register('test',
+      (args, content) => {},
+      { ends: true });
+
+    const body = [
+      '{% test %}',
+      '${#var}',
+      '{% endtest %}'
+    ].join('\n');
+
+    try {
+      await tag.render(body, { source });
+    } catch (err) {
+      err.should.have.property('message');
+      err.message.should.contains(source);
+    }
+  });
 });

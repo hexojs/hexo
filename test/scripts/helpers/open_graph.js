@@ -211,6 +211,18 @@ describe('open_graph', () => {
     result.should.have.string(meta({property: 'og:image', content: 'https://hexo.io/test.jpg'}));
   });
 
+  it('images - content with data-uri', () => {
+    const result = openGraph.call({
+      page: {
+        content: '<img src="data:image/svg+xml;utf8,<svg>...</svg>">'
+      },
+      config: hexo.config,
+      is_post: isPost
+    });
+
+    result.should.not.have.string(meta({property: 'og:image', content: 'data:image/svg+xml;utf8,<svg>...</svg>'}));
+  });
+
   it('images - string', () => {
     const result = openGraph.call({
       page: {
@@ -301,11 +313,10 @@ describe('open_graph', () => {
   });
 
   it('images - resolve relative path when site is hosted in subdirectory', () => {
-    const urlFn = require('url');
     const config = hexo.config;
-    config.url = urlFn.resolve(config.url, 'blog');
+    config.url = new URL('blog', config.url).toString();
     config.root = 'blog';
-    const postUrl = urlFn.resolve(config.url, '/foo/bar/index.html');
+    const postUrl = new URL('/foo/bar/index.html', config.url).toString();
 
     const result = openGraph.call({
       page: {},
@@ -314,7 +325,37 @@ describe('open_graph', () => {
       url: postUrl
     }, {images: 'test.jpg'});
 
-    result.should.have.string(meta({property: 'og:image', content: urlFn.resolve(config.url, '/foo/bar/test.jpg')}));
+    result.should.have.string(meta({property: 'og:image', content: new URL('/foo/bar/test.jpg', config.url).toString()}));
+  });
+
+  it('twitter_image - default same as og:image', () => {
+    const result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    }, {images: 'image.jpg'});
+
+    result.should.have.string(meta({name: 'twitter:image', content: hexo.config.url + '/image.jpg'}));
+  });
+
+  it('twitter_image - different URLs for og:image and twitter:image', () => {
+    const result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    }, {twitter_image: 'twitter.jpg', images: 'image.jpg'});
+
+    result.should.have.string(meta({name: 'twitter:image', content: hexo.config.url + '/twitter.jpg'}));
+  });
+
+  it('images - twitter_image absolute url', () => {
+    const result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    }, {twitter_image: 'https://hexo.io/twitter.jpg', images: 'image.jpg'});
+
+    result.should.have.string(meta({name: 'twitter:image', content: 'https://hexo.io/twitter.jpg'}));
   });
 
   it('site_name - options', () => {
@@ -448,16 +489,6 @@ describe('open_graph', () => {
     }, {twitter_site: 'Hello'});
 
     result.should.have.string(meta({name: 'twitter:site', content: 'Hello'}));
-  });
-
-  it('google_plus - options', () => {
-    const result = openGraph.call({
-      page: {},
-      config: hexo.config,
-      is_post: isPost
-    }, {google_plus: '+123456789'});
-
-    result.should.have.string(tag('link', {rel: 'publisher', href: '+123456789'}));
   });
 
   it('fb_admins - options', () => {

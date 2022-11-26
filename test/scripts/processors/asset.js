@@ -86,8 +86,10 @@ describe('asset', () => {
     asset.modified.should.be.true;
     asset.renderable.should.be.false;
 
-    asset.remove();
-    unlink(file.source);
+    return Promise.all([
+      asset.remove(),
+      unlink(file.source)
+    ]);
   });
 
   it('asset - type: create (when source path is configed to parent directory)', async () => {
@@ -136,8 +138,10 @@ describe('asset', () => {
     asset.modified.should.be.true;
     asset.renderable.should.be.false;
 
-    asset.remove();
-    unlink(file.source);
+    return Promise.all([
+      asset.remove(),
+      unlink(file.source)
+    ]);
   });
 
   it('asset - type: skip', async () => {
@@ -348,63 +352,6 @@ describe('asset', () => {
 
     page.date.toDate().should.eql(stats.ctime);
     should.not.exist(page.updated);
-
-    await Promise.all([
-      page.remove(),
-      unlink(file.source)
-    ]);
-  });
-
-  it('page - use_date_for_updated as fallback', async () => {
-    const body = [
-      'date: 2011-4-5 14:19:19',
-      '---'
-    ].join('\n');
-
-    const file = newFile({
-      path: 'hello.njk',
-      type: 'create',
-      renderable: true
-    });
-
-    hexo.config.use_date_for_updated = true;
-
-    await writeFile(file.source, body);
-    await process(file);
-    const stats = await stat(file.source);
-    const page = Page.findOne({source: file.path});
-
-    page.updated.toDate().should.eql(page.date.toDate());
-    page.updated.toDate().should.not.eql(stats.mtime);
-
-    await Promise.all([
-      page.remove(),
-      unlink(file.source)
-    ]);
-  });
-
-  it('page - ignore updated_option when use_date_for_updated is set', async () => {
-    const body = [
-      'date: 2011-4-5 14:19:19',
-      '---'
-    ].join('\n');
-
-    const file = newFile({
-      path: 'hello.njk',
-      type: 'create',
-      renderable: true
-    });
-
-    hexo.config.use_date_for_updated = true;
-    hexo.config.updated_option = 'mtime';
-
-    await writeFile(file.source, body);
-    await process(file);
-    const stats = await stat(file.source);
-    const page = Page.findOne({source: file.path});
-
-    page.updated.toDate().should.eql(page.date.toDate());
-    page.updated.toDate().should.not.eql(stats.mtime);
 
     await Promise.all([
       page.remove(),

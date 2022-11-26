@@ -100,22 +100,4 @@ describe('Validate config', () => {
       e.message.should.eql('Invalid config detected: "root" should not be empty!');
     }
   });
-
-  it('config.use_date_for_updated - depreacte', () => {
-    hexo.config.use_date_for_updated = true;
-
-    validateConfig(hexo);
-
-    logSpy.calledOnce.should.be.true;
-    logSpy.calledWith('Deprecated config detected: "use_date_for_updated" is deprecated, please use "updated_option" instead. See https://hexo.io/docs/configuration for more details.').should.be.true;
-  });
-
-  it('config.external_link - depreacte Boolean value', () => {
-    hexo.config.external_link = false;
-
-    validateConfig(hexo);
-
-    logSpy.calledOnce.should.be.true;
-    logSpy.calledWith('Deprecated config detected: "external_link" with a Boolean value is deprecated. See https://hexo.io/docs/configuration for more details.').should.be.true;
-  });
 });

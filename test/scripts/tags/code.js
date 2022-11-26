@@ -68,6 +68,21 @@ describe('code', () => {
       }));
     });
 
+    it('line_threshold', () => {
+      let result = code('line_number:false line_threshold:1', fixture);
+      result.should.eql(highlight(fixture, {
+        gutter: false
+      }));
+      result = code('line_number:true line_threshold:1', fixture);
+      result.should.eql(highlight(fixture, {
+        gutter: true
+      }));
+      result = code('line_number:true line_threshold:3', fixture);
+      result.should.eql(highlight(fixture, {
+        gutter: false
+      }));
+    });
+
     it('highlight disable', () => {
       const result = code('highlight:false', fixture);
       result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
@@ -158,6 +173,14 @@ describe('code', () => {
         wrap: true
       }));
     });
+
+    it('language_attr', () => {
+      const result = code('lang:js language_attr:true', fixture);
+      result.should.eql(highlight(fixture, {
+        lang: 'js',
+        languageAttr: true
+      }));
+    });
   });
 
   describe('prismjs', () => {
@@ -199,6 +222,21 @@ describe('code', () => {
       result = code('line_number:true', fixture);
       result.should.eql(prism(fixture, {
         lineNumber: true
+      }));
+    });
+
+    it('line_threshold', () => {
+      let result = code('line_number:false line_threshold:1', fixture);
+      result.should.eql(prism(fixture, {
+        lineNumber: false
+      }));
+      result = code('line_number:true line_threshold:1', fixture);
+      result.should.eql(prism(fixture, {
+        lineNumber: true
+      }));
+      result = code('line_number:true line_threshold:3', fixture);
+      result.should.eql(prism(fixture, {
+        lineNumber: false
       }));
     });
 
