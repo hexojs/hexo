@@ -1,10 +1,10 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('Migrator', () => {
-  var Migrator = require('../../../lib/extend/migrator');
+  const Migrator = require('../../../lib/extend/migrator');
 
   it('register()', () => {
-    var d = new Migrator();
+    const d = new Migrator();
 
     // name, fn
     d.register('test', () => {});
@@ -12,26 +12,14 @@ describe('Migrator', () => {
     d.get('test').should.exist;
 
     // no name
-    try {
-      d.register();
-    } catch (err) {
-      err.should.be
-        .instanceOf(TypeError)
-        .property('message', 'name is required');
-    }
+    should.throw(() => d.register(), TypeError, 'name is required');
 
     // no fn
-    try {
-      d.register('test');
-    } catch (err) {
-      err.should.be
-        .instanceOf(TypeError)
-        .property('message', 'fn must be a function');
-    }
+    should.throw(() => d.register('test'), TypeError, 'fn must be a function');
   });
 
   it('register() - promisify', () => {
-    var d = new Migrator();
+    const d = new Migrator();
 
     d.register('test', (args, callback) => {
       args.should.eql({foo: 'bar'});
@@ -45,31 +33,31 @@ describe('Migrator', () => {
     });
   });
 
-  it('register() - Promise.method', () => {
-    var d = new Migrator();
+  it('register() - Promise.method', async () => {
+    const d = new Migrator();
 
     d.register('test', args => {
       args.should.eql({foo: 'bar'});
       return 'foo';
     });
 
-    d.get('test')({
+    const result = await d.get('test')({
       foo: 'bar'
-    }).then(result => {
-      result.should.eql('foo');
     });
+
+    result.should.eql('foo');
   });
 
   it('list()', () => {
-    var d = new Migrator();
+    const d = new Migrator();
 
     d.register('test', () => {});
 
-    d.list().should.have.keys(['test']);
+    d.list().should.have.all.keys(['test']);
   });
 
   it('get()', () => {
-    var d = new Migrator();
+    const d = new Migrator();
 
     d.register('test', () => {});
 

@@ -1,105 +1,120 @@
-var should = require('chai').should(); // eslint-disable-line
-var fs = require('hexo-fs');
-var pathFn = require('path');
-var yaml = require('js-yaml');
-var _ = require('lodash');
-var rewire = require('rewire');
-var sinon = require('sinon');
+'use strict';
+
+const { mkdirs, readFile, rmdir, unlink, writeFile } = require('hexo-fs');
+const { join } = require('path');
+const { load } = require('js-yaml');
+const { stub, assert: sinonAssert } = require('sinon');
 
 describe('config', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
-  var config = require('../../../lib/plugins/console/config').bind(hexo);
-  var configModule = rewire('../../../lib/plugins/console/config');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
+  const config = require('../../../lib/plugins/console/config').bind(hexo);
 
-  before(() => fs.mkdirs(hexo.base_dir).then(() => hexo.init()));
-
-  beforeEach(() => fs.writeFile(hexo.config_path, ''));
-
-  after(() => fs.rmdir(hexo.base_dir));
-
-  it('read all config', () => {
-    var spy = sinon.spy();
-
-    return configModule.__with__({
-      console: {
-        log: spy
-      }
-    })(() => configModule.call(hexo, {_: []})).then(() => {
-      spy.args[0][0].should.eql(hexo.config);
-    });
+  before(async () => {
+    await mkdirs(hexo.base_dir);
+    hexo.init();
   });
 
-  it('read config', () => {
-    var spy = sinon.spy();
+  beforeEach(() => writeFile(hexo.config_path, ''));
 
-    return configModule.__with__({
-      console: {
-        log: spy
-      }
-    })(() => configModule.call(hexo, {_: ['title']})).then(() => {
-      spy.args[0][0].should.eql(hexo.config.title);
-    });
+  after(() => rmdir(hexo.base_dir));
+
+  it('read all config', async () => {
+    const logStub = stub(console, 'log');
+
+    try {
+      await config({_: []});
+    } finally {
+      logStub.restore();
+    }
+
+    sinonAssert.calledWith(logStub, hexo.config);
   });
 
-  it('read nested config', () => {
-    var spy = sinon.spy();
+  it('read config', async () => {
+    const logStub = stub(console, 'log');
 
-    hexo.config.server = {
-      port: 12345
-    };
+    try {
+      await config({_: ['title']});
+    } finally {
+      logStub.restore();
+    }
 
-    return configModule.__with__({
-      console: {
-        log: spy
-      }
-    })(() => configModule.call(hexo, {_: ['server.port']})).then(() => {
-      spy.args[0][0].should.eql(hexo.config.server.port);
-    }).finally(() => {
+    sinonAssert.calledWith(logStub, hexo.config.title);
+  });
+
+  it('read nested config', async () => {
+    const logStub = stub(console, 'log');
+
+    try {
+      hexo.config.server = {
+        port: 12345
+      };
+
+      await config({_: ['server.port']});
+      sinonAssert.calledWith(logStub, hexo.config.server.port);
+    } finally {
       delete hexo.config.server;
-    });
+      logStub.restore();
+    }
   });
 
-  function writeConfig() {
-    var args = _.toArray(arguments);
-
-    return config({_: args}).then(() => fs.readFile(hexo.config_path)).then(content => yaml.safeLoad(content));
+  async function writeConfig(...args) {
+    await config({_: args});
+    const content = await readFile(hexo.config_path);
+    return load(content);
   }
 
-  it('write config', () => writeConfig('title', 'My Blog').then(config => {
+  it('write config', async () => {
+    const config = await writeConfig('title', 'My Blog');
     config.title.should.eql('My Blog');
-  }));
+  });
 
-  it('write config: number', () => writeConfig('server.port', '5000').then(config => {
+  it('write config: number', async () => {
+    const config = await writeConfig('server.port', '5000');
     config.server.port.should.eql(5000);
-  }));
+  });
 
-  it('write config: false', () => writeConfig('post_asset_folder', 'false').then(config => {
+  it('write config: false', async () => {
+    const config = await writeConfig('post_asset_folder', 'false');
     config.post_asset_folder.should.be.false;
-  }));
+  });
 
-  it('write config: true', () => writeConfig('post_asset_folder', 'true').then(config => {
+  it('write config: true', async () => {
+    const config = await writeConfig('post_asset_folder', 'true');
     config.post_asset_folder.should.be.true;
-  }));
+  });
 
-  it('write config: null', () => writeConfig('language', 'null').then(config => {
+  it('write config: null', async () => {
+    const config = await writeConfig('language', 'null');
     should.not.exist(config.language);
-  }));
+  });
 
-  it('write config: json', () => {
-    var configPath = hexo.config_path = pathFn.join(hexo.base_dir, '_config.json');
+  it('write config: undefined', async () => {
+    const config = await writeConfig('meta_generator', 'undefined');
+    should.not.exist(config.meta_generator);
+  });
 
-    return fs.writeFile(configPath, '{}').then(() => config({_: ['title', 'My Blog']})).then(() => fs.readFile(configPath)).then(content => {
-      var json = JSON.parse(content);
+  it('write config: json', async () => {
+    const configPath = join(hexo.base_dir, '_config.json');
+    hexo.config_path = join(hexo.base_dir, '_config.json');
+
+    await writeFile(configPath, '{}');
+    await config({_: ['title', 'My Blog']});
+
+    return readFile(configPath).then(content => {
+      const json = JSON.parse(content);
 
       json.title.should.eql('My Blog');
 
-      hexo.config_path = pathFn.join(hexo.base_dir, '_config.yml');
-      return fs.unlink(configPath);
+      hexo.config_path = join(hexo.base_dir, '_config.yml');
+      return unlink(configPath);
     });
   });
 
-  it('create config if not exist', () => fs.unlink(hexo.config_path).then(() => writeConfig('subtitle', 'Hello world')).then(config => {
+  it('create config if not exist', async () => {
+    await unlink(hexo.config_path);
+    const config = await writeConfig('subtitle', 'Hello world');
     config.subtitle.should.eql('Hello world');
-  }));
+  });
 });

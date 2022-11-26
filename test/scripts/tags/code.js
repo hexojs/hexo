@@ -1,14 +1,15 @@
-var should = require('chai').should(); // eslint-disable-line
-var util = require('hexo-util');
-var cheerio = require('cheerio');
+'use strict';
+
+const util = require('hexo-util');
+const cheerio = require('cheerio');
 
 describe('code', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var codeTag = require('../../../lib/plugins/tag/code')(hexo);
-  var escapeHTML = util.escapeHTML;
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const codeTag = require('../../../lib/plugins/tag/code')(hexo);
+  const { escapeHTML } = util;
 
-  var fixture = [
+  const fixture = [
     'if (tired && night){',
     '  sleep();',
     '}'
@@ -24,115 +25,276 @@ describe('code', () => {
       .replace(/}/g, '&#125;');
   }
 
-  it('default', () => {
-    var result = code('', fixture);
-    result.should.eql(highlight(fixture));
-  });
+  function prism(code, options) {
+    return util.prismHighlight(code, options || {})
+      .replace(/{/g, '&#123;')
+      .replace(/}/g, '&#125;');
+  }
 
-  it('non standard indent', () => {
-    var nonStandardIndent = [
+  describe('highlightjs', () => {
+    it('default', () => {
+      const result = code('', fixture);
+      result.should.eql(highlight(fixture));
+    });
+
+    it('non standard indent', () => {
+      const nonStandardIndent = [
         '  ',
         '  return x;',
         '}',
         '',
         fixture,
         '  '
-    ].join('/n');
-    var result = code('', nonStandardIndent);
-    result.should.eql(highlight(nonStandardIndent));
-  });
-
-  it('lang', () => {
-    var result = code('lang:js', fixture);
-    result.should.eql(highlight(fixture, {
-      lang: 'js'
-    }));
-  });
-
-  it('line_number', () => {
-    var result = code('line_number:false', fixture);
-    result.should.eql(highlight(fixture, {
-      gutter: false
-    }));
-    result = code('line_number:true', fixture);
-    result.should.eql(highlight(fixture, {
-      gutter: true
-    }));
-  });
-
-  it('highlight disable', () => {
-    var result = code('highlight:false', fixture);
-    result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
-  });
-
-  it('title', () => {
-    var result = code('Hello world', fixture);
-    result.should.eql(highlight(fixture, {
-      caption: '<span>Hello world</span>'
-    }));
-  });
-
-  it('link', () => {
-    var result = code('Hello world http://hexo.io/', fixture);
-    var expected = highlight(fixture, {
-      caption: '<span>Hello world</span><a href="http://hexo.io/">link</a>'
+      ].join('/n');
+      const result = code('', nonStandardIndent);
+      result.should.eql(highlight(nonStandardIndent));
     });
 
-    result.should.eql(expected);
-  });
-
-  it('link text', () => {
-    var result = code('Hello world http://hexo.io/ Hexo', fixture);
-    var expected = highlight(fixture, {
-      caption: '<span>Hello world</span><a href="http://hexo.io/">Hexo</a>'
+    it('lang', () => {
+      const result = code('lang:js', fixture);
+      result.should.eql(highlight(fixture, {
+        lang: 'js'
+      }));
     });
 
-    result.should.eql(expected);
+    it('line_number', () => {
+      let result = code('line_number:false', fixture);
+      result.should.eql(highlight(fixture, {
+        gutter: false
+      }));
+      result = code('line_number:true', fixture);
+      result.should.eql(highlight(fixture, {
+        gutter: true
+      }));
+    });
+
+    it('line_threshold', () => {
+      let result = code('line_number:false line_threshold:1', fixture);
+      result.should.eql(highlight(fixture, {
+        gutter: false
+      }));
+      result = code('line_number:true line_threshold:1', fixture);
+      result.should.eql(highlight(fixture, {
+        gutter: true
+      }));
+      result = code('line_number:true line_threshold:3', fixture);
+      result.should.eql(highlight(fixture, {
+        gutter: false
+      }));
+    });
+
+    it('highlight disable', () => {
+      const result = code('highlight:false', fixture);
+      result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
+    });
+
+    it('title', () => {
+      const result = code('Hello world', fixture);
+      result.should.eql(highlight(fixture, {
+        caption: '<span>Hello world</span>'
+      }));
+    });
+
+    it('link', () => {
+      const result = code('Hello world https://hexo.io/', fixture);
+      const expected = highlight(fixture, {
+        caption: '<span>Hello world</span><a href="https://hexo.io/">link</a>'
+      });
+
+      result.should.eql(expected);
+    });
+
+    it('link text', () => {
+      const result = code('Hello world https://hexo.io/ Hexo', fixture);
+      const expected = highlight(fixture, {
+        caption: '<span>Hello world</span><a href="https://hexo.io/">Hexo</a>'
+      });
+
+      result.should.eql(expected);
+    });
+
+    it('disabled', () => {
+      hexo.config.highlight.enable = false;
+
+      const result = code('', fixture);
+      result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
+
+      hexo.config.highlight.enable = true;
+    });
+
+    it('first_line', () => {
+      let result = code('first_line:1234', fixture);
+      result.should.eql(highlight(fixture, {
+        firstLine: 1234
+      }));
+      result = code('', fixture);
+      result.should.eql(highlight(fixture, {
+        firstLine: 1
+      }));
+    });
+
+    it('mark', () => {
+      const source = [
+        'const http = require(\'http\');',
+        '',
+        'const hostname = \'127.0.0.1\';',
+        'const port = 1337;',
+        '',
+        'http.createServer((req, res) => {',
+        '  res.writeHead(200, { \'Content-Type\': \'text/plain\' });',
+        '  res.end(\'Hello World\n\');',
+        '}).listen(port, hostname, () => {',
+        '  console.log(`Server running at http://${hostname}:${port}/`);',
+        '});'
+      ].join('\n');
+
+      code('mark:1,7-9,11', source).should.eql(highlight(source, {
+        mark: [1, 7, 8, 9, 11]
+      }));
+
+      code('mark:11,9-7,1', source).should.eql(highlight(source, {
+        mark: [1, 7, 8, 9, 11]
+      }));
+    });
+
+    it('# lines', () => {
+      const result = code('', fixture);
+      const $ = cheerio.load(result);
+      $('.gutter .line').should.have.lengthOf(3);
+    });
+
+    it('wrap', () => {
+      let result = code('wrap:false', fixture);
+      result.should.eql(highlight(fixture, {
+        wrap: false
+      }));
+      result = code('wrap:true', fixture);
+      result.should.eql(highlight(fixture, {
+        wrap: true
+      }));
+    });
+
+    it('language_attr', () => {
+      const result = code('lang:js language_attr:true', fixture);
+      result.should.eql(highlight(fixture, {
+        lang: 'js',
+        languageAttr: true
+      }));
+    });
   });
 
-  it('disabled', () => {
-    hexo.config.highlight.enable = false;
+  describe('prismjs', () => {
+    beforeEach(() => {
+      hexo.config.highlight.enable = false;
+      hexo.config.prismjs.enable = true;
+    });
 
-    var result = code('', fixture);
-    result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
+    it('default', () => {
+      const result = code('', fixture);
+      result.should.eql(prism(fixture));
+    });
 
-    hexo.config.highlight.enable = true;
-  });
+    it('non standard indent', () => {
+      const nonStandardIndent = [
+        '  ',
+        '  return x;',
+        '}',
+        '',
+        fixture,
+        '  '
+      ].join('/n');
+      const result = code('', nonStandardIndent);
+      result.should.eql(prism(nonStandardIndent));
+    });
 
-  it('first_line', () => {
-    var result = code('first_line:1234', fixture);
-    result.should.eql(highlight(fixture, {
-      firstLine: 1234
-    }));
-    result = code('', fixture);
-    result.should.eql(highlight(fixture, {
-      firstLine: 1
-    }));
-  });
+    it('lang', () => {
+      const result = code('lang:js', fixture);
+      result.should.eql(prism(fixture, {
+        lang: 'js'
+      }));
+    });
 
-  it('mark', () => {
-    var source = [
-      'const http = require(\'http\');',
-      '',
-      'const hostname = \'127.0.0.1\';',
-      'const port = 1337;',
-      '',
-      'http.createServer((req, res) => {',
-      '  res.writeHead(200, { \'Content-Type\': \'text/plain\' });',
-      '  res.end(\'Hello World\n\');',
-      '}).listen(port, hostname, () => {',
-      '  console.log(`Server running at http://${hostname}:${port}/`);',
-      '});'
-    ].join('\n');
-    var result = code('mark:1,7-8,10', source);
-    result.should.eql(highlight(source, {
-      mark: [1, 7, 8, 10]
-    }));
-  });
+    it('line_number', () => {
+      let result = code('line_number:false', fixture);
+      result.should.eql(prism(fixture, {
+        lineNumber: false
+      }));
+      result = code('line_number:true', fixture);
+      result.should.eql(prism(fixture, {
+        lineNumber: true
+      }));
+    });
 
-  it('# lines', () => {
-    var result = code('', fixture);
-    var $ = cheerio.load(result);
-    $('.gutter .line').length.should.eql(3);
+    it('line_threshold', () => {
+      let result = code('line_number:false line_threshold:1', fixture);
+      result.should.eql(prism(fixture, {
+        lineNumber: false
+      }));
+      result = code('line_number:true line_threshold:1', fixture);
+      result.should.eql(prism(fixture, {
+        lineNumber: true
+      }));
+      result = code('line_number:true line_threshold:3', fixture);
+      result.should.eql(prism(fixture, {
+        lineNumber: false
+      }));
+    });
+
+    it('highlight disable', () => {
+      const result = code('highlight:false', fixture);
+      result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
+    });
+
+    it('disabled', () => {
+      hexo.config.highlight.enable = false;
+      hexo.config.prismjs.enable = false;
+
+      const result = code('', fixture);
+      result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
+
+      hexo.config.highlight.enable = true;
+    });
+
+    it('first_line', () => {
+      let result = code('first_line:1234', fixture);
+      result.should.eql(prism(fixture, {
+        firstLine: 1234
+      }));
+      result = code('', fixture);
+      result.should.eql(prism(fixture, {
+        firstLine: 1
+      }));
+    });
+
+    it('mark', () => {
+      const source = [
+        'const http = require(\'http\');',
+        '',
+        'const hostname = \'127.0.0.1\';',
+        'const port = 1337;',
+        '',
+        'http.createServer((req, res) => {',
+        '  res.writeHead(200, { \'Content-Type\': \'text/plain\' });',
+        '  res.end(\'Hello World\n\');',
+        '}).listen(port, hostname, () => {',
+        '  console.log(`Server running at http://${hostname}:${port}/`);',
+        '});'
+      ].join('\n');
+
+      code('mark:1,7-9,11', source).should.eql(prism(source, {
+        mark: [1, 7, 8, 9, 11]
+      }));
+
+      code('mark:11,9-7,1', source).should.eql(prism(source, {
+        mark: [1, 7, 8, 9, 11]
+      }));
+    });
+
+    it('title', () => {
+      const result = code('Hello world', fixture);
+      result.should.eql(prism(fixture, {
+        caption: '<span>Hello world</span>'
+      }));
+    });
   });
 });

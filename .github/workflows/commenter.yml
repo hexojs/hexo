@@ -1,0 +1,25 @@
+name: Commenter
+
+on: [pull_request_target]
+
+permissions:
+  contents: read
+
+jobs:
+  commenter:
+    permissions:
+      pull-requests: write  # for marocchino/sticky-pull-request-comment to create or update PR comment
+    runs-on: ubuntu-latest
+    steps:
+      - name: Comment PR
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          message: |
+            ## How to test
+
+            ```sh
+            git clone -b ${{ github.head_ref }} https://github.com/${{ github.event.pull_request.head.repo.full_name }}.git
+            cd hexo
+            npm install
+            npm test
+            ```

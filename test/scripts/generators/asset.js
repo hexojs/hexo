@@ -1,109 +1,115 @@
-var should = require('chai').should(); // eslint-disable-line
-var Promise = require('bluebird');
-var pathFn = require('path');
-var fs = require('hexo-fs');
-var testUtil = require('../../util');
+'use strict';
+
+const { join } = require('path');
+const { mkdirs, rmdir, unlink, writeFile } = require('hexo-fs');
+const testUtil = require('../../util');
 
 describe('asset', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'asset_test'), {silent: true});
-  var generator = require('../../../lib/plugins/generator/asset').bind(hexo);
-  var Asset = hexo.model('Asset');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(join(__dirname, 'asset_test'), {silent: true});
+  const generator = require('../../../lib/plugins/generator/asset').bind(hexo);
+  const Asset = hexo.model('Asset');
 
-  function checkStream(stream, expected) {
-    return testUtil.stream.read(stream).then(data => {
-      data.should.eql(expected);
-    });
-  }
+  const checkStream = async (stream, expected) => {
+    const data = await testUtil.stream.read(stream);
+    data.should.eql(expected);
+  };
 
-  before(() => fs.mkdirs(hexo.base_dir).then(() => hexo.init()));
-
-  after(() => fs.rmdir(hexo.base_dir));
-
-  it('renderable', () => {
-    var path = 'test.yml';
-    var source = pathFn.join(hexo.base_dir, path);
-    var content = 'foo: bar';
-
-    return Promise.all([
-      Asset.insert({_id: path, path}),
-      fs.writeFile(source, content)
-    ]).then(() => generator(hexo.locals)).then(data => {
-      data[0].path.should.eql('test.json');
-      data[0].data.modified.should.be.true;
-
-      return data[0].data.data().then(result => {
-        result.should.eql('{"foo":"bar"}');
-      });
-    }).then(() => Promise.all([
-      Asset.removeById(path),
-      fs.unlink(source)
-    ]));
+  before(async () => {
+    await mkdirs(hexo.base_dir);
+    hexo.init();
   });
 
-  it('not renderable', () => {
-    var path = 'test.txt';
-    var source = pathFn.join(hexo.base_dir, path);
-    var content = 'test content';
+  after(() => rmdir(hexo.base_dir));
 
-    return Promise.all([
+  it('renderable', async () => {
+    const path = 'test.yml';
+    const source = join(hexo.base_dir, path);
+    const content = 'foo: bar';
+
+    await Promise.all([
       Asset.insert({_id: path, path}),
-      fs.writeFile(source, content)
-    ]).then(() => generator(hexo.locals)).then(data => {
-      data[0].path.should.eql(path);
-      data[0].data.modified.should.be.true;
+      writeFile(source, content)
+    ]);
+    const data = await generator(hexo.locals);
+    data[0].path.should.eql('test.json');
+    data[0].data.modified.should.be.true;
 
-      return checkStream(data[0].data.data(), content);
-    }).then(() => Promise.all([
+    const result = await data[0].data.data();
+    result.should.eql('{"foo":"bar"}');
+
+    await Promise.all([
       Asset.removeById(path),
-      fs.unlink(source)
-    ]));
+      unlink(source)
+    ]);
   });
 
-  it('skip render', () => {
-    var path = 'test.yml';
-    var source = pathFn.join(hexo.base_dir, path);
-    var content = 'foo: bar';
+  it('not renderable', async () => {
+    const path = 'test.txt';
+    const source = join(hexo.base_dir, path);
+    const content = 'test content';
 
-    return Promise.all([
+    await Promise.all([
+      Asset.insert({_id: path, path}),
+      writeFile(source, content)
+    ]);
+    const data = await generator(hexo.locals);
+    data[0].path.should.eql(path);
+    data[0].data.modified.should.be.true;
+
+    await checkStream(data[0].data.data(), content);
+
+    await Promise.all([
+      Asset.removeById(path),
+      unlink(source)
+    ]);
+  });
+
+  it('skip render', async () => {
+    const path = 'test.yml';
+    const source = join(hexo.base_dir, path);
+    const content = 'foo: bar';
+
+    await Promise.all([
       Asset.insert({_id: path, path, renderable: false}),
-      fs.writeFile(source, content)
-    ]).then(() => generator(hexo.locals)).then(data => {
-      data[0].path.should.eql('test.yml');
-      data[0].data.modified.should.be.true;
+      writeFile(source, content)
+    ]);
+    const data = await generator(hexo.locals);
+    data[0].path.should.eql('test.yml');
+    data[0].data.modified.should.be.true;
 
-      return checkStream(data[0].data.data(), content);
-    }).then(() => Promise.all([
+    await checkStream(data[0].data.data(), content);
+    await Promise.all([
       Asset.removeById(path),
-      fs.unlink(source)
-    ]));
+      unlink(source)
+    ]);
   });
 
-  it('remove assets which does not exist', () => {
-    var path = 'test.txt';
+  it('remove assets which does not exist', async () => {
+    const path = 'test.txt';
 
-    return Asset.insert({
+    await Asset.insert({
       _id: path,
       path
-    }).then(() => generator(hexo.locals)).then(() => {
-      should.not.exist(Asset.findById(path));
     });
+    await generator(hexo.locals);
+    should.not.exist(Asset.findById(path));
   });
 
-  it('don\'t remove extension name', () => {
-    var path = 'test.min.js';
-    var source = pathFn.join(hexo.base_dir, path);
+  it('don\'t remove extension name', async () => {
+    const path = 'test.min.js';
+    const source = join(hexo.base_dir, path);
 
-    return Promise.all([
+    await Promise.all([
       Asset.insert({_id: path, path}),
-      fs.writeFile(source, '')
-    ]).then(() => generator(hexo.locals)).then(data => {
-      data[0].path.should.eql('test.min.js');
+      writeFile(source, '')
+    ]);
+    const data = await generator(hexo.locals);
+    data[0].path.should.eql('test.min.js');
 
-      return Promise.all([
-        Asset.removeById(path),
-        fs.unlink(source)
-      ]);
-    });
+    await Promise.all([
+      Asset.removeById(path),
+      unlink(source)
+    ]);
   });
 });

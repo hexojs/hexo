@@ -1,15 +1,15 @@
-var should = require('chai').should(); // eslint-disable-line
-var util = require('hexo-util');
-var _ = require('lodash');
-var defaultConfig = require('../../../lib/hexo/default_config');
+'use strict';
+
+const util = require('hexo-util');
+const defaultConfig = require('../../../lib/hexo/default_config');
 
 describe('Backtick code block', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var codeBlock = require('../../../lib/plugins/filter/before_post_render/backtick_code_block').bind(hexo);
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const codeBlock = require('../../../lib/plugins/filter/before_post_render/backtick_code_block').bind(hexo);
 
-  var code = [
-    'if (tired && night){',
+  const code = [
+    'if (tired && night) {',
     '  sleep();',
     '}'
   ].join('\n');
@@ -20,203 +20,617 @@ describe('Backtick code block', () => {
       .replace(/}/g, '&#125;');
   }
 
+  function prism(code, options) {
+    return util.prismHighlight(code, options || {})
+      .replace(/{/g, '&#123;')
+      .replace(/}/g, '&#125;');
+  }
+
   beforeEach(() => {
     // Reset config
-    hexo.config.highlight = _.cloneDeep(defaultConfig.highlight);
+    hexo.config.highlight = Object.assign({}, defaultConfig.highlight);
+    hexo.config.prismjs = Object.assign({}, defaultConfig.prismjs);
+  });
+
+  after(() => {
+    // Reset config for further test
+    hexo.config.highlight = defaultConfig.highlight;
+    hexo.config.prismjs = defaultConfig.prismjs;
   });
 
   it('disabled', () => {
-    var content = [
+    const content = [
       '``` js',
       code,
       '```'
     ].join('\n');
 
-    var data = {content};
+    const data = {content};
 
     hexo.config.highlight.enable = false;
+    hexo.config.prismjs.enable = false;
     codeBlock(data);
     data.content.should.eql(content);
   });
 
   it('with no config (disabled)', () => {
-    var content = [
+    const content = [
       '``` js',
       code,
       '```'
     ].join('\n');
 
-    var data = {content};
+    const data = {content};
 
-    var oldConfig = hexo.config.highlight;
+    const oldHljsCfg = hexo.config.highlight;
+    const oldPrismCfg = hexo.config.prismjs;
     delete hexo.config.highlight;
+    delete hexo.config.prismjs;
 
     codeBlock(data);
     data.content.should.eql(content);
 
-    hexo.config.highlight = oldConfig;
+    hexo.config.highlight = oldHljsCfg;
+    hexo.config.prismjs = oldPrismCfg;
   });
 
-  it('default', () => {
-    var data = {
-      content: [
-        '``` js',
-        code,
-        '```'
-      ].join('\n')
-    };
+  describe('highlightjs', () => {
+    it('shorthand', () => {
+      const data = {
+        content: 'Hello, world!'
+      };
 
-    codeBlock(data);
-    data.content.should.eql('<escape>' + highlight(code, {lang: 'js'}) + '</escape>');
-  });
-
-  it('without language name', () => {
-    var data = {
-      content: [
-        '```',
-        code,
-        '```'
-      ].join('\n')
-    };
-
-    var expected = highlight(code);
-
-    codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
-  });
-
-  it('without language name - ignore tab character', () => {
-    var data = {
-      content: [
-        '``` \t',
-        code,
-        '```'
-      ].join('\n')
-    };
-
-    var expected = highlight(code);
-
-    codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
-  });
-
-  it('title', () => {
-    var data = {
-      content: [
-        '``` js Hello world',
-        code,
-        '```'
-      ].join('\n')
-    };
-
-    var expected = highlight(code, {
-      lang: 'js',
-      caption: '<span>Hello world</span>'
+      should.not.exist(codeBlock(data));
     });
 
-    codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
-  });
+    it('default', () => {
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
 
-  it('url', () => {
-    var data = {
-      content: [
-        '``` js Hello world http://hexo.io/',
-        code,
-        '```'
-      ].join('\n')
-    };
-
-    var expected = highlight(code, {
-      lang: 'js',
-      caption: '<span>Hello world</span><a href="http://hexo.io/">link</a>'
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + highlight(code, {lang: 'js'}) + '</hexoPostRenderCodeBlock>');
     });
 
-    codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
-  });
+    it('without language name', () => {
+      const data = {
+        content: [
+          '```',
+          code,
+          '```'
+        ].join('\n')
+      };
 
-  it('link text', () => {
-    var data = {
-      content: [
-        '``` js Hello world http://hexo.io/ Hexo',
-        code,
-        '```'
-      ].join('\n')
-    };
+      const expected = highlight(code);
 
-    var expected = highlight(code, {
-      lang: 'js',
-      caption: '<span>Hello world</span><a href="http://hexo.io/">Hexo</a>'
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
     });
 
-    codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
-  });
+    it('without language name - ignore tab character', () => {
+      const data = {
+        content: [
+          '``` \t',
+          code,
+          '```'
+        ].join('\n')
+      };
 
-  it('indent', () => {
-    var indentCode = code.split('\n').map(line => '  ' + line).join('\n');
+      const expected = highlight(code);
 
-    var data = {
-      content: [
-        '``` js Hello world http://hexo.io/',
-        indentCode,
-        '```'
-      ].join('\n')
-    };
-
-    var expected = highlight(code, {
-      lang: 'js',
-      caption: '<span>Hello world</span><a href="http://hexo.io/">link</a>'
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
     });
 
-    codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
-  });
+    it('title', () => {
+      const data = {
+        content: [
+          '``` js Hello world',
+          code,
+          '```'
+        ].join('\n')
+      };
 
-  it('line number', () => {
-    hexo.config.highlight.line_number = false;
+      const expected = highlight(code, {
+        lang: 'js',
+        caption: '<span>Hello world</span>'
+      });
 
-    var data = {
-      content: [
-        '``` js',
-        code,
-        '```'
-      ].join('\n')
-    };
-
-    var expected = highlight(code, {
-      lang: 'js',
-      gutter: false
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
     });
 
-    codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
-  });
+    it('url', () => {
+      const data = {
+        content: [
+          '``` js Hello world https://hexo.io/',
+          code,
+          '```'
+        ].join('\n')
+      };
 
-  it('tab replace', () => {
-    hexo.config.highlight.tab_replace = '  ';
+      const expected = highlight(code, {
+        lang: 'js',
+        caption: '<span>Hello world</span><a href="https://hexo.io/">link</a>'
+      });
 
-    var code = [
-      'if (tired && night){',
-      '\tsleep();',
-      '}'
-    ].join('\n');
-
-    var data = {
-      content: [
-        '``` js',
-        code,
-        '```'
-      ].join('\n')
-    };
-
-    var expected = highlight(code, {
-      lang: 'js',
-      tab: '  '
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
     });
 
-    codeBlock(data);
-    data.content.should.eql('<escape>' + expected + '</escape>');
+    it('link text', () => {
+      const data = {
+        content: [
+          '``` js Hello world https://hexo.io/ Hexo',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = highlight(code, {
+        lang: 'js',
+        caption: '<span>Hello world</span><a href="https://hexo.io/">Hexo</a>'
+      });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('indent', () => {
+      const indentCode = code.split('\n').map(line => '  ' + line).join('\n');
+
+      const data = {
+        content: [
+          '``` js Hello world https://hexo.io/',
+          indentCode,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = highlight(code, {
+        lang: 'js',
+        caption: '<span>Hello world</span><a href="https://hexo.io/">link</a>'
+      });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('line number false', () => {
+      hexo.config.highlight.line_number = false;
+
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = highlight(code, {
+        lang: 'js',
+        gutter: false
+      });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('line number false, don`t first_line_number always1', () => {
+      hexo.config.highlight.line_number = false;
+      hexo.config.highlight.first_line_number = 'always1';
+
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = highlight(code, {
+        lang: 'js',
+        gutter: false
+      });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('only wrap with pre and code', () => {
+      hexo.config.highlight.exclude_languages = ['js'];
+      hexo.config.highlight.hljs = true;
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+      const expected = highlight(code, {
+        lang: 'js',
+        gutter: false,
+        hljs: true,
+        wrap: false
+      });
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('line number false, don`t care first_line_number inilne', () => {
+      hexo.config.highlight.line_number = false;
+      hexo.config.highlight.first_line_number = 'inilne';
+
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = highlight(code, {
+        lang: 'js',
+        gutter: false
+      });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('line number true', () => {
+      hexo.config.highlight.line_number = true;
+
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = highlight(code, {
+        lang: 'js',
+        gutter: true
+      });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('line number, first_line_number always1, js=', () => {
+      hexo.config.highlight.line_number = true;
+      hexo.config.highlight.first_line_number = 'always1';
+
+      const data = {
+        content: [
+          '``` js=',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = highlight(code, {
+        lang: 'js',
+        gutter: true,
+        firstLine: 1
+      });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('line number, first_line_number inline, js', () => {
+      hexo.config.highlight.line_number = true;
+      hexo.config.highlight.first_line_number = 'inline';
+
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = highlight(code, {
+        lang: 'js',
+        gutter: false,
+        firstLine: 0
+      });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('line number, first_line_number inline, js=1', () => {
+      hexo.config.highlight.line_number = true;
+      hexo.config.highlight.first_line_number = 'inline';
+
+      const data = {
+        content: [
+          '``` js=1',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = highlight(code, {
+        lang: 'js',
+        gutter: true,
+        firstLine: 1
+      });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('line number, first_line_number inline, js=2', () => {
+      hexo.config.highlight.line_number = true;
+      hexo.config.highlight.first_line_number = 'inline';
+
+      const data = {
+        content: [
+          '``` js=2',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = highlight(code, {
+        lang: 'js',
+        gutter: true,
+        firstLine: 2
+      });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('tab replace', () => {
+      hexo.config.highlight.tab_replace = '  ';
+
+      const code = [
+        'if (tired && night){',
+        '\tsleep();',
+        '}'
+      ].join('\n');
+
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = highlight(code, {
+        lang: 'js',
+        tab: '  '
+      });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('wrap', () => {
+      hexo.config.highlight.wrap = false;
+
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js', wrap: false }) + '</hexoPostRenderCodeBlock>');
+
+      hexo.config.highlight.wrap = true;
+    });
+
+    // test for Issue #4220
+    it('skip a Swig template', () => {
+      const data = {
+        content: [
+          '```foo```',
+          '',
+          '```',
+          code,
+          '```'
+        ].join('\n')
+      };
+      codeBlock(data);
+
+      data.content.should.eql('```foo```\n\n<hexoPostRenderCodeBlock>' + highlight(code, {}) + '</hexoPostRenderCodeBlock>');
+    });
+
+    // test for Issue #4190
+    it('ignore triple backticks at the line which is started by extra characters', () => {
+      const data = {
+        content: [
+          '```',
+          code,
+          'foo```',
+          '',
+          'bar```',
+          'baz',
+          '```'
+        ].join('\n')
+      };
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + highlight(code + '\nfoo```\n\nbar```\nbaz', {}) + '</hexoPostRenderCodeBlock>');
+    });
+
+    // test for Issue #4573
+    it('ignore trailing spaces', () => {
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '``` ',
+          '``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      codeBlock(data);
+      data.content.should.not.contain('`');
+    });
+
+    // test for Issue #4573
+    it('ignore trailing spaces but not newlines', () => {
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```',
+          '',
+          '# New line'
+        ].join('\n')
+      };
+
+      codeBlock(data);
+      data.content.should.contain('\n\n# New line');
+    });
+  });
+
+  describe('prismjs', () => {
+    beforeEach(() => {
+      hexo.config.highlight.enable = false;
+      hexo.config.prismjs.enable = true;
+    });
+
+    it('default', () => {
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      codeBlock(data);
+
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + prism(code, {lang: 'js'}) + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('without language name', () => {
+      const data = {
+        content: [
+          '```',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = prism(code);
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+
+    it('without language name - ignore tab character', () => {
+      const data = {
+        content: [
+          '``` \t',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = prism(code);
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('indent', () => {
+      const indentCode = code.split('\n').map(line => '  ' + line).join('\n');
+
+      const data = {
+        content: [
+          '``` js',
+          indentCode,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = prism(code, { lang: 'js' });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('line number false', () => {
+      hexo.config.prismjs.line_number = false;
+
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = prism(code, {
+        lang: 'js',
+        lineNumber: false
+      });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('tab replace', () => {
+      hexo.config.prismjs.tab_replace = '  ';
+
+      const code = [
+        'if (tired && night){',
+        '\tsleep();',
+        '}'
+      ].join('\n');
+
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = prism(code, {
+        lang: 'js',
+        tab: '  '
+      });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('title', () => {
+      const data = {
+        content: [
+          '``` js Hello world',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = prism(code, {
+        lang: 'js',
+        caption: '<span>Hello world</span>'
+      });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
   });
 });

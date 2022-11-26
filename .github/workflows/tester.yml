@@ -1,0 +1,52 @@
+name: Tester
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  tester:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: ['14.x', '16.x', '18.x']
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install Dependencies
+        run: npm install
+      - name: Test
+        run: npm test -- --no-parallel
+        env:
+          CI: true
+  coverage:
+    permissions:
+      checks: write  # for coverallsapp/github-action to create new checks
+      contents: read  # for actions/checkout to fetch code
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: ['14.x']
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install Dependencies
+        run: npm install
+      - name: Coverage
+        run: npm run test-cov
+        env:
+          CI: true
+      - name: Coveralls
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.github_token }}

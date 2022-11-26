@@ -1,32 +1,21 @@
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
+'use strict';
 
 describe('Locals', () => {
-  var Locals = require('../../../lib/hexo/locals');
-  var locals = new Locals();
+  const Locals = require('../../../lib/hexo/locals');
+  const locals = new Locals();
 
   it('get() - name must be a string', () => {
-    var errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'name must be a string!');
-    });
-
-    try {
-      locals.get();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => locals.get(), 'name must be a string!');
   });
 
   it('set() - function', () => {
     locals.set('foo', () => 'foo');
 
     // cache should be clear after new data is set
-    should.not.exist(locals.cache.foo);
+    locals.cache.has('foo').should.be.false;
     locals.get('foo').should.eql('foo');
     // cache should be saved once it's get
-    locals.cache.foo.should.eql('foo');
+    locals.cache.get('foo').should.eql('foo');
   });
 
   it('set() - not function', () => {
@@ -35,31 +24,11 @@ describe('Locals', () => {
   });
 
   it('set() - name must be a string', () => {
-    var errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'name must be a string!');
-    });
-
-    try {
-      locals.set();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => locals.set(), 'name must be a string!');
   });
 
   it('set() - value is required', () => {
-    var errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'value is required!');
-    });
-
-    try {
-      locals.set('test');
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => locals.set('test'), 'value is required!');
   });
 
   it('remove()', () => {
@@ -68,25 +37,15 @@ describe('Locals', () => {
     locals.remove('foo');
 
     should.not.exist(locals.getters.foo);
-    should.not.exist(locals.cache.foo);
+    locals.cache.has('foo').should.be.false;
   });
 
   it('remove() - name must be a string', () => {
-    var errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'name must be a string!');
-    });
-
-    try {
-      locals.remove();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => locals.remove(), 'name must be a string!');
   });
 
   it('toObject()', () => {
-    var locals = new Locals();
+    const locals = new Locals();
 
     locals.set('foo', 'foo');
     locals.set('bar', 'bar');
@@ -99,6 +58,6 @@ describe('Locals', () => {
     locals.get('foo');
     locals.invalidate();
 
-    should.not.exist(locals.cache.foo);
+    locals.cache.has('foo').should.be.false;
   });
 });

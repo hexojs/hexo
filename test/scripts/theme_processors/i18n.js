@@ -1,76 +1,78 @@
-var should = require('chai').should(); // eslint-disable-line
-var pathFn = require('path');
-var fs = require('hexo-fs');
-var Promise = require('bluebird');
+'use strict';
+
+const { join } = require('path');
+const { mkdirs, rmdir, unlink, writeFile } = require('hexo-fs');
+const Promise = require('bluebird');
 
 describe('i18n', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'config_test'), {silent: true});
-  var processor = require('../../../lib/theme/processors/i18n');
-  var process = Promise.method(processor.process.bind(hexo));
-  var themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
+  const processor = require('../../../lib/theme/processors/i18n');
+  const process = Promise.method(processor.process.bind(hexo));
+  const themeDir = join(hexo.base_dir, 'themes', 'test');
 
   function newFile(options) {
-    var path = options.path;
+    const { path } = options;
 
-    options.params = {
-      path
-    };
+    options.params = { path };
 
     options.path = 'languages/' + path;
-    options.source = pathFn.join(themeDir, options.path);
+    options.source = join(themeDir, options.path);
 
     return new hexo.theme.File(options);
   }
 
-  before(() => Promise.all([
-    fs.mkdirs(themeDir),
-    fs.writeFile(hexo.config_path, 'theme: test')
-  ]).then(() => hexo.init()));
+  before(async () => {
+    await Promise.all([
+      mkdirs(themeDir),
+      writeFile(hexo.config_path, 'theme: test')
+    ]);
+    hexo.init();
+  });
 
-  after(() => fs.rmdir(hexo.base_dir));
+  after(() => rmdir(hexo.base_dir));
 
   it('pattern', () => {
-    var pattern = processor.pattern;
+    const pattern = processor.pattern;
 
     pattern.match('languages/default.yml').should.be.ok;
     pattern.match('languages/zh-TW.yml').should.be.ok;
     should.not.exist(pattern.match('default.yml'));
   });
 
-  it('type: create', () => {
-    var body = [
+  it('type: create', async () => {
+    const body = [
       'ok: OK',
       'index:',
       '  title: Home'
     ].join('\n');
 
-    var file = newFile({
+    const file = newFile({
       path: 'en.yml',
       type: 'create'
     });
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      var __ = hexo.theme.i18n.__('en');
+    await writeFile(file.source, body);
+    await process(file);
+    const __ = hexo.theme.i18n.__('en');
 
-      __('ok').should.eql('OK');
-      __('index.title').should.eql('Home');
-    }).finally(() => fs.unlink(file.source));
+    __('ok').should.eql('OK');
+    __('index.title').should.eql('Home');
+    unlink(file.source);
   });
 
-  it('type: delete', () => {
+  it('type: delete', async () => {
     hexo.theme.i18n.set('en', {
       foo: 'foo',
       bar: 'bar'
     });
 
-    var file = newFile({
+    const file = newFile({
       path: 'en.yml',
       type: 'delete'
     });
 
-    return process(file).then(() => {
-      hexo.theme.i18n.get('en').should.eql({});
-    });
+    await process(file);
+    hexo.theme.i18n.get('en').should.eql({});
   });
 });

@@ -1,56 +1,59 @@
-var should = require('chai').should(); // eslint-disable-line
-var pathFn = require('path');
-var fs = require('hexo-fs');
-var Promise = require('bluebird');
+'use strict';
+
+const { join } = require('path');
+const { mkdirs, rmdir, writeFile } = require('hexo-fs');
 
 describe('Theme', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'theme_test'), {silent: true});
-  var themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(join(__dirname, 'theme_test'), {silent: true});
+  const themeDir = join(hexo.base_dir, 'themes', 'test');
 
-  before(() => Promise.all([
-    fs.mkdirs(themeDir),
-    fs.writeFile(hexo.config_path, 'theme: test')
-  ]).then(() => hexo.init()));
+  before(async () => {
+    await Promise.all([
+      mkdirs(themeDir),
+      writeFile(hexo.config_path, 'theme: test')
+    ]);
+    hexo.init();
+  });
 
-  after(() => fs.rmdir(hexo.base_dir));
+  after(() => rmdir(hexo.base_dir));
 
   it('getView()', () => {
-    hexo.theme.setView('test.swig', '');
+    hexo.theme.setView('test.njk', '');
 
     // With extension name
-    hexo.theme.getView('test.swig').should.have.property('path', 'test.swig');
+    hexo.theme.getView('test.njk').should.have.property('path', 'test.njk');
 
     // Without extension name
-    hexo.theme.getView('test').should.have.property('path', 'test.swig');
+    hexo.theme.getView('test').should.have.property('path', 'test.njk');
 
     // not exist
-    should.not.exist(hexo.theme.getView('abc.swig'));
+    should.not.exist(hexo.theme.getView('abc.njk'));
 
-    hexo.theme.removeView('test.swig');
+    hexo.theme.removeView('test.njk');
   });
 
   it('getView() - escape backslashes', () => {
-    hexo.theme.setView('foo/bar.swig', '');
+    hexo.theme.setView('foo/bar.njk', '');
 
-    hexo.theme.getView('foo\\bar.swig').should.have.property('path', 'foo/bar.swig');
+    hexo.theme.getView('foo\\bar.njk').should.have.property('path', 'foo/bar.njk');
 
-    hexo.theme.removeView('foo/bar.swig');
+    hexo.theme.removeView('foo/bar.njk');
   });
 
   it('setView()', () => {
-    hexo.theme.setView('test.swig', '');
+    hexo.theme.setView('test.njk', '');
 
-    var view = hexo.theme.getView('test.swig');
-    view.path.should.eql('test.swig');
+    const view = hexo.theme.getView('test.njk');
+    view.path.should.eql('test.njk');
 
-    hexo.theme.removeView('test.swig');
+    hexo.theme.removeView('test.njk');
   });
 
   it('removeView()', () => {
-    hexo.theme.setView('test.swig', '');
-    hexo.theme.removeView('test.swig');
+    hexo.theme.setView('test.njk', '');
+    hexo.theme.removeView('test.njk');
 
-    should.not.exist(hexo.theme.getView('test.swig'));
+    should.not.exist(hexo.theme.getView('test.njk'));
   });
 });

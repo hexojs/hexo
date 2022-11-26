@@ -1,18 +1,18 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('Excerpt', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var excerpt = require('../../../lib/plugins/filter/after_post_render/excerpt').bind(hexo);
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const excerpt = require('../../../lib/plugins/filter/after_post_render/excerpt').bind(hexo);
 
   it('without <!-- more -->', () => {
-    var content = [
+    const content = [
       'foo',
       'bar',
       'baz'
     ].join('\n');
 
-    var data = {
+    const data = {
       content
     };
 
@@ -23,50 +23,24 @@ describe('Excerpt', () => {
   });
 
   it('with <!-- more -->', () => {
+    const _moreCases = [
+      '<!-- more -->',
+      '<!-- more-->',
+      '<!--more -->',
+      '<!--more-->'
+    ];
 
-    _moreCases().forEach(_test);
-
-    function _moreCases() {
-      var template = '<!--{{lead}}more{{tail}}-->';
-      // see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp#Special_characters_meaning_in_regular_expressions
-      var spaces = ' \f\n\r\t\v\u00a0\u1680\u180e\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200a\u2028\u2029\u202f\u205f\u3000\ufeff';
-      var cases = [];
-      var more;
-      var lead;
-      var tail;
-      var s;
-      var e;
-
-      for (var i = 0; i < spaces.length; ++i) {
-        lead = spaces[i];
-        for (var k = 0; k < spaces.length; ++k) {
-          tail = spaces[k];
-          s = '';
-          for (var m = 0; m < 3; ++m) {
-            e = '';
-            for (var n = 0; n < 3; ++n) {
-              more = template.replace('{{lead}}', s).replace('{{tail}}', e);
-              cases.push(more);
-              e += tail;
-            }
-
-            s += lead;
-          }
-        }
-      }
-
-      return cases;
-    }
+    _moreCases.forEach(moreCase => _test(moreCase));
 
     function _test(more) {
-      var content = [
+      const content = [
         'foo',
         'bar',
         more,
         'baz'
       ].join('\n');
 
-      var data = {
+      const data = {
         content
       };
 
@@ -75,7 +49,7 @@ describe('Excerpt', () => {
       data.content.should.eql([
         'foo',
         'bar',
-        '<a id="more"></a>',
+        '<span id="more"></span>',
         'baz'
       ].join('\n'));
 
@@ -91,7 +65,7 @@ describe('Excerpt', () => {
   });
 
   it('multiple <!-- more -->', () => {
-    var content = [
+    const content = [
       'foo',
       '<!-- more -->',
       'bar',
@@ -99,7 +73,7 @@ describe('Excerpt', () => {
       'baz'
     ].join('\n');
 
-    var data = {
+    const data = {
       content
     };
 
@@ -107,7 +81,7 @@ describe('Excerpt', () => {
 
     data.content.should.eql([
       'foo',
-      '<a id="more"></a>',
+      '<span id="more"></span>',
       'bar',
       '<!-- more -->',
       'baz'
@@ -121,6 +95,37 @@ describe('Excerpt', () => {
       'bar',
       '<!-- more -->',
       'baz'
+    ].join('\n'));
+  });
+
+  it('skip processing if post/page.excerpt is present in the front-matter', () => {
+    const content = [
+      'foo',
+      '<!-- more -->',
+      'bar'
+    ].join('\n');
+
+    const data = {
+      content,
+      excerpt: 'baz'
+    };
+
+    excerpt(data);
+
+    data.content.should.eql([
+      'foo',
+      '<!-- more -->',
+      'bar'
+    ].join('\n'));
+
+    data.excerpt.should.eql([
+      'baz'
+    ].join('\n'));
+
+    data.more.should.eql([
+      'foo',
+      '<!-- more -->',
+      'bar'
     ].join('\n'));
   });
 });

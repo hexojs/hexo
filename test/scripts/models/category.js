@@ -1,114 +1,160 @@
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
-var Promise = require('bluebird');
+'use strict';
+
+const { deepMerge, full_url_for } = require('hexo-util');
 
 describe('Category', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var Category = hexo.model('Category');
-  var Post = hexo.model('Post');
-  var PostCategory = hexo.model('PostCategory');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const Category = hexo.model('Category');
+  const Post = hexo.model('Post');
+  const PostCategory = hexo.model('PostCategory');
+  const defaults = require('../../../lib/hexo/default_config');
 
   before(() => hexo.init());
 
-  it('name - required', () => {
-    var errorCallback = sinon.spy(err => {
-      err.should.have.property('message', '`name` is required!');
-    });
-
-    return Category.insert({}).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
-    });
+  beforeEach(() => {
+    hexo.config = deepMerge({}, defaults);
   });
 
-  it.skip('parent - reference');
+  it('name - required', async () => {
+    try {
+      await Category.insert({});
+    } catch (err) {
+      err.message.should.eql('`name` is required!');
+    }
+  });
 
-  it('slug - virtual', () => Category.insert({
-    name: 'foo'
-  }).then(data => {
+  // it('parent - reference'); missing-unit-test
+
+  it('slug - virtual', async () => {
+    const data = await Category.insert({
+      name: 'foo'
+    });
     data.slug.should.eql('foo');
-    return Category.removeById(data._id);
-  }));
 
-  it('slug - category_map', () => {
+    Category.removeById(data._id);
+  });
+
+  it('slug - category_map', async () => {
     hexo.config.category_map = {
       test: 'wat'
     };
 
-    return Category.insert({
+    const data = await Category.insert({
       name: 'test'
-    }).then(data => {
-      data.slug.should.eql('wat');
-      hexo.config.category_map = {};
-      return Category.removeById(data._id);
     });
+    data.slug.should.eql('wat');
+
+    Category.removeById(data._id);
   });
 
-  it('slug - filename_case: 0', () => Category.insert({
-    name: 'WahAHa'
-  }).then(data => {
+  it('slug - filename_case: 0', async () => {
+    const data = await Category.insert({
+      name: 'WahAHa'
+    });
     data.slug.should.eql('WahAHa');
-    return Category.removeById(data._id);
-  }));
 
-  it('slug - filename_case: 1', () => {
+    Category.removeById(data._id);
+  });
+
+  it('slug - filename_case: 1', async () => {
     hexo.config.filename_case = 1;
 
-    return Category.insert({
+    const data = await Category.insert({
       name: 'WahAHa'
-    }).then(data => {
-      data.slug.should.eql('wahaha');
-      hexo.config.filename_case = 0;
-      return Category.removeById(data._id);
     });
+    data.slug.should.eql('wahaha');
+
+    Category.removeById(data._id);
   });
 
-  it('slug - filename_case: 2', () => {
+  it('slug - filename_case: 2', async () => {
     hexo.config.filename_case = 2;
 
-    return Category.insert({
+    const data = await Category.insert({
       name: 'WahAHa'
-    }).then(data => {
-      data.slug.should.eql('WAHAHA');
-      hexo.config.filename_case = 0;
-      return Category.removeById(data._id);
     });
+
+    data.slug.should.eql('WAHAHA');
+
+    Category.removeById(data._id);
   });
 
-  it('slug - parent', () => Category.insert({
-    name: 'parent'
-  }).then(cat => Category.insert({
-    name: 'child',
-    parent: cat._id
-  })).then(cat => {
+  it('slug - parent', async () => {
+    let cat = await Category.insert({
+      name: 'parent'
+    });
+    cat = await Category.insert({
+      name: 'child',
+      parent: cat._id
+    });
     cat.slug.should.eql('parent/child');
 
-    return Promise.all([
+    await Promise.all([
       Category.removeById(cat._id),
       Category.removeById(cat.parent)
     ]);
-  }));
+  });
 
-  it('path - virtual', () => Category.insert({
-    name: 'foo'
-  }).then(data => {
+  it('path - virtual', async () => {
+    const data = await Category.insert({
+      name: 'foo'
+    });
     data.path.should.eql(hexo.config.category_dir + '/' + data.slug + '/');
-    return Category.removeById(data._id);
-  }));
 
-  it('permalink - virtual', () => Category.insert({
-    name: 'foo'
-  }).then(data => {
+    Category.removeById(data._id);
+  });
+
+  it('permalink - virtual', async () => {
+    const data = await Category.insert({
+      name: 'foo'
+    });
     data.permalink.should.eql(hexo.config.url + '/' + data.path);
-    return Category.removeById(data._id);
-  }));
 
-  it('posts - virtual', () => Post.insert([
-    {source: 'foo.md', slug: 'foo'},
-    {source: 'bar.md', slug: 'bar'},
-    {source: 'baz.md', slug: 'baz'}
-  ]).each(post => post.setCategories(['foo'])).then(posts => {
-    var cat = Category.findOne({name: 'foo'});
+    Category.removeById(data._id);
+  });
+
+  it('permalink - trailing_index', async () => {
+    hexo.config.pretty_urls.trailing_index = false;
+
+    const data = await Category.insert({
+      name: 'foo'
+    });
+    data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/index\.html$/, ''));
+
+    Category.removeById(data._id);
+  });
+
+  it('permalink - trailing_html', async () => {
+    hexo.config.pretty_urls.trailing_html = false;
+    const data = await Category.insert({
+      name: 'foo'
+    });
+    data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/\.html$/, ''));
+
+    Category.removeById(data._id);
+  });
+
+  it('permalink - should be encoded', async () => {
+    hexo.config.url = 'http://fôo.com';
+    const data = await Category.insert({
+      name: '字'
+    });
+    data.permalink.should.eql(full_url_for.call(hexo, data.path));
+
+    Category.removeById(data._id);
+  });
+
+  it('posts - virtual', async () => {
+    const posts = await Post.insert([
+      {source: 'foo.md', slug: 'foo'},
+      {source: 'bar.md', slug: 'bar'},
+      {source: 'baz.md', slug: 'baz'}
+    ]);
+
+    await Promise.all(posts.map(post => post.setCategories(['foo'])));
+
+    const cat = await Category.findOne({name: 'foo'});
 
     function mapper(post) {
       return post._id;
@@ -116,17 +162,22 @@ describe('Category', () => {
 
     hexo.locals.invalidate();
     cat.posts.map(mapper).should.eql(posts.map(mapper));
-    cat.length.should.eql(posts.length);
+    cat.should.have.lengthOf(posts.length);
 
-    return cat.remove().thenReturn(posts);
-  }).map(post => post.remove()));
+    await cat.remove();
+    await Promise.all(posts.map(post => post.remove()));
+  });
 
-  it('posts - draft', () => Post.insert([
-    {source: 'foo.md', slug: 'foo', published: true},
-    {source: 'bar.md', slug: 'bar', published: false},
-    {source: 'baz.md', slug: 'baz', published: true}
-  ]).each(post => post.setCategories(['foo'])).then(posts => {
-    var cat = Category.findOne({name: 'foo'});
+  it('posts - draft', async () => {
+    const posts = await Post.insert([
+      {source: 'foo.md', slug: 'foo', published: true},
+      {source: 'bar.md', slug: 'bar', published: false},
+      {source: 'baz.md', slug: 'baz', published: true}
+    ]);
+
+    await Promise.all(posts.map(post => post.setCategories(['foo'])));
+
+    let cat = Category.findOne({name: 'foo'});
 
     function mapper(post) {
       return post._id;
@@ -136,97 +187,101 @@ describe('Category', () => {
     hexo.locals.invalidate();
     cat.posts.eq(0)._id.should.eql(posts[0]._id);
     cat.posts.eq(1)._id.should.eql(posts[2]._id);
-    cat.length.should.eql(2);
+    cat.should.have.lengthOf(2);
 
     // draft on
     hexo.config.render_drafts = true;
     hexo.locals.invalidate();
     cat = Category.findOne({name: 'foo'});
     cat.posts.map(mapper).should.eql(posts.map(mapper));
-    cat.length.should.eql(posts.length);
+    cat.should.have.lengthOf(posts.length);
     hexo.config.render_drafts = false;
 
-    return cat.remove().thenReturn(posts);
-  }).map(post => post.remove()));
+    await cat.remove();
+    await Promise.all(posts.map(post => post.remove()));
 
-  it('posts - future', () => {
-    var now = Date.now();
+  });
 
-    return Post.insert([
+  it('posts - future', async () => {
+    const now = Date.now();
+
+    const posts = await Post.insert([
       {source: 'foo.md', slug: 'foo', date: now - 3600},
       {source: 'bar.md', slug: 'bar', date: now + 3600},
       {source: 'baz.md', slug: 'baz', date: now}
-    ]).each(post => post.setCategories(['foo'])).then(posts => {
-      var cat = Category.findOne({name: 'foo'});
+    ]);
 
-      function mapper(post) {
-        return post._id;
-      }
+    await Promise.all(posts.map(post => post.setCategories(['foo'])));
 
-      // future on
-      hexo.config.future = true;
-      hexo.locals.invalidate();
-      cat.posts.map(mapper).should.eql(posts.map(mapper));
-      cat.length.should.eql(posts.length);
+    let cat = Category.findOne({name: 'foo'});
 
-      // future off
-      hexo.config.future = false;
-      hexo.locals.invalidate();
-      cat = Category.findOne({name: 'foo'});
-      cat.posts.eq(0)._id.should.eql(posts[0]._id);
-      cat.posts.eq(1)._id.should.eql(posts[2]._id);
-      cat.length.should.eql(2);
+    function mapper(post) {
+      return post._id;
+    }
 
-      return cat.remove().thenReturn(posts);
-    }).map(post => post.remove());
+    // future on
+    hexo.config.future = true;
+    hexo.locals.invalidate();
+    cat.posts.map(mapper).should.eql(posts.map(mapper));
+    cat.should.have.lengthOf(posts.length);
+
+    // future off
+    hexo.config.future = false;
+    hexo.locals.invalidate();
+    cat = Category.findOne({name: 'foo'});
+    cat.posts.eq(0)._id.should.eql(posts[0]._id);
+    cat.posts.eq(1)._id.should.eql(posts[2]._id);
+    cat.should.have.lengthOf(2);
+
+    await cat.remove();
+    await Promise.all(posts.map(post => post.remove()));
+
   });
 
-  it('check whether a category exists', () => {
-    var errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'Category `foo` has already existed!');
-    });
-
-    return Category.insert({
+  it('check whether a category exists', async () => {
+    const data = await Category.insert({
       name: 'foo'
-    }).then(data => {
-      Category.insert({
-        name: 'foo'
-      }).catch(errorCallback);
-
-      return Category.removeById(data._id);
-    }).finally(() => {
-      errorCallback.calledOnce.should.be.true;
     });
+
+    try {
+      await Category.insert({
+        name: 'foo'
+      });
+    } catch (err) {
+      err.message.should.eql('Category `foo` has already existed!');
+    }
+
+    Category.removeById(data._id);
   });
 
-  it('check whether a category exists (with parent)', () => Category.insert({
-    name: 'foo'
-  }).then(data => Category.insert({
-    name: 'foo',
-    parent: data._id
-  })).then(data => Promise.all([
-    Category.removeById(data._id),
-    Category.removeById(data.parent)
-  ])));
+  it('check whether a category exists (with parent)', async () => {
+    let data = await Category.insert({
+      name: 'foo'
+    });
+    data = await Category.insert({
+      name: 'foo',
+      parent: data._id
+    });
+    await Promise.all([
+      Category.removeById(data._id),
+      Category.removeById(data.parent)
+    ]);
+  });
 
-  it('remove PostCategory references when a category is removed', () => {
-    var cat;
-
-    return Post.insert([
+  it('remove PostCategory references when a category is removed', async () => {
+    const posts = await Post.insert([
       {source: 'foo.md', slug: 'foo'},
       {source: 'bar.md', slug: 'bar'},
       {source: 'baz.md', slug: 'baz'}
-    ]).then(posts => // One item a time
-    Promise.map(
-      posts,
-      post => post.setCategories(['foo']).thenReturn(post),
-      {concurrency: 1}
-    )).then(posts => {
-      cat = Category.findOne({name: 'foo'});
-      return Category.removeById(cat._id).thenReturn(posts);
-    }).then(posts => {
-      PostCategory.find({category_id: cat._id}).length.should.eql(0);
-      return posts;
-    }).map(post => Post.removeById(post._id));
+    ]);
+
+    await Promise.all(posts.map(post => post.setCategories(['foo'])));
+
+    const cat = Category.findOne({name: 'foo'});
+    await Category.removeById(cat._id);
+
+    PostCategory.find({category_id: cat._id}).should.have.lengthOf(0);
+
+    await Promise.all(posts.map(post => post.remove()));
   });
 });

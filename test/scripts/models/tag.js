@@ -1,99 +1,142 @@
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
-var Promise = require('bluebird');
+'use strict';
+
+const { deepMerge, full_url_for } = require('hexo-util');
 
 describe('Tag', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var Tag = hexo.model('Tag');
-  var Post = hexo.model('Post');
-  var PostTag = hexo.model('PostTag');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const Tag = hexo.model('Tag');
+  const Post = hexo.model('Post');
+  const PostTag = hexo.model('PostTag');
+  const defaults = require('../../../lib/hexo/default_config');
 
   before(() => hexo.init());
 
-  it('name - required', () => {
-    var errorCallback = sinon.spy(err => {
-      err.should.have.property('message', '`name` is required!');
-    });
+  beforeEach(() => { hexo.config = deepMerge({}, defaults); });
 
-    return Tag.insert({}).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
-    });
+  it('name - required', async () => {
+    try {
+      await Tag.insert({});
+    } catch (err) {
+      err.message.should.be.eql('`name` is required!');
+    }
   });
 
-  it('slug - virtual', () => Tag.insert({
-    name: 'foo'
-  }).then(data => {
+  it('slug - virtual', async () => {
+    const data = await Tag.insert({
+      name: 'foo'
+    });
     data.slug.should.eql('foo');
-    return Tag.removeById(data._id);
-  }));
 
-  it('slug - tag_map', () => {
+    Tag.removeById(data._id);
+  });
+
+  it('slug - tag_map', async () => {
     hexo.config.tag_map = {
       test: 'wat'
     };
 
-    return Tag.insert({
+    const data = await Tag.insert({
       name: 'test'
-    }).then(data => {
-      data.slug.should.eql('wat');
-      hexo.config.tag_map = {};
-
-      return Tag.removeById(data._id);
     });
+    data.slug.should.eql('wat');
+    Tag.removeById(data._id);
   });
 
-  it('slug - filename_case: 0', () => Tag.insert({
-    name: 'WahAHa'
-  }).then(data => {
+  it('slug - filename_case: 0', async () => {
+    const data = await Tag.insert({
+      name: 'WahAHa'
+    });
     data.slug.should.eql('WahAHa');
-    return Tag.removeById(data._id);
-  }));
 
-  it('slug - filename_case: 1', () => {
+    Tag.removeById(data._id);
+  });
+
+  it('slug - filename_case: 1', async () => {
     hexo.config.filename_case = 1;
 
-    return Tag.insert({
+    const data = await Tag.insert({
       name: 'WahAHa'
-    }).then(data => {
-      data.slug.should.eql('wahaha');
-      hexo.config.filename_case = 0;
-      return Tag.removeById(data._id);
     });
+    data.slug.should.eql('wahaha');
+
+    Tag.removeById(data._id);
   });
 
-  it('slug - filename_case: 2', () => {
+  it('slug - filename_case: 2', async () => {
     hexo.config.filename_case = 2;
 
-    return Tag.insert({
+    const data = await Tag.insert({
       name: 'WahAHa'
-    }).then(data => {
-      data.slug.should.eql('WAHAHA');
-      hexo.config.filename_case = 0;
-      return Tag.removeById(data._id);
     });
+
+    data.slug.should.eql('WAHAHA');
+
+    Tag.removeById(data._id);
   });
 
-  it('path - virtual', () => Tag.insert({
-    name: 'foo'
-  }).then(data => {
+  it('path - virtual', async () => {
+    const data = await Tag.insert({
+      name: 'foo'
+    });
+
     data.path.should.eql(hexo.config.tag_dir + '/' + data.slug + '/');
-    return Tag.removeById(data._id);
-  }));
 
-  it('permalink - virtual', () => Tag.insert({
-    name: 'foo'
-  }).then(data => {
+    Tag.removeById(data._id);
+  });
+
+  it('permalink - virtual', async () => {
+    const data = await Tag.insert({
+      name: 'foo'
+    });
+
     data.permalink.should.eql(hexo.config.url + '/' + data.path);
-    return Tag.removeById(data._id);
-  }));
 
-  it('posts - virtual', () => Post.insert([
-    {source: 'foo.md', slug: 'foo'},
-    {source: 'bar.md', slug: 'bar'},
-    {source: 'baz.md', slug: 'baz'}
-  ]).each(post => post.setTags(['foo'])).then(posts => {
-    var tag = Tag.findOne({name: 'foo'});
+    Tag.removeById(data._id);
+  });
+
+  it('permalink - trailing_index', async () => {
+    hexo.config.pretty_urls.trailing_index = false;
+    const data = await Tag.insert({
+      name: 'foo'
+    });
+
+    data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/index\.html$/, ''));
+
+    Tag.removeById(data._id);
+  });
+
+  it('permalink - trailing_html', async () => {
+    hexo.config.pretty_urls.trailing_html = false;
+    const data = await Tag.insert({
+      name: 'foo'
+    });
+
+    data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/\.html$/, ''));
+
+    Tag.removeById(data._id);
+  });
+
+  it('permalink - should be encoded', async () => {
+    hexo.config.url = 'http://fôo.com';
+    const data = await Tag.insert({
+      name: '字'
+    });
+
+    data.permalink.should.eql(full_url_for.call(hexo, data.path));
+
+    Tag.removeById(data._id);
+  });
+
+  it('posts - virtual', async () => {
+    const posts = await Post.insert([
+      {source: 'foo.md', slug: 'foo'},
+      {source: 'bar.md', slug: 'bar'},
+      {source: 'baz.md', slug: 'baz'}
+    ]);
+    await Promise.all(posts.map(post => post.setTags(['foo'])));
+
+    const tag = Tag.findOne({name: 'foo'});
 
     function mapper(post) {
       return post._id;
@@ -101,17 +144,21 @@ describe('Tag', () => {
 
     hexo.locals.invalidate();
     tag.posts.map(mapper).should.eql(posts.map(mapper));
-    tag.length.should.eql(posts.length);
+    tag.should.have.lengthOf(posts.length);
 
-    return tag.remove().thenReturn(posts);
-  }).map(post => post.remove()));
+    await tag.remove();
+    await Promise.all(posts.map(post => post.remove()));
+  });
 
-  it('posts - draft', () => Post.insert([
-    {source: 'foo.md', slug: 'foo', published: true},
-    {source: 'bar.md', slug: 'bar', published: false},
-    {source: 'baz.md', slug: 'baz', published: true}
-  ]).each(post => post.setTags(['foo'])).then(posts => {
-    var tag = Tag.findOne({name: 'foo'});
+  it('posts - draft', async () => {
+    const posts = await Post.insert([
+      {source: 'foo.md', slug: 'foo', published: true},
+      {source: 'bar.md', slug: 'bar', published: false},
+      {source: 'baz.md', slug: 'baz', published: true}
+    ]);
+    await Promise.all(posts.map(post => post.setTags(['foo'])));
+
+    let tag = Tag.findOne({name: 'foo'});
 
     function mapper(post) {
       return post._id;
@@ -121,83 +168,83 @@ describe('Tag', () => {
     hexo.locals.invalidate();
     tag.posts.eq(0)._id.should.eql(posts[0]._id);
     tag.posts.eq(1)._id.should.eql(posts[2]._id);
-    tag.length.should.eql(2);
+    tag.should.have.lengthOf(2);
 
     // draft on
     hexo.config.render_drafts = true;
     tag = Tag.findOne({name: 'foo'});
     hexo.locals.invalidate();
     tag.posts.map(mapper).should.eql(posts.map(mapper));
-    tag.length.should.eql(posts.length);
+    tag.should.have.lengthOf(posts.length);
     hexo.config.render_drafts = false;
 
-    return tag.remove().thenReturn(posts);
-  }).map(post => post.remove()));
+    await tag.remove();
+    await Promise.all(posts.map(post => post.remove()));
+  });
 
-  it('posts - future', () => {
-    var now = Date.now();
+  it('posts - future', async () => {
+    const now = Date.now();
 
-    return Post.insert([
+    const posts = await Post.insert([
       {source: 'foo.md', slug: 'foo', date: now - 3600},
       {source: 'bar.md', slug: 'bar', date: now + 3600},
       {source: 'baz.md', slug: 'baz', date: now}
-    ]).each(post => post.setTags(['foo'])).then(posts => {
-      var tag = Tag.findOne({name: 'foo'});
+    ]);
+    await Promise.all(posts.map(post => post.setTags(['foo'])));
 
-      function mapper(post) {
-        return post._id;
-      }
+    let tag = Tag.findOne({name: 'foo'});
 
-      // future on
-      hexo.config.future = true;
-      hexo.locals.invalidate();
-      tag.posts.map(mapper).should.eql(posts.map(mapper));
-      tag.length.should.eql(posts.length);
+    function mapper(post) {
+      return post._id;
+    }
 
-      // future off
-      hexo.config.future = false;
-      hexo.locals.invalidate();
-      tag = Tag.findOne({name: 'foo'});
-      tag.posts.eq(0)._id.should.eql(posts[0]._id);
-      tag.posts.eq(1)._id.should.eql(posts[2]._id);
-      tag.length.should.eql(2);
+    // future on
+    hexo.config.future = true;
+    hexo.locals.invalidate();
+    tag.posts.map(mapper).should.eql(posts.map(mapper));
+    tag.should.have.lengthOf(posts.length);
 
-      return tag.remove().thenReturn(posts);
-    }).map(post => post.remove());
+    // future off
+    hexo.config.future = false;
+    hexo.locals.invalidate();
+    tag = Tag.findOne({name: 'foo'});
+    tag.posts.eq(0)._id.should.eql(posts[0]._id);
+    tag.posts.eq(1)._id.should.eql(posts[2]._id);
+    tag.should.have.lengthOf(2);
+
+    await tag.remove();
+    await Promise.all(posts.map(post => post.remove()));
   });
 
-  it('check whether a tag exists', () => {
-    var errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'Tag `foo` has already existed!');
-    });
-
-    return Tag.insert({
+  it('check whether a tag exists', async () => {
+    let data = await Tag.insert({
       name: 'foo'
-    }).then(data => {
-      Tag.insert({
-        name: 'foo'
-      }).catch(errorCallback);
-
-      return Tag.removeById(data._id);
-    }).finally(() => {
-      errorCallback.calledOnce.should.be.true;
     });
+
+    try {
+      data = await Tag.insert({
+        name: 'foo'
+      });
+    } catch (err) {
+      err.message.should.eql('Tag `foo` has already existed!');
+    }
+
+    Tag.removeById(data._id);
   });
 
-  it('remove PostTag references when a tag is removed', () => {
-    var tag;
-
-    return Post.insert([
+  it('remove PostTag references when a tag is removed', async () => {
+    const posts = await Post.insert([
       {source: 'foo.md', slug: 'foo'},
       {source: 'bar.md', slug: 'bar'},
       {source: 'baz.md', slug: 'baz'}
-    ]).then(posts => // One item a time
-    Promise.map(posts, post => post.setTags(['foo']).thenReturn(post), {concurrency: 1})).then(posts => {
-      tag = Tag.findOne({name: 'foo'});
-      return Tag.removeById(tag._id).thenReturn(posts);
-    }).then(posts => {
-      PostTag.find({tag_id: tag._id}).length.should.eql(0);
-      return posts;
-    }).map(post => Post.removeById(post._id));
+    ]);
+    await Promise.all(posts.map(post => post.setTags(['foo'])));
+
+    const tag = Tag.findOne({name: 'foo'});
+    await Tag.removeById(tag._id);
+
+    PostTag.find({tag_id: tag._id}).should.have.lengthOf(0);
+
+    await Promise.all(posts.map(post => Post.removeById(post._id)));
   });
 });

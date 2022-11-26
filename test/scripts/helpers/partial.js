@@ -1,20 +1,21 @@
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
-var pathFn = require('path');
-var fs = require('hexo-fs');
-var Promise = require('bluebird');
+'use strict';
+
+const pathFn = require('path');
+const fs = require('hexo-fs');
+const Promise = require('bluebird');
 
 describe('partial', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'partial_test'), {silent: true});
-  var themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
-  var viewDir = pathFn.join(themeDir, 'layout') + pathFn.sep;
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(pathFn.join(__dirname, 'partial_test'), {silent: true});
+  const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
+  const viewDir = pathFn.join(themeDir, 'layout') + pathFn.sep;
+  const viewName = 'article.njk';
 
-  var ctx = {
+  const ctx = {
     site: hexo.locals,
     config: hexo.config,
     view_dir: viewDir,
-    filename: pathFn.join(viewDir, 'post', 'article.swig'),
+    filename: pathFn.join(viewDir, 'post', viewName),
     foo: 'foo',
     cache: true
   };
@@ -23,14 +24,16 @@ describe('partial', () => {
 
   hexo.env.init = true;
 
-  var partial = require('../../../lib/plugins/helper/partial')(hexo).bind(ctx);
+  const partial = require('../../../lib/plugins/helper/partial')(hexo).bind(ctx);
 
-  before(() => Promise.all([
-    fs.mkdirs(themeDir),
-    fs.writeFile(hexo.config_path, 'theme: test')
-  ]).then(() => hexo.init()).then(() => {
-    hexo.theme.setView('widget/tag.swig', 'tag widget');
-  }));
+  before(async () => {
+    await Promise.all([
+      fs.mkdirs(themeDir),
+      fs.writeFile(hexo.config_path, 'theme: test')
+    ]);
+    await hexo.init();
+    hexo.theme.setView('widget/tag.njk', 'tag widget');
+  });
 
   after(() => fs.rmdir(hexo.base_dir));
 
@@ -42,47 +45,43 @@ describe('partial', () => {
     partial('widget/tag').should.eql('tag widget');
 
     // not found
-    partial('foo').should.eql('');
+    should.throw(
+      () => partial('foo'),
+      `Partial foo does not exist. (in ${pathFn.join('post', viewName)})`
+    );
   });
 
   it('locals', () => {
-    hexo.theme.setView('test.swig', '{{ foo }}');
+    hexo.theme.setView('test.njk', '{{ foo }}');
 
     partial('test', {foo: 'bar'}).should.eql('bar');
   });
 
   it('cache', () => {
-    hexo.theme.setView('test.swig', '{{ foo }}');
+    hexo.theme.setView('test.njk', '{{ foo }}');
 
     partial('test', {foo: 'bar'}, {cache: true}).should.eql('bar');
     partial('test', {}, {cache: true}).should.eql('bar');
+
+    partial('test', {foo: 'baz'}, {cache: 'ash'}).should.eql('baz');
+    partial('test', {}, {cache: 'ash'}).should.eql('baz');
   });
 
   it('only', () => {
-    hexo.theme.setView('test.swig', '{{ foo }}{{ bar }}');
+    hexo.theme.setView('test.njk', '{{ foo }}{{ bar }}');
 
     partial('test', {bar: 'bar'}, {only: true}).should.eql('bar');
   });
 
   it('a partial in another partial', () => {
-    hexo.theme.setView('partial/a.swig', '{{ partial("b") }}');
-    hexo.theme.setView('partial/b.swig', '{{ partial("c") }}');
-    hexo.theme.setView('partial/c.swig', 'c');
+    hexo.theme.setView('partial/a.njk', '{{ partial("b") }}');
+    hexo.theme.setView('partial/b.njk', '{{ partial("c") }}');
+    hexo.theme.setView('partial/c.njk', 'c');
 
     partial('partial/a').should.eql('c');
   });
 
   it('name must be a string', () => {
-    var errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'name must be a string!');
-    });
-
-    try {
-      partial();
-    } catch (err) {
-      errorCallback(err);
-    }
-
-    errorCallback.calledOnce.should.be.true;
+    should.throw(() => partial(), 'name must be a string!');
   });
 });

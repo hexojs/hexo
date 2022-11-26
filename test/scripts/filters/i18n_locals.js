@@ -1,16 +1,24 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('i18n locals', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var i18nFilter = require('../../../lib/plugins/filter/template_locals/i18n').bind(hexo);
-  var theme = hexo.theme;
-  var i18n = theme.i18n;
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const i18nFilter = require('../../../lib/plugins/filter/template_locals/i18n').bind(hexo);
+  const theme = hexo.theme;
+  const i18n = theme.i18n;
 
   // Default language
-  hexo.config.language = 'en';
+  i18n.languages = ['en', 'default'];
 
   // Fixtures
+  i18n.set('de', {
+    Home: 'Zuhause'
+  });
+
+  i18n.set('default', {
+    Home: 'Default Home'
+  });
+
   i18n.set('en', {
     Home: 'Home'
   });
@@ -20,7 +28,7 @@ describe('i18n locals', () => {
   });
 
   it('page.lang set', () => {
-    var locals = {
+    const locals = {
       config: hexo.config,
       page: {
         lang: 'zh-tw'
@@ -33,7 +41,7 @@ describe('i18n locals', () => {
   });
 
   it('page.language set', () => {
-    var locals = {
+    const locals = {
       config: hexo.config,
       page: {
         language: 'zh-tw'
@@ -46,7 +54,7 @@ describe('i18n locals', () => {
   });
 
   it('detect by path (lang found)', () => {
-    var locals = {
+    const locals = {
       config: hexo.config,
       page: {},
       path: 'zh-tw/index.html'
@@ -60,7 +68,7 @@ describe('i18n locals', () => {
   });
 
   it('detect by path (lang not found)', () => {
-    var locals = {
+    const locals = {
       config: hexo.config,
       page: {},
       path: 'news/index.html'
@@ -74,7 +82,7 @@ describe('i18n locals', () => {
   });
 
   it('use config by default', () => {
-    var locals = {
+    const locals = {
       config: hexo.config,
       page: {},
       path: 'index.html'
@@ -88,10 +96,10 @@ describe('i18n locals', () => {
   });
 
   it('use config by default - with multiple languages, first language should be used', () => {
-    var oldConfig = hexo.config.language;
-    hexo.config.language = ['zh-tw', 'en'];
+    const oldConfig = i18n.languages;
+    i18n.languages = ['zh-tw', 'en', 'default'];
 
-    var locals = {
+    const locals = {
       config: hexo.config,
       page: {},
       path: 'index.html'
@@ -103,6 +111,66 @@ describe('i18n locals', () => {
     locals.page.canonical_path.should.eql('index.html');
     locals.__('Home').should.eql('首頁');
 
-    hexo.config.language = oldConfig;
+    i18n.languages = oldConfig;
+  });
+
+  it('use config by default - with no languages, default language should be used', () => {
+    const oldConfig = i18n.language;
+    i18n.languages = ['default'];
+
+    const locals = {
+      config: hexo.config,
+      page: {},
+      path: 'index.html'
+    };
+
+    i18nFilter(locals);
+
+    locals.page.lang.should.eql('default');
+    locals.page.canonical_path.should.eql('index.html');
+    locals.__('Home').should.eql('Default Home');
+
+    i18n.languages = oldConfig;
+  });
+
+  it('use config by default - with unknown language, default language should be used', () => {
+    const oldConfig = i18n.languages;
+    i18n.languages = ['fr', 'default'];
+
+    const locals = {
+      config: hexo.config,
+      page: {},
+      path: 'index.html'
+    };
+
+    i18nFilter(locals);
+
+    locals.page.lang.should.eql('fr');
+    locals.page.canonical_path.should.eql('index.html');
+    locals.__('Home').should.eql('Default Home');
+
+    i18n.languages = oldConfig;
+  });
+
+  it('use config by default - with no set language and no default file take first available', () => {
+    const oldConfig = i18n.languages;
+    const oldSet = i18n.get('default');
+    i18n.remove('default');
+    i18n.languages = ['default'];
+
+    const locals = {
+      config: hexo.config,
+      page: {},
+      path: 'index.html'
+    };
+
+    i18nFilter(locals);
+
+    locals.page.lang.should.eql('default');
+    locals.page.canonical_path.should.eql('index.html');
+    locals.__('Home').should.eql('Zuhause');
+
+    i18n.set('default', oldSet);
+    i18n.languages = oldConfig;
   });
 });

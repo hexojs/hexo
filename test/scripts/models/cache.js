@@ -1,18 +1,15 @@
-var should = require('chai').should(); // eslint-disable-line
-var sinon = require('sinon');
+'use strict';
 
 describe('Cache', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var Cache = hexo.model('Cache');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const Cache = hexo.model('Cache');
 
-  it('_id - required', () => {
-    var errorCallback = sinon.spy(err => {
-      err.should.have.property('message', 'ID is not defined');
-    });
-
-    return Cache.insert({}).catch(errorCallback).finally(() => {
-      errorCallback.calledOnce.should.be.true;
-    });
+  it('_id - required', async () => {
+    try {
+      await Cache.insert({});
+    } catch (err) {
+      err.message.should.eql('ID is not defined');
+    }
   });
 });

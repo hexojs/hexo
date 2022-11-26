@@ -1,11 +1,12 @@
-var should = require('chai').should(); // eslint-disable-line
-var Promise = require('bluebird');
+'use strict';
+
+const Promise = require('bluebird');
 
 describe('post', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname, {silent: true});
-  var Post = hexo.model('Post');
-  var generator = Promise.method(require('../../../lib/plugins/generator/post').bind(hexo));
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname, {silent: true});
+  const Post = hexo.model('Post');
+  const generator = Promise.method(require('../../../lib/plugins/generator/post').bind(hexo));
 
   hexo.config.permalink = ':title/';
 
@@ -16,10 +17,12 @@ describe('post', () => {
 
   before(() => hexo.init());
 
-  it('default layout', () => Post.insert({
-    source: 'foo',
-    slug: 'bar'
-  }).then(post => generator(locals()).then(data => {
+  it('default layout', async () => {
+    const post = await Post.insert({
+      source: 'foo',
+      slug: 'bar'
+    });
+    const data = await generator(locals());
     post.__post = true;
 
     data.should.eql([
@@ -30,39 +33,47 @@ describe('post', () => {
       }
     ]);
 
-    return post.remove();
-  })));
+    post.remove();
+  });
 
-  it('custom layout', () => Post.insert({
-    source: 'foo',
-    slug: 'bar',
-    layout: 'photo'
-  }).then(post => generator(locals()).then(data => {
+  it('custom layout', async () => {
+    const post = await Post.insert({
+      source: 'foo',
+      slug: 'bar',
+      layout: 'photo'
+    });
+    const data = await generator(locals());
     data[0].layout.should.eql(['photo', 'post', 'page', 'index']);
 
-    return post.remove();
-  })));
+    post.remove();
+  });
 
-  it('layout disabled', () => Post.insert({
-    source: 'foo',
-    slug: 'bar',
-    layout: false
-  }).then(post => generator(locals()).then(data => {
+  it('layout disabled', async () => {
+    const post = await Post.insert({
+      source: 'foo',
+      slug: 'bar',
+      layout: false
+    });
+    const data = await generator(locals());
     should.not.exist(data[0].layout);
 
-    return post.remove();
-  })));
+    post.remove();
+  });
 
-  it('prev/next post', () => Post.insert([
-    {source: 'foo', slug: 'foo', date: 1e8},
-    {source: 'bar', slug: 'bar', date: 1e8 + 1},
-    {source: 'baz', slug: 'baz', date: 1e8 - 1}
-  ]).then(posts => generator(locals()).then(data => {
+  it('prev/next post', async () => {
+    const posts = await Post.insert([
+      {source: 'foo', slug: 'foo', date: 1e8},
+      {source: 'bar', slug: 'bar', date: 1e8 + 1},
+      {source: 'baz', slug: 'baz', date: 1e8 - 1}
+    ]);
+    const data = await generator(locals());
     should.not.exist(data[0].data.prev);
     data[0].data.next._id.should.eq(posts[0]._id);
     data[1].data.prev._id.should.eq(posts[1]._id);
     data[1].data.next._id.should.eq(posts[2]._id);
     data[2].data.prev._id.should.eq(posts[0]._id);
     should.not.exist(data[2].data.next);
-  }).thenReturn(posts)).map(post => post.remove()));
+
+    await Promise.all(posts.map(post => post.remove()));
+  });
 });

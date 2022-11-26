@@ -1,12 +1,20 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('url_for', () => {
-  var ctx = {
-    config: {},
+  const ctx = {
+    config: { url: 'https://example.com' },
     relative_url: require('../../../lib/plugins/helper/relative_url')
   };
 
-  var urlFor = require('../../../lib/plugins/helper/url_for').bind(ctx);
+  const urlFor = require('../../../lib/plugins/helper/url_for').bind(ctx);
+
+  it('should encode path', () => {
+    ctx.config.root = '/';
+    urlFor('fôo.html').should.eql('/f%C3%B4o.html');
+
+    ctx.config.root = '/fôo/';
+    urlFor('bár.html').should.eql('/f%C3%B4o/b%C3%A1r.html');
+  });
 
   it('internal url (relative off)', () => {
     ctx.config.root = '/';
@@ -42,10 +50,24 @@ describe('url_for', () => {
     ctx.config.relative_link = false;
   });
 
+  it('internel url (pretty_urls.trailing_index disabled)', () => {
+    ctx.config.pretty_urls = { trailing_index: false };
+    ctx.path = '';
+    ctx.config.root = '/';
+    urlFor('index.html').should.eql('/');
+    urlFor('/index.html').should.eql('/');
+
+    ctx.config.root = '/blog/';
+    urlFor('index.html').should.eql('/blog/');
+    urlFor('/index.html').should.eql('/blog/');
+  });
+
   it('external url', () => {
     [
-      'http://hexo.io/',
-      '//google.com/'
+      'https://hexo.io/',
+      '//google.com/',
+      // 'index.html' in external link should not be removed
+      '//google.com/index.html'
     ].forEach(url => {
       urlFor(url).should.eql(url);
     });

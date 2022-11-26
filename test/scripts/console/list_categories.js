@@ -1,52 +1,49 @@
-var Promise = require('bluebird');
-var sinon = require('sinon');
-var expect = require('chai').expect;
+'use strict';
+
+const Promise = require('bluebird');
+const { stub, assert: sinonAssert } = require('sinon');
 
 describe('Console list', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
-  var Post = hexo.model('Post');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
+  const Post = hexo.model('Post');
 
-  var listCategories = require('../../../lib/plugins/console/list/category').bind(hexo);
+  const listCategories = require('../../../lib/plugins/console/list/category').bind(hexo);
 
-  before(() => {
-    var log = console.log;
-    sinon.stub(console, 'log', function(...args) {
-      return log.apply(log, args);
-    });
-  });
+  let logStub;
 
-  after(() => {
-    console.log.restore();
-  });
+  before(() => { logStub = stub(console, 'log'); });
+
+  afterEach(() => { logStub.reset(); });
+
+  after(() => { logStub.restore(); });
 
   it('no categories', () => {
     listCategories();
-    expect(console.log.calledWith(sinon.match('Name'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('Posts'))).to.be.true;
-    expect(console.log.calledWith(sinon.match('No categories.'))).to.be.true;
+    sinonAssert.calledWithMatch(logStub, 'Name');
+    sinonAssert.calledWithMatch(logStub, 'Posts');
+    sinonAssert.calledWithMatch(logStub, 'No categories.');
   });
 
-  it('categories', () => {
-    var posts = [
+  it('categories', async () => {
+    const posts = [
       {source: 'foo', slug: 'foo', title: 'Its', date: 1e8},
       {source: 'bar', slug: 'bar', title: 'Math', date: 1e8 + 1},
       {source: 'baz', slug: 'baz', title: 'Dude', date: 1e8 - 1}
     ];
-    return hexo.init()
-    .then(() => Post.insert(posts)).then(posts => Promise.each([
+
+    await hexo.init();
+    const output = await Post.insert(posts);
+    await Promise.each([
       ['foo'],
       ['baz'],
       ['baz']
-    ], (tags, i) => posts[i].setCategories(tags))).then(() => {
-      hexo.locals.invalidate();
-    })
-    .then(() => {
-      listCategories();
-      expect(console.log.calledWith(sinon.match('Name'))).to.be.true;
-      expect(console.log.calledWith(sinon.match('Posts'))).to.be.true;
-      expect(console.log.calledWith(sinon.match('baz'))).to.be.true;
-      expect(console.log.calledWith(sinon.match('foo'))).to.be.true;
-    });
+    ], (tags, i) => output[i].setCategories(tags));
+    await hexo.locals.invalidate();
+    listCategories();
+    sinonAssert.calledWithMatch(logStub, 'Name');
+    sinonAssert.calledWithMatch(logStub, 'Posts');
+    sinonAssert.calledWithMatch(logStub, 'baz');
+    sinonAssert.calledWithMatch(logStub, 'foo');
   });
 });

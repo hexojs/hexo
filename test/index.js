@@ -1,6 +1,7 @@
-var chai = require('chai');
+'use strict';
 
-chai.use(require('chai-as-promised'));
+const chai = require('chai');
+global.should = chai.should();
 
 describe('Hexo', () => {
   require('./scripts/box');

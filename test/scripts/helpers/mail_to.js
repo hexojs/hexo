@@ -1,20 +1,23 @@
-var should = require('chai').should(); // eslint-disable-line
-var qs = require('querystring');
+'use strict';
 
 describe('mail_to', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
 
-  var ctx = {
+  const ctx = {
     config: hexo.config
   };
 
-  ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
-
-  var mailto = require('../../../lib/plugins/helper/mail_to').bind(ctx);
+  const mailto = require('../../../lib/plugins/helper/mail_to').bind(ctx);
 
   it('path', () => {
     mailto('abc@example.com').should.eql('<a href="mailto:abc@example.com" title="abc@example.com">abc@example.com</a>');
+  });
+
+  it('path - array', () => {
+    const emails = ['abc@example.com', 'foo@example.com'];
+    const emailsStr = 'abc@example.com,foo@example.com';
+    mailto(emails).should.eql(`<a href="mailto:${emailsStr}" title="${emailsStr}">${emailsStr}</a>`);
   });
 
   it('text', () => {
@@ -27,32 +30,32 @@ describe('mail_to', () => {
   });
 
   it('cc (string)', () => {
-    var data = {cc: 'abc@abc.com'};
-    var querystring = qs.stringify(data);
+    const data = {cc: 'abc@abc.com'};
+    const querystring = new URLSearchParams(data).toString();
 
     mailto('abc@example.com', 'Email', {cc: 'abc@abc.com'})
       .should.eql('<a href="mailto:abc@example.com?' + querystring + '" title="Email">Email</a>');
   });
 
   it('cc (array)', () => {
-    var data = {cc: 'abc@abc.com,bcd@bcd.com'};
-    var querystring = qs.stringify(data);
+    const data = {cc: 'abc@abc.com,bcd@bcd.com'};
+    const querystring = new URLSearchParams(data).toString();
 
     mailto('abc@example.com', 'Email', {cc: ['abc@abc.com', 'bcd@bcd.com']})
       .should.eql('<a href="mailto:abc@example.com?' + querystring + '" title="Email">Email</a>');
   });
 
   it('bcc (string)', () => {
-    var data = {bcc: 'abc@abc.com'};
-    var querystring = qs.stringify(data);
+    const data = {bcc: 'abc@abc.com'};
+    const querystring = new URLSearchParams(data).toString();
 
     mailto('abc@example.com', 'Email', {bcc: 'abc@abc.com'})
       .should.eql('<a href="mailto:abc@example.com?' + querystring + '" title="Email">Email</a>');
   });
 
   it('bcc (array)', () => {
-    var data = {bcc: 'abc@abc.com,bcd@bcd.com'};
-    var querystring = qs.stringify(data);
+    const data = {bcc: 'abc@abc.com,bcd@bcd.com'};
+    const querystring = new URLSearchParams(data).toString();
 
     mailto('abc@example.com', 'Email', {bcc: ['abc@abc.com', 'bcd@bcd.com']})
       .should.eql('<a href="mailto:abc@example.com?' + querystring + '" title="Email">Email</a>');

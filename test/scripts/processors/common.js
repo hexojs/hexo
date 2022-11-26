@@ -1,8 +1,9 @@
-var should = require('chai').should(); // eslint-disable-line
-var moment = require('moment');
+'use strict';
+
+const moment = require('moment');
 
 describe('common', () => {
-  var common = require('../../../lib/plugins/processor/common');
+  const common = require('../../../lib/plugins/processor/common');
 
   it('isTmpFile()', () => {
     common.isTmpFile('foo').should.be.false;
@@ -19,7 +20,7 @@ describe('common', () => {
   });
 
   it('ignoreTmpAndHiddenFile()', () => {
-    var pattern = common.ignoreTmpAndHiddenFile;
+    const pattern = common.ignoreTmpAndHiddenFile;
 
     pattern.match('foo').should.be.true;
     pattern.match('foo%').should.be.false;
@@ -31,8 +32,8 @@ describe('common', () => {
   });
 
   it('toDate()', () => {
-    var m = moment();
-    var d = new Date();
+    const m = moment();
+    const d = new Date();
 
     should.not.exist(common.toDate());
     common.toDate(m).should.eql(m);
@@ -41,6 +42,20 @@ describe('common', () => {
     common.toDate('2014-04-25T01:32:21.196Z').should.eql(new Date('2014-04-25T01:32:21.196Z'));
     common.toDate('Apr 24 2014').should.eql(new Date(2014, 3, 24));
     should.not.exist(common.toDate('foo'));
+  });
+
+  it('timezone() - date', () => {
+    const d = new Date(Date.UTC(1972, 2, 29, 0, 0, 0));
+    const d_timezone_UTC = common.timezone(d, 'UTC');
+    (common.timezone(d, 'Asia/Shanghai') - d_timezone_UTC).should.eql(-8 * 3600 * 1000);
+    (common.timezone(d, 'Asia/Bangkok') - d_timezone_UTC).should.eql(-7 * 3600 * 1000);
+    (common.timezone(d, 'America/Los_Angeles') - d_timezone_UTC).should.eql(8 * 3600 * 1000);
+  });
+
+  it('timezone() - moment', () => {
+    const d = moment(new Date(Date.UTC(1972, 2, 29, 0, 0, 0)));
+    const d_timezone_UTC = common.timezone(d, 'UTC');
+    (common.timezone(d, 'Europe/Moscow') - d_timezone_UTC).should.eql(-3 * 3600 * 1000);
   });
 
   it('isMatch() - string', () => {

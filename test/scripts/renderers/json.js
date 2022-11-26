@@ -1,10 +1,10 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('json', () => {
-  var r = require('../../../lib/plugins/renderer/json');
+  const r = require('../../../lib/plugins/renderer/json');
 
   it('normal', () => {
-    var data = {
+    const data = {
       foo: 1,
       bar: {
         baz: 2

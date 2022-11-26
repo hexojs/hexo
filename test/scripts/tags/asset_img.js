@@ -1,13 +1,14 @@
-var should = require('chai').should(); // eslint-disable-line
-var Promise = require('bluebird');
+'use strict';
+
+const Promise = require('bluebird');
 
 describe('asset_img', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
-  var assetImgTag = require('../../../lib/plugins/tag/asset_img')(hexo);
-  var Post = hexo.model('Post');
-  var PostAsset = hexo.model('PostAsset');
-  var post;
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
+  const assetImgTag = require('../../../lib/plugins/tag/asset_img')(hexo);
+  const Post = hexo.model('Post');
+  const PostAsset = hexo.model('PostAsset');
+  let post;
 
   hexo.config.permalink = ':title/';
 
@@ -28,6 +29,11 @@ describe('asset_img', () => {
         post: post._id
       }),
       PostAsset.insert({
+        _id: 'bár',
+        slug: 'bár',
+        post: post._id
+      }),
+      PostAsset.insert({
         _id: 'spaced asset',
         slug: 'spaced asset',
         post: post._id
@@ -36,17 +42,31 @@ describe('asset_img', () => {
   }));
 
   it('default', () => {
-    assetImg('bar').should.eql('<img src="/foo/bar" alt="bar" title="">');
+    assetImg('bar').should.eql('<img src="/foo/bar" class="">');
+  });
+
+  it('should encode path', () => {
+    assetImg('bár').should.eql('<img src="/foo/b%C3%A1r" class="">');
   });
 
   it('default', () => {
-    assetImg('bar title').should.eql('<img src="/foo/bar" alt="title" title="title">');
+    assetImg('bar "a title"').should.eql('<img src="/foo/bar" class="" title="a title">');
   });
 
   it('with space', () => {
     // {% asset_img "spaced asset" "spaced title" %}
     assetImgTag.call(post, ['spaced asset', 'spaced title'])
-      .should.eql('<img src="/foo/spaced%20asset" alt="spaced title" title="spaced title">');
+      .should.eql('<img src="/foo/spaced%20asset" class="" title="spaced title">');
+  });
+
+  it('with alt and title', () => {
+    assetImgTag.call(post, ['bar', '"a title"', '"an alt"'])
+      .should.eql('<img src="/foo/bar" class="" title="a title" alt="an alt">');
+  });
+
+  it('with width height alt and title', () => {
+    assetImgTag.call(post, ['bar', '100', '200', '"a title"', '"an alt"'])
+      .should.eql('<img src="/foo/bar" class="" width="100" height="200" title="a title" alt="an alt">');
   });
 
   it('no slug', () => {
@@ -55,5 +75,10 @@ describe('asset_img', () => {
 
   it('asset not found', () => {
     should.not.exist(assetImg('boo'));
+  });
+
+  it('with root path', () => {
+    hexo.config.root = '/root/';
+    assetImg('bar').should.eql('<img src="/root/foo/bar" class="">');
   });
 });

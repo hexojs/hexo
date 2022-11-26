@@ -1,24 +1,25 @@
-var should = require('chai').should(); // eslint-disable-line
-var pathFn = require('path');
-var fs = require('hexo-fs');
-var Promise = require('bluebird');
+'use strict';
 
-var dateFormat = 'YYYY-MM-DD HH:mm:ss';
+const { dirname, join } = require('path');
+const { mkdirs, rmdir, stat, unlink, writeFile } = require('hexo-fs');
+
+const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 
 describe('asset', () => {
-  var Hexo = require('../../../lib/hexo');
-  var baseDir = pathFn.join(__dirname, 'asset_test');
-  var hexo = new Hexo(baseDir);
-  var asset = require('../../../lib/plugins/processor/asset')(hexo);
-  var process = asset.process.bind(hexo);
-  var pattern = asset.pattern;
-  var source = hexo.source;
-  var File = source.File;
-  var Asset = hexo.model('Asset');
-  var Page = hexo.model('Page');
+  const Hexo = require('../../../lib/hexo');
+  const defaults = require('../../../lib/hexo/default_config');
+  const baseDir = join(__dirname, 'asset_test');
+  const hexo = new Hexo(baseDir);
+  const asset = require('../../../lib/plugins/processor/asset')(hexo);
+  const process = asset.process.bind(hexo);
+  const { pattern } = asset;
+  const { source } = hexo;
+  const { File } = source;
+  const Asset = hexo.model('Asset');
+  const Page = hexo.model('Page');
 
   function newFile(options) {
-    options.source = pathFn.join(source.base, options.path);
+    options.source = join(source.base, options.path);
     options.params = {
       renderable: options.renderable
     };
@@ -26,9 +27,14 @@ describe('asset', () => {
     return new File(options);
   }
 
-  before(() => fs.mkdirs(baseDir).then(() => hexo.init()));
+  before(async () => {
+    await mkdirs(baseDir);
+    await hexo.init();
+  });
 
-  after(() => fs.rmdir(baseDir));
+  beforeEach(() => { hexo.config = Object.assign({}, defaults); });
+
+  after(() => rmdir(baseDir));
 
   it('pattern', () => {
     // Renderable files
@@ -63,98 +69,127 @@ describe('asset', () => {
     hexo.config.skip_render = [];
   });
 
-  it('asset - type: create', () => {
-    var file = newFile({
+  it('asset - type: create', async () => {
+    const file = newFile({
       path: 'foo.jpg',
       type: 'create',
       renderable: false
     });
 
-    return fs.writeFile(file.source, 'foo').then(() => process(file)).then(() => {
-      var id = 'source/' + file.path;
-      var asset = Asset.findById(id);
+    await writeFile(file.source, 'foo');
+    await process(file);
+    const id = 'source/' + file.path;
+    const asset = Asset.findById(id);
 
-      asset._id.should.eql(id);
-      asset.path.should.eql(file.path);
-      asset.modified.should.be.true;
-      asset.renderable.should.be.false;
+    asset._id.should.eql(id);
+    asset.path.should.eql(file.path);
+    asset.modified.should.be.true;
+    asset.renderable.should.be.false;
 
-      return asset.remove();
-    }).finally(() => fs.unlink(file.source));
+    return Promise.all([
+      asset.remove(),
+      unlink(file.source)
+    ]);
   });
 
-  it('asset - type: update', () => {
-    var file = newFile({
+  it('asset - type: create (when source path is configed to parent directory)', async () => {
+    const file = newFile({
+      path: '../../source/foo.jpg',
+      type: 'create',
+      renderable: false
+    });
+
+    await writeFile(file.source, 'foo');
+    await process(file);
+    const id = '../source/foo.jpg'; // The id should a relative path,because the 'lib/models/assets.js' use asset path by joining base path with "_id" directly.
+    const asset = Asset.findById(id);
+    asset._id.should.eql(id);
+    asset.path.should.eql(file.path);
+    asset.modified.should.be.true;
+    asset.renderable.should.be.false;
+
+    asset.remove();
+    await unlink(file.source);
+    rmdir(dirname(file.source));
+  });
+
+  it('asset - type: update', async () => {
+    const file = newFile({
       path: 'foo.jpg',
       type: 'update',
       renderable: false
     });
 
-    var id = 'source/' + file.path;
+    const id = 'source/' + file.path;
 
-    return Promise.all([
-      fs.writeFile(file.source, 'test'),
+    await Promise.all([
+      writeFile(file.source, 'test'),
       Asset.insert({
         _id: id,
         path: file.path,
         modified: false
       })
-    ]).then(() => process(file)).then(() => {
-      var asset = Asset.findById(id);
+    ]);
+    await process(file);
+    const asset = Asset.findById(id);
 
-      asset._id.should.eql(id);
-      asset.path.should.eql(file.path);
-      asset.modified.should.be.true;
-      asset.renderable.should.be.false;
+    asset._id.should.eql(id);
+    asset.path.should.eql(file.path);
+    asset.modified.should.be.true;
+    asset.renderable.should.be.false;
 
-      return asset.remove();
-    }).finally(() => fs.unlink(file.source));
+    return Promise.all([
+      asset.remove(),
+      unlink(file.source)
+    ]);
   });
 
-  it('asset - type: skip', () => {
-    var file = newFile({
+  it('asset - type: skip', async () => {
+    const file = newFile({
       path: 'foo.jpg',
       type: 'skip',
       renderable: false
     });
 
-    var id = 'source/' + file.path;
+    const id = 'source/' + file.path;
 
-    return Promise.all([
-      fs.writeFile(file.source, 'test'),
+    await Promise.all([
+      writeFile(file.source, 'test'),
       Asset.insert({
         _id: id,
         path: file.path,
         modified: false
       })
-    ]).then(() => process(file)).then(() => {
-      var asset = Asset.findById(id);
-      asset.modified.should.be.false;
-    }).finally(() => Promise.all([
+    ]);
+    await process(file);
+    const asset = Asset.findById(id);
+    asset.modified.should.be.false;
+    await Promise.all([
       Asset.removeById(id),
-      fs.unlink(file.source)
-    ]));
+      unlink(file.source)
+    ]);
   });
 
-  it('asset - type: delete', () => {
-    var file = newFile({
+  it('asset - type: delete', async () => {
+    const file = newFile({
       path: 'foo.jpg',
       type: 'delete',
       renderable: false
     });
 
-    var id = 'source/' + file.path;
+    const id = 'source/' + file.path;
 
-    return Asset.insert({
+    await Asset.insert({
       _id: id,
       path: file.path
-    }).then(() => process(file)).then(() => {
-      should.not.exist(Asset.findById(id));
     });
+    await process(file);
+
+    should.not.exist(Asset.findById(id));
   });
 
-  it('page - type: create', () => {
-    var body = [
+  it('page - type: create', async () => {
+    const body = [
       'title: "Hello world"',
       'date: 2006-01-02 15:04:05',
       'updated: 2014-12-13 01:02:03',
@@ -162,329 +197,384 @@ describe('asset', () => {
       'The quick brown fox jumps over the lazy dog'
     ].join('\n');
 
-    var file = newFile({
-      path: 'hello.swig',
+    const file = newFile({
+      path: 'hello.njk',
       type: 'create',
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      var page = Page.findOne({source: file.path});
+    await writeFile(file.source, body);
+    await process(file);
 
-      page.title.should.eql('Hello world');
-      page.date.format(dateFormat).should.eql('2006-01-02 15:04:05');
-      page.updated.format(dateFormat).should.eql('2014-12-13 01:02:03');
-      page._content.should.eql('The quick brown fox jumps over the lazy dog');
-      page.source.should.eql(file.path);
-      page.raw.should.eql(body);
-      page.path.should.eql('hello.html');
-      page.layout.should.eql('page');
+    const page = Page.findOne({ source: file.path });
+    page.title.should.eql('Hello world');
+    page.date.format(dateFormat).should.eql('2006-01-02 15:04:05');
+    page.updated.format(dateFormat).should.eql('2014-12-13 01:02:03');
+    page._content.should.eql('The quick brown fox jumps over the lazy dog');
+    page.source.should.eql(file.path);
+    page.raw.should.eql(body);
+    page.path.should.eql('hello.html');
+    page.layout.should.eql('page');
 
-      return Promise.all([
-        page.remove(),
-        fs.unlink(file.source)
-      ]);
-    });
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
   });
 
-  it('page - type: update', () => {
-    var body = [
+  it('page - type: update', async () => {
+    const body = [
       'title: "Hello world"',
       '---'
     ].join('\n');
 
-    var file = newFile({
-      path: 'hello.swig',
+    const file = newFile({
+      path: 'hello.njk',
       type: 'update',
       renderable: true
     });
 
-    var id;
 
-    return Promise.all([
-      Page.insert({source: file.path, path: 'hello.html'}),
-      fs.writeFile(file.source, body)
-    ]).spread(doc => {
-      id = doc._id;
-      return process(file);
-    }).then(() => {
-      var page = Page.findOne({source: file.path});
+    const doc = await Page.insert({ source: file.path, path: 'hello.html' });
+    await writeFile(file.source, body);
+    const id = doc._id;
+    await process(file);
+    const page = Page.findOne({ source: file.path });
+    page._id.should.eql(id);
+    page.title.should.eql('Hello world');
 
-      page._id.should.eql(id);
-      page.title.should.eql('Hello world');
-
-      return Promise.all([
-        page.remove(),
-        fs.unlink(file.source)
-      ]);
-    });
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
   });
 
-  it('page - type: delete', () => {
-    var file = newFile({
-      path: 'hello.swig',
+  it('page - type: delete', async () => {
+    const file = newFile({
+      path: 'hello.njk',
       type: 'delete',
       renderable: true
     });
 
-    return Page.insert({
+    await Page.insert({
       source: file.path,
       path: 'hello.html'
-    }).then(() => process(file)).then(() => {
-      should.not.exist(Page.findOne({source: file.path}));
     });
+    await process(file);
+    should.not.exist(Page.findOne({ source: file.path }));
   });
 
-  it('page - use the status of the source file if date not set', () => {
-    var file = newFile({
-      path: 'hello.swig',
+  it('page - use the status of the source file if date not set', async () => {
+    const file = newFile({
+      path: 'hello.njk',
       type: 'create',
       renderable: true
     });
 
-    return fs.writeFile(file.source, '').then(() => Promise.all([
-      fs.stat(file.source),
-      process(file)
-    ])).spread(stats => {
-      var page = Page.findOne({source: file.path});
+    await writeFile(file.source, '');
+    await process(file);
+    const stats = await stat(file.source);
+    const page = Page.findOne({source: file.path});
 
-      page.date.toDate().should.eql(stats.ctime);
-      page.updated.toDate().should.eql(stats.mtime);
+    page.date.toDate().should.eql(stats.ctime);
+    page.updated.toDate().should.eql(stats.mtime);
 
-      return Promise.all([
-        page.remove(),
-        fs.unlink(file.source)
-      ]);
-    });
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
   });
 
-  it('page - permalink', () => {
-    var body = [
+  it('page - use the date for updated if updated_option = date', async () => {
+    const body = [
+      'date: 2011-4-5 14:19:19',
+      '---'
+    ].join('\n');
+
+    const file = newFile({
+      path: 'hello.njk',
+      type: 'create',
+      renderable: true
+    });
+
+    hexo.config.updated_option = 'date';
+
+    await writeFile(file.source, body);
+    await process(file);
+    const stats = await stat(file.source);
+    const page = Page.findOne({source: file.path});
+
+    page.updated.toDate().should.eql(page.date.toDate());
+    page.updated.toDate().should.not.eql(stats.mtime);
+
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
+  });
+
+  it('page - use the status if updated_option = mtime', async () => {
+    const file = newFile({
+      path: 'hello.njk',
+      type: 'create',
+      renderable: true
+    });
+
+    hexo.config.updated_option = 'mtime';
+
+    await writeFile(file.source, '');
+    await process(file);
+    const stats = await stat(file.source);
+    const page = Page.findOne({source: file.path});
+
+    page.date.toDate().should.eql(stats.ctime);
+    page.updated.toDate().should.eql(stats.mtime);
+
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
+  });
+
+  it('page - updated shouldn\'t exists if updated_option = empty', async () => {
+    const file = newFile({
+      path: 'hello.njk',
+      type: 'create',
+      renderable: true
+    });
+
+    hexo.config.updated_option = 'empty';
+
+    await writeFile(file.source, '');
+    await process(file);
+    const stats = await stat(file.source);
+    const page = Page.findOne({source: file.path});
+
+    page.date.toDate().should.eql(stats.ctime);
+    should.not.exist(page.updated);
+
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
+  });
+
+  it('page - permalink', async () => {
+    const body = [
       'title: "Hello world"',
       'permalink: foo.html',
       '---'
     ].join('\n');
 
-    var file = newFile({
-      path: 'hello.swig',
+    const file = newFile({
+      path: 'hello.njk',
       type: 'create',
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      var page = Page.findOne({source: file.path});
+    await writeFile(file.source, body);
+    await process(file);
+    const page = Page.findOne({ source: file.path });
+    page.path.should.eql('foo.html');
 
-      page.path.should.eql('foo.html');
-
-      return Promise.all([
-        page.remove(),
-        fs.unlink(file.source)
-      ]);
-    });
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
   });
 
-  it('page - permalink (without extension name)', () => {
-    var body = [
+  it('page - permalink (without extension name)', async () => {
+    const body = [
       'title: "Hello world"',
       'permalink: foo',
       '---'
     ].join('\n');
 
-    var file = newFile({
-      path: 'hello.swig',
+    const file = newFile({
+      path: 'hello.njk',
       type: 'create',
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      var page = Page.findOne({source: file.path});
+    await writeFile(file.source, body);
+    await process(file);
+    const page = Page.findOne({ source: file.path });
+    page.path.should.eql('foo.html');
 
-      page.path.should.eql('foo.html');
-
-      return Promise.all([
-        page.remove(),
-        fs.unlink(file.source)
-      ]);
-    });
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
   });
 
-  it('page - permalink (with trailing slash)', () => {
-    var body = [
+  it('page - permalink (with trailing slash)', async () => {
+    const body = [
       'title: "Hello world"',
       'permalink: foo/',
       '---'
     ].join('\n');
 
-    var file = newFile({
-      path: 'hello.swig',
+    const file = newFile({
+      path: 'hello.njk',
       type: 'create',
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      var page = Page.findOne({source: file.path});
+    await writeFile(file.source, body);
+    await process(file);
+    const page = Page.findOne({ source: file.path });
+    page.path.should.eql('foo/index.html');
 
-      page.path.should.eql('foo/index.html');
-
-      return Promise.all([
-        page.remove(),
-        fs.unlink(file.source)
-      ]);
-    });
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
   });
 
-  it('page - set layout to false if output is not html', () => {
-    var body = 'foo: 1';
+  it('page - set layout to false if output is not html', async () => {
+    const body = 'foo: 1';
 
-    var file = newFile({
+    const file = newFile({
       path: 'test.yml',
       type: 'create',
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      var page = Page.findOne({source: file.path});
+    await writeFile(file.source, body);
+    await process(file);
+    const page = Page.findOne({ source: file.path });
+    page.layout.should.eql('false');
 
-      page.layout.should.eql('false');
-
-      return Promise.all([
-        page.remove(),
-        fs.unlink(file.source)
-      ]);
-    });
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
   });
 
-  it('page - don\'t set layout to false if layout is set but output is not html', () => {
-    var body = [
+  it('page - don\'t set layout to false if layout is set but output is not html', async () => {
+    const body = [
       'layout: something',
       '---',
       'foo: 1'
     ].join('\n');
 
-    var file = newFile({
+    const file = newFile({
       path: 'test.yml',
       type: 'create',
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      var page = Page.findOne({source: file.path});
+    await writeFile(file.source, body);
+    await process(file);
+    const page = Page.findOne({ source: file.path });
+    page.layout.should.eql('something');
 
-      page.layout.should.eql('something');
-
-      return Promise.all([
-        page.remove(),
-        fs.unlink(file.source)
-      ]);
-    });
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
   });
 
-  it('page - parse date', () => {
-    var body = [
+  it('page - parse date', async () => {
+    const body = [
       'title: "Hello world"',
       'date: Apr 24 2014',
       'updated: May 5 2015',
       '---'
     ].join('\n');
 
-    var file = newFile({
-      path: 'hello.swig',
+    const file = newFile({
+      path: 'hello.njk',
       type: 'create',
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      var page = Page.findOne({source: file.path});
+    await writeFile(file.source, body);
+    await process(file);
+    const page = Page.findOne({ source: file.path });
+    page.date.format(dateFormat).should.eql('2014-04-24 00:00:00');
+    page.updated.format(dateFormat).should.eql('2015-05-05 00:00:00');
 
-      page.date.format(dateFormat).should.eql('2014-04-24 00:00:00');
-      page.updated.format(dateFormat).should.eql('2015-05-05 00:00:00');
-
-      return Promise.all([
-        page.remove(),
-        fs.unlink(file.source)
-      ]);
-    });
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
   });
 
-  it('page - use file stats instead if date is invalid', () => {
-    var body = [
+  it('page - use file stats instead if date is invalid', async () => {
+    const body = [
       'title: "Hello world"',
       'date: yomama',
       'updated: isfat',
       '---'
     ].join('\n');
 
-    var file = newFile({
-      path: 'hello.swig',
+    const file = newFile({
+      path: 'hello.njk',
       type: 'create',
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(() => Promise.all([
-      file.stat(),
-      process(file)
-    ])).spread(stats => {
-      var page = Page.findOne({source: file.path});
+    await writeFile(file.source, body);
+    await process(file);
+    const stats = await file.stat();
+    const page = Page.findOne({source: file.path});
 
-      page.date.toDate().should.eql(stats.ctime);
-      page.updated.toDate().should.eql(stats.mtime);
+    page.date.toDate().should.eql(stats.ctime);
+    page.updated.toDate().should.eql(page.date.toDate());
 
-      return Promise.all([
-        page.remove(),
-        fs.unlink(file.source)
-      ]);
-    });
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
   });
 
-  it('page - don\'t remove extension name', () => {
-    var body = '';
+  it('page - don\'t remove extension name', async () => {
+    const body = '';
 
-    var file = newFile({
+    const file = newFile({
       path: 'test.min.js',
       type: 'create',
       renderable: true
     });
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      var page = Page.findOne({source: file.path});
+    await writeFile(file.source, body);
+    await process(file);
+    const page = Page.findOne({ source: file.path });
+    page.path.should.eql('test.min.js');
 
-      page.path.should.eql('test.min.js');
-
-      return Promise.all([
-        page.remove(),
-        fs.unlink(file.source)
-      ]);
-    });
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
   });
 
-  it('page - timezone', () => {
-    var body = [
+  it('page - timezone', async () => {
+    const body = [
       'title: "Hello world"',
       'date: Apr 24 2014',
       'updated: May 5 2015',
       '---'
     ].join('\n');
 
-    var file = newFile({
-      path: 'hello.swig',
+    const file = newFile({
+      path: 'hello.njk',
       type: 'create',
       renderable: true
     });
 
     hexo.config.timezone = 'UTC';
 
-    return fs.writeFile(file.source, body).then(() => process(file)).then(() => {
-      var page = Page.findOne({source: file.path});
+    await writeFile(file.source, body);
+    await process(file);
+    const page = Page.findOne({source: file.path});
 
-      page.date.utc().format(dateFormat).should.eql('2014-04-24 00:00:00');
-      page.updated.utc().format(dateFormat).should.eql('2015-05-05 00:00:00');
+    page.date.utc().format(dateFormat).should.eql('2014-04-24 00:00:00');
+    page.updated.utc().format(dateFormat).should.eql('2015-05-05 00:00:00');
 
-      return Promise.all([
-        page.remove(),
-        fs.unlink(file.source)
-      ]);
-    }).finally(() => {
-      hexo.config.timezone = '';
-    });
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
   });
 });

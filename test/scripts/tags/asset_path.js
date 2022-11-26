@@ -1,13 +1,14 @@
-var should = require('chai').should(); // eslint-disable-line
-var Promise = require('bluebird');
+'use strict';
+
+const Promise = require('bluebird');
 
 describe('asset_path', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
-  var assetPathTag = require('../../../lib/plugins/tag/asset_path')(hexo);
-  var Post = hexo.model('Post');
-  var PostAsset = hexo.model('PostAsset');
-  var post;
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
+  const assetPathTag = require('../../../lib/plugins/tag/asset_path')(hexo);
+  const Post = hexo.model('Post');
+  const PostAsset = hexo.model('PostAsset');
+  let post;
 
   hexo.config.permalink = ':title/';
 
@@ -28,6 +29,11 @@ describe('asset_path', () => {
         post: post._id
       }),
       PostAsset.insert({
+        _id: 'bár',
+        slug: 'bár',
+        post: post._id
+      }),
+      PostAsset.insert({
         _id: 'spaced asset',
         slug: 'spaced asset',
         post: post._id
@@ -37,6 +43,10 @@ describe('asset_path', () => {
 
   it('default', () => {
     assetPath('bar').should.eql('/foo/bar');
+  });
+
+  it('should encode path', () => {
+    assetPath('bár').should.eql('/foo/b%C3%A1r');
   });
 
   it('with space', () => {

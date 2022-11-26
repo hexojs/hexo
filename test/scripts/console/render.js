@@ -1,117 +1,143 @@
-var should = require('chai').should(); // eslint-disable-line
-var fs = require('hexo-fs');
-var pathFn = require('path');
-var Promise = require('bluebird');
+'use strict';
+
+const { mkdirs, readFile, rmdir, unlink, writeFile } = require('hexo-fs');
+const { join } = require('path');
+const Promise = require('bluebird');
+const { spy } = require('sinon');
 
 describe('render', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(pathFn.join(__dirname, 'render_test'), {silent: true});
-  var render = require('../../../lib/plugins/console/render').bind(hexo);
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(join(__dirname, 'render_test'), {silent: true});
+  const render = require('../../../lib/plugins/console/render').bind(hexo);
 
-  before(() => fs.mkdirs(hexo.base_dir).then(() => hexo.init()));
+  before(async () => {
+    await mkdirs(hexo.base_dir);
+    hexo.init();
+  });
 
-  after(() => fs.rmdir(hexo.base_dir));
+  after(() => rmdir(hexo.base_dir));
 
-  var body = [
+  const body = [
     'foo: 1',
     'bar:',
     '  boo: 2'
   ].join('\n');
 
-  it('relative path', () => {
-    var src = pathFn.join(hexo.base_dir, 'test.yml');
-    var dest = pathFn.join(hexo.base_dir, 'result.json');
+  it('no args', async () => {
+    const hexo = new Hexo(join(__dirname, 'render_test'), {silent: true});
+    hexo.call = spy();
+    const render = require('../../../lib/plugins/console/render').bind(hexo);
 
-    return fs.writeFile(src, body).then(() => render({_: ['test.yml'], output: 'result.json'})).then(() => fs.readFile(dest)).then(result => {
-      JSON.parse(result).should.eql({
-        foo: 1,
-        bar: {
-          boo: 2
-        }
-      });
+    await render({_: []});
 
-      return Promise.all([
-        fs.unlink(src),
-        fs.unlink(dest)
-      ]);
-    });
+    hexo.call.calledOnce.should.be.true;
+    hexo.call.args[0][0].should.eql('help');
+    hexo.call.args[0][1]._.should.eql('render');
   });
 
-  it('absolute path', () => {
-    var src = pathFn.join(hexo.base_dir, 'test.yml');
-    var dest = pathFn.join(hexo.base_dir, 'result.json');
+  it('relative path', async () => {
+    const src = join(hexo.base_dir, 'test.yml');
+    const dest = join(hexo.base_dir, 'result.json');
 
-    return fs.writeFile(src, body).then(() => render({_: [src], output: 'result.json'})).then(() => fs.readFile(dest)).then(result => {
-      JSON.parse(result).should.eql({
-        foo: 1,
-        bar: {
-          boo: 2
-        }
-      });
-
-      return Promise.all([
-        fs.unlink(src),
-        fs.unlink(dest)
-      ]);
+    await writeFile(src, body);
+    await render({_: ['test.yml'], output: 'result.json'});
+    const result = await readFile(dest);
+    JSON.parse(result).should.eql({
+      foo: 1,
+      bar: {
+        boo: 2
+      }
     });
+
+    await Promise.all([
+      unlink(src),
+      unlink(dest)
+    ]);
   });
 
-  it('absolute output', () => {
-    var src = pathFn.join(hexo.base_dir, 'test.yml');
-    var dest = pathFn.join(hexo.base_dir, 'result.json');
+  it('absolute path', async () => {
+    const src = join(hexo.base_dir, 'test.yml');
+    const dest = join(hexo.base_dir, 'result.json');
 
-    return fs.writeFile(src, body).then(() => render({_: ['test.yml'], output: dest})).then(() => fs.readFile(dest)).then(result => {
-      JSON.parse(result).should.eql({
-        foo: 1,
-        bar: {
-          boo: 2
-        }
-      });
+    await writeFile(src, body);
+    await render({_: [src], output: 'result.json'});
 
-      return Promise.all([
-        fs.unlink(src),
-        fs.unlink(dest)
-      ]);
+    const result = await readFile(dest);
+    JSON.parse(result).should.eql({
+      foo: 1,
+      bar: {
+        boo: 2
+      }
     });
+
+    await Promise.all([
+      unlink(src),
+      unlink(dest)
+    ]);
   });
 
-  it('output');
+  it('absolute output', async () => {
+    const src = join(hexo.base_dir, 'test.yml');
+    const dest = join(hexo.base_dir, 'result.json');
 
-  it('engine', () => {
-    var src = pathFn.join(hexo.base_dir, 'test');
-    var dest = pathFn.join(hexo.base_dir, 'result.json');
+    await writeFile(src, body);
+    await render({_: ['test.yml'], output: dest});
 
-    return fs.writeFile(src, body).then(() => render({_: ['test'], output: 'result.json', engine: 'yaml'})).then(() => fs.readFile(dest)).then(result => {
-      JSON.parse(result).should.eql({
-        foo: 1,
-        bar: {
-          boo: 2
-        }
-      });
-
-      return Promise.all([
-        fs.unlink(src),
-        fs.unlink(dest)
-      ]);
+    const result = await readFile(dest);
+    JSON.parse(result).should.eql({
+      foo: 1,
+      bar: {
+        boo: 2
+      }
     });
+
+    await Promise.all([
+      unlink(src),
+      unlink(dest)
+    ]);
   });
 
-  it('pretty', () => {
-    var src = pathFn.join(hexo.base_dir, 'test.yml');
-    var dest = pathFn.join(hexo.base_dir, 'result.json');
+  // it('output'); missing-unit-test
 
-    return fs.writeFile(src, body).then(() => render({_: ['test.yml'], output: 'result.json', pretty: true})).then(() => fs.readFile(dest)).then(result => {
-      result.should.eql(JSON.stringify({
-        foo: 1,
-        bar: {
-          boo: 2
-        }
-      }, null, '  '));
+  it('engine', async () => {
+    const src = join(hexo.base_dir, 'test');
+    const dest = join(hexo.base_dir, 'result.json');
 
-      return Promise.all([
-        fs.unlink(src),
-        fs.unlink(dest)
-      ]);
+    await writeFile(src, body);
+    await render({_: ['test'], output: 'result.json', engine: 'yaml'});
+
+    const result = await readFile(dest);
+    JSON.parse(result).should.eql({
+      foo: 1,
+      bar: {
+        boo: 2
+      }
     });
+
+    await Promise.all([
+      unlink(src),
+      unlink(dest)
+    ]);
+  });
+
+  it('pretty', async () => {
+    const src = join(hexo.base_dir, 'test.yml');
+    const dest = join(hexo.base_dir, 'result.json');
+
+    await writeFile(src, body);
+    await render({_: ['test.yml'], output: 'result.json', pretty: true});
+
+    const result = await readFile(dest);
+    result.should.eql(JSON.stringify({
+      foo: 1,
+      bar: {
+        boo: 2
+      }
+    }, null, '  '));
+
+    await Promise.all([
+      unlink(src),
+      unlink(dest)
+    ]);
   });
 });

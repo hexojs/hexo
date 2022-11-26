@@ -1,55 +1,56 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('list_posts', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo(__dirname);
-  var Post = hexo.model('Post');
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo(__dirname);
+  const Post = hexo.model('Post');
 
-  var ctx = {
+  const ctx = {
     config: hexo.config
   };
 
-  ctx.url_for = require('../../../lib/plugins/helper/url_for').bind(ctx);
-
-  var listPosts = require('../../../lib/plugins/helper/list_posts').bind(ctx);
+  const listPosts = require('../../../lib/plugins/helper/list_posts').bind(ctx);
 
   hexo.config.permalink = ':title/';
 
-  before(() => hexo.init().then(() => Post.insert([
-    {source: 'foo', slug: 'foo', title: 'Its', date: 1e8},
-    {source: 'bar', slug: 'bar', title: 'Chemistry', date: 1e8 + 1},
-    {source: 'baz', slug: 'baz', title: 'Bitch', date: 1e8 - 1}
-  ])).then(() => {
+  before(async () => {
+    await hexo.init();
+    await Post.insert([
+      {source: 'foo', slug: 'foo', title: 'Its', date: 1e8},
+      {source: 'bar', slug: 'bar', title: 'Chemistry', date: 1e8 + 1},
+      {source: 'baz', slug: 'baz', title: 'Bitch', date: 1e8 - 1}
+    ]);
+
     hexo.locals.invalidate();
     ctx.site = hexo.locals.toObject();
-  }));
+  });
 
   it('default', () => {
-    var result = listPosts();
+    const result = listPosts();
 
     result.should.eql([
       '<ul class="post-list">',
-        '<li class="post-list-item"><a class="post-list-link" href="/bar/">Chemistry</a></li>',
-        '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
-        '<li class="post-list-item"><a class="post-list-link" href="/baz/">Bitch</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/bar/">Chemistry</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/baz/">Bitch</a></li>',
       '</ul>'
     ].join(''));
   });
 
   it('specified collection', () => {
-    var result = listPosts(Post.find({
+    const result = listPosts(Post.find({
       title: 'Its'
     }));
 
     result.should.eql([
       '<ul class="post-list">',
-        '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
       '</ul>'
     ].join(''));
   });
 
   it('style: false', () => {
-    var result = listPosts({
+    const result = listPosts({
       style: false
     });
 
@@ -61,49 +62,49 @@ describe('list_posts', () => {
   });
 
   it('orderby', () => {
-    var result = listPosts({
+    const result = listPosts({
       orderby: 'title'
     });
 
     result.should.eql([
       '<ul class="post-list">',
-        '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
-        '<li class="post-list-item"><a class="post-list-link" href="/bar/">Chemistry</a></li>',
-        '<li class="post-list-item"><a class="post-list-link" href="/baz/">Bitch</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/bar/">Chemistry</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/baz/">Bitch</a></li>',
       '</ul>'
     ].join(''));
   });
 
   it('order', () => {
-    var result = listPosts({
+    const result = listPosts({
       order: 1
     });
 
     result.should.eql([
       '<ul class="post-list">',
-        '<li class="post-list-item"><a class="post-list-link" href="/baz/">Bitch</a></li>',
-        '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
-        '<li class="post-list-item"><a class="post-list-link" href="/bar/">Chemistry</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/baz/">Bitch</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/bar/">Chemistry</a></li>',
       '</ul>'
     ].join(''));
   });
 
   it('class', () => {
-    var result = listPosts({
+    const result = listPosts({
       class: 'test'
     });
 
     result.should.eql([
       '<ul class="test-list">',
-        '<li class="test-list-item"><a class="test-list-link" href="/bar/">Chemistry</a></li>',
-        '<li class="test-list-item"><a class="test-list-link" href="/foo/">Its</a></li>',
-        '<li class="test-list-item"><a class="test-list-link" href="/baz/">Bitch</a></li>',
+      '<li class="test-list-item"><a class="test-list-link" href="/bar/">Chemistry</a></li>',
+      '<li class="test-list-item"><a class="test-list-link" href="/foo/">Its</a></li>',
+      '<li class="test-list-item"><a class="test-list-link" href="/baz/">Bitch</a></li>',
       '</ul>'
     ].join(''));
   });
 
   it('transform', () => {
-    var result = listPosts({
+    const result = listPosts({
       transform(str) {
         return str.toUpperCase();
       }
@@ -111,15 +112,15 @@ describe('list_posts', () => {
 
     result.should.eql([
       '<ul class="post-list">',
-        '<li class="post-list-item"><a class="post-list-link" href="/bar/">CHEMISTRY</a></li>',
-        '<li class="post-list-item"><a class="post-list-link" href="/foo/">ITS</a></li>',
-        '<li class="post-list-item"><a class="post-list-link" href="/baz/">BITCH</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/bar/">CHEMISTRY</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/foo/">ITS</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/baz/">BITCH</a></li>',
       '</ul>'
     ].join(''));
   });
 
   it('separator', () => {
-    var result = listPosts({
+    const result = listPosts({
       style: false,
       separator: ''
     });
@@ -132,14 +133,14 @@ describe('list_posts', () => {
   });
 
   it('amount', () => {
-    var result = listPosts({
+    const result = listPosts({
       amount: 2
     });
 
     result.should.eql([
       '<ul class="post-list">',
-        '<li class="post-list-item"><a class="post-list-link" href="/bar/">Chemistry</a></li>',
-        '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/bar/">Chemistry</a></li>',
+      '<li class="post-list-item"><a class="post-list-link" href="/foo/">Its</a></li>',
       '</ul>'
     ].join(''));
   });

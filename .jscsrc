@@ -1,4 +1,0 @@
-{
-  "excludeFiles": ["node_modules/**", "coverage/**", "tmp/**"],
-  "preset": "hexo"
-}

@@ -1,10 +1,10 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('Deployer', () => {
-  var Deployer = require('../../../lib/extend/deployer');
+  const Deployer = require('../../../lib/extend/deployer');
 
   it('register()', () => {
-    var d = new Deployer();
+    const d = new Deployer();
 
     // name, fn
     d.register('test', () => {});
@@ -12,26 +12,14 @@ describe('Deployer', () => {
     d.get('test').should.exist;
 
     // no name
-    try {
-      d.register();
-    } catch (err) {
-      err.should.be
-        .instanceOf(TypeError)
-        .property('message', 'name is required');
-    }
+    should.throw(() => d.register(), TypeError, 'name is required');
 
     // no fn
-    try {
-      d.register('test');
-    } catch (err) {
-      err.should.be
-        .instanceOf(TypeError)
-        .property('message', 'fn must be a function');
-    }
+    should.throw(() => d.register('test'), TypeError, 'fn must be a function');
   });
 
   it('register() - promisify', () => {
-    var d = new Deployer();
+    const d = new Deployer();
 
     d.register('test', (args, callback) => {
       args.should.eql({foo: 'bar'});
@@ -46,7 +34,7 @@ describe('Deployer', () => {
   });
 
   it('register() - Promise.method', () => {
-    var d = new Deployer();
+    const d = new Deployer();
 
     d.register('test', args => {
       args.should.eql({foo: 'bar'});
@@ -61,15 +49,15 @@ describe('Deployer', () => {
   });
 
   it('list()', () => {
-    var d = new Deployer();
+    const d = new Deployer();
 
     d.register('test', () => {});
 
-    d.list().should.have.keys(['test']);
+    d.list().should.have.all.keys(['test']);
   });
 
   it('get()', () => {
-    var d = new Deployer();
+    const d = new Deployer();
 
     d.register('test', () => {});
 

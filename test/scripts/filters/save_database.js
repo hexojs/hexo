@@ -1,27 +1,40 @@
-var should = require('chai').should(); // eslint-disable-line
-var fs = require('hexo-fs');
-var Promise = require('bluebird');
+'use strict';
+
+const { exists, unlink } = require('hexo-fs');
+const Promise = require('bluebird');
 
 describe('Save database', () => {
-  var Hexo = require('../../../lib/hexo');
-  var hexo = new Hexo();
-  var saveDatabase = Promise.method(require('../../../lib/plugins/filter/before_exit/save_database')).bind(hexo);
-  var dbPath = hexo.database.options.path;
+  const Hexo = require('../../../lib/hexo');
+  const hexo = new Hexo();
+  const saveDatabase = Promise.method(require('../../../lib/plugins/filter/before_exit/save_database')).bind(hexo);
+  const dbPath = hexo.database.options.path;
 
-  it('default', () => {
+  it('default', async () => {
     hexo.env.init = true;
+    hexo._dbLoaded = true;
 
-    return saveDatabase().then(() => fs.exists(dbPath)).then(exist => {
-      exist.should.be.true;
-      return fs.unlink(dbPath);
-    });
+    await saveDatabase();
+    const exist = await exists(dbPath);
+    exist.should.be.true;
+
+    unlink(dbPath);
   });
 
-  it('do nothing if hexo is not initialized', () => {
+  it('do nothing if hexo is not initialized', async () => {
     hexo.env.init = false;
+    hexo._dbLoaded = true;
 
-    return saveDatabase().then(() => fs.exists(dbPath)).then(exist => {
-      exist.should.be.false;
-    });
+    await saveDatabase();
+    const exist = await exists(dbPath);
+    exist.should.be.false;
+  });
+
+  it('do nothing if database is not loaded', async () => {
+    hexo.env.init = true;
+    hexo._dbLoaded = false;
+
+    await saveDatabase();
+    const exist = await exists(dbPath);
+    exist.should.be.false;
   });
 });

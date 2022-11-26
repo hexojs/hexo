@@ -1,10 +1,10 @@
-var should = require('chai').should(); // eslint-disable-line
+'use strict';
 
 describe('Processor', () => {
-  var Processor = require('../../../lib/extend/processor');
+  const Processor = require('../../../lib/extend/processor');
 
   it('register()', () => {
-    var p = new Processor();
+    const p = new Processor();
 
     // pattern, fn
     p.register('test', () => {});
@@ -17,20 +17,14 @@ describe('Processor', () => {
     p.list()[1].should.exist;
 
     // no fn
-    try {
-      p.register();
-    } catch (err) {
-      err.should.be
-        .instanceOf(TypeError)
-        .property('message', 'fn must be a function');
-    }
+    should.throw(() => p.register(), TypeError, 'fn must be a function');
   });
 
   it('list()', () => {
-    var p = new Processor();
+    const p = new Processor();
 
     p.register('test', () => {});
 
-    p.list().length.should.eql(1);
+    p.list().should.have.lengthOf(1);
   });
 });

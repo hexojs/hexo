@@ -1,40 +1,37 @@
-var should = require('chai').should(); // eslint-disable-line
-var rewire = require('rewire');
-var sinon = require('sinon');
+'use strict';
+
+const { stub } = require('sinon');
 
 describe('debug', () => {
-  var debug = require('../../../lib/plugins/helper/debug');
-  var debugModule = rewire('../../../lib/plugins/helper/debug');
-  var inspect = require('util').inspect;
+  const debug = require('../../../lib/plugins/helper/debug');
+  const { inspect } = require('util');
 
   it('inspect simple object', () => {
-    var obj = { foo: 'bar' };
+    const obj = { foo: 'bar' };
     debug.inspectObject(obj).should.eql(inspect(obj));
   });
 
   it('inspect circular object', () => {
-    var obj = { foo: 'bar' };
+    const obj = { foo: 'bar' };
     obj.circular = obj;
     debug.inspectObject(obj).should.eql(inspect(obj));
   });
 
   it('inspect deep object', () => {
-    var obj = { baz: { thud: 'narf', dur: { foo: 'bar', baz: { bang: 'zoom' } } } };
-    debug.inspectObject(obj).should.not.eql(inspect(obj, {depth: 5}));
+    const obj = { baz: { thud: 'narf', dur: { foo: 'bar', baz: { bang: 'zoom' } } } };
+    debug.inspectObject(obj, {depth: 2}).should.not.eql(inspect(obj, {depth: 5}));
     debug.inspectObject(obj, {depth: 5}).should.eql(inspect(obj, {depth: 5}));
   });
 
   it('log should print to console', () => {
-    var spy = sinon.spy();
+    const logStub = stub(console, 'log');
 
-    debugModule.__with__({
-      console: {
-        log: spy
-      }
-    })(() => {
-      debugModule.log('Hello %s from debug.log()!', 'World');
-    });
+    try {
+      debug.log('Hello %s from debug.log()!', 'World');
+    } finally {
+      logStub.restore();
+    }
 
-    spy.args[0].should.eql(['Hello %s from debug.log()!', 'World']);
+    logStub.calledWithExactly('Hello %s from debug.log()!', 'World').should.be.true;
   });
 });

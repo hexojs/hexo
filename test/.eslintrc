@@ -1,3 +1,6 @@
 {
-  "extends": "hexo/test"
+  "extends": "hexo/test",
+  "globals": {
+    "should": true
+  }
 }
