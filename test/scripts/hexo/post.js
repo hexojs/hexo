@@ -687,12 +687,12 @@ describe('Post', () => {
 
   it('render() - skip js', async () => {
     const content = 'let a = "{{ 1 + 1 }}"';
-    const source = 'render_test.js';
+
     const data = await post.render(null, {
       content,
-      source
+      source: 'render_test.js'
     });
-    data.content.trim().should.eql('let a = "{{ 1 + 1 }}"');
+    data.content.trim().should.eql(content);
   });
 
   it('render() - toString', async () => {
