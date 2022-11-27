@@ -688,12 +688,10 @@ describe('Post', () => {
   it('render() - skip js', async () => {
     const content = 'let a = "{{ 1 + 1 }}"';
     const source = 'render_test.js';
-    const data = {
+    const data = await post.render(null, {
       content,
       source
-    };
-
-    await post.render(source, data);
+    });
     data.content.trim().should.eql('let a = "{{ 1 + 1 }}"');
   });
 
