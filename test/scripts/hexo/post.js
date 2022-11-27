@@ -685,6 +685,18 @@ describe('Post', () => {
     await unlink(path);
   });
 
+  it('render() - skip js', async () => {
+    const content = 'let a = "{{ 1 + 1 }}"';
+    const source = 'render_test.js';
+    const data = {
+      content,
+      source
+    };
+
+    await post.render(source, data);
+    data.content.trim().should.eql('let a = "{{ 1 + 1 }}"');
+  });
+
   it('render() - toString', async () => {
     const content = 'foo: 1';
 
