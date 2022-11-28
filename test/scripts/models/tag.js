@@ -172,6 +172,7 @@ describe('Tag', () => {
 
     // draft on
     hexo.config.render_drafts = true;
+    await Promise.all(posts.map(post => post.setTags(['foo'])));
     tag = Tag.findOne({name: 'foo'});
     hexo.locals.invalidate();
     tag.posts.map(mapper).should.eql(posts.map(mapper));
@@ -206,6 +207,7 @@ describe('Tag', () => {
 
     // future off
     hexo.config.future = false;
+    await Promise.all(posts.map(post => post.setTags(['foo'])));
     hexo.locals.invalidate();
     tag = Tag.findOne({name: 'foo'});
     tag.posts.eq(0)._id.should.eql(posts[0]._id);
