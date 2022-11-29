@@ -902,6 +902,36 @@ describe('Post', () => {
     ].join('\n'));
   });
 
+  it('render() - multiple tags with async rendering', async () => {
+    const content = [
+      '{% blockquote %}',
+      'test1',
+      '{% quote test2 %}',
+      'test3',
+      '{% endquote %}',
+      'test4',
+      '{% endblockquote %}',
+      'ASDF',
+      '{% quote test5 %}',
+      'test6',
+      '{% endquote %}'
+    ].join('\n');
+
+    const data = await post.render(null, {
+      content,
+      async_tags: true
+    });
+    data.content.trim().should.eql([
+      '<blockquote><p>test1</p>',
+      '<blockquote><p>test3</p>',
+      '<footer><strong>test2</strong></footer></blockquote>',
+      'test4</blockquote>',
+      'ASDF',
+      '<blockquote><p>test6</p>',
+      '<footer><strong>test5</strong></footer></blockquote>'
+    ].join('\n'));
+  });
+
   it('render() - shouln\'t break curly brackets', async () => {
     hexo.config.prismjs.enable = true;
     hexo.config.highlight.enable = false;
@@ -1203,6 +1233,15 @@ describe('Post', () => {
     });
 
     data.content.trim().should.eql(`<p><code>${escapeSwigTag('{{ 1 + 1 }}')}</code> 2</p>`);
+
+    // Test that the async tags logic recognize the tags correctly.
+    const data_async = await post.render(null, {
+      content,
+      engine: 'markdown',
+      async_tags: true
+    });
+
+    data_async.content.trim().should.eql(`<p><code>${escapeSwigTag('{{ 1 + 1 }}')}</code> 2</p>`);
   });
 
   // #3543
