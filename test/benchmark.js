@@ -168,7 +168,7 @@ async function init() {
     log.info('Setting up a dummy hexo site with 500 posts');
     await gitClone('https://github.com/hexojs/hexo-theme-unit-test.git', testDir);
     await gitClone('https://github.com/hexojs/hexo-theme-landscape', resolve(testDir, 'themes', 'landscape'));
-    await gitClone('https://github.com/SukkaLab/hexo-many-posts.git', resolve(testDir, 'source', '_posts', 'hexo-many-posts'));
+    await gitClone('https://github.com/hexojs/hexo-many-posts.git', resolve(testDir, 'source', '_posts', 'hexo-many-posts'));
   }
 
   log.info('Installing dependencies');
