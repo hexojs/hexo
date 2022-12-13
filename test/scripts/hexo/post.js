@@ -914,7 +914,7 @@ describe('Post', () => {
   });
 
   it('render() - shouln\'t break curly brackets', async () => {
-    hexo.config.highlighter = 'prismjs';
+    hexo.config.syntax_highlighter = 'prismjs';
 
     const content = [
       '\\begin{equation}',
@@ -930,7 +930,7 @@ describe('Post', () => {
     data.content.should.include('\\begin{equation}');
     data.content.should.include('\\end{equation}');
 
-    hexo.config.highlighter = 'highlight.js';
+    hexo.config.syntax_highlighter = 'highlight.js';
   });
 
   // #2321
@@ -1329,7 +1329,7 @@ describe('Post', () => {
   });
 
   it('render() - issue #4460', async () => {
-    hexo.config.highlighter = 'prismjs';
+    hexo.config.syntax_highlighter = 'prismjs';
 
     const content = fixture.content_for_issue_4460;
 
@@ -1340,11 +1340,11 @@ describe('Post', () => {
 
     data.content.should.not.include('hexoPostRenderEscape');
 
-    hexo.config.highlighter = 'highlight.js';
+    hexo.config.syntax_highlighter = 'highlight.js';
   });
 
   it('render() - empty tag name', async () => {
-    hexo.config.highlighter = 'prismjs';
+    hexo.config.syntax_highlighter = 'prismjs';
 
     const content = 'Disable rendering of Nunjucks tag `{{ }}` / `{% %}`';
 
@@ -1356,6 +1356,6 @@ describe('Post', () => {
     data.content.should.include(escapeSwigTag('{{ }}'));
     data.content.should.include(escapeSwigTag('{% %}'));
 
-    hexo.config.highlighter = 'highlight.js';
+    hexo.config.syntax_highlighter = 'highlight.js';
   });
 });

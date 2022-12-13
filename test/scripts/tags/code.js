@@ -115,12 +115,12 @@ describe('code', () => {
     });
 
     it('disabled', () => {
-      hexo.config.highlighter = '';
+      hexo.config.syntax_highlighter = '';
 
       const result = code('', fixture);
       result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
 
-      hexo.config.highlighter = 'highlight.js';
+      hexo.config.syntax_highlighter = 'highlight.js';
     });
 
     it('first_line', () => {
@@ -186,7 +186,7 @@ describe('code', () => {
 
   describe('prismjs', () => {
     beforeEach(() => {
-      hexo.config.highlighter = 'prismjs';
+      hexo.config.syntax_highlighter = 'prismjs';
     });
 
     it('default', () => {
@@ -246,12 +246,12 @@ describe('code', () => {
     });
 
     it('disabled', () => {
-      hexo.config.highlighter = '';
+      hexo.config.syntax_highlighter = '';
 
       const result = code('', fixture);
       result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
 
-      hexo.config.highlighter = 'highlight.js';
+      hexo.config.syntax_highlighter = 'highlight.js';
     });
 
     it('first_line', () => {

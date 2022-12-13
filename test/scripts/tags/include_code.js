@@ -31,7 +31,7 @@ describe('include_code', () => {
 
   describe('highlightjs', () => {
     it('default', async () => {
-      hexo.config.highlighter = 'highlight.js';
+      hexo.config.syntax_highlighter = 'highlight.js';
 
       const expected = highlight(fixture, {
         lang: 'js',
@@ -124,7 +124,7 @@ describe('include_code', () => {
     });
 
     it('disabled', async () => {
-      hexo.config.highlighter = '';
+      hexo.config.syntax_highlighter = '';
 
       const result = await code('test.js');
       result.should.eql('<pre><code>' + fixture + '</code></pre>');
@@ -133,7 +133,7 @@ describe('include_code', () => {
 
   describe('prismjs', () => {
     beforeEach(() => {
-      hexo.config.highlighter = 'prismjs';
+      hexo.config.syntax_highlighter = 'prismjs';
     });
 
     it('default', async () => {
@@ -212,7 +212,7 @@ describe('include_code', () => {
     });
 
     it('disabled', async () => {
-      hexo.config.highlighter = '';
+      hexo.config.syntax_highlighter = '';
 
       const result = await code('test.js');
       result.should.eql('<pre><code>' + fixture + '</code></pre>');

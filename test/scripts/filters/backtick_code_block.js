@@ -48,7 +48,7 @@ describe('Backtick code block', () => {
 
     const data = {content};
 
-    hexo.config.highlighter = '';
+    hexo.config.syntax_highlighter = '';
     codeBlock(data);
     data.content.should.eql(content);
   });
@@ -76,7 +76,7 @@ describe('Backtick code block', () => {
 
   describe('highlightjs', () => {
     beforeEach(() => {
-      hexo.config.highlighter = 'highlight.js';
+      hexo.config.syntax_highlighter = 'highlight.js';
     });
 
     it('shorthand', () => {
@@ -507,7 +507,7 @@ describe('Backtick code block', () => {
 
   describe('prismjs', () => {
     beforeEach(() => {
-      hexo.config.highlighter = 'prismjs';
+      hexo.config.syntax_highlighter = 'prismjs';
     });
 
     it('default', () => {
