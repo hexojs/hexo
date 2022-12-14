@@ -6,7 +6,8 @@ const defaultConfig = require('../../../lib/hexo/default_config');
 describe('Backtick code block', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
-  const codeBlock = require('../../../lib/plugins/filter/before_post_render/backtick_code_block').bind(hexo);
+  require('../../../lib/plugins/highlight/')(hexo);
+  const codeBlock = require('../../../lib/plugins/filter/before_post_render/backtick_code_block')(hexo);
 
   const code = [
     'if (tired && night) {',
@@ -47,8 +48,7 @@ describe('Backtick code block', () => {
 
     const data = {content};
 
-    hexo.config.highlight.enable = false;
-    hexo.config.prismjs.enable = false;
+    hexo.config.syntax_highlighter = '';
     codeBlock(data);
     data.content.should.eql(content);
   });
@@ -75,6 +75,10 @@ describe('Backtick code block', () => {
   });
 
   describe('highlightjs', () => {
+    beforeEach(() => {
+      hexo.config.syntax_highlighter = 'highlight.js';
+    });
+
     it('shorthand', () => {
       const data = {
         content: 'Hello, world!'
@@ -503,8 +507,7 @@ describe('Backtick code block', () => {
 
   describe('prismjs', () => {
     beforeEach(() => {
-      hexo.config.highlight.enable = false;
-      hexo.config.prismjs.enable = true;
+      hexo.config.syntax_highlighter = 'prismjs';
     });
 
     it('default', () => {

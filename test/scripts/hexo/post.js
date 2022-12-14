@@ -12,6 +12,7 @@ const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;')
 describe('Post', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo(join(__dirname, 'post_test'));
+  require('../../../lib/plugins/highlight/')(hexo);
   const { post } = hexo;
   const now = Date.now();
   let clock;
@@ -913,8 +914,7 @@ describe('Post', () => {
   });
 
   it('render() - shouln\'t break curly brackets', async () => {
-    hexo.config.prismjs.enable = true;
-    hexo.config.highlight.enable = false;
+    hexo.config.syntax_highlighter = 'prismjs';
 
     const content = [
       '\\begin{equation}',
@@ -930,8 +930,7 @@ describe('Post', () => {
     data.content.should.include('\\begin{equation}');
     data.content.should.include('\\end{equation}');
 
-    hexo.config.prismjs.enable = false;
-    hexo.config.highlight.enable = true;
+    hexo.config.syntax_highlighter = 'highlight.js';
   });
 
   // #2321
@@ -1330,8 +1329,7 @@ describe('Post', () => {
   });
 
   it('render() - issue #4460', async () => {
-    hexo.config.prismjs.enable = true;
-    hexo.config.highlight.enable = false;
+    hexo.config.syntax_highlighter = 'prismjs';
 
     const content = fixture.content_for_issue_4460;
 
@@ -1342,13 +1340,11 @@ describe('Post', () => {
 
     data.content.should.not.include('hexoPostRenderEscape');
 
-    hexo.config.prismjs.enable = false;
-    hexo.config.highlight.enable = true;
+    hexo.config.syntax_highlighter = 'highlight.js';
   });
 
   it('render() - empty tag name', async () => {
-    hexo.config.prismjs.enable = true;
-    hexo.config.highlight.enable = false;
+    hexo.config.syntax_highlighter = 'prismjs';
 
     const content = 'Disable rendering of Nunjucks tag `{{ }}` / `{% %}`';
 
@@ -1360,7 +1356,6 @@ describe('Post', () => {
     data.content.should.include(escapeSwigTag('{{ }}'));
     data.content.should.include(escapeSwigTag('{% %}'));
 
-    hexo.config.prismjs.enable = false;
-    hexo.config.highlight.enable = true;
+    hexo.config.syntax_highlighter = 'highlight.js';
   });
 });

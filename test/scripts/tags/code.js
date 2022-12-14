@@ -6,6 +6,7 @@ const cheerio = require('cheerio');
 describe('code', () => {
   const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
+  require('../../../lib/plugins/highlight/')(hexo);
   const codeTag = require('../../../lib/plugins/tag/code')(hexo);
   const { escapeHTML } = util;
 
@@ -114,12 +115,12 @@ describe('code', () => {
     });
 
     it('disabled', () => {
-      hexo.config.highlight.enable = false;
+      hexo.config.syntax_highlighter = '';
 
       const result = code('', fixture);
       result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
 
-      hexo.config.highlight.enable = true;
+      hexo.config.syntax_highlighter = 'highlight.js';
     });
 
     it('first_line', () => {
@@ -185,8 +186,7 @@ describe('code', () => {
 
   describe('prismjs', () => {
     beforeEach(() => {
-      hexo.config.highlight.enable = false;
-      hexo.config.prismjs.enable = true;
+      hexo.config.syntax_highlighter = 'prismjs';
     });
 
     it('default', () => {
@@ -246,13 +246,12 @@ describe('code', () => {
     });
 
     it('disabled', () => {
-      hexo.config.highlight.enable = false;
-      hexo.config.prismjs.enable = false;
+      hexo.config.syntax_highlighter = '';
 
       const result = code('', fixture);
       result.should.eql('<pre><code>' + escapeHTML(fixture) + '</code></pre>');
 
-      hexo.config.highlight.enable = true;
+      hexo.config.syntax_highlighter = 'highlight.js';
     });
 
     it('first_line', () => {
