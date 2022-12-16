@@ -1,6 +1,15 @@
-'use strict';
+interface StoreFunction {
+  (...args: any[]): any;
+  priority?: number;
+}
+
+interface Store {
+  [key: string]: StoreFunction[]
+}
 
 class SyntaxHighlight {
+  public store: Store;
+
   constructor() {
     this.store = {};
   }
@@ -26,4 +35,4 @@ class SyntaxHighlight {
   }
 }
 
-module.exports = SyntaxHighlight;
+export = SyntaxHighlight;

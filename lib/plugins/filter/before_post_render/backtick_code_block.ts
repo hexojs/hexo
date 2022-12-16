@@ -4,6 +4,13 @@ const rLangCaption = /([^\s]+)\s*(.+)?/;
 
 const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
+interface Options {
+  lang: string,
+  caption: string,
+  lines_length: number,
+  firstLineNumber?: string | number
+}
+
 export = ctx => {
   return function backtickCodeBlock(data) {
     const dataContent = data.content;
@@ -44,7 +51,7 @@ export = ctx => {
         content = content.replace(regexp, '');
       }
 
-      const options = {
+      const options: Options = {
         lang,
         caption,
         lines_length: content.split('\n').length
