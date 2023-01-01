@@ -10,9 +10,9 @@ interface Data {
 }
 
 const process = (name, ctx) => {
-  return Promise.filter(ctx.model(name).toArray(), (asset: warehouse.Schema) => fs.exists(asset.source).tap(exist => {
+  return Promise.filter(ctx.model(name).toArray(), (asset: warehouse['Schema']) => fs.exists(asset.source).tap(exist => {
     if (!exist) return asset.remove();
-  })).map((asset: warehouse.Schema) => {
+  })).map((asset: warehouse['Schema']) => {
     const { source } = asset;
     let { path } = asset;
     const data: Data = {

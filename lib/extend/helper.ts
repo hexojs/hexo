@@ -17,7 +17,7 @@ class Helper {
    * @param {String} name - The name of the helper plugin
    * @returns {Function}
    */
-  get(name) {
+  get(name: string) {
     return this.store[name];
   }
 
@@ -26,7 +26,7 @@ class Helper {
    * @param {String} name - The name of the helper plugin
    * @param {Function} fn - The helper plugin function
    */
-  register(name, fn) {
+  register(name: string, fn) {
     if (!name) throw new TypeError('name is required');
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 

@@ -11,11 +11,11 @@ class Deployer {
     return this.store;
   }
 
-  get(name) {
+  get(name: string) {
     return this.store[name];
   }
 
-  register(name, fn) {
+  register(name: string, fn) {
     if (!name) throw new TypeError('name is required');
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 

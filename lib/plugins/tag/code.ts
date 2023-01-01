@@ -6,6 +6,18 @@ const rCaptionUrlTitle = /(\S[\S\s]*)\s+(https?:\/\/\S+)\s+(.+)/i;
 const rCaptionUrl = /(\S[\S\s]*)\s+(https?:\/\/\S+)/i;
 const rCaption = /\S[\S\s]*/;
 
+interface Options {
+  lang: string;
+  language_attr: boolean;
+  firstLine: number;
+  caption: string;
+  line_number: boolean;
+  line_threshold: number;
+  mark: number[];
+  wrap: boolean;
+  lines_length?: number;
+}
+
 /**
  * Code block tag
  * Syntax:
@@ -25,7 +37,7 @@ const rCaption = /\S[\S\s]*/;
  * @returns {String} Code snippet with code highlighting
 */
 
-function parseArgs(args) {
+function parseArgs(args): Options {
   const _else = [];
   const len = args.length;
   let lang, language_attr,

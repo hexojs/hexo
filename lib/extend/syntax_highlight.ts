@@ -1,10 +1,15 @@
+interface Options {
+  context?: any;
+  args?: any;
+}
+
 interface StoreFunction {
   (...args: any[]): any;
   priority?: number;
 }
 
 interface Store {
-  [key: string]: StoreFunction[]
+  [key: string]: StoreFunction
 }
 
 class SyntaxHighlight {
@@ -14,17 +19,17 @@ class SyntaxHighlight {
     this.store = {};
   }
 
-  register(name, fn) {
+  register(name: string, fn: StoreFunction) {
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 
     this.store[name] = fn;
   }
 
-  query(name) {
+  query(name: string) {
     return name && this.store[name];
   }
 
-  exec(name, options) {
+  exec(name: string, options: Options) {
     const fn = this.store[name];
 
     if (!fn) throw new TypeError(`syntax highlighter ${name} is not registered`);

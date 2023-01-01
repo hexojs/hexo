@@ -13,7 +13,7 @@ class Generator {
     return this.store;
   }
 
-  get(name) {
+  get(name: string) {
     return this.store[name];
   }
 
