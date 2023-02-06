@@ -247,4 +247,88 @@ describe('new', () => {
 
     await unlink(path);
   });
+
+  it('special character - 1', async () => {
+    const date = moment(now);
+    const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const body = [
+      'title: \'[Hello] World\'',
+      'foo: bar',
+      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+      'tags:',
+      '---'
+    ].join('\n') + '\n';
+
+    await n({
+      _: ['[Hello] World'],
+      foo: 'bar'
+    });
+    const content = await readFile(path);
+    content.should.eql(body);
+
+    await unlink(path);
+  });
+
+  it('special character - 2', async () => {
+    const date = moment(now);
+    const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const body = [
+      'title: \'{Hello} World\'',
+      'foo: bar',
+      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+      'tags:',
+      '---'
+    ].join('\n') + '\n';
+
+    await n({
+      _: ['{Hello} World'],
+      foo: 'bar'
+    });
+    const content = await readFile(path);
+    content.should.eql(body);
+
+    await unlink(path);
+  });
+
+  it('special character - 3', async () => {
+    const date = moment(now);
+    const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const body = [
+      'title: \'\'\'Hello\'\' World\'',
+      'foo: bar',
+      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+      'tags:',
+      '---'
+    ].join('\n') + '\n';
+
+    await n({
+      _: ['\'Hello\' World'],
+      foo: 'bar'
+    });
+    const content = await readFile(path);
+    content.should.eql(body);
+
+    await unlink(path);
+  });
+
+  it('special character - 4', async () => {
+    const date = moment(now);
+    const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const body = [
+      'title: \'"Hello" World\'',
+      'foo: bar',
+      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+      'tags:',
+      '---'
+    ].join('\n') + '\n';
+
+    await n({
+      _: ['"Hello" World'],
+      foo: 'bar'
+    });
+    const content = await readFile(path);
+    content.should.eql(body);
+
+    await unlink(path);
+  });
 });
