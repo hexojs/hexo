@@ -32,7 +32,7 @@ function newPostPathFilter(data: Data = {}, replace) {
   const { path, layout, slug } = data;
 
   if (!permalink || permalink.rule !== newPostName) {
-    permalink = new Permalink(newPostName);
+    permalink = new Permalink(newPostName, {});
   }
 
   let target = '';

@@ -32,7 +32,7 @@ function postPermalinkFilter(data) {
   };
 
   if (!permalink || permalink.rule !== config.permalink) {
-    permalink = new Permalink(config.permalink);
+    permalink = new Permalink(config.permalink, {});
   }
 
   const { categories } = data;
