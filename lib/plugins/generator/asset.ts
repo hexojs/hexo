@@ -10,15 +10,21 @@ interface Data {
 }
 
 const process = (name, ctx) => {
+  // @ts-expect-error
   return Promise.filter(ctx.model(name).toArray(), (asset: warehouse['Schema']) => fs.exists(asset.source).tap(exist => {
+    // @ts-expect-error
     if (!exist) return asset.remove();
   })).map((asset: warehouse['Schema']) => {
+    // @ts-expect-error
     const { source } = asset;
+    // @ts-expect-error
     let { path } = asset;
     const data: Data = {
+      // @ts-expect-error
       modified: asset.modified
     };
 
+    // @ts-expect-error
     if (asset.renderable && ctx.render.isRenderable(path)) {
       // Replace extension name if the asset is renderable
       const filename = path.substring(0, path.length - extname(path).length);
