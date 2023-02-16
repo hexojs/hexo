@@ -48,7 +48,7 @@ function deployConsole(args) {
 
     this.log.info('Deploying: %s', magenta(type));
 
-    return Reflect.apply(deployers[type], this, [{ ...item, ...args }]).then(() => {
+    return (Reflect.apply(deployers[type], this, [{ ...item, ...args }]) as any).then(() => {
       this.log.info('Deploy done: %s', magenta(type));
     });
   }).then(() => {

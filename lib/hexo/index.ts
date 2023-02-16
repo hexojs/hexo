@@ -327,7 +327,7 @@ class Hexo extends EventEmitter {
 
     const c = this.extend.console.get(name);
 
-    if (c) return Reflect.apply(c, this, [args]).asCallback(callback);
+    if (c) return (Reflect.apply(c, this, [args]) as any).asCallback(callback);
     return Promise.reject(new Error(`Console \`${name}\` has not been registered yet!`));
   }
 

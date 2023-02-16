@@ -54,7 +54,7 @@ class NunjucksTag {
     return this._run(context, args, '');
   }
 
-  _run(context, args, body) {
+  _run(context, args, body): any {
     return Reflect.apply(this.fn, context.ctx, [args, body]);
   }
 }
