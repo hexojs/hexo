@@ -9,3 +9,4 @@ package-lock.json
 coverage/
 .tmp*
 .vscode
+dist/
