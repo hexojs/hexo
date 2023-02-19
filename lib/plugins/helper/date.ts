@@ -92,4 +92,4 @@ export {fullDateHelper as full_date};
 export {relativeDateHelper as relative_date};
 export {timeTagHelper as time_tag};
 export {moment};
-export var toMomentLocale = moize.shallow(_toMomentLocale);
+export const toMomentLocale = moize.shallow(_toMomentLocale);

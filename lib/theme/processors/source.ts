@@ -22,7 +22,7 @@ export function process(file) {
   });
 }
 
-export var pattern = new Pattern(path => {
+export const pattern = new Pattern(path => {
   if (!path.startsWith('source/')) return false;
 
   path = path.substring(7);

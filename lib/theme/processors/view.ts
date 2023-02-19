@@ -1,4 +1,4 @@
-import {Pattern} from 'hexo-util';
+import { Pattern } from 'hexo-util';
 
 export function process(file) {
   const { path } = file.params;
@@ -13,4 +13,4 @@ export function process(file) {
   });
 }
 
-export var pattern = new Pattern('layout/*path');
+export const pattern = new Pattern('layout/*path');

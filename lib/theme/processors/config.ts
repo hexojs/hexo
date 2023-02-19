@@ -15,4 +15,4 @@ export function process(file) {
   });
 }
 
-export var pattern = new Pattern(/^_config\.\w+$/);
+export const pattern = new Pattern(/^_config\.\w+$/);

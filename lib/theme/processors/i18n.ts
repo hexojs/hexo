@@ -18,4 +18,4 @@ export function process(file) {
   });
 }
 
-export var pattern = new Pattern('languages/*path');
+export const pattern = new Pattern('languages/*path');
