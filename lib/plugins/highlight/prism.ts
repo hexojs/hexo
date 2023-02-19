@@ -1,5 +1,3 @@
-'use strict';
-
 // Lazy require prismjs
 let prismHighlight;
 

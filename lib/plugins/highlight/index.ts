@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = ctx => {
   const { highlight } = ctx.extend;
 

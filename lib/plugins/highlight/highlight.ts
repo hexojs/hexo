@@ -1,5 +1,3 @@
-'use strict';
-
 // Lazy require highlight.js
 let highlight;
 
