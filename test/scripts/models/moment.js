@@ -1,10 +1,10 @@
 'use strict';
 
 const moment = require('moment-timezone');
+const SchemaTypeMoment = require('../../../dist/models/types/moment');
 
 describe('SchemaTypeMoment', () => {
-  const SchemaTypeMoment = require('../../../dist/models/types/moment');
-  const type = new warehouse.SchemaTypeMoment('test');
+  const type = new SchemaTypeMoment('test');
 
   it('cast()', () => {
     type.cast(1e8).should.eql(moment(1e8));
@@ -14,14 +14,14 @@ describe('SchemaTypeMoment', () => {
   });
 
   it('cast() - default', () => {
-    const type = new warehouse.SchemaTypeMoment('test', {default: moment});
+    const type = new SchemaTypeMoment('test', {default: moment});
     moment.isMoment(type.cast()).should.be.true;
   });
 
   it('cast() - language', () => {
     const lang = 'zh-tw';
     const format = 'LLLL';
-    const type = new warehouse.SchemaTypeMoment('test', {language: lang});
+    const type = new SchemaTypeMoment('test', {language: lang});
     const now = Date.now();
 
     type.cast(now).format(format).should.eql(moment(now).locale(lang).format(format));
@@ -30,7 +30,7 @@ describe('SchemaTypeMoment', () => {
   it('cast() - timezone', () => {
     const timezone = 'Etc/UTC';
     const format = 'LLLL';
-    const type = new warehouse.SchemaTypeMoment('test', {timezone});
+    const type = new SchemaTypeMoment('test', {timezone});
     const now = Date.now();
 
     type.cast(now).format(format).should.eql(moment(now).tz(timezone).format(format));
@@ -49,7 +49,7 @@ describe('SchemaTypeMoment', () => {
   });
 
   it('validate() - required', () => {
-    const type = new warehouse.SchemaTypeMoment('test', {required: true});
+    const type = new SchemaTypeMoment('test', {required: true});
 
     should.throw(() => type.validate(), '`test` is required!');
   });
