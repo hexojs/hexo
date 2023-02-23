@@ -1,6 +1,6 @@
 import { Pattern } from 'hexo-util';
 
-export function process(file) {
+function process(file) {
   const { path } = file.params;
 
   if (file.type === 'delete') {
@@ -13,4 +13,9 @@ export function process(file) {
   });
 }
 
-export const pattern = new Pattern('layout/*path');
+const pattern = new Pattern('layout/*path');
+
+export const view = {
+  pattern: pattern,
+  process: process
+}

@@ -2,6 +2,10 @@ import {extname} from 'path';
 import Box from '../box';
 import View from './view';
 import I18n from 'hexo-i18n';
+import { config } from './processors/config';
+import { i18n } from './processors/i18n';
+import { source } from './processors/source';
+import { view } from './processors/view';
 
 class Theme extends Box {
   public config: any;
@@ -17,10 +21,10 @@ class Theme extends Box {
     this.views = {};
 
     this.processors = [
-      require('./processors/config'),
-      require('./processors/i18n'),
-      require('./processors/source'),
-      require('./processors/view')
+      config,
+      i18n,
+      source,
+      view
     ];
 
     let languages = ctx.config.language;

@@ -1,7 +1,7 @@
 import {Pattern} from 'hexo-util';
 import {extname} from 'path';
 
-export function process(file) {
+function process(file) {
   const { path } = file.params;
   const ext = extname(path);
   const name = path.substring(0, path.length - ext.length);
@@ -18,4 +18,9 @@ export function process(file) {
   });
 }
 
-export const pattern = new Pattern('languages/*path');
+const pattern = new Pattern('languages/*path');
+
+export const i18n = {
+  pattern: pattern,
+  process: process
+}

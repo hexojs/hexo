@@ -1,7 +1,7 @@
 import {Pattern} from 'hexo-util';
 import * as common from '../../plugins/processor/common';
 
-export function process(file) {
+function process(file) {
   const Asset = this.model('Asset');
   const id = file.source.substring(this.base_dir.length).replace(/\\/g, '/');
   const { path } = file.params;
@@ -22,7 +22,7 @@ export function process(file) {
   });
 }
 
-export const pattern = new Pattern(path => {
+const pattern = new Pattern(path => {
   if (!path.startsWith('source/')) return false;
 
   path = path.substring(7);
@@ -30,3 +30,9 @@ export const pattern = new Pattern(path => {
 
   return {path};
 });
+
+
+export const source = {
+  pattern: pattern,
+  process: process
+}

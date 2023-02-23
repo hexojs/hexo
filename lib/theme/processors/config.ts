@@ -1,6 +1,6 @@
 import {Pattern} from 'hexo-util';
 
-export function process(file) {
+function process(file) {
   if (file.type === 'delete') {
     file.box.config = {};
     return;
@@ -15,4 +15,9 @@ export function process(file) {
   });
 }
 
-export const pattern = new Pattern(/^_config\.\w+$/);
+const pattern = new Pattern(/^_config\.\w+$/);
+
+export const config = {
+  pattern: pattern,
+  process: process
+}
