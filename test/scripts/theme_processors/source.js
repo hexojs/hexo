@@ -33,7 +33,7 @@ describe('source', () => {
   after(() => rmdir(hexo.base_dir));
 
   it('pattern', () => {
-    const { pattern } = processor;
+    const { pattern } = processor.source;
 
     pattern.match('source/foo.jpg').should.eql({path: 'foo.jpg'});
     pattern.match('source/_foo.jpg').should.be.false;

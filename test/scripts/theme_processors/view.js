@@ -34,7 +34,7 @@ describe('view', () => {
   after(() => rmdir(hexo.base_dir));
 
   it('pattern', () => {
-    const { pattern } = processor;
+    const { pattern } = processor.view;
 
     pattern.match('layout/index.njk').path.should.eql('index.njk');
     should.not.exist(pattern.match('index.njk'));

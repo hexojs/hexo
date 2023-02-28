@@ -30,7 +30,7 @@ describe('config', () => {
   after(() => rmdir(hexo.base_dir));
 
   it('pattern', () => {
-    const pattern = processor.pattern;
+    const pattern = processor.config.pattern;
 
     pattern.match('_config.yml').should.be.ok;
     pattern.match('_config.json').should.be.ok;

@@ -33,7 +33,7 @@ describe('i18n', () => {
   after(() => rmdir(hexo.base_dir));
 
   it('pattern', () => {
-    const pattern = processor.pattern;
+    const pattern = processor.i18n.pattern;
 
     pattern.match('languages/default.yml').should.be.ok;
     pattern.match('languages/zh-TW.yml').should.be.ok;
