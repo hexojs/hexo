@@ -8,7 +8,7 @@ describe('source', () => {
   const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'source_test'), {silent: true});
   const processor = require('../../../dist/theme/processors/source');
-  const process = Promise.method(processor.process.bind(hexo));
+  const process = Promise.method(processor.source.process.bind(hexo));
   const themeDir = join(hexo.base_dir, 'themes', 'test');
   const Asset = hexo.model('Asset');
 

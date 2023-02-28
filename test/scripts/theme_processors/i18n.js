@@ -8,7 +8,7 @@ describe('i18n', () => {
   const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
   const processor = require('../../../dist/theme/processors/i18n');
-  const process = Promise.method(processor.process.bind(hexo));
+  const process = Promise.method(processor.i18n.process.bind(hexo));
   const themeDir = join(hexo.base_dir, 'themes', 'test');
 
   function newFile(options) {

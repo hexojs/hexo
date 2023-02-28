@@ -8,7 +8,7 @@ describe('view', () => {
   const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'view_test'), {silent: true});
   const processor = require('../../../dist/theme/processors/view');
-  const process = Promise.method(processor.process.bind(hexo));
+  const process = Promise.method(processor.view.process.bind(hexo));
   const themeDir = join(hexo.base_dir, 'themes', 'test');
 
   hexo.env.init = true;

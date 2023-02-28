@@ -9,7 +9,7 @@ describe('config', () => {
   const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
   const processor = require('../../../dist/theme/processors/config');
-  const process = Promise.method(processor.process.bind(hexo));
+  const process = Promise.method(processor.config.process.bind(hexo));
   const themeDir = join(hexo.base_dir, 'themes', 'test');
 
   function newFile(options) {
