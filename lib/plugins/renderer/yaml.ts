@@ -1,6 +1,6 @@
 import yaml from 'js-yaml';
 import {escape} from 'hexo-front-matter';
-const log = require('hexo-log')();
+import logger from 'hexo-log';
 
 let schema = {};
 // FIXME: workaround for https://github.com/hexojs/hexo/issues/4917
@@ -8,7 +8,7 @@ try {
   schema = yaml.DEFAULT_SCHEMA.extend(require('js-yaml-js-types').all);
 } catch (e) {
   if (e instanceof yaml.YAMLException) {
-    log.warn('YAMLException: please see https://github.com/hexojs/hexo/issues/4917');
+    logger().warn('YAMLException: please see https://github.com/hexojs/hexo/issues/4917');
   } else {
     throw e;
   }

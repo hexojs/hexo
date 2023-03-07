@@ -27,7 +27,7 @@ class Theme extends Box {
       view
     ];
 
-    let languages = ctx.config.language;
+    let languages: string | string[] = ctx.config.language;
 
     if (!Array.isArray(languages)) languages = [languages];
 
