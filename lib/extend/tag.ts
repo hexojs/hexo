@@ -90,7 +90,7 @@ class NunjucksAsyncTag extends NunjucksTag {
     return new nodes.CallExtensionAsync(this, 'run', node, []);
   }
 
-  run(context, args, body, callback) {
+  run(context, args, callback) {
     return this._run(context, args, '').then(result => {
       callback(null, result);
     }, callback);
