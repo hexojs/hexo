@@ -21,6 +21,6 @@ function process(file) {
 const pattern = new Pattern('languages/*path');
 
 export const i18n = {
-  pattern: pattern,
-  process: process
-}
+  pattern,
+  process
+};

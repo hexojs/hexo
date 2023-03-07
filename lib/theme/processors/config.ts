@@ -18,6 +18,6 @@ function process(file) {
 const pattern = new Pattern(/^_config\.\w+$/);
 
 export const config = {
-  pattern: pattern,
-  process: process
-}
+  pattern,
+  process
+};

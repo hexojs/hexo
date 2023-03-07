@@ -25,7 +25,7 @@ function isExcludedFile(path, config) {
   return false;
 }
 
-export var ignoreTmpAndHiddenFile = new Pattern(path => {
+export const ignoreTmpAndHiddenFile = new Pattern(path => {
   if (isTmpFile(path) || isHiddenFile(path)) return false;
   return true;
 });

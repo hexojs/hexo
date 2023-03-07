@@ -31,8 +31,7 @@ const pattern = new Pattern(path => {
   return {path};
 });
 
-
 export const source = {
-  pattern: pattern,
-  process: process
-}
+  pattern,
+  process
+};

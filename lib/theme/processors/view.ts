@@ -16,6 +16,6 @@ function process(file) {
 const pattern = new Pattern('layout/*path');
 
 export const view = {
-  pattern: pattern,
-  process: process
-}
+  pattern,
+  process
+};
