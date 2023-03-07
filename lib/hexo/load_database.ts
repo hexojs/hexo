@@ -1,4 +1,4 @@
-import fs from 'hexo-fs';
+import { exists, unlink } from 'hexo-fs';
 import Promise from 'bluebird';
 
 export = ctx => {
@@ -8,7 +8,7 @@ export = ctx => {
   const { path } = db.options;
   const { log } = ctx;
 
-  return fs.exists(path).then(exist => {
+  return exists(path).then(exist => {
     if (!exist) return;
 
     log.debug('Loading database.');
@@ -17,6 +17,6 @@ export = ctx => {
     ctx._dbLoaded = true;
   }).catch(() => {
     log.error('Database load failed. Deleting database.');
-    return fs.unlink(path);
+    return unlink(path);
   });
 };

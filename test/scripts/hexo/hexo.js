@@ -48,7 +48,7 @@ describe('Hexo', () => {
 
     /* eslint-disable no-path-concat */
     hexo.core_dir.should.eql(coreDir + sep);
-    hexo.lib_dir.should.eql(join(coreDir, 'lib') + sep);
+    hexo.lib_dir.should.eql(join(coreDir, 'dist') + sep);
     hexo.version.should.eql(version);
     hexo.base_dir.should.eql(__dirname + sep);
     hexo.public_dir.should.eql(join(__dirname, 'public') + sep);

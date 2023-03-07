@@ -1,5 +1,5 @@
 import Promise from 'bluebird';
-import fs from 'hexo-fs';
+import { exists, unlink, rmdir } from 'hexo-fs';
 
 function cleanConsole(args) {
   return Promise.all([
@@ -12,10 +12,10 @@ function cleanConsole(args) {
 function deleteDatabase(ctx) {
   const dbPath = ctx.database.options.path;
 
-  return fs.exists(dbPath).then(exist => {
+  return exists(dbPath).then(exist => {
     if (!exist) return;
 
-    return fs.unlink(dbPath).then(() => {
+    return unlink(dbPath).then(() => {
       ctx.log.info('Deleted database.');
     });
   });
@@ -24,10 +24,10 @@ function deleteDatabase(ctx) {
 function deletePublicDir(ctx) {
   const publicDir = ctx.public_dir;
 
-  return fs.exists(publicDir).then(exist => {
+  return exists(publicDir).then(exist => {
     if (!exist) return;
 
-    return fs.rmdir(publicDir).then(() => {
+    return rmdir(publicDir).then(() => {
       ctx.log.info('Deleted public folder.');
     });
   });

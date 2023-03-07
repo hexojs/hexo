@@ -1,7 +1,7 @@
 import {resolve} from 'path';
 import tildify from 'tildify';
 import prettyHrtime from 'pretty-hrtime';
-import fs from 'hexo-fs';
+import { writeFile } from 'hexo-fs';
 import {cyan, magenta} from 'picocolors';
 
 function renderConsole(args) {
@@ -34,7 +34,7 @@ function renderConsole(args) {
     const interval = prettyHrtime(process.hrtime(start));
 
     log.info('Rendered in %s: %s -> %s', cyan(interval), magenta(tildify(src)), magenta(tildify(dest)));
-    return fs.writeFile(dest, result);
+    return writeFile(dest, result);
   });
 }
 

@@ -1,5 +1,5 @@
 import {isAbsolute, resolve, join, extname} from 'path';
-import fs from 'hexo-fs';
+import { existsSync, readFileSync, writeFileSync } from 'hexo-fs';
 import yml from 'js-yaml';
 import {deepMerge} from 'hexo-util';
 
@@ -20,7 +20,7 @@ export = ctx => function multiConfigPath(base, configPaths, outputDir) {
     // only one config
     let configPath = isAbsolute(configPaths) ? configPaths : resolve(base, configPaths);
 
-    if (!fs.existsSync(configPath)) {
+    if (!existsSync(configPath)) {
       log.w(`Config file ${configPaths} not found, using default.`);
       configPath = defaultPath;
     }
@@ -36,13 +36,13 @@ export = ctx => function multiConfigPath(base, configPaths, outputDir) {
   for (let i = 0; i < numPaths; i++) {
     const configPath = isAbsolute(paths[i]) ? paths[i] : join(base, paths[i]);
 
-    if (!fs.existsSync(configPath)) {
+    if (!existsSync(configPath)) {
       log.w(`Config file ${paths[i]} not found.`);
       continue;
     }
 
     // files read synchronously to ensure proper overwrite order
-    const file = fs.readFileSync(configPath);
+    const file = readFileSync(configPath);
     const ext = extname(paths[i]).toLowerCase();
 
     if (ext === '.yml') {
@@ -68,7 +68,7 @@ export = ctx => function multiConfigPath(base, configPaths, outputDir) {
 
   log.d(`Writing _multiconfig.yml to ${outputPath}`);
 
-  fs.writeFileSync(outputPath, yml.dump(combinedConfig));
+  writeFileSync(outputPath, yml.dump(combinedConfig));
 
   // write file and return path
   return outputPath;

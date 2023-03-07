@@ -2,7 +2,7 @@ import {join, extname} from 'path';
 import moment from 'moment';
 import Promise from 'bluebird';
 import {createSha1Hash, Permalink} from 'hexo-util';
-import fs from 'hexo-fs';
+import { ensurePath } from 'hexo-fs';
 let permalink;
 
 const reservedKeys = {
@@ -99,7 +99,7 @@ function newPostPathFilter(data: Data = {}, replace) {
     return Promise.resolve(target);
   }
 
-  return fs.ensurePath(target);
+  return ensurePath(target);
 }
 
 export = newPostPathFilter;

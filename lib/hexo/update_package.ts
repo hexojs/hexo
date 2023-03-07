@@ -1,5 +1,5 @@
 import {join} from 'path';
-import fs from 'hexo-fs';
+import { writeFile, exists, readFile } from 'hexo-fs';
 
 export = ctx => {
   const pkgPath = join(ctx.base_dir, 'package.json');
@@ -14,15 +14,15 @@ export = ctx => {
     pkg.hexo.version = ctx.version;
 
     ctx.log.debug('Updating package.json');
-    return fs.writeFile(pkgPath, JSON.stringify(pkg, null, '  '));
+    return writeFile(pkgPath, JSON.stringify(pkg, null, '  '));
   });
 };
 
 function readPkg(path) {
-  return fs.exists(path).then(exist => {
+  return exists(path).then(exist => {
     if (!exist) return;
 
-    return fs.readFile(path).then(content => {
+    return readFile(path).then(content => {
       const pkg = JSON.parse(content as string);
       if (typeof pkg.hexo !== 'object') return;
 

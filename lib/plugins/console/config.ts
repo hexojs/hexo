@@ -1,5 +1,5 @@
 import yaml from 'js-yaml';
-import fs from 'hexo-fs';
+import { exists, writeFile } from 'hexo-fs';
 import {extname} from 'path';
 import Promise from 'bluebird';
 
@@ -21,7 +21,7 @@ function configConsole(args) {
   const configPath = this.config_path;
   const ext = extname(configPath);
 
-  return fs.exists(configPath).then(exist => {
+  return exists(configPath).then(exist => {
     if (!exist) return {};
     return this.render.render({path: configPath});
   }).then(config => {
@@ -31,7 +31,7 @@ function configConsole(args) {
 
     const result = ext === '.json' ? JSON.stringify(config) : yaml.dump(config);
 
-    return fs.writeFile(configPath, result);
+    return writeFile(configPath, result);
   });
 }
 

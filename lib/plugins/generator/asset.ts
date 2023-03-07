@@ -1,4 +1,4 @@
-import fs from 'hexo-fs';
+import { exists, createReadStream } from 'hexo-fs';
 import Promise from 'bluebird';
 import {extname} from 'path';
 import { magenta } from 'picocolors';
@@ -11,7 +11,7 @@ interface Data {
 
 const process = (name, ctx) => {
   // @ts-expect-error
-  return Promise.filter(ctx.model(name).toArray(), (asset: warehouse['Schema']) => fs.exists(asset.source).tap(exist => {
+  return Promise.filter(ctx.model(name).toArray(), (asset: warehouse['Schema']) => exists(asset.source).tap(exist => {
     // @ts-expect-error
     if (!exist) return asset.remove();
   })).map((asset: warehouse['Schema']) => {
@@ -38,7 +38,7 @@ const process = (name, ctx) => {
         ctx.log.error({err}, 'Asset render failed: %s', magenta(path));
       });
     } else {
-      data.data = () => fs.createReadStream(source);
+      data.data = () => createReadStream(source);
     }
 
     return { path, data };
