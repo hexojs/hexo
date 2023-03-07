@@ -1,5 +1,5 @@
 
-import {Cache} from 'hexo-util';
+import { Cache } from 'hexo-util';
 
 export = ctx => {
   const cache = new Cache();

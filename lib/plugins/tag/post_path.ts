@@ -1,5 +1,5 @@
-import {encodeURL} from 'hexo-util';
-import {postFindOneFactory} from './';
+import { encodeURL } from 'hexo-util';
+import { postFindOneFactory } from './';
 
 /**
  * Post path tag

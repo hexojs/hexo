@@ -1,11 +1,11 @@
-import {join, sep} from 'path';
+import { join, sep } from 'path';
 import BlueBirdPromise from 'bluebird';
 import File from './file';
-import {Pattern, createSha1Hash} from 'hexo-util';
-import {createReadStream, readdir, stat, watch} from 'hexo-fs';
-import {magenta} from 'picocolors';
-import {EventEmitter} from 'events';
-import {isMatch, makeRe} from 'micromatch';
+import { Pattern, createSha1Hash } from 'hexo-util';
+import { createReadStream, readdir, stat, watch } from 'hexo-fs';
+import { magenta } from 'picocolors';
+import { EventEmitter } from 'events';
+import { isMatch, makeRe } from 'micromatch';
 
 const defaultPattern = new Pattern(() => ({}));
 

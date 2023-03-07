@@ -1,5 +1,5 @@
 import tildify from 'tildify';
-import {magenta} from 'picocolors';
+import { magenta } from 'picocolors';
 import { basename } from 'path';
 
 const reservedKeys = {

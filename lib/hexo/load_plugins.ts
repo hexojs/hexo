@@ -1,7 +1,7 @@
-import {join} from 'path';
-import {exists, readFile, listDir} from 'hexo-fs';
+import { join } from 'path';
+import { exists, readFile, listDir } from 'hexo-fs';
 import Promise from 'bluebird';
-import {magenta} from 'picocolors';
+import { magenta } from 'picocolors';
 
 export = ctx => {
   if (!ctx.env.init || ctx.env.safe) return;

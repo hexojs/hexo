@@ -1,6 +1,6 @@
-import {extname} from 'path';
+import { extname } from 'path';
 import Promise from 'bluebird';
-import {readFile, readFileSync} from 'hexo-fs';
+import { readFile, readFileSync } from 'hexo-fs';
 
 const getExtname = str => {
   if (typeof str !== 'string') return '';

@@ -1,4 +1,4 @@
-import {Pattern} from 'hexo-util';
+import { Pattern } from 'hexo-util';
 
 function i18nLocalsFilter(locals) {
   const { i18n } = this.theme;

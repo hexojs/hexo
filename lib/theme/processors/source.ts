@@ -1,4 +1,4 @@
-import {Pattern} from 'hexo-util';
+import { Pattern } from 'hexo-util';
 import * as common from '../../plugins/processor/common';
 
 function process(file) {

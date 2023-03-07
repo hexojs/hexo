@@ -1,5 +1,5 @@
 import warehouse from 'warehouse';
-import {moment, toMomentLocale} from '../../plugins/helper/date';
+import { moment, toMomentLocale } from '../../plugins/helper/date';
 
 declare module 'moment' {
   export default interface Moment extends moment.Moment {

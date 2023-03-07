@@ -1,5 +1,5 @@
-import {exists} from 'hexo-fs';
-import {underline, magenta} from 'picocolors';
+import { exists } from 'hexo-fs';
+import { underline, magenta } from 'picocolors';
 
 function deployConsole(args) {
   let config = this.config.deploy;

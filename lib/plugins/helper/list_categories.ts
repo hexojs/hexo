@@ -1,4 +1,4 @@
-import {url_for} from 'hexo-util';
+import { url_for } from 'hexo-util';
 
 function listCategoriesHelper(categories, options) {
   if (!options && (!categories || !Object.prototype.hasOwnProperty.call(categories, 'length'))) {

@@ -1,4 +1,4 @@
-import {extname} from 'path';
+import { extname } from 'path';
 import Box from '../box';
 import View from './view';
 import I18n from 'hexo-i18n';

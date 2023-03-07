@@ -1,4 +1,4 @@
-import {inspect} from 'util';
+import { inspect } from 'util';
 
 // this format object as string, resolves circular reference
 function inspectObject(object, options) {

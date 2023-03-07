@@ -1,5 +1,5 @@
-import {isMoment, isDate} from 'moment';
-import {encodeURL, prettyUrls, stripHTML, escapeHTML} from 'hexo-util';
+import { isMoment, isDate } from 'moment';
+import { encodeURL, prettyUrls, stripHTML, escapeHTML } from 'hexo-util';
 import moize from 'moize';
 
 const localeMap = {

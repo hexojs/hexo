@@ -1,4 +1,4 @@
-import {htmlTag, url_for} from 'hexo-util';
+import { htmlTag, url_for } from 'hexo-util';
 import moize from 'moize';
 
 function cssHelper(...args) {

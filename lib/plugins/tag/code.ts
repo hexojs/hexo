@@ -1,6 +1,6 @@
 // Based on: https://raw.github.com/imathis/octopress/master/plugins/code_block.rb
 
-import {escapeHTML} from 'hexo-util';
+import { escapeHTML } from 'hexo-util';
 
 const rCaptionUrlTitle = /(\S[\S\s]*)\s+(https?:\/\/\S+)\s+(.+)/i;
 const rCaptionUrl = /(\S[\S\s]*)\s+(https?:\/\/\S+)/i;

@@ -1,5 +1,5 @@
-import {exists, readFile} from 'hexo-fs';
-import {basename, extname, join, posix} from 'path';
+import { exists, readFile } from 'hexo-fs';
+import { basename, extname, join, posix } from 'path';
 
 const rCaptionTitleFile = /(.*)?(?:\s+|^)(\/*\S+)/;
 const rLang = /\s*lang:(\w+)/i;

@@ -1,12 +1,12 @@
 import assert from 'assert';
 import moment from 'moment';
 import Promise from 'bluebird';
-import {join, extname, basename} from 'path';
-import {magenta} from 'picocolors';
-import {load} from 'js-yaml';
-import {slugize, escapeRegExp} from 'hexo-util';
-import {copyDir, exists, listDir, mkdirs, readFile, rmdir, unlink, writeFile} from 'hexo-fs';
-import {parse as yfmParse, split as yfmSplit, stringify as yfmStringify} from 'hexo-front-matter';
+import { join, extname, basename } from 'path';
+import { magenta } from 'picocolors';
+import { load } from 'js-yaml';
+import { slugize, escapeRegExp } from 'hexo-util';
+import { copyDir, exists, listDir, mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
+import { parse as yfmParse, split as yfmSplit, stringify as yfmStringify } from 'hexo-front-matter';
 const preservedKeys = ['title', 'slug', 'path', 'layout', 'date', 'content'];
 
 const rHexoPostRenderEscape = /<hexoPostRenderCodeBlock>([\s\S]+?)<\/hexoPostRenderCodeBlock>/g;

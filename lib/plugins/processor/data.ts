@@ -1,5 +1,5 @@
-import {Pattern} from 'hexo-util';
-import {extname} from 'path';
+import { Pattern } from 'hexo-util';
+import { extname } from 'path';
 
 export = ctx => ({
   pattern: new Pattern('_data/*path'),

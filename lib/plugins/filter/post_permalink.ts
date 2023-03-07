@@ -1,5 +1,5 @@
-import {createSha1Hash, Permalink, slugize} from 'hexo-util';
-import {basename} from 'path';
+import { createSha1Hash, Permalink, slugize } from 'hexo-util';
+import { basename } from 'path';
 let permalink;
 
 function postPermalinkFilter(data) {

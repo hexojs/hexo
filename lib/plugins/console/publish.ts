@@ -1,5 +1,5 @@
 import tildify from 'tildify';
-import {magenta} from 'picocolors';
+import { magenta } from 'picocolors';
 
 function publishConsole(args) {
   // Display help message if user didn't input any arguments

@@ -1,5 +1,5 @@
 import warehouse from 'warehouse';
-import {slugize, full_url_for} from 'hexo-util';
+import { slugize, full_url_for } from 'hexo-util';
 const { hasOwnProperty: hasOwn } = Object.prototype;
 
 export = ctx => {

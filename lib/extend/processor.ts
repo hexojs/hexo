@@ -1,5 +1,5 @@
 import Promise from 'bluebird';
-import {Pattern} from 'hexo-util';
+import { Pattern } from 'hexo-util';
 
 class Processor {
   public store: any;

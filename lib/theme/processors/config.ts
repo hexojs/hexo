@@ -1,4 +1,4 @@
-import {Pattern} from 'hexo-util';
+import { Pattern } from 'hexo-util';
 
 function process(file) {
   if (file.type === 'delete') {

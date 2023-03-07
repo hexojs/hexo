@@ -1,5 +1,5 @@
-import {Pattern} from 'hexo-util';
-import {extname} from 'path';
+import { Pattern } from 'hexo-util';
+import { extname } from 'path';
 
 function process(file) {
   const { path } = file.params;

@@ -1,2 +1,2 @@
-import {gravatar} from 'hexo-util';
+import { gravatar } from 'hexo-util';
 export = gravatar;

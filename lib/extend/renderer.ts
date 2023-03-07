@@ -1,4 +1,4 @@
-import {extname} from 'path';
+import { extname } from 'path';
 import Promise from 'bluebird';
 
 const getExtname = str => {

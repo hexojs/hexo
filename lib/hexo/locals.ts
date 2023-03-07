@@ -1,4 +1,4 @@
-import {Cache} from 'hexo-util';
+import { Cache } from 'hexo-util';
 
 class Locals {
   public cache: any;

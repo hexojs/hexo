@@ -1,5 +1,5 @@
 import warehouse from 'warehouse';
-import {join} from 'path';
+import { join } from 'path';
 
 export = ctx => {
   const PostAsset = new warehouse.Schema({

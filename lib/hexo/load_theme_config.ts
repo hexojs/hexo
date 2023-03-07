@@ -1,8 +1,8 @@
-import {join, parse} from 'path';
+import { join, parse } from 'path';
 import tildify from 'tildify';
-import {exists, readdir} from 'hexo-fs';
-import {magenta} from 'picocolors';
-import {deepMerge} from 'hexo-util';
+import { exists, readdir } from 'hexo-fs';
+import { magenta } from 'picocolors';
+import { deepMerge } from 'hexo-util';
 
 export = ctx => {
   if (!ctx.env.init) return;

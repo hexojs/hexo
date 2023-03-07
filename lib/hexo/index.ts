@@ -1,12 +1,12 @@
 import Promise from 'bluebird';
-import {sep, join, dirname} from 'path';
+import { sep, join, dirname } from 'path';
 import tildify from 'tildify';
 import Database from 'warehouse';
-import {magenta, underline} from 'picocolors';
-import {EventEmitter} from 'events';
-import {readFile} from 'hexo-fs';
+import { magenta, underline } from 'picocolors';
+import { EventEmitter } from 'events';
+import { readFile } from 'hexo-fs';
 import Module from 'module';
-import {runInThisContext} from 'vm';
+import { runInThisContext } from 'vm';
 const {version} = require('../../package.json');
 import logger from 'hexo-log';
 
@@ -35,7 +35,7 @@ import Locals from './locals';
 import defaultConfig from './default_config';
 import loadDatabase from './load_database';
 import multiConfigPath from './multi_config_path';
-import {deepMerge, full_url_for} from 'hexo-util';
+import { deepMerge, full_url_for } from 'hexo-util';
 let resolveSync; // = require('resolve');
 
 const libDir = dirname(__dirname);

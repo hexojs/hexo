@@ -1,6 +1,6 @@
-import {gray, magenta, underline} from 'picocolors';
+import { gray, magenta, underline } from 'picocolors';
 import table from 'text-table';
-import {stringLength} from './common';
+import { stringLength } from './common';
 
 function mapName(item) {
   return item.name;

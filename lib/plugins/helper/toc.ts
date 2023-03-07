@@ -1,4 +1,4 @@
-import {tocObj, escapeHTML, encodeURL} from 'hexo-util';
+import { tocObj, escapeHTML, encodeURL } from 'hexo-util';
 
 interface Options {
   min_depth?: number;

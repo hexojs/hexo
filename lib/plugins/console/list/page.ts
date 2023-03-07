@@ -1,6 +1,6 @@
-import {magenta, underline, gray} from 'picocolors';
+import { magenta, underline, gray } from 'picocolors';
 import table from 'text-table';
-import {stringLength} from './common';
+import { stringLength } from './common';
 
 function listPage() {
   const Page = this.model('Page');

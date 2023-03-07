@@ -1,4 +1,4 @@
-import {Color, url_for} from 'hexo-util';
+import { Color, url_for } from 'hexo-util';
 import moize from 'moize';
 
 function tagcloudHelper(tags, options?) {

@@ -1,9 +1,9 @@
 import warehouse from 'warehouse';
 import moment from 'moment';
-import {extname, join, sep} from 'path';
+import { extname, join, sep } from 'path';
 import Promise from 'bluebird';
 import Moment from './types/moment';
-import {full_url_for} from 'hexo-util';
+import { full_url_for } from 'hexo-util';
 
 function pickID(data) {
   return data._id;

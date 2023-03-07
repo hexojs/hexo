@@ -1,6 +1,6 @@
-import {underline} from 'picocolors';
+import { underline } from 'picocolors';
 import table from 'text-table';
-import {stringLength} from './common';
+import { stringLength } from './common';
 
 function listCategory() {
   const categories = this.model('Category');

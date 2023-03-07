@@ -1,8 +1,8 @@
 import warehouse from 'warehouse';
-import {join} from 'path';
+import { join } from 'path';
 import Moment from './types/moment';
 import moment from 'moment';
-import {full_url_for} from 'hexo-util';
+import { full_url_for } from 'hexo-util';
 
 export = ctx => {
   const Page = new warehouse.Schema({

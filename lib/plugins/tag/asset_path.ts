@@ -1,4 +1,4 @@
-import {encodeURL} from 'hexo-util';
+import { encodeURL } from 'hexo-util';
 
 /**
  * Asset path tag

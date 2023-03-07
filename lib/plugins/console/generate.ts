@@ -1,11 +1,11 @@
-import {exists, writeFile, unlink, stat, mkdirs} from 'hexo-fs';
-import {join} from 'path';
+import { exists, writeFile, unlink, stat, mkdirs } from 'hexo-fs';
+import { join } from 'path';
 import Promise from 'bluebird';
 import prettyHrtime from 'pretty-hrtime';
-import {cyan, magenta} from 'picocolors';
+import { cyan, magenta } from 'picocolors';
 import tildify from 'tildify';
-import {PassThrough} from 'stream';
-import {createSha1Hash} from 'hexo-util';
+import { PassThrough } from 'stream';
+import { createSha1Hash } from 'hexo-util';
 
 class Generater {
   public context: any;

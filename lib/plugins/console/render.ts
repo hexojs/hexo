@@ -1,8 +1,8 @@
-import {resolve} from 'path';
+import { resolve } from 'path';
 import tildify from 'tildify';
 import prettyHrtime from 'pretty-hrtime';
 import { writeFile } from 'hexo-fs';
-import {cyan, magenta} from 'picocolors';
+import { cyan, magenta } from 'picocolors';
 
 function renderConsole(args) {
   // Display help message if user didn't input any arguments

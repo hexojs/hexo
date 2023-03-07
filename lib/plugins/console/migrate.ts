@@ -1,4 +1,4 @@
-import {underline, magenta} from 'picocolors';
+import { underline, magenta } from 'picocolors';
 
 function migrateConsole(args) {
   // Display help message if user didn't input any arguments

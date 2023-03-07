@@ -1,10 +1,10 @@
-import {toDate, timezone, isExcludedFile, isTmpFile, isHiddenFile, isMatch} from './common';
+import { toDate, timezone, isExcludedFile, isTmpFile, isHiddenFile, isMatch } from './common';
 import Promise from 'bluebird';
-import {parse as yfm} from 'hexo-front-matter';
-import {extname, join} from 'path';
-import {stat, listDir} from 'hexo-fs';
-import {slugize, Pattern, Permalink} from 'hexo-util';
-import {magenta} from 'picocolors';
+import { parse as yfm } from 'hexo-front-matter';
+import { extname, join } from 'path';
+import { stat, listDir } from 'hexo-fs';
+import { slugize, Pattern, Permalink } from 'hexo-util';
+import { magenta } from 'picocolors';
 
 const postDir = '_posts/';
 const draftDir = '_drafts/';

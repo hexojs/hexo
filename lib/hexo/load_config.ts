@@ -1,10 +1,10 @@
-import {sep, resolve, join, parse} from 'path';
+import { sep, resolve, join, parse } from 'path';
 import tildify from 'tildify';
 import Theme from '../theme';
 import Source from './source';
-import {exists, readdir} from 'hexo-fs';
-import {magenta} from 'picocolors';
-import {deepMerge} from 'hexo-util';
+import { exists, readdir } from 'hexo-fs';
+import { magenta } from 'picocolors';
+import { deepMerge } from 'hexo-util';
 import validateConfig from './validate_config';
 
 export = async ctx => {

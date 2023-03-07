@@ -1,4 +1,4 @@
-import {encodeURL, escapeHTML} from 'hexo-util';
+import { encodeURL, escapeHTML } from 'hexo-util';
 
 /**
  * Asset link tag

@@ -1,5 +1,5 @@
-import {extname, join} from 'path';
-import {exists, listDir, readFile, unlink, writeFile} from 'hexo-fs';
+import { extname, join } from 'path';
+import { exists, listDir, readFile, unlink, writeFile } from 'hexo-fs';
 
 class Scaffold {
   public context: any;

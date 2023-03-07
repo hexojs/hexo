@@ -1,7 +1,7 @@
 
 import nunjucks from 'nunjucks';
-import {readFileSync} from 'hexo-fs';
-import {dirname} from 'path';
+import { readFileSync } from 'hexo-fs';
+import { dirname } from 'path';
 
 function toArray(value) {
   if (Array.isArray(value)) {

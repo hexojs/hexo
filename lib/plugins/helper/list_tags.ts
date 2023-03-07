@@ -1,4 +1,4 @@
-import {url_for, escapeHTML} from 'hexo-util';
+import { url_for, escapeHTML } from 'hexo-util';
 import moize from 'moize';
 
 function listTagsHelper(tags, options?) {

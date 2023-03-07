@@ -1,4 +1,4 @@
-import {url_for} from 'hexo-util';
+import { url_for } from 'hexo-util';
 
 function listPostsHelper(posts, options) {
   if (!options && (!posts || !Object.prototype.hasOwnProperty.call(posts, 'length'))) {

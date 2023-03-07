@@ -1,9 +1,9 @@
-import {timezone, toDate, isExcludedFile, isMatch} from './common';
+import { timezone, toDate, isExcludedFile, isMatch } from './common';
 import Promise from 'bluebird';
-import {parse as yfm} from 'hexo-front-matter';
-import {extname, relative} from 'path';
-import {Pattern} from 'hexo-util';
-import {magenta} from 'picocolors';
+import { parse as yfm } from 'hexo-front-matter';
+import { extname, relative } from 'path';
+import { Pattern } from 'hexo-util';
+import { magenta } from 'picocolors';
 
 export = ctx => {
   return {

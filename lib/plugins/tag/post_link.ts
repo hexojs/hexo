@@ -1,5 +1,5 @@
-import {encodeURL, escapeHTML} from 'hexo-util';
-import {postFindOneFactory} from './';
+import { encodeURL, escapeHTML } from 'hexo-util';
+import { postFindOneFactory } from './';
 
 /**
  * Post link tag

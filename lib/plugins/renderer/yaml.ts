@@ -1,5 +1,5 @@
 import yaml from 'js-yaml';
-import {escape} from 'hexo-front-matter';
+import { escape } from 'hexo-front-matter';
 import logger from 'hexo-log';
 
 let schema = {};

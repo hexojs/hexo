@@ -1,5 +1,5 @@
 import img from './img';
-import {encodeURL} from 'hexo-util';
+import { encodeURL } from 'hexo-util';
 
 /**
  * Asset image tag

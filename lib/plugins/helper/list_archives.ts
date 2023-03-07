@@ -1,5 +1,5 @@
-import {toMomentLocale} from './date';
-import {url_for} from 'hexo-util';
+import { toMomentLocale } from './date';
+import { url_for } from 'hexo-util';
 
 interface Options {
   format?: string;

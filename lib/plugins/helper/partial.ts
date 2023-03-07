@@ -1,4 +1,4 @@
-import {dirname, join} from 'path';
+import { dirname, join } from 'path';
 
 interface Options {
   cache?: boolean | string;

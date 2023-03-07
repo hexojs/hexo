@@ -1,4 +1,4 @@
-import {htmlTag} from 'hexo-util';
+import { htmlTag } from 'hexo-util';
 import moize from 'moize';
 
 interface Options {

@@ -1,4 +1,4 @@
-import {EventEmitter} from 'events';
+import { EventEmitter } from 'events';
 import Promise from 'bluebird';
 import Stream from 'stream';
 const { Readable } = Stream;
