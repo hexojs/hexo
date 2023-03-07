@@ -176,6 +176,9 @@ async function init() {
   if (await exists(resolve(testDir, 'node_modules'))) await rmdir(resolve(testDir, 'node_modules'));
   await spawnAsync(npmScript, ['install', '--silent'], { cwd: testDir });
 
+  log.info('Build hexo');
+  await spawnAsync(npmScript, ['run', 'build'], { cwd: testDir });
+
   log.info('Replacing hexo');
   await rmdir(resolve(testDir, 'node_modules', 'hexo'));
 
