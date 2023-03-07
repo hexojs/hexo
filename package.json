@@ -2,7 +2,7 @@
   "name": "hexo",
   "version": "6.3.0",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
-  "main": "lib/hexo",
+  "main": "dist/hexo",
   "bin": {
     "hexo": "./bin/hexo"
   },
@@ -16,12 +16,8 @@
     "test-cov": "c8 --reporter=lcovonly npm test -- --no-parallel",
     "prepare": "husky install"
   },
-  "directories": {
-    "lib": "./lib",
-    "bin": "./bin"
-  },
   "files": [
-    "lib/",
+    "dist/",
     "bin/"
   ],
   "repository": "hexojs/hexo",

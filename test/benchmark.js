@@ -22,9 +22,7 @@ const isWin32 = require('os').platform() === 'win32';
 const npmScript = isWin32 ? 'npm.cmd' : 'npm';
 
 const testDir = resolve('.tmp-hexo-theme-unit-test');
-const zeroEksDir = process.env.TRAVIS_BUILD_DIR
-  ? join(process.env.TRAVIS_BUILD_DIR, '0x')
-  : resolve(testDir, '0x');
+const zeroEksDir = resolve(testDir, '0x');
 const hexoBin = resolve(testDir, 'node_modules/.bin/hexo');
 
 const isGitHubActions = process.env.GITHUB_ACTIONS;
