@@ -121,8 +121,8 @@ interface Query {
 declare module 'module' {
   function _nodeModulePaths(path: string): string[];
   function _resolveFilename(request: string, parent: Module, isMain?: any, options?: any): string;
-  const _extensions: NodeJS.RequireExtensions;
-  const _cache: any;
+  const _extensions: NodeJS.RequireExtensions,
+  _cache: any;
 }
 
 class Hexo extends EventEmitter {
@@ -351,7 +351,7 @@ class Hexo extends EventEmitter {
     }
   }
 
-  loadPlugin(path: string, callback: Function) {
+  loadPlugin(path: string, callback: (...args: any[]) => any) {
     return readFile(path).then(script => {
       // Based on: https://github.com/joyent/node/blob/v0.10.33/src/node.js#L516
       const module = new Module(path);
