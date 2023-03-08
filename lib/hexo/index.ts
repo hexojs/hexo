@@ -93,14 +93,12 @@ const createLoadThemeRoute = function(generatorResult, locals, ctx) {
   };
 };
 
-function debounce(func, wait) {
-  let timeout;
+function debounce(func: () => void, wait: number) {
+  let timeout: NodeJS.Timeout;
   return function() {
-    const context = this;
-    const args = arguments;
     clearTimeout(timeout);
     timeout = setTimeout(() => {
-      func.apply(context, args);
+      func.apply(this);
     }, wait);
   };
 }
