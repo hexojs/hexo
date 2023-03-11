@@ -122,7 +122,7 @@ declare module 'module' {
   function _nodeModulePaths(path: string): string[];
   function _resolveFilename(request: string, parent: Module, isMain?: any, options?: any): string;
   const _extensions: NodeJS.RequireExtensions,
-  _cache: any;
+    _cache: any;
 }
 
 class Hexo extends EventEmitter {
@@ -325,6 +325,7 @@ class Hexo extends EventEmitter {
 
     const c = this.extend.console.get(name);
 
+    // eslint-disable-next-line no-extra-parens
     if (c) return (Reflect.apply(c, this, [args]) as any).asCallback(callback);
     return Promise.reject(new Error(`Console \`${name}\` has not been registered yet!`));
   }

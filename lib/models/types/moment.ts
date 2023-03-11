@@ -4,6 +4,7 @@ import { moment, toMomentLocale } from '../../plugins/helper/date';
 declare module 'moment' {
   export default interface Moment extends moment.Moment {
     _d: Date;
+  // eslint-disable-next-line semi
   }
 }
 

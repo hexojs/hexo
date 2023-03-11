@@ -48,6 +48,7 @@ function deployConsole(args) {
 
     this.log.info('Deploying: %s', magenta(type));
 
+    // eslint-disable-next-line no-extra-parens
     return (Reflect.apply(deployers[type], this, [{ ...item, ...args }]) as any).then(() => {
       this.log.info('Deploy done: %s', magenta(type));
     });

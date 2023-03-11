@@ -40,12 +40,14 @@ class View {
     this._precompile();
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   render(options: Options | Function = {}, callback) {
     if (!callback && typeof options === 'function') {
       callback = options;
       options = {};
     }
     const { data } = this;
+    // eslint-disable-next-line no-extra-parens
     const { layout = (options as Options).layout } = data;
     const locals = this._buildLocals(options);
 
