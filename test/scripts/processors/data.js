@@ -5,10 +5,10 @@ const { mkdirs, rmdir, unlink, writeFile } = require('hexo-fs');
 const { join } = require('path');
 
 describe('data', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const baseDir = join(__dirname, 'data_test');
   const hexo = new Hexo(baseDir);
-  const processor = require('../../../lib/plugins/processor/data')(hexo);
+  const processor = require('../../../dist/plugins/processor/data')(hexo);
   const process = Promise.method(processor.process).bind(hexo);
   const { source } = hexo;
   const { File } = source;

@@ -6,7 +6,7 @@ const yaml = require('js-yaml');
 const { spy, assert: sinonAssert } = require('sinon');
 
 describe('Render', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'render_test'));
 
   hexo.config.meta_generator = false;

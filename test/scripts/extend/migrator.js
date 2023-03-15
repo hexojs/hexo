@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Migrator', () => {
-  const Migrator = require('../../../lib/extend/migrator');
+  const Migrator = require('../../../dist/extend/migrator');
 
   it('register()', () => {
     const d = new Migrator();

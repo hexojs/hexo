@@ -1,7 +1,7 @@
 'use strict';
 
 describe('relative_url', () => {
-  const relativeURL = require('../../../lib/plugins/helper/relative_url');
+  const relativeURL = require('../../../dist/plugins/helper/relative_url');
 
   it('from root', () => {
     relativeURL('', 'css/style.css').should.eql('css/style.css');

@@ -5,9 +5,9 @@ const { join, dirname } = require('path');
 const Promise = require('bluebird');
 
 describe('Load plugins', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'plugin_test'), { silent: true });
-  const loadPlugins = require('../../../lib/hexo/load_plugins');
+  const loadPlugins = require('../../../dist/hexo/load_plugins');
 
   const script = [
     'hexo._script_test = {',

@@ -10,7 +10,7 @@ const fixture = require('../../fixtures/post_render');
 const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
 describe('Post', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'post_test'));
   require('../../../lib/plugins/highlight/')(hexo);
   const { post } = hexo;

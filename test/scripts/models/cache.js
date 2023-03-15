@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Cache', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo();
   const Cache = hexo.model('Cache');
 

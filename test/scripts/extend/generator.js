@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Generator', () => {
-  const Generator = require('../../../lib/extend/generator');
+  const Generator = require('../../../dist/extend/generator');
 
   it('register()', () => {
     const g = new Generator();

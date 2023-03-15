@@ -4,9 +4,9 @@ const { join } = require('path');
 const { exists, mkdirs, rmdir, unlink, writeFile } = require('hexo-fs');
 
 describe('Load database', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'db_test'), {silent: true});
-  const loadDatabase = require('../../../lib/hexo/load_database');
+  const loadDatabase = require('../../../dist/hexo/load_database');
   const dbPath = hexo.database.options.path;
 
   const fixture = {
@@ -63,9 +63,9 @@ describe('Load database', () => {
 // Clean-up is not necessary (unlike the above tests),
 // because the db file is already removed if invalid
 describe('Load database - load failed', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname), {silent: true});
-  const loadDatabase = require('../../../lib/hexo/load_database');
+  const loadDatabase = require('../../../dist/hexo/load_database');
   const dbPath = hexo.database.options.path;
 
   it('database load failed', async () => {

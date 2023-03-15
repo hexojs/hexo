@@ -5,7 +5,7 @@ const { spawn } = require('child_process');
 const { spawn: spawnAsync } = require('hexo-util');
 const { rmdir, exists } = require('hexo-fs');
 const { appendFileSync: appendFile } = require('fs');
-const { join, resolve } = require('path');
+const { resolve } = require('path');
 const log = require('hexo-log').default();
 const { red } = require('picocolors');
 const hooks = [
@@ -22,9 +22,7 @@ const isWin32 = require('os').platform() === 'win32';
 const npmScript = isWin32 ? 'npm.cmd' : 'npm';
 
 const testDir = resolve('.tmp-hexo-theme-unit-test');
-const zeroEksDir = process.env.TRAVIS_BUILD_DIR
-  ? join(process.env.TRAVIS_BUILD_DIR, '0x')
-  : resolve(testDir, '0x');
+const zeroEksDir = resolve(testDir, '0x');
 const hexoBin = resolve(testDir, 'node_modules/.bin/hexo');
 
 const isGitHubActions = process.env.GITHUB_ACTIONS;
@@ -175,6 +173,9 @@ async function init() {
   // Always re-install dependencies
   if (await exists(resolve(testDir, 'node_modules'))) await rmdir(resolve(testDir, 'node_modules'));
   await spawnAsync(npmScript, ['install', '--silent'], { cwd: testDir });
+
+  log.info('Build hexo');
+  await spawnAsync(npmScript, ['run', 'build']);
 
   log.info('Replacing hexo');
   await rmdir(resolve(testDir, 'node_modules', 'hexo'));

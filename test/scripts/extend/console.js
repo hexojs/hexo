@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Console', () => {
-  const Console = require('../../../lib/extend/console');
+  const Console = require('../../../dist/extend/console');
 
   it('register()', () => {
     const c = new Console();

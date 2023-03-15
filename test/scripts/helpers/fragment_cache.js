@@ -1,9 +1,9 @@
 'use strict';
 
 describe('fragment_cache', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
-  const fragment_cache = require('../../../lib/plugins/helper/fragment_cache')(hexo);
+  const fragment_cache = require('../../../dist/plugins/helper/fragment_cache')(hexo);
 
   fragment_cache.call({cache: true}, 'foo', () => 123);
 

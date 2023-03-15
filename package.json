@@ -2,22 +2,22 @@
   "name": "hexo",
   "version": "6.3.0",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
-  "main": "lib/hexo",
+  "main": "dist/hexo",
   "bin": {
     "hexo": "./bin/hexo"
   },
   "scripts": {
-    "eslint": "eslint .",
-    "test": "mocha test/index.js",
+    "prepublish ": "npm run clean && npm run build",
+    "build": "tsc -b",
+    "clean": "tsc -b --clean",
+    "eslint": "eslint lib test",
+    "pretest": "npm run clean && npm run build",
+    "test": "mocha test/index.js --require ts-node/register",
     "test-cov": "c8 --reporter=lcovonly npm test -- --no-parallel",
     "prepare": "husky install"
   },
-  "directories": {
-    "lib": "./lib",
-    "bin": "./bin"
-  },
   "files": [
-    "lib/",
+    "dist/",
     "bin/"
   ],
   "repository": "hexojs/hexo",
@@ -44,7 +44,7 @@
     "bluebird": "^3.7.2",
     "hexo-cli": "^4.3.0",
     "hexo-front-matter": "^4.0.0",
-    "hexo-fs": "^4.0.0",
+    "hexo-fs": "^4.1.1",
     "hexo-i18n": "^2.0.0",
     "hexo-log": "^4.0.1",
     "hexo-util": "^3.0.1",
@@ -66,6 +66,10 @@
   },
   "devDependencies": {
     "@easyops/git-exec-and-restage": "^1.0.4",
+    "@types/bluebird": "^3.5.37",
+    "@types/node": "^18.11.8",
+    "@typescript-eslint/eslint-plugin": "^5.41.0",
+    "@typescript-eslint/parser": "^5.41.0",
     "0x": "^5.1.2",
     "c8": "^7.12.0",
     "chai": "^4.3.6",
@@ -77,7 +81,9 @@
     "husky": "^8.0.1",
     "lint-staged": "^13.0.3",
     "mocha": "^10.0.0",
-    "sinon": "^15.0.0"
+    "sinon": "^15.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.4"
   },
   "engines": {
     "node": ">=14"

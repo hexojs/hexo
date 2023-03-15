@@ -6,7 +6,7 @@ const moment = require('moment');
 const { fake, assert: sinonAssert } = require('sinon');
 
 describe('View', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'theme_test'));
   const themeDir = join(hexo.base_dir, 'themes', 'test');
   const { compile } = Object.assign({}, hexo.extend.renderer.store.njk);

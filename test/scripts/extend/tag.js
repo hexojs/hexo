@@ -3,7 +3,7 @@
 const { spy } = require('sinon');
 
 describe('Tag', () => {
-  const Tag = require('../../../lib/extend/tag');
+  const Tag = require('../../../dist/extend/tag');
   const tag = new Tag();
 
   it('register()', async () => {
