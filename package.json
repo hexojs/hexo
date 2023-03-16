@@ -20,6 +20,7 @@
     "dist/",
     "bin/"
   ],
+  "types": "./dist/hexo/index.d.ts",
   "repository": "hexojs/hexo",
   "homepage": "https://hexo.io/",
   "funding": {
