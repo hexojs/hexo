@@ -3,6 +3,8 @@ import abbrev from 'abbrev';
 
 type Option = Partial<{
   usage: string;
+  desc: string;
+  init: boolean;
   arguments: {
       name: string;
       desc: string;

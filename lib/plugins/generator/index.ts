@@ -1,4 +1,6 @@
-export = ctx => {
+import Hexo from '../../hexo';
+
+export = (ctx: Hexo) => {
   const { generator } = ctx.extend;
 
   generator.register('asset', require('./asset'));

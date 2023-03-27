@@ -1,4 +1,6 @@
-export = ctx => {
+import Hexo from '../../hexo';
+
+export = (ctx: Hexo) => {
   const { filter } = ctx.extend;
 
   require('./after_render')(ctx);
