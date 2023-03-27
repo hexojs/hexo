@@ -1,10 +1,32 @@
-interface Options {
-  context?: any;
-  args?: any;
+import Hexo from '../hexo';
+
+export interface HighlightOptions {
+  // plulgins/filter/before_post_render/backtick_code_block
+  lang: string,
+  caption: string,
+  lines_length?: number,
+  firstLineNumber?: string | number
+
+
+  language_attr?: boolean;
+  firstLine?: number;
+  line_number?: boolean;
+  line_threshold?: number;
+  mark?: number[];
+  wrap?: boolean;
+
+}
+
+interface HighlightExecArgs {
+  context?: Hexo;
+  args?: [
+    content: string,
+    options: HighlightOptions,
+  ];
 }
 
 interface StoreFunction {
-  (...args: any[]): any;
+  (content: string, options: HighlightOptions): string;
   priority?: number;
 }
 
@@ -29,7 +51,7 @@ class SyntaxHighlight {
     return name && this.store[name];
   }
 
-  exec(name: string, options: Options) {
+  exec(name: string, options: HighlightExecArgs): string {
     const fn = this.store[name];
 
     if (!fn) throw new TypeError(`syntax highlighter ${name} is not registered`);
@@ -40,4 +62,4 @@ class SyntaxHighlight {
   }
 }
 
-export = SyntaxHighlight;
+export default SyntaxHighlight;

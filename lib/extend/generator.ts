@@ -1,8 +1,16 @@
 import Promise from 'bluebird';
 
+interface StoreFunction {
+  (...args: any[]): any;
+}
+
+interface Store {
+  [key: string]: StoreFunction
+}
+
 class Generator {
-  public id: any;
-  public store: any;
+  public id: number;
+  public store: Store;
 
   constructor() {
     this.id = 0;
@@ -17,9 +25,11 @@ class Generator {
     return this.store[name];
   }
 
-  register(name, fn) {
+  register(fn: StoreFunction): void
+  register(name: string, fn: StoreFunction): void
+  register(name: string | StoreFunction, fn?: StoreFunction) {
     if (!fn) {
-      if (typeof name === 'function') {
+      if (typeof name === 'function') { // fn
         fn = name;
         name = `generator-${this.id++}`;
       } else {
@@ -28,7 +38,7 @@ class Generator {
     }
 
     if (fn.length > 1) fn = Promise.promisify(fn);
-    this.store[name] = Promise.method(fn);
+    this.store[name as string] = Promise.method(fn);
   }
 }
 
