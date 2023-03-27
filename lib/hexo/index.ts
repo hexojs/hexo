@@ -117,6 +117,25 @@ interface Query {
   published?: boolean;
 }
 
+interface Extend {
+  console: Console,
+  deployer: Deployer,
+  filter: Filter,
+  generator: Generator,
+  helper: Helper,
+  highlight: Highlight,
+  injector: Injector,
+  migrator: Migrator,
+  processor: Processor,
+  renderer: Renderer,
+  tag: Tag
+}
+
+type DefaultConfigType = typeof defaultConfig;
+interface Config extends DefaultConfigType {
+  [key: string]: any;
+}
+
 // Node.js internal APIs
 declare module 'module' {
   function _nodeModulePaths(path: string): string[];
@@ -126,32 +145,31 @@ declare module 'module' {
 }
 
 class Hexo extends EventEmitter {
-  public base_dir: any;
-  public public_dir: any;
-  public source_dir: any;
-  public plugin_dir: any;
-  public script_dir: any;
-  public scaffold_dir: any;
-  public theme_dir: any;
-  public theme_script_dir: any;
+  public base_dir: string;
+  public public_dir: string;
+  public source_dir: string;
+  public plugin_dir: string;
+  public script_dir: string;
+  public scaffold_dir: string;
+  public theme_dir: string;
+  public theme_script_dir: string;
   public env: any;
-  public extend: any;
-  public config: any;
-  public log: any;
-  public render: any;
-  public route: any;
-  public post: any;
-  public scaffold: any;
-  public _dbLoaded: any;
-  public _isGenerating: any;
+  public extend: Extend;
+  public config: Config;
+  public log: ReturnType<typeof logger>;
+  public render: Render;
+  public route: Router;
+  public post: Post;
+  public scaffold: Scaffold;
+  public _dbLoaded: boolean;
+  public _isGenerating: boolean;
   public database: Database;
-  public config_path: any;
-  public source: any;
-  public theme: any;
-  public locals: any;
-  public version: any;
-  public emit: any;
-  public _watchBox: any;
+  public config_path: string;
+  public source: Source;
+  public theme: Theme;
+  public locals: Locals;
+  public version: string;
+  public _watchBox: () => void;
   public page: any;
   public path: any;
   public url: any;
