@@ -12,7 +12,7 @@ interface FilterOptions {
 }
 
 interface StoreFunction {
-  (...args: any[]): any;
+  (data?: any, ...args: any[]): any;
   priority?: number;
 }
 

@@ -1,8 +1,9 @@
 import Promise from 'bluebird';
 import { Pattern } from 'hexo-util';
+import File from '../box/file';
 
 interface StoreFunction {
-  (args: any): any
+  (file: File): any
 }
 
 type Store = {
@@ -41,7 +42,7 @@ class Processor {
     }
 
     this.store.push({
-      pattern: new Pattern(pattern),
+      pattern: new Pattern(pattern as patternType),
       process: fn
     });
   }

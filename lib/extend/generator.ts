@@ -1,7 +1,21 @@
 import Promise from 'bluebird';
 
+interface BaseObj {
+  path: string;
+  data: any;
+  layout?: string;
+}
+type ReturnType = BaseObj | BaseObj[];
+type GeneratorReturnType = ReturnType | Promise<ReturnType>;
+
+interface GeneratorFunction {
+  (locals: object): GeneratorReturnType;
+}
+
+type StoreFunctionReturn = Promise<ReturnType>;
+
 interface StoreFunction {
-  (...args: any[]): any;
+  (locals: object): StoreFunctionReturn;
 }
 
 interface Store {
@@ -25,9 +39,9 @@ class Generator {
     return this.store[name];
   }
 
-  register(fn: StoreFunction): void
-  register(name: string, fn: StoreFunction): void
-  register(name: string | StoreFunction, fn?: StoreFunction) {
+  register(fn: GeneratorFunction): void
+  register(name: string, fn: GeneratorFunction): void
+  register(name: string | GeneratorFunction, fn?: GeneratorFunction) {
     if (!fn) {
       if (typeof name === 'function') { // fn
         fn = name;

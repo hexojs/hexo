@@ -15,7 +15,11 @@ type Option = Partial<{
   }[];
 }>
 
-type AnyFn = (args: any[]) => any;
+interface Args {
+  _: string[];
+  [key: string]: string | boolean | string[];
+}
+type AnyFn = (args: Args) => any;
 interface StoreFunction extends AnyFn {
   desc?: string;
   options?: Option;
