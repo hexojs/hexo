@@ -20,5 +20,10 @@ module.exports = function(code, options) {
 
   if (!prismHighlight) prismHighlight = require('hexo-util').prismHighlight;
 
-  return prismHighlight(code, prismjsOptions);
+  if (Array.isArray(prismjsCfg.exclude_languages) && prismjsCfg.exclude_languages.includes(prismjsOptions.lang)) {
+    // Only wrap with <pre><code class="lang"></code></pre>
+    return `<pre><code class="${prismjsOptions.lang}">${require('hexo-util').escapeHTML(code)}</code></pre>`;
+  } else {
+    return prismHighlight(code, prismjsOptions);
+  }
 };
