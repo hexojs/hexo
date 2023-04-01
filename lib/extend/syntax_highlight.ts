@@ -1,28 +1,26 @@
 import type Hexo from '../hexo';
 
 export interface HighlightOptions {
+  lang: string | undefined,
+  caption: string | undefined,
+  lines_length: number,
+
   // plulgins/filter/before_post_render/backtick_code_block
-  lang: string,
-  caption: string,
-  lines_length?: number,
   firstLineNumber?: string | number
 
-
-  language_attr?: boolean;
+  // plugins/tag/code.ts
+  language_attr?: boolean | undefined;
   firstLine?: number;
-  line_number?: boolean;
-  line_threshold?: number;
+  line_number?: boolean | undefined;
+  line_threshold?: number | undefined;
   mark?: number[];
-  wrap?: boolean;
+  wrap?: boolean | undefined;
 
 }
 
 interface HighlightExecArgs {
   context?: Hexo;
-  args?: [
-    content: string,
-    options: HighlightOptions,
-  ];
+  args?: [string, HighlightOptions];
 }
 
 interface StoreFunction {
