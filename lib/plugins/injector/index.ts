@@ -1,4 +1,4 @@
-import Hexo from '../../hexo';
+import type Hexo from '../../hexo';
 
 export = (ctx: Hexo) => {
   // eslint-disable-next-line no-unused-vars

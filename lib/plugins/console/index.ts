@@ -1,4 +1,4 @@
-import Hexo from '../../hexo';
+import type Hexo from '../../hexo';
 
 export = function(ctx: Hexo) {
   const { console } = ctx.extend;

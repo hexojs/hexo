@@ -1,4 +1,4 @@
-import Hexo from '../../hexo';
+import type Hexo from '../../hexo';
 
 export = (ctx: Hexo) => {
   const { filter } = ctx.extend;

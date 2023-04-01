@@ -1,4 +1,4 @@
-import Hexo from '../hexo';
+import type Hexo from '../hexo';
 
 export interface HighlightOptions {
   // plulgins/filter/before_post_render/backtick_code_block
