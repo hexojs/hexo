@@ -3,9 +3,7 @@
   "version": "7.0.0-rc1",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
   "main": "dist/hexo",
-  "bin": {
-    "hexo": "./bin/hexo"
-  },
+  "bin": "./bin/hexo",
   "scripts": {
     "prepublish ": "npm run clean && npm run build",
     "build": "tsc -b",
