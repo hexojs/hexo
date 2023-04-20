@@ -11,20 +11,20 @@ function findYarnRootWorkspace(ctx: { base_dir: string }) {
 
   /**
    * extract workspaces from package.json
-   * @param {Record<string,any>} manifest
+   * @param manifest
    * @returns
    */
-  const extractWorkspaces = function(manifest) {
+  const extractWorkspaces = function(manifest: Record<string, any>) {
     const workspaces = (manifest || {}).workspaces;
     return (workspaces && workspaces.packages) || (Array.isArray(workspaces) ? workspaces : null);
   };
 
   /**
    * read package.json from given folder
-   * @param {string} dir
-   * @returns {Record<string,any>}
+   * @param dir
+   * @returns
    */
-  const readPackageJSON = function(dir) {
+  const readPackageJSON = function(dir: string): Record<string, any> {
     const file = join(dir, 'package.json');
     if (existsSync(file)) {
       return JSON.parse(readFileSync(file).toString());
