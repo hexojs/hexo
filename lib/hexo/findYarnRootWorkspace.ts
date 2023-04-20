@@ -6,7 +6,7 @@ import { dirname, join, normalize, relative } from 'path';
  * search yarn root workspace folder
  * @param ctx
  */
-function findYarnRootWorkspace(ctx: { base_dir: string }) {
+function findYarnRootWorkspace(ctx: { base_dir: string }): string | null {
   const baseDir = ctx.base_dir;
 
   /**
