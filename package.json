@@ -66,12 +66,13 @@
     "warehouse": "^5.0.0"
   },
   "devDependencies": {
+    "0x": "^5.1.2",
     "@easyops/git-exec-and-restage": "^1.0.4",
     "@types/bluebird": "^3.5.37",
     "@types/node": "^18.11.8",
+    "@types/nunjucks": "^3.2.2",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
-    "0x": "^5.1.2",
     "c8": "^7.12.0",
     "chai": "^4.3.6",
     "cheerio": "0.22.0",

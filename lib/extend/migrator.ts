@@ -1,7 +1,14 @@
 import Promise from 'bluebird';
+interface StoreFunction {
+  (args: any): any
+}
+
+interface Store {
+  [key: string]: StoreFunction
+}
 
 class Migrator {
-  public store: any;
+  public store: Store;
 
   constructor() {
     this.store = {};
@@ -15,7 +22,7 @@ class Migrator {
     return this.store[name];
   }
 
-  register(name: string, fn) {
+  register(name: string, fn: StoreFunction) {
     if (!name) throw new TypeError('name is required');
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 

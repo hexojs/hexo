@@ -1,7 +1,15 @@
 import { Cache } from 'hexo-util';
 
+type Entry = 'head_begin' | 'head_end' | 'body_begin' | 'body_end';
+
+type Store = {
+  [key in Entry]: {
+    [key: string]: Set<unknown>;
+  };
+};
+
 class Injector {
-  public store: any;
+  public store: Store;
   public cache: any;
   public page: any;
 
@@ -20,21 +28,21 @@ class Injector {
     return this.store;
   }
 
-  get(entry, to = 'default') {
+  get(entry: Entry, to = 'default') {
     return Array.from(this.store[entry][to] || []);
   }
 
-  getText(entry, to = 'default') {
+  getText(entry: Entry, to = 'default') {
     const arr = this.get(entry, to);
     if (!arr || !arr.length) return '';
     return arr.join('');
   }
 
-  getSize(entry) {
+  getSize(entry: Entry) {
     return this.cache.apply(`${entry}-size`, Object.keys(this.store[entry]).length);
   }
 
-  register(entry, value, to = 'default') {
+  register(entry: Entry, value: string | (() => string), to = 'default') {
     if (!entry) throw new TypeError('entry is required');
     if (typeof value === 'function') value = value();
 

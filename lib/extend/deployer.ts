@@ -1,7 +1,17 @@
 import Promise from 'bluebird';
 
+interface StoreFunction {
+  (deployArg: {
+    type: string;
+    [key: string]: any
+  }) : any;
+}
+interface Store {
+  [key: string]: StoreFunction
+}
+
 class Deployer {
-  public store: any;
+  public store: Store;
 
   constructor() {
     this.store = {};
@@ -15,7 +25,7 @@ class Deployer {
     return this.store[name];
   }
 
-  register(name: string, fn) {
+  register(name: string, fn: StoreFunction) {
     if (!name) throw new TypeError('name is required');
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 

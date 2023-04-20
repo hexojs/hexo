@@ -8,11 +8,11 @@ const typeAlias = {
 
 interface FilterOptions {
   context?: any;
-  args?: any;
+  args?: any[];
 }
 
 interface StoreFunction {
-  (...args: any[]): any;
+  (data?: any, ...args: any[]): any;
   priority?: number;
 }
 
@@ -34,8 +34,11 @@ class Filter {
     return this.store[type] || [];
   }
 
-  register(fn: StoreFunction, priority: number);
-  register(type?: string | StoreFunction, fn?: StoreFunction | number, priority?: number) {
+  register(fn: StoreFunction): void
+  register(fn: StoreFunction, priority: number): void
+  register(type: string, fn: StoreFunction): void
+  register(type: string, fn: StoreFunction, priority: number): void
+  register(type: string | StoreFunction, fn?: StoreFunction | number, priority?: number) {
     if (!priority) {
       if (typeof type === 'function') {
         priority = fn as number;
@@ -72,7 +75,7 @@ class Filter {
     if (index !== -1) list.splice(index, 1);
   }
 
-  exec(type: string, data, options: FilterOptions = {}) {
+  exec(type: string, data: any[], options: FilterOptions = {}) {
     const filters = this.list(type);
     if (filters.length === 0) return Promise.resolve(data);
 
@@ -87,7 +90,7 @@ class Filter {
     })).then(() => args[0]);
   }
 
-  execSync(type: string, data, options: FilterOptions = {}) {
+  execSync(type: string, data: any[], options: FilterOptions = {}) {
     const filters = this.list(type);
     const filtersLen = filters.length;
     if (filtersLen === 0) return data;

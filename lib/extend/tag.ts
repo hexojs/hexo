@@ -6,11 +6,18 @@ const rSwigRawFullBlock = /{% *raw *%}/;
 const rCodeTag = /<code[^<>]*>[\s\S]+?<\/code>/g;
 const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
-class NunjucksTag {
-  public tags: any;
-  public fn: any;
+interface TagFunction {
+  (args: any[], content: string): string;
+}
+interface AsyncTagFunction {
+  (args: any[], content: string): Promise<string>;
+}
 
-  constructor(name, fn) {
+class NunjucksTag {
+  public tags: string[];
+  public fn: TagFunction | AsyncTagFunction;
+
+  constructor(name: string, fn: TagFunction | AsyncTagFunction) {
     this.tags = [name];
     this.fn = fn;
   }
@@ -186,6 +193,11 @@ const formatNunjucksError = (err, input, source = '') => {
   return e;
 };
 
+type RegisterOptions = {
+  async?: boolean;
+  ends?: boolean;
+}
+
 class Tag {
   public env: any;
   public source: any;
@@ -196,27 +208,31 @@ class Tag {
     });
   }
 
-  register(name, fn, options) {
+  register(name: string, fn: TagFunction): void
+  register(name: string, fn: TagFunction, ends: boolean): void
+  register(name: string, fn: TagFunction, options: RegisterOptions): void
+  register(name: string, fn: TagFunction, options?: RegisterOptions | boolean) {
     if (!name) throw new TypeError('name is required');
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 
     if (options == null || typeof options === 'boolean') {
-      options = { ends: options };
+      options = { ends: options as boolean };
     }
 
-    let tag;
+    let tag: NunjucksTag;
 
     if (options.async) {
+      let asyncFn: AsyncTagFunction;
       if (fn.length > 2) {
-        fn = Promise.promisify(fn);
+        asyncFn = Promise.promisify(fn);
       } else {
-        fn = Promise.method(fn);
+        asyncFn = Promise.method(fn);
       }
 
       if (options.ends) {
-        tag = new NunjucksAsyncBlock(name, fn);
+        tag = new NunjucksAsyncBlock(name, asyncFn);
       } else {
-        tag = new NunjucksAsyncTag(name, fn);
+        tag = new NunjucksAsyncTag(name, asyncFn);
       }
     } else if (options.ends) {
       tag = new NunjucksBlock(name, fn);

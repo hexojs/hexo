@@ -182,7 +182,7 @@ class Box extends EventEmitter {
     }).thenReturn(path);
   }
 
-  watch(callback) {
+  watch(callback?) {
     if (this.isWatching()) {
       return BlueBirdPromise.reject(new Error('Watcher has already started.')).asCallback(callback);
     }
