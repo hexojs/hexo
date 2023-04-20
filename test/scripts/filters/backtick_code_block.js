@@ -635,5 +635,20 @@ describe('Backtick code block', () => {
       codeBlock(data);
       data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
     });
+
+    it('prism only wrap with pre and code', () => {
+      hexo.config.prismjs.exclude_languages = ['js'];
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+      const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
+      const expected = `<pre><code class="js">${escapeSwigTag(util.escapeHTML(code))}</code></pre>`;
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
   });
 });

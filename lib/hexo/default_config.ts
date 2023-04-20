@@ -51,7 +51,8 @@ export = {
   prismjs: {
     preprocess: true,
     line_number: true,
-    tab_replace: ''
+    tab_replace: '',
+    exclude_languages: []
   },
   // Category & Tag
   default_category: 'uncategorized',
