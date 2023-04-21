@@ -1,6 +1,6 @@
 name: Commenter
 
-on: [pull_request_target]
+on: [pull_request_target, workflow_dispatch]
 
 permissions:
   contents: read
