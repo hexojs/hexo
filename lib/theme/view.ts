@@ -1,6 +1,6 @@
-import { dirname, extname, join } from 'path';
-import { parse as yfm } from 'hexo-front-matter';
 import Promise from 'bluebird';
+import { parse as yfm } from 'hexo-front-matter';
+import { dirname, extname, join } from 'path';
 
 const assignIn = (target, ...sources) => {
   const length = sources.length;
@@ -35,7 +35,7 @@ class View {
   constructor(path, data) {
     this.path = path;
     this.source = join(this._theme.base, 'layout', path);
-    this.data = typeof data === 'string' ? yfm(data) : data;
+    this.data = typeof data === 'string' ? yfm(data, {}) : data;
 
     this._precompile();
   }

@@ -1,10 +1,10 @@
-import { toDate, timezone, isExcludedFile, isTmpFile, isHiddenFile, isMatch } from './common';
 import Promise from 'bluebird';
 import { parse as yfm } from 'hexo-front-matter';
+import { listDir, stat } from 'hexo-fs';
+import { Pattern, Permalink, slugize } from 'hexo-util';
 import { extname, join } from 'path';
-import { stat, listDir } from 'hexo-fs';
-import { slugize, Pattern, Permalink } from 'hexo-util';
 import { magenta } from 'picocolors';
+import { isExcludedFile, isHiddenFile, isMatch, isTmpFile, timezone, toDate } from './common';
 
 const postDir = '_posts/';
 const draftDir = '_drafts/';
@@ -87,7 +87,7 @@ function processPost(ctx, file) {
     file.stat(),
     file.read()
   ]).spread((stats, content) => {
-    const data = yfm(content);
+    const data = yfm(content, {});
     const info = parseFilename(config.new_post_name, path);
     const keys = Object.keys(info);
 

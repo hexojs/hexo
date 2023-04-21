@@ -1,12 +1,12 @@
 import assert from 'assert';
-import moment from 'moment';
 import Promise from 'bluebird';
-import { join, extname, basename } from 'path';
-import { magenta } from 'picocolors';
-import { load } from 'js-yaml';
-import { slugize, escapeRegExp } from 'hexo-util';
-import { copyDir, exists, listDir, mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
 import { parse as yfmParse, split as yfmSplit, stringify as yfmStringify } from 'hexo-front-matter';
+import { copyDir, exists, listDir, mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
+import { escapeRegExp, slugize } from 'hexo-util';
+import { load } from 'js-yaml';
+import moment from 'moment';
+import { basename, extname, join } from 'path';
+import { magenta } from 'picocolors';
 const preservedKeys = ['title', 'slug', 'path', 'layout', 'date', 'content'];
 
 const rHexoPostRenderEscape = /<hexoPostRenderCodeBlock>([\s\S]+?)<\/hexoPostRenderCodeBlock>/g;
@@ -356,7 +356,7 @@ class Post {
       return readFile(src);
     }).then(content => {
       // Create post
-      Object.assign(data, yfmParse(content));
+      Object.assign(data, yfmParse(String(content), {}));
       data.content = data._content;
       data._content = undefined;
 

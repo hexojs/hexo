@@ -1,9 +1,9 @@
-import { timezone, toDate, isExcludedFile, isMatch } from './common';
 import Promise from 'bluebird';
 import { parse as yfm } from 'hexo-front-matter';
-import { extname, relative } from 'path';
 import { Pattern } from 'hexo-util';
+import { extname, relative } from 'path';
 import { magenta } from 'picocolors';
+import { isExcludedFile, isMatch, timezone, toDate } from './common';
 
 export = ctx => {
   return {
@@ -49,7 +49,7 @@ function processPage(ctx, file) {
     file.stat(),
     file.read()
   ]).spread((stats, content) => {
-    const data = yfm(content);
+    const data = yfm(content, {});
     const output = ctx.render.getOutput(path);
 
     data.source = path;
