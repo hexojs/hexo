@@ -10,3 +10,4 @@ coverage/
 .tmp*
 .vscode
 dist/
+**/*findYarnRootWorkspace*
