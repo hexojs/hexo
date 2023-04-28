@@ -21,4 +21,5 @@ releases/package-lock.json
 
 # ignore dimaslanjaka/hexo#monorepo-v7
 packages/
-bin/
+bin/*
+!bin/hexo
