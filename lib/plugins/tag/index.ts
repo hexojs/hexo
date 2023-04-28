@@ -44,6 +44,9 @@ export default (ctx: Hexo) => {
   tag.register('asset_image', assetImg);
 
   tag.register('pullquote', require('./pullquote')(ctx), true);
+
+  tag.register('url_for', require('./url_for')(ctx));
+  tag.register('full_url_for', require('./full_url_for')(ctx));
 };
 
 // Use WeakMap to track different ctx (in case there is any)
