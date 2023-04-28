@@ -13,5 +13,5 @@ export = ctx => {
       href: url
     };
     return htmlTag('a', attrs, text);
-  }
+  };
 };
