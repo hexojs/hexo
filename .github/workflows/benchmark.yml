@@ -1,7 +1,6 @@
 name: Benchmark
 
 on:
-  workflow_dispatch:
   push:
     paths:
       - 'lib/**'
