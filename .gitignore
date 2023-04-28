@@ -19,6 +19,6 @@ releases/yarn.lock
 releases/.yarn
 releases/package-lock.json
 
-# ignore monorepo-v7
+# ignore dimaslanjaka/hexo#monorepo-v7
 packages/
 bin/
