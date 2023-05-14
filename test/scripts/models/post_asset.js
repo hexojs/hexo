@@ -92,7 +92,10 @@ describe('PostAsset', () => {
       slug: 'foo.html',
       post: post._id
     });
-    data.path.should.eql(join(post.path + '.htm-foo/', data.slug));
+    data.path.should.not.eql(join(post.path + '.htm-foo/', data.slug));
+    data.source.should.eql(join(hexo.base_dir, data._id));
+    // actual 2023/05/14/bar/bar/foo.html
+    data.path.should.eql(join(post.path, post.slug, data.slug));
 
     PostAsset.removeById(data._id);
   });
