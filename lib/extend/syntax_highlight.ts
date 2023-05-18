@@ -1,12 +1,12 @@
 import type Hexo from '../hexo';
 
 export interface HighlightOptions {
-  lang: string | undefined,
-  caption: string | undefined,
-  lines_length: number,
+  lang: string | undefined;
+  caption: string | undefined;
+  lines_length: number;
 
-  // plulgins/filter/before_post_render/backtick_code_block
-  firstLineNumber?: string | number
+  // plugins/filter/before_post_render/backtick_code_block
+  firstLineNumber?: string | number;
 
   // plugins/tag/code.ts
   language_attr?: boolean | undefined;
@@ -15,7 +15,6 @@ export interface HighlightOptions {
   line_threshold?: number | undefined;
   mark?: number[];
   wrap?: boolean | undefined;
-
 }
 
 interface HighlightExecArgs {
@@ -29,7 +28,7 @@ interface StoreFunction {
 }
 
 interface Store {
-  [key: string]: StoreFunction
+  [key: string]: StoreFunction;
 }
 
 class SyntaxHighlight {
@@ -52,7 +51,9 @@ class SyntaxHighlight {
   exec(name: string, options: HighlightExecArgs): string {
     const fn = this.store[name];
 
-    if (!fn) throw new TypeError(`syntax highlighter ${name} is not registered`);
+    if (!fn) {
+      throw new TypeError(`syntax highlighter ${name} is not registered`);
+    }
     const ctx = options.context;
     const args = options.args || [];
 
