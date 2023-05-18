@@ -1,11 +1,10 @@
 interface StoreFunction {
-  (...args: any[]): string;
+  (this: import('../hexo'), ...args: any[]): any;
 }
 
 interface Store {
-  [key: string]: StoreFunction
+  [key: string]: StoreFunction;
 }
-
 
 class Helper {
   public store: Store;
