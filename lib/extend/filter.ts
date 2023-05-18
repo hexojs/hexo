@@ -1,4 +1,5 @@
 import Promise from 'bluebird';
+import { extend_filter_before_post_render_data } from '../plugins/filter/before_post_render/dataType';
 
 const typeAlias = {
   pre: 'before_post_render',
@@ -17,7 +18,7 @@ interface StoreFunction {
 }
 
 interface Store {
-  [key: string]: StoreFunction[]
+  [key: string]: StoreFunction[];
 }
 
 class Filter {
@@ -34,11 +35,27 @@ class Filter {
     return this.store[type] || [];
   }
 
-  register(fn: StoreFunction): void
-  register(fn: StoreFunction, priority: number): void
-  register(type: string, fn: StoreFunction): void
-  register(type: string, fn: StoreFunction, priority: number): void
-  register(type: string | StoreFunction, fn?: StoreFunction | number, priority?: number) {
+  register(fn: StoreFunction): void;
+  register(fn: StoreFunction, priority: number): void;
+  register(type: string, fn: StoreFunction): void;
+  register(
+    type: 'server_middleware',
+    fn: (app: import('connect').Server) => void
+  ): void;
+  register(
+    type: 'before_post_render',
+    fn: (data: extend_filter_before_post_render_data) => void
+  ): void;
+  register(
+    type: 'before_post_render',
+    fn: (data: extend_filter_before_post_render_data) => Promise<void>
+  ): void;
+  register(type: string, fn: StoreFunction, priority: number): void;
+  register(
+    type: string | StoreFunction,
+    fn?: StoreFunction | number,
+    priority?: number
+  ) {
     if (!priority) {
       if (typeof type === 'function') {
         priority = fn as number;
@@ -84,10 +101,12 @@ class Filter {
 
     args.unshift(data);
 
-    return Promise.each(filters, filter => Reflect.apply(Promise.method(filter), ctx, args).then(result => {
-      args[0] = result == null ? args[0] : result;
-      return args[0];
-    })).then(() => args[0]);
+    return Promise.each(filters, filter =>
+      Reflect.apply(Promise.method(filter), ctx, args).then(result => {
+        args[0] = result == null ? args[0] : result;
+        return args[0];
+      })
+    ).then(() => args[0]);
   }
 
   execSync(type: string, data: any[], options: FilterOptions = {}) {
