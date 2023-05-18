@@ -4,14 +4,33 @@ import { Environment } from 'nunjucks';
 import Promise from 'bluebird';
 const rSwigRawFullBlock = /{% *raw *%}/;
 const rCodeTag = /<code[^<>]*>[\s\S]+?<\/code>/g;
-const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
+const escapeSwigTag = (str: string) => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
-interface TagFunction {
-  (args: any[], content: string): string;
-}
-interface AsyncTagFunction {
-  (args: any[], content: string): Promise<string>;
-}
+/**
+ * synchronous callback - shortcode tag
+ * @example
+ * // to get args type
+ * type args = Parameters<Parameters<typeof hexo.extend.tag.register>[1]>[0];
+ * // to get content type
+ * type content = Parameters<Parameters<typeof hexo.extend.tag.register>[1]>[1];
+ */
+type TagFunction =
+  | ((arg: string) => string)
+  | ((...args: any[]) => string)
+  | ((args: any[], content: string) => string);
+
+/**
+ * asynchronous callback - shortcode tag
+ * @example
+ * // to get args type
+ * type args = Parameters<Parameters<typeof hexo.extend.tag.register>[1]>[0];
+ * // to get content type
+ * type content = Parameters<Parameters<typeof hexo.extend.tag.register>[1]>[1];
+ */
+type AsyncTagFunction =
+  | ((arg: string) => PromiseLike<string> | Promise<string>)
+  | ((...args: any[]) => PromiseLike<string> | Promise<string>)
+  | ((args: any[], content: string) => PromiseLike<string> | Promise<string>);
 
 class NunjucksTag {
   public tags: string[];
@@ -57,7 +76,7 @@ class NunjucksTag {
     return node;
   }
 
-  run(context, args, body, callback) {
+  run(context, args, _body, _callback) {
     return this._run(context, args, '');
   }
 
@@ -78,14 +97,14 @@ class NunjucksBlock extends NunjucksTag {
     return new nodes.CallExtension(this, 'run', node, [body]);
   }
 
-  _parseBody(parser, nodes, lexer) {
+  _parseBody(parser, _nodes?, _lexer?) {
     const body = parser.parseUntilBlocks(`end${this.tags[0]}`);
 
     parser.advanceAfterBlockEnd();
     return body;
   }
 
-  run(context, args, body, callback) {
+  run(context, args, body, _callback?) {
     return this._run(context, args, trimBody(body));
   }
 }
@@ -145,18 +164,16 @@ const getContext = (lines, errLine, location, type) => {
 
   message.push(
     // get LINES_OF_CONTEXT lines surrounding `errLine`
-    ...getContextLineNums(1, lines.length, errLine, LINES_OF_CONTEXT)
-      .map(lnNum => {
-        const line = '  ' + lnNum + ' | ' + lines[lnNum - 1];
-        if (lnNum === errLine) {
-          return cyan(bold(line));
-        }
+    ...getContextLineNums(1, lines.length, errLine, LINES_OF_CONTEXT).map(lnNum => {
+      const line = '  ' + lnNum + ' | ' + lines[lnNum - 1];
+      if (lnNum === errLine) {
+        return cyan(bold(line));
+      }
 
-        return cyan(line);
-      })
+      return cyan(line);
+    })
   );
-  message.push(cyan(
-    '    =====             Context Dump Ends            ====='));
+  message.push(cyan('    =====             Context Dump Ends            ====='));
 
   return message;
 };
@@ -169,11 +186,11 @@ class NunjucksError extends Error {
 
 /**
  * Provide context for Nunjucks error
- * @param  {Error}    err Nunjucks error
- * @param  {string}   str string input for Nunjucks
- * @return {Error}    New error object with embedded context
+ * @param err Nunjucks error
+ * @param input string input for Nunjucks
+ * @return  New error object with embedded context
  */
-const formatNunjucksError = (err, input, source = '') => {
+const formatNunjucksError = (err: Error, input: string, source = ''): Error => {
   err.message = err.message.replace('(unknown path)', source ? magenta(source) : '');
 
   const match = err.message.match(/Line (\d+), Column \d+/);
@@ -196,10 +213,14 @@ const formatNunjucksError = (err, input, source = '') => {
 type RegisterOptions = {
   async?: boolean;
   ends?: boolean;
+};
+
+interface RegisterAsyncOptions extends RegisterOptions {
+  async: boolean;
 }
 
 class Tag {
-  public env: any;
+  public env: Environment;
   public source: any;
 
   constructor() {
@@ -208,10 +229,60 @@ class Tag {
     });
   }
 
-  register(name: string, fn: TagFunction): void
-  register(name: string, fn: TagFunction, ends: boolean): void
-  register(name: string, fn: TagFunction, options: RegisterOptions): void
-  register(name: string, fn: TagFunction, options?: RegisterOptions | boolean) {
+  /**
+   * register shortcode tag
+   * @param name shortcode tag name
+   * @param fn shortcode tag function
+   */
+  register(name: string, fn: TagFunction): void;
+
+  /**
+   * register shortcode tag with RegisterOptions.ends boolean directly
+   * @param name shortcode tag name
+   * @param fn callback shortcode tag
+   * @param ends use endblock
+   */
+  register(name: string, fn: TagFunction, ends: boolean): void;
+
+  /**
+   * register shortcode tag with synchronous function callback
+   * @param name shortcode tag name
+   * @param fn synchronous function callback
+   * @param options register options
+   */
+  register(name: string, fn: TagFunction, options: RegisterOptions): void;
+
+  /**
+   * register shortcode tag with synchronous function callback
+   * @param name shortcode tag name
+   * @param fn synchronous function callback
+   * @param options register options
+   */
+  register(name: string, fn: TagFunction, options: { async: false; ends?: boolean }): void;
+
+  /**
+   * register shortcode tag with asynchronous function callback
+   * @param name shortcode tag name
+   * @param fn asynchronous function callback
+   * @param options register options
+   */
+  register(
+    name: string,
+    fn: AsyncTagFunction,
+    options: { async: true; ends?: boolean } | { async: true; ends: boolean }
+  ): void;
+
+  /**
+   * register shortcode tag
+   * @param name shortcode tag name
+   * @param fn asynchronous or synchronous function callback
+   * @param options register options
+   */
+  register(
+    name: string,
+    fn: TagFunction | AsyncTagFunction,
+    options?: RegisterOptions | RegisterAsyncOptions | boolean
+  ) {
     if (!name) throw new TypeError('name is required');
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 
@@ -243,7 +314,11 @@ class Tag {
     this.env.addExtension(name, tag);
   }
 
-  unregister(name) {
+  /**
+   * unregister shortcode tag
+   * @param name shortcode tag name
+   */
+  unregister(name: string) {
     if (!name) throw new TypeError('name is required');
 
     const { env } = this;
@@ -251,7 +326,8 @@ class Tag {
     if (env.hasExtension(name)) env.removeExtension(name);
   }
 
-  render(str, options: { source?: string } = {}, callback) {
+  render(str: string, options: { source?: string }): Promise<string>;
+  render(str: string, options: { source?: string } = {}, callback?: (err: any, result: string) => any) {
     if (!callback && typeof options === 'function') {
       callback = options;
       options = {};
@@ -271,9 +347,10 @@ class Tag {
         options,
         cb
       );
-    }).catch(err => {
-      return Promise.reject(formatNunjucksError(err, str, source));
     })
+      .catch(err => {
+        return Promise.reject(formatNunjucksError(err, str, source));
+      })
       .asCallback(callback);
   }
 }
