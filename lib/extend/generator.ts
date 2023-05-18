@@ -9,13 +9,13 @@ type ReturnType = BaseObj | BaseObj[];
 type GeneratorReturnType = ReturnType | Promise<ReturnType>;
 
 interface GeneratorFunction {
-  (locals: object): GeneratorReturnType;
+  (locals: Record<string, any>): GeneratorReturnType;
 }
 
 type StoreFunctionReturn = Promise<ReturnType>;
 
 interface StoreFunction {
-  (locals: object): StoreFunctionReturn;
+  (locals: Record<string, any>): StoreFunctionReturn;
 }
 
 interface Store {
