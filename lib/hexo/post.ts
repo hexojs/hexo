@@ -356,7 +356,7 @@ class Post {
       return readFile(src);
     }).then(content => {
       // Create post
-      Object.assign(data, yfmParse(content));
+      Object.assign(data, yfmParse(String(content)));
       data.content = data._content;
       data._content = undefined;
 
