@@ -6,6 +6,14 @@ const rSwigRawFullBlock = /{% *raw *%}/;
 const rCodeTag = /<code[^<>]*>[\s\S]+?<\/code>/g;
 const escapeSwigTag = (str: string) => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
+interface ExtendedTagProperty {
+
+  /**
+   * current absolute file source
+   */
+  full_source: string;
+}
+
 /**
  * synchronous callback - shortcode tag
  * @example
@@ -15,9 +23,9 @@ const escapeSwigTag = (str: string) => str.replace(/{/g, '&#123;').replace(/}/g,
  * type content = Parameters<Parameters<typeof hexo.extend.tag.register>[1]>[1];
  */
 type TagFunction =
-  | ((arg: string) => string)
-  | ((...args: any[]) => string)
-  | ((args: any[], content: string) => string);
+  | ((this: ExtendedTagProperty, arg: string) => string)
+  | ((this: ExtendedTagProperty, ...args: any[]) => string)
+  | ((this: ExtendedTagProperty, args: any[], content: string) => string);
 
 /**
  * asynchronous callback - shortcode tag
@@ -28,9 +36,9 @@ type TagFunction =
  * type content = Parameters<Parameters<typeof hexo.extend.tag.register>[1]>[1];
  */
 type AsyncTagFunction =
-  | ((arg: string) => PromiseLike<string> | Promise<string>)
-  | ((...args: any[]) => PromiseLike<string> | Promise<string>)
-  | ((args: any[], content: string) => PromiseLike<string> | Promise<string>);
+  | ((this: ExtendedTagProperty, arg: string) => PromiseLike<string> | Promise<string>)
+  | ((this: ExtendedTagProperty, ...args: any[]) => PromiseLike<string> | Promise<string>)
+  | ((this: ExtendedTagProperty, args: any[], content: string) => PromiseLike<string> | Promise<string>);
 
 class NunjucksTag {
   public tags: string[];
