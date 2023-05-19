@@ -370,6 +370,14 @@ class Hexo extends EventEmitter {
     }
   }
 
+  /**
+   * load installed plugin
+   * @param path absolute path to plugin directory
+   * @param callback
+   * @returns
+   * @example
+   * hexo.loadPlugin(require.resolve('hexo-renderer-marked'));
+   */
   loadPlugin(path: string, callback?: (...args: any[]) => any) {
     return readFile(path).then(script => {
       // Based on: https://github.com/joyent/node/blob/v0.10.33/src/node.js#L516
