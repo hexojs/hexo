@@ -370,7 +370,7 @@ class Hexo extends EventEmitter {
     }
   }
 
-  loadPlugin(path: string, callback: (...args: any[]) => any) {
+  loadPlugin(path: string, callback?: (...args: any[]) => any) {
     return readFile(path).then(script => {
       // Based on: https://github.com/joyent/node/blob/v0.10.33/src/node.js#L516
       const module = new Module(path);
