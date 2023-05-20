@@ -650,5 +650,19 @@ describe('Backtick code block', () => {
       codeBlock(data);
       data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
     });
+
+    it('handle empty code block', () => {
+      const data = {
+        content: [
+          '``` js',
+          '```',
+          '# New line',
+          '``` js',
+          '```'
+        ].join('\n')
+      };
+      codeBlock(data);
+      data.content.match(/<hexoPostRenderCodeBlock>/g).length.should.eql(2);
+    });
   });
 });
