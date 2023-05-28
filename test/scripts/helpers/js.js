@@ -82,4 +82,17 @@ describe('js', () => {
     assertResult(js({src: '/foo.js', 'async': true}), {src: '/foo.js', 'async': true});
     assertResult(js({src: '/bar.js', 'defer': true}), {src: '/bar.js', 'defer': true});
   });
+
+  it('relative link', () => {
+    ctx.config.relative_link = true;
+    ctx.config.root = '/';
+
+    ctx.path = '';
+    assertResult(js('script'), 'script.js');
+
+    ctx.path = 'foo/bar/';
+    assertResult(js('script'), '../../script.js');
+
+    ctx.config.relative_link = false;
+  });
 });
