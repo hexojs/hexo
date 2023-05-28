@@ -6,7 +6,7 @@ function cssHelper(...args) {
   let result = '\n';
 
   relative_link = this.config.relative_link;
-  
+
   args.flat(Infinity).forEach(item => {
     if (typeof item === 'string' || item instanceof String) {
       let path = item;
