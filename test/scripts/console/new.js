@@ -5,6 +5,7 @@ const moment = require('moment');
 const { join } = require('path');
 const Promise = require('bluebird');
 const { useFakeTimers } = require('sinon');
+const { spy } = require('sinon');
 
 describe('new', () => {
   const Hexo = require('../../../dist/hexo');
@@ -37,6 +38,16 @@ describe('new', () => {
   after(() => {
     clock.restore();
     return rmdir(hexo.base_dir);
+  });
+
+  it('no args', async () => {
+    hexo.call = spy();
+    await n({
+      _: []
+    });
+    hexo.call.calledOnce.should.be.true;
+    hexo.call.args[0][0].should.eql('help');
+    hexo.call.args[0][1]._[0].should.eql('new');
   });
 
   it('title', async () => {
