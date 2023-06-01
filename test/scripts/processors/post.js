@@ -250,6 +250,31 @@ describe('post', () => {
     Post.removeById(postId);
   });
 
+  it('asset - type: delete - not exist', async () => {
+    hexo.config.post_asset_folder = true;
+
+    const file = newFile({
+      path: 'foo/bar.jpg',
+      published: true,
+      type: 'delete',
+      renderable: false
+    });
+
+    const id = 'source/' + file.path;
+
+    const post = await Post.insert({
+      source: '_posts/foo.html',
+      slug: 'foo'
+    });
+    const postId = post._id;
+
+    await process(file);
+    should.not.exist(PostAsset.findById(id));
+
+    Post.removeById(postId);
+  });
+
+
   it('asset - skip if can\'t find a matching post', async () => {
     hexo.config.post_asset_folder = true;
 
@@ -358,6 +383,36 @@ describe('post', () => {
     ]);
   });
 
+  it('post - type: skip', async () => {
+    const file = newFile({
+      path: 'foo.html',
+      published: true,
+      type: 'skip',
+      renderable: true
+    });
+
+    await Post.insert({
+      source: file.path,
+      slug: 'foo'
+    });
+    await process(file);
+    const post = Post.findOne({ source: file.path });
+    should.exist(post);
+    post.remove();
+  });
+
+  it('post - type: delete - not exist', async () => {
+    const file = newFile({
+      path: 'foo.html',
+      published: true,
+      type: 'delete',
+      renderable: true
+    });
+
+    await process(file);
+    should.not.exist(Post.findOne({ source: file.path }));
+  });
+
   it('post - type: delete', async () => {
     const file = newFile({
       path: 'foo.html',
@@ -370,6 +425,18 @@ describe('post', () => {
       source: file.path,
       slug: 'foo'
     });
+    await process(file);
+    should.not.exist(Post.findOne({ source: file.path }));
+  });
+
+  it('post - type: delete - not exist', async () => {
+    const file = newFile({
+      path: 'foo.html',
+      published: true,
+      type: 'delete',
+      renderable: true
+    });
+
     await process(file);
     should.not.exist(Post.findOne({ source: file.path }));
   });

@@ -188,6 +188,19 @@ describe('asset', () => {
     should.not.exist(Asset.findById(id));
   });
 
+  it('asset - type: delete - not exist', async () => {
+    const file = newFile({
+      path: 'foo.jpg',
+      type: 'delete',
+      renderable: false
+    });
+
+    const id = 'source/' + file.path;
+    await process(file);
+
+    should.not.exist(Asset.findById(id));
+  });
+
   it('page - type: create', async () => {
     const body = [
       'title: "Hello world"',
