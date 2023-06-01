@@ -157,6 +157,26 @@ describe('new', () => {
     await unlink(path);
   });
 
+  it('without _', async () => {
+    const date = moment(now);
+    const path = join(hexo.source_dir, '_posts', 'bar.md');
+    const body = [
+      'title: bar',
+      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+      'tags:',
+      '---'
+    ].join('\n') + '\n';
+
+    await n({
+      _: [],
+      path: 'bar'
+    });
+    const content = await readFile(path);
+    content.should.eql(body);
+
+    await unlink(path);
+  });
+
   it('rename if target existed', async () => {
     const path = join(hexo.source_dir, '_posts', 'Hello-World-1.md');
 

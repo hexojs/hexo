@@ -27,5 +27,15 @@ describe('Console list', () => {
 
     listRoutes();
     sinonAssert.calledWithMatch(logStub, 'Total: 1');
+    route.remove('test');
+  });
+
+  it('route with nodes', async () => {
+    route.set('test0/test1', 'foo');
+
+    listRoutes();
+    sinonAssert.calledWithMatch(logStub, 'Total: 1');
+    sinonAssert.calledWithMatch(logStub, '└─┬ test0');
+    sinonAssert.calledWithMatch(logStub, '  └── test1');
   });
 });

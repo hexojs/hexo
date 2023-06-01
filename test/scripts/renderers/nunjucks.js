@@ -123,6 +123,14 @@ describe('nunjucks', () => {
       r({ text: forLoop }, data).should.eql('123');
     });
 
+    it('toarray other case', () => {
+      const data = {
+        arr: 1
+      };
+
+      r({ text: forLoop }, data).should.eql('');
+    });
+
     it('safedump undefined', () => {
       const text = [
         '{{ items | safedump }}'
