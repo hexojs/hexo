@@ -188,6 +188,19 @@ describe('asset', () => {
     should.not.exist(Asset.findById(id));
   });
 
+  it('asset - type: delete - not exist', async () => {
+    const file = newFile({
+      path: 'foo.jpg',
+      type: 'delete',
+      renderable: false
+    });
+
+    const id = 'source/' + file.path;
+    await process(file);
+
+    should.not.exist(Asset.findById(id));
+  });
+
   it('page - type: create', async () => {
     const body = [
       'title: "Hello world"',
@@ -249,6 +262,25 @@ describe('asset', () => {
     ]);
   });
 
+  it('page - type: skip', async () => {
+    const file = newFile({
+      path: 'hello.njk',
+      type: 'skip',
+      renderable: true
+    });
+
+    await Page.insert({
+      source: file.path,
+      path: 'hello.html'
+    });
+    const page = Page.findOne({source: file.path});
+    await process(file);
+    should.exist(page);
+    await Promise.all([
+      page.remove()
+    ]);
+  });
+
   it('page - type: delete', async () => {
     const file = newFile({
       path: 'hello.njk',
@@ -260,6 +292,17 @@ describe('asset', () => {
       source: file.path,
       path: 'hello.html'
     });
+    await process(file);
+    should.not.exist(Page.findOne({ source: file.path }));
+  });
+
+  it('page - type: delete - not exist', async () => {
+    const file = newFile({
+      path: 'hello.njk',
+      type: 'delete',
+      renderable: true
+    });
+
     await process(file);
     should.not.exist(Page.findOne({ source: file.path }));
   });
