@@ -27,9 +27,9 @@ export = ctx => {
       throw new Error(`Post not found: post_link ${slug}.`);
     }
 
-    let title = args.length ? args.join(' ') : post.title;
+    let title = args.length ? args.join(' ') : post.title || post.slug;
     // Let attribute be the true post title so it appears in tooltip.
-    const attrTitle = escapeHTML(post.title);
+    const attrTitle = escapeHTML(post.title || post.slug);
     if (escape === 'true') title = escapeHTML(title);
 
     const link = encodeURL(new URL(post.path, ctx.config.url).pathname);
