@@ -16,6 +16,11 @@ describe('Processor', () => {
 
     p.list()[1].should.exist;
 
+    // more than one arg
+    p.register((a, b) => {});
+
+    p.list()[1].should.exist;
+
     // no fn
     should.throw(() => p.register(), TypeError, 'fn must be a function');
   });

@@ -136,4 +136,16 @@ describe('source', () => {
     await process(file);
     should.not.exist(Asset.findById(id));
   });
+
+  it('type: delete - not -exist', async () => {
+    const file = newFile({
+      path: 'style.css',
+      type: 'delete'
+    });
+
+    const id = 'themes/test/' + file.path;
+
+    await process(file);
+    should.not.exist(Asset.findById(id));
+  });
 });

@@ -104,6 +104,15 @@ describe('Render', () => {
     }
   });
 
+  it('render() - null path and text', async () => {
+    try {
+      await hexo.render.render({text: null, engine: null});
+      should.fail('Return value must be rejected');
+    } catch (err) {
+      err.message.should.eql('No input file or string!');
+    }
+  });
+
   it('render() - options', async () => {
     const result = await hexo.render.render({
       text: [
@@ -226,6 +235,10 @@ describe('Render', () => {
 
   it('renderSync() - no path and text', () => {
     should.throw(() => hexo.render.renderSync(), 'No input file or string!');
+  });
+
+  it('renderSync() - null path and text', () => {
+    should.throw(() => hexo.render.renderSync({text: null, engine: null}), 'No input file or string!');
   });
 
   it('renderSync() - options', () => {

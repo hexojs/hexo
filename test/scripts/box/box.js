@@ -262,6 +262,16 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
+  it('process() - error ignore - 1', async () => {
+    const box = newBox('test', { ignore: [null] });
+    box.options.ignored.should.eql([]);
+  });
+
+  it('process() - error ignore - 2', async () => {
+    const box = newBox('test', { ignore: [111] });
+    box.options.ignored.should.eql([]);
+  });
+
   it('process() - skip files if they match a glob epression in ignore', async () => {
     const box = newBox('test', { ignore: '**/ignore_me' });
     const data = {};
