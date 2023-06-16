@@ -387,7 +387,7 @@ class Hexo extends EventEmitter {
       req.extensions = Module._extensions;
       req.cache = Module._cache;
 
-      script = `(function(exports, require, module, __filename, __dirname, hexo){${script}\n});`;
+      script = `(async function(exports, require, module, __filename, __dirname, hexo){${script}\n});`;
 
       const fn = runInThisContext(script, path);
 
