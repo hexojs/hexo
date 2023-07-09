@@ -73,4 +73,17 @@ describe('css', () => {
     assertResult(css([{href: '/aaa.css', bbb: 'ccc'}, {href: '/ddd.css', eee: 'fff'}]),
       [{href: '/aaa.css', bbb: 'ccc'}, {href: '/ddd.css', eee: 'fff'}]);
   });
+
+  it('relative link', () => {
+    ctx.config.relative_link = true;
+    ctx.config.root = '/';
+
+    ctx.path = '';
+    assertResult(css('style'), 'style.css');
+
+    ctx.path = 'foo/bar/';
+    assertResult(css('style'), '../../style.css');
+
+    ctx.config.relative_link = false;
+  });
 });
