@@ -1073,6 +1073,50 @@ describe('post', () => {
     ]);
   });
 
+  it('post - delete existing draft assets if draft posts are hidden', async () => {
+    hexo.config.post_asset_folder = true;
+
+    const body = [
+      'title: "Hello world"',
+      'published: false',
+      '---'
+    ].join('\n');
+
+    const file = newFile({
+      path: 'foo.html',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+
+    const assetId = 'source/_posts/foo/bar.jpg';
+    const assetPath = join(hexo.base_dir, assetId);
+
+    await Promise.all([
+      writeFile(file.source, body),
+      writeFile(assetPath, '')
+    ]);
+
+    // drafts disabled - no draft assets should be generated
+    await process(file);
+    const post = Post.findOne({ source: file.path });
+    await PostAsset.insert({
+      _id: 'source/_posts/foo/bar.jpg',
+      slug: 'bar.jpg',
+      post: post._id
+    });
+    await process(file);
+
+    post.published.should.be.false;
+    should.not.exist(PostAsset.findById(assetId));
+
+    await Promise.all([
+      post.remove(),
+      unlink(file.source),
+      unlink(assetPath)
+    ]);
+  });
+
   it('post - post_asset_folder disabled', async () => {
     hexo.config.post_asset_folder = false;
 

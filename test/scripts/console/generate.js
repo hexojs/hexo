@@ -55,6 +55,23 @@ describe('generate', () => {
 
   it('default', () => testGenerate());
 
+  it('public_dir is not a directory', async () => {
+    await Promise.all([
+      // Add some source files
+      writeFile(join(hexo.source_dir, 'test.txt'), 'test'),
+      // Add some files to public folder
+      writeFile(join(hexo.public_dir, 'foo.txt'), 'foo')
+    ]);
+    const old = hexo.public_dir;
+    hexo.public_dir = join(hexo.public_dir, 'foo.txt');
+    try {
+      await generate();
+    } catch (e) {
+      e.message.split(' ').slice(1).join(' ').should.eql('is not a directory');
+    }
+    hexo.public_dir = old;
+  });
+
   it('write file if not exist', async () => {
     const src = join(hexo.source_dir, 'test.txt');
     const dest = join(hexo.public_dir, 'test.txt');

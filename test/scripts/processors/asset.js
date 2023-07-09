@@ -2,6 +2,7 @@
 
 const { dirname, join } = require('path');
 const { mkdirs, rmdir, stat, unlink, writeFile } = require('hexo-fs');
+const { spy } = require('sinon');
 
 const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 
@@ -229,6 +230,46 @@ describe('asset', () => {
     page.path.should.eql('hello.html');
     page.layout.should.eql('page');
 
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
+  });
+
+  it('page - type: create - exist', async () => {
+    const logSpy = spy();
+    hexo.log.warn = logSpy;
+
+    const body = [
+      'title: "Hello world"',
+      'date: 2006-01-02 15:04:05',
+      'updated: 2014-12-13 01:02:03',
+      '---',
+      'The quick brown fox jumps over the lazy dog'
+    ].join('\n');
+
+    const file = newFile({
+      path: 'hello.njk',
+      type: 'create',
+      renderable: true
+    });
+
+    await writeFile(file.source, body);
+    await process(file);
+    await process(file);
+
+    const page = Page.findOne({ source: file.path });
+    page.title.should.eql('Hello world');
+    page.date.format(dateFormat).should.eql('2006-01-02 15:04:05');
+    page.updated.format(dateFormat).should.eql('2014-12-13 01:02:03');
+    page._content.should.eql('The quick brown fox jumps over the lazy dog');
+    page.source.should.eql(file.path);
+    page.raw.should.eql(body);
+    page.path.should.eql('hello.html');
+    page.layout.should.eql('page');
+
+    logSpy.called.should.be.true;
+    logSpy.args[0][0].should.contains('Trying to "create" \x1B[35mhello.njk\x1B[39m, but the file already exists!');
     await Promise.all([
       page.remove(),
       unlink(file.source)
