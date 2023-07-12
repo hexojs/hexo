@@ -778,33 +778,7 @@ describe('post', () => {
     ]);
   });
 
-  it('post - link without title', async () => {
-    const body = [
-      'link: https://hexo.io/',
-      '---'
-    ].join('\n');
-
-    const file = newFile({
-      path: 'foo.html',
-      published: true,
-      type: 'create',
-      renderable: true
-    });
-
-    await writeFile(file.source, body);
-    await process(file);
-    const post = Post.findOne({ source: file.path });
-
-    post.link.should.eql('https://hexo.io/');
-    post.title.should.eql('hexo.io');
-
-    return Promise.all([
-      post.remove(),
-      unlink(file.source)
-    ]);
-  });
-
-  it('post - link without title and link', async () => {
+  it('post - without title', async () => {
     const body = '';
 
     const file = newFile({

@@ -159,10 +159,6 @@ function processPost(ctx, file) {
       data.photos = [data.photos];
     }
 
-    if (data.link && !data.title) {
-      data.title = data.link.replace(/^https?:\/\/|\/$/g, '');
-    }
-
     if (data.permalink) {
       data.__permalink = data.permalink;
       data.permalink = undefined;

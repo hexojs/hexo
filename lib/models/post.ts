@@ -34,7 +34,6 @@ export = ctx => {
     source: {type: String, required: true},
     slug: {type: String, required: true},
     photos: [String],
-    link: {type: String, default: ''},
     raw: {type: String, default: ''},
     published: {type: Boolean, default: true},
     content: {type: String},
