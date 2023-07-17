@@ -598,4 +598,11 @@ Hexo.prototype.core_dir = Hexo.core_dir;
 Hexo.version = version;
 Hexo.prototype.version = Hexo.version;
 
+// define global variable
+// this useful for plugin written in typescript
+declare global {
+  // eslint-disable-next-line one-var
+  const hexo: Hexo;
+}
+
 export = Hexo;
