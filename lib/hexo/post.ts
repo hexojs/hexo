@@ -287,16 +287,16 @@ class Post {
 
   _renderScaffold(data) {
     const { tag } = this.context.extend;
-    let splited;
+    let splitted;
 
     return this._getScaffold(data.layout).then(scaffold => {
-      splited = yfmSplit(scaffold);
-      const jsonMode = splited.separator.startsWith(';');
+      splitted = yfmSplit(scaffold);
+      const jsonMode = splitted.separator.startsWith(';');
       const frontMatter = prepareFrontMatter({ ...data }, jsonMode);
 
-      return tag.render(splited.data, frontMatter);
+      return tag.render(splitted.data, frontMatter);
     }).then(frontMatter => {
-      const { separator } = splited;
+      const { separator } = splitted;
       const jsonMode = separator.startsWith(';');
 
       // Parse front-matter
@@ -310,14 +310,14 @@ class Post {
 
       let content = '';
       // Prepend the separator
-      if (splited.prefixSeparator) content += `${separator}\n`;
+      if (splitted.prefixSeparator) content += `${separator}\n`;
 
       content += yfmStringify(obj, {
         mode: jsonMode ? 'json' : ''
       });
 
       // Concat content
-      content += splited.content;
+      content += splitted.content;
 
       if (data.content) {
         content += `\n${data.content}`;

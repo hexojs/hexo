@@ -512,7 +512,7 @@ class Hexo extends EventEmitter {
     }, []);
   }
 
-  _routerReflesh(runningGenerators, useCache) {
+  _routerRefresh(runningGenerators, useCache) {
     const { route } = this;
     const routeList = route.list();
     const Locals = this._generateLocals();
@@ -556,7 +556,7 @@ class Hexo extends EventEmitter {
 
     // Run before_generate filters
     return this.execFilter('before_generate', this.locals.get('data'), { context: this })
-      .then(() => this._routerReflesh(this._runGenerators(), useCache)).then(() => {
+      .then(() => this._routerRefresh(this._runGenerators(), useCache)).then(() => {
         this.emit('generateAfter');
 
         // Run after_generate filters

@@ -34,7 +34,7 @@ const showAll = (tags, options, ctx) => {
   }
 };
 
-const pagenasionPartShow = (tags, options, ctx) => {
+const paginationPartShow = (tags, options, ctx) => {
   const {
     current,
     total,
@@ -156,7 +156,7 @@ function paginatorHelper(options: Options = {}) {
   if (options.show_all) {
     showAll(tags, options, this);
   } else {
-    pagenasionPartShow(tags, options, this);
+    paginationPartShow(tags, options, this);
   }
 
   // Display the link to the next page

@@ -5,7 +5,7 @@ export interface HighlightOptions {
   caption: string | undefined,
   lines_length: number,
 
-  // plulgins/filter/before_post_render/backtick_code_block
+  // plugins/filter/before_post_render/backtick_code_block
   firstLineNumber?: string | number
 
   // plugins/tag/code.ts
