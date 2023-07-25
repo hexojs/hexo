@@ -280,13 +280,13 @@ function readDirWalker(ctx, base, results, ignore, prefix) {
       if (err && err.code === 'ENOENT') return null;
       throw err;
     });
-    const prefixdPath = `${prefix}${path}`;
+    const prefixPath = `${prefix}${path}`;
     if (stats) {
       if (stats.isDirectory()) {
-        return readDirWalker(ctx, fullpath, results, ignore, `${prefixdPath}/`);
+        return readDirWalker(ctx, fullpath, results, ignore, `${prefixPath}/`);
       }
       if (!isIgnoreMatch(fullpath, ignore)) {
-        results.push(prefixdPath);
+        results.push(prefixPath);
       }
     }
   });
