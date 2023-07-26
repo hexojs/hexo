@@ -47,32 +47,32 @@ export = (ctx: Hexo) => function includeCodeTag(args: string[]) {
   // If the language is not defined, use file extension instead
   lang = lang || extname(path).substring(1);
 
-  const src = join(ctx.source_dir, codeDir, path);
+  const src = join(codeDir, path);
 
   // If the title is not defined, use file name instead
   const title = match[1] || basename(path);
   const caption = `<span>${title}</span><a href="${posix.join(ctx.config.root, codeDir, path)}">view raw</a>`;
 
-  return exists(src).then(exist => {
-    if (exist) return readFile(src);
-  }).then((code: string) => {
-    if (!code) return;
+  // Prevent path traversal: https://github.com/hexojs/hexo/issues/5250
+  const Page = ctx.model('Page');
+  const doc = Page.findOne({ source: src });
+  if (!doc) return;
 
-    const lines = code.split('\n');
-    code = lines.slice(from, to).join('\n').trim();
+  let code = doc.content;
+  const lines = code.split('\n');
+  code = lines.slice(from, to).join('\n').trim();
 
-    if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
-      const options = {
-        lang,
-        caption,
-        lines_length: lines.length
-      };
-      return ctx.extend.highlight.exec(ctx.config.syntax_highlighter, {
-        context: ctx,
-        args: [code, options]
-      });
-    }
+  if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
+    const options = {
+      lang,
+      caption,
+      lines_length: lines.length
+    };
+    return ctx.extend.highlight.exec(ctx.config.syntax_highlighter, {
+      context: ctx,
+      args: [code, options]
+    });
+  }
 
-    return `<pre><code>${code}</code></pre>`;
-  });
+  return `<pre><code>${code}</code></pre>`;
 };
