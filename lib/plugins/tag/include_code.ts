@@ -1,4 +1,3 @@
-import { exists, readFile } from 'hexo-fs';
 import { basename, extname, join, posix } from 'path';
 import type Hexo from '../../hexo';
 
