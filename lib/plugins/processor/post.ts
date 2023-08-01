@@ -217,7 +217,9 @@ function scanAssetDir(ctx, post) {
 
   const assetDir = post.asset_dir;
   const baseDir = ctx.base_dir;
+  const sourceDir = ctx.config.source_dir;
   const baseDirLength = baseDir.length;
+  const sourceDirLength = sourceDir.length;
   const PostAsset = ctx.model('PostAsset');
 
   return stat(assetDir).then(stats => {
@@ -229,6 +231,7 @@ function scanAssetDir(ctx, post) {
     throw err;
   }).filter(item => !isExcludedFile(item, ctx.config)).map(item => {
     const id = join(assetDir, item).substring(baseDirLength).replace(/\\/g, '/');
+    const renderablePath = id.substring(sourceDirLength + 1);
     const asset = PostAsset.findById(id);
 
     if (shouldSkipAsset(ctx, post, asset)) return undefined;
@@ -237,7 +240,8 @@ function scanAssetDir(ctx, post) {
       _id: id,
       post: post._id,
       slug: item,
-      modified: true
+      modified: true,
+      renderable: ctx.render.isRenderable(renderablePath) && !isMatch(renderablePath, ctx.config.skip_render)
     });
   });
 }
