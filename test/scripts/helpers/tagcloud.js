@@ -291,6 +291,20 @@ describe('tagcloud', () => {
     ].join(' '));
   });
 
+  it('class name without level', () => {
+    const result = tagcloud({
+      class: 'tag-cloud',
+      level: false
+    });
+
+    result.should.eql([
+      '<a href="/tags/abc/" style="font-size: 13.33px;" class="tag-cloud">abc</a>',
+      '<a href="/tags/bcd/" style="font-size: 20px;" class="tag-cloud">bcd</a>',
+      '<a href="/tags/cde/" style="font-size: 16.67px;" class="tag-cloud">cde</a>',
+      '<a href="/tags/def/" style="font-size: 10px;" class="tag-cloud">def</a>'
+    ].join(' '));
+  });
+
   it('show_count', () => {
     const result = tagcloud({ show_count: true });
 
