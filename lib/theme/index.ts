@@ -13,6 +13,7 @@ class Theme extends Box {
   public views: any;
   public i18n: I18n;
   public View: any;
+  public processors: any[];
 
   constructor(ctx: Hexo, options?) {
     super(ctx, ctx.theme_dir, options);

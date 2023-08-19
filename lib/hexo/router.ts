@@ -18,8 +18,6 @@ class RouteStream extends Readable {
   public _data: any;
   public _ended: boolean;
   public modified: any;
-  public push: any;
-  public emit: any;
 
   constructor(data: Data) {
     super({ objectMode: true });

@@ -1,8 +1,10 @@
 import { dirname, extname, join } from 'path';
 import { parse as yfm } from 'hexo-front-matter';
 import Promise from 'bluebird';
+import type Theme from '.';
+import type Render from '../hexo/render';
 
-const assignIn = (target, ...sources) => {
+const assignIn = (target: any, ...sources: any[]) => {
   const length = sources.length;
 
   if (length < 1 || target == null) return target;
@@ -23,14 +25,12 @@ class Options {
 class View {
   public path: string;
   public source: any;
-  public _theme: any;
+  public _theme: Theme;
   public data: any;
   public _compiled: any;
   public _compiledSync: any;
   public _helper: any;
-  public _render: any;
-  public layout: any;
-  public _content: any;
+  public _render: Render;
 
   constructor(path: string, data) {
     this.path = path;
@@ -128,7 +128,7 @@ class View {
       text: this.data._content
     };
 
-    function buildFilterArguments(result) {
+    function buildFilterArguments(result: any): [string, any, any] {
       const output = render.getOutput(ext) || ext;
       return [
         `after_render:${output}`,

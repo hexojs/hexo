@@ -27,8 +27,6 @@ class Box extends EventEmitter {
   public File: any;
   public ignore: any[];
   public source: any;
-  public emit: any;
-  public ctx: any;
 
   constructor(ctx: Hexo, base: string, options?: object) {
     super();
@@ -65,13 +63,13 @@ class Box extends EventEmitter {
     class _File extends File {
       public box: Box;
 
-      render(options?: any) {
+      render(options?: object) {
         return ctx.render.render({
           path: this.source
         }, options);
       }
 
-      renderSync(options?: any) {
+      renderSync(options?: object) {
         return ctx.render.renderSync({
           path: this.source
         }, options);

@@ -4,7 +4,7 @@ import yml from 'js-yaml';
 import { deepMerge } from 'hexo-util';
 import type Hexo from './index';
 
-export = (ctx: Hexo) => function multiConfigPath(base: string, configPaths: string, outputDir: any) {
+export = (ctx: Hexo) => function multiConfigPath(base: string, configPaths: string, outputDir: string) {
   const { log } = ctx;
   const defaultPath = join(base, '_config.yml');
 

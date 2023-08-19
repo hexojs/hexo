@@ -186,7 +186,7 @@ class PostRenderEscape {
   }
 }
 
-const prepareFrontMatter = (data: object, jsonMode: boolean) => {
+const prepareFrontMatter = (data: any, jsonMode: boolean) => {
   for (const [key, item] of Object.entries(data)) {
     if (moment.isMoment(item)) {
       data[key] = item.utc().format('YYYY-MM-DD HH:mm:ss');
@@ -232,19 +232,24 @@ interface Data {
   source?: string;
 }
 
+interface PostData {
+  title?: string;
+  layout?: string;
+  slug?: string;
+  path?: string;
+  [prop: string]: any;
+}
+
 class Post {
   public context: Hexo;
-  public config: any;
-  public tag: any;
-  public separator: string;
 
   constructor(context: Hexo) {
     this.context = context;
   }
 
-  create(data: any, callback?: (...args: any[]) => any);
-  create(data: any, replace: boolean, callback?: (...args: any[]) => any);
-  create(data: any, replace: boolean | ((...args: any[]) => any), callback?: (...args: any[]) => any) {
+  create(data: PostData, callback?: (...args: any[]) => any);
+  create(data: PostData, replace: boolean, callback?: (...args: any[]) => any);
+  create(data: PostData, replace: boolean | ((...args: any[]) => any), callback?: (...args: any[]) => any) {
     if (!callback && typeof replace === 'function') {
       callback = replace;
       replace = false;
@@ -288,7 +293,7 @@ class Post {
     });
   }
 
-  _renderScaffold(data: any) {
+  _renderScaffold(data: PostData) {
     const { tag } = this.context.extend;
     let splitted;
 
@@ -330,7 +335,7 @@ class Post {
     });
   }
 
-  publish(data: any, replace: boolean, callback: (...args: any[]) => any) {
+  publish(data: PostData, replace: boolean, callback?: (...args: any[]) => any) {
     if (!callback && typeof replace === 'function') {
       callback = replace;
       replace = false;
@@ -383,7 +388,7 @@ class Post {
     }).thenReturn(result).asCallback(callback);
   }
 
-  render(source: string, data: Data = {}, callback: (...args: any[]) => any) {
+  render(source: string, data: Data = {}, callback?: (...args: any[]) => any) {
     const ctx = this.context;
     const { config } = ctx;
     const { tag } = ctx.extend;

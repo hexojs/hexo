@@ -24,7 +24,7 @@ export interface StoreSyncFunction {
     // callback: (err: Error, value: string) => any
   ): any;
   output?: string;
-  compile?: (local: object) => string;
+  compile?: (local: object) => any;
 }
 export interface StoreFunction {
   (
@@ -37,7 +37,7 @@ export interface StoreFunction {
     callback: (err: Error, value: string) => any
   ): void;
   output?: string;
-  compile?: (local: object) => string;
+  compile?: (local: object) => any;
   disableNunjucks?: boolean;
 }
 

@@ -30,8 +30,8 @@ const rCaption = /\S[\S\s]*/;
 function parseArgs(args: string[]): HighlightOptions {
   const _else = [];
   const len = args.length;
-  let lang, language_attr,
-    line_number, line_threshold, wrap;
+  let lang: string, language_attr: boolean,
+    line_number: boolean, line_threshold: number, wrap: boolean;
   let firstLine = 1;
   const mark = [];
   for (let i = 0; i < len; i++) {
@@ -123,7 +123,7 @@ export = (ctx: Hexo) => function codeTag(args: string[], content: string) {
     return `<pre><code>${escapeHTML(content)}</code></pre>`;
   }
 
-  let index;
+  let index: number;
   let enableHighlight = true;
 
   if ((index = args.findIndex(item => item.startsWith('highlight:'))) !== -1) {
