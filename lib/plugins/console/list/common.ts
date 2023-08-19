@@ -1,6 +1,6 @@
 import strip from 'strip-ansi';
 
-export function stringLength(str) {
+export function stringLength(str: string) {
   str = strip(str);
 
   const len = str.length;

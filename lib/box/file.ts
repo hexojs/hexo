@@ -1,10 +1,10 @@
-import { readFile, readFileSync, stat, statSync } from 'hexo-fs';
+import { readFile, readFileSync, stat, statSync, ReadFileOptions } from 'hexo-fs';
 
 class File {
-  public source: any;
-  public path: any;
+  public source: string;
+  public path: string;
   public params: any;
-  public type: any;
+  public type: string;
   static TYPE_CREATE: 'create';
   static TYPE_UPDATE: 'update';
   static TYPE_SKIP: 'skip';
@@ -17,19 +17,19 @@ class File {
     this.type = type;
   }
 
-  read(options) {
+  read(options?: ReadFileOptions) {
     return readFile(this.source, options);
   }
 
-  readSync(options) {
+  readSync(options?: ReadFileOptions) {
     return readFileSync(this.source, options);
   }
 
-  stat(options) {
+  stat() {
     return stat(this.source);
   }
 
-  statSync(options) {
+  statSync() {
     return statSync(this.source);
   }
 }

@@ -7,7 +7,7 @@ const { load } = require('js-yaml');
 describe('File', () => {
   const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
-  const Box = require('../../../dist/box');
+  const Box = require('../../../dist/box').default;
   const box = new Box(hexo, join(hexo.base_dir, 'file_test'));
   const { File } = box;
 

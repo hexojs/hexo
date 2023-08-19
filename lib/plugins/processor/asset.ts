@@ -4,8 +4,10 @@ import { parse as yfm } from 'hexo-front-matter';
 import { extname, relative } from 'path';
 import { Pattern } from 'hexo-util';
 import { magenta } from 'picocolors';
+import type { _File } from '../../box';
+import type Hexo from '../../hexo';
 
-export = ctx => {
+export = (ctx: Hexo) => {
   return {
     pattern: new Pattern(path => {
       if (isExcludedFile(path, ctx.config)) return;
@@ -15,7 +17,7 @@ export = ctx => {
       };
     }),
 
-    process: function assetProcessor(file) {
+    process: function assetProcessor(file: _File) {
       if (file.params.renderable) {
         return processPage(ctx, file);
       }
@@ -25,7 +27,7 @@ export = ctx => {
   };
 };
 
-function processPage(ctx, file) {
+function processPage(ctx: Hexo, file: _File) {
   const Page = ctx.model('Page');
   const { path } = file;
   const doc = Page.findOne({source: path});
@@ -105,7 +107,7 @@ function processPage(ctx, file) {
   });
 }
 
-function processAsset(ctx, file) {
+function processAsset(ctx: Hexo, file: _File) {
   const id = relative(ctx.base_dir, file.source).replace(/\\/g, '/');
   const Asset = ctx.model('Asset');
   const doc = Asset.findById(id);

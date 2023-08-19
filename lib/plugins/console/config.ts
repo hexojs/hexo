@@ -35,7 +35,7 @@ function configConsole(args) {
   });
 }
 
-function getProperty(obj, key) {
+function getProperty(obj: object, key: string) {
   const split = key.split('.');
   let result = obj[split[0]];
 
@@ -46,7 +46,7 @@ function getProperty(obj, key) {
   return result;
 }
 
-function setProperty(obj, key, value) {
+function setProperty(obj: object, key: string, value: any) {
   const split = key.split('.');
   let cursor = obj;
   const lastKey = split.pop();
@@ -60,7 +60,7 @@ function setProperty(obj, key, value) {
   cursor[lastKey] = value;
 }
 
-function castValue(value) {
+function castValue(value: string) {
   switch (value) {
     case 'true':
       return true;

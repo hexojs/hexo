@@ -8,31 +8,31 @@ const getExtname = (str: string) => {
   return ext.startsWith('.') ? ext.slice(1) : ext;
 };
 
-interface StoreSyncFunction {
+export interface StoreFunctionData {
+  path?: any;
+  text?: string;
+  engine?: string;
+  toString?: any;
+  onRenderEnd?: any;
+}
+
+export interface StoreSyncFunction {
+  [x: string]: any;
   (
-    data: {
-      path?: string;
-      text: string;
-    },
+    data: StoreFunctionData,
     options: object,
     // callback: (err: Error, value: string) => any
   ): any;
   output?: string;
   compile?: (local: object) => string;
 }
-interface StoreFunction {
+export interface StoreFunction {
   (
-    data: {
-      path?: string;
-      text: string;
-    },
+    data: StoreFunctionData,
     options: object,
   ): Promise<any>;
   (
-    data: {
-      path?: string;
-      text: string;
-    },
+    data: StoreFunctionData,
     options: object,
     callback: (err: Error, value: string) => any
   ): void;
@@ -109,4 +109,4 @@ class Renderer {
   }
 }
 
-export = Renderer;
+export default Renderer;

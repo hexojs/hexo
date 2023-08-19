@@ -133,14 +133,14 @@ class Router extends EventEmitter {
     return new RouteStream(data);
   }
 
-  isModified(path) {
+  isModified(path: string) {
     if (typeof path !== 'string') throw new TypeError('path must be a string!');
 
     const data = this.routes[this.format(path)];
     return data ? data.modified : false;
   }
 
-  set(path, data) {
+  set(path: string, data: any) {
     if (typeof path !== 'string') throw new TypeError('path must be a string!');
     if (data == null) throw new TypeError('data is required!');
 
@@ -175,7 +175,7 @@ class Router extends EventEmitter {
     return this;
   }
 
-  remove(path) {
+  remove(path: string) {
     if (typeof path !== 'string') throw new TypeError('path must be a string!');
     path = this.format(path);
 

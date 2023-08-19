@@ -6,6 +6,7 @@ import { createReadStream, readdir, stat, watch } from 'hexo-fs';
 import { magenta } from 'picocolors';
 import { EventEmitter } from 'events';
 import { isMatch, makeRe } from 'micromatch';
+import type Hexo from '../hexo';
 
 const defaultPattern = new Pattern(() => ({}));
 
@@ -16,20 +17,20 @@ interface Processor {
 
 class Box extends EventEmitter {
   public options: any;
-  public context: any;
-  public base: any;
+  public context: Hexo;
+  public base: string;
   public processors: Processor[];
   public _processingFiles: any;
   public watcher: any;
   public Cache: any;
   // TODO: replace runtime class _File
   public File: any;
-  public ignore: any;
+  public ignore: any[];
   public source: any;
   public emit: any;
   public ctx: any;
 
-  constructor(ctx, base, options?: object) {
+  constructor(ctx: Hexo, base: string, options?: object) {
     super();
 
     this.options = Object.assign({
@@ -64,13 +65,13 @@ class Box extends EventEmitter {
     class _File extends File {
       public box: Box;
 
-      render(options) {
+      render(options?: any) {
         return ctx.render.render({
           path: this.source
         }, options);
       }
 
-      renderSync(options) {
+      renderSync(options?: any) {
         return ctx.render.renderSync({
           path: this.source
         }, options);
@@ -82,7 +83,9 @@ class Box extends EventEmitter {
     return _File;
   }
 
-  addProcessor(pattern, fn) {
+  addProcessor(pattern: (...args: any[]) => any);
+  addProcessor(pattern: string | RegExp | Pattern | ((...args: any[]) => any), fn: (...args: any[]) => any);
+  addProcessor(pattern: string | RegExp | Pattern | ((...args: any[]) => any), fn?: (...args: any[]) => any) {
     if (!fn && typeof pattern === 'function') {
       fn = pattern;
       pattern = defaultPattern;
@@ -97,7 +100,7 @@ class Box extends EventEmitter {
     });
   }
 
-  _readDir(base, prefix = '') {
+  _readDir(base: string, prefix = '') {
     const { context: ctx } = this;
     const results = [];
     return readDirWalker(ctx, base, results, this.ignore, prefix)
@@ -106,7 +109,7 @@ class Box extends EventEmitter {
       .map(file => this._processFile(file.type, file.path).return(file.path));
   }
 
-  _checkFileStatus(path) {
+  _checkFileStatus(path: string) {
     const { Cache, context: ctx } = this;
     const src = join(this.base, path);
 
@@ -120,7 +123,7 @@ class Box extends EventEmitter {
     }));
   }
 
-  process(callback?) {
+  process(callback?: (...args: any[]) => any) {
     const { base, Cache, context: ctx } = this;
 
     return stat(base).then(stats => {
@@ -139,7 +142,7 @@ class Box extends EventEmitter {
     }).asCallback(callback);
   }
 
-  _processFile(type, path) {
+  _processFile(type: string, path: string) {
     if (this._processingFiles[path]) {
       return BlueBirdPromise.resolve();
     }
@@ -182,7 +185,7 @@ class Box extends EventEmitter {
     }).thenReturn(path);
   }
 
-  watch(callback?) {
+  watch(callback?: (...args: any[]) => any) {
     if (this.isWatching()) {
       return BlueBirdPromise.reject(new Error('Watcher has already started.')).asCallback(callback);
     }
@@ -229,12 +232,12 @@ class Box extends EventEmitter {
   }
 }
 
-function escapeBackslash(path) {
+function escapeBackslash(path: string) {
   // Replace backslashes on Windows
   return path.replace(/\\/g, '/');
 }
 
-function getHash(path) {
+function getHash(path: string) {
   const src = createReadStream(path);
   const hasher = createSha1Hash();
 
@@ -248,7 +251,7 @@ function getHash(path) {
   return finishedPromise.then(() => hasher.digest('hex'));
 }
 
-function toRegExp(ctx, arg) {
+function toRegExp(ctx: Hexo, arg: string) {
   if (!arg) return null;
   if (typeof arg !== 'string') {
     ctx.log.warn('A value of "ignore:" section in "_config.yml" is not invalid (not a string)');
@@ -262,11 +265,11 @@ function toRegExp(ctx, arg) {
   return result;
 }
 
-function isIgnoreMatch(path, ignore) {
+function isIgnoreMatch(path: string, ignore: string | any[]) {
   return path && ignore && ignore.length && isMatch(path, ignore);
 }
 
-function readDirWalker(ctx, base, results, ignore, prefix) {
+function readDirWalker(ctx: Hexo, base: string, results: any[], ignore: any, prefix: string) {
   if (isIgnoreMatch(base, ignore)) return BlueBirdPromise.resolve();
 
   return BlueBirdPromise.map(readdir(base).catch(err => {
@@ -292,4 +295,10 @@ function readDirWalker(ctx, base, results, ignore, prefix) {
   });
 }
 
-export = Box;
+export interface _File extends File {
+  box: Box;
+  render(options?: any): any;
+  renderSync(options?: any): any;
+}
+
+export default Box;

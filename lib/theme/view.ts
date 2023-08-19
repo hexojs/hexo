@@ -21,7 +21,7 @@ class Options {
 }
 
 class View {
-  public path: any;
+  public path: string;
   public source: any;
   public _theme: any;
   public data: any;
@@ -32,7 +32,7 @@ class View {
   public layout: any;
   public _content: any;
 
-  constructor(path, data) {
+  constructor(path: string, data) {
     this.path = path;
     this.source = join(this._theme.base, 'layout', path);
     this.data = typeof data === 'string' ? yfm(data) : data;
@@ -106,7 +106,7 @@ class View {
     return locals;
   }
 
-  _resolveLayout(name) {
+  _resolveLayout(name: string) {
     // Relative path
     const layoutPath = join(dirname(this.path), name);
     let layoutView = this._theme.getView(layoutPath);

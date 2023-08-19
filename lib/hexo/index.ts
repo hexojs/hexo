@@ -36,16 +36,17 @@ import defaultConfig from './default_config';
 import loadDatabase from './load_database';
 import multiConfigPath from './multi_config_path';
 import { deepMerge, full_url_for } from 'hexo-util';
+import type Box from '../box';
 let resolveSync; // = require('resolve');
 
 const libDir = dirname(__dirname);
 const dbVersion = 1;
 
-const stopWatcher = box => { if (box.isWatching()) box.unwatch(); };
+const stopWatcher = (box: Box) => { if (box.isWatching()) box.unwatch(); };
 
 const routeCache = new WeakMap();
 
-const castArray = obj => { return Array.isArray(obj) ? obj : [obj]; };
+const castArray = (obj: any) => { return Array.isArray(obj) ? obj : [obj]; };
 
 const mergeCtxThemeConfig = ctx => {
   // Merge hexo.config.theme_config into hexo.theme.config before post rendering & generating
@@ -335,7 +336,7 @@ class Hexo extends EventEmitter {
     });
   }
 
-  call(name, args, callback) {
+  call(name: string, args: any, callback?: (...args: any[]) => any) {
     if (!callback && typeof args === 'function') {
       callback = args;
       args = {};
@@ -348,11 +349,11 @@ class Hexo extends EventEmitter {
     return Promise.reject(new Error(`Console \`${name}\` has not been registered yet!`));
   }
 
-  model(name, schema) {
+  model(name: string, schema?: any) {
     return this.database.model(name, schema);
   }
 
-  resolvePlugin(name, basedir) {
+  resolvePlugin(name: string, basedir: string) {
     try {
       // Try to resolve the plugin with the Node.js's built-in require.resolve.
       return require.resolve(name, { paths: [basedir] });
@@ -370,18 +371,18 @@ class Hexo extends EventEmitter {
     }
   }
 
-  loadPlugin(path: string, callback: (...args: any[]) => any) {
+  loadPlugin(path: string, callback?: (...args: any[]) => any) {
     return readFile(path).then(script => {
       // Based on: https://github.com/joyent/node/blob/v0.10.33/src/node.js#L516
       const module = new Module(path);
       module.filename = path;
       module.paths = Module._nodeModulePaths(path);
 
-      function req(path) {
+      function req(path: string) {
         return module.require(path);
       }
 
-      req.resolve = request => Module._resolveFilename(request, module);
+      req.resolve = (request: string) => Module._resolveFilename(request, module);
 
       req.main = require.main;
       req.extensions = Module._extensions;
@@ -400,7 +401,7 @@ class Hexo extends EventEmitter {
     return args.draft || args.drafts || this.config.render_drafts;
   }
 
-  load(callback) {
+  load(callback: (...args: any[]) => any) {
     return loadDatabase(this).then(() => {
       this.log.info('Start processing');
 
@@ -414,7 +415,7 @@ class Hexo extends EventEmitter {
     }).asCallback(callback);
   }
 
-  watch(callback) {
+  watch(callback?: (...args: any[]) => any) {
     let useCache = false;
     const { cache } = Object.assign({
       cache: false
@@ -478,7 +479,7 @@ class Hexo extends EventEmitter {
       site: object;
       cache?: boolean;
 
-      constructor(path, locals) {
+      constructor(path: string, locals) {
         this.page = { ...locals };
         if (this.page.path == null) this.page.path = path;
         this.path = path;
@@ -512,7 +513,7 @@ class Hexo extends EventEmitter {
     }, []);
   }
 
-  _routerRefresh(runningGenerators, useCache) {
+  _routerRefresh(runningGenerators: Promise<any[]>, useCache: boolean) {
     const { route } = this;
     const routeList = route.list();
     const Locals = this._generateLocals();
@@ -580,11 +581,11 @@ class Hexo extends EventEmitter {
     });
   }
 
-  execFilter(type, data, options) {
+  execFilter(type: string, data: any, options) {
     return this.extend.filter.exec(type, data, options);
   }
 
-  execFilterSync(type, data, options) {
+  execFilterSync(type: string, data: any, options) {
     return this.extend.filter.execSync(type, data, options);
   }
 }

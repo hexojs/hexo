@@ -1,22 +1,12 @@
 // Based on: https://raw.github.com/imathis/octopress/master/plugins/code_block.rb
 
 import { escapeHTML } from 'hexo-util';
+import type Hexo from '../../hexo';
+import type { HighlightOptions } from '../../extend/syntax_highlight';
 
 const rCaptionUrlTitle = /(\S[\S\s]*)\s+(https?:\/\/\S+)\s+(.+)/i;
 const rCaptionUrl = /(\S[\S\s]*)\s+(https?:\/\/\S+)/i;
 const rCaption = /\S[\S\s]*/;
-
-interface Options {
-  lang: string;
-  language_attr: boolean;
-  firstLine: number;
-  caption: string;
-  line_number: boolean;
-  line_threshold: number;
-  mark: number[];
-  wrap: boolean;
-  lines_length?: number;
-}
 
 /**
  * Code block tag
@@ -37,7 +27,7 @@ interface Options {
  * @returns {String} Code snippet with code highlighting
 */
 
-function parseArgs(args): Options {
+function parseArgs(args: string[]): HighlightOptions {
   const _else = [];
   const len = args.length;
   let lang, language_attr,
@@ -63,10 +53,10 @@ function parseArgs(args): Options {
         line_number = value === 'true';
         break;
       case 'line_threshold':
-        if (!isNaN(value)) line_threshold = +value;
+        if (!isNaN(Number(value))) line_threshold = +value;
         break;
       case 'first_line':
-        if (!isNaN(value)) firstLine = +value;
+        if (!isNaN(Number(value))) firstLine = +value;
         break;
       case 'wrap':
         wrap = value === 'true';
@@ -88,7 +78,7 @@ function parseArgs(args): Options {
               mark.push(a);
             }
           }
-          if (!isNaN(cur)) mark.push(+cur);
+          if (!isNaN(Number(cur))) mark.push(+cur);
         }
         break;
       }
@@ -126,7 +116,7 @@ function parseArgs(args): Options {
   };
 }
 
-export = ctx => function codeTag(args, content) {
+export = (ctx: Hexo) => function codeTag(args: string[], content: string) {
 
   // If neither highlight.js nor prism.js is enabled, return escaped code directly
   if (!ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {

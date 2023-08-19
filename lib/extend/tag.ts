@@ -4,7 +4,7 @@ import { Environment } from 'nunjucks';
 import Promise from 'bluebird';
 const rSwigRawFullBlock = /{% *raw *%}/;
 const rCodeTag = /<code[^<>]*>[\s\S]+?<\/code>/g;
-const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
+const escapeSwigTag = (str: string) => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
 interface TagFunction {
   (args: any[], content: string): string;
@@ -66,7 +66,7 @@ class NunjucksTag {
   }
 }
 
-const trimBody = body => {
+const trimBody = (body: () => any) => {
   return stripIndent(body()).replace(/^\n?|\n?$/g, '');
 };
 
@@ -126,7 +126,7 @@ class NunjucksAsyncBlock extends NunjucksBlock {
   }
 }
 
-const getContextLineNums = (min, max, center, amplitude) => {
+const getContextLineNums = (min: number, max: number, center: number, amplitude: number) => {
   const result = [];
   let lbound = Math.max(min, center - amplitude);
   const hbound = Math.min(max, center + amplitude);
@@ -136,7 +136,7 @@ const getContextLineNums = (min, max, center, amplitude) => {
 
 const LINES_OF_CONTEXT = 5;
 
-const getContext = (lines, errLine, location, type) => {
+const getContext = (lines: string[], errLine: number, location: string, type: string) => {
   const message = [
     location + ' ' + red(type),
     cyan('    =====               Context Dump               ====='),
@@ -173,7 +173,7 @@ class NunjucksError extends Error {
  * @param  {string}   str string input for Nunjucks
  * @return {Error}    New error object with embedded context
  */
-const formatNunjucksError = (err, input, source = '') => {
+const formatNunjucksError = (err: Error, input: string, source = ''): Error => {
   err.message = err.message.replace('(unknown path)', source ? magenta(source) : '');
 
   const match = err.message.match(/Line (\d+), Column \d+/);
@@ -199,8 +199,8 @@ type RegisterOptions = {
 }
 
 class Tag {
-  public env: any;
-  public source: any;
+  public env: Environment;
+  public source: string;
 
   constructor() {
     this.env = new Environment(null, {
@@ -243,7 +243,7 @@ class Tag {
     this.env.addExtension(name, tag);
   }
 
-  unregister(name) {
+  unregister(name: string) {
     if (!name) throw new TypeError('name is required');
 
     const { env } = this;
@@ -251,7 +251,7 @@ class Tag {
     if (env.hasExtension(name)) env.removeExtension(name);
   }
 
-  render(str, options: { source?: string } = {}, callback) {
+  render(str: string, options: { source?: string } = {}, callback?: (...args: any[]) => any) {
     if (!callback && typeof options === 'function') {
       callback = options;
       options = {};

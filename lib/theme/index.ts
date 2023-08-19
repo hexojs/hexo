@@ -6,14 +6,15 @@ import { config } from './processors/config';
 import { i18n } from './processors/i18n';
 import { source } from './processors/source';
 import { view } from './processors/view';
+import type Hexo from '../hexo';
 
 class Theme extends Box {
   public config: any;
   public views: any;
-  public i18n: any;
+  public i18n: I18n;
   public View: any;
 
-  constructor(ctx, options?) {
+  constructor(ctx: Hexo, options?) {
     super(ctx, ctx.theme_dir, options);
 
     this.config = {};
@@ -46,7 +47,7 @@ class Theme extends Box {
     _View.prototype._helper = ctx.extend.helper;
   }
 
-  getView(path) {
+  getView(path: string) {
     // Replace backslashes on Windows
     path = path.replace(/\\/g, '/');
 
@@ -63,7 +64,7 @@ class Theme extends Box {
     return views[Object.keys(views)[0]];
   }
 
-  setView(path, data) {
+  setView(path: string, data) {
     const ext = extname(path);
     const name = path.substring(0, path.length - ext.length);
     this.views[name] = this.views[name] || {};
@@ -72,7 +73,7 @@ class Theme extends Box {
     views[ext] = new this.View(path, data);
   }
 
-  removeView(path) {
+  removeView(path: string) {
     const ext = extname(path);
     const name = path.substring(0, path.length - ext.length);
     const views = this.views[name];

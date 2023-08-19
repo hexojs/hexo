@@ -3,7 +3,7 @@ import type Hexo from '../hexo';
 export interface HighlightOptions {
   lang: string | undefined,
   caption: string | undefined,
-  lines_length: number,
+  lines_length?: number | undefined,
 
   // plugins/filter/before_post_render/backtick_code_block
   firstLineNumber?: string | number
