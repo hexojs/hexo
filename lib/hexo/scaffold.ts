@@ -40,7 +40,7 @@ class Scaffold {
     return this._listDir().then(list => list.find(item => item.name === name));
   }
 
-  get(name: string, callback?: (...args: any[]) => any) {
+  get(name: string, callback?: (...args: any[]) => void) {
     return this._getScaffold(name).then(item => {
       if (item) {
         return readFile(item.path);
@@ -50,7 +50,7 @@ class Scaffold {
     }).asCallback(callback);
   }
 
-  set(name: string, content: any, callback: (...args: any[]) => any) {
+  set(name: string, content: any, callback: (...args: any[]) => void) {
     const { scaffoldDir } = this;
 
     return this._getScaffold(name).then(item => {
@@ -61,7 +61,7 @@ class Scaffold {
     }).asCallback(callback);
   }
 
-  remove(name: string, callback: (...args: any[]) => any) {
+  remove(name: string, callback: (...args: any[]) => void) {
     return this._getScaffold(name).then(item => {
       if (!item) return;
 

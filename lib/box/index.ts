@@ -121,7 +121,7 @@ class Box extends EventEmitter {
     }));
   }
 
-  process(callback?: (...args: any[]) => any) {
+  process(callback?: (...args: any[]) => void) {
     const { base, Cache, context: ctx } = this;
 
     return stat(base).then(stats => {
@@ -183,7 +183,7 @@ class Box extends EventEmitter {
     }).thenReturn(path);
   }
 
-  watch(callback?: (...args: any[]) => any) {
+  watch(callback?: (...args: any[]) => void) {
     if (this.isWatching()) {
       return BlueBirdPromise.reject(new Error('Watcher has already started.')).asCallback(callback);
     }

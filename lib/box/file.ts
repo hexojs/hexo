@@ -1,4 +1,4 @@
-import { readFile, readFileSync, stat, statSync, ReadFileOptions } from 'hexo-fs';
+import { readFile, readFileSync, stat, statSync, type ReadFileOptions } from 'hexo-fs';
 
 class File {
   public source: string;
