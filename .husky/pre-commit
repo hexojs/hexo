@@ -39,10 +39,12 @@ no_node_dir() {
 }
 
 # determine node path
+## determine when this package installed in global
 NODE_EXE="$basedir/node.exe"
 if ! [ -x "$NODE_EXE" ]; then
   NODE_EXE="$basedir/node"
 fi
+## fallback to default node
 if ! [ -x "$NODE_EXE" ]; then
   NODE_EXE=node
 fi
