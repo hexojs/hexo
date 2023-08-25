@@ -92,6 +92,7 @@ NPX_WSL_PATH="/.."
 if [ "$IS_WSL" == "true" ]; then
   NPX_WSL_PATH=`wslpath "$NPM_PREFIX_NPX_CLI_JS"`
 fi
+## overriding $NPX_CLI_JS on WSL
 if [ -f "$NPM_PREFIX_NPX_CLI_JS" ] || [ -f "$NPX_WSL_PATH" ]; then
   NPX_CLI_JS="$NPM_PREFIX_NPX_CLI_JS"
 fi
