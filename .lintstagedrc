@@ -1,3 +1,0 @@
-{
-  "*.js": "git-exec-and-restage eslint --fix --"
-}
