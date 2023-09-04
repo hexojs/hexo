@@ -21,7 +21,7 @@ export interface StoreSyncFunction {
   (
     data: StoreFunctionData,
     options: object,
-    // callback: (err: Error, value: string) => any
+    // callback: NodeJSLikeCallback<string>
   ): any;
   output?: string;
   compile?: (local: object) => any;
@@ -34,7 +34,7 @@ export interface StoreFunction {
   (
     data: StoreFunctionData,
     options: object,
-    callback: (err: Error, value: string) => any
+    callback: NodeJSLikeCallback<string>
   ): void;
   output?: string;
   compile?: (local: object) => any;

@@ -247,9 +247,9 @@ class Post {
     this.context = context;
   }
 
-  create(data: PostData, callback?: (...args: any[]) => void);
-  create(data: PostData, replace: boolean, callback?: (...args: any[]) => void);
-  create(data: PostData, replace: boolean | ((...args: any[]) => void), callback?: (...args: any[]) => void) {
+  create(data: PostData, callback?: NodeJSLikeCallback<any>);
+  create(data: PostData, replace: boolean, callback?: NodeJSLikeCallback<any>);
+  create(data: PostData, replace: boolean | (NodeJSLikeCallback<any>), callback?: NodeJSLikeCallback<any>) {
     if (!callback && typeof replace === 'function') {
       callback = replace;
       replace = false;
@@ -335,7 +335,7 @@ class Post {
     });
   }
 
-  publish(data: PostData, replace: boolean, callback?: (...args: any[]) => void) {
+  publish(data: PostData, replace: boolean, callback?: NodeJSLikeCallback<Result>) {
     if (!callback && typeof replace === 'function') {
       callback = replace;
       replace = false;
@@ -388,7 +388,7 @@ class Post {
     }).thenReturn(result).asCallback(callback);
   }
 
-  render(source: string, data: Data = {}, callback?: (...args: any[]) => void) {
+  render(source: string, data: Data = {}, callback?: NodeJSLikeCallback<never>) {
     const ctx = this.context;
     const { config } = ctx;
     const { tag } = ctx.extend;

@@ -121,7 +121,7 @@ class Box extends EventEmitter {
     }));
   }
 
-  process(callback?: (...args: any[]) => void) {
+  process(callback?: NodeJSLikeCallback<any>) {
     const { base, Cache, context: ctx } = this;
 
     return stat(base).then(stats => {
@@ -183,7 +183,7 @@ class Box extends EventEmitter {
     }).thenReturn(path);
   }
 
-  watch(callback?: (...args: any[]) => void) {
+  watch(callback?: NodeJSLikeCallback<never>) {
     if (this.isWatching()) {
       return BlueBirdPromise.reject(new Error('Watcher has already started.')).asCallback(callback);
     }

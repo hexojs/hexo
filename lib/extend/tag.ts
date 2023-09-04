@@ -251,7 +251,7 @@ class Tag {
     if (env.hasExtension(name)) env.removeExtension(name);
   }
 
-  render(str: string, options: { source?: string } = {}, callback?: (...args: any[]) => void) {
+  render(str: string, options: { source?: string } = {}, callback?: NodeJSLikeCallback<any>) {
     if (!callback && typeof options === 'function') {
       callback = options;
       options = {};

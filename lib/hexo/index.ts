@@ -336,7 +336,7 @@ class Hexo extends EventEmitter {
     });
   }
 
-  call(name: string, args: any, callback?: (...args: any[]) => void) {
+  call(name: string, args: any, callback?: NodeJSLikeCallback<any>) {
     if (!callback && typeof args === 'function') {
       callback = args;
       args = {};
@@ -371,7 +371,7 @@ class Hexo extends EventEmitter {
     }
   }
 
-  loadPlugin(path: string, callback?: (...args: any[]) => void) {
+  loadPlugin(path: string, callback?: NodeJSLikeCallback<any>) {
     return readFile(path).then(script => {
       // Based on: https://github.com/joyent/node/blob/v0.10.33/src/node.js#L516
       const module = new Module(path);
@@ -401,7 +401,7 @@ class Hexo extends EventEmitter {
     return args.draft || args.drafts || this.config.render_drafts;
   }
 
-  load(callback: (...args: any[]) => void) {
+  load(callback: NodeJSLikeCallback<any>) {
     return loadDatabase(this).then(() => {
       this.log.info('Start processing');
 
@@ -415,7 +415,7 @@ class Hexo extends EventEmitter {
     }).asCallback(callback);
   }
 
-  watch(callback?: (...args: any[]) => void) {
+  watch(callback?: NodeJSLikeCallback<any>) {
     let useCache = false;
     const { cache } = Object.assign({
       cache: false
