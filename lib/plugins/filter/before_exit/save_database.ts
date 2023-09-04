@@ -1,4 +1,6 @@
-function saveDatabaseFilter() {
+import type Hexo from '../../../hexo';
+
+function saveDatabaseFilter(this: Hexo) {
   if (!this.env.init || !this._dbLoaded) return;
 
   return this.database.save().then(() => {

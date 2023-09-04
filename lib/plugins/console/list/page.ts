@@ -2,7 +2,7 @@ import { magenta, underline, gray } from 'picocolors';
 import table from 'text-table';
 import { stringLength } from './common';
 
-function listPage() {
+function listPage(): void {
   const Page = this.model('Page');
 
   const data = Page.sort({date: 1}).map(page => {

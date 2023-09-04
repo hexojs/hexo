@@ -1,7 +1,8 @@
 import { exists } from 'hexo-fs';
 import { underline, magenta } from 'picocolors';
+import type Hexo from '../../hexo';
 
-function deployConsole(args) {
+function deployConsole(this: Hexo, args) {
   let config = this.config.deploy;
   const deployers = this.extend.deployer.list();
 

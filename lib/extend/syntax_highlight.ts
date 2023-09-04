@@ -39,13 +39,13 @@ class SyntaxHighlight {
     this.store = {};
   }
 
-  register(name: string, fn: StoreFunction) {
+  register(name: string, fn: StoreFunction): void {
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 
     this.store[name] = fn;
   }
 
-  query(name: string) {
+  query(name: string): StoreFunction {
     return name && this.store[name];
   }
 

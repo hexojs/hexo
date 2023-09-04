@@ -6,7 +6,7 @@ function mapName(item) {
   return item.name;
 }
 
-function listPost() {
+function listPost(): void {
   const Post = this.model('Post');
 
   const data = Post.sort({published: -1, date: 1}).map(post => {

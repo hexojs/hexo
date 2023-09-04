@@ -2,8 +2,9 @@ import yaml from 'js-yaml';
 import { exists, writeFile } from 'hexo-fs';
 import { extname } from 'path';
 import Promise from 'bluebird';
+import type Hexo from '../../hexo';
 
-function configConsole(args) {
+function configConsole(this: Hexo, args): Promise<void> {
   const key = args._[0];
   let value = args._[1];
 
@@ -35,7 +36,7 @@ function configConsole(args) {
   });
 }
 
-function getProperty(obj: object, key: string) {
+function getProperty(obj: object, key: string): any {
   const split = key.split('.');
   let result = obj[split[0]];
 
@@ -46,7 +47,7 @@ function getProperty(obj: object, key: string) {
   return result;
 }
 
-function setProperty(obj: object, key: string, value: any) {
+function setProperty(obj: object, key: string, value: any): void {
   const split = key.split('.');
   let cursor = obj;
   const lastKey = split.pop();
@@ -60,7 +61,7 @@ function setProperty(obj: object, key: string, value: any) {
   cursor[lastKey] = value;
 }
 
-function castValue(value: string) {
+function castValue(value: string): any {
   switch (value) {
     case 'true':
       return true;

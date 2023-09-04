@@ -57,25 +57,25 @@ class Renderer {
     this.storeSync = {};
   }
 
-  list(sync: boolean) {
+  list(sync: boolean): Store | SyncStore {
     return sync ? this.storeSync : this.store;
   }
 
-  get(name: string, sync?: boolean) {
+  get(name: string, sync?: boolean): StoreSyncFunction | StoreFunction {
     const store = this[sync ? 'storeSync' : 'store'];
 
     return store[getExtname(name)] || store[name];
   }
 
-  isRenderable(path: string) {
+  isRenderable(path: string): boolean {
     return Boolean(this.get(path));
   }
 
-  isRenderableSync(path: string) {
+  isRenderableSync(path: string): boolean {
     return Boolean(this.get(path, true));
   }
 
-  getOutput(path: string) {
+  getOutput(path: string): string {
     const renderer = this.get(path);
     return renderer ? renderer.output : '';
   }

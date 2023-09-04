@@ -2,7 +2,7 @@ import { underline } from 'picocolors';
 import table from 'text-table';
 import { stringLength } from './common';
 
-function listCategory() {
+function listCategory(): void {
   const categories = this.model('Category');
 
   const data = categories.sort({name: 1}).map(cate => [cate.name, String(cate.length)]);

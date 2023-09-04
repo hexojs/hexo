@@ -59,7 +59,7 @@ class Generater {
       generatingFiles.delete(path);
     });
   }
-  writeFile(path: string, force?: boolean) {
+  writeFile(path: string, force?: boolean): Promise<any> {
     const { route, log } = this.context;
     const publicDir = this.context.public_dir;
     const Cache = this.context.model('Cache');
@@ -100,7 +100,7 @@ class Generater {
       });
     });
   }
-  deleteFile(path: string) {
+  deleteFile(path: string): Promise<void> {
     const { log } = this.context;
     const publicDir = this.context.public_dir;
     const dest = join(publicDir, path);
@@ -127,7 +127,7 @@ class Generater {
 
     return dataStream.pipe(new PassThrough());
   }
-  firstGenerate() {
+  firstGenerate(): Promise<void> {
     const { concurrency } = this;
     const { route, log } = this.context;
     const publicDir = this.context.public_dir;
@@ -172,7 +172,7 @@ class Generater {
       log.info('%d files generated in %s', count, cyan(interval));
     });
   }
-  execWatch() {
+  execWatch(): Promise<void> {
     const { route, log } = this.context;
     return this.context.watch().then(() => this.firstGenerate()).then(() => {
       log.info('Hexo is watching for file changes. Press Ctrl+C to exit.');

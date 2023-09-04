@@ -47,7 +47,7 @@ const process = (name: string, ctx: Hexo) => {
   });
 };
 
-function assetGenerator() {
+function assetGenerator(this: Hexo): Promise<any[]> {
   return Promise.all([
     process('Asset', this),
     process('PostAsset', this)

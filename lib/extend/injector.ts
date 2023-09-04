@@ -24,15 +24,15 @@ class Injector {
     this.cache = new Cache();
   }
 
-  list() {
+  list(): Store {
     return this.store;
   }
 
-  get(entry: Entry, to = 'default') {
+  get(entry: Entry, to = 'default'): any[] {
     return Array.from(this.store[entry][to] || []);
   }
 
-  getText(entry: Entry, to = 'default') {
+  getText(entry: Entry, to = 'default'): string {
     const arr = this.get(entry, to);
     if (!arr || !arr.length) return '';
     return arr.join('');
@@ -42,7 +42,7 @@ class Injector {
     return this.cache.apply(`${entry}-size`, Object.keys(this.store[entry]).length);
   }
 
-  register(entry: Entry, value: string | (() => string), to = 'default') {
+  register(entry: Entry, value: string | (() => string), to = 'default'): void {
     if (!entry) throw new TypeError('entry is required');
     if (typeof value === 'function') value = value();
 
@@ -52,7 +52,7 @@ class Injector {
     entryMap[to] = valueSet;
   }
 
-  _getPageType(pageLocals) {
+  _getPageType(pageLocals): string {
     let currentType = 'default';
     if (pageLocals.__index) currentType = 'home';
     if (pageLocals.__post) currentType = 'post';
@@ -65,7 +65,7 @@ class Injector {
     return currentType;
   }
 
-  _injector(input, pattern, flag, isBegin = true, currentType) {
+  _injector(input: string, pattern: string | RegExp, flag: Entry, isBegin = true, currentType: string): string {
     if (input.includes(`hexo injector ${flag}`)) return input;
 
     const code = this.cache.apply(`${flag}-${currentType}-code`, () => {
@@ -81,7 +81,7 @@ class Injector {
     return input.replace(pattern, str => { return isBegin ? str + code : code + str; });
   }
 
-  exec(data, locals = { page: {} }) {
+  exec(data: string, locals = { page: {} }): string {
     const { page } = locals;
     const currentType = this._getPageType(page);
 

@@ -211,7 +211,7 @@ class Tag {
   register(name: string, fn: TagFunction): void
   register(name: string, fn: TagFunction, ends: boolean): void
   register(name: string, fn: TagFunction, options: RegisterOptions): void
-  register(name: string, fn: TagFunction, options?: RegisterOptions | boolean) {
+  register(name: string, fn: TagFunction, options?: RegisterOptions | boolean):void {
     if (!name) throw new TypeError('name is required');
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 
@@ -243,7 +243,7 @@ class Tag {
     this.env.addExtension(name, tag);
   }
 
-  unregister(name: string) {
+  unregister(name: string): void {
     if (!name) throw new TypeError('name is required');
 
     const { env } = this;
@@ -251,7 +251,7 @@ class Tag {
     if (env.hasExtension(name)) env.removeExtension(name);
   }
 
-  render(str: string, options: { source?: string } = {}, callback?: NodeJSLikeCallback<any>) {
+  render(str: string, options: { source?: string } = {}, callback?: NodeJSLikeCallback<any>): Promise<any> {
     if (!callback && typeof options === 'function') {
       callback = options;
       options = {};

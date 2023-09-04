@@ -81,9 +81,9 @@ class Box extends EventEmitter {
     return _File;
   }
 
-  addProcessor(pattern: (...args: any[]) => any);
-  addProcessor(pattern: string | RegExp | Pattern | ((...args: any[]) => any), fn: (...args: any[]) => any);
-  addProcessor(pattern: string | RegExp | Pattern | ((...args: any[]) => any), fn?: (...args: any[]) => any) {
+  addProcessor(pattern: (...args: any[]) => any): void;
+  addProcessor(pattern: string | RegExp | Pattern | ((...args: any[]) => any), fn: (...args: any[]) => any): void;
+  addProcessor(pattern: string | RegExp | Pattern | ((...args: any[]) => any), fn?: (...args: any[]) => any): void {
     if (!fn && typeof pattern === 'function') {
       fn = pattern;
       pattern = defaultPattern;
@@ -98,7 +98,7 @@ class Box extends EventEmitter {
     });
   }
 
-  _readDir(base: string, prefix = '') {
+  _readDir(base: string, prefix = ''): BlueBirdPromise<any> {
     const { context: ctx } = this;
     const results = [];
     return readDirWalker(ctx, base, results, this.ignore, prefix)
@@ -121,7 +121,7 @@ class Box extends EventEmitter {
     }));
   }
 
-  process(callback?: NodeJSLikeCallback<any>) {
+  process(callback?: NodeJSLikeCallback<any>): BlueBirdPromise<any> {
     const { base, Cache, context: ctx } = this;
 
     return stat(base).then(stats => {
@@ -133,14 +133,14 @@ class Box extends EventEmitter {
 
       // Handle deleted files
       return this._readDir(base)
-        .then(files => cacheFiles.filter(path => !files.includes(path)))
-        .map(path => this._processFile(File.TYPE_DELETE, path));
+        .then((files: string[]) => cacheFiles.filter((path: string) => !files.includes(path)))
+        .map((path: string) => this._processFile(File.TYPE_DELETE, path) as PromiseLike<any>);
     }).catch(err => {
       if (err && err.code !== 'ENOENT') throw err;
     }).asCallback(callback);
   }
 
-  _processFile(type: string, path: string) {
+  _processFile(type: string, path: string): BlueBirdPromise<void> | BlueBirdPromise<string> {
     if (this._processingFiles[path]) {
       return BlueBirdPromise.resolve();
     }
@@ -183,7 +183,7 @@ class Box extends EventEmitter {
     }).thenReturn(path);
   }
 
-  watch(callback?: NodeJSLikeCallback<never>) {
+  watch(callback?: NodeJSLikeCallback<never>): BlueBirdPromise<void> {
     if (this.isWatching()) {
       return BlueBirdPromise.reject(new Error('Watcher has already started.')).asCallback(callback);
     }
@@ -218,24 +218,24 @@ class Box extends EventEmitter {
     }).asCallback(callback);
   }
 
-  unwatch() {
+  unwatch(): void {
     if (!this.isWatching()) return;
 
     this.watcher.close();
     this.watcher = null;
   }
 
-  isWatching() {
+  isWatching(): boolean {
     return Boolean(this.watcher);
   }
 }
 
-function escapeBackslash(path: string) {
+function escapeBackslash(path: string): string {
   // Replace backslashes on Windows
   return path.replace(/\\/g, '/');
 }
 
-function getHash(path: string) {
+function getHash(path: string): BlueBirdPromise<string> {
   const src = createReadStream(path);
   const hasher = createSha1Hash();
 
@@ -249,7 +249,7 @@ function getHash(path: string) {
   return finishedPromise.then(() => hasher.digest('hex'));
 }
 
-function toRegExp(ctx: Hexo, arg: string) {
+function toRegExp(ctx: Hexo, arg: string): RegExp | null {
   if (!arg) return null;
   if (typeof arg !== 'string') {
     ctx.log.warn('A value of "ignore:" section in "_config.yml" is not invalid (not a string)');
@@ -263,11 +263,11 @@ function toRegExp(ctx: Hexo, arg: string) {
   return result;
 }
 
-function isIgnoreMatch(path: string, ignore: string | any[]) {
+function isIgnoreMatch(path: string, ignore: string | any[]): boolean {
   return path && ignore && ignore.length && isMatch(path, ignore);
 }
 
-function readDirWalker(ctx: Hexo, base: string, results: any[], ignore: any, prefix: string) {
+function readDirWalker(ctx: Hexo, base: string, results: any[], ignore: any, prefix: string): BlueBirdPromise<any> {
   if (isIgnoreMatch(base, ignore)) return BlueBirdPromise.resolve();
 
   return BlueBirdPromise.map(readdir(base).catch(err => {

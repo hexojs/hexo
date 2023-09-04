@@ -1,8 +1,9 @@
 import { createSha1Hash, Permalink, slugize } from 'hexo-util';
 import { basename } from 'path';
+import type Hexo from '../../hexo';
 let permalink;
 
-function postPermalinkFilter(data) {
+function postPermalinkFilter(this: Hexo, data) {
   const { config } = this;
   const { id, _id, slug, title, date, __permalink } = data;
 

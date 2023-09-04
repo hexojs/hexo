@@ -2,7 +2,7 @@ import { magenta, underline } from 'picocolors';
 import table from 'text-table';
 import { stringLength } from './common';
 
-function listTag() {
+function listTag(): void {
   const Tag = this.model('Tag');
 
   const data = Tag.sort({name: 1}).map(tag => [tag.name, String(tag.length), magenta(tag.path)]);

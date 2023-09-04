@@ -401,7 +401,7 @@ class Hexo extends EventEmitter {
     return args.draft || args.drafts || this.config.render_drafts;
   }
 
-  load(callback: NodeJSLikeCallback<any>) {
+  load(callback?: NodeJSLikeCallback<any>) {
     return loadDatabase(this).then(() => {
       this.log.info('Start processing');
 

@@ -1,6 +1,6 @@
 import archy from 'archy';
 
-function listRoute() {
+function listRoute(): void {
   const routes = this.route.list().sort();
   const tree = buildTree(routes);
   const nodes = buildNodes(tree);
