@@ -13,6 +13,11 @@ const rTo = /\s*to:(\d+)/i;
 *   {% include_code [title] [lang:language] path/to/file %}
 */
 
+const escapeBackslash = path => {
+  // Replace backslashes on Windows
+  return path.replace(/\\/g, '/');
+};
+
 export = (ctx: Hexo) => function includeCodeTag(args: string[]) {
   let codeDir = ctx.config.code_dir;
   let arg = args.join(' ');
@@ -46,7 +51,7 @@ export = (ctx: Hexo) => function includeCodeTag(args: string[]) {
   // If the language is not defined, use file extension instead
   lang = lang || extname(path).substring(1);
 
-  const src = join(codeDir, path);
+  const src = escapeBackslash(join(codeDir, path));
 
   // If the title is not defined, use file name instead
   const title = match[1] || basename(path);
@@ -72,6 +77,5 @@ export = (ctx: Hexo) => function includeCodeTag(args: string[]) {
       args: [code, options]
     });
   }
-
   return `<pre><code>${code}</code></pre>`;
 };
