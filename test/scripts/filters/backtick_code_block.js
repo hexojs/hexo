@@ -184,6 +184,26 @@ describe('Backtick code block', () => {
       data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
     });
 
+    it('additional options', () => {
+      const data = {
+        content: [
+          '``` js Hello world https://hexo.io/ Hexo mark:1,2-3 wrap:false',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = highlight(code, {
+        lang: 'js',
+        caption: '<span>Hello world</span><a href="https://hexo.io/">Hexo</a>',
+        mark: [1, 2, 3],
+        wrap: false
+      });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
     it('indent', () => {
       const indentCode = code.split('\n').map(line => '  ' + line).join('\n');
 
@@ -630,6 +650,61 @@ describe('Backtick code block', () => {
       const expected = prism(code, {
         lang: 'js',
         caption: '<span>Hello world</span>'
+      });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('url', () => {
+      const data = {
+        content: [
+          '``` js Hello world https://hexo.io/',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = prism(code, {
+        lang: 'js',
+        caption: '<span>Hello world</span><a href="https://hexo.io/">link</a>'
+      });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('link text', () => {
+      const data = {
+        content: [
+          '``` js Hello world https://hexo.io/ Hexo',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = prism(code, {
+        lang: 'js',
+        caption: '<span>Hello world</span><a href="https://hexo.io/">Hexo</a>'
+      });
+
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('additional options', () => {
+      const data = {
+        content: [
+          '``` js Hello world https://hexo.io/ Hexo mark:1,2-3',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      const expected = prism(code, {
+        lang: 'js',
+        caption: '<span>Hello world</span><a href="https://hexo.io/">Hexo</a>',
+        mark: [1, 2, 3]
       });
 
       codeBlock(data);
