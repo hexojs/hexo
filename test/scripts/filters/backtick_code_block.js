@@ -693,6 +693,8 @@ describe('Backtick code block', () => {
     });
 
     it('additional options', () => {
+      hexo.config.prismjs.preprocess = false;
+
       const data = {
         content: [
           '``` js Hello world https://hexo.io/ Hexo mark:1,2-3',
@@ -704,7 +706,9 @@ describe('Backtick code block', () => {
       const expected = prism(code, {
         lang: 'js',
         caption: '<span>Hello world</span><a href="https://hexo.io/">Hexo</a>',
-        mark: [1, 2, 3]
+        isPreprocess: false,
+        firstLine: 1,
+        mark: '1,2-3'
       });
 
       codeBlock(data);
