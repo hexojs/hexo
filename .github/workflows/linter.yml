@@ -1,6 +1,19 @@
 name: Linter
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - "master"
+      - "v7.0.0"
+    paths:
+      - "lib/**"
+      - "test/**"
+      - ".github/workflows/linter.yml"
+  pull_request:
+    paths:
+      - "lib/**"
+      - "test/**"
+      - ".github/workflows/linter.yml"
 
 permissions:
   contents: read
@@ -13,7 +26,7 @@ jobs:
       - name: Use Node.js 14.x
         uses: actions/setup-node@v3
         with:
-          node-version: '14.x'
+          node-version: "14.x"
       - name: Install Dependencies
         run: npm install
       - name: Lint
