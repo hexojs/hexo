@@ -3,10 +3,10 @@
 const { stub, assert: sinonAssert } = require('sinon');
 
 describe('Console list', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
 
-  const listRoutes = require('../../../lib/plugins/console/list/route').bind(hexo);
+  const listRoutes = require('../../../dist/plugins/console/list/route').bind(hexo);
   const { route } = hexo;
 
   let logStub;
@@ -27,5 +27,15 @@ describe('Console list', () => {
 
     listRoutes();
     sinonAssert.calledWithMatch(logStub, 'Total: 1');
+    route.remove('test');
+  });
+
+  it('route with nodes', async () => {
+    route.set('test0/test1', 'foo');
+
+    listRoutes();
+    sinonAssert.calledWithMatch(logStub, 'Total: 1');
+    sinonAssert.calledWithMatch(logStub, '└─┬ test0');
+    sinonAssert.calledWithMatch(logStub, '  └── test1');
   });
 });

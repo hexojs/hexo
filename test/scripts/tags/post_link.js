@@ -1,9 +1,9 @@
 'use strict';
 
 describe('post_link', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
-  const postLink = require('../../../lib/plugins/tag/post_link')(hexo);
+  const postLink = require('../../../dist/plugins/tag/post_link')(hexo);
   const Post = hexo.model('Post');
 
   hexo.config.permalink = ':title/';
@@ -22,6 +22,11 @@ describe('post_link', () => {
     source: 'fôo',
     slug: 'fôo',
     title: 'Hello world'
+  },
+  {
+    source: 'no-title',
+    slug: 'no-title',
+    title: ''
   }])));
 
   it('default', () => {
@@ -34,6 +39,10 @@ describe('post_link', () => {
 
   it('title', () => {
     postLink(['foo', 'test']).should.eql('<a href="/foo/" title="Hello world">test</a>');
+  });
+
+  it('no title', () => {
+    postLink(['no-title']).should.eql('<a href="/no-title/" title="no-title">no-title</a>');
   });
 
   it('should escape tag in title by default', () => {

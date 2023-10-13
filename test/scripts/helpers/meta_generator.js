@@ -1,10 +1,10 @@
 'use strict';
 
 describe('meta_generator', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo();
 
-  const metaGeneratorHelper = require('../../../lib/plugins/helper/meta_generator').bind(hexo);
+  const metaGeneratorHelper = require('../../../dist/plugins/helper/meta_generator').bind(hexo);
 
   it('default', () => {
     const { version } = hexo;

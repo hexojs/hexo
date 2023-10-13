@@ -1,12 +1,13 @@
 'use strict';
 
 const util = require('hexo-util');
-const defaultConfig = require('../../../lib/hexo/default_config');
+const defaultConfig = require('../../../dist/hexo/default_config');
 
 describe('Backtick code block', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo();
-  const codeBlock = require('../../../lib/plugins/filter/before_post_render/backtick_code_block').bind(hexo);
+  require('../../../dist/plugins/highlight/')(hexo);
+  const codeBlock = require('../../../dist/plugins/filter/before_post_render/backtick_code_block')(hexo);
 
   const code = [
     'if (tired && night) {',
@@ -47,8 +48,7 @@ describe('Backtick code block', () => {
 
     const data = {content};
 
-    hexo.config.highlight.enable = false;
-    hexo.config.prismjs.enable = false;
+    hexo.config.syntax_highlighter = '';
     codeBlock(data);
     data.content.should.eql(content);
   });
@@ -75,6 +75,10 @@ describe('Backtick code block', () => {
   });
 
   describe('highlightjs', () => {
+    beforeEach(() => {
+      hexo.config.syntax_highlighter = 'highlight.js';
+    });
+
     it('shorthand', () => {
       const data = {
         content: 'Hello, world!'
@@ -503,8 +507,7 @@ describe('Backtick code block', () => {
 
   describe('prismjs', () => {
     beforeEach(() => {
-      hexo.config.highlight.enable = false;
-      hexo.config.prismjs.enable = true;
+      hexo.config.syntax_highlighter = 'prismjs';
     });
 
     it('default', () => {
@@ -629,6 +632,21 @@ describe('Backtick code block', () => {
         caption: '<span>Hello world</span>'
       });
 
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('prism only wrap with pre and code', () => {
+      hexo.config.prismjs.exclude_languages = ['js'];
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+      const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
+      const expected = `<pre><code class="js">${escapeSwigTag(util.escapeHTML(code))}</code></pre>`;
       codeBlock(data);
       data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
     });

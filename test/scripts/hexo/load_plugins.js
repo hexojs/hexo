@@ -5,9 +5,9 @@ const { join, dirname } = require('path');
 const Promise = require('bluebird');
 
 describe('Load plugins', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'plugin_test'), { silent: true });
-  const loadPlugins = require('../../../lib/hexo/load_plugins');
+  const loadPlugins = require('../../../dist/hexo/load_plugins');
 
   const script = [
     'hexo._script_test = {',
@@ -18,6 +18,18 @@ describe('Load plugins', () => {
     '}'
   ].join('\n');
 
+  const asyncScript = [
+    'async function afunc() {',
+    '  return new Promise(resolve => resolve());',
+    '}',
+    'await afunc()',
+    'hexo._script_test = {',
+    '  filename: __filename,',
+    '  dirname: __dirname,',
+    '  module: module,',
+    '  require: require',
+    '}'
+  ].join('\n');
   function validate(path) {
     const result = hexo._script_test;
 
@@ -75,6 +87,19 @@ describe('Load plugins', () => {
     return Promise.all([
       createPackageFile(name),
       fs.writeFile(path, script)
+    ]).then(() => loadPlugins(hexo)).then(() => {
+      validate(path);
+      return fs.unlink(path);
+    });
+  });
+
+  it('load async plugins', () => {
+    const name = 'hexo-async-plugin-test';
+    const path = join(hexo.plugin_dir, name, 'index.js');
+
+    return Promise.all([
+      createPackageFile(name),
+      fs.writeFile(path, asyncScript)
     ]).then(() => loadPlugins(hexo)).then(() => {
       validate(path);
       return fs.unlink(path);

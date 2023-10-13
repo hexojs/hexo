@@ -3,13 +3,13 @@
 const decache = require('decache');
 
 describe('External link', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo();
   let externalLink;
 
   beforeEach(() => {
-    decache('../../../lib/plugins/filter/after_render/external_link');
-    externalLink = require('../../../lib/plugins/filter/after_render/external_link').bind(hexo);
+    decache('../../../dist/plugins/filter/after_render/external_link');
+    externalLink = require('../../../dist/plugins/filter/after_render/external_link').bind(hexo);
   });
 
   hexo.config = {
@@ -137,14 +137,14 @@ describe('External link', () => {
 });
 
 describe('External link - post', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo();
 
   let externalLink;
 
   beforeEach(() => {
-    decache('../../../lib/plugins/filter/after_post_render/external_link');
-    externalLink = require('../../../lib/plugins/filter/after_post_render/external_link').bind(hexo);
+    decache('../../../dist/plugins/filter/after_post_render/external_link');
+    externalLink = require('../../../dist/plugins/filter/after_post_render/external_link').bind(hexo);
   });
 
   hexo.config = {

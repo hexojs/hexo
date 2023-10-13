@@ -1,7 +1,7 @@
 'use strict';
 
 describe('list_tags', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
   const Post = hexo.model('Post');
   const Tag = hexo.model('Tag');
@@ -10,7 +10,7 @@ describe('list_tags', () => {
     config: hexo.config
   };
 
-  const listTags = require('../../../lib/plugins/helper/list_tags').bind(ctx);
+  const listTags = require('../../../dist/plugins/helper/list_tags').bind(ctx);
 
   before(async () => {
     await hexo.init();
@@ -207,7 +207,7 @@ describe('list_tags', () => {
 });
 
 describe('list_tags transform', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
   const Post = hexo.model('Post');
 
@@ -215,7 +215,7 @@ describe('list_tags transform', () => {
     config: hexo.config
   };
 
-  const listTags = require('../../../lib/plugins/helper/list_tags').bind(ctx);
+  const listTags = require('../../../dist/plugins/helper/list_tags').bind(ctx);
 
   before(async () => {
     await hexo.init();

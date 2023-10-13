@@ -3,11 +3,11 @@
 const { content, expected } = require('../../fixtures/post_render');
 
 describe('Render post', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo();
   const Post = hexo.model('Post');
   const Page = hexo.model('Page');
-  const renderPost = require('../../../lib/plugins/filter/before_generate/render_post').bind(hexo);
+  const renderPost = require('../../../dist/plugins/filter/before_generate/render_post').bind(hexo);
 
   before(async () => {
     await hexo.init();

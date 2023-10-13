@@ -1,14 +1,14 @@
 'use strict';
 
 describe('markdown', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
 
   const ctx = {
-    render: require('../../../lib/plugins/helper/render')(hexo)
+    render: require('../../../dist/plugins/helper/render')(hexo)
   };
 
-  const markdown = require('../../../lib/plugins/helper/markdown').bind(ctx);
+  const markdown = require('../../../dist/plugins/helper/markdown').bind(ctx);
 
   before(() => hexo.init().then(() => hexo.loadPlugin(require.resolve('hexo-renderer-marked'))));
 

@@ -1,7 +1,7 @@
 'use strict';
 
 describe('list_categories', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
   const Post = hexo.model('Post');
   const Category = hexo.model('Category');
@@ -10,7 +10,7 @@ describe('list_categories', () => {
     config: hexo.config
   };
 
-  const listCategories = require('../../../lib/plugins/helper/list_categories').bind(ctx);
+  const listCategories = require('../../../dist/plugins/helper/list_categories').bind(ctx);
 
   before(async () => {
     await hexo.init();

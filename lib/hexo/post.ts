@@ -1,4 +1,4 @@
-'use strict';
+
 
 const assert = require('assert');
 const moment = require('moment');
@@ -31,6 +31,9 @@ const isNonWhiteSpaceChar = char => char !== '\r'
   && char !== ' ';
 
 class PostRenderEscape {
+  public stored: any;
+  public length: any;
+
   constructor() {
     this.stored = [];
   }
@@ -192,7 +195,9 @@ const prepareFrontMatter = (data, jsonMode) => {
     } else if (moment.isDate(item)) {
       data[key] = moment.utc(item).format('YYYY-MM-DD HH:mm:ss');
     } else if (typeof item === 'string') {
-      if (jsonMode || item.includes(':') || item.startsWith('#') || item.startsWith('!!')) data[key] = `"${item}"`;
+      if (jsonMode || item.includes(':') || item.startsWith('#') || item.startsWith('!!')
+      || item.includes('{') || item.includes('}') || item.includes('[') || item.includes(']')
+      || item.includes('\'') || item.includes('"')) data[key] = `"${item.replace(/"/g, '\\"')}"`;
     }
   }
 
@@ -216,12 +221,30 @@ const createAssetFolder = (path, assetFolder) => {
   });
 };
 
+interface Result {
+  path?: string;
+  content?: string;
+}
+
+interface Data {
+  engine?: string;
+  content?: string;
+  disableNunjucks?: boolean;
+  markdown?: object;
+  source?: string;
+}
+
 class Post {
+  public context: any;
+  public config: any;
+  public tag: any;
+  public separator: any;
+
   constructor(context) {
     this.context = context;
   }
 
-  create(data, replace, callback) {
+  create(data, replace, callback?) {
     if (!callback && typeof replace === 'function') {
       callback = replace;
       replace = false;
@@ -244,7 +267,7 @@ class Post {
     ]).spread((path, content) => {
       const result = { path, content };
 
-      return Promise.all([
+      return Promise.all<void, void | string>([
         // Write content to file
         writeFile(path, content),
         // Create asset folder
@@ -267,16 +290,16 @@ class Post {
 
   _renderScaffold(data) {
     const { tag } = this.context.extend;
-    let splited;
+    let splitted;
 
     return this._getScaffold(data.layout).then(scaffold => {
-      splited = yfmSplit(scaffold);
-      const jsonMode = splited.separator.startsWith(';');
+      splitted = yfmSplit(scaffold);
+      const jsonMode = splitted.separator.startsWith(';');
       const frontMatter = prepareFrontMatter({ ...data }, jsonMode);
 
-      return tag.render(splited.data, frontMatter);
+      return tag.render(splitted.data, frontMatter);
     }).then(frontMatter => {
-      const { separator } = splited;
+      const { separator } = splitted;
       const jsonMode = separator.startsWith(';');
 
       // Parse front-matter
@@ -290,14 +313,14 @@ class Post {
 
       let content = '';
       // Prepend the separator
-      if (splited.prefixSeparator) content += `${separator}\n`;
+      if (splitted.prefixSeparator) content += `${separator}\n`;
 
       content += yfmStringify(obj, {
         mode: jsonMode ? 'json' : ''
       });
 
       // Concat content
-      content += splited.content;
+      content += splitted.content;
 
       if (data.content) {
         content += `\n${data.content}`;
@@ -322,7 +345,7 @@ class Post {
     data.slug = slug;
     const regex = new RegExp(`^${escapeRegExp(slug)}(?:[^\\/\\\\]+)`);
     let src = '';
-    const result = {};
+    const result: Result = {};
 
     data.layout = (data.layout || config.default_layout).toLowerCase();
 
@@ -360,7 +383,7 @@ class Post {
     }).thenReturn(result).asCallback(callback);
   }
 
-  render(source, data = {}, callback) {
+  render(source, data: Data = {}, callback) {
     const ctx = this.context;
     const { config } = ctx;
     const { tag } = ctx.extend;
@@ -375,6 +398,27 @@ class Post {
       promise = readFile(source);
     } else {
       return Promise.reject(new Error('No input file or string!')).asCallback(callback);
+    }
+
+    // Files like js and css are also processed by this function, but they do not require preprocessing like markdown
+    // data.source does not exist when tag plugins call the markdown renderer
+    const isPost = !data.source || ['html', 'htm'].includes(ctx.render.getOutput(data.source));
+
+    if (!isPost) {
+      return promise.then(content => {
+        data.content = content;
+        ctx.log.debug('Rendering file: %s', magenta(source));
+
+        return ctx.render.render({
+          text: data.content,
+          path: source,
+          engine: data.engine,
+          toString: true
+        });
+      }).then(content => {
+        data.content = content;
+        return data;
+      }).asCallback(callback);
     }
 
     // disable Nunjucks when the renderer specify that.
@@ -396,8 +440,8 @@ class Post {
         data.content = cacheObj.escapeAllSwigTags(data.content);
       }
 
-      const options = data.markdown || {};
-      if (!config.highlight.enable) options.highlight = null;
+      const options: { highlight?: boolean; } = data.markdown || {};
+      if (!config.syntax_highlighter) options.highlight = null;
 
       ctx.log.debug('Rendering post: %s', magenta(source));
       // Render with markdown or other renderer
@@ -458,4 +502,4 @@ class Post {
   }
 }
 
-module.exports = Post;
+export = Post;

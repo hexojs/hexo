@@ -2,16 +2,27 @@
 
 const { join } = require('path');
 const moment = require('moment');
-const { readFile, mkdirs, unlink, rmdir, writeFile, exists, stat, listDir } = require('hexo-fs');
+const {
+  readFile,
+  mkdirs,
+  unlink,
+  rmdir,
+  writeFile,
+  exists,
+  stat,
+  listDir
+} = require('hexo-fs');
 const { highlight } = require('hexo-util');
 const { spy, useFakeTimers } = require('sinon');
 const { parse: yfm } = require('hexo-front-matter');
 const fixture = require('../../fixtures/post_render');
-const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
+const escapeSwigTag = str =>
+  str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
 describe('Post', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'post_test'));
+  require('../../../lib/plugins/highlight/')(hexo);
   const { post } = hexo;
   const now = Date.now();
   let clock;
@@ -25,19 +36,16 @@ describe('Post', () => {
 
     // Load marked renderer for testing
     await hexo.loadPlugin(require.resolve('hexo-renderer-marked'));
-    await hexo.scaffold.set('post', [
-      '---',
-      'title: {{ title }}',
-      'date: {{ date }}',
-      'tags:',
-      '---'
-    ].join('\n'));
-    await hexo.scaffold.set('draft', [
-      '---',
-      'title: {{ title }}',
-      'tags:',
-      '---'
-    ].join('\n'));
+    await hexo.scaffold.set(
+      'post',
+      ['---', 'title: {{ title }}', 'date: {{ date }}', 'tags:', '---'].join(
+        '\n'
+      )
+    );
+    await hexo.scaffold.set(
+      'draft',
+      ['---', 'title: {{ title }}', 'tags:', '---'].join('\n')
+    );
 
     defaultCfg = JSON.parse(JSON.stringify(hexo.config));
   });
@@ -56,13 +64,14 @@ describe('Post', () => {
     const date = moment(now);
     const listener = spy();
 
-    const content = [
-      '---',
-      'title: Hello World',
-      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
-      'tags:',
-      '---'
-    ].join('\n') + '\n';
+    const content
+      = [
+        '---',
+        'title: Hello World',
+        'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+        'tags:',
+        '---'
+      ].join('\n') + '\n';
 
     hexo.once('new', listener);
 
@@ -82,13 +91,14 @@ describe('Post', () => {
     const path = join(hexo.source_dir, '_posts', 'foo.md');
     const date = moment(now);
 
-    const content = [
-      '---',
-      'title: Hello World',
-      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
-      'tags:',
-      '---'
-    ].join('\n') + '\n';
+    const content
+      = [
+        '---',
+        'title: Hello World',
+        'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+        'tags:',
+        '---'
+      ].join('\n') + '\n';
 
     const result = await post.create({
       title: 'Hello World',
@@ -108,13 +118,14 @@ describe('Post', () => {
     const path = join(hexo.source_dir, '_posts', 'hello-world.md');
     const date = moment(now);
 
-    const content = [
-      '---',
-      'title: Hello World',
-      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
-      'tags:',
-      '---'
-    ].join('\n') + '\n';
+    const content
+      = [
+        '---',
+        'title: Hello World',
+        'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+        'tags:',
+        '---'
+      ].join('\n') + '\n';
 
     const result = await post.create({
       title: 'Hello World'
@@ -131,14 +142,15 @@ describe('Post', () => {
     const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
 
-    const content = [
-      '---',
-      'layout: photo',
-      'title: Hello World',
-      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
-      'tags:',
-      '---'
-    ].join('\n') + '\n';
+    const content
+      = [
+        '---',
+        'layout: photo',
+        'title: Hello World',
+        'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+        'tags:',
+        '---'
+      ].join('\n') + '\n';
 
     const result = await post.create({
       title: 'Hello World',
@@ -156,14 +168,15 @@ describe('Post', () => {
     const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
 
-    const content = [
-      '---',
-      'title: Hello World',
-      'foo: bar',
-      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
-      'tags:',
-      '---'
-    ].join('\n') + '\n';
+    const content
+      = [
+        '---',
+        'title: Hello World',
+        'foo: bar',
+        'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+        'tags:',
+        '---'
+      ].join('\n') + '\n';
 
     const result = await post.create({
       title: 'Hello World',
@@ -202,9 +215,12 @@ describe('Post', () => {
     await post.create({
       title: 'Hello World'
     });
-    const result = await post.create({
-      title: 'Hello World'
-    }, true);
+    const result = await post.create(
+      {
+        title: 'Hello World'
+      },
+      true
+    );
     result.path.should.eql(path);
     await unlink(path);
   });
@@ -242,36 +258,23 @@ describe('Post', () => {
   });
 
   it('create() - follow the separator style in the scaffold', async () => {
-    const scaffold = [
-      '---',
-      'title: {{ title }}',
-      '---'
-    ].join('\n');
+    const scaffold = ['---', 'title: {{ title }}', '---'].join('\n');
 
     await hexo.scaffold.set('test', scaffold);
     const result = await post.create({
       title: 'Hello World',
       layout: 'test'
     });
-    result.content.should.eql([
-      '---',
-      'title: Hello World',
-      '---'
-    ].join('\n') + '\n');
+    result.content.should.eql(
+      ['---', 'title: Hello World', '---'].join('\n') + '\n'
+    );
 
-    await Promise.all([
-      unlink(result.path),
-      hexo.scaffold.remove('test')
-    ]);
+    await Promise.all([unlink(result.path), hexo.scaffold.remove('test')]);
   });
 
   // #4511
   it('create() - avoid quote if unnecessary', async () => {
-    const scaffold = [
-      '---',
-      'title: {{ title }}',
-      '---'
-    ].join('\n');
+    const scaffold = ['---', 'title: {{ title }}', '---'].join('\n');
 
     await hexo.scaffold.set('test', scaffold);
     const result = await post.create({
@@ -280,25 +283,14 @@ describe('Post', () => {
     });
 
     const data = await readFile(result.path);
-    data.should.eql([
-      '---',
-      'title: Hello World',
-      '---'
-    ].join('\n') + '\n');
+    data.should.eql(['---', 'title: Hello World', '---'].join('\n') + '\n');
 
-    await Promise.all([
-      unlink(result.path),
-      hexo.scaffold.remove('test')
-    ]);
+    await Promise.all([unlink(result.path), hexo.scaffold.remove('test')]);
   });
 
   // #4511
   it('create() - wrap with quote when necessary', async () => {
-    const scaffold = [
-      '---',
-      'title: {{ title }}',
-      '---'
-    ].join('\n');
+    const scaffold = ['---', 'title: {{ title }}', '---'].join('\n');
 
     await hexo.scaffold.set('test', scaffold);
     const result = await post.create({
@@ -307,25 +299,14 @@ describe('Post', () => {
     });
 
     const data = await readFile(result.path);
-    data.should.eql([
-      '---',
-      'title: \'Hello: World\'',
-      '---'
-    ].join('\n') + '\n');
+    data.should.eql(['---', 'title: \'Hello: World\'', '---'].join('\n') + '\n');
 
-    await Promise.all([
-      unlink(result.path),
-      hexo.scaffold.remove('test')
-    ]);
+    await Promise.all([unlink(result.path), hexo.scaffold.remove('test')]);
   });
 
   // #4511
   it('create() - wrap with quote when necessary - yaml tag', async () => {
-    const scaffold = [
-      '---',
-      'title: {{ title }}',
-      '---'
-    ].join('\n');
+    const scaffold = ['---', 'title: {{ title }}', '---'].join('\n');
 
     await hexo.scaffold.set('test', scaffold);
     const result = await post.create({
@@ -335,23 +316,15 @@ describe('Post', () => {
     });
 
     const data = await readFile(result.path);
-    data.should.eql([
-      '---',
-      'title: \'!!js/regexp /pattern/gim\'',
-      '---'
-    ].join('\n') + '\n');
+    data.should.eql(
+      ['---', 'title: \'!!js/regexp /pattern/gim\'', '---'].join('\n') + '\n'
+    );
 
-    await Promise.all([
-      unlink(result.path),
-      hexo.scaffold.remove('test')
-    ]);
+    await Promise.all([unlink(result.path), hexo.scaffold.remove('test')]);
   });
 
   it('create() - JSON front-matter', async () => {
-    const scaffold = [
-      '"title": {{ title }}',
-      ';;;'
-    ].join('\n');
+    const scaffold = ['"title": {{ title }}', ';;;'].join('\n');
 
     await hexo.scaffold.set('test', scaffold);
     const result = await post.create({
@@ -359,16 +332,11 @@ describe('Post', () => {
       layout: 'test',
       lang: 'en'
     });
-    result.content.should.eql([
-      '"title": "Hello World",',
-      '"lang": "en"',
-      ';;;'
-    ].join('\n') + '\n');
+    result.content.should.eql(
+      ['"title": "Hello World",', '"lang": "en"', ';;;'].join('\n') + '\n'
+    );
 
-    await Promise.all([
-      unlink(result.path),
-      hexo.scaffold.remove('test')
-    ]);
+    await Promise.all([unlink(result.path), hexo.scaffold.remove('test')]);
   });
 
   // #1100
@@ -386,14 +354,16 @@ describe('Post', () => {
     const data = await post.create({
       title: 'Foo: Bar'
     });
-    data.content.should.eql([
-      // js-yaml use single-quotation for dumping since 3.3
-      '---',
-      'title: \'Foo: Bar\'',
-      'date: ' + moment(now).format('YYYY-MM-DD HH:mm:ss'),
-      'tags:',
-      '---'
-    ].join('\n') + '\n');
+    data.content.should.eql(
+      [
+        // js-yaml use single-quotation for dumping since 3.3
+        '---',
+        'title: \'Foo: Bar\'',
+        'date: ' + moment(now).format('YYYY-MM-DD HH:mm:ss'),
+        'tags:',
+        '---'
+      ].join('\n') + '\n'
+    );
     await unlink(data.path);
   });
 
@@ -427,13 +397,14 @@ describe('Post', () => {
     const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
 
-    const content = [
-      '---',
-      'title: Hello World',
-      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
-      'tags:',
-      '---'
-    ].join('\n') + '\n';
+    const content
+      = [
+        '---',
+        'title: Hello World',
+        'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+        'tags:',
+        '---'
+      ].join('\n') + '\n';
 
     post.create({ title: 'Hello World' }, (err, post) => {
       if (err) {
@@ -465,13 +436,14 @@ describe('Post', () => {
     const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
 
-    const content = [
-      '---',
-      'title: Hello World',
-      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
-      'tags:',
-      '---'
-    ].join('\n') + '\n';
+    const content
+      = [
+        '---',
+        'title: Hello World',
+        'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+        'tags:',
+        '---'
+      ].join('\n') + '\n';
 
     const data = await post.create({
       title: 'Hello World',
@@ -497,14 +469,15 @@ describe('Post', () => {
     const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
 
-    const content = [
-      '---',
-      'layout: photo',
-      'title: Hello World',
-      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
-      'tags:',
-      '---'
-    ].join('\n') + '\n';
+    const content
+      = [
+        '---',
+        'layout: photo',
+        'title: Hello World',
+        'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+        'tags:',
+        '---'
+      ].join('\n') + '\n';
 
     await post.create({
       title: 'Hello World',
@@ -549,9 +522,12 @@ describe('Post', () => {
       post.create({ title: 'Hello World', layout: 'draft' }),
       post.create({ title: 'Hello World' })
     ]);
-    const data = await post.publish({
-      slug: 'Hello-World'
-    }, true);
+    const data = await post.publish(
+      {
+        slug: 'Hello-World'
+      },
+      true
+    );
     data.path.should.eql(path);
     await unlink(path);
   });
@@ -603,13 +579,14 @@ describe('Post', () => {
     const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
 
-    const content = [
-      '---',
-      'title: Hello World',
-      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
-      'tags:',
-      '---'
-    ].join('\n') + '\n';
+    const content
+      = [
+        '---',
+        'title: Hello World',
+        'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+        'tags:',
+        '---'
+      ].join('\n') + '\n';
 
     const callback = spy();
 
@@ -619,9 +596,12 @@ describe('Post', () => {
     });
     const draftPath = data.path;
 
-    await post.publish({
-      slug: 'Hello-World'
-    }, callback);
+    await post.publish(
+      {
+        slug: 'Hello-World'
+      },
+      callback
+    );
     callback.calledOnce.should.be.true;
     callback.calledWithMatch(null, { path, content }).should.true;
 
@@ -667,12 +647,16 @@ describe('Post', () => {
   });
 
   it('render() - callback', done => {
-    post.render(null, {
-      content: fixture.content,
-      engine: 'markdown'
-    }, err => {
-      done(err);
-    });
+    post.render(
+      null,
+      {
+        content: fixture.content,
+        engine: 'markdown'
+      },
+      err => {
+        done(err);
+      }
+    );
   });
 
   it('render() - file', async () => {
@@ -683,6 +667,16 @@ describe('Post', () => {
     const data = await post.render(path);
     data.content.trim().should.eql('<p><strong>file test</strong></p>');
     await unlink(path);
+  });
+
+  it('render() - skip js', async () => {
+    const content = 'let a = "{{ 1 + 1 }}"';
+
+    const data = await post.render(null, {
+      content,
+      source: 'render_test.js'
+    });
+    data.content.trim().should.eql(content);
   });
 
   it('render() - toString', async () => {
@@ -706,10 +700,14 @@ describe('Post', () => {
       content,
       engine: 'njk'
     });
-    data.content.trim().should.eql([
-      '<blockquote><p>quote content</p>\n',
-      '<footer><strong>Hello World</strong></footer></blockquote>'
-    ].join(''));
+    data.content
+      .trim()
+      .should.eql(
+        [
+          '<blockquote><p>quote content</p>\n',
+          '<footer><strong>Hello World</strong></footer></blockquote>'
+        ].join('')
+      );
   });
 
   it('render() - escaping nunjucks blocks with similar names', async () => {
@@ -729,21 +727,20 @@ describe('Post', () => {
     const data = await post.render(null, {
       content
     });
-    data.content.trim().should.eql([
-      highlighted,
-      '',
-      highlighted
-    ].join('\n'));
+    data.content.trim().should.eql([highlighted, '', highlighted].join('\n'));
   });
 
   it('render() - recover escaped nunjucks blocks which is html escaped', async () => {
-    const content = '`{% raw %}{{ test }}{% endraw %}`, {%raw%}{{ test }}{%endraw%}';
+    const content
+      = '`{% raw %}{{ test }}{% endraw %}`, {%raw%}{{ test }}{%endraw%}';
 
     const data = await post.render(null, {
       content,
       engine: 'markdown'
     });
-    data.content.trim().should.eql('<p><code>{{ test }}</code>, {{ test }}</p>');
+    data.content
+      .trim()
+      .should.eql('<p><code>{{ test }}</code>, {{ test }}</p>');
   });
 
   it.skip('render() - recover escaped nunjucks blocks which is html escaped before post_render', async () => {
@@ -758,7 +755,9 @@ describe('Post', () => {
       engine: 'markdown'
     });
     filter.calledOnce.should.be.true;
-    filter.firstCall.args[0].trim().should.eql('<p><code>{{ test }}</code></p>');
+    filter.firstCall.args[0]
+      .trim()
+      .should.eql('<p><code>{{ test }}</code></p>');
     hexo.extend.filter.unregister('after_render:html', filter);
   });
 
@@ -812,7 +811,9 @@ describe('Post', () => {
   // #4498
   it('render() - (disableNunjucks === true) - sync', async () => {
     const content = '{% link foo http://bar.com %}';
-    const loremFn = data => { return data.text.toUpperCase(); };
+    const loremFn = data => {
+      return data.text.toUpperCase();
+    };
     loremFn.disableNunjucks = true;
     hexo.extend.renderer.register('coffee', 'js', loremFn, true);
 
@@ -823,7 +824,9 @@ describe('Post', () => {
   // #4498
   it('render() - (disableNunjucks === false) - sync', async () => {
     const content = '{% link foo http://bar.com %}';
-    const loremFn = data => { return data.text.toUpperCase(); };
+    const loremFn = data => {
+      return data.text.toUpperCase();
+    };
     loremFn.disableNunjucks = false;
     hexo.extend.renderer.register('coffee', 'js', loremFn, true);
 
@@ -892,14 +895,29 @@ describe('Post', () => {
     ].join('\n');
 
     const data = await post.render(null, {
-      content
+      content,
+      engine: 'markdown'
     });
-    data.content.trim().should.eql([
-      '<blockquote><p>test1</p>',
-      '<blockquote><p>test3</p>',
-      '<footer><strong>test2</strong></footer></blockquote>',
-      'test4</blockquote>'
-    ].join('\n'));
+    data.content
+      .trim()
+      .should.eql(
+        [
+          '<blockquote><p>test1</p>',
+          '<blockquote><p>test3</p>',
+          '<footer><strong>test2</strong></footer></blockquote>',
+          'test4</blockquote>'
+        ].join('\n')
+      );
+  });
+
+  it('render() - swig comments', async () => {
+    const content = '{# blockquote #}';
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+    data.content.trim().should.eql('');
   });
 
   it('render() - multiple tags with async rendering', async () => {
@@ -921,26 +939,27 @@ describe('Post', () => {
       content,
       async_tags: true
     });
-    data.content.trim().should.eql([
-      '<blockquote><p>test1</p>',
-      '<blockquote><p>test3</p>',
-      '<footer><strong>test2</strong></footer></blockquote>',
-      'test4</blockquote>',
-      'ASDF',
-      '<blockquote><p>test6</p>',
-      '<footer><strong>test5</strong></footer></blockquote>'
-    ].join('\n'));
+    data.content
+      .trim()
+      .should.eql(
+        [
+          '<blockquote><p>test1</p>',
+          '<blockquote><p>test3</p>',
+          '<footer><strong>test2</strong></footer></blockquote>',
+          'test4</blockquote>',
+          'ASDF',
+          '<blockquote><p>test6</p>',
+          '<footer><strong>test5</strong></footer></blockquote>'
+        ].join('\n')
+      );
   });
 
   it('render() - shouln\'t break curly brackets', async () => {
-    hexo.config.prismjs.enable = true;
-    hexo.config.highlight.enable = false;
+    hexo.config.syntax_highlighter = 'prismjs';
 
-    const content = [
-      '\\begin{equation}',
-      'E=h\\nu',
-      '\\end{equation}'
-    ].join('\n');
+    const content = ['\\begin{equation}', 'E=h\\nu', '\\end{equation}'].join(
+      '\n'
+    );
 
     const data = await post.render(null, {
       content,
@@ -950,8 +969,7 @@ describe('Post', () => {
     data.content.should.include('\\begin{equation}');
     data.content.should.include('\\end{equation}');
 
-    hexo.config.prismjs.enable = false;
-    hexo.config.highlight.enable = true;
+    hexo.config.syntax_highlighter = 'highlight.js';
   });
 
   // #2321
@@ -970,69 +988,61 @@ describe('Post', () => {
     const data = await post.render(null, {
       content
     });
-    data.content.trim().should.eql([
-      '<blockquote>' + highlighted + '</blockquote>'
-    ].join('\n'));
+    data.content
+      .trim()
+      .should.eql(['<blockquote>' + highlighted + '</blockquote>'].join('\n'));
   });
 
   // #2969
   it('render() - backtick cocde block in blockquote', async () => {
     const code = 'alert("Hello world")';
     const highlighted = highlight(code);
-    const quotedContent = [
-      'This is a code-block',
-      '',
-      '```',
-      code,
-      '```'
-    ];
+    const quotedContent = ['This is a code-block', '', '```', code, '```'];
 
-    const content = [
-      'Hello',
-      '',
-      ...quotedContent.map(s => '> ' + s)
-    ].join('\n');
+    const content = ['Hello', '', ...quotedContent.map(s => '> ' + s)].join(
+      '\n'
+    );
 
     const data = await post.render(null, {
       content,
       engine: 'markdown'
     });
-    data.content.trim().should.eql([
-      '<p>Hello</p>',
-      '<blockquote>',
-      '<p>This is a code-block</p>',
-      highlighted + '</blockquote>'
-    ].join('\n'));
+    data.content
+      .trim()
+      .should.eql(
+        [
+          '<p>Hello</p>',
+          '<blockquote>',
+          '<p>This is a code-block</p>',
+          highlighted + '</blockquote>'
+        ].join('\n')
+      );
   });
 
   // #2969
   it('render() - "lang=dos" backtick cocde block in blockquote', async () => {
     const code = '> dir';
     const highlighted = highlight(code);
-    const quotedContent = [
-      'This is a code-block',
-      '',
-      '```',
-      code,
-      '```'
-    ];
+    const quotedContent = ['This is a code-block', '', '```', code, '```'];
 
-    const content = [
-      'Hello',
-      '',
-      ...quotedContent.map(s => '> ' + s)
-    ].join('\n');
+    const content = ['Hello', '', ...quotedContent.map(s => '> ' + s)].join(
+      '\n'
+    );
 
     const data = await post.render(null, {
       content,
       engine: 'markdown'
     });
-    data.content.trim().should.eql([
-      '<p>Hello</p>',
-      '<blockquote>',
-      '<p>This is a code-block</p>',
-      highlighted + '</blockquote>'
-    ].join('\n'));
+    data.content
+      .trim()
+      .should.eql(
+        [
+          '<p>Hello</p>',
+          '<blockquote>',
+          '<p>This is a code-block</p>',
+          highlighted + '</blockquote>'
+        ].join('\n')
+      );
   });
 
   // #3767
@@ -1049,40 +1059,32 @@ describe('Post', () => {
       'This is a following paragraph'
     ];
 
-    const content = [
-      'Hello',
-      '',
-      ...quotedContent.map(s => '> ' + s)
-    ].join('\n');
+    const content = ['Hello', '', ...quotedContent.map(s => '> ' + s)].join(
+      '\n'
+    );
 
     const data = await post.render(null, {
       content,
       engine: 'markdown'
     });
-    data.content.trim().should.eql([
-      '<p>Hello</p>',
-      '<blockquote>',
-      '<p>This is a code-block</p>',
-      highlighted,
-      '',
-      '<p>This is a following paragraph</p>',
-      '</blockquote>'
-    ].join('\n'));
+    data.content
+      .trim()
+      .should.eql(
+        [
+          '<p>Hello</p>',
+          '<blockquote>',
+          '<p>This is a code-block</p>',
+          highlighted,
+          '',
+          '<p>This is a following paragraph</p>',
+          '</blockquote>'
+        ].join('\n')
+      );
   });
 
   // #3769
   it('render() - blank lines in backtick cocde block in blockquote', async () => {
-    const code = [
-      '',
-      '',
-      '',
-      '{',
-      '  "test": 123',
-      '',
-      '',
-      '}',
-      ''
-    ];
+    const code = ['', '', '', '{', '  "test": 123', '', '', '}', ''];
     const highlighted = highlight(code.join('\n'));
     const addQuote = s => '>' + (s ? ` ${s}` : '');
     const code2 = code.map((s, i) => {
@@ -1098,26 +1100,26 @@ describe('Post', () => {
       '',
       'This is a following paragraph'
     ];
-    const content = [
-      'Hello',
-      '',
-      ...quotedContent.map(addQuote)
-    ].join('\n');
+    const content = ['Hello', '', ...quotedContent.map(addQuote)].join('\n');
 
     const data = await post.render(null, {
       content,
       engine: 'markdown'
     });
-    data.content.trim().should.eql([
-      '<p>Hello</p>',
-      '<blockquote>',
-      '<p>This is a code-block</p>',
-      '<blockquote>',
-      highlighted.replace('{', '&#123;').replace('}', '&#125;'),
-      '</blockquote>',
-      '<p>This is a following paragraph</p>',
-      '</blockquote>'
-    ].join('\n'));
+    data.content
+      .trim()
+      .should.eql(
+        [
+          '<p>Hello</p>',
+          '<blockquote>',
+          '<p>This is a code-block</p>',
+          '<blockquote>',
+          highlighted.replace('{', '&#123;').replace('}', '&#125;'),
+          '</blockquote>',
+          '<p>This is a following paragraph</p>',
+          '</blockquote>'
+        ].join('\n')
+      );
   });
 
   // #4161
@@ -1134,11 +1136,15 @@ describe('Post', () => {
       content,
       engine: 'markdown'
     });
-    data.content.trim().should.eql([
-      '<blockquote class="pullquote"><p>content1</p>\n</blockquote>\n\n',
-      '<p>This is a following paragraph</p>\n',
-      '<blockquote class="pullquote"><p>content2</p>\n</blockquote>'
-    ].join(''));
+    data.content
+      .trim()
+      .should.eql(
+        [
+          '<blockquote class="pullquote"><p>content1</p>\n</blockquote>\n\n',
+          '<p>This is a following paragraph</p>\n',
+          '<blockquote class="pullquote"><p>content2</p>\n</blockquote>'
+        ].join('')
+      );
   });
 
   // #4161
@@ -1155,11 +1161,15 @@ describe('Post', () => {
       content,
       engine: 'markdown'
     });
-    data.content.trim().should.eql([
-      '<blockquote class="pullquote center"><p>content1</p>\n</blockquote>\n\n',
-      '<p>This is a following paragraph</p>\n',
-      '<blockquote class="pullquote center"><p>content2</p>\n</blockquote>'
-    ].join(''));
+    data.content
+      .trim()
+      .should.eql(
+        [
+          '<blockquote class="pullquote center"><p>content1</p>\n</blockquote>\n\n',
+          '<p>This is a following paragraph</p>\n',
+          '<blockquote class="pullquote center"><p>content2</p>\n</blockquote>'
+        ].join('')
+      );
   });
 
   // #3346
@@ -1205,22 +1215,45 @@ describe('Post', () => {
     });
 
     // We only to make sure markdown content is rendered correctly
-    data.content.trim().should.include('<h1 id="Title-0"><a href="#Title-0" class="headerlink" title="Title 0"></a>Title 0</h1>');
-    data.content.trim().should.include('<h1 id="Title-1"><a href="#Title-1" class="headerlink" title="Title 1"></a>Title 1</h1>');
-    data.content.trim().should.include('<h1 id="Title-2"><a href="#Title-2" class="headerlink" title="Title 2"></a>Title 2</h1>');
-    data.content.trim().should.include('<h1 id="Title-3"><a href="#Title-3" class="headerlink" title="Title 3"></a>Title 3</h1>');
+    data.content
+      .trim()
+      .should.include(
+        '<h1 id="Title-0"><a href="#Title-0" class="headerlink" title="Title 0"></a>Title 0</h1>'
+      );
+    data.content
+      .trim()
+      .should.include(
+        '<h1 id="Title-1"><a href="#Title-1" class="headerlink" title="Title 1"></a>Title 1</h1>'
+      );
+    data.content
+      .trim()
+      .should.include(
+        '<h1 id="Title-2"><a href="#Title-2" class="headerlink" title="Title 2"></a>Title 2</h1>'
+      );
+    data.content
+      .trim()
+      .should.include(
+        '<h1 id="Title-3"><a href="#Title-3" class="headerlink" title="Title 3"></a>Title 3</h1>'
+      );
   });
 
   // #3259
   it('render() - "{{" & "}}" inside inline code', async () => {
-    const content = 'In Go\'s templates, blocks look like this: `{{block "template name" .}} (content) {{end}}`.';
+    const content
+      = 'In Go\'s templates, blocks look like this: `{{block "template name" .}} (content) {{end}}`.';
 
     const data = await post.render(null, {
       content,
       engine: 'markdown'
     });
 
-    data.content.trim().should.eql(`<p>In Go’s templates, blocks look like this: <code>${escapeSwigTag('{{block "template name" .}} (content) {{end}}')}</code>.</p>`);
+    data.content
+      .trim()
+      .should.eql(
+        `<p>In Go’s templates, blocks look like this: <code>${escapeSwigTag(
+          '{{block "template name" .}} (content) {{end}}'
+        )}</code>.</p>`
+      );
   });
 
   // https://github.com/hexojs/hexo/issues/3346#issuecomment-595497849
@@ -1232,7 +1265,9 @@ describe('Post', () => {
       engine: 'markdown'
     });
 
-    data.content.trim().should.eql(`<p><code>${escapeSwigTag('{{ 1 + 1 }}')}</code> 2</p>`);
+    data.content
+      .trim()
+      .should.eql(`<p><code>${escapeSwigTag('{{ 1 + 1 }}')}</code> 2</p>`);
 
     // Test that the async tags logic recognize the tags correctly.
     const data_async = await post.render(null, {
@@ -1241,7 +1276,9 @@ describe('Post', () => {
       async_tags: true
     });
 
-    data_async.content.trim().should.eql(`<p><code>${escapeSwigTag('{{ 1 + 1 }}')}</code> 2</p>`);
+    data_async.content
+      .trim()
+      .should.eql(`<p><code>${escapeSwigTag('{{ 1 + 1 }}')}</code> 2</p>`);
   });
 
   // #3543
@@ -1294,15 +1331,21 @@ describe('Post', () => {
       engine: 'markdown'
     });
 
-    data.content.trim().should.eql([
-      `<p><code>${escapeSwigTag('{{ 1 + 1 }}')}</code> 3 <code>${escapeSwigTag('{{ 2 + 2 }}')}</code><br>Text</p>`,
-      '',
-      'Raw 1',
-      '',
-      '<p>Another Text</p>',
-      '',
-      'Raw 2'
-    ].join('\n'));
+    data.content
+      .trim()
+      .should.eql(
+        [
+          `<p><code>${escapeSwigTag(
+            '{{ 1 + 1 }}'
+          )}</code> 3 <code>${escapeSwigTag('{{ 2 + 2 }}')}</code><br>Text</p>`,
+          '',
+          'Raw 1',
+          '',
+          '<p>Another Text</p>',
+          '',
+          'Raw 2'
+        ].join('\n')
+      );
   });
 
   // #4087
@@ -1329,10 +1372,20 @@ describe('Post', () => {
     });
 
     // indented pullquote
-    data.content.trim().should.contains(`<pre><code>${escapeSwigTag('{% pullquote %}foo foo foo{% endpullquote %}')}\n</code></pre>`);
+    data.content
+      .trim()
+      .should.contains(
+        `<pre><code>${escapeSwigTag(
+          '{% pullquote %}foo foo foo{% endpullquote %}'
+        )}\n</code></pre>`
+      );
     data.content.trim().should.contains('<p>test001</p>');
     // pullquote tag
-    data.content.trim().should.contains('<blockquote class="pullquote"><p>bar bar bar</p>\n</blockquote>');
+    data.content
+      .trim()
+      .should.contains(
+        '<blockquote class="pullquote"><p>bar bar bar</p>\n</blockquote>'
+      );
     data.content.trim().should.contains('<p>test002</p>');
   });
 
@@ -1359,8 +1412,7 @@ describe('Post', () => {
   });
 
   it('render() - issue #4460', async () => {
-    hexo.config.prismjs.enable = true;
-    hexo.config.highlight.enable = false;
+    hexo.config.syntax_highlighter = 'prismjs';
 
     const content = fixture.content_for_issue_4460;
 
@@ -1371,13 +1423,11 @@ describe('Post', () => {
 
     data.content.should.not.include('hexoPostRenderEscape');
 
-    hexo.config.prismjs.enable = false;
-    hexo.config.highlight.enable = true;
+    hexo.config.syntax_highlighter = 'highlight.js';
   });
 
   it('render() - empty tag name', async () => {
-    hexo.config.prismjs.enable = true;
-    hexo.config.highlight.enable = false;
+    hexo.config.syntax_highlighter = 'prismjs';
 
     const content = 'Disable rendering of Nunjucks tag `{{ }}` / `{% %}`';
 
@@ -1389,7 +1439,6 @@ describe('Post', () => {
     data.content.should.include(escapeSwigTag('{{ }}'));
     data.content.should.include(escapeSwigTag('{% %}'));
 
-    hexo.config.prismjs.enable = false;
-    hexo.config.highlight.enable = true;
+    hexo.config.syntax_highlighter = 'highlight.js';
   });
 });

@@ -1,14 +1,14 @@
 'use strict';
 
 describe('mail_to', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
 
   const ctx = {
     config: hexo.config
   };
 
-  const mailto = require('../../../lib/plugins/helper/mail_to').bind(ctx);
+  const mailto = require('../../../dist/plugins/helper/mail_to').bind(ctx);
 
   it('path', () => {
     mailto('abc@example.com').should.eql('<a href="mailto:abc@example.com" title="abc@example.com">abc@example.com</a>');

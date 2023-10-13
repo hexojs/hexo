@@ -3,11 +3,12 @@
 const { join } = require('path');
 const { mkdirs, rmdir, unlink, writeFile } = require('hexo-fs');
 const testUtil = require('../../util');
+const { spy } = require('sinon');
 
 describe('asset', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'asset_test'), {silent: true});
-  const generator = require('../../../lib/plugins/generator/asset').bind(hexo);
+  const generator = require('../../../dist/plugins/generator/asset').bind(hexo);
   const Asset = hexo.model('Asset');
 
   const checkStream = async (stream, expected) => {
@@ -38,6 +39,31 @@ describe('asset', () => {
     const result = await data[0].data.data();
     result.should.eql('{"foo":"bar"}');
 
+    await Promise.all([
+      Asset.removeById(path),
+      unlink(source)
+    ]);
+  });
+
+  it('renderable - error', async () => {
+    const logSpy = spy();
+    hexo.log.error = logSpy;
+    const path = 'test.yml';
+    const source = join(hexo.base_dir, path);
+    const content = 'foo: :';
+
+    await Promise.all([
+      Asset.insert({_id: path, path}),
+      writeFile(source, content)
+    ]);
+    const data = await generator(hexo.locals);
+    data[0].path.should.eql('test.json');
+    data[0].data.modified.should.be.true;
+    await data[0].data.data();
+    logSpy.called.should.be.true;
+
+    logSpy.args[0][1].should.contains('Asset render failed: %s');
+    logSpy.args[0][2].should.contains('test.json');
     await Promise.all([
       Asset.removeById(path),
       unlink(source)

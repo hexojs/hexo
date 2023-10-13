@@ -1,9 +1,9 @@
 'use strict';
 
 describe('pullquote', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
-  const pullquote = require('../../../lib/plugins/tag/pullquote')(hexo);
+  const pullquote = require('../../../dist/plugins/tag/pullquote')(hexo);
 
   before(() => hexo.init().then(() => hexo.loadPlugin(require.resolve('hexo-renderer-marked'))));
 

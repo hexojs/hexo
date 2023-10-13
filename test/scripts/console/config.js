@@ -6,9 +6,9 @@ const { load } = require('js-yaml');
 const { stub, assert: sinonAssert } = require('sinon');
 
 describe('config', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
-  const config = require('../../../lib/plugins/console/config').bind(hexo);
+  const config = require('../../../dist/plugins/console/config').bind(hexo);
 
   before(async () => {
     await mkdirs(hexo.base_dir);

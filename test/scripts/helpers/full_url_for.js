@@ -5,7 +5,7 @@ describe('full_url_for', () => {
     config: { url: 'https://example.com' }
   };
 
-  const fullUrlFor = require('../../../lib/plugins/helper/full_url_for').bind(ctx);
+  const fullUrlFor = require('../../../dist/plugins/helper/full_url_for').bind(ctx);
 
   it('no path input', () => {
     fullUrlFor().should.eql(ctx.config.url + '/');

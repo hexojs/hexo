@@ -4,7 +4,7 @@ const { join } = require('path');
 const { exists, readFile, rmdir, unlink, writeFile } = require('hexo-fs');
 
 describe('Scaffold', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
   const scaffold = hexo.scaffold;
   const scaffoldDir = hexo.scaffold_dir;
