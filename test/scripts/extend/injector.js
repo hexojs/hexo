@@ -13,7 +13,7 @@ describe('Injector', () => {
     '</html>'
   ].join('');
 
-  const Injector = require('../../../lib/extend/injector');
+  const Injector = require('../../../dist/extend/injector');
 
   it('register() - entry is required', () => {
     const i = new Injector();

@@ -1,7 +1,7 @@
 'use strict';
 
 describe('search_form', () => {
-  const searchForm = require('../../../lib/plugins/helper/search_form').bind({
+  const searchForm = require('../../../dist/plugins/helper/search_form').bind({
     config: {url: 'https://hexo.io'}
   });
 

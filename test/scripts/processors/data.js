@@ -5,10 +5,10 @@ const { mkdirs, rmdir, unlink, writeFile } = require('hexo-fs');
 const { join } = require('path');
 
 describe('data', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const baseDir = join(__dirname, 'data_test');
   const hexo = new Hexo(baseDir);
-  const processor = require('../../../lib/plugins/processor/data')(hexo);
+  const processor = require('../../../dist/plugins/processor/data')(hexo);
   const process = Promise.method(processor.process).bind(hexo);
   const { source } = hexo;
   const { File } = source;
@@ -128,6 +128,22 @@ describe('data', () => {
     unlink(file.source);
   });
 
+  it('type: skip', async () => {
+    const file = newFile({
+      path: 'users.yml',
+      type: 'skip'
+    });
+
+    await Data.insert({
+      _id: 'users',
+      data: {foo: 'bar'}
+    });
+    const data = Data.findById('users');
+    await process(file);
+    should.exist(data);
+    data.remove();
+  });
+
   it('type: delete', async () => {
     const file = newFile({
       path: 'users.yml',
@@ -141,4 +157,15 @@ describe('data', () => {
     await process(file);
     should.not.exist(Data.findById('users'));
   });
+
+  it('type: delete - not exist', async () => {
+    const file = newFile({
+      path: 'users.yml',
+      type: 'delete'
+    });
+
+    await process(file);
+    should.not.exist(Data.findById('users'));
+  });
+
 });

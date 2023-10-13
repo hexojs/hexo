@@ -5,10 +5,10 @@ const { mkdirs, rmdir, unlink, writeFile } = require('hexo-fs');
 const Promise = require('bluebird');
 
 describe('view', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'view_test'), {silent: true});
-  const processor = require('../../../lib/theme/processors/view');
-  const process = Promise.method(processor.process.bind(hexo));
+  const processor = require('../../../dist/theme/processors/view');
+  const process = Promise.method(processor.view.process.bind(hexo));
   const themeDir = join(hexo.base_dir, 'themes', 'test');
 
   hexo.env.init = true;
@@ -34,7 +34,7 @@ describe('view', () => {
   after(() => rmdir(hexo.base_dir));
 
   it('pattern', () => {
-    const { pattern } = processor;
+    const { pattern } = processor.view;
 
     pattern.match('layout/index.njk').path.should.eql('index.njk');
     should.not.exist(pattern.match('index.njk'));

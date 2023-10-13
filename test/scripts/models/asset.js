@@ -3,7 +3,7 @@
 const { join } = require('path');
 
 describe('Asset', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo();
   const Asset = hexo.model('Asset');
 

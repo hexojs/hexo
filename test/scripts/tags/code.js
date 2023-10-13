@@ -4,10 +4,10 @@ const util = require('hexo-util');
 const cheerio = require('cheerio');
 
 describe('code', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo();
-  require('../../../lib/plugins/highlight/')(hexo);
-  const codeTag = require('../../../lib/plugins/tag/code')(hexo);
+  require('../../../dist/plugins/highlight/')(hexo);
+  const codeTag = require('../../../dist/plugins/tag/code')(hexo);
   const { escapeHTML } = util;
 
   const fixture = [

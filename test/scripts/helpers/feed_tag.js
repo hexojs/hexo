@@ -12,7 +12,7 @@ describe('feed_tag', () => {
 
   beforeEach(() => { ctx.config.feed = {}; });
 
-  const feed = require('../../../lib/plugins/helper/feed_tag').bind(ctx);
+  const feed = require('../../../dist/plugins/helper/feed_tag').bind(ctx);
 
   it('path - atom', () => {
     feed('atom.xml').should.eql('<link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">');

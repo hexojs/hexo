@@ -1,7 +1,7 @@
 'use strict';
 
 describe('list_archives', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
   const Post = hexo.model('Post');
 
@@ -10,7 +10,7 @@ describe('list_archives', () => {
     page: {}
   };
 
-  const listArchives = require('../../../lib/plugins/helper/list_archives').bind(ctx);
+  const listArchives = require('../../../dist/plugins/helper/list_archives').bind(ctx);
 
   function resetLocals() {
     hexo.locals.invalidate();

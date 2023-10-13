@@ -7,9 +7,9 @@ const { hash, Pattern } = require('hexo-util');
 const { spy, match, assert: sinonAssert } = require('sinon');
 
 describe('Box', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const baseDir = join(__dirname, 'box_tmp');
-  const Box = require('../../../lib/box');
+  const Box = require('../../../dist/box');
 
   const newBox = (path, config) => {
     const hexo = new Hexo(baseDir, { silent: true });
@@ -260,6 +260,16 @@ describe('Box', () => {
     data.should.have.all.keys(['foo.txt']);
 
     await rmdir(box.base);
+  });
+
+  it('process() - error ignore - 1', async () => {
+    const box = newBox('test', { ignore: [null] });
+    box.options.ignored.should.eql([]);
+  });
+
+  it('process() - error ignore - 2', async () => {
+    const box = newBox('test', { ignore: [111] });
+    box.options.ignored.should.eql([]);
   });
 
   it('process() - skip files if they match a glob epression in ignore', async () => {

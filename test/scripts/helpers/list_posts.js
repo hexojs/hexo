@@ -1,7 +1,7 @@
 'use strict';
 
 describe('list_posts', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
   const Post = hexo.model('Post');
 
@@ -9,7 +9,7 @@ describe('list_posts', () => {
     config: hexo.config
   };
 
-  const listPosts = require('../../../lib/plugins/helper/list_posts').bind(ctx);
+  const listPosts = require('../../../dist/plugins/helper/list_posts').bind(ctx);
 
   hexo.config.permalink = ':title/';
 

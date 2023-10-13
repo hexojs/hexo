@@ -4,9 +4,9 @@ const { join } = require('path');
 const { readFile, unlink, writeFile } = require('hexo-fs');
 
 describe('Update package.json', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname, {silent: true});
-  const updatePkg = require('../../../lib/hexo/update_package');
+  const updatePkg = require('../../../dist/hexo/update_package');
   const packagePath = join(hexo.base_dir, 'package.json');
 
   beforeEach(() => {

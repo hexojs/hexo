@@ -3,9 +3,9 @@
 const Promise = require('bluebird');
 
 describe('asset_link', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
-  const assetLinkTag = require('../../../lib/plugins/tag/asset_link')(hexo);
+  const assetLinkTag = require('../../../dist/plugins/tag/asset_link')(hexo);
   const Post = hexo.model('Post');
   const PostAsset = hexo.model('PostAsset');
   let post;

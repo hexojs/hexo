@@ -6,10 +6,10 @@ const { highlight, prismHighlight } = require('hexo-util');
 const Promise = require('bluebird');
 
 describe('include_code', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'include_code_test'));
-  require('../../../lib/plugins/highlight/')(hexo);
-  const includeCode = Promise.method(require('../../../lib/plugins/tag/include_code')(hexo));
+  require('../../../dist/plugins/highlight/')(hexo);
+  const includeCode = Promise.method(require('../../../dist/plugins/tag/include_code')(hexo));
   const path = join(hexo.source_dir, hexo.config.code_dir, 'test.js');
   const defaultCfg = JSON.parse(JSON.stringify(hexo.config));
 

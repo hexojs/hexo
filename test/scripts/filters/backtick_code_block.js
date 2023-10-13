@@ -1,13 +1,13 @@
 'use strict';
 
 const util = require('hexo-util');
-const defaultConfig = require('../../../lib/hexo/default_config');
+const defaultConfig = require('../../../dist/hexo/default_config');
 
 describe('Backtick code block', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo();
-  require('../../../lib/plugins/highlight/')(hexo);
-  const codeBlock = require('../../../lib/plugins/filter/before_post_render/backtick_code_block')(hexo);
+  require('../../../dist/plugins/highlight/')(hexo);
+  const codeBlock = require('../../../dist/plugins/filter/before_post_render/backtick_code_block')(hexo);
 
   const code = [
     'if (tired && night) {',
@@ -632,6 +632,21 @@ describe('Backtick code block', () => {
         caption: '<span>Hello world</span>'
       });
 
+      codeBlock(data);
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('prism only wrap with pre and code', () => {
+      hexo.config.prismjs.exclude_languages = ['js'];
+      const data = {
+        content: [
+          '``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+      const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
+      const expected = `<pre><code class="js">${escapeSwigTag(util.escapeHTML(code))}</code></pre>`;
       codeBlock(data);
       data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
     });

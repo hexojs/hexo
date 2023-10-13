@@ -3,7 +3,7 @@
 const { encodeURL, escapeHTML } = require('hexo-util');
 
 describe('toc', () => {
-  const toc = require('../../../lib/plugins/helper/toc');
+  const toc = require('../../../dist/plugins/helper/toc');
 
   const html = [
     '<h1 id="title_1">Title 1</h1>',

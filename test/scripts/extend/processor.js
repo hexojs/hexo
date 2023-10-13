@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Processor', () => {
-  const Processor = require('../../../lib/extend/processor');
+  const Processor = require('../../../dist/extend/processor');
 
   it('register()', () => {
     const p = new Processor();
@@ -13,6 +13,11 @@ describe('Processor', () => {
 
     // fn
     p.register(() => {});
+
+    p.list()[1].should.exist;
+
+    // more than one arg
+    p.register((a, b) => {});
 
     p.list()[1].should.exist;
 
