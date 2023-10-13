@@ -3,7 +3,7 @@
 const assert = require('assert');
 const moment = require('moment');
 const parse5 = require('parse5');
-const Promise = require('bluebird');
+const bluebirdPromise = require('bluebird');
 const { join, extname, basename } = require('path');
 const { magenta } = require('picocolors');
 const { load } = require('js-yaml');
@@ -191,7 +191,7 @@ class PostRenderEscape {
 const prepareFrontMatter = (data, jsonMode) => {
   for (const [key, item] of Object.entries(data)) {
     if (moment.isMoment(item)) {
-      data[key] = item.utc().format('YYYY-MM-DD HH:mm:ss');
+      data[key] = (item as typeof moment).utc().format('YYYY-MM-DD HH:mm:ss');
     } else if (moment.isDate(item)) {
       data[key] = moment.utc(item).format('YYYY-MM-DD HH:mm:ss');
     } else if (typeof item === 'string') {
@@ -210,11 +210,11 @@ const removeExtname = str => {
 };
 
 const createAssetFolder = (path, assetFolder) => {
-  if (!assetFolder) return Promise.resolve();
+  if (!assetFolder) return bluebirdPromise.resolve();
 
   const target = removeExtname(path);
 
-  if (basename(target) === 'index') return Promise.resolve();
+  if (basename(target) === 'index') return bluebirdPromise.resolve();
 
   return exists(target).then(exist => {
     if (!exist) return mkdirs(target);
@@ -232,6 +232,7 @@ interface Data {
   disableNunjucks?: boolean;
   markdown?: object;
   source?: string;
+  async_tags?: boolean
 }
 
 class Post {
@@ -257,7 +258,7 @@ class Post {
     data.layout = (data.layout || config.default_layout).toLowerCase();
     data.date = data.date ? moment(data.date) : moment();
 
-    return Promise.all([
+    return bluebirdPromise.all([
       // Get the post path
       ctx.execFilter('new_post_path', data, {
         args: [replace],
@@ -267,7 +268,7 @@ class Post {
     ]).spread((path, content) => {
       const result = { path, content };
 
-      return Promise.all<void, void | string>([
+      return bluebirdPromise.all([
         // Write content to file
         writeFile(path, content),
         // Create asset folder
@@ -392,12 +393,12 @@ class Post {
     let promise;
 
     if (data.content != null) {
-      promise = Promise.resolve(data.content);
+      promise = bluebirdPromise.resolve(data.content);
     } else if (source) {
       // Read content from files
       promise = readFile(source);
     } else {
-      return Promise.reject(new Error('No input file or string!')).asCallback(callback);
+      return bluebirdPromise.reject(new Error('No input file or string!')).asCallback(callback);
     }
 
     // Files like js and css are also processed by this function, but they do not require preprocessing like markdown
@@ -492,7 +493,7 @@ class Post {
       const results = split_content.map(async content => {
         return await tag.render(content, data);
       });
-      return Promise.all(results).then(x => x.join(''));
+      return bluebirdPromise.all(results).then(x => x.join(''));
     }).then(content => {
       data.content = cacheObj.restoreCodeBlocks(content);
 
