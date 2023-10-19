@@ -1,20 +1,30 @@
 name: Feature request / Improvement
-about: I have a feature request, suggestion, improvement etc...
-title: ""
-labels: ""
-assignees: ""
+description: I have a feature request, suggestion, improvement etc...
+# title: ""
+# labels: []
+# assignees: []
 
-## Check List
+body:
+  - type: checkboxes
+    attributes:
+      label: Check List
+      description: Please check followings before submitting a new feature request.
+      options:
+        - label: I have already read [Docs page](https://hexo.io/docs/)
+        - label: I have already searched existing issues
 
-Please check followings before submitting a new feature request.
+  - type: textarea
+    attributes:
+      label: "Feature Request"
+      description: "Feature Request description."
+      # value:
+    validations:
+      required: true
 
-- [ ] I have already read [Docs page](https://hexo.io/docs/)
-- [ ] I have already searched existing issues
-
-## Feature Request
-
-<!-- Feature Request description -->
-
-## Others
-
-<!-- If you have other information. Please write here. -->
+  - type: textarea
+    attributes:
+      label: "Others"
+      description: "If you have other information. Please write here."
+      # value:
+    validations:
+      required: false
