@@ -1,11 +1,8 @@
----
 name: Bug report
 about: Something isn't working as expected
-title: ''
-labels: ''
-assignees: ''
-
----
+title: ""
+labels: ""
+assignees: ""
 
 <!-- NOTE:
 
@@ -26,7 +23,7 @@ Please take extra precaution not to attach any secret environment variables (lik
 Please check followings before submitting a new issue.
 
 - [ ] I have already read [Docs page](https://hexo.io/docs/) & [Troubleshooting page](https://hexo.io/docs/troubleshooting)
-- [ ] I have already searched existing issues and they are not help  to me
+- [ ] I have already searched existing issues and they are not help to me
 - [ ] I examined error or warning messages and it's difficult to solve
 - [ ] Using [the latest](https://github.com/hexojs/hexo/releases) version of Hexo (run `hexo version` to check)
 - [ ] Node.js is higher than [minimum required version](https://hexo.io/docs/#Minimum-required-Node-js-version)
@@ -37,9 +34,9 @@ Please check followings before submitting a new issue.
 
 ## How to reproduce?
 
-* Step1
-* Step2
-* etc...
+- Step1
+- Step2
+- etc...
 
 ## Is the problem still there under "Safe mode"?
 
@@ -59,6 +56,7 @@ Please paste the output between two "```" provided below
 -->
 
 ```
+
 ```
 
 **Your site `_config.yml`** (Optional)
@@ -68,6 +66,7 @@ Please paste the content of your _config.yml between two "```" provided below
 -->
 
 ```yaml
+
 ```
 
 **Hexo and Plugin version(`npm ls --depth 0`)**
@@ -77,6 +76,7 @@ Please paste the output between two "```" provided below
 -->
 
 ```
+
 ```
 
 **Your package.json `package.json`**
@@ -86,6 +86,7 @@ Please paste the content of package.json between two "```" provided below
 -->
 
 ```
+
 ```
 
 ## Others
