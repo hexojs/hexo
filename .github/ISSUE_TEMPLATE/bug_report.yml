@@ -109,16 +109,6 @@ body:
     validations:
       required: false
     attributes:
-      label: Your site's `_config.yml` (Optional)
-      description: Please paste the content of your `_config.yml` here.
-      placeholder: _config.yml
-      # value: |
-      render: yaml
-
-  - type: textarea
-    validations:
-      required: false
-    attributes:
       label: Your Hexo and Plugin version
       description: |
         Please run `npm ls --depth 0` 
@@ -136,6 +126,16 @@ body:
       placeholder: package.json
       # value:
       render: json
+
+  - type: textarea
+    validations:
+      required: false
+    attributes:
+      label: Your site's `_config.yml` (Optional)
+      description: Please paste the content of your `_config.yml` here.
+      placeholder: _config.yml
+      # value: |
+      render: yaml
 
   - type: textarea
     validations:
