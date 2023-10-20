@@ -31,7 +31,7 @@ body:
         - label: I have already searched existing issues and they are not help to me
         - label: I examined error or warning messages and it's difficult to solve
         - label: Using [the latest](https://github.com/hexojs/hexo/releases) version of Hexo (run `hexo version` to check)
-        - label: Node.js is higher than [minimum required version](https://hexo.io/docs/#Minimum-required-Node-js-version)
+        - label: Node.js is higher than [minimum required version](https://hexo.io/docs/#Required-Node-js-version)
 
   - type: textarea
     attributes:
