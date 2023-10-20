@@ -23,6 +23,8 @@ body:
         ------
 
   - type: checkboxes
+    validations:
+      required: true
     attributes:
       label: Check List
       description: Please check followings before submitting a new issue.
@@ -34,36 +36,43 @@ body:
         - label: Node.js is higher than [minimum required version](https://hexo.io/docs/#Required-Node-js-version)
 
   - type: textarea
-    attributes:
-      label: "Expected behavior"
-      # description: ""
-      # value:
     validations:
       required: true
+    attributes:
+      label: Expected behavior
+      # description:
+      # placeholder:
+      # value:
+      # render:
 
   - type: textarea
-    attributes:
-      label: "Actual behavior"
-      # description: ""
-      # value:
     validations:
       required: true
+    attributes:
+      label: Actual behavior
+      # description:
+      # placeholder:
+      # value:
+      # render:
 
   - type: textarea
+    validations:
+      required: true
     attributes:
-      label: "How to reproduce?"
-      description: "Feature Request description."
+      label: How to reproduce?
+      description: Feature Request description.
       placeholder: |
         1. Step1
         2. Step2
         3. etc...
       # value:
-    validations:
-      required: true
+      # render:
 
   - type: textarea
+    validations:
+      required: true
     attributes:
-      label: "Is the problem still there under `Safe mode`?"
+      label: Is the problem still there under `Safe mode`?
       description: |
         https://hexo.io/docs/commands#Safe-mode
 
@@ -71,8 +80,7 @@ body:
         If your problem disappear under "Safe mode" means the problem is probably at your newly installed plugins, not at hexo.
       # placeholder:
       # value: |
-    validations:
-      required: true
+      # render:
 
   - type: markdown
     attributes:
@@ -82,50 +90,51 @@ body:
         ## Environment & Settings
 
   - type: textarea
-    attributes:
-      label: "Node.js & npm version"
-      description: "Please run `node -v && npm -v` and paste the output below"
-      render: text
-      # placeholder:
-      # value: |
     validations:
       required: false
+    attributes:
+      label: Node.js & npm version
+      description: Please run `node -v && npm -v` and paste the output below
+      # placeholder:
+      # value: |
+      render: text
 
   - type: textarea
+    validations:
+      required: false
     attributes:
-      label: "Your site `_config.yml (Optional)"
-      description: "Please paste the content of your `_config.yml` below"
+      label: Your site `_config.yml` (Optional)
+      description: Please paste the content of your `_config.yml` below
+      # placeholder:
+      # value: |
       render: yaml
-      # placeholder:
-      # value: |
-    validations:
-      required: false
 
   - type: textarea
+    validations:
+      required: false
     attributes:
-      label: "Hexo and Plugin version"
-      description: "Please run `npm ls --depth 0` and paste the output below"
+      label: Hexo and Plugin version
+      description: Please run `npm ls --depth 0` and paste the output below
+      # placeholder:
+      # value:
       render: text
-      # placeholder:
-      # value:
-    validations:
-      required: false
 
   - type: textarea
+    validations:
+      required: false
     attributes:
-      label: "Your `package.json`"
-      description: "Please paste the content of `package.json` below"
+      label: Your `package.json`
+      description: Please paste the content of `package.json` below
+      # placeholder:
+      # value:
       render: json
-      # placeholder:
-      # value:
-    validations:
-      required: false
 
   - type: textarea
-    attributes:
-      label: "Others"
-      description: "If you have other information. Please write here."
-      # placeholder:
-      # value:
     validations:
       required: false
+    attributes:
+      label: Others
+      description: If you have other information. Please write here.
+      # placeholder:
+      # value:
+      # render:
