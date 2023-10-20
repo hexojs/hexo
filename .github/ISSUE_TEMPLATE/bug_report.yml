@@ -60,7 +60,7 @@ body:
       required: true
     attributes:
       label: How to reproduce?
-      description: Feature Request description.
+      # description:
       placeholder: |
         1. Step1
         2. Step2
