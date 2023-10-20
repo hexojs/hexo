@@ -85,6 +85,7 @@ body:
     attributes:
       label: "Node.js & npm version"
       description: "Please run `node -v && npm -v` and paste the output below"
+      render: text
       # placeholder:
       # value: |
     validations:
@@ -94,6 +95,7 @@ body:
     attributes:
       label: "Your site `_config.yml (Optional)"
       description: "Please paste the content of your `_config.yml` below"
+      render: yaml
       # placeholder:
       # value: |
     validations:
@@ -103,6 +105,7 @@ body:
     attributes:
       label: "Hexo and Plugin version"
       description: "Please run `npm ls --depth 0` and paste the output below"
+      render: text
       # placeholder:
       # value:
     validations:
@@ -112,6 +115,7 @@ body:
     attributes:
       label: "Your `package.json`"
       description: "Please paste the content of `package.json` below"
+      render: json
       # placeholder:
       # value:
     validations:
