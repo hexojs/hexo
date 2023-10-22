@@ -555,7 +555,7 @@ class Hexo extends EventEmitter {
     this.emit('generateBefore');
 
     // Run before_generate filters
-    return this.execFilter('before_generate', this.locals.get('data'), { context: this })
+    return this.execFilter('before_generate', null, { context: this })
       .then(() => this._routerRefresh(this._runGenerators(), useCache)).then(() => {
         this.emit('generateAfter');
 
