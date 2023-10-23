@@ -1,12 +1,11 @@
 import Promise from 'bluebird';
 
-function renderPostFilter(data) {
+function renderPostFilter() {
   const renderPosts = model => {
     const posts = model.toArray().filter(post => post.content == null);
 
     return Promise.map(posts, (post: any) => {
       post.content = post._content;
-      post.site = {data};
 
       return this.post.render(post.full_source, post).then(() => post.save());
     });
