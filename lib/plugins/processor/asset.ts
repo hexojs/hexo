@@ -6,6 +6,7 @@ import { Pattern } from 'hexo-util';
 import { magenta } from 'picocolors';
 import type { _File } from '../../box';
 import type Hexo from '../../hexo';
+import type { Stats } from 'fs';
 
 export = (ctx: Hexo) => {
   return {
@@ -50,7 +51,7 @@ function processPage(ctx: Hexo, file: _File) {
   return Promise.all([
     file.stat(),
     file.read()
-  ]).spread((stats, content) => {
+  ]).spread((stats: Stats, content: string | Buffer) => {
     const data = yfm(content);
     const output = ctx.render.getOutput(path);
 

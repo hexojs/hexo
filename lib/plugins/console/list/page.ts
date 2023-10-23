@@ -1,8 +1,9 @@
 import { magenta, underline, gray } from 'picocolors';
 import table from 'text-table';
 import { stringLength } from './common';
+import type Hexo from '../../../hexo';
 
-function listPage(): void {
+function listPage(this: Hexo): void {
   const Page = this.model('Page');
 
   const data = Page.sort({date: 1}).map(page => {

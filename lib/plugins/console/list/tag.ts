@@ -1,8 +1,9 @@
 import { magenta, underline } from 'picocolors';
 import table from 'text-table';
 import { stringLength } from './common';
+import type Hexo from '../../../hexo';
 
-function listTag(): void {
+function listTag(this: Hexo): void {
   const Tag = this.model('Tag');
 
   const data = Tag.sort({name: 1}).map(tag => [tag.name, String(tag.length), magenta(tag.path)]);

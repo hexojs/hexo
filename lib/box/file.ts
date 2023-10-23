@@ -1,5 +1,6 @@
 import type Promise from 'bluebird';
 import { readFile, readFileSync, stat, statSync, type ReadFileOptions } from 'hexo-fs';
+import type fs from 'fs';
 
 class File {
   public source: string;
@@ -26,11 +27,11 @@ class File {
     return readFileSync(this.source, options);
   }
 
-  stat(): any {
+  stat(): Promise<fs.Stats> {
     return stat(this.source);
   }
 
-  statSync():any {
+  statSync(): fs.Stats {
     return statSync(this.source);
   }
 }

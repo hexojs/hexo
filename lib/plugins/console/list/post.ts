@@ -1,12 +1,13 @@
 import { gray, magenta, underline } from 'picocolors';
 import table from 'text-table';
 import { stringLength } from './common';
+import type Hexo from '../../../hexo';
 
 function mapName(item) {
   return item.name;
 }
 
-function listPost(): void {
+function listPost(this: Hexo): void {
   const Post = this.model('Post');
 
   const data = Post.sort({published: -1, date: 1}).map(post => {
