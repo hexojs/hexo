@@ -1,9 +1,9 @@
 'use strict';
 
 describe('blockquote', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
-  const blockquote = require('../../../lib/plugins/tag/blockquote')(hexo);
+  const blockquote = require('../../../dist/plugins/tag/blockquote')(hexo);
 
   before(() => hexo.init().then(() => hexo.loadPlugin(require.resolve('hexo-renderer-marked'))));
 

@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Deployer', () => {
-  const Deployer = require('../../../lib/extend/deployer');
+  const Deployer = require('../../../dist/extend/deployer');
 
   it('register()', () => {
     const d = new Deployer();

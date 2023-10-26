@@ -1,7 +1,7 @@
 'use strict';
 
 describe('json', () => {
-  const r = require('../../../lib/plugins/renderer/json');
+  const r = require('../../../dist/plugins/renderer/json');
 
   it('normal', () => {
     const data = {

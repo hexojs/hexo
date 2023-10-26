@@ -4,9 +4,9 @@ const { join } = require('path');
 const { mkdirs, unlink, writeFile, rmdir } = require('hexo-fs');
 
 describe('Load alternate theme config', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
-  const loadThemeConfig = require('../../../lib/hexo/load_theme_config');
+  const loadThemeConfig = require('../../../dist/hexo/load_theme_config');
 
   hexo.env.init = true;
 

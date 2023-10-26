@@ -3,10 +3,10 @@
 const { stub, assert: sinonAssert } = require('sinon');
 
 describe('Console list', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo();
   const Page = hexo.model('Page');
-  const listPages = require('../../../lib/plugins/console/list/page').bind(hexo);
+  const listPages = require('../../../dist/plugins/console/list/page').bind(hexo);
 
   hexo.config.permalink = ':title/';
 
@@ -37,6 +37,20 @@ describe('Console list', () => {
     sinonAssert.calledWithMatch(logStub, 'Title');
     sinonAssert.calledWithMatch(logStub, 'Path');
     sinonAssert.calledWithMatch(logStub, 'Hello World');
+    sinonAssert.calledWithMatch(logStub, 'foo');
+  });
+
+  it('page with unicode', async () => {
+    await Page.insert({
+      source: 'foo',
+      title: '\u0100',
+      path: 'bar'
+    });
+    listPages();
+    sinonAssert.calledWithMatch(logStub, 'Date');
+    sinonAssert.calledWithMatch(logStub, 'Title');
+    sinonAssert.calledWithMatch(logStub, 'Path');
+    sinonAssert.calledWithMatch(logStub, '\u0100');
     sinonAssert.calledWithMatch(logStub, 'foo');
   });
 });

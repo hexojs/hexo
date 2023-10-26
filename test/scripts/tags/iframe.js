@@ -3,7 +3,7 @@
 const cheerio = require('cheerio');
 
 describe('iframe', () => {
-  const iframe = require('../../../lib/plugins/tag/iframe');
+  const iframe = require('../../../dist/plugins/tag/iframe');
 
   it('url', () => {
     const $ = cheerio.load(iframe(['https://zespia.tw']));

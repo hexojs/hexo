@@ -5,11 +5,12 @@ const moment = require('moment');
 const { join } = require('path');
 const Promise = require('bluebird');
 const { useFakeTimers } = require('sinon');
+const { spy } = require('sinon');
 
 describe('new', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'new_test'), {silent: true});
-  const n = require('../../../lib/plugins/console/new').bind(hexo);
+  const n = require('../../../dist/plugins/console/new').bind(hexo);
   const post = hexo.post;
   const now = Date.now();
   let clock;
@@ -37,6 +38,16 @@ describe('new', () => {
   after(() => {
     clock.restore();
     return rmdir(hexo.base_dir);
+  });
+
+  it('no args', async () => {
+    hexo.call = spy();
+    await n({
+      _: []
+    });
+    hexo.call.calledOnce.should.be.true;
+    hexo.call.args[0][0].should.eql('help');
+    hexo.call.args[0][1]._[0].should.eql('new');
   });
 
   it('title', async () => {
@@ -150,6 +161,26 @@ describe('new', () => {
       _: ['Hello World'],
       slug: 'foo',
       p: 'bar'
+    });
+    const content = await readFile(path);
+    content.should.eql(body);
+
+    await unlink(path);
+  });
+
+  it('without _', async () => {
+    const date = moment(now);
+    const path = join(hexo.source_dir, '_posts', 'bar.md');
+    const body = [
+      'title: bar',
+      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+      'tags:',
+      '---'
+    ].join('\n') + '\n';
+
+    await n({
+      _: [],
+      path: 'bar'
     });
     const content = await readFile(path);
     content.should.eql(body);

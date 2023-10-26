@@ -5,10 +5,10 @@ const { mkdirs, rmdir, unlink, writeFile } = require('hexo-fs');
 const Promise = require('bluebird');
 
 describe('source', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'source_test'), {silent: true});
-  const processor = require('../../../lib/theme/processors/source');
-  const process = Promise.method(processor.process.bind(hexo));
+  const processor = require('../../../dist/theme/processors/source');
+  const process = Promise.method(processor.source.process.bind(hexo));
   const themeDir = join(hexo.base_dir, 'themes', 'test');
   const Asset = hexo.model('Asset');
 
@@ -33,7 +33,7 @@ describe('source', () => {
   after(() => rmdir(hexo.base_dir));
 
   it('pattern', () => {
-    const { pattern } = processor;
+    const { pattern } = processor.source;
 
     pattern.match('source/foo.jpg').should.eql({path: 'foo.jpg'});
     pattern.match('source/_foo.jpg').should.be.false;
@@ -133,6 +133,18 @@ describe('source', () => {
       _id: id,
       path: file.params.path
     });
+    await process(file);
+    should.not.exist(Asset.findById(id));
+  });
+
+  it('type: delete - not -exist', async () => {
+    const file = newFile({
+      path: 'style.css',
+      type: 'delete'
+    });
+
+    const id = 'themes/test/' + file.path;
+
     await process(file);
     should.not.exist(Asset.findById(id));
   });

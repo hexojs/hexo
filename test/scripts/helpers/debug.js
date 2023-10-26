@@ -3,7 +3,7 @@
 const { stub } = require('sinon');
 
 describe('debug', () => {
-  const debug = require('../../../lib/plugins/helper/debug');
+  const debug = require('../../../dist/plugins/helper/debug');
   const { inspect } = require('util');
 
   it('inspect simple object', () => {

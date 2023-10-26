@@ -3,7 +3,7 @@
 const Promise = require('bluebird');
 
 describe('tagcloud', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
   const Post = hexo.model('Post');
   const Tag = hexo.model('Tag');
@@ -12,7 +12,7 @@ describe('tagcloud', () => {
     config: hexo.config
   };
 
-  const tagcloud = require('../../../lib/plugins/helper/tagcloud').bind(ctx);
+  const tagcloud = require('../../../dist/plugins/helper/tagcloud').bind(ctx);
 
   before(async () => {
     await hexo.init();
@@ -50,7 +50,7 @@ describe('tagcloud', () => {
     await hexo.init();
     hexo.locals.invalidate();
     hexo.site = hexo.locals.toObject();
-    const tagcloud = require('../../../lib/plugins/helper/tagcloud').bind(hexo);
+    const tagcloud = require('../../../dist/plugins/helper/tagcloud').bind(hexo);
 
     const result = tagcloud();
 

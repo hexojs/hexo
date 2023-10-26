@@ -3,7 +3,7 @@
 const { spy } = require('sinon');
 
 describe('Filter', () => {
-  const Filter = require('../../../lib/extend/filter');
+  const Filter = require('../../../dist/extend/filter');
 
   it('register()', () => {
     const f = new Filter();

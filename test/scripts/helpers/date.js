@@ -4,9 +4,9 @@ const moment = require('moment-timezone');
 const { useFakeTimers } = require('sinon');
 
 describe('date', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo();
-  const dateHelper = require('../../../lib/plugins/helper/date');
+  const dateHelper = require('../../../dist/plugins/helper/date');
   let clock;
 
   before(() => {

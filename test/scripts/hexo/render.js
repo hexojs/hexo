@@ -6,7 +6,7 @@ const yaml = require('js-yaml');
 const { spy, assert: sinonAssert } = require('sinon');
 
 describe('Render', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'render_test'));
 
   hexo.config.meta_generator = false;
@@ -98,6 +98,15 @@ describe('Render', () => {
   it('render() - no path and text', async () => {
     try {
       await hexo.render.render();
+      should.fail('Return value must be rejected');
+    } catch (err) {
+      err.message.should.eql('No input file or string!');
+    }
+  });
+
+  it('render() - null path and text', async () => {
+    try {
+      await hexo.render.render({text: null, engine: null});
       should.fail('Return value must be rejected');
     } catch (err) {
       err.message.should.eql('No input file or string!');
@@ -226,6 +235,10 @@ describe('Render', () => {
 
   it('renderSync() - no path and text', () => {
     should.throw(() => hexo.render.renderSync(), 'No input file or string!');
+  });
+
+  it('renderSync() - null path and text', () => {
+    should.throw(() => hexo.render.renderSync({text: null, engine: null}), 'No input file or string!');
   });
 
   it('renderSync() - options', () => {

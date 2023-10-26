@@ -3,7 +3,7 @@
 const cheerio = require('cheerio');
 
 describe('link', () => {
-  const link = require('../../../lib/plugins/tag/link');
+  const link = require('../../../dist/plugins/tag/link');
 
   it('text + url', () => {
     const $ = cheerio.load(link('Click here to Google https://google.com'.split(' ')));

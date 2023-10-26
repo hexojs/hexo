@@ -5,7 +5,7 @@ const fs = require('hexo-fs');
 const Promise = require('bluebird');
 
 describe('partial', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(pathFn.join(__dirname, 'partial_test'), {silent: true});
   const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
   const viewDir = pathFn.join(themeDir, 'layout') + pathFn.sep;
@@ -20,11 +20,11 @@ describe('partial', () => {
     cache: true
   };
 
-  ctx.fragment_cache = require('../../../lib/plugins/helper/fragment_cache')(hexo);
+  ctx.fragment_cache = require('../../../dist/plugins/helper/fragment_cache')(hexo);
 
   hexo.env.init = true;
 
-  const partial = require('../../../lib/plugins/helper/partial')(hexo).bind(ctx);
+  const partial = require('../../../dist/plugins/helper/partial')(hexo).bind(ctx);
 
   before(async () => {
     await Promise.all([

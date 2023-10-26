@@ -10,7 +10,7 @@ const fixture = require('../../fixtures/post_render');
 const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
 describe('Post', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'post_test'));
   require('../../../lib/plugins/highlight/')(hexo);
   const { post } = hexo;
@@ -903,7 +903,8 @@ describe('Post', () => {
     ].join('\n');
 
     const data = await post.render(null, {
-      content
+      content,
+      engine: 'markdown'
     });
     data.content.trim().should.eql([
       '<blockquote><p>test1</p>',
@@ -911,6 +912,16 @@ describe('Post', () => {
       '<footer><strong>test2</strong></footer></blockquote>',
       'test4</blockquote>'
     ].join('\n'));
+  });
+
+  it('render() - swig comments', async () => {
+    const content = '{# blockquote #}';
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+    data.content.trim().should.eql('');
   });
 
   it('render() - shouln\'t break curly brackets', async () => {

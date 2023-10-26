@@ -1,9 +1,9 @@
 'use strict';
 
 const moment = require('moment-timezone');
+const SchemaTypeMoment = require('../../../dist/models/types/moment');
 
 describe('SchemaTypeMoment', () => {
-  const SchemaTypeMoment = require('../../../lib/models/types/moment');
   const type = new SchemaTypeMoment('test');
 
   it('cast()', () => {
