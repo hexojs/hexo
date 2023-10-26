@@ -70,7 +70,7 @@
     "@types/bluebird": "^3.5.37",
     "@types/node": "^18.11.8",
     "@types/nunjucks": "^3.2.2",
-    "@typescript-eslint/eslint-plugin": "^5.41.0",
+    "@typescript-eslint/eslint-plugin": "^6.9.0",
     "@typescript-eslint/parser": "^5.41.0",
     "c8": "^8.0.0",
     "chai": "^4.3.6",
