@@ -1,0 +1,36 @@
+name: Feature request / Improvement
+description: I have a feature request, suggestion, improvement etc...
+# title: ""
+# labels: []
+# assignees: []
+
+body:
+  - type: checkboxes
+    validations:
+      required: true
+    attributes:
+      label: Check List
+      description: Please check followings before submitting a new feature request.
+      options:
+        - label: I have already read [Docs page](https://hexo.io/docs/).
+        - label: I have already searched existing issues.
+
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Feature Request
+      description: Descripe the feature and why it is needed.
+      # placeholder:
+      # value:
+      # render:
+
+  - type: textarea
+    validations:
+      required: false
+    attributes:
+      label: Others
+      description: If you have other information. Please write here.
+      # placeholder:
+      # value:
+      # render:

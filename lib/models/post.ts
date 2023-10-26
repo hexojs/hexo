@@ -3,7 +3,7 @@ import moment from 'moment';
 import { extname, join, sep } from 'path';
 import Promise from 'bluebird';
 import Moment from './types/moment';
-import { full_url_for } from 'hexo-util';
+import { full_url_for, Cache } from 'hexo-util';
 
 function pickID(data) {
   return data._id;
@@ -12,6 +12,8 @@ function pickID(data) {
 function removeEmptyTag(tags) {
   return tags.filter(tag => tag != null && tag !== '').map(tag => `${tag}`);
 }
+
+const tagsGetterCache = new Cache();
 
 export = ctx => {
   const Post = new warehouse.Schema({
@@ -60,12 +62,14 @@ export = ctx => {
   });
 
   Post.virtual('tags').get(function() {
-    const PostTag = ctx.model('PostTag');
-    const Tag = ctx.model('Tag');
+    return tagsGetterCache.apply(this._id, () => {
+      const PostTag = ctx.model('PostTag');
+      const Tag = ctx.model('Tag');
 
-    const ids = PostTag.find({post_id: this._id}, {lean: true}).map(item => item.tag_id);
+      const ids = PostTag.find({post_id: this._id}, {lean: true}).map(item => item.tag_id);
 
-    return Tag.find({_id: {$in: ids}});
+      return Tag.find({_id: {$in: ids}});
+    });
   });
 
   Post.method('notPublished', function() {
@@ -79,6 +83,7 @@ export = ctx => {
       // If the post is unpublished then the tag needs to be removed, thus the function cannot be returned early here
       tags = [];
     }
+    tagsGetterCache.flush();
     tags = removeEmptyTag(tags);
 
     const PostTag = ctx.model('PostTag');
