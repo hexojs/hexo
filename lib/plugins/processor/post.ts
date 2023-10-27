@@ -89,7 +89,7 @@ function processPost(ctx: Hexo, file: _File) {
   return Promise.all([
     file.stat(),
     file.read()
-  ]).spread((stats: Stats, content: string | Buffer) => {
+  ]).spread((stats: Stats, content: string) => {
     const data = yfm(content);
     const info = parseFilename(config.new_post_name, path);
     const keys = Object.keys(info);
