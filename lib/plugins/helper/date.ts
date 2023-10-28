@@ -61,7 +61,7 @@ function timeTagHelper(date: string | number | Date | moment.Moment, format: str
   return `<time datetime="${toISOString(date)}">${this.date(date, format, getLanguage(this), config.timezone)}</time>`;
 }
 
-function getLanguage(ctx: Hexo) {
+function getLanguage(ctx) {
   return ctx.page.lang || ctx.page.language || ctx.config.language;
 }
 
