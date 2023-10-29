@@ -3,12 +3,12 @@ name: Benchmark
 on:
   push:
     paths:
-      - 'lib/**'
+      - "lib/**"
   pull_request:
     branches:
       - master
     paths-ignore:
-      - 'test/scripts/**'
+      - "test/scripts/**"
 
 jobs:
   benchmark:
@@ -16,7 +16,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: ['14', '16', '18']
+        node-version: ["14", "16", "18"]
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
@@ -30,10 +30,12 @@ jobs:
         run: node test/benchmark.js --benchmark
   profiling:
     runs-on: ${{ matrix.os }}
+    permissions:
+      pull-requests: write # for marocchino/sticky-pull-request-comment to create or update PR comment
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: ['14', '16', '18']
+        node-version: ["14", "16", "18"]
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
