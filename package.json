@@ -68,7 +68,7 @@
   "devDependencies": {
     "0x": "^5.1.2",
     "@types/bluebird": "^3.5.37",
-    "@types/node": "^18.11.8",
+    "@types/node": "^20.8.9",
     "@types/nunjucks": "^3.2.2",
     "@typescript-eslint/eslint-plugin": "^5.41.0",
     "@typescript-eslint/parser": "^5.41.0",
