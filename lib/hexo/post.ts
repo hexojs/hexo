@@ -1,12 +1,15 @@
-import assert from 'assert';
-import moment from 'moment';
-import Promise from 'bluebird';
-import { join, extname, basename } from 'path';
-import { magenta } from 'picocolors';
-import { load } from 'js-yaml';
-import { slugize, escapeRegExp } from 'hexo-util';
-import { copyDir, exists, listDir, mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
-import { parse as yfmParse, split as yfmSplit, stringify as yfmStringify } from 'hexo-front-matter';
+
+
+const assert = require('assert');
+const moment = require('moment');
+const parse5 = require('parse5');
+const bluebirdPromise = require('bluebird');
+const { join, extname, basename } = require('path');
+const { magenta } = require('picocolors');
+const { load } = require('js-yaml');
+const { slugize, escapeRegExp } = require('hexo-util');
+const { copyDir, exists, listDir, mkdirs, readFile, rmdir, unlink, writeFile } = require('hexo-fs');
+const { parse: yfmParse, split: yfmSplit, stringify: yfmStringify } = require('hexo-front-matter');
 const preservedKeys = ['title', 'slug', 'path', 'layout', 'date', 'content'];
 
 const rHexoPostRenderEscape = /<hexoPostRenderCodeBlock>([\s\S]+?)<\/hexoPostRenderCodeBlock>/g;
@@ -188,7 +191,7 @@ class PostRenderEscape {
 const prepareFrontMatter = (data, jsonMode) => {
   for (const [key, item] of Object.entries(data)) {
     if (moment.isMoment(item)) {
-      data[key] = item.utc().format('YYYY-MM-DD HH:mm:ss');
+      data[key] = (item as typeof moment).utc().format('YYYY-MM-DD HH:mm:ss');
     } else if (moment.isDate(item)) {
       data[key] = moment.utc(item).format('YYYY-MM-DD HH:mm:ss');
     } else if (typeof item === 'string') {
@@ -207,11 +210,11 @@ const removeExtname = str => {
 };
 
 const createAssetFolder = (path, assetFolder) => {
-  if (!assetFolder) return Promise.resolve();
+  if (!assetFolder) return bluebirdPromise.resolve();
 
   const target = removeExtname(path);
 
-  if (basename(target) === 'index') return Promise.resolve();
+  if (basename(target) === 'index') return bluebirdPromise.resolve();
 
   return exists(target).then(exist => {
     if (!exist) return mkdirs(target);
@@ -229,6 +232,7 @@ interface Data {
   disableNunjucks?: boolean;
   markdown?: object;
   source?: string;
+  async_tags?: boolean
 }
 
 class Post {
@@ -254,7 +258,7 @@ class Post {
     data.layout = (data.layout || config.default_layout).toLowerCase();
     data.date = data.date ? moment(data.date) : moment();
 
-    return Promise.all([
+    return bluebirdPromise.all([
       // Get the post path
       ctx.execFilter('new_post_path', data, {
         args: [replace],
@@ -264,7 +268,7 @@ class Post {
     ]).spread((path, content) => {
       const result = { path, content };
 
-      return Promise.all<void, void | string>([
+      return bluebirdPromise.all([
         // Write content to file
         writeFile(path, content),
         // Create asset folder
@@ -389,12 +393,12 @@ class Post {
     let promise;
 
     if (data.content != null) {
-      promise = Promise.resolve(data.content);
+      promise = bluebirdPromise.resolve(data.content);
     } else if (source) {
       // Read content from files
       promise = readFile(source);
     } else {
-      return Promise.reject(new Error('No input file or string!')).asCallback(callback);
+      return bluebirdPromise.reject(new Error('No input file or string!')).asCallback(callback);
     }
 
     // Files like js and css are also processed by this function, but they do not require preprocessing like markdown
@@ -446,18 +450,50 @@ class Post {
         text: data.content,
         path: source,
         engine: data.engine,
-        toString: true,
-        onRenderEnd(content) {
-          // Replace cache data with real contents
-          data.content = cacheObj.restoreAllSwigTags(content);
-
-          // Return content after replace the placeholders
-          if (disableNunjucks) return data.content;
-
-          // Render with Nunjucks
-          return tag.render(data.content, data);
-        }
+        toString: true
       }, options);
+    }).then(content => {
+      // This function restores swig tags in `content` and render them.
+      if (disableNunjucks) {
+        // If rendering is disabled, do nothing.
+        return cacheObj.restoreAllSwigTags(content);
+      }
+      // Whether to allow async/concurrent rendering of tags within the post.
+      // Enabling it can improve performance for slow async tags, but may produce
+      // wrong results if tags within a post depend on each other.
+      const async_tags = data.async_tags || false;
+      if (!async_tags) {
+        return tag.render(cacheObj.restoreAllSwigTags(content), data);
+      }
+      // We'd like to render tags concurrently, so we split `content`
+      // by top-level HTML nodes that have swig tags into `split_content` array
+      // (nodes that don't have swig tags don't need to be split).
+      // Then we render items in `split_content` asynchronously.
+      const doc = parse5.parseFragment(content);
+      const split_content = [];
+      let current = []; // Current list of nodes to be added to split_content.
+      doc.childNodes.forEach(node => {
+        const html = parse5.serializeOuter(node);
+        const restored = cacheObj.restoreAllSwigTags(html);
+        current.push(restored);
+        if (html !== restored) {
+          // Once we encouner a node that has swig tags, merge
+          // all content we've seen so far and add to `split_content`.
+          // We don't simply add every node to `split_content`, because
+          // most nodes don't have swig tags and calling `tag.render` for
+          // all of them has significant overhead.
+          split_content.push(current.join(''));
+          current = [];
+        }
+      });
+      if (current.length) {
+        split_content.push(current.join(''));
+      }
+      // Render the tags in each top-level node asynchronously.
+      const results = split_content.map(async content => {
+        return await tag.render(content, data);
+      });
+      return bluebirdPromise.all(results).then(x => x.join(''));
     }).then(content => {
       data.content = cacheObj.restoreCodeBlocks(content);
 
