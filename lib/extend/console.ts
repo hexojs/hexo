@@ -51,7 +51,7 @@ class Console {
     return this.store[this.alias[name]];
   }
 
-  list() {
+  list(): Store {
     return this.store;
   }
 
@@ -66,7 +66,7 @@ class Console {
   register(name: string, desc: string, fn: AnyFn): void
   register(name: string, options: Option, fn: AnyFn): void
   register(name: string, desc: string, options: Option, fn: AnyFn): void
-  register(name: string, desc: string | Option | AnyFn, options?: Option | AnyFn, fn?: AnyFn) {
+  register(name: string, desc: string | Option | AnyFn, options?: Option | AnyFn, fn?: AnyFn): void {
     if (!name) throw new TypeError('name is required');
 
     if (!fn) {

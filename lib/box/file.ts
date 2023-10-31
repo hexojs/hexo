@@ -1,10 +1,12 @@
-import { readFile, readFileSync, stat, statSync } from 'hexo-fs';
+import type Promise from 'bluebird';
+import { readFile, readFileSync, stat, statSync, type ReadFileOptions } from 'hexo-fs';
+import type fs from 'fs';
 
 class File {
-  public source: any;
-  public path: any;
+  public source: string;
+  public path: string;
   public params: any;
-  public type: any;
+  public type: string;
   static TYPE_CREATE: 'create';
   static TYPE_UPDATE: 'update';
   static TYPE_SKIP: 'skip';
@@ -17,19 +19,19 @@ class File {
     this.type = type;
   }
 
-  read(options) {
+  read(options?: ReadFileOptions): Promise<string | Buffer> {
     return readFile(this.source, options);
   }
 
-  readSync(options) {
+  readSync(options?: ReadFileOptions): string | Buffer {
     return readFileSync(this.source, options);
   }
 
-  stat(options) {
+  stat(): Promise<fs.Stats> {
     return stat(this.source);
   }
 
-  statSync(options) {
+  statSync(): fs.Stats {
     return statSync(this.source);
   }
 }

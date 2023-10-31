@@ -1,5 +1,6 @@
 import { encodeURL } from 'hexo-util';
 import { postFindOneFactory } from './';
+import type Hexo from '../../hexo';
 
 /**
  * Post path tag
@@ -7,8 +8,8 @@ import { postFindOneFactory } from './';
  * Syntax:
  *   {% post_path slug | title %}
  */
-export = ctx => {
-  return function postPathTag(args) {
+export = (ctx: Hexo) => {
+  return function postPathTag(args: any[]) {
     const slug = args.shift();
     if (!slug) return;
 

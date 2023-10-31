@@ -1,6 +1,7 @@
 import Promise from 'bluebird';
+import type Hexo from '../../../hexo';
 
-function renderPostFilter() {
+function renderPostFilter(this: Hexo): Promise<[any[], any[]]> {
   const renderPosts = model => {
     const posts = model.toArray().filter(post => post.content == null);
 

@@ -3,6 +3,7 @@ import moment from 'moment';
 import Promise from 'bluebird';
 import { createSha1Hash, Permalink } from 'hexo-util';
 import { ensurePath } from 'hexo-fs';
+import type Hexo from '../../hexo';
 let permalink;
 
 const reservedKeys = {
@@ -22,7 +23,7 @@ interface Data {
   date?: Date;
 }
 
-function newPostPathFilter(data: Data = {}, replace) {
+function newPostPathFilter(this: Hexo, data: Data = {}, replace): Promise<string> {
   const sourceDir = this.source_dir;
   const draftDir = join(sourceDir, '_drafts');
   const postDir = join(sourceDir, '_posts');

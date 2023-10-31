@@ -1,3 +1,5 @@
+import type Hexo from '../../../hexo';
+
 const rBacktick = /^((?:[^\S\r\n]*>){0,3}[^\S\r\n]*)(`{3,}|~{3,})[^\S\r\n]*((?:.*?[^`\s])?)[^\S\r\n]*\n((?:[\s\S]*?\n)?)(?:(?:[^\S\r\n]*>){0,3}[^\S\r\n]*)\2[^\S\r\n]?(\n+|$)/gm;
 const rAllOptions = /([^\s]+)\s+(.+?)\s+(https?:\/\/\S+|\/\S+)\s*(.+)?/;
 const rLangCaption = /([^\s]+)\s*(.+)?/;
@@ -11,8 +13,8 @@ interface Options {
   firstLineNumber?: string | number
 }
 
-export = ctx => {
-  return function backtickCodeBlock(data) {
+export = (ctx: Hexo) => {
+  return function backtickCodeBlock(data): void {
     const dataContent = data.content;
 
     if ((!dataContent.includes('```') && !dataContent.includes('~~~')) || !ctx.extend.highlight.query(ctx.config.syntax_highlighter)) return;

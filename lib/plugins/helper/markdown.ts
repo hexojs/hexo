@@ -1,4 +1,4 @@
-function markdownHelper(text, options) {
+function markdownHelper(text: string, options) {
   return this.render(text, 'markdown', options);
 }
 

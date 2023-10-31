@@ -1,6 +1,7 @@
 import tildify from 'tildify';
 import { magenta } from 'picocolors';
 import { basename } from 'path';
+import Hexo from '../../hexo';
 
 const reservedKeys = {
   _: true,
@@ -19,7 +20,7 @@ const reservedKeys = {
   silent: true
 };
 
-function newConsole(args) {
+function newConsole(this: Hexo, args) {
   const path = args.p || args.path;
   let title;
   if (args._.length) {

@@ -35,7 +35,7 @@ class Helper {
    * @param {String} name - The name of the helper plugin
    * @param {StoreFunction} fn - The helper plugin function
    */
-  register(name: string, fn: StoreFunction) {
+  register(name: string, fn: StoreFunction): void {
     if (!name) throw new TypeError('name is required');
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 

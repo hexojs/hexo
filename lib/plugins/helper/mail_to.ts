@@ -14,7 +14,7 @@ interface Attrs {
   [key: string]: string | boolean | null | undefined;
 }
 
-function mailToHelper(path, text, options: Options = {}) {
+function mailToHelper(path: string, text: string, options: Options = {}) {
   if (Array.isArray(path)) path = path.join(',');
   if (!text) text = path;
 
