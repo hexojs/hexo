@@ -14,15 +14,15 @@ class Migrator {
     this.store = {};
   }
 
-  list() {
+  list(): Store {
     return this.store;
   }
 
-  get(name: string) {
+  get(name: string): StoreFunction {
     return this.store[name];
   }
 
-  register(name: string, fn: StoreFunction) {
+  register(name: string, fn: StoreFunction): void {
     if (!name) throw new TypeError('name is required');
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 

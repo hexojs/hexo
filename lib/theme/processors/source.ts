@@ -1,7 +1,8 @@
 import { Pattern } from 'hexo-util';
 import * as common from '../../plugins/processor/common';
+import type { _File } from '../../box';
 
-function process(file) {
+function process(file: _File) {
   const Asset = this.model('Asset');
   const id = file.source.substring(this.base_dir.length).replace(/\\/g, '/');
   const { path } = file.params;

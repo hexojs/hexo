@@ -1,3 +1,5 @@
+import type Hexo from '../../hexo';
+
 /**
 * Pullquote tag
 *
@@ -6,7 +8,7 @@
 *   Quote string
 *   {% endpullquote %}
 */
-export = ctx => function pullquoteTag(args, content) {
+export = (ctx: Hexo) => function pullquoteTag(args: string[], content: string) {
   args.unshift('pullquote');
 
   const result = ctx.render.renderSync({text: content, engine: 'markdown'});

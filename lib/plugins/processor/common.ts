@@ -4,21 +4,21 @@ import micromatch from 'micromatch';
 
 const DURATION_MINUTE = 1000 * 60;
 
-function isMatch(path, patterns) {
+function isMatch(path: string, patterns: string| string[]) {
   if (!patterns) return false;
 
   return micromatch.isMatch(path, patterns);
 }
 
-function isTmpFile(path) {
+function isTmpFile(path: string) {
   return path.endsWith('%') || path.endsWith('~');
 }
 
-function isHiddenFile(path) {
+function isHiddenFile(path: string) {
   return /(^|\/)[_.]/.test(path);
 }
 
-function isExcludedFile(path, config) {
+function isExcludedFile(path: string, config) {
   if (isTmpFile(path)) return true;
   if (isMatch(path, config.exclude)) return true;
   if (isHiddenFile(path) && !isMatch(path, config.include)) return true;
@@ -34,7 +34,7 @@ export {isTmpFile};
 export {isHiddenFile};
 export {isExcludedFile};
 
-export function toDate(date) {
+export function toDate(date: string | number | Date) {
   if (!date || moment.isMoment(date)) return date;
 
   if (!(date instanceof Date)) {
@@ -46,7 +46,7 @@ export function toDate(date) {
   return date;
 }
 
-export function timezone(date, timezone) {
+export function timezone(date: Date, timezone: string) {
   if (moment.isMoment(date)) date = date.toDate();
 
   const offset = date.getTimezoneOffset();

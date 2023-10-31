@@ -4,6 +4,7 @@ import { extname, join, sep } from 'path';
 import Promise from 'bluebird';
 import Moment from './types/moment';
 import { full_url_for, Cache } from 'hexo-util';
+import type Hexo from '../hexo';
 
 function pickID(data) {
   return data._id;
@@ -15,7 +16,7 @@ function removeEmptyTag(tags) {
 
 const tagsGetterCache = new Cache();
 
-export = ctx => {
+export = (ctx: Hexo) => {
   const Post = new warehouse.Schema({
     id: String,
     title: {type: String, default: ''},

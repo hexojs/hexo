@@ -1,7 +1,9 @@
+import type Hexo from '../../../hexo';
+
 let NEED_INJECT = true;
 let META_GENERATOR_TAG;
 
-function hexoMetaGeneratorInject(data) {
+function hexoMetaGeneratorInject(this: Hexo, data: string): string {
   if (!NEED_INJECT) return;
 
   if (!this.config.meta_generator

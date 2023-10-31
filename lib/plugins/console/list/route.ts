@@ -1,6 +1,7 @@
 import archy from 'archy';
+import type Hexo from '../../../hexo';
 
-function listRoute() {
+function listRoute(this: Hexo): void {
   const routes = this.route.list().sort();
   const tree = buildTree(routes);
   const nodes = buildNodes(tree);

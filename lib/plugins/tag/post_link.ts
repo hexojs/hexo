@@ -1,5 +1,6 @@
 import { encodeURL, escapeHTML } from 'hexo-util';
 import { postFindOneFactory } from './';
+import type Hexo from '../../hexo';
 
 /**
  * Post link tag
@@ -7,8 +8,8 @@ import { postFindOneFactory } from './';
  * Syntax:
  *   {% post_link slug | title [title] [escape] %}
  */
-export = ctx => {
-  return function postLinkTag(args) {
+export = (ctx: Hexo) => {
+  return function postLinkTag(args: string[]) {
     const slug = args.shift();
     if (!slug) {
       throw new Error(`Post not found: "${slug}" doesn't exist for {% post_link %}`);
