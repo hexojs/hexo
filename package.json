@@ -66,6 +66,7 @@
     "warehouse": "^5.0.0"
   },
   "devDependencies": {
+    "@types/abbrev": "^1.1.3",
     "@types/bluebird": "^3.5.37",
     "@types/node": "^18.11.8",
     "@types/nunjucks": "^3.2.2",

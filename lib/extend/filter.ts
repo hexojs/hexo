@@ -11,6 +11,7 @@ interface FilterOptions {
   args?: any[];
 }
 
+
 interface StoreFunction {
   (data?: any, ...args: any[]): any;
   priority?: number;

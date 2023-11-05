@@ -4,7 +4,9 @@ import Promise from 'bluebird';
 import { createSha1Hash, Permalink } from 'hexo-util';
 import { ensurePath } from 'hexo-fs';
 import type Hexo from '../../hexo';
-let permalink;
+import type { PostSchema } from '../../types';
+
+let permalink: Permalink;
 
 const reservedKeys = {
   year: true,
@@ -16,14 +18,7 @@ const reservedKeys = {
   hash: true
 };
 
-interface Data {
-  path?: string;
-  layout?: string;
-  slug?: string;
-  date?: Date;
-}
-
-function newPostPathFilter(this: Hexo, data: Data = {}, replace): Promise<string> {
+function newPostPathFilter(this: Hexo, data: PostSchema = {}, replace: boolean): Promise<string> {
   const sourceDir = this.source_dir;
   const draftDir = join(sourceDir, '_drafts');
   const postDir = join(sourceDir, '_posts');

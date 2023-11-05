@@ -1,6 +1,8 @@
 import { extname, join } from 'path';
 import { exists, listDir, readFile, unlink, writeFile } from 'hexo-fs';
 import type Hexo from './index';
+import type { NodeJSLikeCallback } from '../types';
+
 class Scaffold {
   public context: Hexo;
   public scaffoldDir: string;

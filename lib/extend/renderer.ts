@@ -1,5 +1,6 @@
 import { extname } from 'path';
 import Promise from 'bluebird';
+import type { NodeJSLikeCallback } from '../types';
 
 const getExtname = (str: string) => {
   if (typeof str !== 'string') return '';
@@ -97,7 +98,6 @@ class Renderer {
       this.storeSync[name].output = output;
 
       this.store[name] = Promise.method(fn);
-      // eslint-disable-next-line no-extra-parens
       this.store[name].disableNunjucks = (fn as StoreFunction).disableNunjucks;
     } else {
       if (fn.length > 2) fn = Promise.promisify(fn);

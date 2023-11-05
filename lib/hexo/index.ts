@@ -37,6 +37,8 @@ import loadDatabase from './load_database';
 import multiConfigPath from './multi_config_path';
 import { deepMerge, full_url_for } from 'hexo-util';
 import type Box from '../box';
+import type { NodeJSLikeCallback } from '../types';
+
 let resolveSync; // = require('resolve');
 
 const libDir = dirname(__dirname);
@@ -105,12 +107,15 @@ function debounce(func: () => void, wait: number) {
 }
 
 interface Args {
-  debug?: any;
-  safe?: any;
-  silent?: any;
-  _?: any[];
-  output?: any;
-  config?: any;
+  debug?: boolean;
+  safe?: boolean;
+  silent?: boolean;
+  draft?: boolean;
+  drafts?: boolean;
+  _?: string[];
+  output?: string;
+  config?: string;
+  [key: string]: any;
 }
 
 interface Query {
@@ -130,6 +135,17 @@ interface Extend {
   processor: Processor,
   renderer: Renderer,
   tag: Tag
+}
+
+interface Env {
+  args: Args;
+  debug: boolean;
+  safe: boolean;
+  silent: boolean;
+  env: string;
+  version: string;
+  cmd: string;
+  init: boolean;
 }
 
 type DefaultConfigType = typeof defaultConfig;
@@ -154,7 +170,7 @@ class Hexo extends EventEmitter {
   public scaffold_dir: string;
   public theme_dir: string;
   public theme_script_dir: string;
-  public env: any;
+  public env: Env;
   public extend: Extend;
   public config: Config;
   public log: ReturnType<typeof logger>;
@@ -171,16 +187,6 @@ class Hexo extends EventEmitter {
   public locals: Locals;
   public version: string;
   public _watchBox: () => void;
-  public page: any;
-  public path: any;
-  public url: any;
-  public layout: any;
-  public view_dir: any;
-  public site: any;
-  public args: any;
-  public cache: any;
-  public alias: any;
-  public data: any;
   public lib_dir: string;
   public core_dir: string;
   static lib_dir: string;
@@ -266,7 +272,7 @@ class Hexo extends EventEmitter {
     this._bindLocals();
   }
 
-  _bindLocals() {
+  _bindLocals(): void {
     const db = this.database;
     const { locals } = this;
 
@@ -309,7 +315,7 @@ class Hexo extends EventEmitter {
     });
   }
 
-  init() {
+  init(): Promise<void> {
     this.log.debug('Hexo version: %s', magenta(this.version));
     this.log.debug('Working directory: %s', magenta(tildify(this.base_dir)));
 
@@ -344,7 +350,6 @@ class Hexo extends EventEmitter {
 
     const c = this.extend.console.get(name);
 
-    // eslint-disable-next-line no-extra-parens
     if (c) return (Reflect.apply(c, this, [args]) as any).asCallback(callback);
     return Promise.reject(new Error(`Console \`${name}\` has not been registered yet!`));
   }
@@ -353,7 +358,7 @@ class Hexo extends EventEmitter {
     return this.database.model(name, schema);
   }
 
-  resolvePlugin(name: string, basedir: string) {
+  resolvePlugin(name: string, basedir: string): string {
     try {
       // Try to resolve the plugin with the Node.js's built-in require.resolve.
       return require.resolve(name, { paths: [basedir] });
@@ -371,7 +376,7 @@ class Hexo extends EventEmitter {
     }
   }
 
-  loadPlugin(path: string, callback?: NodeJSLikeCallback<any>) {
+  loadPlugin(path: string, callback?: NodeJSLikeCallback<any>): Promise<any> {
     return readFile(path).then(script => {
       // Based on: https://github.com/joyent/node/blob/v0.10.33/src/node.js#L516
       const module = new Module(path);
@@ -396,12 +401,12 @@ class Hexo extends EventEmitter {
     }).asCallback(callback);
   }
 
-  _showDrafts() {
+  _showDrafts(): boolean {
     const { args } = this.env;
     return args.draft || args.drafts || this.config.render_drafts;
   }
 
-  load(callback?: NodeJSLikeCallback<any>) {
+  load(callback?: NodeJSLikeCallback<any>): Promise<any> {
     return loadDatabase(this).then(() => {
       this.log.info('Start processing');
 
@@ -415,7 +420,7 @@ class Hexo extends EventEmitter {
     }).asCallback(callback);
   }
 
-  watch(callback?: NodeJSLikeCallback<any>) {
+  watch(callback?: NodeJSLikeCallback<any>): Promise<any> {
     let useCache = false;
     const { cache } = Object.assign({
       cache: false
@@ -448,7 +453,7 @@ class Hexo extends EventEmitter {
     }).asCallback(callback);
   }
 
-  unwatch() {
+  unwatch(): void {
     if (this._watchBox != null) {
       this.source.removeListener('processAfter', this._watchBox);
       this.theme.removeListener('processAfter', this._watchBox);
@@ -496,7 +501,7 @@ class Hexo extends EventEmitter {
     return Locals;
   }
 
-  _runGenerators() {
+  _runGenerators(): Promise<any[]> {
     this.locals.invalidate();
     const siteLocals = this.locals.toObject();
     const generators = this.extend.generator.list();
@@ -513,7 +518,7 @@ class Hexo extends EventEmitter {
     }, []);
   }
 
-  _routerRefresh(runningGenerators: Promise<any[]>, useCache: boolean) {
+  _routerRefresh(runningGenerators: Promise<any[]>, useCache: boolean): Promise<void> {
     const { route } = this;
     const routeList = route.list();
     const Locals = this._generateLocals();
@@ -546,7 +551,7 @@ class Hexo extends EventEmitter {
     });
   }
 
-  _generate(options: { cache?: boolean } = {}) {
+  _generate(options: { cache?: boolean } = {}): Promise<any> {
     if (this._isGenerating) return;
 
     const useCache = options.cache;
@@ -567,7 +572,7 @@ class Hexo extends EventEmitter {
       });
   }
 
-  exit(err) {
+  exit(err: Error): Promise<void> {
     if (err) {
       this.log.fatal(
         { err },

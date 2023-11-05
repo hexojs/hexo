@@ -8,6 +8,8 @@ import { slugize, escapeRegExp } from 'hexo-util';
 import { copyDir, exists, listDir, mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
 import { parse as yfmParse, split as yfmSplit, stringify as yfmStringify } from 'hexo-front-matter';
 import type Hexo from './index';
+import type { NodeJSLikeCallback, RenderData } from '../types';
+
 const preservedKeys = ['title', 'slug', 'path', 'layout', 'date', 'content'];
 
 const rHexoPostRenderEscape = /<hexoPostRenderCodeBlock>([\s\S]+?)<\/hexoPostRenderCodeBlock>/g;
@@ -224,14 +226,6 @@ interface Result {
   content?: string;
 }
 
-interface Data {
-  engine?: string;
-  content?: string;
-  disableNunjucks?: boolean;
-  markdown?: object;
-  source?: string;
-}
-
 interface PostData {
   title?: string;
   layout?: string;
@@ -388,7 +382,7 @@ class Post {
     }).thenReturn(result).asCallback(callback);
   }
 
-  render(source: string, data: Data = {}, callback?: NodeJSLikeCallback<never>) {
+  render(source: string, data: RenderData = {}, callback?: NodeJSLikeCallback<never>) {
     const ctx = this.context;
     const { config } = ctx;
     const { tag } = ctx.extend;

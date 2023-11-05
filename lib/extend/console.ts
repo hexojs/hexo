@@ -29,7 +29,7 @@ interface Store {
   [key: string]: StoreFunction
 }
 interface Alias {
-  [key: string]: string
+  [abbreviation: string]: string
 }
 
 class Console {

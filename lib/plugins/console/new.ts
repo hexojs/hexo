@@ -20,9 +20,19 @@ const reservedKeys = {
   silent: true
 };
 
-function newConsole(this: Hexo, args) {
+interface NewArgs {
+  _?: string[]
+  p?: string
+  path?: string
+  s?: string
+  slug?: string
+  r?: boolean
+  replace?: boolean
+}
+
+function newConsole(this: Hexo, args: NewArgs) {
   const path = args.p || args.path;
-  let title;
+  let title: string;
   if (args._.length) {
     title = args._.pop();
   } else if (path) {
@@ -30,7 +40,7 @@ function newConsole(this: Hexo, args) {
     title = basename(path);
   } else {
     // Display help message if user didn't input any arguments
-    return this.call('help', {_: ['new']});
+    return this.call('help', { _: ['new'] });
   }
 
   const data = {
