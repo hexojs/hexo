@@ -3,7 +3,7 @@ import titlecase from 'titlecase';
 export {stripHTML as strip_html};
 export {stripHTML};
 
-export function trim(str) {
+export function trim(str: string) {
   return str.trim();
 }
 

@@ -5,6 +5,9 @@ import { extname, join } from 'path';
 import { stat, listDir } from 'hexo-fs';
 import { slugize, Pattern, Permalink } from 'hexo-util';
 import { magenta } from 'picocolors';
+import type { _File } from '../../box';
+import type Hexo from '../../hexo';
+import type { Stats } from 'fs';
 
 const postDir = '_posts/';
 const draftDir = '_drafts/';
@@ -20,7 +23,7 @@ const preservedKeys = {
   hash: true
 };
 
-export = ctx => {
+export = (ctx: Hexo) => {
   return {
     pattern: new Pattern(path => {
       if (isTmpFile(path)) return;
@@ -62,7 +65,7 @@ export = ctx => {
   };
 };
 
-function processPost(ctx, file) {
+function processPost(ctx: Hexo, file: _File) {
   const Post = ctx.model('Post');
   const { path } = file.params;
   const doc = Post.findOne({source: file.path});
@@ -86,7 +89,7 @@ function processPost(ctx, file) {
   return Promise.all([
     file.stat(),
     file.read()
-  ]).spread((stats, content) => {
+  ]).spread((stats: Stats, content: string) => {
     const data = yfm(content);
     const info = parseFilename(config.new_post_name, path);
     const keys = Object.keys(info);
@@ -179,7 +182,7 @@ function processPost(ctx, file) {
   ]));
 }
 
-function parseFilename(config, path) {
+function parseFilename(config: string, path: string) {
   config = config.substring(0, config.length - extname(config).length);
   path = path.substring(0, path.length - extname(path).length);
 
@@ -212,7 +215,7 @@ function parseFilename(config, path) {
   };
 }
 
-function scanAssetDir(ctx, post) {
+function scanAssetDir(ctx: Hexo, post) {
   if (!ctx.config.post_asset_folder) return;
 
   const assetDir = post.asset_dir;
@@ -246,7 +249,7 @@ function scanAssetDir(ctx, post) {
   });
 }
 
-function shouldSkipAsset(ctx, post, asset) {
+function shouldSkipAsset(ctx: Hexo, post, asset) {
   if (!ctx._showDrafts()) {
     if (post.published === false && asset) {
       // delete existing draft assets if draft posts are hidden
@@ -261,7 +264,7 @@ function shouldSkipAsset(ctx, post, asset) {
   return asset !== undefined; // skip already existing assets
 }
 
-function processAsset(ctx, file) {
+function processAsset(ctx: Hexo, file: _File) {
   const PostAsset = ctx.model('PostAsset');
   const Post = ctx.model('Post');
   const id = file.source.substring(ctx.base_dir.length).replace(/\\/g, '/');

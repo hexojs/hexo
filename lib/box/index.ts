@@ -6,6 +6,7 @@ import { createReadStream, readdir, stat, watch } from 'hexo-fs';
 import { magenta } from 'picocolors';
 import { EventEmitter } from 'events';
 import { isMatch, makeRe } from 'micromatch';
+import type Hexo from '../hexo';
 
 const defaultPattern = new Pattern(() => ({}));
 
@@ -16,20 +17,18 @@ interface Processor {
 
 class Box extends EventEmitter {
   public options: any;
-  public context: any;
-  public base: any;
+  public context: Hexo;
+  public base: string;
   public processors: Processor[];
   public _processingFiles: any;
   public watcher: any;
   public Cache: any;
   // TODO: replace runtime class _File
   public File: any;
-  public ignore: any;
+  public ignore: any[];
   public source: any;
-  public emit: any;
-  public ctx: any;
 
-  constructor(ctx, base, options?: object) {
+  constructor(ctx: Hexo, base: string, options?: object) {
     super();
 
     this.options = Object.assign({
@@ -64,13 +63,13 @@ class Box extends EventEmitter {
     class _File extends File {
       public box: Box;
 
-      render(options) {
+      render(options?: object) {
         return ctx.render.render({
           path: this.source
         }, options);
       }
 
-      renderSync(options) {
+      renderSync(options?: object) {
         return ctx.render.renderSync({
           path: this.source
         }, options);
@@ -82,7 +81,9 @@ class Box extends EventEmitter {
     return _File;
   }
 
-  addProcessor(pattern, fn) {
+  addProcessor(pattern: (...args: any[]) => any): void;
+  addProcessor(pattern: string | RegExp | Pattern | ((...args: any[]) => any), fn: (...args: any[]) => any): void;
+  addProcessor(pattern: string | RegExp | Pattern | ((...args: any[]) => any), fn?: (...args: any[]) => any): void {
     if (!fn && typeof pattern === 'function') {
       fn = pattern;
       pattern = defaultPattern;
@@ -97,7 +98,7 @@ class Box extends EventEmitter {
     });
   }
 
-  _readDir(base, prefix = '') {
+  _readDir(base: string, prefix = ''): BlueBirdPromise<any> {
     const { context: ctx } = this;
     const results = [];
     return readDirWalker(ctx, base, results, this.ignore, prefix)
@@ -106,7 +107,7 @@ class Box extends EventEmitter {
       .map(file => this._processFile(file.type, file.path).return(file.path));
   }
 
-  _checkFileStatus(path) {
+  _checkFileStatus(path: string) {
     const { Cache, context: ctx } = this;
     const src = join(this.base, path);
 
@@ -120,7 +121,7 @@ class Box extends EventEmitter {
     }));
   }
 
-  process(callback?) {
+  process(callback?: NodeJSLikeCallback<any>): BlueBirdPromise<any> {
     const { base, Cache, context: ctx } = this;
 
     return stat(base).then(stats => {
@@ -132,14 +133,14 @@ class Box extends EventEmitter {
 
       // Handle deleted files
       return this._readDir(base)
-        .then(files => cacheFiles.filter(path => !files.includes(path)))
-        .map(path => this._processFile(File.TYPE_DELETE, path));
+        .then((files: string[]) => cacheFiles.filter((path: string) => !files.includes(path)))
+        .map((path: string) => this._processFile(File.TYPE_DELETE, path) as PromiseLike<any>);
     }).catch(err => {
       if (err && err.code !== 'ENOENT') throw err;
     }).asCallback(callback);
   }
 
-  _processFile(type, path) {
+  _processFile(type: string, path: string): BlueBirdPromise<void> | BlueBirdPromise<string> {
     if (this._processingFiles[path]) {
       return BlueBirdPromise.resolve();
     }
@@ -182,7 +183,7 @@ class Box extends EventEmitter {
     }).thenReturn(path);
   }
 
-  watch(callback?) {
+  watch(callback?: NodeJSLikeCallback<never>): BlueBirdPromise<void> {
     if (this.isWatching()) {
       return BlueBirdPromise.reject(new Error('Watcher has already started.')).asCallback(callback);
     }
@@ -217,24 +218,24 @@ class Box extends EventEmitter {
     }).asCallback(callback);
   }
 
-  unwatch() {
+  unwatch(): void {
     if (!this.isWatching()) return;
 
     this.watcher.close();
     this.watcher = null;
   }
 
-  isWatching() {
+  isWatching(): boolean {
     return Boolean(this.watcher);
   }
 }
 
-function escapeBackslash(path) {
+function escapeBackslash(path: string): string {
   // Replace backslashes on Windows
   return path.replace(/\\/g, '/');
 }
 
-function getHash(path) {
+function getHash(path: string): BlueBirdPromise<string> {
   const src = createReadStream(path);
   const hasher = createSha1Hash();
 
@@ -248,7 +249,7 @@ function getHash(path) {
   return finishedPromise.then(() => hasher.digest('hex'));
 }
 
-function toRegExp(ctx, arg) {
+function toRegExp(ctx: Hexo, arg: string): RegExp | null {
   if (!arg) return null;
   if (typeof arg !== 'string') {
     ctx.log.warn('A value of "ignore:" section in "_config.yml" is not invalid (not a string)');
@@ -262,11 +263,11 @@ function toRegExp(ctx, arg) {
   return result;
 }
 
-function isIgnoreMatch(path, ignore) {
+function isIgnoreMatch(path: string, ignore: string | any[]): boolean {
   return path && ignore && ignore.length && isMatch(path, ignore);
 }
 
-function readDirWalker(ctx, base, results, ignore, prefix) {
+function readDirWalker(ctx: Hexo, base: string, results: any[], ignore: any, prefix: string): BlueBirdPromise<any> {
   if (isIgnoreMatch(base, ignore)) return BlueBirdPromise.resolve();
 
   return BlueBirdPromise.map(readdir(base).catch(err => {
@@ -292,4 +293,10 @@ function readDirWalker(ctx, base, results, ignore, prefix) {
   });
 }
 
-export = Box;
+export interface _File extends File {
+  box: Box;
+  render(options?: any): any;
+  renderSync(options?: any): any;
+}
+
+export default Box;

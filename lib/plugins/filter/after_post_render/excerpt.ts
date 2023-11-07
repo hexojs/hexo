@@ -1,6 +1,6 @@
 const rExcerpt = /<!-- ?more ?-->/i;
 
-function excerptFilter(data) {
+function excerptFilter(data): void {
   const { content } = data;
 
   if (typeof data.excerpt !== 'undefined') {

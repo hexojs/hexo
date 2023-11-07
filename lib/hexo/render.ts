@@ -1,8 +1,11 @@
 import { extname } from 'path';
 import Promise from 'bluebird';
 import { readFile, readFileSync } from 'hexo-fs';
+import type Hexo from './index';
+import type { Renderer } from '../extend';
+import type { StoreFunctionData } from '../extend/renderer';
 
-const getExtname = str => {
+const getExtname = (str: string) => {
   if (typeof str !== 'string') return '';
 
   const ext = extname(str);
@@ -24,35 +27,35 @@ const toString = (result, options) => {
 };
 
 class Render {
-  public context: any;
-  public renderer: any;
+  public context: Hexo;
+  public renderer: Renderer;
 
-  constructor(ctx) {
+  constructor(ctx: Hexo) {
     this.context = ctx;
     this.renderer = ctx.extend.renderer;
   }
 
-  isRenderable(path) {
+  isRenderable(path: string) {
     return this.renderer.isRenderable(path);
   }
 
-  isRenderableSync(path) {
+  isRenderableSync(path: string) {
     return this.renderer.isRenderableSync(path);
   }
 
-  getOutput(path) {
+  getOutput(path: string) {
     return this.renderer.getOutput(path);
   }
 
-  getRenderer(ext, sync?) {
+  getRenderer(ext: string, sync?: boolean) {
     return this.renderer.get(ext, sync);
   }
 
-  getRendererSync(ext) {
+  getRendererSync(ext: string) {
     return this.getRenderer(ext, true);
   }
 
-  render(data, options, callback) {
+  render(data: StoreFunctionData, options?: { highlight?: boolean; }, callback?: undefined) {
     if (!callback && typeof options === 'function') {
       callback = options;
       options = {};
@@ -96,14 +99,14 @@ class Render {
     }).asCallback(callback);
   }
 
-  renderSync(data, options = {}) {
+  renderSync(data: StoreFunctionData, options = {}) {
     if (!data) throw new TypeError('No input file or string!');
 
     const ctx = this.context;
 
     if (data.text == null) {
       if (!data.path) throw new TypeError('No input file or string!');
-      data.text = readFileSync(data.path);
+      data.text = readFileSync(data.path) as string;
     }
 
     if (data.text == null) throw new TypeError('No input file or string!');

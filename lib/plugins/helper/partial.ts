@@ -1,11 +1,12 @@
 import { dirname, join } from 'path';
+import type Hexo from '../../hexo';
 
 interface Options {
   cache?: boolean | string;
   only?: boolean;
 }
 
-export = ctx => function partial(name, locals, options: Options = {}) {
+export = (ctx: Hexo) => function partial(name: string, locals: any, options: Options = {}) {
   if (typeof name !== 'string') throw new TypeError('name must be a string!');
 
   const { cache } = options;

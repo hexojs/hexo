@@ -34,7 +34,7 @@ const localeToTerritory = moize.shallow(str => {
   }
 });
 
-const meta = (name, content, escape?: boolean) => {
+const meta = (name: string, content: string | URL, escape?: boolean) => {
   if (escape !== false && typeof content === 'string') {
     content = escapeHTML(content);
   }
@@ -43,7 +43,7 @@ const meta = (name, content, escape?: boolean) => {
   return `<meta name="${name}">\n`;
 };
 
-const og = (name, content?: string, escape?: boolean) => {
+const og = (name: string, content?: string, escape?: boolean) => {
   if (escape !== false && typeof content === 'string') {
     content = escapeHTML(content);
   }

@@ -1,7 +1,8 @@
 import tildify from 'tildify';
 import { magenta } from 'picocolors';
+import type Hexo from '../../hexo';
 
-function publishConsole(args) {
+function publishConsole(this: Hexo, args) {
   // Display help message if user didn't input any arguments
   if (!args._.length) {
     return this.call('help', {_: ['publish']});
