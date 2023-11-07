@@ -70,8 +70,6 @@
     "@types/node": "^18.11.8",
     "@types/nunjucks": "^3.2.2",
     "@types/text-table": "^0.2.4",
-    "@typescript-eslint/eslint-plugin": "^5.41.0",
-    "@typescript-eslint/parser": "^5.41.0",
     "0x": "^5.1.2",
     "c8": "^8.0.0",
     "chai": "^4.3.6",
