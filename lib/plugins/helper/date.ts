@@ -1,7 +1,7 @@
 import moment from 'moment-timezone';
 const { isMoment } = moment;
 import moize from 'moize';
-import type Hexo from '../../hexo';
+import type { LocalsType } from '../../types';
 
 const isDate = (value: moment.MomentInput | moment.Moment): boolean =>
   typeof value === 'object' && value instanceof Date && !isNaN(value.getTime());
@@ -61,7 +61,7 @@ function timeTagHelper(date: string | number | Date | moment.Moment, format: str
   return `<time datetime="${toISOString(date)}">${this.date(date, format, getLanguage(this), config.timezone)}</time>`;
 }
 
-function getLanguage(ctx) {
+function getLanguage(ctx: LocalsType) {
   return ctx.page.lang || ctx.page.language || ctx.config.language;
 }
 

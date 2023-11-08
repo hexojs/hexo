@@ -37,7 +37,7 @@ import loadDatabase from './load_database';
 import multiConfigPath from './multi_config_path';
 import { deepMerge, full_url_for } from 'hexo-util';
 import type Box from '../box';
-import type { NodeJSLikeCallback } from '../types';
+import type { AssetGenerator, LocalsType, NodeJSLikeCallback, NormalPageGenerator, NormalPostGenerator, PageGenerator, PostGenerator, SiteLocals } from '../types';
 
 let resolveSync; // = require('resolve');
 
@@ -50,7 +50,8 @@ const routeCache = new WeakMap();
 
 const castArray = (obj: any) => { return Array.isArray(obj) ? obj : [obj]; };
 
-const mergeCtxThemeConfig = ctx => {
+// eslint-disable-next-line no-use-before-define
+const mergeCtxThemeConfig = (ctx: Hexo) => {
   // Merge hexo.config.theme_config into hexo.theme.config before post rendering & generating
   // config.theme_config has "_config.[theme].yml" merged in load_theme_config.js
   if (ctx.config.theme_config) {
@@ -58,11 +59,12 @@ const mergeCtxThemeConfig = ctx => {
   }
 };
 
-const createLoadThemeRoute = function(generatorResult, locals, ctx) {
+// eslint-disable-next-line no-use-before-define
+const createLoadThemeRoute = function(generatorResult: NormalPageGenerator | NormalPostGenerator, locals: LocalsType, ctx: Hexo) {
   const { log, theme } = ctx;
   const { path, cache: useCache } = locals;
 
-  const layout = [...new Set(castArray(generatorResult.layout))];
+  const layout: string[] = [...new Set(castArray(generatorResult.layout))];
   const layoutLength = layout.length;
 
   // always use cache in fragment_cache
@@ -96,7 +98,7 @@ const createLoadThemeRoute = function(generatorResult, locals, ctx) {
   };
 };
 
-function debounce(func: () => void, wait: number) {
+function debounce(func: () => void, wait: number): () => void {
   let timeout: NodeJS.Timeout;
   return function() {
     clearTimeout(timeout);
@@ -342,9 +344,11 @@ class Hexo extends EventEmitter {
     });
   }
 
-  call(name: string, args: any, callback?: NodeJSLikeCallback<any>) {
+  call(name: string, callback?: NodeJSLikeCallback<any>): Promise<any>;
+  call(name: string, args: object, callback?: NodeJSLikeCallback<any>): Promise<any>;
+  call(name: string, args?: object | NodeJSLikeCallback<any>, callback?: NodeJSLikeCallback<any>): Promise<any> {
     if (!callback && typeof args === 'function') {
-      callback = args;
+      callback = args as NodeJSLikeCallback<any>;
       args = {};
     }
 
@@ -378,7 +382,7 @@ class Hexo extends EventEmitter {
 
   loadPlugin(path: string, callback?: NodeJSLikeCallback<any>): Promise<any> {
     return readFile(path).then(script => {
-      // Based on: https://github.com/joyent/node/blob/v0.10.33/src/node.js#L516
+      // Based on: https://github.com/nodejs/node-v0.x-archive/blob/v0.10.33/src/node.js#L516
       const module = new Module(path);
       module.filename = path;
       module.paths = Module._nodeModulePaths(path);
@@ -468,12 +472,10 @@ class Hexo extends EventEmitter {
   _generateLocals() {
     const { config, env, theme, theme_dir } = this;
     const ctx = { config: { url: this.config.url } };
-    const localsObj = this.locals.toObject();
+    const localsObj = this.locals.toObject() as SiteLocals;
 
     class Locals {
-      page: {
-        path: string;
-      };
+      page: NormalPageGenerator | NormalPostGenerator;
       path: string;
       url: string;
       config: object;
@@ -481,10 +483,10 @@ class Hexo extends EventEmitter {
       layout: string;
       env: any;
       view_dir: string;
-      site: object;
+      site: SiteLocals;
       cache?: boolean;
 
-      constructor(path: string, locals) {
+      constructor(path: string, locals: NormalPageGenerator | NormalPostGenerator) {
         this.page = { ...locals };
         if (this.page.path == null) this.page.path = path;
         this.path = path;
@@ -501,9 +503,9 @@ class Hexo extends EventEmitter {
     return Locals;
   }
 
-  _runGenerators(): Promise<any[]> {
+  _runGenerators(): Promise<(AssetGenerator | PostGenerator | PageGenerator)[]> {
     this.locals.invalidate();
-    const siteLocals = this.locals.toObject();
+    const siteLocals = this.locals.toObject() as SiteLocals;
     const generators = this.extend.generator.list();
     const { log } = this;
 
@@ -518,17 +520,19 @@ class Hexo extends EventEmitter {
     }, []);
   }
 
-  _routerRefresh(runningGenerators: Promise<any[]>, useCache: boolean): Promise<void> {
+  _routerRefresh(runningGenerators: Promise<(AssetGenerator | PostGenerator | PageGenerator)[]>, useCache: boolean): Promise<void> {
     const { route } = this;
     const routeList = route.list();
     const Locals = this._generateLocals();
     Locals.prototype.cache = useCache;
 
-    return runningGenerators.map(generatorResult => {
+    return runningGenerators.map((generatorResult: AssetGenerator | PostGenerator | PageGenerator) => {
       if (typeof generatorResult !== 'object' || generatorResult.path == null) return undefined;
 
       // add Route
       const path = route.format(generatorResult.path);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
       const { data, layout } = generatorResult;
 
       if (!layout) {
@@ -536,8 +540,8 @@ class Hexo extends EventEmitter {
         return path;
       }
 
-      return this.execFilter('template_locals', new Locals(path, data), { context: this })
-        .then(locals => { route.set(path, createLoadThemeRoute(generatorResult, locals, this)); })
+      return this.execFilter('template_locals', new Locals(path, data as unknown as NormalPageGenerator | NormalPostGenerator), { context: this })
+        .then(locals => { route.set(path, createLoadThemeRoute(generatorResult as NormalPageGenerator | NormalPostGenerator, locals, this)); })
         .thenReturn(path);
     }).then(newRouteList => {
       // Remove old routes

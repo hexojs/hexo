@@ -25,7 +25,7 @@ class Options {
 
 class View {
   public path: string;
-  public source: any;
+  public source: string;
   public _theme: Theme;
   public data: any;
   public _compiled: any;
@@ -89,6 +89,7 @@ class View {
   }
 
   _buildLocals(locals: Options) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { layout, _content, ...data } = this.data;
     return assignIn({}, locals, data, {
       filename: this.source
