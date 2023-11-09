@@ -4,6 +4,7 @@ import Promise from 'bluebird';
 import type Theme from '.';
 import type Render from '../hexo/render';
 import type { NodeJSLikeCallback } from '../types';
+import type { Helper } from '../extend';
 
 const assignIn = (target: any, ...sources: any[]) => {
   const length = sources.length;
@@ -30,10 +31,10 @@ class View {
   public data: any;
   public _compiled: any;
   public _compiledSync: any;
-  public _helper: any;
+  public _helper: Helper;
   public _render: Render;
 
-  constructor(path: string, data) {
+  constructor(path: string, data: string) {
     this.path = path;
     this.source = join(this._theme.base, 'layout', path);
     this.data = typeof data === 'string' ? yfm(data) : data;
@@ -42,7 +43,7 @@ class View {
   }
 
   render(callback: NodeJSLikeCallback<any>): Promise<any>;
-  render(options: Options, callback: NodeJSLikeCallback<any>): Promise<any>;
+  render(options: Options, callback?: NodeJSLikeCallback<any>): Promise<any>;
   render(options: Options | NodeJSLikeCallback<any> = {}, callback?: NodeJSLikeCallback<any>): Promise<any> {
     if (!callback && typeof options === 'function') {
       callback = options;
@@ -107,7 +108,7 @@ class View {
     return locals;
   }
 
-  _resolveLayout(name: string) {
+  _resolveLayout(name: string): View {
     // Relative path
     const layoutPath = join(dirname(this.path), name);
     let layoutView = this._theme.getView(layoutPath);
@@ -119,7 +120,7 @@ class View {
     if (layoutView && layoutView.source !== this.source) return layoutView;
   }
 
-  _precompile() {
+  _precompile(): void {
     const render = this._render;
     const ctx = render.context;
     const ext = extname(this.path);

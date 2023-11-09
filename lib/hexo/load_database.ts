@@ -2,7 +2,7 @@ import { exists, unlink } from 'hexo-fs';
 import Promise from 'bluebird';
 import type Hexo from './index';
 
-export = (ctx: Hexo) => {
+export = (ctx: Hexo): Promise<void> => {
   if (ctx._dbLoaded) return Promise.resolve();
 
   const db = ctx.database;

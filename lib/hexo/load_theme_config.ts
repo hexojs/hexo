@@ -4,8 +4,9 @@ import { exists, readdir } from 'hexo-fs';
 import { magenta } from 'picocolors';
 import { deepMerge } from 'hexo-util';
 import type Hexo from './index';
+import type Promise from 'bluebird';
 
-export = (ctx: Hexo) => {
+export = (ctx: Hexo): Promise<void> => {
   if (!ctx.env.init) return;
   if (!ctx.config.theme) return;
 
@@ -31,7 +32,7 @@ export = (ctx: Hexo) => {
   });
 };
 
-function findConfigPath(path: string) {
+function findConfigPath(path: string): Promise<string> {
   const { dir, name } = parse(path);
 
   return readdir(dir).then(files => {

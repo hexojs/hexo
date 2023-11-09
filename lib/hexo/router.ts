@@ -17,7 +17,7 @@ declare module 'stream' {
 class RouteStream extends Readable {
   public _data: any;
   public _ended: boolean;
-  public modified: any;
+  public modified: boolean;
 
   constructor(data: Data) {
     super({ objectMode: true });
@@ -28,7 +28,7 @@ class RouteStream extends Readable {
   }
 
   // Assume we only accept Buffer, plain object, or string
-  _toBuffer(data) {
+  _toBuffer(data: Buffer | object | string): Buffer | null {
     if (data instanceof Buffer) {
       return data;
     }
@@ -41,7 +41,7 @@ class RouteStream extends Readable {
     return null;
   }
 
-  _read() {
+  _read(): boolean {
     const data = this._data;
 
     if (typeof data !== 'function') {
@@ -84,7 +84,7 @@ class RouteStream extends Readable {
   }
 }
 
-const _format = (path: string) => {
+const _format = (path: string): string => {
   path = path || '';
   if (typeof path !== 'string') throw new TypeError('path must be a string!');
 
@@ -113,16 +113,16 @@ class Router extends EventEmitter {
     this.routes = {};
   }
 
-  list() {
+  list(): string[] {
     const { routes } = this;
     return Object.keys(routes).filter(key => routes[key]);
   }
 
-  format(path: string) {
+  format(path: string): string {
     return _format(path);
   }
 
-  get(path: string) {
+  get(path: string): RouteStream {
     if (typeof path !== 'string') throw new TypeError('path must be a string!');
 
     const data = this.routes[this.format(path)];
@@ -131,14 +131,14 @@ class Router extends EventEmitter {
     return new RouteStream(data);
   }
 
-  isModified(path: string) {
+  isModified(path: string): boolean {
     if (typeof path !== 'string') throw new TypeError('path must be a string!');
 
     const data = this.routes[this.format(path)];
     return data ? data.modified : false;
   }
 
-  set(path: string, data: any) {
+  set(path: string, data: any): this {
     if (typeof path !== 'string') throw new TypeError('path must be a string!');
     if (data == null) throw new TypeError('data is required!');
 
@@ -173,7 +173,7 @@ class Router extends EventEmitter {
     return this;
   }
 
-  remove(path: string) {
+  remove(path: string): this {
     if (typeof path !== 'string') throw new TypeError('path must be a string!');
     path = this.format(path);
 
