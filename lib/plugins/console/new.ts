@@ -28,6 +28,7 @@ interface NewArgs {
   slug?: string
   r?: boolean
   replace?: boolean
+  [key: string]: any
 }
 
 function newConsole(this: Hexo, args: NewArgs) {

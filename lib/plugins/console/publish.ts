@@ -6,6 +6,7 @@ interface PublishArgs {
   _: string[]
   r?: boolean
   replace?: boolean
+  [key: string]: any
 }
 
 function publishConsole(this: Hexo, args: PublishArgs) {

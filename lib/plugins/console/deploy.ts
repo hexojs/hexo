@@ -3,9 +3,10 @@ import { underline, magenta } from 'picocolors';
 import type Hexo from '../../hexo';
 
 interface DeployArgs {
-  _: string[]
+  _?: string[]
   g?: boolean
   generate?: boolean
+  [key: string]: any
 }
 
 function deployConsole(this: Hexo, args: DeployArgs) {

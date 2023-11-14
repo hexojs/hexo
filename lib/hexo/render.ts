@@ -65,7 +65,7 @@ class Render {
     const ctx = this.context;
     let ext = '';
 
-    let promise: Promise<string | Buffer>;
+    let promise: Promise<string>;
 
     if (!data) return Promise.reject(new TypeError('No input file or string!'));
 
@@ -74,10 +74,10 @@ class Render {
     } else if (!data.path) {
       return Promise.reject(new TypeError('No input file or string!'));
     } else {
-      promise = readFile(data.path);
+      promise = readFile(data.path) as Promise<string>;
     }
 
-    return promise.then((text: string) => {
+    return promise.then(text => {
       data.text = text;
       ext = data.engine || getExtname(data.path);
       if (!ext || !this.isRenderable(ext)) return text;

@@ -6,6 +6,7 @@ import type Hexo from '../../hexo';
 
 interface ConfigArgs {
   _: string[]
+  [key: string]: any
 }
 
 function configConsole(this: Hexo, args: ConfigArgs): Promise<void> {

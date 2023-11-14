@@ -3,6 +3,7 @@ import type Hexo from '../../hexo';
 
 interface MigrateArgs {
   _: string[]
+  [key: string]: any
 }
 
 function migrateConsole(this: Hexo, args: MigrateArgs) {

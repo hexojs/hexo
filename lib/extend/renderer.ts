@@ -14,7 +14,7 @@ export interface StoreFunctionData {
   text?: string;
   engine?: string;
   toString?: any;
-  onRenderEnd?: any;
+  onRenderEnd?: (...args: any[]) => any;
 }
 
 export interface StoreSyncFunction {

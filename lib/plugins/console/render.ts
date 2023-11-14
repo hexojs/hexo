@@ -11,6 +11,7 @@ interface RenderArgs {
   output?: string
   pretty?: boolean
   engine?: string
+  [key: string]: any
 }
 
 function renderConsole(this: Hexo, args: RenderArgs) {

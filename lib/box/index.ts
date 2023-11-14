@@ -13,7 +13,7 @@ const defaultPattern = new Pattern(() => ({}));
 
 interface Processor {
   pattern: Pattern;
-  process: (file: File) => void;
+  process: (file?: File) => any;
 }
 
 class Box extends EventEmitter {

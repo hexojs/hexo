@@ -19,6 +19,7 @@ interface GenerateArgs {
   watch?: boolean
   d?: boolean
   deploy?: boolean
+  [key: string]: any
 }
 
 class Generater {

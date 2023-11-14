@@ -53,7 +53,7 @@ export = async (ctx: Hexo): Promise<void> => {
   const themeDirFromNodeModules = join(ctx.plugin_dir, 'hexo-theme-' + theme) + sep; // base_dir/node_modules/hexo-theme-[config.theme]/
 
   // themeDirFromThemes has higher priority than themeDirFromNodeModules
-  let ignored = [];
+  let ignored: string[] = [];
   if (await exists(themeDirFromThemes)) {
     ctx.theme_dir = themeDirFromThemes;
     ignored = ['**/themes/*/node_modules/**', '**/themes/*/.git/**'];

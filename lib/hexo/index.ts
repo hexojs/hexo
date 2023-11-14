@@ -7,7 +7,7 @@ import { EventEmitter } from 'events';
 import { readFile } from 'hexo-fs';
 import Module from 'module';
 import { runInThisContext } from 'vm';
-const {version} = require('../../package.json');
+const { version } = require('../../package.json');
 import logger from 'hexo-log';
 
 import {

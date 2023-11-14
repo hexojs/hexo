@@ -61,7 +61,7 @@ class Scaffold {
     }).asCallback(callback);
   }
 
-  set(name: string, content: any, callback: NodeJSLikeCallback<void>): Promise<void> {
+  set(name: string, content: any, callback?: NodeJSLikeCallback<void>): Promise<void> {
     const { scaffoldDir } = this;
 
     return this._getScaffold(name).then(item => {
@@ -72,7 +72,7 @@ class Scaffold {
     }).asCallback(callback);
   }
 
-  remove(name: string, callback: NodeJSLikeCallback<void>): Promise<void> {
+  remove(name: string, callback?: NodeJSLikeCallback<void>): Promise<void> {
     return this._getScaffold(name).then(item => {
       if (!item) return;
 
