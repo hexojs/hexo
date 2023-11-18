@@ -56,7 +56,7 @@ menu:
   Tags: true
   Archives: true
   Friends: false
-  Links: true
+  Links: false
 
 #! ---------------------------------------------------------------
 #! Theme Config
@@ -205,10 +205,10 @@ injects:
 footer_links:
   - title: Pish Posh
     links:
-      - title: wee
-        url: www.yahoo.com
-      - title: pooo
-        url: www.reddit.com
+      - title: Visit Beefy
+        url: www.beefthroat.com
+      - title: Visit Cojovi
+        url: www.cojovi.com
       - title: Friends # link of friends mode / 友链模式
         mode: 'links'
 
