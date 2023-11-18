@@ -1,8 +1,8 @@
 ---
 title: Blog1
 date: 2023-11-18 01:44:38
-tags:
 cover: https://i.imgur.com/JAQ8kBu.png
+tags:
 ---
 this a blog blah blah  balh
 
