@@ -1,0 +1,220 @@
+#! ---------------------------------------------------------------
+#! Aurora Theme for Hexo
+#! ---------------------------------------------------------------
+#! Designed & Coded By Benny Guo
+#! ---------------------------------------------------------------
+
+#! ---------------------------------------------------------------
+#! Site Configs
+#！ @docs https://aurora.tridiamond.tech/guide/configuration.html
+#! ---------------------------------------------------------------
+site:
+  subtitle: Aurora's Blog
+  author: Aurora
+  nick: Auroral UI
+  description:
+  link: '/'
+  language: en
+  multi_language: true
+  logo:
+  avatar:
+  beian:
+    number: ''
+    link: ''
+  police_beian:
+    number: ''
+    link: ''
+  # Start date of the blog YYY-MM-DD
+  # 博客开始运行日期
+  started_date:
+  # Path unique identifier (文章 URL 唯一标识)
+  # uid: use unique ID
+  # slug: use generated slug base on title
+  # (Default is 'slug')
+  pathSlug: 'slug'
+
+#! ---------------------------------------------------------------
+#! Authors Configs
+#！ @docs https://aurora.tridiamond.tech/guide/authors.html
+#! ---------------------------------------------------------------
+authors:
+  ##! example
+  # TriDiamond:
+  #   name: TriDiamond
+  #   avatar: https://up.enterdesk.com/edpic_source/44/ff/3d/44ff3d6bd2819d524facfcc33205d4cd.jpg
+  #   link: https://github.com/TriDiamond
+  #   description: 'Think like an artist, code like an artisan.'
+  #   socials:
+  #     github: https://tridiamond.tech
+
+#! ---------------------------------------------------------------
+#! Menu Configs
+#！ @docs https://aurora.tridiamond.tech/guide/menu.html
+#! ---------------------------------------------------------------
+menu:
+  About: true
+  Tags: true
+  Archives: true
+  Friends: false
+
+#! ---------------------------------------------------------------
+#! Theme Config
+#! @docs https://aurora.tridiamond.tech/guide/theme.html
+#! ---------------------------------------------------------------
+theme:
+  dark_mode: true
+  profile_shape: diamond # support `circle`, `diamond`, `rounded`
+  feature: true
+  gradient:
+    color_1: '#24c6dc'
+    color_2: '#5433ff'
+    color_3: '#ff0099'
+
+#! ---------------------------------------------------------------
+#! Social Configs
+#! @docs https://aurora.tridiamond.tech/guide/social.html
+#! ---------------------------------------------------------------
+socials:
+  customs:
+  ##! Example:
+  ##! --- Using SVG
+  # bilibili:
+  #   icon: http://localhost:4000/svg/bilibili.svg
+  #   link: https://live.bilibili.com/22619211
+
+  ##! --- Using IconFont
+  # baidu:
+  #   icon: iconfont icon-baidu
+  #   link: https://live.bilibili.com/22619211
+
+  ##! --- Using FontAwesome
+  # book:
+  #   icon: far fa-address-book
+  #   link: https://live.bilibili.com/22619211
+
+#! ---------------------------------------------------------------
+#! Site Meta Configs
+#! @docs https://aurora.tridiamond.tech/guide/theme.html
+#! ---------------------------------------------------------------
+site_meta:
+  cdn: cn
+  favicon:
+  description: ''
+  keywords: ''
+  author: ''
+
+#! ---------------------------------------------------------------
+#! Plugins
+#! @docs https://aurora.tridiamond.tech/guide/plugins.html
+#! ---------------------------------------------------------------
+
+# For local development only!
+gitalk:
+  enable: true
+  autoExpand: true
+  clientID: ''
+  clientSecret: ''
+  repo: '' ## dev-blo-comments
+  owner: '' ## owner name
+  admin: [''] ## ['admin_name']
+  id: uid
+  language: en
+  distractionFreeMode: true
+  recentComment: true
+  proxy: ''
+
+# Valine comment plugin (recommended!)
+# see https://valine.js.org/quickstart.html
+valine:
+  enable: false
+  app_id:
+  app_key:
+  avatar: ''
+  placeholder: Leave your thoughts behind~
+  visitor: true
+  lang: en
+  avatarForce: false
+  meta: ['nick', 'mail']
+  requiredFields: ['nick', 'mail']
+  admin: '' # admin username
+  recentComment: true
+
+# Twikoo comment plugin
+# see https://twikoo.js.org/quick-start.html
+twikoo:
+  enable: false
+  recentComment: true
+  envId: xxxxxxxxxxxxxxx # 腾讯云环境填 envId；Vercel 环境填地址（https://xxx.vercel.app）
+  # region: ap-guangzhou # 环境地域，默认为 ap-shanghai，腾讯云环境填 ap-shanghai 或 ap-guangzhou；Vercel 环境不填
+  lang: 'en' # 用于手动设定评论区语言，支持的语言列表 https://github.com/imaegoo/twikoo/blob/main/src/client/utils/i18n/index.js
+
+# Waline comment plugin
+# see https://waline.js.org/guide/get-started/
+waline:
+  enable: false
+  recentComment: true
+  reaction: false
+  login: 'disable'
+  meta: ['nick', 'mail']
+  requiredMeta: ['nick', 'mail']
+  commentSorting: 'latest'
+  wordLimit: 0
+  imageUploader: false
+  pageSize: 10
+  serverURL: '' # 填写服务端地址
+
+# Enable Busuanzi statistic plugin
+# see http://ibruce.info/2015/04/04/busuanzi/
+busuanzi:
+  enable: false
+
+copy_protection:
+  enable: true
+  author:
+    cn: 作者
+    en: Author
+  link:
+    cn: 本文来自于
+    en: Article is from
+  license:
+    cn: 博客内容遵循 署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0) 协议
+    en: This content is shared under the CC BY-NC-SA 4.0 protocol (Non-Commercial)
+
+#! ---------------------------------------------------------------
+#! Enable Aurora Bot Dia
+#! @docs https://aurora.tridiamond.tech/guide/site-meta.html#custom-meta
+#! ---------------------------------------------------------------
+aurora_bot:
+  enable: false
+  locale: en
+  bot_type: dia
+  tips:
+
+#! ---------------------------------------------------------------
+#! Injections
+#! @docs https://aurora.tridiamond.tech/guide/site-meta.html#custom-meta
+#! ---------------------------------------------------------------
+injects:
+  scripts:
+  css:
+
+#! ---------------------------------------------------------------
+#! Footer links
+#! ---------------------------------------------------------------
+footer_links:
+  - title: # main title
+    links:
+      - title: # link title
+        url: # URL link
+      - title: # link title
+        url: # URL link
+      - title: Friends # link of friends mode / 友链模式
+        mode: 'links'
+
+#! ---------------------------------------------------------------
+#! Highlighter Shiki
+#! ---------------------------------------------------------------
+shiki:
+  enable: true
+  backgroundColor: "#1a1a1a"
+

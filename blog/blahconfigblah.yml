@@ -3,18 +3,18 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Tech Done Cheap
-subtitle: 'The Blog Your Momma Told You About'
-description: 'Tech, Software, Coding, Builds'
+title: Hexo
+subtitle: ''
+description: ''
 keywords:
-author: cojovi
+author: John Doe
 language: en
 timezone: ''
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://techdonecheap.com
-permalink: /post/:title.html
+url: http://example.com
+permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:
   trailing_index: true # Set to false to remove trailing 'index.html' from permalinks
@@ -44,7 +44,7 @@ post_asset_folder: false
 relative_link: false
 future: true
 highlight:
-  enable: false
+  enable: true
   line_number: true
   auto_detect: false
   tab_replace: ''
@@ -97,7 +97,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: aurora
+theme: landscape
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
