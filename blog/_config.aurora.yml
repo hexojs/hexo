@@ -9,15 +9,15 @@
 #！ @docs https://aurora.tridiamond.tech/guide/configuration.html
 #! ---------------------------------------------------------------
 site:
-  subtitle: Aurora's Blog
-  author: Aurora
-  nick: Auroral UI
-  description:
+  subtitle: Tech Done Cheap's Blog
+  author: Tech Predator
+  nick: Techie
+  description: This is the apparel your mother warned you about.
   link: '/'
   language: en
-  multi_language: true
-  logo:
-  avatar:
+  multi_language: false
+  logo: https://i.imgur.com/7wBcp0O.png
+  avatar: https://i.imgur.com/7ymX561s.png
   beian:
     number: ''
     link: ''
@@ -26,7 +26,7 @@ site:
     link: ''
   # Start date of the blog YYY-MM-DD
   # 博客开始运行日期
-  started_date:
+  started_date: 2017-10-14
   # Path unique identifier (文章 URL 唯一标识)
   # uid: use unique ID
   # slug: use generated slug base on title
@@ -40,10 +40,10 @@ site:
 authors:
   ##! example
   # TriDiamond:
-  #   name: TriDiamond
-  #   avatar: https://up.enterdesk.com/edpic_source/44/ff/3d/44ff3d6bd2819d524facfcc33205d4cd.jpg
-  #   link: https://github.com/TriDiamond
-  #   description: 'Think like an artist, code like an artisan.'
+     name: cojovi
+     avatar: https://up.enterdesk.com/edpic_source/44/ff/3d/44ff3d6bd2819d524facfcc33205d4cd.jpg
+     link: https://github.com/cojovi
+     description: 'code like your life depends on it.'
   #   socials:
   #     github: https://tridiamond.tech
 
@@ -56,6 +56,7 @@ menu:
   Tags: true
   Archives: true
   Friends: false
+  Links: true
 
 #! ---------------------------------------------------------------
 #! Theme Config
@@ -98,10 +99,10 @@ socials:
 #! ---------------------------------------------------------------
 site_meta:
   cdn: cn
-  favicon:
-  description: ''
-  keywords: ''
-  author: ''
+  favicon: https://i.imgur.com/To9I7ks.png
+  description: 'TechDoneCheap'
+  keywords: 'Tech, Electronics, DIY, coding'
+  author: 'TechPredator'
 
 #! ---------------------------------------------------------------
 #! Plugins
@@ -202,12 +203,12 @@ injects:
 #! Footer links
 #! ---------------------------------------------------------------
 footer_links:
-  - title: # main title
+  - title: Pish Posh
     links:
-      - title: # link title
-        url: # URL link
-      - title: # link title
-        url: # URL link
+      - title: wee
+        url: www.yahoo.com
+      - title: pooo
+        url: www.reddit.com
       - title: Friends # link of friends mode / 友链模式
         mode: 'links'
 
