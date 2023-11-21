@@ -4,8 +4,9 @@ Run Local Server : hexo clean & hexo g & hexo server
 Rebuild hexo static files : hexo cl & hexo g
 
 
+New Blog : hexo new My-First-Hexo-Post
 
-
+Generate : hexo generate  (This will generate the HTML files for your blog and place them in the public directory. You can then open your blog in your web browser by navigating to the public directory and opening the index.html file.)
 
 
 

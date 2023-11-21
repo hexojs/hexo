@@ -13,7 +13,6 @@ categories:
   - - DIY
 date: 2020-01-03 17:07:58
 cover: https://techdonecheap.files.wordpress.com/2023/04/8f24c-4c543-img_0055.jpeg
-feature: true
 ---
 
 # Thors Hammer

@@ -10,14 +10,14 @@
 #! ---------------------------------------------------------------
 site:
   subtitle: Tech Done Cheap's Blog
-  author: Tech Predator
-  nick: Techie
+  author: TechDoneCheap.com
+  nick: Tech Enthusiast Homebase!
   description: We Blog, We Test, Be Build!
   link: '/'
   language: en
   multi_language: false
   logo: https://i.imgur.com/7wBcp0O.png
-  avatar: https://i.imgur.com/7ymX561s.png
+  avatar: https://i.imgur.com/denosrr.png
   beian:
     number: ''
     link: ''
@@ -41,7 +41,7 @@ authors:
   ##! example
   # TriDiamond:
      name: TechPredator
-     avatar: https://i.imgur.com/6QopFKl.jpg
+     avatar: https://i.imgur.com/o6C9GyA.png
      link: https://github.com/cojovi
      description: 'code like your life depends on it.'
   #   socials:
@@ -186,10 +186,138 @@ copy_protection:
 #! @docs https://aurora.tridiamond.tech/guide/site-meta.html#custom-meta
 #! ---------------------------------------------------------------
 aurora_bot:
-  enable: false
+  enable: true
   locale: en
   bot_type: dia
   tips:
+    # ======================================================
+    # These are random messages that Dia will say every 30 seconds.
+    # ======================================================
+    messages:
+      - Hi, I am <span>Dia</span>, I am here to help you~
+      - Long time no see, time passes with the blink of the eyes...
+      - Hi～ Come play with me！
+      - '*Hammer your chest with my kitty fist*'
+      # This is a special function which will trigger the quotes API
+      # and Dia will say out the daily quote message.
+      - showQuote
+
+    # ======================================================
+    # This will trigger when user open the browser console.
+    # ======================================================
+    console: LOL, you opened the console, want to find out my little secrets?
+
+    # ======================================================
+    # This will trigger when user copy things off your blog.
+    # ======================================================
+    copy: What have you copied? Remember to add the source when using it!
+
+    # ======================================================
+    # This will trigger when user come back to the window.
+    # ======================================================
+    visibility_change: Welcome back my friend!~
+
+    # ======================================================
+    # Welcome messages, the number is the time of the day.
+    # -----------------------------------
+    # eg: 24 = 00:00 which is midnight
+    # eg: 17-19 = during 5pm to 7pm
+    # -----------------------------------
+    # During this time of the day, Dia will greet your readers
+    # with the corresponding message.
+    # ======================================================
+    welcome:
+      '24': Are you a night owl? Will you able get up tomorrow?
+      '5_7':
+        Good morning! The plan for a day lies in the morning, and a beautiful day
+        is about to begin.
+      '7_11': Good morning! How is your day doing? don't sit for too long!
+      '11_13': It's noon, Must have being working all morning, and it's lunch time!
+      '13_17': It's easy to get sleepy in the afternoon. Have a cup of coffee maybe?
+      '17_19': It's evening! The sunset outside the window is beautiful.
+      '19_21': Good evening, how are you doing today?
+      '21_23':
+        - It's getting late, rest early, good night~
+        - Take good care of your eyes!
+
+    # ======================================================
+    # This is used when your user come from a Search Engine.
+    # ======================================================
+    referrer:
+      # User came from your own site.
+      self: Welcome to <span>「[PLACEHOLDER]」</span>
+      # User came from Baidu search engine.
+      baidu:
+        Hello！Friend from Baidu search engine,<br>did you search <span>「[PLACEHOLDER]」</span>
+        to find me？
+      # User came from 360 search engine.
+      so:
+        Hello！Friend from 360 search engine,<br>did you search <span>「[PLACEHOLDER]」</span>
+        to find me？
+      # User came from Google search engine.
+      google: Hello！Friend from Google search engine,<br>enjoy your time reading <span>「[PLACEHOLDER]」</span>
+      # User came from another website.
+      site: Hello there, friend from <span>[PLACEHOLDER]</span>
+      # For any other source.
+      other: Thanks for reading <span>「[PLACEHOLDER]」</span>
+
+    # ======================================================
+    # When your `mouse hover` on to certain HTML tag, Dia will
+    # give your user a message to help them out.
+    # ------------------------------------------------------
+    # selector: tag selector (you can use any css selector for this)
+    # text: this is the message(s) that Dia will say. (If you want
+    #       Dia to say a random one from a set of messages, set it with
+    #       array, else just plain text)
+    # ======================================================
+    mouseover:
+      # Hover on Dia
+      - selector: '#Aurora-Dia'
+        text:
+          - Waaaaaaaa...What are you <span>doing</span>? O.O
+          - Please be gentle, I am very delicate! O.O
+          - '<span>Sir yes sir!</span> What can I help you with? O.O'
+      # Hover on home menu
+      - selector: "[data-menu='Home']"
+        text:
+          - 'Click to go to the <span>home page</span>. '
+          - Yes, click here to go <span>back home</span>.
+          - Go take a look at the <span>home page</span>.
+      # Hover on about menu
+      - selector: "[data-menu='About']"
+        text:
+          - You want to know more about my <span>master</span>?
+          - Here hides all the <span>secrets of my master</span>, want to take a look?
+          - Found my master's <span>secret hideout</span>!
+      # Hover on archives menu
+      - selector: "[data-menu='Archives']"
+        text:
+          - Here stores all the <span>works</span> my master had done！
+          - Wanna see my master's <span>library?</span>
+          - Yes, my masters' <span>ancient histories</span> are all here!
+      # Hover on tags menu
+      - selector: "[data-menu='Tags']"
+        text:
+          - Click here to look at <span>article tags</span>.
+          - Tags are used to better <span>categorize</span> your articles.
+      # Hover on language menu
+      - selector: "[data-dia='language']"
+        text: Master's blog supports multiple <span>languages.</span>
+      # Hover on light and dark switch
+      - selector: "[data-dia='light-switch']"
+        text:
+          You can switch between <span>light</span> and <span>dark</span> mode, click
+          the switch to see the magic!
+      # Hover on author profile
+      - selector: "[data-dia='author']"
+        text:
+          - Here is a short profile of my master.
+          - Click any of these links can teleport to my master's other worlds.
+      # Hover on jump to comment menu in article page.
+      - selector: "[data-dia='jump-to-comment']"
+        text:
+          - Do you want to check out the comments?
+          - Click here will help you jump right into the comments section.
 
 #! ---------------------------------------------------------------
 #! Injections
