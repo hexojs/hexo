@@ -11,6 +11,7 @@ categories:
   - - Video Games
   - - Wall Decor
 date: 2022-10-07 05:02:39
+cover: https://techdonecheap.files.wordpress.com/2023/04/bd4c5-img_9840.jpg
 ---
 
 Everybody remembers "Super Mario Kart" !! And ii think Everybody has played it!! Came across these files and once i saw it, i KNEW i HAD to print it!!! I hope you like it!! ;-)

@@ -9,6 +9,7 @@ id: '75'
 categories:
   - - Wall Decor
 date: 2018-04-22 07:56:51
+cover: https://techdonecheap.files.wordpress.com/2023/04/e30bd-2e711-img_8292.jpg
 ---
 
 1843 Navy Colt Revolver custom “floating mount” with glowing background.  This is one special gun!!!  

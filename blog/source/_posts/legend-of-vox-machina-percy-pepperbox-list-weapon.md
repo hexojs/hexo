@@ -16,7 +16,8 @@ categories:
   - - 3d Print
   - - Video Games
   - - Wall Decor
-date: 2022-10-17 08:11:17
+date: 2023-09-17 08:11:17
+cover: https://techdonecheap.files.wordpress.com/2023/04/25343-img_9838.png
 ---
 
 ![](https://techdonecheap.files.wordpress.com/2023/04/25343-img_9838.png?w=1024)

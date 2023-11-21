@@ -11,6 +11,7 @@ categories:
   - - Furniture
   - - Wall Decor
 date: 2023-03-10 20:43:00
+cover: https://techdonecheap.files.wordpress.com/2023/04/cleanshot-2022-12-08-at-15.56.30.png
 ---
 
 * * *

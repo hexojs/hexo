@@ -4,7 +4,16 @@ tags: []
 id: '22'
 categories:
   - - uncategorized
-date: 2023-04-24 02:19:00
+date: 2023-08-24 02:19:00
+cover: https://techdonecheap.files.wordpress.com/2023/04/kali-aircr.jpg
+author:
+  name: TechPredator
+  link: https://techdonecheap.com
+  avatar: https://i.imgur.com/o6C9GyA.png
+  description: 'Think like an artist, code like an artisan.'
+  socials:
+    github: https://github.com/techdonecheap
+feature: true
 ---
 
 * * *

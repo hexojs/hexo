@@ -10,6 +10,7 @@ id: '102'
 categories:
   - - Amazon Item Review
 date: 2021-06-10 06:08:00
+cover: https://techdonecheap.files.wordpress.com/2023/04/eeb0d-0f169-screenshot2021-07-16at5.36.31pm.png
 ---
 
 Purchased iPad keyboard and case from Amazon, like always came in with the quickness. I absolutly love this purchase. Anyone who actively dislikes tap-typing onscreen will appreciate the convenience and comfort of a keyboard case. It helps you type quickly and accurately on your lap, as you do with a laptop, and it’s especially useful if you type often. When your keyboard doubles as a cover (and the cover, once closed automatically triggers the lockscreen) , you always have it with you. If you prefer a keyboard for your iPad, consider the trade-off between a keyboard case’s extra bulk and weight against the typing experience and the extra expense. A keyboard case should not be too big or small, with keys that comfortably travel and without weird, unconventional layouts. Please note that keyboard cases are specific to iPad models and that the expense of a keyboard case may not be transferrable to a new iPad you buy in the future.

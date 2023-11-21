@@ -11,6 +11,8 @@ categories:
   - - tech
   - - Tech Stuff
 date: 2023-10-02 06:29:40
+cover: http://techdonecheap.com/blog/wp-content/uploads/2023/10/AdobeStock_570014298_Editorial_Use_Only-min-708x400-3.jpeg
+feature: true
 ---
 
 ![AdobeStock 570014298 Editorial Use Only min 708x400](http://techdonecheap.com/blog/wp-content/uploads/2023/10/AdobeStock_570014298_Editorial_Use_Only-min-708x400-3.jpeg "AdobeStock_570014298_Editorial_Use_Only-min-708x400.jpeg")

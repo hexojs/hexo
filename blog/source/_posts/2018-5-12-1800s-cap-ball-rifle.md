@@ -5,6 +5,7 @@ id: '77'
 categories:
   - - uncategorized
 date: 2018-05-12 21:11:58
+cover: https://techdonecheap.files.wordpress.com/2023/04/a839c-d417c-image.jpg
 ---
 
 Vintage rifle from 1800s. Mounted by After5DIY

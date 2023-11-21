@@ -12,6 +12,7 @@ categories:
   - - Tech Stuff
   - - Wall Decor
 date: 2022-12-11 22:33:20
+cover: https://techdonecheap.files.wordpress.com/2023/04/cdbed-screen-shot-2022-12-11-at-10.20.14-pm.png
 ---
 
 I had the idea for a latern for a while, a couple years ago (ok i might be abit of a pack rat) a buddy gave me 2 really cool looking hanging lanterns.  he was just going to throw them away so i took them and stashed them until the right time, and the right time came.  I was browing at walmart and found an light bulb that is supposed to suplicate the looks of an actual fire.  While staying within my realm (lol) seeing as it was $7, i snatched it so i could make a blog about it!

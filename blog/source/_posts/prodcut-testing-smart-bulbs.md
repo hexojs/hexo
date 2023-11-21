@@ -10,6 +10,7 @@ categories:
   - - tech
   - - Tech Stuff
 date: 2023-03-02 09:22:23
+cover: https://techdonecheap.files.wordpress.com/2023/04/screen-shot-2023-01-19-at-11.40.20-pm.png
 ---
 
 ![](https://techdonecheap.files.wordpress.com/2023/04/screen-shot-2023-01-19-at-11.40.20-pm.png?w=205)

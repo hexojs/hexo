@@ -12,6 +12,7 @@ categories:
   - - Tech Stuff
   - - Video Games
 date: 2023-06-16 18:53:58
+cover: https://techdonecheap.files.wordpress.com/2023/06/tech-pouch-black-2-1024x1024-2.jpeg
 ---
 
 ![](https://techdonecheap.files.wordpress.com/2023/04/fancy-page-divider2-1.png?w=723)

@@ -8,6 +8,7 @@ id: '396'
 categories:
   - - Tech Stuff
 date: 2022-12-20 22:13:42
+cover: https://techdonecheap.files.wordpress.com/2023/04/61bba-img_0348.jpg
 ---
 
 I was chit chatting with my brother and he was telling me a story about the Photo Booth he had rented for his daughters birthday party, how much fun they had, and how much everybody loved it.  His mind, as always, will begin thinking, could this be made lucrative?  he mentioned how much the rental was, i forget what that figure was now, but if i were to guess, probably around the $500 range for a full evening..?  but in order to purchase a machine yourself i think he said around $1,800, ive also looked up a couple myself and see the anywhere from $1,800-$3,600. 

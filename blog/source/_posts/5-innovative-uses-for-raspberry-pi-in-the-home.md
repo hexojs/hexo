@@ -15,6 +15,7 @@ categories:
   - - Home Assistant
   - - Tech Stuff
 date: 2023-05-04 08:18:57
+cover: https://techdonecheap.files.wordpress.com/2023/05/img_3473.jpg
 ---
 
 ![](https://techdonecheap.files.wordpress.com/2023/05/img_3473.jpg?w=640)

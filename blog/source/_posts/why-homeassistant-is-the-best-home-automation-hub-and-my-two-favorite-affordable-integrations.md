@@ -16,6 +16,7 @@ categories:
   - - Home Assistant
   - - Tech Stuff
 date: 2023-05-21 13:44:00
+cover: https://techdonecheap.files.wordpress.com/2023/05/newbanner.jpg
 ---
 
 ![](https://techdonecheap.files.wordpress.com/2023/04/fancy-page-divider2-1.png?w=723)

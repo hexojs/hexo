@@ -9,6 +9,7 @@ id: '70'
 categories:
   - - Furniture
 date: 2018-03-12 14:04:19
+cover: http://techdonecheap.files.wordpress.com/2018/03/ccebd-img_6487.jpg
 ---
 
 My girlfriend brings her son over often and I love that little guy.  So I decided to make him his own little bed when he’s visiting!  All made from reclaimed wood. I decided not to sand it, I wanted to keep the aesthetics of the texture of the wood, so in efforts to NOT give little man splinters, I will spray with a thin, clear, rubbery membrane that will “seal” the wood and make it smooth. But here is the project thus far!!

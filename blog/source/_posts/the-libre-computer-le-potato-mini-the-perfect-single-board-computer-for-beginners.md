@@ -13,6 +13,7 @@ categories:
   - - tech
   - - Tech Stuff
 date: 2023-10-02 08:06:08
+cover: http://techdonecheap.com/blog/wp-content/uploads/2023/10/7.jpg
 ---
 
 If you're looking for a cheap, powerful, and easy-to-use single board computer (SBC), then the Libre Computer Le Potato Mini is the perfect option for you.

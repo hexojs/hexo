@@ -9,7 +9,8 @@ categories:
   - - Amazon Item Review
   - - Home Assistant
   - - Tech Stuff
-date: 2023-01-24 14:45:00
+date: 2023-06-24 14:45:00
+cover: https://techdonecheap.files.wordpress.com/2023/04/screen-shot-2023-01-19-at-11.05.15-pm.png
 ---
 
 * * *

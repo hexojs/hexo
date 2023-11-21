@@ -12,6 +12,7 @@ categories:
   - - 3d Print
   - - DIY
 date: 2020-01-07 00:17:11
+cover: https://techdonecheap.files.wordpress.com/2023/04/10dfc-8f29d-img_3814.jpeg
 ---
 
 # This mask is inspired by “Deathstroke”, again, like most of my masks, i throw in a little twist.

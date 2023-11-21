@@ -13,6 +13,7 @@ categories:
   - - Tech Stuff
   - - Video Games
 date: 2023-09-04 11:06:52
+cover: http://techdonecheap.com/blog/wp-content/uploads/2023/09/anbernic-rg353ps-review-colours-768x432-1.jpg
 ---
 
 * * *

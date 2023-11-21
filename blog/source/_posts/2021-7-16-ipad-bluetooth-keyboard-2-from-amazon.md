@@ -9,6 +9,7 @@ id: '101'
 categories:
   - - Amazon Item Review
 date: 2021-07-14 06:09:00
+cover: https://techdonecheap.files.wordpress.com/2023/04/76b73-b29e7-img_0462.jpeg
 ---
 
 This is #2 in the saga of finding a good Bluetooth keyboard for tablet convenience! My previous blog outlined a great and inexpensive Bluetooth keyboard and case i ordered from amazon! I loved it! BUT, 2-3 months into using the item, the ENTIRE center row of keys just stopped working! No physical damage, no water damage, nothing to trigger the malfunction. I tried a few of the “typical problems” from google with keyboards like this, yet nothing fixed it! But i digress, i ordered what i feel will be my new 5 star purchase!

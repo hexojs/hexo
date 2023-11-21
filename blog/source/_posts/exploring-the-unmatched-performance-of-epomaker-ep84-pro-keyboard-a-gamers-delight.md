@@ -16,6 +16,7 @@ categories:
   - - Tech Stuff
   - - Video Games
 date: 2023-10-02 05:35:21
+cover: http://techdonecheap.com/blog/wp-content/uploads/2023/10/71k0ll-wbtl._ac_sx679_-300x300.jpg
 ---
 
 * * *

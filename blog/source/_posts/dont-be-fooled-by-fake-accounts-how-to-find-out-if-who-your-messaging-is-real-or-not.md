@@ -10,6 +10,7 @@ id: '52'
 categories:
   - - Tech Stuff
 date: 2021-11-07 19:39:14
+cover: https://techdonecheap.files.wordpress.com/2023/04/ce9e9-banner.jpg
 ---
 
 [![](https://techdonecheap.files.wordpress.com/2023/04/ce9e9-banner.jpg?w=1024)](https://techdonecheap.files.wordpress.com/2023/04/ce9e9-banner.jpg)

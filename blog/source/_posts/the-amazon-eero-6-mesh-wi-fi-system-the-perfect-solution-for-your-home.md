@@ -14,6 +14,7 @@ categories:
   - - tech
   - - Tech Stuff
 date: 2023-10-05 15:06:06
+cover: https://techdonecheap.com/blog/wp-content/uploads/2023/10/Screen-Shot-2023-10-02-at-4.45.57-PM.jpg
 ---
 
 **Welp, lets get started….**

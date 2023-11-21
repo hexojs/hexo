@@ -9,6 +9,7 @@ categories:
   - - Home Assistant
   - - Tech Stuff
 date: 2023-05-07 20:41:32
+cover: https://techdonecheap.files.wordpress.com/2023/05/smart-home-1.jpg
 ---
 
 * * *

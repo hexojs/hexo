@@ -2,6 +2,7 @@
 title: OK, so ChatGPT just debugged my code. For real
 date: 2023-10-05 01:58:55
 tags: tech
+cover: https://i.imgur.com/MtYXUQn.jpg
 ---
 Not only can ChatGPT write code, it can read code. On the one hand, that’s very helpful. On the other hand, that’s truly 
 terrifying.

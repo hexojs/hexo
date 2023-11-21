@@ -7,6 +7,7 @@ id: '689'
 categories:
   - - uncategorized
 date: 2023-09-07 09:07:00
+cover: http://techdonecheap.com/blog/wp-content/uploads/2023/09/download-4.png
 ---
 
 * * *

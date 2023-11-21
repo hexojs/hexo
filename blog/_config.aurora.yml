@@ -12,7 +12,7 @@ site:
   subtitle: Tech Done Cheap's Blog
   author: Tech Predator
   nick: Techie
-  description: This is the apparel your mother warned you about.
+  description: We Blog, We Test, Be Build!
   link: '/'
   language: en
   multi_language: false
@@ -40,8 +40,8 @@ site:
 authors:
   ##! example
   # TriDiamond:
-     name: cojovi
-     avatar: https://up.enterdesk.com/edpic_source/44/ff/3d/44ff3d6bd2819d524facfcc33205d4cd.jpg
+     name: TechPredator
+     avatar: https://i.imgur.com/6QopFKl.jpg
      link: https://github.com/cojovi
      description: 'code like your life depends on it.'
   #   socials:

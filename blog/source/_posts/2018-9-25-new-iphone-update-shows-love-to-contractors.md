@@ -14,6 +14,7 @@ id: '80'
 categories:
   - - uncategorized
 date: 2018-09-25 23:37:20
+cover: https://techdonecheap.files.wordpress.com/2023/04/0ec87-f47e3-img_2194copy.jpg
 ---
 
 ![IMG_2194 copy.jpg](https://techdonecheap.files.wordpress.com/2023/04/0ec87-f47e3-img_2194copy.jpg)![IMG_2194 copy.jpg](https://techdonecheap.files.wordpress.com/2023/04/0ec87-f47e3-img_2194copy.jpg)

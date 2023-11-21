@@ -9,6 +9,7 @@ categories:
   - - home automation
   - - Tech Stuff
 date: 2023-03-25 14:47:06
+cover: https://i.imgur.com/dTjXkv6.png
 ---
 
 * * *

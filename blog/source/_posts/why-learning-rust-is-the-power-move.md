@@ -9,6 +9,7 @@ categories:
   - - News
   - - Tech Stuff
 date: 2023-09-15 01:53:29
+cover: http://techdonecheap.com/blog/wp-content/uploads/2023/09/introduction-to-rust-programming-language_art-board-1.jpg
 ---
 
 * * *

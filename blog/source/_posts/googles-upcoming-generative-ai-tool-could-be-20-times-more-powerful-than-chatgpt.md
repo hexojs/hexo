@@ -11,6 +11,7 @@ categories:
   - - News
   - - Tech Stuff
 date: 2023-09-11 15:23:15
+cover: http://techdonecheap.com/blog/wp-content/uploads/2023/09/unnamed-47.jpeg
 ---
 
 * * *

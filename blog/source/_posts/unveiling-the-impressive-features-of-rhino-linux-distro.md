@@ -8,6 +8,7 @@ id: '646'
 categories:
   - - uncategorized
 date: 2023-08-24 19:12:59
+cover: https://techdonecheap.files.wordpress.com/2023/08/rl231-5.webp
 ---
 
 ![](https://techdonecheap.files.wordpress.com/2023/04/fancy-page-divider2.png?w=723)

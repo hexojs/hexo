@@ -1,0 +1,18 @@
+
+Run Local Server : hexo clean & hexo g & hexo server
+
+Rebuild hexo static files : hexo cl & hexo g
+
+
+
+
+
+
+
+author:
+  name: TechPredator
+  link: https://techdonecheap.com
+  avatar: https://i.imgur.com/o6C9GyA.png
+  description: 'Think like an artist, code like an artisan.'
+  socials:
+    github: https://github.com/techdonecheap

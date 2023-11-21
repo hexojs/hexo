@@ -10,6 +10,7 @@ categories:
   - - Video Games
   - - weapon
 date: 2022-05-09 14:37:24
+cover: https://techdonecheap.files.wordpress.com/2023/04/img_1101.jpg
 ---
 
 * * *
