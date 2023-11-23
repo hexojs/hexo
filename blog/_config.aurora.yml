@@ -55,7 +55,7 @@ menu:
   About: true
   Tags: true
   Archives: true
-  Friends: false
+  Friends: true
   Links: true
 
 #! ---------------------------------------------------------------
