@@ -10,9 +10,17 @@ import type Hexo from '../../hexo';
  */
 export = (ctx: Hexo) => {
   return function postLinkTag(args: string[]) {
-    const slug = args.shift();
+    let slug = args.shift();
     if (!slug) {
       throw new Error(`Post not found: "${slug}" doesn't exist for {% post_link %}`);
+    }
+
+    let hash = '';
+    const parts = slug.split('#');
+
+    if (parts.length === 2) {
+      slug = parts[0];
+      hash = parts[1];
     }
 
     let escape = args[args.length - 1];
@@ -33,7 +41,8 @@ export = (ctx: Hexo) => {
     const attrTitle = escapeHTML(post.title || post.slug);
     if (escape === 'true') title = escapeHTML(title);
 
-    const link = encodeURL(new URL(post.path, ctx.config.url).pathname);
+    const url = new URL(post.path, ctx.config.url).pathname + (hash ? `#${hash}` : '');
+    const link = encodeURL(url);
 
     return `<a href="${link}" title="${attrTitle}">${title}</a>`;
   };
