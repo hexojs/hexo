@@ -3,7 +3,7 @@ import type Hexo from '../hexo';
 export interface HighlightOptions {
   lang: string | undefined,
   caption: string | undefined,
-  lines_length: number,
+  lines_length?: number | undefined,
 
   // plugins/filter/before_post_render/backtick_code_block
   firstLineNumber?: string | number
@@ -39,13 +39,13 @@ class SyntaxHighlight {
     this.store = {};
   }
 
-  register(name: string, fn: StoreFunction) {
+  register(name: string, fn: StoreFunction): void {
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 
     this.store[name] = fn;
   }
 
-  query(name: string) {
+  query(name: string): StoreFunction {
     return name && this.store[name];
   }
 

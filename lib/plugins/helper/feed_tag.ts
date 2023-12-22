@@ -11,7 +11,7 @@ interface Options {
   type?: string;
 }
 
-function makeFeedTag(path, options: Options = {}, configFeed?, configTitle?) {
+function makeFeedTag(path: string, options: Options = {}, configFeed?: any, configTitle?: string) {
   const title = options.title || configTitle;
 
   if (path) {
@@ -46,7 +46,7 @@ function makeFeedTag(path, options: Options = {}, configFeed?, configTitle?) {
   return '';
 }
 
-function feedTagHelper(path, options = {}) {
+function feedTagHelper(path: string, options = {}) {
   const { config } = this;
   return moize.deep(makeFeedTag.bind(this))(path, options, config.feed, config.title);
 }

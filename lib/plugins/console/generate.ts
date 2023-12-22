@@ -6,21 +6,22 @@ import { cyan, magenta } from 'picocolors';
 import tildify from 'tildify';
 import { PassThrough } from 'stream';
 import { createSha1Hash } from 'hexo-util';
+import type Hexo from '../../hexo';
 
 class Generater {
-  public context: any;
+  public context: Hexo;
   public force: any;
   public bail: any;
   public concurrency: any;
   public watch: any;
   public deploy: any;
-  public generatingFiles: any;
-  public start: any;
+  public generatingFiles: Set<any>;
+  public start: [number, number];
   public args: any;
   public route: any;
   public log: any;
 
-  constructor(ctx, args) {
+  constructor(ctx: Hexo, args) {
     this.context = ctx;
     this.force = args.f || args.force;
     this.bail = args.b || args.bail;
@@ -31,7 +32,7 @@ class Generater {
     this.start = process.hrtime();
     this.args = args;
   }
-  generateFile(path) {
+  generateFile(path: string) {
     const publicDir = this.context.public_dir;
     const { generatingFiles } = this;
     const { route } = this.context;
@@ -58,7 +59,7 @@ class Generater {
       generatingFiles.delete(path);
     });
   }
-  writeFile(path, force?) {
+  writeFile(path: string, force?: boolean): Promise<any> {
     const { route, log } = this.context;
     const publicDir = this.context.public_dir;
     const Cache = this.context.model('Cache');
@@ -99,7 +100,7 @@ class Generater {
       });
     });
   }
-  deleteFile(path) {
+  deleteFile(path: string): Promise<void> {
     const { log } = this.context;
     const publicDir = this.context.public_dir;
     const dest = join(publicDir, path);
@@ -126,7 +127,7 @@ class Generater {
 
     return dataStream.pipe(new PassThrough());
   }
-  firstGenerate() {
+  firstGenerate(): Promise<void> {
     const { concurrency } = this;
     const { route, log } = this.context;
     const publicDir = this.context.public_dir;
@@ -168,10 +169,10 @@ class Generater {
       const interval = prettyHrtime(process.hrtime(this.start));
       const count = result.filter(Boolean).length;
 
-      log.info('%d files generated in %s', count, cyan(interval));
+      log.info('%d files generated in %s', count.toString(), cyan(interval));
     });
   }
-  execWatch() {
+  execWatch(): Promise<void> {
     const { route, log } = this.context;
     return this.context.watch().then(() => this.firstGenerate()).then(() => {
       log.info('Hexo is watching for file changes. Press Ctrl+C to exit.');

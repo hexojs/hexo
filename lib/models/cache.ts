@@ -1,7 +1,8 @@
 import warehouse from 'warehouse';
 import Promise from 'bluebird';
+import type Hexo from '../hexo';
 
-export = ctx => {
+export = (ctx: Hexo) => {
   const Cache = new warehouse.Schema({
     _id: {type: String, required: true},
     hash: {type: String, default: ''},

@@ -1,6 +1,6 @@
 {
   "name": "hexo",
-  "version": "7.0.0-rc2",
+  "version": "7.0.0",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
   "main": "dist/hexo",
   "bin": {
@@ -44,7 +44,7 @@
     "archy": "^1.0.0",
     "bluebird": "^3.7.2",
     "hexo-cli": "^4.3.0",
-    "hexo-front-matter": "4.0.0",
+    "hexo-front-matter": "^4.2.1",
     "hexo-fs": "^4.1.1",
     "hexo-i18n": "^2.0.0",
     "hexo-log": "^4.0.1",
@@ -66,26 +66,24 @@
     "warehouse": "^5.0.0"
   },
   "devDependencies": {
-    "0x": "^5.1.2",
-    "@easyops/git-exec-and-restage": "^1.0.4",
     "@types/bluebird": "^3.5.37",
     "@types/node": "^18.11.8",
     "@types/nunjucks": "^3.2.2",
-    "@typescript-eslint/eslint-plugin": "^5.41.0",
-    "@typescript-eslint/parser": "^5.41.0",
-    "c8": "^7.12.0",
+    "@types/text-table": "^0.2.4",
+    "0x": "^5.1.2",
+    "c8": "^8.0.0",
     "chai": "^4.3.6",
     "cheerio": "0.22.0",
     "decache": "^4.6.1",
-    "eslint": "^8.8.0",
+    "eslint": "^8.48.0",
     "eslint-config-hexo": "^5.0.0",
     "hexo-renderer-marked": "^6.0.0",
     "husky": "^8.0.1",
-    "lint-staged": "^13.0.3",
+    "lint-staged": "^14.0.1",
     "mocha": "^10.0.0",
     "sinon": "^15.0.0",
     "ts-node": "^10.9.1",
-    "typescript": "^4.8.4"
+    "typescript": "^5.3.2"
   },
   "engines": {
     "node": ">=14"

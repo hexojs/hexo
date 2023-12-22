@@ -3,8 +3,9 @@ import tildify from 'tildify';
 import prettyHrtime from 'pretty-hrtime';
 import { writeFile } from 'hexo-fs';
 import { cyan, magenta } from 'picocolors';
+import type Hexo from '../../hexo';
 
-function renderConsole(args) {
+function renderConsole(this: Hexo, args) {
   // Display help message if user didn't input any arguments
   if (!args._.length) {
     return this.call('help', {_: 'render'});
