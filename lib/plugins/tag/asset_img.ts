@@ -1,5 +1,6 @@
 import img from './img';
 import { encodeURL } from 'hexo-util';
+import type Hexo from '../../hexo';
 
 /**
  * Asset image tag
@@ -7,10 +8,10 @@ import { encodeURL } from 'hexo-util';
  * Syntax:
  *   {% asset_img [class names] slug [width] [height] [title text [alt text]]%}
  */
-export = ctx => {
+export = (ctx: Hexo) => {
   const PostAsset = ctx.model('PostAsset');
 
-  return function assetImgTag(args) {
+  return function assetImgTag(args: string[]) {
     const len = args.length;
 
     // Find image URL

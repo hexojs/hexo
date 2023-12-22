@@ -3,12 +3,12 @@ name: Benchmark
 on:
   push:
     paths:
-      - 'lib/**'
+      - "lib/**"
   pull_request:
     branches:
       - master
     paths-ignore:
-      - 'test/scripts/**'
+      - "test/scripts/**"
 
 jobs:
   benchmark:
@@ -16,12 +16,12 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: ['14', '16', '18']
+        node-version: ["14", "16", "18"]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
@@ -30,15 +30,17 @@ jobs:
         run: node test/benchmark.js --benchmark
   profiling:
     runs-on: ${{ matrix.os }}
+    permissions:
+      pull-requests: write # for marocchino/sticky-pull-request-comment to create or update PR comment
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: ['14', '16', '18']
+        node-version: ["14", "16", "18"]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies

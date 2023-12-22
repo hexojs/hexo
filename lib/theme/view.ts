@@ -1,8 +1,10 @@
 import { dirname, extname, join } from 'path';
 import { parse as yfm } from 'hexo-front-matter';
 import Promise from 'bluebird';
+import type Theme from '.';
+import type Render from '../hexo/render';
 
-const assignIn = (target, ...sources) => {
+const assignIn = (target: any, ...sources: any[]) => {
   const length = sources.length;
 
   if (length < 1 || target == null) return target;
@@ -21,18 +23,16 @@ class Options {
 }
 
 class View {
-  public path: any;
+  public path: string;
   public source: any;
-  public _theme: any;
+  public _theme: Theme;
   public data: any;
   public _compiled: any;
   public _compiledSync: any;
   public _helper: any;
-  public _render: any;
-  public layout: any;
-  public _content: any;
+  public _render: Render;
 
-  constructor(path, data) {
+  constructor(path: string, data) {
     this.path = path;
     this.source = join(this._theme.base, 'layout', path);
     this.data = typeof data === 'string' ? yfm(data) : data;
@@ -106,7 +106,7 @@ class View {
     return locals;
   }
 
-  _resolveLayout(name) {
+  _resolveLayout(name: string) {
     // Relative path
     const layoutPath = join(dirname(this.path), name);
     let layoutView = this._theme.getView(layoutPath);
@@ -128,7 +128,7 @@ class View {
       text: this.data._content
     };
 
-    function buildFilterArguments(result) {
+    function buildFilterArguments(result: any): [string, any, any] {
       const output = render.getOutput(ext) || ext;
       return [
         `after_render:${output}`,

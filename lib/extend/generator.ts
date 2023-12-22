@@ -31,17 +31,17 @@ class Generator {
     this.store = {};
   }
 
-  list() {
+  list(): Store {
     return this.store;
   }
 
-  get(name: string) {
+  get(name: string): StoreFunction {
     return this.store[name];
   }
 
   register(fn: GeneratorFunction): void
   register(name: string, fn: GeneratorFunction): void
-  register(name: string | GeneratorFunction, fn?: GeneratorFunction) {
+  register(name: string | GeneratorFunction, fn?: GeneratorFunction): void {
     if (!fn) {
       if (typeof name === 'function') { // fn
         fn = name;

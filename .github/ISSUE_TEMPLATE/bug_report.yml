@@ -1,0 +1,148 @@
+name: Bug report
+description: Something isn't working as expected.
+# title: ""
+# labels: []
+# assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Tips
+
+        - 给简体中文用户的提示:
+
+          - 在提交 issue 时请按照下面的模板提供相关信息，这将有助于我们发现问题。
+          - 请尽量使用英语描述你遇到的问题，这可以让更多的人帮助到你。
+
+        - A good bug report should have your configuration and build environment information, which are essential for us to investigate the problem. We've provided the following steps on how to attach the necessary information.
+
+        - If you find that markdown files are not rendered as expected, please go to https://marked.js.org/demo/ to see if it can be reproduced there. If it can be reproduced, please file a bug to https://github.com/markedjs/marked.
+
+        - If you want help on your bug, please also send us the git repository (GitHub, GitLab, Bitbucket, etc.) where your hexo code is stored. It would greatly help. If you prefer not to have your hexo code out in public, please upload to a private GitHub repository and grant read-only access to `hexojs/core`.
+
+        - Please take extra precaution not to attach any secret or personal information. (likes personal privacy, password, GitHub Personal Access Token, etc.)
+
+        ------
+
+  - type: checkboxes
+    validations:
+      required: true
+    attributes:
+      label: Check List
+      description: Please check followings before submitting a new issue.
+      options:
+        - label: I have already read [Docs page](https://hexo.io/docs/) & [Troubleshooting page](https://hexo.io/docs/troubleshooting).
+        - label: I have already searched existing issues and they are not help to me.
+        - label: I examined error or warning messages and it's difficult to solve.
+        - label: I am using the [latest](https://github.com/hexojs/hexo/releases) version of Hexo. (run `hexo version` to check)
+        - label: My Node.js is matched [the required version](https://hexo.io/docs/#Required-Node-js-version).
+
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Expected behavior
+      # description:
+      placeholder: Descripe what you expected to happen.
+      # value:
+      # render:
+
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: Actual behavior
+      # description:
+      placeholder: Descripe what actually happen.
+      # value:
+      # render:
+
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: How to reproduce?
+      description: How do you trigger this bug? Please walk us through it step by step.
+      placeholder: |
+        1. Step1
+        2. Step2
+        3. etc.
+        ...
+      # value:
+      # render:
+
+  - type: input
+    validations:
+      required: true
+    attributes:
+      label: Is the problem still there under `Safe mode`?
+      description: |
+        https://hexo.io/docs/commands#Safe-mode
+
+        "Safe mode" will disable all the plugins and scripts.
+        If your problem disappear under "Safe mode" means the problem is probably at your newly installed plugins, not at hexo.
+      # placeholder:
+      # value: |
+      # render:
+
+  - type: markdown
+    attributes:
+      value: |
+        ------
+
+        ## Environment & Settings
+
+  - type: textarea
+    validations:
+      required: false
+    attributes:
+      label: Your Node.js & npm version
+      description: |
+        Please run `node -v && npm -v` 
+        and paste the output here.
+      placeholder: node -v && npm -v
+      # value: |
+      render: text
+
+  - type: textarea
+    validations:
+      required: false
+    attributes:
+      label: Your Hexo and Plugin version
+      description: |
+        Please run `npm ls --depth 0` 
+        and paste the output here.
+      placeholder: npm ls --depth 0
+      # value:
+      render: text
+
+  - type: textarea
+    validations:
+      required: false
+    attributes:
+      label: Your `package.json`
+      description: Please paste the content of `package.json` here.
+      placeholder: package.json
+      # value:
+      render: json
+
+  - type: textarea
+    validations:
+      required: false
+    attributes:
+      label: Your site's `_config.yml` (Optional)
+      description: Please paste the content of your `_config.yml` here.
+      placeholder: _config.yml
+      # value: |
+      render: yaml
+
+  - type: textarea
+    validations:
+      required: false
+    attributes:
+      label: Others
+      description: If you have other information. Please write here.
+      # placeholder:
+      # value:
+      # render:

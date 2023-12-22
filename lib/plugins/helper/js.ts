@@ -2,7 +2,7 @@ import { htmlTag, url_for } from 'hexo-util';
 import moize from 'moize';
 
 let relative_link = true;
-function jsHelper(...args) {
+function jsHelper(...args: any[]) {
   let result = '\n';
 
   relative_link = this.config.relative_link;

@@ -1,6 +1,7 @@
-import nunjucks from 'nunjucks';
+import nunjucks, { Environment } from 'nunjucks';
 import { readFileSync } from 'hexo-fs';
 import { dirname } from 'path';
+import type { StoreFunctionData } from '../../extend/renderer';
 
 function toArray(value) {
   if (Array.isArray(value)) {
@@ -36,13 +37,13 @@ const nunjucksCfg = {
   lstripBlocks: false
 };
 
-const nunjucksAddFilter = env => {
+const nunjucksAddFilter = (env: Environment) => {
   env.addFilter('toarray', toArray);
   env.addFilter('safedump', safeJsonStringify);
 };
 
-function njkCompile(data) {
-  let env;
+function njkCompile(data: StoreFunctionData) {
+  let env: Environment;
   if (data.path) {
     env = nunjucks.configure(dirname(data.path), nunjucksCfg);
   } else {
@@ -52,14 +53,14 @@ function njkCompile(data) {
 
   const text = 'text' in data ? data.text : readFileSync(data.path);
 
-  return nunjucks.compile(text, env, data.path);
+  return nunjucks.compile(text as string, env, data.path);
 }
 
-function njkRenderer(data, locals) {
+function njkRenderer(data: StoreFunctionData, locals: object) {
   return njkCompile(data).render(locals);
 }
 
-njkRenderer.compile = data => {
+njkRenderer.compile = (data: StoreFunctionData) => {
   // Need a closure to keep the compiled template.
   return locals => njkCompile(data).render(locals);
 };

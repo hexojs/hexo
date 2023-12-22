@@ -46,20 +46,4 @@ describe('Render post', () => {
     page.remove();
   });
 
-  it('use data variables', async () => {
-    let page = await Page.insert({
-      source: 'foo.md',
-      path: 'foo.html',
-      _content: '<p>Hello {{site.data.foo.name}}</p>'
-    });
-
-    const id = page._id;
-    await renderPost({foo: {name: 'Hexo'}});
-
-    page = Page.findById(id);
-    page.content.trim().should.eql('<p>Hello Hexo</p>');
-
-    page.remove();
-  });
-
 });

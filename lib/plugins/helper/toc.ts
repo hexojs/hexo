@@ -13,7 +13,7 @@ interface Options {
   list_number?: boolean;
 }
 
-function tocHelper(str, options: Options = {}) {
+function tocHelper(str: string, options: Options = {}) {
   options = Object.assign({
     min_depth: 1,
     max_depth: 6,

@@ -33,7 +33,7 @@ function listCategoriesHelper(categories, options) {
   const hierarchicalList = (level: number, parent?: any) => {
     let result = '';
 
-    prepareQuery(parent).forEach((cat, i) => {
+    prepareQuery(parent).forEach(cat => {
       let child;
       if (!depth || level + 1 < depth) {
         child = hierarchicalList(level + 1, cat._id);

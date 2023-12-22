@@ -4,13 +4,14 @@ import Promise from 'bluebird';
 import { extname } from 'path';
 import { magenta } from 'picocolors';
 import type warehouse from 'warehouse';
+import type Hexo from '../../hexo';
 
 interface Data {
   modified: boolean;
   data?: () => any;
 }
 
-const process = (name, ctx) => {
+const process = (name: string, ctx: Hexo) => {
   // @ts-expect-error
   return Promise.filter(ctx.model(name).toArray(), (asset: warehouse['Schema']) => exists(asset.source).tap(exist => {
     // @ts-expect-error
@@ -46,7 +47,7 @@ const process = (name, ctx) => {
   });
 };
 
-function assetGenerator() {
+function assetGenerator(this: Hexo): Promise<any[]> {
   return Promise.all([
     process('Asset', this),
     process('PostAsset', this)
