@@ -1,4 +1,5 @@
 import { encodeURL } from 'hexo-util';
+import type Hexo from '../../hexo';
 
 /**
  * Asset path tag
@@ -6,10 +7,10 @@ import { encodeURL } from 'hexo-util';
  * Syntax:
  *   {% asset_path slug %}
  */
-export = ctx => {
+export = (ctx: Hexo) => {
   const PostAsset = ctx.model('PostAsset');
 
-  return function assetPathTag(args) {
+  return function assetPathTag(args: string[]) {
     const slug = args.shift();
     if (!slug) return;
 

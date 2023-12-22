@@ -3,8 +3,9 @@ import tildify from 'tildify';
 import { exists, readdir } from 'hexo-fs';
 import { magenta } from 'picocolors';
 import { deepMerge } from 'hexo-util';
+import type Hexo from './index';
 
-export = ctx => {
+export = (ctx: Hexo) => {
   if (!ctx.env.init) return;
   if (!ctx.config.theme) return;
 
@@ -30,7 +31,7 @@ export = ctx => {
   });
 };
 
-function findConfigPath(path) {
+function findConfigPath(path: string) {
   const { dir, name } = parse(path);
 
   return readdir(dir).then(files => {

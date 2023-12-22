@@ -1,7 +1,7 @@
 'use strict';
 
 describe('Renderer', () => {
-  const Renderer = require('../../../dist/extend/renderer');
+  const Renderer = require('../../../dist/extend/renderer').default;
 
   it('register()', () => {
     const r = new Renderer();

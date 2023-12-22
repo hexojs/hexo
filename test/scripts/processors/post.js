@@ -778,33 +778,7 @@ describe('post', () => {
     ]);
   });
 
-  it('post - link without title', async () => {
-    const body = [
-      'link: https://hexo.io/',
-      '---'
-    ].join('\n');
-
-    const file = newFile({
-      path: 'foo.html',
-      published: true,
-      type: 'create',
-      renderable: true
-    });
-
-    await writeFile(file.source, body);
-    await process(file);
-    const post = Post.findOne({ source: file.path });
-
-    post.link.should.eql('https://hexo.io/');
-    post.title.should.eql('hexo.io');
-
-    return Promise.all([
-      post.remove(),
-      unlink(file.source)
-    ]);
-  });
-
-  it('post - link without title and link', async () => {
+  it('post - without title', async () => {
     const body = '';
 
     const file = newFile({
@@ -1280,6 +1254,78 @@ describe('post', () => {
     return Promise.all([
       post.remove(),
       unlink(file.source)
+    ]);
+  });
+
+  it('asset - post - common render', async () => {
+    hexo.config.post_asset_folder = true;
+
+    const file = newFile({
+      path: 'foo.md',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+
+    const assetFile = newFile({
+      path: 'foo/test.yml',
+      published: true,
+      type: 'create'
+    });
+
+    await Promise.all([
+      writeFile(file.source, 'test'),
+      writeFile(assetFile.source, 'test')
+    ]);
+    await process(file);
+    const id = 'source/' + assetFile.path;
+    const post = Post.findOne({ source: file.path });
+    PostAsset.findById(id).renderable.should.be.true;
+
+    hexo.config.post_asset_folder = false;
+
+    return Promise.all([
+      unlink(file.source),
+      unlink(assetFile.source),
+      post.remove(),
+      PostAsset.removeById(id)
+    ]);
+  });
+
+  it('asset - post - skip render', async () => {
+    hexo.config.post_asset_folder = true;
+    hexo.config.skip_render = '**.yml';
+
+    const file = newFile({
+      path: 'foo.md',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+
+    const assetFile = newFile({
+      path: 'foo/test.yml',
+      published: true,
+      type: 'create'
+    });
+
+    await Promise.all([
+      writeFile(file.source, 'test'),
+      writeFile(assetFile.source, 'test')
+    ]);
+    await process(file);
+    const id = 'source/' + assetFile.path;
+    const post = Post.findOne({ source: file.path });
+    PostAsset.findById(id).renderable.should.be.false;
+
+    hexo.config.post_asset_folder = false;
+    hexo.config.skip_render = '';
+
+    return Promise.all([
+      unlink(file.source),
+      unlink(assetFile.source),
+      post.remove(),
+      PostAsset.removeById(id)
     ]);
   });
 });

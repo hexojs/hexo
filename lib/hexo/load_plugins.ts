@@ -2,14 +2,15 @@ import { join } from 'path';
 import { exists, readFile, listDir } from 'hexo-fs';
 import Promise from 'bluebird';
 import { magenta } from 'picocolors';
+import type Hexo from './index';
 
-export = ctx => {
+export = (ctx: Hexo) => {
   if (!ctx.env.init || ctx.env.safe) return;
 
   return loadModules(ctx).then(() => loadScripts(ctx));
 };
 
-function loadModuleList(ctx, basedir) {
+function loadModuleList(ctx: Hexo, basedir: string) {
   const packagePath = join(basedir, 'package.json');
 
   // Make sure package.json exists
@@ -42,14 +43,14 @@ function loadModuleList(ctx, basedir) {
   });
 }
 
-function loadModules(ctx) {
+function loadModules(ctx: Hexo) {
   return Promise.map([ctx.base_dir, ctx.theme_dir], basedir => loadModuleList(ctx, basedir))
     .then(([hexoModuleList, themeModuleList]) => {
       return Object.entries(Object.assign(themeModuleList, hexoModuleList));
     })
     .map(([name, path]) => {
       // Load plugins
-      return ctx.loadPlugin(path).then(() => {
+      return ctx.loadPlugin(path as string).then(() => {
         ctx.log.debug('Plugin loaded: %s', magenta(name));
       }).catch(err => {
         ctx.log.error({err}, 'Plugin load failed: %s', magenta(name));
@@ -57,7 +58,7 @@ function loadModules(ctx) {
     });
 }
 
-function loadScripts(ctx) {
+function loadScripts(ctx: Hexo) {
   const baseDirLength = ctx.base_dir.length;
 
   return Promise.filter([
@@ -76,6 +77,6 @@ function loadScripts(ctx) {
   }));
 }
 
-function displayPath(path, baseDirLength) {
+function displayPath(path: string, baseDirLength: number) {
   return magenta(path.substring(baseDirLength));
 }

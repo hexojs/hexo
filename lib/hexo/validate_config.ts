@@ -1,4 +1,6 @@
-export = ctx => {
+import type Hexo from './index';
+
+export = (ctx: Hexo) => {
   const { config, log } = ctx;
 
   log.info('Validating config');

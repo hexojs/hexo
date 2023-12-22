@@ -1,7 +1,8 @@
 import { join } from 'path';
 import { writeFile, exists, readFile } from 'hexo-fs';
+import type Hexo from './index';
 
-export = ctx => {
+export = (ctx: Hexo) => {
   const pkgPath = join(ctx.base_dir, 'package.json');
 
   return readPkg(pkgPath).then(pkg => {
@@ -18,7 +19,7 @@ export = ctx => {
   });
 };
 
-function readPkg(path) {
+function readPkg(path: string) {
   return exists(path).then(exist => {
     if (!exist) return;
 
