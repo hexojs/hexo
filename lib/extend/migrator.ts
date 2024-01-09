@@ -1,6 +1,8 @@
 import Promise from 'bluebird';
+import type { NodeJSLikeCallback } from '../types';
+
 interface StoreFunction {
-  (args: any): any
+  (args: any, callback?: NodeJSLikeCallback<any>): any
 }
 
 interface Store {

@@ -22,7 +22,7 @@ export interface StoreSyncFunction {
   (
     data: StoreFunctionData,
     options: object,
-    // callback: NodeJSLikeCallback<string>
+    // callback?: NodeJSLikeCallback<string>
   ): any;
   output?: string;
   compile?: (local: object) => any;
@@ -31,6 +31,7 @@ export interface StoreFunction {
   (
     data: StoreFunctionData,
     options: object,
+    callback?: NodeJSLikeCallback<any>
   ): Promise<any>;
   (
     data: StoreFunctionData,
@@ -58,7 +59,7 @@ class Renderer {
     this.storeSync = {};
   }
 
-  list(sync: boolean): Store | SyncStore {
+  list(sync?: boolean): Store | SyncStore {
     return sync ? this.storeSync : this.store;
   }
 

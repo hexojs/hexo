@@ -1,5 +1,6 @@
 import Promise from 'bluebird';
 import abbrev from 'abbrev';
+import type { NodeJSLikeCallback } from '../types';
 
 type Option = Partial<{
   usage: string;
@@ -19,7 +20,7 @@ interface Args {
   _: string[];
   [key: string]: string | boolean | string[];
 }
-type AnyFn = (args: Args) => any;
+type AnyFn = (args: Args, callback?: NodeJSLikeCallback<any>) => any;
 interface StoreFunction extends AnyFn {
   desc?: string;
   options?: Option;
