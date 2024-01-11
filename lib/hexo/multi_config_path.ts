@@ -62,7 +62,7 @@ export = (ctx: Hexo) => function multiConfigPath(base: string, configPaths: stri
     return defaultPath;
   }
 
-  log.i('Config based on', count, 'files');
+  log.i('Config based on', count.toString(), 'files');
 
   const multiconfigRoot = outputDir || base;
   const outputPath = join(multiconfigRoot, '_multiconfig.yml');

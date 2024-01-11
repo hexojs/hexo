@@ -181,7 +181,7 @@ class Generater {
       const interval = prettyHrtime(process.hrtime(this.start));
       const count = result.filter(Boolean).length;
 
-      log.info('%d files generated in %s', count, cyan(interval));
+      log.info('%d files generated in %s', count.toString(), cyan(interval));
     });
   }
   execWatch(): Promise<void> {
