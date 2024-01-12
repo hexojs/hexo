@@ -59,7 +59,7 @@ class Renderer {
     this.storeSync = {};
   }
 
-  list(sync?: boolean): Store | SyncStore {
+  list(sync = false): Store | SyncStore {
     return sync ? this.storeSync : this.store;
   }
 
