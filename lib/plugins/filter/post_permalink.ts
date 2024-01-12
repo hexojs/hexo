@@ -5,9 +5,14 @@ let permalink;
 
 function postPermalinkFilter(this: Hexo, data) {
   const { config } = this;
-  const { id, _id, slug, title, date, __permalink } = data;
+  const { id, _id, slug, title, date } = data;
+  let { __permalink } = data;
+  const { post_asset_folder } = config;
 
   if (__permalink) {
+    if (post_asset_folder && !__permalink.endsWith('/') && !__permalink.endsWith('.html')) {
+      __permalink += '/';
+    }
     if (!__permalink.startsWith('/')) return `/${__permalink}`;
     return __permalink;
   }
@@ -62,7 +67,11 @@ function postPermalinkFilter(this: Hexo, data) {
     }
   }
 
-  return permalink.stringify(meta);
+  const permalink_stringify = permalink.stringify(meta);
+  if (post_asset_folder && !permalink_stringify.endsWith('/') && !permalink_stringify.endsWith('.html')) {
+    return `${permalink_stringify}/`;
+  }
+  return permalink_stringify;
 }
 
 export = postPermalinkFilter;
