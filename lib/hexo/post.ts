@@ -84,13 +84,14 @@ class PostRenderEscape {
 
       if (state === STATE_PLAINTEXT) { // From plain text to swig
         if (char === '{') {
-          if (next_char === '{') {
+          // check if it is a complete tag {{ }}
+          if (next_char === '{' && /\{\{.+?\}\}/.test(str)) {
             state = STATE_SWIG_VAR;
             idx++;
-          } else if (next_char === '#') {
+          } else if (next_char === '#' && /\{#.+?#\}/.test(str)) {
             state = STATE_SWIG_COMMENT;
             idx++;
-          } else if (next_char === '%') {
+          } else if (next_char === '%' && /\{%.+?%\}/.test(str)) {
             state = STATE_SWIG_TAG;
             idx++;
             swig_tag_name = '';
