@@ -69,6 +69,9 @@ class PostRenderEscape {
    * @returns string
    */
   escapeAllSwigTags(str: string) {
+    if (!/(\{\{.+?\}\})|(\{#.+?#\})|(\{%.+?%\})/.test(str)) {
+      return str;
+    }
     let state = STATE_PLAINTEXT;
     let buffer = '';
     let output = '';
@@ -86,6 +89,7 @@ class PostRenderEscape {
 
       if (state === STATE_PLAINTEXT) { // From plain text to swig
         if (char === '{') {
+          // check if it is a complete tag {{ }}
           if (next_char === '{') {
             state = STATE_SWIG_VAR;
             idx++;
