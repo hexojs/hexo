@@ -8,20 +8,32 @@ import { PassThrough } from 'stream';
 import { createSha1Hash } from 'hexo-util';
 import type Hexo from '../../hexo';
 
+interface GenerateArgs {
+  f?: boolean
+  force?: boolean
+  b?: boolean
+  bail?: boolean
+  c?: string
+  concurrency?: string
+  w?: boolean
+  watch?: boolean
+  d?: boolean
+  deploy?: boolean
+  [key: string]: any
+}
+
 class Generater {
   public context: Hexo;
-  public force: any;
-  public bail: any;
-  public concurrency: any;
-  public watch: any;
-  public deploy: any;
+  public force: boolean;
+  public bail: boolean;
+  public concurrency: string;
+  public watch: boolean;
+  public deploy: boolean;
   public generatingFiles: Set<any>;
   public start: [number, number];
-  public args: any;
-  public route: any;
-  public log: any;
+  public args: GenerateArgs;
 
-  constructor(ctx: Hexo, args) {
+  constructor(ctx: Hexo, args: GenerateArgs) {
     this.context = ctx;
     this.force = args.f || args.force;
     this.bail = args.b || args.bail;
@@ -193,7 +205,7 @@ class Generater {
   }
 }
 
-function generateConsole(args = {}) {
+function generateConsole(this: Hexo, args: GenerateArgs = {}) {
   const generator = new Generater(this, args);
 
   if (generator.watch) {

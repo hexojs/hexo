@@ -1,8 +1,10 @@
-function postGenerator(locals) {
+import type { PostGenerator, PostSchema, SiteLocals } from '../../types';
+
+function postGenerator(locals: SiteLocals): PostGenerator[] {
   const posts = locals.posts.sort('-date').toArray();
   const { length } = posts;
 
-  return posts.map((post, i) => {
+  return posts.map((post: PostSchema, i: number) => {
     const { path, layout } = post;
 
     if (!layout || layout === 'false') {

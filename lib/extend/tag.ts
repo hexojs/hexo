@@ -2,12 +2,14 @@ import { stripIndent } from 'hexo-util';
 import { cyan, magenta, red, bold } from 'picocolors';
 import { Environment } from 'nunjucks';
 import Promise from 'bluebird';
+import type { NodeJSLikeCallback } from '../types';
+
 const rSwigRawFullBlock = /{% *raw *%}/;
 const rCodeTag = /<code[^<>]*>[\s\S]+?<\/code>/g;
 const escapeSwigTag = (str: string) => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
 interface TagFunction {
-  (args: any[], content: string): string;
+  (args: any[], content: string, callback?: NodeJSLikeCallback<any>): string | PromiseLike<string>;
 }
 interface AsyncTagFunction {
   (args: any[], content: string): Promise<string>;
@@ -251,14 +253,17 @@ class Tag {
     if (env.hasExtension(name)) env.removeExtension(name);
   }
 
-  render(str: string, options: { source?: string } = {}, callback?: NodeJSLikeCallback<any>): Promise<any> {
+  render(str: string): Promise<any>;
+  render(str: string, callback: NodeJSLikeCallback<any>): Promise<any>;
+  render(str: string, options: { source?: string, [key: string]: any }, callback?: NodeJSLikeCallback<any>): Promise<any>;
+  render(str: string, options: { source?: string, [key: string]: any } | NodeJSLikeCallback<any> = {}, callback?: NodeJSLikeCallback<any>): Promise<any> {
     if (!callback && typeof options === 'function') {
       callback = options;
       options = {};
     }
 
     // Get path of post from source
-    const { source = '' } = options;
+    const { source = '' } = options as { source?: string };
 
     return Promise.fromCallback(cb => {
       this.env.renderString(

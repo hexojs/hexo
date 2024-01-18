@@ -2,7 +2,14 @@ import { exists } from 'hexo-fs';
 import { underline, magenta } from 'picocolors';
 import type Hexo from '../../hexo';
 
-function deployConsole(this: Hexo, args) {
+interface DeployArgs {
+  _?: string[]
+  g?: boolean
+  generate?: boolean
+  [key: string]: any
+}
+
+function deployConsole(this: Hexo, args: DeployArgs) {
   let config = this.config.deploy;
   const deployers = this.extend.deployer.list();
 
@@ -17,10 +24,6 @@ function deployConsole(this: Hexo, args) {
     console.log(help);
     return;
   }
-
-  const generateArgs = {...args};
-  generateArgs.d = false;
-  generateArgs.deploy = false;
 
   let promise;
 

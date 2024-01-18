@@ -1,4 +1,4 @@
-function isCurrentHelper(path = '/', strict) {
+function isCurrentHelper(path = '/', strict: boolean) {
   const currentPath = this.path.replace(/^[^/].*/, '/$&');
 
   if (strict) {

@@ -19,12 +19,12 @@ class File {
     this.type = type;
   }
 
-  read(options?: ReadFileOptions): Promise<string | Buffer> {
-    return readFile(this.source, options);
+  read(options?: ReadFileOptions): Promise<string> {
+    return readFile(this.source, options) as Promise<string>;
   }
 
-  readSync(options?: ReadFileOptions): string | Buffer {
-    return readFileSync(this.source, options);
+  readSync(options?: ReadFileOptions): string {
+    return readFileSync(this.source, options) as string;
   }
 
   stat(): Promise<fs.Stats> {

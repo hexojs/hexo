@@ -1,10 +1,11 @@
 import type Hexo from '../../../hexo';
+import type { RenderData } from '../../../types';
 
 const rBacktick = /^((?:[^\S\r\n]*>){0,3}[^\S\r\n]*)(`{3,}|~{3,})[^\S\r\n]*((?:.*?[^`\s])?)[^\S\r\n]*\n((?:[\s\S]*?\n)?)(?:(?:[^\S\r\n]*>){0,3}[^\S\r\n]*)\2[^\S\r\n]?(\n+|$)/gm;
 const rAllOptions = /([^\s]+)\s+(.+?)\s+(https?:\/\/\S+|\/\S+)\s*(.+)?/;
 const rLangCaption = /([^\s]+)\s*(.+)?/;
 
-const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
+const escapeSwigTag = (str: string) => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
 interface Options {
   lang: string,
@@ -13,8 +14,8 @@ interface Options {
   firstLineNumber?: string | number
 }
 
-export = (ctx: Hexo) => {
-  return function backtickCodeBlock(data): void {
+export = (ctx: Hexo): (data: RenderData) => void => {
+  return function backtickCodeBlock(data: RenderData): void {
     const dataContent = data.content;
 
     if ((!dataContent.includes('```') && !dataContent.includes('~~~')) || !ctx.extend.highlight.query(ctx.config.syntax_highlighter)) return;
@@ -27,7 +28,7 @@ export = (ctx: Hexo) => {
 
       // Extract language and caption of code blocks
       const args = _args.split('=').shift();
-      let lang, caption;
+      let lang: string, caption: string;
 
       if (args) {
         const match = rAllOptions.exec(args) || rLangCaption.exec(args);

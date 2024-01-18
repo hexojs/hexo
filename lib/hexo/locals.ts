@@ -20,7 +20,7 @@ class Locals {
     });
   }
 
-  set(name: string, value: any) {
+  set(name: string, value: any): this {
     if (typeof name !== 'string') throw new TypeError('name must be a string!');
     if (value == null) throw new TypeError('value is required!');
 
@@ -32,7 +32,7 @@ class Locals {
     return this;
   }
 
-  remove(name: string) {
+  remove(name: string): this {
     if (typeof name !== 'string') throw new TypeError('name must be a string!');
 
     this.getters[name] = null;
@@ -41,7 +41,7 @@ class Locals {
     return this;
   }
 
-  invalidate() {
+  invalidate(): this {
     this.cache.flush();
 
     return this;

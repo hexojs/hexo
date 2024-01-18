@@ -5,6 +5,7 @@ import { extname } from 'path';
 import { magenta } from 'picocolors';
 import type warehouse from 'warehouse';
 import type Hexo from '../../hexo';
+import type { AssetGenerator } from '../../types';
 
 interface Data {
   modified: boolean;
@@ -36,7 +37,7 @@ const process = (name: string, ctx: Hexo) => {
       data.data = () => ctx.render.render({
         path: source,
         toString: true
-      }).catch(err => {
+      }).catch((err: Error) => {
         ctx.log.error({err}, 'Asset render failed: %s', magenta(path));
       });
     } else {
@@ -47,7 +48,7 @@ const process = (name: string, ctx: Hexo) => {
   });
 };
 
-function assetGenerator(this: Hexo): Promise<any[]> {
+function assetGenerator(this: Hexo): Promise<AssetGenerator[]> {
   return Promise.all([
     process('Asset', this),
     process('PostAsset', this)
