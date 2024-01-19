@@ -131,6 +131,15 @@ export interface TagSchema {
   _id?: string | number;
   name?: string;
 }
+
+export interface AssetSchema {
+  _id?: string;
+  path: string;
+  modified: boolean;
+  renderable: boolean;
+  source: string;
+}
+
 export interface LocalsType {
   page: PostSchema | PageSchema;
   path: string;
