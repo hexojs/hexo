@@ -1,5 +1,5 @@
 import { htmlTag, url_for } from 'hexo-util';
-import type Hexo from '../../hexo';
+import type { LocalsType } from '../../types';
 
 interface Options {
   base?: string;
@@ -23,13 +23,13 @@ interface Options {
   transform?: (i: number) => any;
 }
 
-const createLink = (options: Options, ctx: Hexo) => {
+const createLink = (options: Options, ctx: LocalsType) => {
   const { base, format } = options;
 
   return (i: number) => url_for.call(ctx, i === 1 ? base : base + format.replace('%d', String(i)));
 };
 
-const createPageTag = (options: Options, ctx: Hexo) => {
+const createPageTag = (options: Options, ctx: LocalsType) => {
   const link = createLink(options, ctx);
   const {
     current,
@@ -47,7 +47,7 @@ const createPageTag = (options: Options, ctx: Hexo) => {
   };
 };
 
-const showAll = (tags: string[], options: Options, ctx: Hexo) => {
+const showAll = (tags: string[], options: Options, ctx: LocalsType) => {
   const { total } = options;
 
   const pageLink = createPageTag(options, ctx);
@@ -57,7 +57,7 @@ const showAll = (tags: string[], options: Options, ctx: Hexo) => {
   }
 };
 
-const paginationPartShow = (tags, options, ctx: Hexo) => {
+const paginationPartShow = (tags, options, ctx: LocalsType) => {
   const {
     current,
     total,
@@ -109,7 +109,7 @@ const paginationPartShow = (tags, options, ctx: Hexo) => {
   }
 };
 
-function paginatorHelper(options: Options = {}) {
+function paginatorHelper(this: LocalsType, options: Options = {}) {
   options = Object.assign({
     base: this.page.base || '',
     current: this.page.current || 0,

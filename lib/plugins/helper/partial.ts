@@ -1,12 +1,13 @@
 import { dirname, join } from 'path';
 import type Hexo from '../../hexo';
+import type { LocalsType } from '../../types';
 
 interface Options {
   cache?: boolean | string;
   only?: boolean;
 }
 
-export = (ctx: Hexo) => function partial(name: string, locals: any, options: Options = {}) {
+export = (ctx: Hexo) => function partial(this: LocalsType, name: string, locals: any, options: Options = {}) {
   if (typeof name !== 'string') throw new TypeError('name must be a string!');
 
   const { cache } = options;

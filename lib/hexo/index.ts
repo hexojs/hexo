@@ -38,6 +38,8 @@ import multiConfigPath from './multi_config_path';
 import { deepMerge, full_url_for } from 'hexo-util';
 import type Box from '../box';
 import type { AssetGenerator, LocalsType, NodeJSLikeCallback, NormalPageGenerator, NormalPostGenerator, PageGenerator, PostGenerator, SiteLocals } from '../types';
+import type { AddSchemaTypeOptions } from 'warehouse/dist/types';
+import type Schema from 'warehouse/dist/schema';
 
 let resolveSync; // = require('resolve');
 
@@ -440,7 +442,7 @@ class Hexo extends EventEmitter {
     return Promise.reject(new Error(`Console \`${name}\` has not been registered yet!`));
   }
 
-  model(name: string, schema?: any) {
+  model(name: string, schema?: Schema | Record<string, AddSchemaTypeOptions>) {
     return this.database.model(name, schema);
   }
 
