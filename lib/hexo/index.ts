@@ -562,8 +562,8 @@ class Hexo extends EventEmitter {
       page: NormalPageGenerator | NormalPostGenerator;
       path: string;
       url: string;
-      config: object;
-      theme: object;
+      config: any;
+      theme: any;
       layout: string;
       env: any;
       view_dir: string;

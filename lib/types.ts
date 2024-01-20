@@ -38,7 +38,7 @@ export interface RenderData {
   engine?: string;
   content?: string;
   disableNunjucks?: boolean;
-  markdown?: object;
+  markdown?: any;
   source?: string;
   titlecase?: boolean;
   title?: string;
@@ -246,5 +246,5 @@ export interface SiteLocals {
   pages: Query<PageSchema>; // _Query
   categories: Model<CategorySchema>; // _Model
   tags: Model<TagSchema>; // _Model
-  data: object;
+  data: any;
 }
