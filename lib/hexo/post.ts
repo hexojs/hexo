@@ -69,7 +69,7 @@ class PostRenderEscape {
    * @returns string
    */
   escapeAllSwigTags(str: string) {
-    if (!/(\{\{.+?\}\})|(\{#.+?#\})|(\{%.+?%\})/.test(str)) {
+    if (!/(\{\{.+?\}\})|(\{#.+?#\})|(\{%.+?%\})/s.test(str)) {
       return str;
     }
     let state = STATE_PLAINTEXT;

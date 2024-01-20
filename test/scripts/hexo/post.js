@@ -1396,4 +1396,22 @@ describe('Post', () => {
       should.fail();
     } catch (err) {}
   });
+
+  // https://github.com/hexojs/hexo/issues/5401
+  it('render() - tags in different lines', async () => {
+    const content = [
+      '{% link',
+      'foobar',
+      'https://hexo.io/',
+      'tttitle',
+      '%}'
+    ].join('\n');
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.should.eql('<a href="https://hexo.io/" title="tttitle" target="">foobar</a>');
+  });
 });
