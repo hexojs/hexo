@@ -1,14 +1,22 @@
 name: Benchmark
 
 on:
+  workflow_dispatch:
   push:
+    branches:
+      - "master"
     paths:
       - "lib/**"
+      - ".github/workflows/benchmark.yml"
   pull_request:
     branches:
       - master
-    paths-ignore:
-      - "test/scripts/**"
+    paths:
+      - "lib/**"
+      - ".github/workflows/benchmark.yml"
+
+env:
+  pages_url: "https://${{github.repository_owner}}.github.io/hexo/flamegraph"
 
 jobs:
   benchmark:
@@ -36,37 +44,122 @@ jobs:
         os: [ubuntu-latest]
         node-version: ["14", "16", "18"]
       fail-fast: false
+
     env:
       comment_file: ".tmp-comment-flamegraph-node${{ matrix.node-version }}.md"
+      flamegraph_file: "flamegraph-${{ github.sha }}-${{ matrix.node-version }}.html"
+
+    # environment:
+    #   name: flamegraph_preview
+    #   url: ${{ steps.result.outputs.url }}
+
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: npm
+          cache-dependency-path: "package.json"
+
       - name: Install dependencies
         run: npm install --silent
       - name: Running profiling
         run: node test/benchmark.js --profiling
-      - name: Publish flamegraph to https://${{ github.sha }}-${{ matrix.node-version }}-hexo.surge.sh/flamegraph.html
-        uses: dswistowski/surge-sh-action@v1
-        with:
-          domain: ${{ github.sha }}-${{ matrix.node-version }}-hexo.surge.sh
-          project: ./.tmp-hexo-theme-unit-test/0x/
-          login: ${{ secrets.SURGE_LOGIN }}
-          token: ${{ secrets.SURGE_TOKEN }}
 
-      - name: save comment to file
-        if: ${{github.event_name == 'pull_request' }}
+      - name: Rename
         run: |
-          echo "https://${{ github.sha }}-${{ matrix.node-version }}-hexo.surge.sh/flamegraph.html" > ${{env.comment_file}}
+          mkdir .tmp-pages/
+          mv ./.tmp-hexo-theme-unit-test/0x/flamegraph.html ./${{env.flamegraph_file}}
 
       - uses: actions/upload-artifact@v4
+        name: Upload flamegraph
+        with:
+          retention-days: 1
+          name: flamegraph-node${{ matrix.node-version }}
+          path: ${{env.flamegraph_file}}
+
+      - name: Get Pages URL
+        id: result
+        run: |
+          echo "url=${{env.pages_url}}/${{ github.event.number || github.ref_name }}/${{env.flamegraph_file}}" >> "$GITHUB_OUTPUT"
+
+      - name: Save comment to file
+        if: ${{github.event_name == 'pull_request' }}
+        run: |
+          echo "${{ steps.result.outputs.url }}" > ${{env.comment_file}}
+
+      - uses: actions/upload-artifact@v4
+        name: Upload comment
         if: ${{github.event_name == 'pull_request' }}
         with:
           retention-days: 1
           name: comment-node${{ matrix.node-version }}
           path: ${{env.comment_file}}
+
+  pages:
+    needs: profiling
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # to push to branch
+      pages: write # to deploy to Pages
+      id-token: write # to verify the deployment originates from an appropriate source
+    concurrency:
+      group: ${{ github.workflow }}-pages
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+        id: checkout
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          fetch-depth: 1
+
+      - name: Init git
+        # run if gh-pages doesn't exist
+        if: ${{ steps.checkout.outcome == 'failure' }}
+        shell: bash
+        run: |
+          git config user.name HexoOrgBot
+          git config user.email 27251540+HexoOrgBot@users.noreply.github.com
+          git config core.ignorecase false
+          git init
+          git checkout --orphan gh-pages
+          git commit --allow-empty -m 'init'
+          git push -u -f https://github.com/${{github.repository}}.git gh-pages:gh-pages
+
+      - name: clean dir
+        continue-on-error: true
+        shell: bash
+        run: |
+          rm -rf flamegraph/${{ github.event.number || github.ref_name }}/*.html
+
+      - name: download flamegraph
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          pattern: "flamegraph-*"
+          merge-multiple: true
+          path: flamegraph/${{ github.event.number || github.ref_name }}
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+          retention-days: 1
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: commit and push
+        shell: bash
+        run: |
+          git config user.name HexoOrgBot
+          git config user.email 27251540+HexoOrgBot@users.noreply.github.com
+          git config core.ignorecase false
+          git add --all .
+          git commit --am -m "${{ github.event.number || github.ref_name }}: ${{ github.sha }}"
+          git push -f
 
   number:
     runs-on: ubuntu-latest
