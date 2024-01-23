@@ -10,7 +10,7 @@ import type Hexo from '../hexo';
 import type { Pattern } from 'hexo-util';
 
 class Theme extends Box {
-  public config: object;
+  public config: any;
   public views: Record<string, Record<string, View>>;
   public i18n: I18n;
   public View: typeof View;
@@ -19,7 +19,7 @@ class Theme extends Box {
     process: (...args: any[]) => any;
   }[];
 
-  constructor(ctx: Hexo, options?: object) {
+  constructor(ctx: Hexo, options?: any) {
     super(ctx, ctx.theme_dir, options);
 
     this.config = {};

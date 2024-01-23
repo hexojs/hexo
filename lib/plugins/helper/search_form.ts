@@ -1,4 +1,5 @@
 import moize from 'moize';
+import type { LocalsType } from '../../types';
 
 interface Options {
   class?: string;
@@ -6,7 +7,7 @@ interface Options {
   button?: string | boolean;
 }
 
-function searchFormHelper(options: Options = {}) {
+function searchFormHelper(this: LocalsType, options: Options = {}) {
   const { config } = this;
   const className = options.class || 'search-form';
   const { text = 'Search', button } = options;

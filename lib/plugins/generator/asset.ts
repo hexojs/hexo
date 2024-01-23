@@ -3,9 +3,9 @@ import { exists, createReadStream } from 'hexo-fs';
 import Promise from 'bluebird';
 import { extname } from 'path';
 import { magenta } from 'picocolors';
-import type warehouse from 'warehouse';
 import type Hexo from '../../hexo';
-import type { AssetGenerator } from '../../types';
+import type { AssetGenerator, AssetSchema } from '../../types';
+import type Document from 'warehouse/dist/document';
 
 interface Data {
   modified: boolean;
@@ -13,21 +13,15 @@ interface Data {
 }
 
 const process = (name: string, ctx: Hexo) => {
-  // @ts-expect-error
-  return Promise.filter(ctx.model(name).toArray(), (asset: warehouse['Schema']) => exists(asset.source).tap(exist => {
-    // @ts-expect-error
+  return Promise.filter(ctx.model(name).toArray(), (asset: Document<AssetSchema>) => exists(asset.source).tap(exist => {
     if (!exist) return asset.remove();
-  })).map((asset: warehouse['Schema']) => {
-    // @ts-expect-error
+  })).map((asset: Document<AssetSchema>) => {
     const { source } = asset;
-    // @ts-expect-error
     let { path } = asset;
     const data: Data = {
-      // @ts-expect-error
       modified: asset.modified
     };
 
-    // @ts-expect-error
     if (asset.renderable && ctx.render.isRenderable(path)) {
       // Replace extension name if the asset is renderable
       const filename = path.substring(0, path.length - extname(path).length);
