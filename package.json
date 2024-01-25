@@ -80,7 +80,7 @@
     "eslint": "^8.48.0",
     "eslint-config-hexo": "^5.0.0",
     "hexo-renderer-marked": "^6.0.0",
-    "husky": "^8.0.1",
+    "husky": "^9.0.6",
     "lint-staged": "^15.2.0",
     "mocha": "^10.0.0",
     "sinon": "^17.0.1",
