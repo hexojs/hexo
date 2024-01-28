@@ -95,7 +95,7 @@ Also, we welcome PR or issue to [official-plugins](https://github.com/hexojs).
 
 ## Sponsors
 
-[![Sponsers](https://opencollective.com/hexo/tiers/sponsers.svg?width=600)](https://opencollective.com/hexo)
+[![Sponsors](https://opencollective.com/hexo/tiers/sponsors.svg?width=600)](https://opencollective.com/hexo)
 
 ## License
 
