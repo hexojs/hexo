@@ -69,7 +69,7 @@
     "@types/abbrev": "^1.1.3",
     "@types/bluebird": "^3.5.37",
     "@types/js-yaml": "^4.0.9",
-    "@types/node": "^18.11.8",
+    "@types/node": "^18.11.8 <18.19.9",
     "@types/nunjucks": "^3.2.2",
     "@types/text-table": "^0.2.4",
     "0x": "^5.1.2",
