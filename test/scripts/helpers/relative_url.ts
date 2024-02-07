@@ -1,4 +1,4 @@
-import relativeURL from '../../../dist/plugins/helper/relative_url';
+import relativeURL from '../../../lib/plugins/helper/relative_url';
 
 describe('relative_url', () => {
   it('from root', () => {

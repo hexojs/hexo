@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import linkToHelper from '../../../dist/plugins/helper/link_to';
+import Hexo from '../../../lib/hexo';
+import linkToHelper from '../../../lib/plugins/helper/link_to';
 type LinkToHelperParams = Parameters<typeof linkToHelper>;
 type LinkToHelperReturn = ReturnType<typeof linkToHelper>;
 

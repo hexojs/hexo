@@ -3,8 +3,8 @@ import { join } from 'path';
 import { spy, stub, assert as sinonAssert } from 'sinon';
 import chai from 'chai';
 const should = chai.should();
-import Hexo from '../../../dist/hexo';
-import deployConsole from '../../../dist/plugins/console/deploy';
+import Hexo from '../../../lib/hexo';
+import deployConsole from '../../../lib/plugins/console/deploy';
 type OriginalParams = Parameters<typeof deployConsole>;
 type OriginalReturn = ReturnType<typeof deployConsole>;
 

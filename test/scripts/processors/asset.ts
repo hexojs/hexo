@@ -1,9 +1,9 @@
 import { dirname, join } from 'path';
 import { mkdirs, rmdir, stat, unlink, writeFile } from 'hexo-fs';
 import { spy } from 'sinon';
-import Hexo from '../../../dist/hexo';
-import defaults from '../../../dist/hexo/default_config';
-import assets from '../../../dist/plugins/processor/asset';
+import Hexo from '../../../lib/hexo';
+import defaults from '../../../lib/hexo/default_config';
+import assets from '../../../lib/plugins/processor/asset';
 import chai from 'chai';
 const should = chai.should();
 

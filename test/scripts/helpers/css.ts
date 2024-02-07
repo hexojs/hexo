@@ -1,6 +1,6 @@
 import cheerio from 'cheerio';
-import Hexo from '../../../dist/hexo';
-import cssHelper from '../../../dist/plugins/helper/css';
+import Hexo from '../../../lib/hexo';
+import cssHelper from '../../../lib/plugins/helper/css';
 type CssHelperParams = Parameters<typeof cssHelper>;
 type CssHelperReturn = ReturnType<typeof cssHelper>;
 

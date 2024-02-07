@@ -1,4 +1,4 @@
-import Hexo from '../../../dist/hexo';
+import Hexo from '../../../lib/hexo';
 
 describe('Cache', () => {
   const hexo = new Hexo();

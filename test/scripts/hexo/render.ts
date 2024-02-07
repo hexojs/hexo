@@ -2,7 +2,7 @@ import { writeFile, rmdir } from 'hexo-fs';
 import { join } from 'path';
 import yaml from 'js-yaml';
 import { spy, assert as sinonAssert } from 'sinon';
-import Hexo from '../../../dist/hexo';
+import Hexo from '../../../lib/hexo';
 import chai from 'chai';
 const should = chai.should();
 

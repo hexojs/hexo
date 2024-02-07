@@ -1,7 +1,7 @@
-import Hexo from '../../../dist/hexo';
+import Hexo from '../../../lib/hexo';
 import decache from 'decache';
-import externalLinkFilter from '../../../dist/plugins/filter/after_render/external_link';
-import externalLinkPostFilter from '../../../dist/plugins/filter/after_post_render/external_link';
+import externalLinkFilter from '../../../lib/plugins/filter/after_render/external_link';
+import externalLinkPostFilter from '../../../lib/plugins/filter/after_post_render/external_link';
 import chai from 'chai';
 const should = chai.should();
 type ExternalLinkParams = Parameters<typeof externalLinkFilter>;
@@ -14,8 +14,8 @@ describe('External link', () => {
   let externalLink: (...args: ExternalLinkParams) => ExternalLinkReturn;
 
   beforeEach(() => {
-    decache('../../../dist/plugins/filter/after_render/external_link');
-    externalLink = require('../../../dist/plugins/filter/after_render/external_link').bind(hexo);
+    decache('../../../lib/plugins/filter/after_render/external_link');
+    externalLink = require('../../../lib/plugins/filter/after_render/external_link').bind(hexo);
   });
   hexo.config = {
     url: 'https://example.com',
@@ -143,14 +143,14 @@ describe('External link', () => {
 });
 
 describe('External link - post', () => {
-  const Hexo = require('../../../dist/hexo');
+  const Hexo = require('../../../lib/hexo');
   const hexo = new Hexo();
 
   let externalLink: (...args: ExternalLinkPostParams) => ExternalLinkPostReturn;
 
   beforeEach(() => {
-    decache('../../../dist/plugins/filter/after_post_render/external_link');
-    externalLink = require('../../../dist/plugins/filter/after_post_render/external_link').bind(hexo);
+    decache('../../../lib/plugins/filter/after_post_render/external_link');
+    externalLink = require('../../../lib/plugins/filter/after_post_render/external_link').bind(hexo);
   });
 
   hexo.config = {

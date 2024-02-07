@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import tagPullquote from '../../../dist/plugins/tag/pullquote';
+import Hexo from '../../../lib/hexo';
+import tagPullquote from '../../../lib/plugins/tag/pullquote';
 
 describe('pullquote', () => {
   const hexo = new Hexo(__dirname);

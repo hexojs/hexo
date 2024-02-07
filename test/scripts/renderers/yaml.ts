@@ -1,4 +1,4 @@
-import r from '../../../dist/plugins/renderer/yaml';
+import r from '../../../lib/plugins/renderer/yaml';
 
 describe('yaml', () => {
   it('normal', () => {

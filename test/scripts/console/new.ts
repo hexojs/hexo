@@ -4,8 +4,8 @@ import { join } from 'path';
 // @ts-ignore
 import Promise from 'bluebird';
 import { useFakeTimers, spy, SinonSpy } from 'sinon';
-import Hexo from '../../../dist/hexo';
-import newConsole from '../../../dist/plugins/console/new';
+import Hexo from '../../../lib/hexo';
+import newConsole from '../../../lib/plugins/console/new';
 type OriginalParams = Parameters<typeof newConsole>;
 type OriginalReturn = ReturnType<typeof newConsole>;
 

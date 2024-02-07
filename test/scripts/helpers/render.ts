@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import renderHelper from '../../../dist/plugins/helper/render';
+import Hexo from '../../../lib/hexo';
+import renderHelper from '../../../lib/plugins/helper/render';
 
 describe('render', () => {
   const hexo = new Hexo(__dirname);

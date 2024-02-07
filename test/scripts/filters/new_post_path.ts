@@ -2,8 +2,8 @@ import { join } from 'path';
 import moment from 'moment';
 import { createSha1Hash } from 'hexo-util';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
-import Hexo from '../../../dist/hexo';
-import newPostPathFilter from '../../../dist/plugins/filter/new_post_path';
+import Hexo from '../../../lib/hexo';
+import newPostPathFilter from '../../../lib/plugins/filter/new_post_path';
 type NewPostPathFilterParams = Parameters<typeof newPostPathFilter>;
 type NewPostPathFilterReturn = ReturnType<typeof newPostPathFilter>;
 

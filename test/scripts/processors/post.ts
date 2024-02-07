@@ -3,9 +3,9 @@ import { join } from 'path';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 // @ts-ignore
 import Promise from 'bluebird';
-import defaultConfig from '../../../dist/hexo/default_config';
-import Hexo from '../../../dist/hexo';
-import posts from '../../../dist/plugins/processor/post';
+import defaultConfig from '../../../lib/hexo/default_config';
+import Hexo from '../../../lib/hexo';
+import posts from '../../../lib/plugins/processor/post';
 import chai from 'chai';
 const should = chai.should();
 type PostParams = Parameters<ReturnType<typeof posts>['process']>

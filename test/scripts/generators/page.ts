@@ -1,8 +1,8 @@
 // @ts-ignore
 import Promise from 'bluebird';
-import Hexo from '../../../dist/hexo';
-import pageGenerator from '../../../dist/plugins/generator/page';
-import { NormalPostGenerator } from '../../../dist/types';
+import Hexo from '../../../lib/hexo';
+import pageGenerator from '../../../lib/plugins/generator/page';
+import { NormalPostGenerator } from '../../../lib/types';
 import chai from 'chai';
 const should = chai.should();
 type PageGeneratorParams = Parameters<typeof pageGenerator>;

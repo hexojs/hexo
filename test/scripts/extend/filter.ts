@@ -1,4 +1,4 @@
-import Filter from '../../../dist/extend/filter';
+import Filter from '../../../lib/extend/filter';
 import { spy } from 'sinon';
 import chai from 'chai';
 const should = chai.should();

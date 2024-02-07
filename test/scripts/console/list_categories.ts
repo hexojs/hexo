@@ -1,8 +1,8 @@
 // @ts-ignore
 import Promise from 'bluebird';
 import { stub, assert as sinonAssert } from 'sinon';
-import Hexo from '../../../dist/hexo';
-import listCategory from '../../../dist/plugins/console/list/category';
+import Hexo from '../../../lib/hexo';
+import listCategory from '../../../lib/plugins/console/list/category';
 type OriginalParams = Parameters<typeof listCategory>;
 type OriginalReturn = ReturnType<typeof listCategory>;
 

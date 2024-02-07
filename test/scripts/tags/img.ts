@@ -1,7 +1,7 @@
 import cheerio from 'cheerio';
 import pathFn from 'path';
-import Hexo from '../../../dist/hexo';
-import tagImg from '../../../dist/plugins/tag/img';
+import Hexo from '../../../lib/hexo';
+import tagImg from '../../../lib/plugins/tag/img';
 
 
 describe('img', () => {

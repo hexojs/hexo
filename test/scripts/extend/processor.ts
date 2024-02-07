@@ -1,4 +1,4 @@
-import Processor from '../../../dist/extend/processor';
+import Processor from '../../../lib/extend/processor';
 import chai from 'chai';
 const should = chai.should();
 

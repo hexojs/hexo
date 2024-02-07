@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import listPostsHelper from '../../../dist/plugins/helper/list_posts';
+import Hexo from '../../../lib/hexo';
+import listPostsHelper from '../../../lib/plugins/helper/list_posts';
 type ListPostsHelperParams = Parameters<typeof listPostsHelper>;
 type ListPostsHelperReturn = ReturnType<typeof listPostsHelper>;
 

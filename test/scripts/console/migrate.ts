@@ -1,6 +1,6 @@
 import { spy, assert as sinonAssert, stub, SinonSpy } from 'sinon';
-import Hexo from '../../../dist/hexo';
-import migrateConsole from '../../../dist/plugins/console/migrate';
+import Hexo from '../../../lib/hexo';
+import migrateConsole from '../../../lib/plugins/console/migrate';
 type OriginalParams = Parameters<typeof migrateConsole>;
 type OriginalReturn = ReturnType<typeof migrateConsole>;
 

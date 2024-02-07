@@ -2,8 +2,8 @@ import { join } from 'path';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 // @ts-ignore
 import Promise from 'bluebird';
-import Hexo from '../../../dist/hexo';
-import { i18n } from '../../../dist/theme/processors/i18n';
+import Hexo from '../../../lib/hexo';
+import { i18n } from '../../../lib/theme/processors/i18n';
 import chai from 'chai';
 const should = chai.should();
 type I18nParams = Parameters<typeof i18n['process']>

@@ -1,7 +1,7 @@
 // @ts-ignore
 import Promise from 'bluebird';
-import Hexo from '../../../dist/hexo';
-import tagcloudHelper from '../../../dist/plugins/helper/tagcloud';
+import Hexo from '../../../lib/hexo';
+import tagcloudHelper from '../../../lib/plugins/helper/tagcloud';
 import chai from 'chai';
 const should = chai.should();
 type TagcloudHelperParams = Parameters<typeof tagcloudHelper>;

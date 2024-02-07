@@ -1,5 +1,5 @@
 import cheerio from 'cheerio';
-import link from '../../../dist/plugins/tag/link';
+import link from '../../../lib/plugins/tag/link';
 
 describe('link', () => {
   it('text + url', () => {

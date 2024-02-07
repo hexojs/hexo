@@ -1,4 +1,4 @@
-import Console from '../../../dist/extend/console';
+import Console from '../../../lib/extend/console';
 import chai from 'chai';
 const should = chai.should();
 

@@ -6,7 +6,7 @@ import crypto from 'crypto';
 import { createReadStream } from 'hexo-fs';
 import { spy, assert as sinonAssert } from 'sinon';
 import testUtil from '../../util';
-import Router from '../../../dist/hexo/router';
+import Router from '../../../lib/hexo/router';
 import chai from 'chai';
 const should = chai.should();
 

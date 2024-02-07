@@ -1,4 +1,4 @@
-import r from '../../../dist/plugins/renderer/plain';
+import r from '../../../lib/plugins/renderer/plain';
 
 describe('plain', () => {
   it('normal', () => {

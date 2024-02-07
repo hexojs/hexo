@@ -1,11 +1,11 @@
 import { escapeHTML, highlight as utilHighlight, prismHighlight } from 'hexo-util';
 import cheerio from 'cheerio';
-import Hexo from '../../../dist/hexo';
-import tagCode from '../../../dist/plugins/tag/code';
+import Hexo from '../../../lib/hexo';
+import tagCode from '../../../lib/plugins/tag/code';
 
 describe('code', () => {
   const hexo = new Hexo();
-  require('../../../dist/plugins/highlight/')(hexo);
+  require('../../../lib/plugins/highlight/')(hexo);
   const codeTag = tagCode(hexo);
 
   const fixture = [

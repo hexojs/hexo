@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import listCategoriesHelper from '../../../dist/plugins/helper/list_categories';
+import Hexo from '../../../lib/hexo';
+import listCategoriesHelper from '../../../lib/plugins/helper/list_categories';
 type ListCategoriesHelperParams = Parameters<typeof listCategoriesHelper>;
 type ListCategoriesHelperReturn = ReturnType<typeof listCategoriesHelper>;
 

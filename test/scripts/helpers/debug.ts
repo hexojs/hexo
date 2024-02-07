@@ -1,5 +1,5 @@
 import { stub } from 'sinon';
-import { inspectObject, log } from '../../../dist/plugins/helper/debug';
+import { inspectObject, log } from '../../../lib/plugins/helper/debug';
 import { inspect } from 'util';
 
 describe('debug', () => {

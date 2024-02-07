@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import renderPostFilter from '../../../dist/plugins/filter/before_generate/render_post';
+import Hexo from '../../../lib/hexo';
+import renderPostFilter from '../../../lib/plugins/filter/before_generate/render_post';
 import { content, expected } from '../../fixtures/post_render';
 type RenderPostFilterParams = Parameters<typeof renderPostFilter>;
 type RenderPostFilterReturn = ReturnType<typeof renderPostFilter>;

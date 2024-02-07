@@ -5,7 +5,7 @@ import Promise from 'bluebird';
 import { spy } from 'sinon';
 import testUtil from '../../util';
 import { full_url_for } from 'hexo-util';
-import Hexo from '../../../dist/hexo';
+import Hexo from '../../../lib/hexo';
 import chai from 'chai';
 const should = chai.should();
 
@@ -25,7 +25,7 @@ describe('Hexo', () => {
   }
 
   function loadAssetGenerator() {
-    hexo.extend.generator.register('asset', require('../../../dist/plugins/generator/asset'));
+    hexo.extend.generator.register('asset', require('../../../lib/plugins/generator/asset'));
   }
 
   before(async () => {
@@ -49,7 +49,7 @@ describe('Hexo', () => {
 
     /* eslint-disable no-path-concat */
     hexo.core_dir.should.eql(coreDir + sep);
-    hexo.lib_dir.should.eql(join(coreDir, 'dist') + sep);
+    hexo.lib_dir.should.eql(join(coreDir, 'lib') + sep);
     hexo.version.should.eql(version);
     hexo.base_dir.should.eql(__dirname + sep);
     hexo.public_dir.should.eql(join(__dirname, 'public') + sep);

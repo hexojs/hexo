@@ -1,7 +1,7 @@
 import { spy } from 'sinon';
-import Hexo from '../../../dist/hexo';
-import validateConfig from '../../../dist/hexo/validate_config';
-import defaultConfig from '../../../dist/hexo/default_config';
+import Hexo from '../../../lib/hexo';
+import validateConfig from '../../../lib/hexo/validate_config';
+import defaultConfig from '../../../lib/hexo/default_config';
 import chai from 'chai';
 const should = chai.should();
 

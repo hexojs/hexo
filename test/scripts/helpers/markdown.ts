@@ -1,6 +1,6 @@
-import Hexo from '../../../dist/hexo';
-import renderHelper from '../../../dist/plugins/helper/render';
-import markdownHelper from '../../../dist/plugins/helper/markdown';
+import Hexo from '../../../lib/hexo';
+import renderHelper from '../../../lib/plugins/helper/render';
+import markdownHelper from '../../../lib/plugins/helper/markdown';
 type MarkdownHelperParams = Parameters<typeof markdownHelper>;
 type MarkdownHelperReturn = ReturnType<typeof markdownHelper>;
 

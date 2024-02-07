@@ -1,4 +1,4 @@
-import Deployer from '../../../dist/extend/deployer';
+import Deployer from '../../../lib/extend/deployer';
 import chai from 'chai';
 const should = chai.should();
 

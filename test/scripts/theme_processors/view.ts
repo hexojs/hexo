@@ -2,8 +2,8 @@ import { join } from 'path';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 // @ts-ignore
 import Promise from 'bluebird';
-import Hexo from '../../../dist/hexo';
-import { view } from '../../../dist/theme/processors/view';
+import Hexo from '../../../lib/hexo';
+import { view } from '../../../lib/theme/processors/view';
 import chai from 'chai';
 const should = chai.should();
 type ViewParams = Parameters<typeof view['process']>

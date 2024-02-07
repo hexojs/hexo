@@ -1,4 +1,4 @@
-import fullUrlForHelper from '../../../dist/plugins/helper/full_url_for';
+import fullUrlForHelper from '../../../lib/plugins/helper/full_url_for';
 type FullUrlForHelperParams = Parameters<typeof fullUrlForHelper>;
 type FullUrlForHelperReturn = ReturnType<typeof fullUrlForHelper>;
 

@@ -1,12 +1,12 @@
 import { join } from 'path';
 import { mkdirs, unlink, writeFile, rmdir } from 'hexo-fs';
-import Hexo from '../../../dist/hexo';
+import Hexo from '../../../lib/hexo';
 import chai from 'chai';
 const should = chai.should();
 
 describe('Load alternate theme config', () => {
   const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
-  const loadThemeConfig = require('../../../dist/hexo/load_theme_config');
+  const loadThemeConfig = require('../../../lib/hexo/load_theme_config');
 
   hexo.env.init = true;
 

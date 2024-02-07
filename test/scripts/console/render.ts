@@ -3,8 +3,8 @@ import { join } from 'path';
 // @ts-ignore
 import Promise from 'bluebird';
 import { spy, SinonSpy } from 'sinon';
-import Hexo from '../../../dist/hexo';
-import renderConsole from '../../../dist/plugins/console/render';
+import Hexo from '../../../lib/hexo';
+import renderConsole from '../../../lib/plugins/console/render';
 type OriginalParams = Parameters<typeof renderConsole>;
 type OriginalReturn = ReturnType<typeof renderConsole>;
 

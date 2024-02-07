@@ -1,5 +1,5 @@
 import cheerio from 'cheerio';
-import tagUrlFor from '../../../dist/plugins/tag/url_for';
+import tagUrlFor from '../../../lib/plugins/tag/url_for';
 
 describe('url_for', () => {
   const ctx: any = {

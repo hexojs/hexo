@@ -1,6 +1,6 @@
 import { deepMerge, full_url_for } from 'hexo-util';
-import Hexo from '../../../dist/hexo';
-import defaults from '../../../dist/hexo/default_config';
+import Hexo from '../../../lib/hexo';
+import defaults from '../../../lib/hexo/default_config';
 
 describe('Category', () => {
   const hexo = new Hexo();

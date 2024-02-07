@@ -1,4 +1,4 @@
-import Tag from '../../../dist/extend/tag';
+import Tag from '../../../lib/extend/tag';
 
 describe('Tag Errors', () => {
   const assertNunjucksError = (err, line, type) => {

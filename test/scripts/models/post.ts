@@ -2,7 +2,7 @@ import { join, sep } from 'path';
 // @ts-ignore
 import Promise from 'bluebird';
 import { full_url_for } from 'hexo-util';
-import Hexo from '../../../dist/hexo';
+import Hexo from '../../../lib/hexo';
 import chai from 'chai';
 const should = chai.should();
 

@@ -1,4 +1,4 @@
-import r from '../../../dist/plugins/renderer/json';
+import r from '../../../lib/plugins/renderer/json';
 
 describe('json', () => {
   it('normal', () => {

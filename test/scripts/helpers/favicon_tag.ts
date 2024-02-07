@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import faviconTag from '../../../dist/plugins/helper/favicon_tag';
+import Hexo from '../../../lib/hexo';
+import faviconTag from '../../../lib/plugins/helper/favicon_tag';
 type faviconTagParams = Parameters<typeof faviconTag>;
 type faviconTagReturn = ReturnType<typeof faviconTag>;
 

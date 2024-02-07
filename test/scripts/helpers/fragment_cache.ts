@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import fragmentCache from '../../../dist/plugins/helper/fragment_cache';
+import Hexo from '../../../lib/hexo';
+import fragmentCache from '../../../lib/plugins/helper/fragment_cache';
 
 describe('fragment_cache', () => {
   const hexo = new Hexo(__dirname);

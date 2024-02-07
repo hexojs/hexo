@@ -1,8 +1,8 @@
 import { join } from 'path';
 import { rmdir, stat, statSync, writeFile } from 'hexo-fs';
 import { load } from 'js-yaml';
-import Hexo from '../../../dist/hexo';
-import Box from '../../../dist/box';
+import Hexo from '../../../lib/hexo';
+import Box from '../../../lib/box';
 
 describe('File', () => {
   const hexo = new Hexo(__dirname);

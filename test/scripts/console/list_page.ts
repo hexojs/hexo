@@ -1,6 +1,6 @@
 import { stub, assert as sinonAssert } from 'sinon';
-import Hexo from '../../../dist/hexo';
-import listPage from '../../../dist/plugins/console/list/page';
+import Hexo from '../../../lib/hexo';
+import listPage from '../../../lib/plugins/console/list/page';
 type OriginalParams = Parameters<typeof listPage>;
 type OriginalReturn = ReturnType<typeof listPage>;
 

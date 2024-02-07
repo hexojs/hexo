@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { isTmpFile, isHiddenFile, ignoreTmpAndHiddenFile as pattern, toDate, timezone, isMatch } from '../../../dist/plugins/processor/common';
+import { isTmpFile, isHiddenFile, ignoreTmpAndHiddenFile as pattern, toDate, timezone, isMatch } from '../../../lib/plugins/processor/common';
 import chai from 'chai';
 const should = chai.should();
 

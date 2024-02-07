@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { readFile, unlink, writeFile } from 'hexo-fs';
-import Hexo from '../../../dist/hexo';
-import updatePkg from '../../../dist/hexo/update_package';
+import Hexo from '../../../lib/hexo';
+import updatePkg from '../../../lib/hexo/update_package';
 
 describe('Update package.json', () => {
   const hexo = new Hexo(__dirname, {silent: true});

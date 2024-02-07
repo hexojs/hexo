@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import listTagsHelper from '../../../dist/plugins/helper/list_tags';
+import Hexo from '../../../lib/hexo';
+import listTagsHelper from '../../../lib/plugins/helper/list_tags';
 type ListTagsHelperParams = Parameters<typeof listTagsHelper>;
 type ListTagsHelperReturn = ReturnType<typeof listTagsHelper>;
 

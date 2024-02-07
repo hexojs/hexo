@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import mailToHelper from '../../../dist/plugins/helper/mail_to';
+import Hexo from '../../../lib/hexo';
+import mailToHelper from '../../../lib/plugins/helper/mail_to';
 type MailToHelperParams = Parameters<typeof mailToHelper>;
 type MailToHelperReturn = ReturnType<typeof mailToHelper>;
 

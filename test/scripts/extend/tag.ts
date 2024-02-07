@@ -1,4 +1,4 @@
-import Tag from '../../../dist/extend/tag';
+import Tag from '../../../lib/extend/tag';
 import chai from 'chai';
 const should = chai.should();
 

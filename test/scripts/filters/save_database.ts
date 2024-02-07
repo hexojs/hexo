@@ -1,8 +1,8 @@
-import Hexo from '../../../dist/hexo';
+import Hexo from '../../../lib/hexo';
 import { exists, unlink } from 'hexo-fs';
 // @ts-ignore
 import Promise from 'bluebird';
-import saveDatabaseFilter from '../../../dist/plugins/filter/before_exit/save_database';
+import saveDatabaseFilter from '../../../lib/plugins/filter/before_exit/save_database';
 type SaveDatabaseFilterParams = Parameters<typeof saveDatabaseFilter>
 type SaveDatabaseFilterReturn = ReturnType<typeof saveDatabaseFilter>
 

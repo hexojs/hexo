@@ -1,4 +1,4 @@
-import Migrator from '../../../dist/extend/migrator';
+import Migrator from '../../../lib/extend/migrator';
 import chai from 'chai';
 const should = chai.should();
 

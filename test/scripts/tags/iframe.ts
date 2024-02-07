@@ -1,5 +1,5 @@
 import cheerio from 'cheerio';
-import iframe from '../../../dist/plugins/tag/iframe';
+import iframe from '../../../lib/plugins/tag/iframe';
 
 describe('iframe', () => {
   it('url', () => {

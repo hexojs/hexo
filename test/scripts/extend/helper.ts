@@ -1,4 +1,4 @@
-import Helper from '../../../dist/extend/helper';
+import Helper from '../../../lib/extend/helper';
 import chai from 'chai';
 const should = chai.should();
 

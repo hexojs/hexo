@@ -1,6 +1,6 @@
 import { stub, assert as sinonAssert } from 'sinon';
-import Hexo from '../../../dist/hexo';
-import listRoute from '../../../dist/plugins/console/list/route';
+import Hexo from '../../../lib/hexo';
+import listRoute from '../../../lib/plugins/console/list/route';
 type OriginalParams = Parameters<typeof listRoute>;
 type OriginalReturn = ReturnType<typeof listRoute>;
 

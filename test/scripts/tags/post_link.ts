@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import tagPostLink from '../../../dist/plugins/tag/post_link';
+import Hexo from '../../../lib/hexo';
+import tagPostLink from '../../../lib/plugins/tag/post_link';
 import chai from 'chai';
 const should = chai.should();
 

@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import i18nLocalsFilter from '../../../dist/plugins/filter/template_locals/i18n';
+import Hexo from '../../../lib/hexo';
+import i18nLocalsFilter from '../../../lib/plugins/filter/template_locals/i18n';
 type I18nLocalsFilterParams = Parameters<typeof i18nLocalsFilter>;
 type I18nLocalsFilterReturn = ReturnType<typeof i18nLocalsFilter>;
 

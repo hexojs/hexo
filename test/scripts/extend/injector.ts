@@ -1,4 +1,4 @@
-import Injector from '../../../dist/extend/injector';
+import Injector from '../../../lib/extend/injector';
 
 describe('Injector', () => {
   const content = [

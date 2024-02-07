@@ -4,8 +4,8 @@ import { join } from 'path';
 // @ts-ignore
 import Promise from 'bluebird';
 import { useFakeTimers, spy, SinonSpy, SinonFakeTimers } from 'sinon';
-import Hexo from '../../../dist/hexo';
-import publishConsole from '../../../dist/plugins/console/publish';
+import Hexo from '../../../lib/hexo';
+import publishConsole from '../../../lib/plugins/console/publish';
 type OriginalParams = Parameters<typeof publishConsole>;
 type OriginalReturn = ReturnType<typeof publishConsole>;
 

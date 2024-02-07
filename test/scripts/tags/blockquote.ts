@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import tagBlockquote from '../../../dist/plugins/tag/blockquote';
+import Hexo from '../../../lib/hexo';
+import tagBlockquote from '../../../lib/plugins/tag/blockquote';
 
 describe('blockquote', () => {
   const hexo = new Hexo(__dirname);

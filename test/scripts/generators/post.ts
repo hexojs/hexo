@@ -1,8 +1,8 @@
 // @ts-ignore
 import Promise from 'bluebird';
-import Hexo from '../../../dist/hexo';
-import postGenerator from '../../../dist/plugins/generator/post';
-import { NormalPostGenerator } from '../../../dist/types';
+import Hexo from '../../../lib/hexo';
+import postGenerator from '../../../lib/plugins/generator/post';
+import { NormalPostGenerator } from '../../../lib/types';
 import chai from 'chai';
 const should = chai.should();
 type PostGeneratorParams = Parameters<typeof postGenerator>;

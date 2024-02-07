@@ -2,9 +2,9 @@ import pathFn from 'path';
 import { mkdirs, writeFile, rmdir } from 'hexo-fs';
 // @ts-ignore
 import Promise from 'bluebird';
-import Hexo from '../../../dist/hexo';
-import fragmentCache from '../../../dist/plugins/helper/fragment_cache';
-import partialHelper from '../../../dist/plugins/helper/partial';
+import Hexo from '../../../lib/hexo';
+import fragmentCache from '../../../lib/plugins/helper/fragment_cache';
+import partialHelper from '../../../lib/plugins/helper/partial';
 import chai from 'chai';
 const should = chai.should();
 type PartialHelperParams = Parameters<ReturnType<typeof partialHelper>>;

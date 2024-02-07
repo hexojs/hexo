@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import excerptFilter from '../../../dist/plugins/filter/after_post_render/excerpt';
+import Hexo from '../../../lib/hexo';
+import excerptFilter from '../../../lib/plugins/filter/after_post_render/excerpt';
 type ExcerptFilterParams = Parameters<typeof excerptFilter>;
 type ExcerptFilterReturn = ReturnType<typeof excerptFilter>;
 

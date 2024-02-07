@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { mkdirs, rmdir, writeFile } from 'hexo-fs';
-import Hexo from '../../../dist/hexo';
+import Hexo from '../../../lib/hexo';
 import chai from 'chai';
 const should = chai.should();
 

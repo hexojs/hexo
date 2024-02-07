@@ -1,5 +1,5 @@
-import urlForHelper from '../../../dist/plugins/helper/url_for';
-import relativeUrlHelper from 'hexo-util/dist/relative_url';
+import urlForHelper from '../../../lib/plugins/helper/url_for';
+import relativeUrlHelper from 'hexo-util/lib/relative_url';
 type UrlForHelperParams = Parameters<typeof urlForHelper>;
 type UrlForHelperReturn = ReturnType<typeof urlForHelper>;
 

@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import titlecaseFilter from '../../../dist/plugins/filter/before_post_render/titlecase';
+import Hexo from '../../../lib/hexo';
+import titlecaseFilter from '../../../lib/plugins/filter/before_post_render/titlecase';
 type titlecaseFilterParams = Parameters<typeof titlecaseFilter>;
 type titlecaseFilterReturn = ReturnType<typeof titlecaseFilter>;
 

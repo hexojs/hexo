@@ -1,6 +1,6 @@
 import moment from 'moment';
-import Hexo from '../../../dist/hexo';
-import postPermalinkFilter from '../../../dist/plugins/filter/post_permalink';
+import Hexo from '../../../lib/hexo';
+import postPermalinkFilter from '../../../lib/plugins/filter/post_permalink';
 type PostPermalinkFilterParams = Parameters<typeof postPermalinkFilter>;
 type PostPermalinkFilterReturn = ReturnType<typeof postPermalinkFilter>;
 

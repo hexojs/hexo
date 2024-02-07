@@ -1,4 +1,4 @@
-import r from '../../../dist/plugins/renderer/nunjucks';
+import r from '../../../lib/plugins/renderer/nunjucks';
 import { dirname, join } from 'path';
 import chai from 'chai';
 const should = chai.should();

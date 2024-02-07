@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import imageTag from '../../../dist/plugins/helper/image_tag';
+import Hexo from '../../../lib/hexo';
+import imageTag from '../../../lib/plugins/helper/image_tag';
 type imageTagParams = Parameters<typeof imageTag>;
 type imageTagReturn = ReturnType<typeof imageTag>;
 

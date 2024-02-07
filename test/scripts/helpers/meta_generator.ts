@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import metaGeneratorHelper from '../../../dist/plugins/helper/meta_generator';
+import Hexo from '../../../lib/hexo';
+import metaGeneratorHelper from '../../../lib/plugins/helper/meta_generator';
 import chai from 'chai';
 const should = chai.should();
 type MetaGeneratorHelperParams = Parameters<typeof metaGeneratorHelper>;

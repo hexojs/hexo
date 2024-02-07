@@ -1,4 +1,4 @@
-import Renderer from '../../../dist/extend/renderer';
+import Renderer from '../../../lib/extend/renderer';
 // @ts-ignore
 import Promise from 'bluebird';
 import chai from 'chai';

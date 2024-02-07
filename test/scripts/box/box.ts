@@ -4,8 +4,8 @@ import { hash, Pattern } from 'hexo-util';
 import { spy, match, assert as sinonAssert } from 'sinon';
 // @ts-ignore
 import Promise from 'bluebird';
-import Hexo from '../../../dist/hexo';
-import Box from '../../../dist/box';
+import Hexo from '../../../lib/hexo';
+import Box from '../../../lib/box';
 import chai from 'chai';
 const should = chai.should();
 

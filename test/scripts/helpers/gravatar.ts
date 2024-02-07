@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import gravatarHelper from '../../../dist/plugins/helper/gravatar';
+import gravatarHelper from '../../../lib/plugins/helper/gravatar';
 
 describe('gravatar', () => {
   function md5(str) {

@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import listArchivesHelper from '../../../dist/plugins/helper/list_archives';
+import Hexo from '../../../lib/hexo';
+import listArchivesHelper from '../../../lib/plugins/helper/list_archives';
 type ListArchivesHelperParams = Parameters<typeof listArchivesHelper>;
 type ListArchivesHelperReturn = ReturnType<typeof listArchivesHelper>;
 

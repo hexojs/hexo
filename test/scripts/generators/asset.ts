@@ -1,8 +1,8 @@
 import { join } from 'path';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 import testUtil from '../../util';
-import Hexo from '../../../dist/hexo';
-import assetGenerator from '../../../dist/plugins/generator/asset';
+import Hexo from '../../../lib/hexo';
+import assetGenerator from '../../../lib/plugins/generator/asset';
 import { spy } from 'sinon';
 import chai from 'chai';
 const should = chai.should();

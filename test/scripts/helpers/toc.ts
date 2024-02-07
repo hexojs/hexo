@@ -1,5 +1,5 @@
 import { encodeURL, escapeHTML } from 'hexo-util';
-import toc from '../../../dist/plugins/helper/toc';
+import toc from '../../../lib/plugins/helper/toc';
 
 describe('toc', () => {
   const html = [

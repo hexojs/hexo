@@ -1,4 +1,4 @@
-import numberFormat from '../../../dist/plugins/helper/number_format';
+import numberFormat from '../../../lib/plugins/helper/number_format';
 
 describe('number_format', () => {
   it('default', () => {

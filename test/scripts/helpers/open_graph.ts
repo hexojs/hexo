@@ -1,10 +1,10 @@
 import moment from 'moment';
 import cheerio from 'cheerio';
 import { encodeURL, htmlTag as tag } from 'hexo-util';
-import defaultConfig from '../../../dist/hexo/default_config';
-import Hexo from '../../../dist/hexo';
-import openGraph from '../../../dist/plugins/helper/open_graph';
-import { post as isPost } from '../../../dist/plugins/helper/is';
+import defaultConfig from '../../../lib/hexo/default_config';
+import Hexo from '../../../lib/hexo';
+import openGraph from '../../../lib/plugins/helper/open_graph';
+import { post as isPost } from '../../../lib/plugins/helper/is';
 
 describe('open_graph', () => {
   const hexo = new Hexo();

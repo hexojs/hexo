@@ -1,5 +1,5 @@
 import { join } from 'path';
-import Hexo from '../../../dist/hexo';
+import Hexo from '../../../lib/hexo';
 
 describe('Asset', () => {
   const hexo = new Hexo();

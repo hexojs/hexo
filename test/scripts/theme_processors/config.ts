@@ -3,8 +3,8 @@ import { join } from 'path';
 import { mkdirs, rmdir, unlink, writeFile} from 'hexo-fs';
 // @ts-ignore
 import Promise from 'bluebird';
-import Hexo from '../../../dist/hexo';
-import { config } from '../../../dist/theme/processors/config';
+import Hexo from '../../../lib/hexo';
+import { config } from '../../../lib/theme/processors/config';
 import chai from 'chai';
 const should = chai.should();
 type ConfigParams = Parameters<typeof config['process']>

@@ -1,7 +1,7 @@
 import moment from 'moment-timezone';
 import { useFakeTimers } from 'sinon';
-import Hexo from '../../../dist/hexo';
-import { date as dateHelper, date_xml, relative_date, time as timeHelper, full_date, time_tag, toMomentLocale } from '../../../dist/plugins/helper/date';
+import Hexo from '../../../lib/hexo';
+import { date as dateHelper, date_xml, relative_date, time as timeHelper, full_date, time_tag, toMomentLocale } from '../../../lib/plugins/helper/date';
 type DateHelperParams = Parameters<typeof dateHelper>;
 type DateHelperReturn = ReturnType<typeof dateHelper>;
 type TimeHelperParams = Parameters<typeof timeHelper>;

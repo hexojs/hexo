@@ -1,4 +1,4 @@
-import searchFormHelper from '../../../dist/plugins/helper/search_form';
+import searchFormHelper from '../../../lib/plugins/helper/search_form';
 type SearchFormHelperParams = Parameters<typeof searchFormHelper>;
 type SearchFormHelperReturn = ReturnType<typeof searchFormHelper>;
 

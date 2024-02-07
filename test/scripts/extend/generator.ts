@@ -1,4 +1,4 @@
-import Generator from '../../../dist/extend/generator';
+import Generator from '../../../lib/extend/generator';
 import chai from 'chai';
 const should = chai.should();
 

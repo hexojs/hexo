@@ -1,5 +1,5 @@
-import Hexo from '../../../dist/hexo';
-import { current, home, home_first_page, post, page, archive, year, month, category, tag } from '../../../dist/plugins/helper/is';
+import Hexo from '../../../lib/hexo';
+import { current, home, home_first_page, post, page, archive, year, month, category, tag } from '../../../lib/plugins/helper/is';
 
 describe('is', () => {
   const hexo = new Hexo(__dirname);

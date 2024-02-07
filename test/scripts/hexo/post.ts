@@ -5,14 +5,14 @@ import { spy, useFakeTimers } from 'sinon';
 import { parse as yfm } from 'hexo-front-matter';
 import fixture from '../../fixtures/post_render';
 import { highlight } from 'hexo-util';
-import Hexo from '../../../dist/hexo';
+import Hexo from '../../../lib/hexo';
 import chai from 'chai';
 const should = chai.should();
 const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
 describe('Post', () => {
   const hexo = new Hexo(join(__dirname, 'post_test'));
-  require('../../../dist/plugins/highlight/')(hexo);
+  require('../../../lib/plugins/highlight/')(hexo);
   const { post } = hexo;
   const now = Date.now();
   let clock;

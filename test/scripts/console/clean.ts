@@ -1,6 +1,6 @@
 import { exists, mkdirs, unlink, writeFile } from 'hexo-fs';
-import Hexo from '../../../dist/hexo';
-import cleanConsole from '../../../dist/plugins/console/clean';
+import Hexo from '../../../lib/hexo';
+import cleanConsole from '../../../lib/plugins/console/clean';
 type OriginalParams = Parameters<typeof cleanConsole>;
 type OriginalReturn = ReturnType<typeof cleanConsole>;
 

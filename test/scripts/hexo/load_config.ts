@@ -1,9 +1,9 @@
 import { join, sep, resolve } from 'path';
 import { writeFile, unlink, mkdirs, rmdir } from 'hexo-fs';
 import { makeRe } from 'micromatch';
-import loadConfig from '../../../dist/hexo/load_config';
-import defaultConfig from '../../../dist/hexo/default_config';
-import Hexo from '../../../dist/hexo';
+import loadConfig from '../../../lib/hexo/load_config';
+import defaultConfig from '../../../lib/hexo/default_config';
+import Hexo from '../../../lib/hexo';
 
 describe('Load config', () => {
   const hexo = new Hexo(join(__dirname, 'config_test'), { silent: true });

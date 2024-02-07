@@ -1,7 +1,7 @@
 import { join } from 'path';
-import Hexo from '../../../dist/hexo';
+import Hexo from '../../../lib/hexo';
 import { exists, mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
-import loadDatabase from '../../../dist/hexo/load_database';
+import loadDatabase from '../../../lib/hexo/load_database';
 
 describe('Load database', () => {
   const hexo = new Hexo(join(__dirname, 'db_test'), {silent: true});

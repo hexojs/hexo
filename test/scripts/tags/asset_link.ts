@@ -1,7 +1,7 @@
 // @ts-ignore
 import Promise from 'bluebird';
-import Hexo from '../../../dist/hexo';
-import tagAssetLink from '../../../dist/plugins/tag/asset_link';
+import Hexo from '../../../lib/hexo';
+import tagAssetLink from '../../../lib/plugins/tag/asset_link';
 import chai from 'chai';
 const should = chai.should();
 

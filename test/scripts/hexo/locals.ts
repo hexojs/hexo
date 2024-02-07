@@ -1,4 +1,4 @@
-import Locals from '../../../dist/hexo/locals';
+import Locals from '../../../lib/hexo/locals';
 import chai from 'chai';
 const should = chai.should();
 

@@ -1,6 +1,6 @@
 import { url_for } from 'hexo-util';
-import Hexo from '../../../dist/hexo';
-import paginatorHelper from '../../../dist/plugins/helper/paginator';
+import Hexo from '../../../lib/hexo';
+import paginatorHelper from '../../../lib/plugins/helper/paginator';
 type PaginatorHelperParams = Parameters<typeof paginatorHelper>;
 type PaginatorHelperReturn = ReturnType<typeof paginatorHelper>;
 

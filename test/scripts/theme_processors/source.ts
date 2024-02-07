@@ -2,8 +2,8 @@ import { join } from 'path';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 // @ts-ignore
 import Promise from 'bluebird';
-import Hexo from '../../../dist/hexo';
-import { source } from '../../../dist/theme/processors/source';
+import Hexo from '../../../lib/hexo';
+import { source } from '../../../lib/theme/processors/source';
 import chai from 'chai';
 const should = chai.should();
 type SourceParams = Parameters<typeof source['process']>

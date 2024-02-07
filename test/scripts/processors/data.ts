@@ -2,8 +2,8 @@
 import Promise from 'bluebird';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 import { join } from 'path';
-import Hexo from '../../../dist/hexo';
-import data from '../../../dist/plugins/processor/data';
+import Hexo from '../../../lib/hexo';
+import data from '../../../lib/plugins/processor/data';
 import chai from 'chai';
 const should = chai.should();
 

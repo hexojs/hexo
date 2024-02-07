@@ -1,5 +1,5 @@
 import moment from 'moment-timezone';
-import SchemaTypeMoment from '../../../dist/models/types/moment';
+import SchemaTypeMoment from '../../../lib/models/types/moment';
 import chai from 'chai';
 const should = chai.should();
 

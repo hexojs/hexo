@@ -5,8 +5,8 @@ import Promise from 'bluebird';
 import { spy } from 'sinon';
 import chai from 'chai';
 const should = chai.should();
-import Hexo from '../../../dist/hexo';
-import generateConsole from '../../../dist/plugins/console/generate';
+import Hexo from '../../../lib/hexo';
+import generateConsole from '../../../lib/plugins/console/generate';
 type OriginalParams = Parameters<typeof generateConsole>;
 type OriginalReturn = ReturnType<typeof generateConsole>;
 

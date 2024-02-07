@@ -1,4 +1,4 @@
-import feedTag from '../../../dist/plugins/helper/feed_tag';
+import feedTag from '../../../lib/plugins/helper/feed_tag';
 import chai from 'chai';
 const should = chai.should();
 type FeedTagParams = Parameters<typeof feedTag>;

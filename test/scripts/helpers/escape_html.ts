@@ -1,4 +1,4 @@
-import { escapeHTML } from '../../../dist/plugins/helper/format';
+import { escapeHTML } from '../../../lib/plugins/helper/format';
 
 describe('escape_html', () => {
   it('default', () => {
