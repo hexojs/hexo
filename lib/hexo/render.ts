@@ -56,7 +56,7 @@ class Render {
     return this.getRenderer(ext, true);
   }
 
-  render(data: StoreFunctionData, options?: { highlight?: boolean; }, callback?: NodeJSLikeCallback<any>): Promise<any> {
+  render(data: StoreFunctionData, options?: any | NodeJSLikeCallback<any>, callback?: NodeJSLikeCallback<any>): Promise<any> {
     if (!callback && typeof options === 'function') {
       callback = options;
       options = {};

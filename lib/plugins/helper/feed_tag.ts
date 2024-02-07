@@ -9,10 +9,10 @@ const feedFn = (str = '') => {
 
 interface Options {
   title?: string;
-  type?: string;
+  type?: string | null;
 }
 
-function makeFeedTag(this: LocalsType, path: string, options: Options = {}, configFeed?: any, configTitle?: string) {
+function makeFeedTag(this: LocalsType, path?: string, options: Options = {}, configFeed?: any, configTitle?: string) {
   const title = options.title || configTitle;
 
   if (path) {
@@ -47,7 +47,7 @@ function makeFeedTag(this: LocalsType, path: string, options: Options = {}, conf
   return '';
 }
 
-function feedTagHelper(this: LocalsType, path: string, options: Options = {}) {
+function feedTagHelper(this: LocalsType, path?: string, options: Options = {}) {
   const { config } = this;
   return moize.deep(makeFeedTag.bind(this))(path, options, (config as any).feed, config.title);
 }

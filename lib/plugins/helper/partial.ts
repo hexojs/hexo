@@ -7,7 +7,7 @@ interface Options {
   only?: boolean;
 }
 
-export = (ctx: Hexo) => function partial(this: LocalsType, name: string, locals: any, options: Options = {}) {
+export = (ctx: Hexo) => function partial(this: LocalsType, name: string, locals?: any, options: Options = {}) {
   if (typeof name !== 'string') throw new TypeError('name must be a string!');
 
   const { cache } = options;

@@ -5,16 +5,26 @@ interface Options {
   href?: string;
   title?: string;
   class?: string | string[];
+  subject?: string;
+  cc?: string | string[];
+  bcc?: string | string[];
+  id?: string;
+  body?: string;
 }
 
 interface Attrs {
   href: string;
   title: string;
   class?: string;
-  [key: string]: string | boolean | null | undefined;
+  subject?: string;
+  cc?: string;
+  bcc?: string;
+  id?: string;
+  body?: string;
+  [key: string]: any;
 }
 
-function mailToHelper(path: string, text: string, options: Options = {}) {
+function mailToHelper(path: string | string[], text?: string, options: Options = {}) {
   if (Array.isArray(path)) path = path.join(',');
   if (!text) text = path;
 

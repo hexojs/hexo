@@ -2,6 +2,7 @@ import { htmlTag, url_for } from 'hexo-util';
 import type { LocalsType } from '../../types';
 
 interface Options {
+  id?: string;
   href?: string;
   title?: string;
   external?: boolean | null;
@@ -20,7 +21,7 @@ interface Attrs {
   [key: string]: string | boolean | null | undefined;
 }
 
-function linkToHelper(this: LocalsType, path: string, text: string, options: Options | boolean = {}) {
+function linkToHelper(this: LocalsType, path: string, text?: string, options: Options | boolean = {}) {
   if (typeof options === 'boolean') options = {external: options};
 
   if (!text) text = path.replace(/^https?:\/\/|\/$/g, '');

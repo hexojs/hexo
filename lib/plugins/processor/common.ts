@@ -4,7 +4,7 @@ import micromatch from 'micromatch';
 
 const DURATION_MINUTE = 1000 * 60;
 
-function isMatch(path: string, patterns: string| string[]) {
+function isMatch(path: string, patterns?: string| string[]) {
   if (!patterns) return false;
 
   return micromatch.isMatch(path, patterns);
@@ -34,7 +34,7 @@ export {isTmpFile};
 export {isHiddenFile};
 export {isExcludedFile};
 
-export function toDate(date: string | number | Date) {
+export function toDate(date?: string | number | Date | moment.Moment) {
   if (!date || moment.isMoment(date)) return date;
 
   if (!(date instanceof Date)) {
@@ -46,7 +46,7 @@ export function toDate(date: string | number | Date) {
   return date;
 }
 
-export function timezone(date: Date, timezone: string) {
+export function timezone(date: Date | moment.Moment, timezone: string) {
   if (moment.isMoment(date)) date = date.toDate();
 
   const offset = date.getTimezoneOffset();

@@ -12,7 +12,7 @@
     "clean": "tsc -b --clean",
     "eslint": "eslint lib test",
     "pretest": "npm run clean && npm run build",
-    "test": "mocha test/index.js --require ts-node/register",
+    "test": "mocha test/scripts/**/*.ts --require ts-node/register",
     "test-cov": "c8 --reporter=lcovonly npm test -- --no-parallel",
     "prepare": "husky install"
   },
@@ -66,13 +66,16 @@
     "warehouse": "^5.0.1"
   },
   "devDependencies": {
+    "0x": "^5.1.2",
     "@types/abbrev": "^1.1.3",
     "@types/bluebird": "^3.5.37",
+    "@types/chai": "^4.3.11",
     "@types/js-yaml": "^4.0.9",
+    "@types/mocha": "^10.0.6",
     "@types/node": "^18.11.8 <18.19.9",
     "@types/nunjucks": "^3.2.2",
+    "@types/sinon": "^17.0.3",
     "@types/text-table": "^0.2.4",
-    "0x": "^5.1.2",
     "c8": "^9.0.0",
     "chai": "^4.3.6",
     "cheerio": "0.22.0",

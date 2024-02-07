@@ -1,7 +1,7 @@
 interface Options {
   delimiter?: string;
   separator?: string;
-  precision?: number;
+  precision?: number | false;
 }
 
 function numberFormatHelper(num: number, options: Options = {}) {

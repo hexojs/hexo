@@ -16,7 +16,7 @@ class SchemaTypeMoment extends warehouse.SchemaType<moment.Moment> {
     super(name, options);
   }
 
-  cast(value, data) {
+  cast(value?, data?) {
     value = super.cast(value, data);
     if (value == null) return value;
 
@@ -29,7 +29,7 @@ class SchemaTypeMoment extends warehouse.SchemaType<moment.Moment> {
     return value;
   }
 
-  validate(value, data) {
+  validate(value, data?) {
     value = super.validate(value, data);
     if (value == null) return value;
 
@@ -42,11 +42,11 @@ class SchemaTypeMoment extends warehouse.SchemaType<moment.Moment> {
     return value;
   }
 
-  match(value, query, data) {
+  match(value, query, data?) {
     return value ? value.valueOf() === query.valueOf() : false;
   }
 
-  compare(a, b) {
+  compare(a?, b?) {
     if (a) {
       if (b) return a - b;
       return 1;
@@ -56,33 +56,33 @@ class SchemaTypeMoment extends warehouse.SchemaType<moment.Moment> {
     return 0;
   }
 
-  parse(value) {
+  parse(value?) {
     if (value) return toMoment(value);
   }
 
-  value(value, data) {
+  value(value?, data?) {
     // FIXME: Same as above. Also a dirty hack.
     return value ? value._d.toISOString() : value;
   }
 
-  q$day(value, query, data) {
+  q$day(value, query, data?) {
     return value ? value.date() === query : false;
   }
 
-  q$month(value, query, data) {
+  q$month(value, query, data?) {
     return value ? value.month() === query : false;
   }
 
-  q$year(value, query, data) {
+  q$year(value, query, data?) {
     return value ? value.year() === query : false;
   }
 
-  u$inc(value, update, data) {
+  u$inc(value, update, data?) {
     if (!value) return value;
     return value.add(update);
   }
 
-  u$dec(value, update, data) {
+  u$dec(value, update, data?) {
     if (!value) return value;
     return value.subtract(update);
   }

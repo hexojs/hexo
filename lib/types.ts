@@ -82,7 +82,7 @@ export interface PostSchema {
   current?: number;
   total?: number;
   description?: string;
-
+  [key: string]: any;
 }
 
 export interface PageSchema {
