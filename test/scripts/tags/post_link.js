@@ -77,4 +77,9 @@ describe('post_link', () => {
   it('should keep hash', () => {
     postLink(['foo#bar']).should.eql('<a href="/foo/#bar" title="Hello world">Hello world</a>');
   });
+
+  it('should keep subdir', () => {
+    hexo.config.url = 'http://example.com/subdir';
+    postLink(['foo']).should.eql('<a href="/subdir/foo/" title="Hello world">Hello world</a>');
+  });
 });
