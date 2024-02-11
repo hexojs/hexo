@@ -41,7 +41,7 @@ export = (ctx: Hexo) => {
     const attrTitle = escapeHTML(post.title || post.slug);
     if (escape === 'true') title = escapeHTML(title);
     
-    // guarantee the base url ends with a slash (case of using a subdirectory in the url of the site)
+    // guarantee the base url ends with a slash. (case of using a subdirectory in the url of the site)
     let baseUrl = ctx.config.url;
     if (!baseUrl.endsWith('/')) {
       baseUrl += '/';
