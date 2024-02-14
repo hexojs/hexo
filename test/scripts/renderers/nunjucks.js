@@ -1,7 +1,7 @@
 'use strict';
 
 require('chai').should();
-const r = require('../../../lib/plugins/renderer/nunjucks');
+const r = require('../../../dist/plugins/renderer/nunjucks');
 const { dirname, join } = require('path');
 
 describe('nunjucks', () => {
@@ -121,6 +121,14 @@ describe('nunjucks', () => {
       data.arr.add(3);
 
       r({ text: forLoop }, data).should.eql('123');
+    });
+
+    it('toarray other case', () => {
+      const data = {
+        arr: 1
+      };
+
+      r({ text: forLoop }, data).should.eql('');
     });
 
     it('safedump undefined', () => {

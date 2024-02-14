@@ -3,10 +3,10 @@
 const { spy } = require('sinon');
 
 describe('Validate config', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo();
-  const validateConfig = require('../../../lib/hexo/validate_config');
-  const defaultConfig = require('../../../lib/hexo/default_config');
+  const validateConfig = require('../../../dist/hexo/validate_config');
+  const defaultConfig = require('../../../dist/hexo/default_config');
   let logSpy;
 
   beforeEach(() => {

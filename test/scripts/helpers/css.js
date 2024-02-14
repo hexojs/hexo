@@ -3,14 +3,14 @@
 const cheerio = require('cheerio');
 
 describe('css', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
 
   const ctx = {
     config: hexo.config
   };
 
-  const css = require('../../../lib/plugins/helper/css').bind(ctx);
+  const css = require('../../../dist/plugins/helper/css').bind(ctx);
 
   function assertResult(result, expected) {
     const $ = cheerio.load(result);
@@ -72,5 +72,18 @@ describe('css', () => {
     assertResult(css([{href: '/foo.css'}, {href: '/bar.css'}]), [{href: '/foo.css'}, {href: '/bar.css'}]);
     assertResult(css([{href: '/aaa.css', bbb: 'ccc'}, {href: '/ddd.css', eee: 'fff'}]),
       [{href: '/aaa.css', bbb: 'ccc'}, {href: '/ddd.css', eee: 'fff'}]);
+  });
+
+  it('relative link', () => {
+    ctx.config.relative_link = true;
+    ctx.config.root = '/';
+
+    ctx.path = '';
+    assertResult(css('style'), 'style.css');
+
+    ctx.path = 'foo/bar/';
+    assertResult(css('style'), '../../style.css');
+
+    ctx.config.relative_link = false;
   });
 });

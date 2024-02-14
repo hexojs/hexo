@@ -6,9 +6,9 @@ const Promise = require('bluebird');
 const { spy } = require('sinon');
 
 describe('render', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'render_test'), {silent: true});
-  const render = require('../../../lib/plugins/console/render').bind(hexo);
+  const render = require('../../../dist/plugins/console/render').bind(hexo);
 
   before(async () => {
     await mkdirs(hexo.base_dir);
@@ -26,7 +26,7 @@ describe('render', () => {
   it('no args', async () => {
     const hexo = new Hexo(join(__dirname, 'render_test'), {silent: true});
     hexo.call = spy();
-    const render = require('../../../lib/plugins/console/render').bind(hexo);
+    const render = require('../../../dist/plugins/console/render').bind(hexo);
 
     await render({_: []});
 

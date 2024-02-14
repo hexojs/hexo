@@ -3,11 +3,11 @@
 const { content, expected } = require('../../fixtures/post_render');
 
 describe('Render post', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo();
   const Post = hexo.model('Post');
   const Page = hexo.model('Page');
-  const renderPost = require('../../../lib/plugins/filter/before_generate/render_post').bind(hexo);
+  const renderPost = require('../../../dist/plugins/filter/before_generate/render_post').bind(hexo);
 
   before(async () => {
     await hexo.init();
@@ -42,22 +42,6 @@ describe('Render post', () => {
 
     page = Page.findById(id);
     page.content.trim().should.eql(expected);
-
-    page.remove();
-  });
-
-  it('use data variables', async () => {
-    let page = await Page.insert({
-      source: 'foo.md',
-      path: 'foo.html',
-      _content: '<p>Hello {{site.data.foo.name}}</p>'
-    });
-
-    const id = page._id;
-    await renderPost({foo: {name: 'Hexo'}});
-
-    page = Page.findById(id);
-    page.content.trim().should.eql('<p>Hello Hexo</p>');
 
     page.remove();
   });

@@ -2,15 +2,16 @@
 
 const { dirname, join } = require('path');
 const { mkdirs, rmdir, stat, unlink, writeFile } = require('hexo-fs');
+const { spy } = require('sinon');
 
 const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 
 describe('asset', () => {
-  const Hexo = require('../../../lib/hexo');
-  const defaults = require('../../../lib/hexo/default_config');
+  const Hexo = require('../../../dist/hexo');
+  const defaults = require('../../../dist/hexo/default_config');
   const baseDir = join(__dirname, 'asset_test');
   const hexo = new Hexo(baseDir);
-  const asset = require('../../../lib/plugins/processor/asset')(hexo);
+  const asset = require('../../../dist/plugins/processor/asset')(hexo);
   const process = asset.process.bind(hexo);
   const { pattern } = asset;
   const { source } = hexo;
@@ -188,6 +189,19 @@ describe('asset', () => {
     should.not.exist(Asset.findById(id));
   });
 
+  it('asset - type: delete - not exist', async () => {
+    const file = newFile({
+      path: 'foo.jpg',
+      type: 'delete',
+      renderable: false
+    });
+
+    const id = 'source/' + file.path;
+    await process(file);
+
+    should.not.exist(Asset.findById(id));
+  });
+
   it('page - type: create', async () => {
     const body = [
       'title: "Hello world"',
@@ -222,6 +236,46 @@ describe('asset', () => {
     ]);
   });
 
+  it('page - type: create - exist', async () => {
+    const logSpy = spy();
+    hexo.log.warn = logSpy;
+
+    const body = [
+      'title: "Hello world"',
+      'date: 2006-01-02 15:04:05',
+      'updated: 2014-12-13 01:02:03',
+      '---',
+      'The quick brown fox jumps over the lazy dog'
+    ].join('\n');
+
+    const file = newFile({
+      path: 'hello.njk',
+      type: 'create',
+      renderable: true
+    });
+
+    await writeFile(file.source, body);
+    await process(file);
+    await process(file);
+
+    const page = Page.findOne({ source: file.path });
+    page.title.should.eql('Hello world');
+    page.date.format(dateFormat).should.eql('2006-01-02 15:04:05');
+    page.updated.format(dateFormat).should.eql('2014-12-13 01:02:03');
+    page._content.should.eql('The quick brown fox jumps over the lazy dog');
+    page.source.should.eql(file.path);
+    page.raw.should.eql(body);
+    page.path.should.eql('hello.html');
+    page.layout.should.eql('page');
+
+    logSpy.called.should.be.true;
+    logSpy.args[0][0].should.contains('Trying to "create" \x1B[35mhello.njk\x1B[39m, but the file already exists!');
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
+  });
+
   it('page - type: update', async () => {
     const body = [
       'title: "Hello world"',
@@ -249,6 +303,25 @@ describe('asset', () => {
     ]);
   });
 
+  it('page - type: skip', async () => {
+    const file = newFile({
+      path: 'hello.njk',
+      type: 'skip',
+      renderable: true
+    });
+
+    await Page.insert({
+      source: file.path,
+      path: 'hello.html'
+    });
+    const page = Page.findOne({source: file.path});
+    await process(file);
+    should.exist(page);
+    await Promise.all([
+      page.remove()
+    ]);
+  });
+
   it('page - type: delete', async () => {
     const file = newFile({
       path: 'hello.njk',
@@ -260,6 +333,17 @@ describe('asset', () => {
       source: file.path,
       path: 'hello.html'
     });
+    await process(file);
+    should.not.exist(Page.findOne({ source: file.path }));
+  });
+
+  it('page - type: delete - not exist', async () => {
+    const file = newFile({
+      path: 'hello.njk',
+      type: 'delete',
+      renderable: true
+    });
+
     await process(file);
     should.not.exist(Page.findOne({ source: file.path }));
   });

@@ -6,10 +6,10 @@ const fs = require('hexo-fs');
 const yml = require('js-yaml');
 
 describe('config flag handling', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(pathFn.join(__dirname, 'test_dir'));
 
-  const mcp = require('../../../lib/hexo/multi_config_path')(hexo);
+  const mcp = require('../../../dist/hexo/multi_config_path')(hexo);
   const base = hexo.base_dir;
 
   function ConsoleReader() {
@@ -129,6 +129,8 @@ describe('config flag handling', () => {
     fs.writeFileSync(base + 'test2.yml', testYaml2);
     fs.writeFileSync(base + 'test1.json', testJson1);
     fs.writeFileSync(base + 'test2.json', testJson2);
+    // not supported type
+    fs.writeFileSync(base + 'test1.xml', '');
     fs.writeFileSync('/tmp/test3.json', testJson3);
   });
 
@@ -145,6 +147,12 @@ describe('config flag handling', () => {
     mcp(base).should.equal(base + '_config.yml');
     hexo.log.reader[0].type.should.eql('warning');
     hexo.log.reader[0].msg.should.eql('No config file entered.');
+  });
+
+  it('not supported type', () => {
+    mcp(base, 'test1.xml,test1.json').should.equal(base + '_multiconfig.yml');
+    hexo.log.reader[0].type.should.eql('warning');
+    hexo.log.reader[0].msg.should.eql('Config file test1.xml not supported type.');
   });
 
   it('1 file', () => {

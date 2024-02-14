@@ -6,10 +6,10 @@ const { mkdirs, rmdir, unlink, writeFile} = require('hexo-fs');
 const Promise = require('bluebird');
 
 describe('config', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
-  const processor = require('../../../lib/theme/processors/config');
-  const process = Promise.method(processor.process.bind(hexo));
+  const processor = require('../../../dist/theme/processors/config');
+  const process = Promise.method(processor.config.process.bind(hexo));
   const themeDir = join(hexo.base_dir, 'themes', 'test');
 
   function newFile(options) {
@@ -30,7 +30,7 @@ describe('config', () => {
   after(() => rmdir(hexo.base_dir));
 
   it('pattern', () => {
-    const pattern = processor.pattern;
+    const pattern = processor.config.pattern;
 
     pattern.match('_config.yml').should.be.ok;
     pattern.match('_config.json').should.be.ok;

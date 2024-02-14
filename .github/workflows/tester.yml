@@ -1,6 +1,21 @@
 name: Tester
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - "master"
+      - "v7.0.0"
+    paths:
+      - "lib/**"
+      - "test/**"
+      - "package.json"
+      - ".github/workflows/tester.yml"
+  pull_request:
+    paths:
+      - "lib/**"
+      - "test/**"
+      - "package.json"
+      - ".github/workflows/tester.yml"
 
 permissions:
   contents: read
@@ -11,12 +26,12 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        node-version: ['14.x', '16.x', '18.x']
+        node-version: ["14.x", "16.x", "18.x"]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install Dependencies
@@ -27,17 +42,17 @@ jobs:
           CI: true
   coverage:
     permissions:
-      checks: write  # for coverallsapp/github-action to create new checks
-      contents: read  # for actions/checkout to fetch code
+      checks: write # for coverallsapp/github-action to create new checks
+      contents: read # for actions/checkout to fetch code
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: ['14.x']
+        node-version: ["14.x"]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install Dependencies

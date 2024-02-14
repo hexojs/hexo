@@ -3,10 +3,10 @@
 const Promise = require('bluebird');
 
 describe('post', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname, {silent: true});
   const Post = hexo.model('Post');
-  const generator = Promise.method(require('../../../lib/plugins/generator/post').bind(hexo));
+  const generator = Promise.method(require('../../../dist/plugins/generator/post').bind(hexo));
 
   hexo.config.permalink = ':title/';
 

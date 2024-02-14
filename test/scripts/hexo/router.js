@@ -9,7 +9,7 @@ const { spy, assert: sinonAssert } = require('sinon');
 const testUtil = require('../../util');
 
 describe('Router', () => {
-  const Router = require('../../../lib/hexo/router');
+  const Router = require('../../../dist/hexo/router');
   const router = new Router();
 
   function checkStream(stream, expected) {

@@ -1,9 +1,9 @@
 'use strict';
 
 describe('is', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
-  const is = require('../../../lib/plugins/helper/is');
+  const is = require('../../../dist/plugins/helper/is');
 
   it('is_current', async () => {
     await is.current.call({path: 'index.html', config: hexo.config}).should.be.true;

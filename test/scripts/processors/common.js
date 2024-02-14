@@ -3,7 +3,7 @@
 const moment = require('moment');
 
 describe('common', () => {
-  const common = require('../../../lib/plugins/processor/common');
+  const common = require('../../../dist/plugins/processor/common');
 
   it('isTmpFile()', () => {
     common.isTmpFile('foo').should.be.false;

@@ -3,9 +3,9 @@
 const { spy, assert: sinonAssert, stub } = require('sinon');
 
 describe('migrate', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname, { silent: true });
-  const migrate = require('../../../lib/plugins/console/migrate').bind(hexo);
+  const migrate = require('../../../dist/plugins/console/migrate').bind(hexo);
 
   it('default', async () => {
     const migrator = spy();
@@ -21,7 +21,7 @@ describe('migrate', () => {
   it('no args', async () => {
     const hexo = new Hexo(__dirname, { silent: true });
     hexo.call = spy();
-    const migrate = require('../../../lib/plugins/console/migrate').bind(hexo);
+    const migrate = require('../../../dist/plugins/console/migrate').bind(hexo);
 
     await migrate({ _: [] });
     hexo.call.calledOnce.should.be.true;

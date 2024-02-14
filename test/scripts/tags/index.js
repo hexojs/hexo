@@ -6,6 +6,7 @@ describe('Tags', () => {
   require('./asset_path');
   require('./blockquote');
   require('./code');
+  require('./full_url_for');
   require('./iframe');
   require('./img');
   require('./include_code');
@@ -13,4 +14,5 @@ describe('Tags', () => {
   require('./post_link');
   require('./post_path');
   require('./pullquote');
+  require('./url_for');
 });

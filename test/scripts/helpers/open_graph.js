@@ -3,13 +3,13 @@
 const moment = require('moment');
 const cheerio = require('cheerio');
 const { encodeURL } = require('hexo-util');
-const defaultConfig = require('../../../lib/hexo/default_config');
+const defaultConfig = require('../../../dist/hexo/default_config');
 
 describe('open_graph', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo();
-  const openGraph = require('../../../lib/plugins/helper/open_graph');
-  const isPost = require('../../../lib/plugins/helper/is').post;
+  const openGraph = require('../../../dist/plugins/helper/open_graph');
+  const isPost = require('../../../dist/plugins/helper/is').post;
   const tag = require('hexo-util').htmlTag;
   const Post = hexo.model('Post');
 

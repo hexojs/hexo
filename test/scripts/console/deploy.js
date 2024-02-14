@@ -5,9 +5,9 @@ const { join } = require('path');
 const { spy, stub, assert: sinonAssert } = require('sinon');
 
 describe('deploy', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'deploy_test'), { silent: true });
-  const deploy = require('../../../lib/plugins/console/deploy').bind(hexo);
+  const deploy = require('../../../dist/plugins/console/deploy').bind(hexo);
 
   before(async () => {
     await mkdirs(hexo.public_dir);
@@ -97,7 +97,7 @@ describe('deploy', () => {
     const hexo = new Hexo(join(__dirname, 'deploy_test'));
     hexo.log.error = logSpy;
 
-    const deploy = require('../../../lib/plugins/console/deploy').bind(hexo);
+    const deploy = require('../../../dist/plugins/console/deploy').bind(hexo);
 
     hexo.extend.deployer.register('baz', () => { });
     hexo.config.deploy = {

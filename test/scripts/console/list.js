@@ -1,15 +1,16 @@
 'use strict';
 
-const { spy } = require('sinon');
+const { spy, stub, assert: sinonAssert } = require('sinon');
+const Promise = require('bluebird');
 
 describe('Console list', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
 
   it('no args', () => {
     hexo.call = spy();
 
-    const list = require('../../../lib/plugins/console/list').bind(hexo);
+    const list = require('../../../dist/plugins/console/list').bind(hexo);
 
     list({ _: [''] });
 
@@ -18,10 +19,26 @@ describe('Console list', () => {
     hexo.call.args[0][1]._[0].should.eql('list');
   });
 
+  it('has args', async () => {
+    const logStub = stub(console, 'log');
+
+    hexo.load = () => Promise.resolve();
+
+    const list = require('../../../dist/plugins/console/list').bind(hexo);
+
+    await list({ _: ['page'] });
+
+    sinonAssert.calledWithMatch(logStub, 'Date');
+    sinonAssert.calledWithMatch(logStub, 'Title');
+    sinonAssert.calledWithMatch(logStub, 'Path');
+    sinonAssert.calledWithMatch(logStub, 'No pages.');
+    logStub.restore();
+  });
+
   it('list type not found', () => {
     hexo.call = spy();
 
-    const list = require('../../../lib/plugins/console/list').bind(hexo);
+    const list = require('../../../dist/plugins/console/list').bind(hexo);
 
     list({ _: ['test'] });
 

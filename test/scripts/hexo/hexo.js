@@ -9,7 +9,7 @@ const { full_url_for } = require('hexo-util');
 
 describe('Hexo', () => {
   const base_dir = join(__dirname, 'hexo_test');
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(base_dir, { silent: true });
   const coreDir = join(__dirname, '../../..');
   const { version } = require('../../../package.json');
@@ -24,7 +24,7 @@ describe('Hexo', () => {
   }
 
   function loadAssetGenerator() {
-    hexo.extend.generator.register('asset', require('../../../lib/plugins/generator/asset'));
+    hexo.extend.generator.register('asset', require('../../../dist/plugins/generator/asset'));
   }
 
   before(async () => {
@@ -48,7 +48,7 @@ describe('Hexo', () => {
 
     /* eslint-disable no-path-concat */
     hexo.core_dir.should.eql(coreDir + sep);
-    hexo.lib_dir.should.eql(join(coreDir, 'lib') + sep);
+    hexo.lib_dir.should.eql(join(coreDir, 'dist') + sep);
     hexo.version.should.eql(version);
     hexo.base_dir.should.eql(__dirname + sep);
     hexo.public_dir.should.eql(join(__dirname, 'public') + sep);

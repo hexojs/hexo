@@ -3,10 +3,10 @@
 const Promise = require('bluebird');
 
 describe('page', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname, {silent: true});
   const Page = hexo.model('Page');
-  const generator = Promise.method(require('../../../lib/plugins/generator/page').bind(hexo));
+  const generator = Promise.method(require('../../../dist/plugins/generator/page').bind(hexo));
 
   const locals = () => {
     hexo.locals.invalidate();

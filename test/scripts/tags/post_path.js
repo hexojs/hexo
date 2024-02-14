@@ -1,9 +1,9 @@
 'use strict';
 
 describe('post_path', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(__dirname);
-  const postPath = require('../../../lib/plugins/tag/post_path')(hexo);
+  const postPath = require('../../../dist/plugins/tag/post_path')(hexo);
   const Post = hexo.model('Post');
 
   hexo.config.permalink = ':title/';

@@ -5,10 +5,10 @@ const { writeFile, unlink, mkdirs, rmdir } = require('hexo-fs');
 const { makeRe } = require('micromatch');
 
 describe('Load config', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'config_test'), { silent: true });
-  const loadConfig = require('../../../lib/hexo/load_config');
-  const defaultConfig = require('../../../lib/hexo/default_config');
+  const loadConfig = require('../../../dist/hexo/load_config');
+  const defaultConfig = require('../../../dist/hexo/default_config');
 
   hexo.env.init = true;
 

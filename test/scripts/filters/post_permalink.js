@@ -3,9 +3,9 @@
 const moment = require('moment');
 
 describe('post_permalink', () => {
-  const Hexo = require('../../../lib/hexo');
+  const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo();
-  const postPermalink = require('../../../lib/plugins/filter/post_permalink').bind(hexo);
+  const postPermalink = require('../../../dist/plugins/filter/post_permalink').bind(hexo);
   const Post = hexo.model('Post');
   let post;
 
@@ -170,5 +170,53 @@ describe('post_permalink', () => {
     postPermalink(posts[1]).should.eql('/hexo-hexo/permalink-test-2');
 
     await Promise.all(posts.map(post => Post.removeById(post._id)));
+  });
+
+  it('permalink - should end with / or .html - 1', async () => {
+    hexo.config.post_asset_folder = true;
+    hexo.config.permalink = ':year/:month/:day/:title';
+
+    const post = await Post.insert({
+      source: 'foo.md',
+      slug: 'foo',
+      date: moment('2014-01-02')
+    });
+
+    postPermalink(post).should.eql('2014/01/02/foo/');
+
+    Post.removeById(post._id);
+    hexo.config.post_asset_folder = false;
+  });
+
+
+  it('permalink - should end with / or .html - 2', async () => {
+    hexo.config.post_asset_folder = true;
+
+    const posts = await Post.insert([{
+      source: 'my-new-post.md',
+      slug: 'hexo/permalink-test',
+      __permalink: 'hexo/permalink-test',
+      title: 'Permalink Test',
+      date: moment('2014-01-02')
+    }, {
+      source: 'another-new-post.md',
+      slug: '/hexo-hexo/permalink-test-2',
+      __permalink: '/hexo-hexo/permalink-test-2/',
+      title: 'Permalink Test',
+      date: moment('2014-01-02')
+    }, {
+      source: 'another-another-new-post.md',
+      slug: '/hexo-hexo/permalink-test-3',
+      __permalink: '/hexo-hexo/permalink-test-3.html',
+      title: 'Permalink Test',
+      date: moment('2014-01-02')
+    }]);
+
+    postPermalink(posts[0]).should.eql('/hexo/permalink-test/');
+    postPermalink(posts[1]).should.eql('/hexo-hexo/permalink-test-2/');
+    postPermalink(posts[2]).should.eql('/hexo-hexo/permalink-test-3.html');
+
+    await Promise.all(posts.map(post => Post.removeById(post._id)));
+    hexo.config.post_asset_folder = false;
   });
 });
