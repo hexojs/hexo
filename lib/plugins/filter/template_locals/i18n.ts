@@ -13,7 +13,9 @@ function i18nLocalsFilter(this: Hexo, locals: LocalsType): void {
 
   if (!lang) {
     const pattern = new Pattern(`${i18nDir}/*path`);
-    const data = pattern.match(locals.path);
+    // fix hexo-util/dist/pattern.d.ts is not object
+    // fix(TS2322): Type 'unknown' is not assignable to type 'string'.
+    const data = pattern.match(locals.path) as Record<string, any>;
 
     if (
       typeof data !== 'undefined'
