@@ -1,6 +1,7 @@
-import { isMoment, isDate } from 'moment';
+import { isMoment, isDate, Moment } from 'moment';
 import { encodeURL, prettyUrls, stripHTML, escapeHTML } from 'hexo-util';
 import moize from 'moize';
+import type { LocalsType } from '../../types';
 
 const localeMap = {
   'en': 'en_US',
@@ -34,7 +35,7 @@ const localeToTerritory = moize.shallow(str => {
   }
 });
 
-const meta = (name, content, escape?: boolean) => {
+const meta = (name: string, content: string | URL, escape?: boolean) => {
   if (escape !== false && typeof content === 'string') {
     content = escapeHTML(content);
   }
@@ -43,7 +44,7 @@ const meta = (name, content, escape?: boolean) => {
   return `<meta name="${name}">\n`;
 };
 
-const og = (name, content?: string, escape?: boolean) => {
+const og = (name: string, content?: string, escape?: boolean) => {
   if (escape !== false && typeof content === 'string') {
     content = escapeHTML(content);
   }
@@ -61,8 +62,8 @@ interface Options {
   url?: string;
   site_name?: string;
   twitter_card?: string;
-  date?: boolean;
-  updated?: boolean;
+  date?: Moment | Date | false;
+  updated?: Moment | Date | false;
   language?: string;
   author?: string;
   twitter_image?: string;
@@ -72,12 +73,12 @@ interface Options {
   fb_app_id?: string;
 }
 
-function openGraphHelper(options: Options = {}) {
+function openGraphHelper(this: LocalsType, options: Options = {}) {
   const { config, page } = this;
   const { content } = page;
   let images = options.image || options.images || page.photos || [];
   let description = options.description || page.description || page.excerpt || content || config.description;
-  let keywords = (page.tags && page.tags.length ? page.tags : undefined) || config.keywords || false;
+  let keywords = (page.tags && page.tags.length ? page.tags : undefined) || (config as any).keywords || false;
   const title = options.title || page.title || config.title;
   const type = options.type || (this.is_post() ? 'article' : 'website');
   const url = prettyUrls(options.url || this.url, config.pretty_urls);

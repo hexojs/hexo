@@ -44,12 +44,15 @@ export default (ctx: Hexo) => {
   tag.register('asset_image', assetImg);
 
   tag.register('pullquote', require('./pullquote')(ctx), true);
+
+  tag.register('url_for', require('./url_for')(ctx));
+  tag.register('full_url_for', require('./full_url_for')(ctx));
 };
 
 // Use WeakMap to track different ctx (in case there is any)
 const moized = new WeakMap();
 
-export function postFindOneFactory(ctx) {
+export function postFindOneFactory(ctx: Hexo) {
   if (moized.has(ctx)) {
     return moized.get(ctx);
   }
@@ -63,7 +66,7 @@ export function postFindOneFactory(ctx) {
   return moizedPostFindOne;
 }
 
-function createPostFindOne(ctx) {
+function createPostFindOne(ctx: Hexo) {
   const Post = ctx.model('Post');
   return Post.findOne.bind(Post);
 }

@@ -46,7 +46,9 @@ export = {
     wrap: true,
     exclude_languages: [],
     language_attr: false,
-    hljs: false
+    hljs: false,
+    line_threshold: 0,
+    first_line_number: 'always1'
   },
   prismjs: {
     preprocess: true,

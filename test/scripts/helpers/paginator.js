@@ -341,4 +341,22 @@ describe('paginator', () => {
       '<a class="extend next" rel="next" href="/page/2/">Next</a>'
     ].join(''));
   });
+
+  it('force_prev_next - 2', () => {
+    const result = paginator({
+      current: 1,
+      prev_next: false,
+      force_prev_next: true
+    });
+
+    result.should.eql([
+      '<span class="extend prev" rel="prev">Prev</span>',
+      '<span class="page-number current">1</span>',
+      '<a class="page-number" href="/page/2/">2</a>',
+      '<a class="page-number" href="/page/3/">3</a>',
+      '<span class="space">&hellip;</span>',
+      '<a class="page-number" href="/page/10/">10</a>',
+      '<span class="extend next" rel="next">Next</span>'
+    ].join(''));
+  });
 });

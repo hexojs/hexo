@@ -1,6 +1,6 @@
 import { extname } from 'path';
 import Promise from 'bluebird';
-import type { Store, SyncStore, StoreSyncFunction, StoreFunction } from './renderer-d';
+import type { NodeJSLikeCallback } from '../types';
 
 const getExtname = (str: string) => {
   if (typeof str !== 'string') return '';
@@ -8,6 +8,47 @@ const getExtname = (str: string) => {
   const ext = extname(str) || str;
   return ext.startsWith('.') ? ext.slice(1) : ext;
 };
+
+export interface StoreFunctionData {
+  path?: any;
+  text?: string;
+  engine?: string;
+  toString?: any;
+  onRenderEnd?: (...args: any[]) => any;
+}
+
+export interface StoreSyncFunction {
+  [x: string]: any;
+  (
+    data: StoreFunctionData,
+    options: object,
+    // callback?: NodeJSLikeCallback<string>
+  ): any;
+  output?: string;
+  compile?: (local: object) => any;
+}
+export interface StoreFunction {
+  (
+    data: StoreFunctionData,
+    options: object,
+    callback?: NodeJSLikeCallback<any>
+  ): Promise<any>;
+  (
+    data: StoreFunctionData,
+    options: object,
+    callback: NodeJSLikeCallback<string>
+  ): void;
+  output?: string;
+  compile?: (local: object) => any;
+  disableNunjucks?: boolean;
+}
+
+interface SyncStore {
+  [key: string]: StoreSyncFunction;
+}
+interface Store {
+  [key: string]: StoreFunction;
+}
 
 class Renderer {
   public store: Store;
@@ -18,25 +59,25 @@ class Renderer {
     this.storeSync = {};
   }
 
-  list(sync: boolean) {
+  list(sync = false): Store | SyncStore {
     return sync ? this.storeSync : this.store;
   }
 
-  get(name: string, sync?: boolean) {
+  get(name: string, sync?: boolean): StoreSyncFunction | StoreFunction {
     const store = this[sync ? 'storeSync' : 'store'];
 
     return store[getExtname(name)] || store[name];
   }
 
-  isRenderable(path: string) {
+  isRenderable(path: string): boolean {
     return Boolean(this.get(path));
   }
 
-  isRenderableSync(path: string) {
+  isRenderableSync(path: string): boolean {
     return Boolean(this.get(path, true));
   }
 
-  getOutput(path: string) {
+  getOutput(path: string): string {
     const renderer = this.get(path);
     return renderer ? renderer.output : '';
   }
@@ -98,7 +139,6 @@ class Renderer {
       this.storeSync[name].output = output;
 
       this.store[name] = Promise.method(fn);
-      // eslint-disable-next-line no-extra-parens
       this.store[name].disableNunjucks = (fn as StoreFunction).disableNunjucks;
     } else {
       if (fn.length > 2) fn = Promise.promisify(fn);
@@ -110,4 +150,4 @@ class Renderer {
   }
 }
 
-export = Renderer;
+export default Renderer;

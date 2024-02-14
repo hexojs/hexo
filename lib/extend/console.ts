@@ -1,5 +1,6 @@
 import Promise from 'bluebird';
 import abbrev from 'abbrev';
+import type { NodeJSLikeCallback } from '../types';
 
 type Option = Partial<{
   usage: string;
@@ -19,7 +20,7 @@ interface Args {
   _: string[];
   [key: string]: string | boolean | string[];
 }
-type AnyFn = (args: Args) => any;
+type AnyFn = (args: Args, callback?: NodeJSLikeCallback<any>) => any;
 interface StoreFunction extends AnyFn {
   desc?: string;
   options?: Option;
@@ -29,7 +30,7 @@ interface Store {
   [key: string]: StoreFunction
 }
 interface Alias {
-  [key: string]: string
+  [abbreviation: string]: string
 }
 
 class Console {
@@ -51,7 +52,7 @@ class Console {
     return this.store[this.alias[name]];
   }
 
-  list() {
+  list(): Store {
     return this.store;
   }
 
@@ -66,7 +67,7 @@ class Console {
   register(name: string, desc: string, fn: AnyFn): void
   register(name: string, options: Option, fn: AnyFn): void
   register(name: string, desc: string, options: Option, fn: AnyFn): void
-  register(name: string, desc: string | Option | AnyFn, options?: Option | AnyFn, fn?: AnyFn) {
+  register(name: string, desc: string | Option | AnyFn, options?: Option | AnyFn, fn?: AnyFn): void {
     if (!name) throw new TypeError('name is required');
 
     if (!fn) {

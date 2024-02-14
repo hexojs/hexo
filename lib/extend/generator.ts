@@ -1,4 +1,5 @@
 import Promise from 'bluebird';
+import type { NodeJSLikeCallback } from '../types';
 
 interface BaseObj {
   path: string;
@@ -9,7 +10,7 @@ type ReturnType = BaseObj | BaseObj[];
 type GeneratorReturnType = ReturnType | Promise<ReturnType>;
 
 interface GeneratorFunction {
-  (locals: Record<string, any>): GeneratorReturnType;
+  (locals: Record<string, any>, callback?: NodeJSLikeCallback<any>): GeneratorReturnType;
 }
 
 type StoreFunctionReturn = Promise<ReturnType>;
@@ -31,17 +32,17 @@ class Generator {
     this.store = {};
   }
 
-  list() {
+  list(): Store {
     return this.store;
   }
 
-  get(name: string) {
+  get(name: string): StoreFunction {
     return this.store[name];
   }
 
   register(fn: GeneratorFunction): void
   register(name: string, fn: GeneratorFunction): void
-  register(name: string | GeneratorFunction, fn?: GeneratorFunction) {
+  register(name: string | GeneratorFunction, fn?: GeneratorFunction): void {
     if (!fn) {
       if (typeof name === 'function') { // fn
         fn = name;

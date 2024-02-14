@@ -1,19 +1,27 @@
 name: Commenter
 
-on: [pull_request_target]
+on:
+  pull_request_target:
+
+  workflow_run:
+    workflows: ["Benchmark"]
+    types:
+      - completed
 
 permissions:
   contents: read
 
 jobs:
-  commenter:
+  comment-test:
     permissions:
-      pull-requests: write  # for marocchino/sticky-pull-request-comment to create or update PR comment
+      pull-requests: write # for marocchino/sticky-pull-request-comment to create or update PR comment
     runs-on: ubuntu-latest
+    if: ${{github.event_name == 'pull_request_target' }}
     steps:
-      - name: Comment PR
+      - name: Comment PR - How to test
         uses: marocchino/sticky-pull-request-comment@v2
         with:
+          header: How to test
           message: |
             ## How to test
 
@@ -23,3 +31,38 @@ jobs:
             npm install
             npm test
             ```
+
+  comment-flamegraph:
+    permissions:
+      pull-requests: write # for marocchino/sticky-pull-request-comment to create or update PR comment
+      actions: read # get artifact
+    runs-on: ubuntu-latest
+    if: ${{github.event_name == 'workflow_run' }}
+    env:
+      comment_result: ".tmp-comment-flamegraph.md"
+    steps:
+      - name: download artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          run-id: ${{toJSON(github.event.workflow_run.id)}}
+          pattern: "comment-*"
+          merge-multiple: true
+
+      - name: get PR number
+        run: |
+          echo "pr_number=$(cat .tmp-comment-pr_number)" >> "$GITHUB_ENV"
+
+      - name: combime comment
+        run: |
+          echo "## flamegraph" > ${{env.comment_result}}
+          echo "" >> ${{env.comment_result}}
+          cat .tmp-comment-flamegraph-*.md >> ${{env.comment_result}}
+
+      - name: Comment PR - flamegraph
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          number: ${{env.pr_number}}
+          header: flamegraph
+          path: ${{env.comment_result}}

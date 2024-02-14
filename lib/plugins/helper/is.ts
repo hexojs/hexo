@@ -1,4 +1,6 @@
-function isCurrentHelper(path = '/', strict) {
+import type { LocalsType } from '../../types';
+
+function isCurrentHelper(this: LocalsType, path = '/', strict: boolean) {
   const currentPath = this.path.replace(/^[^/].*/, '/$&');
 
   if (strict) {
@@ -37,7 +39,7 @@ function isArchiveHelper() {
   return Boolean(this.page.archive);
 }
 
-function isYearHelper(year) {
+function isYearHelper(year?) {
   const { page } = this;
   if (!page.archive) return false;
 
@@ -48,7 +50,7 @@ function isYearHelper(year) {
   return Boolean(page.year);
 }
 
-function isMonthHelper(year, month) {
+function isMonthHelper(year?, month?) {
   const { page } = this;
   if (!page.archive) return false;
 
@@ -63,7 +65,7 @@ function isMonthHelper(year, month) {
   return Boolean(page.year && page.month);
 }
 
-function isCategoryHelper(category) {
+function isCategoryHelper(category?) {
   if (category) {
     return this.page.category === category;
   }
@@ -71,7 +73,7 @@ function isCategoryHelper(category) {
   return Boolean(this.page.category);
 }
 
-function isTagHelper(tag) {
+function isTagHelper(tag?) {
   if (tag) {
     return this.page.tag === tag;
   }

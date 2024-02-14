@@ -1,12 +1,17 @@
 import { extname, join } from 'path';
 import { exists, listDir, readFile, unlink, writeFile } from 'hexo-fs';
+import type Hexo from './index';
+import type { NodeJSLikeCallback } from '../types';
+import type Promise from 'bluebird';
 
 class Scaffold {
-  public context: any;
-  public scaffoldDir: any;
-  public defaults: any;
+  public context: Hexo;
+  public scaffoldDir: string;
+  public defaults: {
+    normal: string
+  };
 
-  constructor(context) {
+  constructor(context: Hexo) {
     this.context = context;
     this.scaffoldDir = context.scaffold_dir;
     this.defaults = {
@@ -21,7 +26,10 @@ class Scaffold {
     };
   }
 
-  _listDir() {
+  _listDir(): Promise<{
+    name: string;
+    path: string;
+  }[]> {
     const { scaffoldDir } = this;
 
     return exists(scaffoldDir).then(exist => {
@@ -36,11 +44,14 @@ class Scaffold {
     }));
   }
 
-  _getScaffold(name) {
+  _getScaffold(name: string): Promise<{
+    name: string;
+    path: string;
+  }> {
     return this._listDir().then(list => list.find(item => item.name === name));
   }
 
-  get(name, callback) {
+  get(name: string, callback?: NodeJSLikeCallback<any>): Promise<string> {
     return this._getScaffold(name).then(item => {
       if (item) {
         return readFile(item.path);
@@ -50,7 +61,7 @@ class Scaffold {
     }).asCallback(callback);
   }
 
-  set(name, content, callback) {
+  set(name: string, content: any, callback?: NodeJSLikeCallback<void>): Promise<void> {
     const { scaffoldDir } = this;
 
     return this._getScaffold(name).then(item => {
@@ -61,7 +72,7 @@ class Scaffold {
     }).asCallback(callback);
   }
 
-  remove(name, callback) {
+  remove(name: string, callback?: NodeJSLikeCallback<void>): Promise<void> {
     return this._getScaffold(name).then(item => {
       if (!item) return;
 

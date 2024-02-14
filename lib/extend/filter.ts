@@ -12,6 +12,7 @@ interface FilterOptions {
   args?: any[];
 }
 
+
 interface StoreFunction {
   (data?: any, ...args: any[]): any;
   priority?: number;
@@ -35,8 +36,6 @@ class Filter {
     return this.store[type] || [];
   }
 
-  register(fn: StoreFunction): void;
-  register(fn: StoreFunction, priority: number): void;
   register(type: string, fn: StoreFunction): void;
   register(
     type: 'server_middleware',
@@ -51,11 +50,11 @@ class Filter {
     fn: (data: extend_filter_before_post_render_data) => Promise<void>
   ): void;
   register(type: string, fn: StoreFunction, priority: number): void;
-  register(
-    type: string | StoreFunction,
-    fn?: StoreFunction | number,
-    priority?: number
-  ) {
+  register(fn: StoreFunction): void
+  register(fn: StoreFunction, priority: number): void
+  register(type: string, fn: StoreFunction): void
+  register(type: string, fn: StoreFunction, priority: number): void
+  register(type: string | StoreFunction, fn?: StoreFunction | number, priority?: number): void {
     if (!priority) {
       if (typeof type === 'function') {
         priority = fn as number;
@@ -78,7 +77,7 @@ class Filter {
     store.sort((a, b) => a.priority - b.priority);
   }
 
-  unregister(type: string, fn: StoreFunction) {
+  unregister(type: string, fn: StoreFunction): void {
     if (!type) throw new TypeError('type is required');
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 
@@ -92,7 +91,7 @@ class Filter {
     if (index !== -1) list.splice(index, 1);
   }
 
-  exec(type: string, data: any[], options: FilterOptions = {}) {
+  exec(type: string, data: any, options: FilterOptions = {}): Promise<any> {
     const filters = this.list(type);
     if (filters.length === 0) return Promise.resolve(data);
 
@@ -109,7 +108,7 @@ class Filter {
     ).then(() => args[0]);
   }
 
-  execSync(type: string, data: any[], options: FilterOptions = {}) {
+  execSync(type: string, data: any, options: FilterOptions = {}) {
     const filters = this.list(type);
     const filtersLen = filters.length;
     if (filtersLen === 0) return data;

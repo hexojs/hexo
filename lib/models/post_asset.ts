@@ -1,7 +1,8 @@
 import warehouse from 'warehouse';
 import { join } from 'path';
+import type Hexo from '../hexo';
 
-export = ctx => {
+export = (ctx: Hexo) => {
   const PostAsset = new warehouse.Schema({
     _id: {type: String, required: true},
     slug: {type: String, required: true},

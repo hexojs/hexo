@@ -1,12 +1,35 @@
 import { htmlTag, url_for } from 'hexo-util';
+import type { LocalsType } from '../../types';
 
-const createLink = (options, ctx) => {
+interface Options {
+  base?: string;
+  current?: number;
+  format?: string;
+  total?: number;
+  end_size?: number;
+  mid_size?: number;
+  space?: string;
+  next_text?: string;
+  prev_text?: string;
+  prev_next?: boolean;
+  escape?: boolean;
+  page_class?: string;
+  current_class?: string;
+  space_class?: string;
+  prev_class?: string;
+  next_class?: string;
+  force_prev_next?: boolean;
+  show_all?: boolean;
+  transform?: (i: number) => any;
+}
+
+const createLink = (options: Options, ctx: LocalsType) => {
   const { base, format } = options;
 
-  return i => url_for.call(ctx, i === 1 ? base : base + format.replace('%d', i));
+  return (i: number) => url_for.call(ctx, i === 1 ? base : base + format.replace('%d', String(i)));
 };
 
-const createPageTag = (options, ctx) => {
+const createPageTag = (options: Options, ctx: LocalsType) => {
   const link = createLink(options, ctx);
   const {
     current,
@@ -16,7 +39,7 @@ const createPageTag = (options, ctx) => {
     current_class: currentClass
   } = options;
 
-  return i => {
+  return (i: number) => {
     if (i === current) {
       return htmlTag('span', { class: pageClass + ' ' + currentClass }, transform ? transform(i) : i, escape);
     }
@@ -24,7 +47,7 @@ const createPageTag = (options, ctx) => {
   };
 };
 
-const showAll = (tags, options, ctx) => {
+const showAll = (tags: string[], options: Options, ctx: LocalsType) => {
   const { total } = options;
 
   const pageLink = createPageTag(options, ctx);
@@ -34,7 +57,7 @@ const showAll = (tags, options, ctx) => {
   }
 };
 
-const pagenasionPartShow = (tags, options, ctx) => {
+const paginationPartShow = (tags, options, ctx: LocalsType) => {
   const {
     current,
     total,
@@ -86,28 +109,7 @@ const pagenasionPartShow = (tags, options, ctx) => {
   }
 };
 
-interface Options {
-  base?: string;
-  current?: number;
-  format?: string;
-  total?: number;
-  end_size?: number;
-  mid_size?: number;
-  space?: string;
-  next_text?: string;
-  prev_text?: string;
-  prev_next?: boolean;
-  escape?: boolean;
-  page_class?: string;
-  current_class?: string;
-  space_class?: string;
-  prev_class?: string;
-  next_class?: string;
-  force_prev_next?: boolean;
-  show_all?: boolean;
-}
-
-function paginatorHelper(options: Options = {}) {
+function paginatorHelper(this: LocalsType, options: Options = {}) {
   options = Object.assign({
     base: this.page.base || '',
     current: this.page.current || 0,
@@ -156,7 +158,7 @@ function paginatorHelper(options: Options = {}) {
   if (options.show_all) {
     showAll(tags, options, this);
   } else {
-    pagenasionPartShow(tags, options, this);
+    paginationPartShow(tags, options, this);
   }
 
   // Display the link to the next page

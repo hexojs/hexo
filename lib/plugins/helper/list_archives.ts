@@ -1,3 +1,4 @@
+import type { LocalsType } from '../../types';
 import { toMomentLocale } from './date';
 import { url_for } from 'hexo-util';
 
@@ -19,7 +20,7 @@ interface Data {
   count: number;
 }
 
-function listArchivesHelper(options: Options = {}) {
+function listArchivesHelper(this: LocalsType, options: Options = {}) {
   const { config } = this;
   const archiveDir = config.archive_dir;
   const { timezone } = config;

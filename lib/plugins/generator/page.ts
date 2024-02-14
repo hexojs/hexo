@@ -1,5 +1,7 @@
-function pageGenerator(locals) {
-  return locals.pages.map(page => {
+import type { PageGenerator, PageSchema, SiteLocals } from '../../types';
+
+function pageGenerator(locals: SiteLocals): PageGenerator[] {
+  return locals.pages.map((page: PageSchema) => {
     const { path, layout } = page;
 
     if (!layout || layout === 'false' || layout === 'off') {

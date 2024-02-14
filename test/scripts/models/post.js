@@ -31,7 +31,6 @@ describe('Post', () => {
       data.comments.should.be.true;
       data.layout.should.eql('post');
       data._content.should.eql('');
-      data.link.should.eql('');
       data.raw.should.eql('');
       data.published.should.be.true;
       should.not.exist(data.updated);

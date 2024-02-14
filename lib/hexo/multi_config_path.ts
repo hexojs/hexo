@@ -2,8 +2,9 @@ import { isAbsolute, resolve, join, extname } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'hexo-fs';
 import yml from 'js-yaml';
 import { deepMerge } from 'hexo-util';
+import type Hexo from './index';
 
-export = ctx => function multiConfigPath(base, configPaths, outputDir) {
+export = (ctx: Hexo) => function multiConfigPath(base: string, configPaths: string, outputDir: string): string {
   const { log } = ctx;
   const defaultPath = join(base, '_config.yml');
 
@@ -12,7 +13,7 @@ export = ctx => function multiConfigPath(base, configPaths, outputDir) {
     return join(base, '_config.yml');
   }
 
-  let paths;
+  let paths: string[];
   // determine if comma or space separated
   if (configPaths.includes(',')) {
     paths = configPaths.replace(' ', '').split(',');
@@ -42,7 +43,7 @@ export = ctx => function multiConfigPath(base, configPaths, outputDir) {
     }
 
     // files read synchronously to ensure proper overwrite order
-    const file = readFileSync(configPath);
+    const file = readFileSync(configPath) as string;
     const ext = extname(paths[i]).toLowerCase();
 
     if (ext === '.yml') {
@@ -61,7 +62,7 @@ export = ctx => function multiConfigPath(base, configPaths, outputDir) {
     return defaultPath;
   }
 
-  log.i('Config based on', count, 'files');
+  log.i('Config based on', count.toString(), 'files');
 
   const multiconfigRoot = outputDir || base;
   const outputPath = join(multiconfigRoot, '_multiconfig.yml');

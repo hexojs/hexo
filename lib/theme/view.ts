@@ -1,8 +1,12 @@
 import { dirname, extname, join } from 'path';
 import { parse as yfm } from 'hexo-front-matter';
 import Promise from 'bluebird';
+import type Theme from '.';
+import type Render from '../hexo/render';
+import type { NodeJSLikeCallback } from '../types';
+import type { Helper } from '../extend';
 
-const assignIn = (target, ...sources) => {
+const assignIn = (target: any, ...sources: any[]) => {
   const length = sources.length;
 
   if (length < 1 || target == null) return target;
@@ -21,18 +25,16 @@ class Options {
 }
 
 class View {
-  public path: any;
-  public source: any;
-  public _theme: any;
+  public path: string;
+  public source: string;
+  public _theme: Theme;
   public data: any;
   public _compiled: any;
   public _compiledSync: any;
-  public _helper: any;
-  public _render: any;
-  public layout: any;
-  public _content: any;
+  public _helper: Helper;
+  public _render: Render;
 
-  constructor(path, data) {
+  constructor(path: string, data: string) {
     this.path = path;
     this.source = join(this._theme.base, 'layout', path);
     this.data = typeof data === 'string' ? yfm(data) : data;
@@ -40,16 +42,16 @@ class View {
     this._precompile();
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  render(options: Options | Function = {}, callback) {
+  render(callback: NodeJSLikeCallback<any>): Promise<any>;
+  render(options: Options, callback?: NodeJSLikeCallback<any>): Promise<any>;
+  render(options: Options | NodeJSLikeCallback<any> = {}, callback?: NodeJSLikeCallback<any>): Promise<any> {
     if (!callback && typeof options === 'function') {
       callback = options;
       options = {};
     }
     const { data } = this;
-    // eslint-disable-next-line no-extra-parens
     const { layout = (options as Options).layout } = data;
-    const locals = this._buildLocals(options);
+    const locals = this._buildLocals(options as Options);
 
     return this._compiled(this._bindHelpers(locals)).then(result => {
       if (result == null || !layout) return result;
@@ -87,8 +89,8 @@ class View {
     return layoutView.renderSync(layoutLocals);
   }
 
-  _buildLocals(locals) {
-    // eslint-disable-next-line no-unused-vars
+  _buildLocals(locals: Options) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { layout, _content, ...data } = this.data;
     return assignIn({}, locals, data, {
       filename: this.source
@@ -106,7 +108,7 @@ class View {
     return locals;
   }
 
-  _resolveLayout(name) {
+  _resolveLayout(name: string): View {
     // Relative path
     const layoutPath = join(dirname(this.path), name);
     let layoutView = this._theme.getView(layoutPath);
@@ -118,7 +120,7 @@ class View {
     if (layoutView && layoutView.source !== this.source) return layoutView;
   }
 
-  _precompile() {
+  _precompile(): void {
     const render = this._render;
     const ctx = render.context;
     const ext = extname(this.path);
@@ -128,7 +130,7 @@ class View {
       text: this.data._content
     };
 
-    function buildFilterArguments(result) {
+    function buildFilterArguments(result: any): [string, any, any] {
       const output = render.getOutput(ext) || ext;
       return [
         `after_render:${output}`,

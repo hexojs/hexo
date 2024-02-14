@@ -1,7 +1,5 @@
 'use strict';
 
-const { spy } = require('sinon');
-
 describe('Tag', () => {
   const Tag = require('../../../dist/extend/tag');
   const tag = new Tag();
@@ -164,13 +162,17 @@ describe('Tag', () => {
   it('render() - callback', () => {
     const tag = new Tag();
 
-    const callback = spy();
+    // spy() is not a function
+    let spy = false;
+    const callback = () => {
+      spy = true;
+    };
 
     tag.register('test', () => 'foo');
 
-    return tag.render('{% test %}', callback()).then(result => {
+    return tag.render('{% test %}', callback).then(result => {
       result.should.eql('foo');
-      callback.calledOnce.should.be.true;
+      spy.should.eql(true);
     });
   });
 });

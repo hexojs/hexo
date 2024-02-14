@@ -1,12 +1,13 @@
 import warehouse from 'warehouse';
 import { moment, toMomentLocale } from '../../plugins/helper/date';
 
-declare module 'moment' {
-  export default interface Moment extends moment.Moment {
-    _d: Date;
-  // eslint-disable-next-line semi
-  }
-}
+// It'll pollute the moment module.
+// declare module 'moment' {
+//   export default interface Moment extends moment.Moment {
+//     _d: Date;
+//   // eslint-disable-next-line semi
+//   }
+// }
 
 class SchemaTypeMoment extends warehouse.SchemaType<moment.Moment> {
   public options: any;
@@ -90,7 +91,7 @@ class SchemaTypeMoment extends warehouse.SchemaType<moment.Moment> {
 function toMoment(value) {
   // FIXME: Something is wrong when using a moment instance. I try to get the
   // original date object and create a new moment object again.
-  if (moment.isMoment(value)) return moment(value._d);
+  if (moment.isMoment(value)) return moment((value as any)._d);
   return moment(value);
 }
 

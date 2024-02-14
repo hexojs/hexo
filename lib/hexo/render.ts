@@ -1,15 +1,19 @@
 import { extname } from 'path';
 import Promise from 'bluebird';
 import { readFile, readFileSync } from 'hexo-fs';
+import type Hexo from './index';
+import type { Renderer } from '../extend';
+import type { StoreFunction, StoreFunctionData, StoreSyncFunction } from '../extend/renderer';
+import { NodeJSLikeCallback } from '../types';
 
-const getExtname = str => {
+const getExtname = (str: string): string => {
   if (typeof str !== 'string') return '';
 
   const ext = extname(str);
   return ext.startsWith('.') ? ext.slice(1) : ext;
 };
 
-const toString = (result, options) => {
+const toString = (result: any, options: StoreFunctionData) => {
   if (!Object.prototype.hasOwnProperty.call(options, 'toString') || typeof result === 'string') return result;
 
   if (typeof options.toString === 'function') {
@@ -24,35 +28,35 @@ const toString = (result, options) => {
 };
 
 class Render {
-  public context: any;
-  public renderer: any;
+  public context: Hexo;
+  public renderer: Renderer;
 
-  constructor(ctx) {
+  constructor(ctx: Hexo) {
     this.context = ctx;
     this.renderer = ctx.extend.renderer;
   }
 
-  isRenderable(path) {
+  isRenderable(path: string): boolean {
     return this.renderer.isRenderable(path);
   }
 
-  isRenderableSync(path) {
+  isRenderableSync(path: string): boolean {
     return this.renderer.isRenderableSync(path);
   }
 
-  getOutput(path) {
+  getOutput(path: string): string {
     return this.renderer.getOutput(path);
   }
 
-  getRenderer(ext, sync?) {
+  getRenderer(ext: string, sync?: boolean): StoreSyncFunction | StoreFunction {
     return this.renderer.get(ext, sync);
   }
 
-  getRendererSync(ext) {
+  getRendererSync(ext: string): StoreSyncFunction | StoreFunction {
     return this.getRenderer(ext, true);
   }
 
-  render(data, options, callback) {
+  render(data: StoreFunctionData, options?: { highlight?: boolean; }, callback?: NodeJSLikeCallback<any>): Promise<any> {
     if (!callback && typeof options === 'function') {
       callback = options;
       options = {};
@@ -61,7 +65,7 @@ class Render {
     const ctx = this.context;
     let ext = '';
 
-    let promise;
+    let promise: Promise<string>;
 
     if (!data) return Promise.reject(new TypeError('No input file or string!'));
 
@@ -70,7 +74,7 @@ class Render {
     } else if (!data.path) {
       return Promise.reject(new TypeError('No input file or string!'));
     } else {
-      promise = readFile(data.path);
+      promise = readFile(data.path) as Promise<string>;
     }
 
     return promise.then(text => {
@@ -96,14 +100,14 @@ class Render {
     }).asCallback(callback);
   }
 
-  renderSync(data, options = {}) {
+  renderSync(data: StoreFunctionData, options = {}): any {
     if (!data) throw new TypeError('No input file or string!');
 
     const ctx = this.context;
 
     if (data.text == null) {
       if (!data.path) throw new TypeError('No input file or string!');
-      data.text = readFileSync(data.path);
+      data.text = readFileSync(data.path) as string;
     }
 
     if (data.text == null) throw new TypeError('No input file or string!');

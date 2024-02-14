@@ -1,6 +1,7 @@
 // Based on: https://raw.github.com/imathis/octopress/master/plugins/blockquote.rb
 
 import titlecase from 'titlecase';
+import type Hexo from '../../hexo';
 
 const rFullCiteWithTitle = /(\S.*)\s+(https?:\/\/\S+)\s+(.+)/i;
 const rFullCite = /(\S.*)\s+(https?:\/\/\S+)/i;
@@ -10,7 +11,7 @@ const rAuthorTitle = /([^,]+),\s*([^,]+)/;
  * @param {string[]} args
  * @param {Hexo} ctx
  */
-const parseFooter = (args, ctx) => {
+const parseFooter = (args: string[], ctx: Hexo) => {
   const str = args.join(' ');
   if (!str) return '';
 
@@ -55,7 +56,7 @@ const parseFooter = (args, ctx) => {
 *   {% endblockquote %}
 */
 
-export = ctx => function blockquoteTag(args, content) {
+export = (ctx: Hexo) => function blockquoteTag(args: string[], content: string) {
   const footer = parseFooter(args, ctx);
 
   let result = '<blockquote>';

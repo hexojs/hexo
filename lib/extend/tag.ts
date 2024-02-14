@@ -2,6 +2,8 @@ import { stripIndent } from 'hexo-util';
 import { cyan, magenta, red, bold } from 'picocolors';
 import { Environment } from 'nunjucks';
 import Promise from 'bluebird';
+import type { NodeJSLikeCallback } from '../types';
+
 const rSwigRawFullBlock = /{% *raw *%}/;
 const rCodeTag = /<code[^<>]*>[\s\S]+?<\/code>/g;
 const escapeSwigTag = (str: string) => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
@@ -25,7 +27,8 @@ interface ExtendedTagProperty {
 type TagFunction =
   | ((this: ExtendedTagProperty, arg: string) => string)
   | ((this: ExtendedTagProperty, ...args: any[]) => string)
-  | ((this: ExtendedTagProperty, args: any[], content: string) => string);
+  | ((this: ExtendedTagProperty, args: any[], content: string) => string)
+  | ((args: any[], content: string, callback?: NodeJSLikeCallback<any>) => string | PromiseLike<string>);
 
 /**
  * asynchronous callback - shortcode tag
@@ -36,7 +39,7 @@ type TagFunction =
  * type content = Parameters<Parameters<typeof hexo.extend.tag.register>[1]>[1];
  */
 type AsyncTagFunction =
-  | ((this: ExtendedTagProperty, arg: string) => PromiseLike<string> | Promise<string>)
+  | ((this: ExtendedTagProperty, content: string) => PromiseLike<string> | Promise<string>)
   | ((this: ExtendedTagProperty, ...args: any[]) => PromiseLike<string> | Promise<string>)
   | ((this: ExtendedTagProperty, args: any[], content: string) => PromiseLike<string> | Promise<string>);
 
@@ -93,7 +96,7 @@ class NunjucksTag {
   }
 }
 
-const trimBody = body => {
+const trimBody = (body: () => any) => {
   return stripIndent(body()).replace(/^\n?|\n?$/g, '');
 };
 
@@ -153,7 +156,7 @@ class NunjucksAsyncBlock extends NunjucksBlock {
   }
 }
 
-const getContextLineNums = (min, max, center, amplitude) => {
+const getContextLineNums = (min: number, max: number, center: number, amplitude: number) => {
   const result = [];
   let lbound = Math.max(min, center - amplitude);
   const hbound = Math.min(max, center + amplitude);
@@ -163,7 +166,7 @@ const getContextLineNums = (min, max, center, amplitude) => {
 
 const LINES_OF_CONTEXT = 5;
 
-const getContext = (lines, errLine, location, type) => {
+const getContext = (lines: string[], errLine: number, location: string, type: string) => {
   const message = [
     location + ' ' + red(type),
     cyan('    =====               Context Dump               ====='),
@@ -207,13 +210,13 @@ const formatNunjucksError = (err: Error, input: string, source = ''): Error => {
   if (isNaN(errLine)) return err;
 
   // trim useless info from Nunjucks Error
-  const splited = err.message.split('\n');
+  const splitted = err.message.split('\n');
 
   const e = new NunjucksError();
   e.name = 'Nunjucks Error';
   e.line = errLine;
-  e.location = splited[0];
-  e.type = splited[1].trim();
+  e.location = splitted[0];
+  e.type = splitted[1].trim();
   e.message = getContext(input.split(/\r?\n/), errLine, e.location, e.type).join('\n');
   return e;
 };
@@ -229,7 +232,7 @@ interface RegisterAsyncOptions extends RegisterOptions {
 
 class Tag {
   public env: Environment;
-  public source: any;
+  public source: string;
 
   constructor() {
     this.env = new Environment(null, {
@@ -284,13 +287,29 @@ class Tag {
    * register shortcode tag
    * @param name shortcode tag name
    * @param fn asynchronous or synchronous function callback
+   * @param ends add support for end tag
+   * @example
+   * without ends
+   * ```html
+   * {% youtube video_id [type] [cookie] %}
+   * ```
+   *
+   * using ends
+   * ```nunjucks
+   * {% blockquote [author[, source]] [link] [source_link_title] %}
+   * content
+   * {% endblockquote %}
+   * ```
+   */
+  register(name: string, fn: TagFunction, ends: boolean): void;
+
+  /**
+   * register shortcode tag
+   * @param name shortcode tag name
+   * @param fn asynchronous or synchronous function callback
    * @param options register options
    */
-  register(
-    name: string,
-    fn: TagFunction | AsyncTagFunction,
-    options?: RegisterOptions | RegisterAsyncOptions | boolean
-  ) {
+  register(name: string, fn: TagFunction | AsyncTagFunction, options?: RegisterOptions | RegisterAsyncOptions | boolean): void {
     if (!name) throw new TypeError('name is required');
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 
@@ -326,7 +345,7 @@ class Tag {
    * unregister shortcode tag
    * @param name shortcode tag name
    */
-  unregister(name: string) {
+  unregister(name: string): void {
     if (!name) throw new TypeError('name is required');
 
     const { env } = this;
@@ -335,14 +354,15 @@ class Tag {
   }
 
   render(str: string, options: { source?: string }): Promise<string>;
-  render(str: string, options: { source?: string } = {}, callback?: (err: any, result: string) => any) {
+  render(str: string, callback: NodeJSLikeCallback<any, string> | NodeJSLikeCallback<any>): Promise<any>;
+  render(str: string, options: { source?: string, [key: string]: any } | NodeJSLikeCallback<any, string> | NodeJSLikeCallback<any> = {}, callback?: NodeJSLikeCallback<any, string> | NodeJSLikeCallback<any>): Promise<any> {
     if (!callback && typeof options === 'function') {
       callback = options;
       options = {};
     }
 
     // Get path of post from source
-    const { source = '' } = options;
+    const { source = '' } = options as { source?: string };
 
     return Promise.fromCallback(cb => {
       this.env.renderString(

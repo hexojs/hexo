@@ -1,8 +1,12 @@
 import { htmlTag, url_for } from 'hexo-util';
 import moize from 'moize';
+import type { LocalsType } from '../../types';
 
-function cssHelper(...args) {
+let relative_link = true;
+function cssHelper(this: LocalsType, ...args: any[]) {
   let result = '\n';
+
+  relative_link = this.config.relative_link;
 
   args.flat(Infinity).forEach(item => {
     if (typeof item === 'string' || item instanceof String) {
@@ -23,5 +27,8 @@ function cssHelper(...args) {
 
 export = moize(cssHelper, {
   maxSize: 10,
-  isDeepEqual: true
+  isDeepEqual: true,
+  updateCacheForKey() {
+    return relative_link;
+  }
 });

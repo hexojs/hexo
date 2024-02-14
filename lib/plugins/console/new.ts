@@ -1,6 +1,7 @@
 import tildify from 'tildify';
 import { magenta } from 'picocolors';
 import { basename } from 'path';
+import Hexo from '../../hexo';
 
 const reservedKeys = {
   _: true,
@@ -19,9 +20,20 @@ const reservedKeys = {
   silent: true
 };
 
-function newConsole(args) {
+interface NewArgs {
+  _?: string[]
+  p?: string
+  path?: string
+  s?: string
+  slug?: string
+  r?: boolean
+  replace?: boolean
+  [key: string]: any
+}
+
+function newConsole(this: Hexo, args: NewArgs) {
   const path = args.p || args.path;
-  let title;
+  let title: string;
   if (args._.length) {
     title = args._.pop();
   } else if (path) {
@@ -29,7 +41,7 @@ function newConsole(args) {
     title = basename(path);
   } else {
     // Display help message if user didn't input any arguments
-    return this.call('help', {_: ['new']});
+    return this.call('help', { _: ['new'] });
   }
 
   const data = {

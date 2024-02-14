@@ -1,5 +1,6 @@
 import { url_for } from 'hexo-util';
 import moize from 'moize';
+import type { LocalsType } from '../../types';
 
 const feedFn = (str = '') => {
   if (str) return str.replace(/2$/, '');
@@ -11,7 +12,7 @@ interface Options {
   type?: string;
 }
 
-function makeFeedTag(path, options: Options = {}, configFeed?, configTitle?) {
+function makeFeedTag(this: LocalsType, path: string, options: Options = {}, configFeed?: any, configTitle?: string) {
   const title = options.title || configTitle;
 
   if (path) {
@@ -46,9 +47,9 @@ function makeFeedTag(path, options: Options = {}, configFeed?, configTitle?) {
   return '';
 }
 
-function feedTagHelper(path, options = {}) {
+function feedTagHelper(this: LocalsType, path: string, options: Options = {}) {
   const { config } = this;
-  return moize.deep(makeFeedTag.bind(this))(path, options, config.feed, config.title);
+  return moize.deep(makeFeedTag.bind(this))(path, options, (config as any).feed, config.title);
 }
 
 export = feedTagHelper;
