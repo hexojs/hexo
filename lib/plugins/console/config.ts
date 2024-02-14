@@ -4,7 +4,12 @@ import { extname } from 'path';
 import Promise from 'bluebird';
 import type Hexo from '../../hexo';
 
-function configConsole(this: Hexo, args): Promise<void> {
+interface ConfigArgs {
+  _: string[]
+  [key: string]: any
+}
+
+function configConsole(this: Hexo, args: ConfigArgs): Promise<void> {
   const key = args._[0];
   let value = args._[1];
 

@@ -12,7 +12,7 @@ const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;')
 describe('Post', () => {
   const Hexo = require('../../../dist/hexo');
   const hexo = new Hexo(join(__dirname, 'post_test'));
-  require('../../../lib/plugins/highlight/')(hexo);
+  require('../../../dist/plugins/highlight/')(hexo);
   const { post } = hexo;
   const now = Date.now();
   let clock;
@@ -1368,5 +1368,50 @@ describe('Post', () => {
     data.content.should.include(escapeSwigTag('{% %}'));
 
     hexo.config.syntax_highlighter = 'highlight.js';
+  });
+
+  // https://github.com/hexojs/hexo/issues/5301
+  it('render() - dont escape uncomplete tags', async () => {
+    const content = 'dont drop `{% }` 11111 `{# }` 22222 `{{ }` 33333';
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.should.contains('11111');
+    data.content.should.contains('22222');
+    data.content.should.contains('33333');
+    data.content.should.not.contains('&#96;'); // `
+  });
+
+  it('render() - uncomplete tags throw error', async () => {
+    const content = 'nunjucks should thorw {#  } error';
+
+    try {
+      await post.render(null, {
+        content,
+        engine: 'markdown'
+      });
+      should.fail();
+    } catch (err) {}
+  });
+
+  // https://github.com/hexojs/hexo/issues/5401
+  it('render() - tags in different lines', async () => {
+    const content = [
+      '{% link',
+      'foobar',
+      'https://hexo.io/',
+      'tttitle',
+      '%}'
+    ].join('\n');
+
+    const data = await post.render(null, {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.should.eql('<a href="https://hexo.io/" title="tttitle" target="">foobar</a>');
   });
 });

@@ -1,10 +1,26 @@
 import { url_for } from 'hexo-util';
+import type { LocalsType, PostSchema } from '../../types';
+import type Query from 'warehouse/dist/query';
 
-function listPostsHelper(posts, options) {
+interface Options {
+  style?: string;
+  class?: string;
+  amount?: number;
+  orderby?: string;
+  order?: number;
+  transform?: (name: string) => string;
+  separator?: string;
+}
+
+function listPostsHelper(this: LocalsType, options?: Options): string;
+function listPostsHelper(this: LocalsType, posts: Query<PostSchema>, options?: Options): string;
+function listPostsHelper(this: LocalsType, posts?: Query<PostSchema> | Options, options?: Options) {
   if (!options && (!posts || !Object.prototype.hasOwnProperty.call(posts, 'length'))) {
-    options = posts;
+    options = posts as Options;
     posts = this.site.posts;
   }
+
+  posts = posts as Query<PostSchema>;
 
   options = options || {};
 

@@ -1,6 +1,8 @@
+import type { RenderData } from '../../../types';
+
 const rExcerpt = /<!-- ?more ?-->/i;
 
-function excerptFilter(data): void {
+function excerptFilter(data: RenderData): void {
   const { content } = data;
 
   if (typeof data.excerpt !== 'undefined') {

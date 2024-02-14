@@ -2,7 +2,7 @@ import { Pattern } from 'hexo-util';
 import type { _File } from '../../box';
 import type Theme from '..';
 
-function process(file: _File) {
+function process(file: _File): Promise<void> {
   const { path } = file.params;
 
   if (file.type === 'delete') {

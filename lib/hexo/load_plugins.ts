@@ -4,13 +4,13 @@ import Promise from 'bluebird';
 import { magenta } from 'picocolors';
 import type Hexo from './index';
 
-export = (ctx: Hexo) => {
+export = (ctx: Hexo): Promise<void[][]> => {
   if (!ctx.env.init || ctx.env.safe) return;
 
   return loadModules(ctx).then(() => loadScripts(ctx));
 };
 
-function loadModuleList(ctx: Hexo, basedir: string) {
+function loadModuleList(ctx: Hexo, basedir: string): Promise<any> {
   const packagePath = join(basedir, 'package.json');
 
   // Make sure package.json exists

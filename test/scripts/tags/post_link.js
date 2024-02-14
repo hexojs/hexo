@@ -73,4 +73,8 @@ describe('post_link', () => {
   it('should throw if post not found', () => {
     should.throw(() => postLink(['bar']), Error, /Post not found: post_link bar\./);
   });
+
+  it('should keep hash', () => {
+    postLink(['foo#bar']).should.eql('<a href="/foo/#bar" title="Hello world">Hello world</a>');
+  });
 });

@@ -22,7 +22,7 @@ function toArray(value) {
   return [];
 }
 
-function safeJsonStringify(json, spacer = undefined) {
+function safeJsonStringify(json: any, spacer = undefined): string {
   if (typeof json !== 'undefined' && json !== null) {
     return JSON.stringify(json, null, spacer);
   }
@@ -37,12 +37,12 @@ const nunjucksCfg = {
   lstripBlocks: false
 };
 
-const nunjucksAddFilter = (env: Environment) => {
+const nunjucksAddFilter = (env: Environment): void => {
   env.addFilter('toarray', toArray);
   env.addFilter('safedump', safeJsonStringify);
 };
 
-function njkCompile(data: StoreFunctionData) {
+function njkCompile(data: StoreFunctionData): nunjucks.Template {
   let env: Environment;
   if (data.path) {
     env = nunjucks.configure(dirname(data.path), nunjucksCfg);
@@ -56,11 +56,11 @@ function njkCompile(data: StoreFunctionData) {
   return nunjucks.compile(text as string, env, data.path);
 }
 
-function njkRenderer(data: StoreFunctionData, locals: object) {
+function njkRenderer(data: StoreFunctionData, locals: object): string {
   return njkCompile(data).render(locals);
 }
 
-njkRenderer.compile = (data: StoreFunctionData) => {
+njkRenderer.compile = (data: StoreFunctionData): (locals: any) => string => {
   // Need a closure to keep the compiled template.
   return locals => njkCompile(data).render(locals);
 };
