@@ -7,12 +7,13 @@ import { magenta } from 'picocolors';
 import { EventEmitter } from 'events';
 import { isMatch, makeRe } from 'micromatch';
 import type Hexo from '../hexo';
+import type { NodeJSLikeCallback } from '../types';
 
 const defaultPattern = new Pattern(() => ({}));
 
 interface Processor {
   pattern: Pattern;
-  process: (file: File) => void;
+  process: (file?: File) => any;
 }
 
 class Box extends EventEmitter {

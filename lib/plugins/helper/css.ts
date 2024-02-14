@@ -1,8 +1,9 @@
 import { htmlTag, url_for } from 'hexo-util';
 import moize from 'moize';
+import type { LocalsType } from '../../types';
 
 let relative_link = true;
-function cssHelper(...args: any[]) {
+function cssHelper(this: LocalsType, ...args: any[]) {
   let result = '\n';
 
   relative_link = this.config.relative_link;

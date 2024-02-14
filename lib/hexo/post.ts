@@ -8,6 +8,8 @@ import { slugize, escapeRegExp } from 'hexo-util';
 import { copyDir, exists, listDir, mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
 import { parse as yfmParse, split as yfmSplit, stringify as yfmStringify } from 'hexo-front-matter';
 import type Hexo from './index';
+import type { NodeJSLikeCallback, RenderData } from '../types';
+
 const preservedKeys = ['title', 'slug', 'path', 'layout', 'date', 'content'];
 
 const rHexoPostRenderEscape = /<hexoPostRenderCodeBlock>([\s\S]+?)<\/hexoPostRenderCodeBlock>/g;
@@ -67,6 +69,9 @@ class PostRenderEscape {
    * @returns string
    */
   escapeAllSwigTags(str: string) {
+    if (!/(\{\{.+?\}\})|(\{#.+?#\})|(\{%.+?%\})/s.test(str)) {
+      return str;
+    }
     let state = STATE_PLAINTEXT;
     let buffer = '';
     let output = '';
@@ -84,6 +89,7 @@ class PostRenderEscape {
 
       if (state === STATE_PLAINTEXT) { // From plain text to swig
         if (char === '{') {
+          // check if it is a complete tag {{ }}
           if (next_char === '{') {
             state = STATE_SWIG_VAR;
             idx++;
@@ -222,14 +228,6 @@ const createAssetFolder = (path: string, assetFolder: boolean) => {
 interface Result {
   path?: string;
   content?: string;
-}
-
-interface Data {
-  engine?: string;
-  content?: string;
-  disableNunjucks?: boolean;
-  markdown?: object;
-  source?: string;
 }
 
 interface PostData {
@@ -388,7 +386,7 @@ class Post {
     }).thenReturn(result).asCallback(callback);
   }
 
-  render(source: string, data: Data = {}, callback?: NodeJSLikeCallback<never>) {
+  render(source: string, data: RenderData = {}, callback?: NodeJSLikeCallback<never>) {
     const ctx = this.context;
     const { config } = ctx;
     const { tag } = ctx.extend;

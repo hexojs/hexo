@@ -1,7 +1,7 @@
 import moment from 'moment-timezone';
 const { isMoment } = moment;
 import moize from 'moize';
-import type Hexo from '../../hexo';
+import type { LocalsType } from '../../types';
 
 const isDate = (value: moment.MomentInput | moment.Moment): boolean =>
   typeof value === 'object' && value instanceof Date && !isNaN(value.getTime());
@@ -29,19 +29,19 @@ function toISOString(date: string | number | Date | moment.Moment) {
   return new Date(date as (string | number)).toISOString();
 }
 
-function dateHelper(date: moment.Moment | moment.MomentInput, format: string) {
+function dateHelper(this: LocalsType, date: moment.Moment | moment.MomentInput, format?: string) {
   const { config } = this;
   const moment = getMoment(date, getLanguage(this), config.timezone);
   return moment.format(format || config.date_format);
 }
 
-function timeHelper(date: moment.Moment | moment.MomentInput, format: string) {
+function timeHelper(this: LocalsType, date: moment.Moment | moment.MomentInput, format?: string) {
   const { config } = this;
   const moment = getMoment(date, getLanguage(this), config.timezone);
   return moment.format(format || config.time_format);
 }
 
-function fullDateHelper(date: moment.Moment | moment.MomentInput, format: string) {
+function fullDateHelper(this: LocalsType, date: moment.Moment | moment.MomentInput, format: string) {
   if (format) {
     const moment = getMoment(date, getLanguage(this), this.config.timezone);
     return moment.format(format);
@@ -50,18 +50,17 @@ function fullDateHelper(date: moment.Moment | moment.MomentInput, format: string
   return `${this.date(date)} ${this.time(date)}`;
 }
 
-function relativeDateHelper(date: moment.Moment | moment.MomentInput) {
+function relativeDateHelper(this: LocalsType, date: moment.Moment | moment.MomentInput) {
   const { config } = this;
   const moment = getMoment(date, getLanguage(this), config.timezone);
   return moment.fromNow();
 }
 
-function timeTagHelper(date: string | number | Date | moment.Moment, format: string) {
-  const { config } = this;
-  return `<time datetime="${toISOString(date)}">${this.date(date, format, getLanguage(this), config.timezone)}</time>`;
+function timeTagHelper(this: LocalsType, date: string | number | Date | moment.Moment, format: string) {
+  return `<time datetime="${toISOString(date)}">${this.date(date, format)}</time>`;
 }
 
-function getLanguage(ctx) {
+function getLanguage(ctx: LocalsType) {
   return ctx.page.lang || ctx.page.language || ctx.config.language;
 }
 

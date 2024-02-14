@@ -1,10 +1,11 @@
 import Promise from 'bluebird';
+import type { NodeJSLikeCallback } from '../types';
 
 interface StoreFunction {
   (deployArg: {
     type: string;
     [key: string]: any
-  }) : any;
+  }, callback?: NodeJSLikeCallback<any>) : any;
 }
 interface Store {
   [key: string]: StoreFunction

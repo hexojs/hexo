@@ -1,11 +1,28 @@
 import { url_for, escapeHTML } from 'hexo-util';
 import moize from 'moize';
+import type { LocalsType, TagSchema } from '../../types';
+import type Query from 'warehouse/dist/query';
 
-function listTagsHelper(tags, options?) {
+interface Options {
+  style?: string;
+  class?: any;
+  amount?: number;
+  orderby?: string;
+  order?: number;
+  transform?: (name: string) => string;
+  separator?: string;
+  show_count?: boolean;
+  suffix?: string;
+}
+
+function listTagsHelper(this: LocalsType, options?: Options): string;
+function listTagsHelper(this: LocalsType, tags: Query<TagSchema>, options?: Options): string;
+function listTagsHelper(this: LocalsType, tags?: Query<TagSchema> | Options, options?: Options) {
   if (!options && (!tags || !Object.prototype.hasOwnProperty.call(tags, 'length'))) {
-    options = tags;
+    options = tags as Options;
     tags = this.site.tags;
   }
+  tags = tags as Query<TagSchema>;
 
   if (!tags || !tags.length) return '';
   options = options || {};
@@ -87,13 +104,15 @@ function listTagsHelper(tags, options?) {
 
   return result;
 }
-
-function listTagsHelperFactory(tags, options) {
+function listTagsHelperFactory(options?: Options): string;
+function listTagsHelperFactory(tags: Query<TagSchema>, options?: Options): string;
+function listTagsHelperFactory(tags?: Query<TagSchema> | Options, options?: Options) {
   const transformArgs = () => {
     if (!options && (!tags || !Object.prototype.hasOwnProperty.call(tags, 'length'))) {
-      options = tags;
+      options = tags as Options;
       tags = this.site.tags;
     }
+    tags = tags as Query<TagSchema>;
 
     return [tags.toArray(), options];
   };

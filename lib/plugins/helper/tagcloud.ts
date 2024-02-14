@@ -1,11 +1,34 @@
 import { Color, url_for } from 'hexo-util';
 import moize from 'moize';
+import type { LocalsType, TagSchema } from '../../types';
+import type Query from 'warehouse/dist/query';
 
-function tagcloudHelper(tags, options?) {
+interface Options {
+  min_font?: number;
+  max_font?: number;
+  orderby?: string;
+  order?: number;
+  unit?: string;
+  color?: boolean;
+  class?: string;
+  show_count?: boolean;
+  count_class?: string;
+  level?: number;
+  transform?: (name: string) => string;
+  separator?: string;
+  amount?: number;
+  start_color?: string;
+  end_color?: string;
+}
+
+function tagcloudHelper(this: LocalsType, options?: Options);
+function tagcloudHelper(this: LocalsType, tags: Query<TagSchema>, options?: Options);
+function tagcloudHelper(this: LocalsType, tags?: Query<TagSchema> | Options, options?: Options) {
   if (!options && (!tags || !Object.prototype.hasOwnProperty.call(tags, 'length'))) {
-    options = tags;
+    options = tags as Options;
     tags = this.site.tags;
   }
+  tags = tags as Query<TagSchema>;
 
   if (!tags || !tags.length) return '';
   options = options || {};
@@ -75,12 +98,15 @@ function tagcloudHelper(tags, options?) {
   return result.join(separator);
 }
 
-function tagcloudHelperFactory(tags, options) {
+function tagcloudHelperFactory(this: LocalsType, options?: Options);
+function tagcloudHelperFactory(this: LocalsType, tags: Query<TagSchema>, options?: Options);
+function tagcloudHelperFactory(this: LocalsType, tags?: Query<TagSchema> | Options, options?: Options) {
   const transformArgs = () => {
     if (!options && (!tags || !Object.prototype.hasOwnProperty.call(tags, 'length'))) {
-      options = tags;
+      options = tags as Options;
       tags = this.site.tags;
     }
+    tags = tags as Query<TagSchema>;
 
     return [tags.toArray(), options];
   };

@@ -7,7 +7,7 @@ export = (ctx: Hexo) => {
   // reset cache for watch mode
   ctx.on('generateBefore', () => { cache.flush(); });
 
-  return function fragmentCache(id, fn) {
+  return function fragmentCache(id: string, fn: () => any) {
     if (this.cache) return cache.apply(id, fn);
 
     const result = fn();
