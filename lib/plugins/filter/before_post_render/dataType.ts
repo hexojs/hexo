@@ -1,3 +1,5 @@
+import Hexo from '../../../hexo';
+
 /**
  * before_post_render `data` parameter
  *
@@ -8,5 +10,5 @@ export interface extend_filter_before_post_render_data {
   [key: string]: any;
   content: string | null | undefined;
   source: string;
-  config: import('../../../hexo')['config'];
+  config: Hexo['config'];
 }
