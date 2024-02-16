@@ -660,7 +660,7 @@ class Hexo extends EventEmitter {
       });
   }
 
-  exit(err: Error): Promise<void> {
+  exit(err?: Error): Promise<void> {
     if (err) {
       this.log.fatal(
         { err },
