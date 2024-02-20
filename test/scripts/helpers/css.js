@@ -62,7 +62,7 @@ describe('css', () => {
     assertResult(css({href: '/script.css', foo: 'bar'}), {href: '/script.css', foo: 'bar'});
   });
 
-  it('mulitple objects', () => {
+  it('multiple objects', () => {
     assertResult(css({href: '/foo.css'}, {href: '/bar.css'}), [{href: '/foo.css'}, {href: '/bar.css'}]);
     assertResult(css({href: '/aaa.css', bbb: 'ccc'}, {href: '/ddd.css', eee: 'fff'}),
       [{href: '/aaa.css', bbb: 'ccc'}, {href: '/ddd.css', eee: 'fff'}]);

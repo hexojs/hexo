@@ -80,7 +80,7 @@ describe('url_for', () => {
     ctx.config.relative_link = false;
   });
 
-  it('internel url (pretty_urls.trailing_index disabled)', () => {
+  it('internal url (pretty_urls.trailing_index disabled)', () => {
     ctx.config.pretty_urls = { trailing_index: false };
     ctx.path = '';
     ctx.config.root = '/';
