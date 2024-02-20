@@ -33,7 +33,8 @@ module.exports = function highlightFilter(this: Hexo, code: string, options: Opt
     languageAttr,
     mark: options.mark,
     tab: hljsCfg.tab_replace,
-    wrap: hljsCfg.wrap
+    wrap: hljsCfg.wrap,
+    disableStripIndent: hljsCfg.disable_strip_indent
   };
   if (hljsCfg.first_line_number === 'inline') {
     if (typeof options.firstLineNumber !== 'undefined') {
