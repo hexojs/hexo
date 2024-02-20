@@ -1,4 +1,4 @@
-import { encodeURL, escapeHTML } from 'hexo-util';
+import { url_for, encodeURL, escapeHTML } from 'hexo-util';
 import { postFindOneFactory } from './';
 import type Hexo from '../../hexo';
 
@@ -41,8 +41,7 @@ export = (ctx: Hexo) => {
     const attrTitle = escapeHTML(post.title || post.slug);
     if (escape === 'true') title = escapeHTML(title);
 
-    const url = new URL(post.path, ctx.config.url).pathname + (hash ? `#${hash}` : '');
-    const link = encodeURL(url);
+    const link = url_for.call(ctx, post.path + (hash ? `#${hash}` : ''));
 
     return `<a href="${link}" title="${attrTitle}">${title}</a>`;
   };

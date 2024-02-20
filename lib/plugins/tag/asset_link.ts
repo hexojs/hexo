@@ -1,4 +1,4 @@
-import { encodeURL, escapeHTML } from 'hexo-util';
+import { url_for, escapeHTML } from 'hexo-util';
 import type Hexo from '../../hexo';
 
 /**
@@ -28,7 +28,7 @@ export = (ctx: Hexo) => {
     const attrTitle = escapeHTML(title);
     if (escape === 'true') title = attrTitle;
 
-    const link = encodeURL(new URL(asset.path, ctx.config.url).pathname);
+    const link = url_for.call(ctx, asset.path);
 
     return `<a href="${link}" title="${attrTitle}">${title}</a>`;
   };

@@ -1,4 +1,4 @@
-import { encodeURL } from 'hexo-util';
+import { url_for } from 'hexo-util';
 import type Hexo from '../../hexo';
 
 /**
@@ -17,7 +17,7 @@ export = (ctx: Hexo) => {
     const asset = PostAsset.findOne({post: this._id, slug});
     if (!asset) return;
 
-    const path = encodeURL(new URL(asset.path, ctx.config.url).pathname);
+    const path = url_for.call(ctx, asset.path);
 
     return path;
   };

@@ -77,4 +77,9 @@ describe('post_link', () => {
   it('should keep hash', () => {
     postLink(['foo#bar']).should.eql('<a href="/foo/#bar" title="Hello world">Hello world</a>');
   });
+
+  it('with root path', () => {
+    hexo.config.root = '/root/';
+    postLink(['foo']).should.eql('<a href="/root/foo/" title="Hello world">Hello world</a>');
+  });
 });
