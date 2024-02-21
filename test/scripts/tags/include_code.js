@@ -21,7 +21,11 @@ describe('include_code', () => {
 
   const code = args => includeCode(args.split(' '));
 
-  before(() => writeFile(path, fixture));
+  before(async () => {
+    await writeFile(path, fixture);
+    await hexo.init();
+    await hexo.load();
+  });
 
   beforeEach(() => {
     hexo.config = JSON.parse(JSON.stringify(defaultCfg));
