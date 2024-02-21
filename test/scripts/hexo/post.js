@@ -1371,7 +1371,7 @@ describe('Post', () => {
   });
 
   // https://github.com/hexojs/hexo/issues/5301
-  it('render() - dont escape uncomplete tags', async () => {
+  it('render() - dont escape incomplete tags', async () => {
     const content = 'dont drop `{% }` 11111 `{# }` 22222 `{{ }` 33333';
 
     const data = await post.render(null, {
@@ -1385,8 +1385,8 @@ describe('Post', () => {
     data.content.should.not.contains('&#96;'); // `
   });
 
-  it('render() - uncomplete tags throw error', async () => {
-    const content = 'nunjucks should thorw {#  } error';
+  it('render() - incomplete tags throw error', async () => {
+    const content = 'nunjucks should throw {#  } error';
 
     try {
       await post.render(null, {
