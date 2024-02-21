@@ -13,9 +13,17 @@ function i18nLocalsFilter(this: Hexo, locals: LocalsType): void {
 
   if (!lang) {
     const pattern = new Pattern(`${i18nDir}/*path`);
-    const data = pattern.match(locals.path);
+    // fix hexo-util/dist/pattern.d.ts is not object
+    // fix(TS2322): Type 'unknown' is not assignable to type 'string'.
+    const data = pattern.match(locals.path) as Record<string, any>;
 
-    if (data && data.lang && i18nLanguages.includes(data.lang)) {
+    if (
+      typeof data !== 'undefined'
+      && !Array.isArray(data)
+      && typeof data !== 'boolean'
+      && data.lang
+      && i18nLanguages.includes(data.lang)
+    ) {
       lang = data.lang;
       page.canonical_path = data.path;
     } else {

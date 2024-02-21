@@ -82,10 +82,50 @@ class Renderer {
     return renderer ? renderer.output : '';
   }
 
+  /**
+   * register renderer engine
+   * - [hexo-renderer-nunjucks example](https://github.com/hexojs/hexo-renderer-nunjucks/blob/c71a1979535c47c3949ff6bf3a85691641841e12/lib/renderer.js#L55-L56)
+   * - [typescript example](https://github.com/dimaslanjaka/hexo-renderers/blob/feed801e90920bea8a5e7000b275b912e4ef6c43/src/renderer-sass.ts#L37-L38)
+   * @param name input extension name. ex: ejs
+   * @param output output extension name. ex: html
+   * @param fn renderer function
+   */
   register(name: string, output: string, fn: StoreFunction): void;
+
+  /**
+   * register renderer engine asynchronous
+   * @param name input extension name. ex: ejs
+   * @param output output extension name. ex: html
+   * @param fn renderer asynchronous function
+   * @param sync is synchronous?
+   */
   register(name: string, output: string, fn: StoreFunction, sync: false): void;
+
+  /**
+   * register renderer engine
+   * @param name input extension name. ex: ejs
+   * @param output output extension name. ex: html
+   * @param fn renderer function
+   * @param sync is synchronous?
+   */
   register(name: string, output: string, fn: StoreSyncFunction, sync: true): void;
+
+  /**
+   * register renderer engine
+   * @param name input extension name. ex: ejs
+   * @param output output extension name. ex: html
+   * @param fn renderer function
+   * @param sync is synchronous?
+   */
   register(name: string, output: string, fn: StoreFunction | StoreSyncFunction, sync: boolean): void;
+
+  /**
+   * register renderer engine
+   * @param name input extension name. ex: ejs
+   * @param output output extension name. ex: html
+   * @param fn renderer function
+   * @param sync is synchronous?
+   */
   register(name: string, output: string, fn: StoreFunction | StoreSyncFunction, sync?: boolean) {
     if (!name) throw new TypeError('name is required');
     if (!output) throw new TypeError('output is required');

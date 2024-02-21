@@ -28,7 +28,7 @@ class Processor {
   register(pattern: patternType | StoreFunction, fn?: StoreFunction): void {
     if (!fn) {
       if (typeof pattern === 'function') {
-        fn = pattern;
+        fn = pattern as StoreFunction;
         pattern = /(.*)/;
       } else {
         throw new TypeError('fn must be a function');
