@@ -41,7 +41,13 @@ export = (ctx: Hexo) => {
     const attrTitle = escapeHTML(post.title || post.slug);
     if (escape === 'true') title = escapeHTML(title);
 
-    const url = new URL(post.path, ctx.config.url).pathname + (hash ? `#${hash}` : '');
+    // guarantee the base url ends with a slash. (case of using a subdirectory in the url of the site)
+    let baseUrl = ctx.config.url;
+    if (!baseUrl.endsWith('/')) {
+      baseUrl += '/';
+    }
+
+    const url = new URL(post.path, baseUrl).pathname + (hash ? `#${hash}` : '');
     const link = encodeURL(url);
 
     return `<a href="${link}" title="${attrTitle}">${title}</a>`;
