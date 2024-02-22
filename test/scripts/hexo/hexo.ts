@@ -71,7 +71,7 @@ describe('Hexo', () => {
     hexo.config_path.should.eql(join(__dirname, '_config.yml'));
   });
 
-  it('constructs mutli-config', () => {
+  it('constructs multi-config', () => {
     const configs = ['../../../fixtures/_config.json', '../../../fixtures/_config.json'];
     const args = { _: [], config: configs.join(',') };
     const hexo = new Hexo(base_dir, args);

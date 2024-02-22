@@ -94,7 +94,7 @@ describe('asset', () => {
     ]);
   });
 
-  it('asset - type: create (when source path is configed to parent directory)', async () => {
+  it('asset - type: create (when source path is configured to parent directory)', async () => {
     const file = newFile({
       path: '../../source/foo.jpg',
       type: 'create',

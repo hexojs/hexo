@@ -29,7 +29,7 @@ describe('full_url_for', () => {
     $('a').html()!.should.eql('index');
   });
 
-  it('internel url (pretty_urls.trailing_index disabled)', () => {
+  it('internal url (pretty_urls.trailing_index disabled)', () => {
     ctx.config.pretty_urls = { trailing_index: false };
     let $ = cheerio.load(fullUrlFor('index index.html'));
     $('a').attr('href')!.should.eql(ctx.config.url + '/');

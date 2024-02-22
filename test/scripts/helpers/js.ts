@@ -67,7 +67,7 @@ describe('js', () => {
     assertResult(js({src: '/script.js', foo: 'bar'}), {src: '/script.js', foo: 'bar'});
   });
 
-  it('mulitple objects', () => {
+  it('multiple objects', () => {
     assertResult(js({src: '/foo.js'}, {src: '/bar.js'}), [{src: '/foo.js'}, {src: '/bar.js'}]);
     assertResult(js({src: '/aaa.js', bbb: 'ccc'}, {src: '/ddd.js', eee: 'fff'}),
       [{src: '/aaa.js', bbb: 'ccc'}, {src: '/ddd.js', eee: 'fff'}]);
