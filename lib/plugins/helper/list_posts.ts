@@ -3,7 +3,7 @@ import type { LocalsType, PostSchema } from '../../types';
 import type Query from 'warehouse/dist/query';
 
 interface Options {
-  style?: string;
+  style?: string | false;
   class?: string;
   amount?: number;
   orderby?: string;
@@ -12,8 +12,6 @@ interface Options {
   separator?: string;
 }
 
-function listPostsHelper(this: LocalsType, options?: Options): string;
-function listPostsHelper(this: LocalsType, posts: Query<PostSchema>, options?: Options): string;
 function listPostsHelper(this: LocalsType, posts?: Query<PostSchema> | Options, options?: Options) {
   if (!options && (!posts || !Object.prototype.hasOwnProperty.call(posts, 'length'))) {
     options = posts as Options;

@@ -1,7 +1,7 @@
 import { inspect } from 'util';
 
 // this format object as string, resolves circular reference
-function inspectObject(object: any, options: boolean) {
+function inspectObject(object: any, options?: any) {
   return inspect(object, options);
 }
 

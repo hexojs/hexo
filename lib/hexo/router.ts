@@ -84,7 +84,7 @@ class RouteStream extends Readable {
   }
 }
 
-const _format = (path: string): string => {
+const _format = (path?: string): string => {
   path = path || '';
   if (typeof path !== 'string') throw new TypeError('path must be a string!');
 
@@ -118,7 +118,7 @@ class Router extends EventEmitter {
     return Object.keys(routes).filter(key => routes[key]);
   }
 
-  format(path: string): string {
+  format(path?: string): string {
     return _format(path);
   }
 

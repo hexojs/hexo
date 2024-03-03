@@ -3,7 +3,7 @@ import type { LocalsType } from '../../types';
 
 interface Options {
   class?: string;
-  text?: string;
+  text?: string | null;
   button?: string | boolean;
 }
 

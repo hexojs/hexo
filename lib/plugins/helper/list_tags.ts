@@ -4,7 +4,7 @@ import type { LocalsType, TagSchema } from '../../types';
 import type Query from 'warehouse/dist/query';
 
 interface Options {
-  style?: string;
+  style?: string | false;
   class?: any;
   amount?: number;
   orderby?: string;
@@ -15,8 +15,6 @@ interface Options {
   suffix?: string;
 }
 
-function listTagsHelper(this: LocalsType, options?: Options): string;
-function listTagsHelper(this: LocalsType, tags: Query<TagSchema>, options?: Options): string;
 function listTagsHelper(this: LocalsType, tags?: Query<TagSchema> | Options, options?: Options) {
   if (!options && (!tags || !Object.prototype.hasOwnProperty.call(tags, 'length'))) {
     options = tags as Options;
@@ -104,8 +102,7 @@ function listTagsHelper(this: LocalsType, tags?: Query<TagSchema> | Options, opt
 
   return result;
 }
-function listTagsHelperFactory(options?: Options): string;
-function listTagsHelperFactory(tags: Query<TagSchema>, options?: Options): string;
+
 function listTagsHelperFactory(tags?: Query<TagSchema> | Options, options?: Options) {
   const transformArgs = () => {
     if (!options && (!tags || !Object.prototype.hasOwnProperty.call(tags, 'length'))) {

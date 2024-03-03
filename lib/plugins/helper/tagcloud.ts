@@ -21,8 +21,6 @@ interface Options {
   end_color?: string;
 }
 
-function tagcloudHelper(this: LocalsType, options?: Options);
-function tagcloudHelper(this: LocalsType, tags: Query<TagSchema>, options?: Options);
 function tagcloudHelper(this: LocalsType, tags?: Query<TagSchema> | Options, options?: Options) {
   if (!options && (!tags || !Object.prototype.hasOwnProperty.call(tags, 'length'))) {
     options = tags as Options;
@@ -98,8 +96,6 @@ function tagcloudHelper(this: LocalsType, tags?: Query<TagSchema> | Options, opt
   return result.join(separator);
 }
 
-function tagcloudHelperFactory(this: LocalsType, options?: Options);
-function tagcloudHelperFactory(this: LocalsType, tags: Query<TagSchema>, options?: Options);
 function tagcloudHelperFactory(this: LocalsType, tags?: Query<TagSchema> | Options, options?: Options) {
   const transformArgs = () => {
     if (!options && (!tags || !Object.prototype.hasOwnProperty.call(tags, 'length'))) {

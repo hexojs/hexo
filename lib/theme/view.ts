@@ -22,6 +22,7 @@ const assignIn = (target: any, ...sources: any[]) => {
 
 class Options {
   layout?: any;
+  [key: string]: any;
 }
 
 class View {

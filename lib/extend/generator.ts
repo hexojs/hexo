@@ -3,20 +3,20 @@ import type { NodeJSLikeCallback } from '../types';
 
 interface BaseObj {
   path: string;
-  data: any;
-  layout?: string;
+  data?: any;
+  layout?: string | string[];
 }
 type ReturnType = BaseObj | BaseObj[];
 type GeneratorReturnType = ReturnType | Promise<ReturnType>;
 
 interface GeneratorFunction {
-  (locals: object, callback?: NodeJSLikeCallback<any>): GeneratorReturnType;
+  (locals: any, callback?: NodeJSLikeCallback<any>): GeneratorReturnType;
 }
 
 type StoreFunctionReturn = Promise<ReturnType>;
 
 interface StoreFunction {
-  (locals: object): StoreFunctionReturn;
+  (locals: any): StoreFunctionReturn;
 }
 
 interface Store {
