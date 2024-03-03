@@ -386,9 +386,15 @@ class Hexo extends EventEmitter {
       return db.model('Page').find(query);
     });
 
-    locals.set('categories', () => db.model('Category'));
+    locals.set('categories', () => {
+      // Ignore categories with zero posts
+      return db.model('Category').filter(category => category.length);
+    });
 
-    locals.set('tags', () => db.model('Tag'));
+    locals.set('tags', () => {
+      // Ignore tags with zero posts
+      return db.model('Tag').filter(tag => tag.length);
+    });
 
     locals.set('data', () => {
       const obj = {};
