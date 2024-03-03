@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
-import testUtil from '../../util';
+import { readStream } from '../../util';
 import Hexo from '../../../lib/hexo';
 import assetGenerator from '../../../lib/plugins/generator/asset';
 import { spy } from 'sinon';
@@ -15,7 +15,7 @@ describe('asset', () => {
   const Asset = hexo.model('Asset');
 
   const checkStream = async (stream, expected) => {
-    const data = await testUtil.stream.read(stream);
+    const data = await readStream(stream);
     data.should.eql(expected);
   };
 

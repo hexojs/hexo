@@ -1,8 +1,6 @@
-'use strict';
+import Promise from 'bluebird';
 
-const Promise = require('bluebird');
-
-function readStream(stream) {
+export function readStream(stream): Promise<string> {
   return new Promise((resolve, reject) => {
     let data = '';
 
@@ -13,5 +11,3 @@ function readStream(stream) {
     }).on('error', reject);
   });
 }
-
-exports.read = readStream;
