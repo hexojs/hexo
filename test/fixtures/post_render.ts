@@ -1,13 +1,11 @@
-'use strict';
-
-const { highlight } = require('hexo-util');
+import { highlight } from 'hexo-util';
 
 const code = [
   'if tired && night:',
   '  sleep()'
 ].join('\n');
 
-exports.content = [
+export const content = [
   '# Title',
   '``` python',
   code,
@@ -24,7 +22,7 @@ exports.content = [
   '{% endquote %}'
 ].join('\n');
 
-exports.expected = [
+export const expected = [
   '<h1 id="Title"><a href="#Title" class="headerlink" title="Title"></a>Title</h1>',
   highlight(code, {lang: 'python'}),
   '\n<p>some content</p>\n',
@@ -36,7 +34,7 @@ exports.expected = [
   '<footer><strong>Hello World</strong></footer></blockquote>'
 ].join('');
 
-exports.expected_disable_nunjucks = [
+export const expected_disable_nunjucks = [
   '<h1 id="Title"><a href="#Title" class="headerlink" title="Title"></a>Title</h1>',
   highlight(code, {lang: 'python'}),
   '\n<p>some content</p>\n',
@@ -49,7 +47,7 @@ exports.expected_disable_nunjucks = [
   '{% endquote %}</p>'
 ].join('');
 
-exports.content_for_issue_3346 = [
+export const content_for_issue_3346 = [
   '# Title',
   '```',
   '{% test1 %}',
@@ -63,7 +61,7 @@ exports.content_for_issue_3346 = [
   '{% endblockquote %}'
 ].join('\n');
 
-exports.expected_for_issue_3346 = [
+export const expected_for_issue_3346 = [
   '<h1 id="Title"><a href="#Title" class="headerlink" title="Title"></a>Title</h1>',
   highlight('{% test1 %}\n{{ test2 }}').replace(/{/g, '&#123;').replace(/}/g, '&#125;'), // Escaped by backtick_code_block
   '\n<p>some content</p>\n',
@@ -73,7 +71,7 @@ exports.expected_for_issue_3346 = [
   '</blockquote>'
 ].join('');
 
-exports.content_for_issue_4460 = [
+export const content_for_issue_4460 = [
   '```html',
   '<body>',
   '<!-- here goes the rest of the page -->',

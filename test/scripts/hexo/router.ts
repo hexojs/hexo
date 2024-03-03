@@ -5,7 +5,7 @@ import { join } from 'path';
 import crypto from 'crypto';
 import { createReadStream } from 'hexo-fs';
 import { spy, assert as sinonAssert } from 'sinon';
-import testUtil from '../../util';
+import { readStream } from '../../util';
 import Router from '../../../lib/hexo/router';
 import chai from 'chai';
 const should = chai.should();
@@ -14,7 +14,7 @@ describe('Router', () => {
   const router = new Router();
 
   function checkStream(stream, expected) {
-    return testUtil.stream.read(stream).then(data => {
+    return readStream(stream).then(data => {
       data.should.eql(expected);
     });
   }
@@ -125,7 +125,7 @@ describe('Router', () => {
       throw new Error('error test');
     });
 
-    return testUtil.stream.read(router.get('test')).then(() => {
+    return readStream(router.get('test')).then(() => {
       should.fail('Return value must be rejected');
     }, err => {
       err.should.have.property('message', 'error test');
