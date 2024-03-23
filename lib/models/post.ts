@@ -224,3 +224,102 @@ export = (ctx: Hexo) => {
 
   return Post;
 };
+
+
+/////////// proposal /////////////////////////
+
+async search(query, options = {}) {
+  // Validar opciones de búsqueda avanzada
+  const { fullText = false, boolQuery = null } = options;
+
+  // Procesar la consulta de búsqueda
+  let queryString = query;
+  if (fullWidth) {
+    queryString = `"${query}"`; // Búsqueda por frase exacta
+  }
+
+  // Construir la consulta de Elasticsearch
+  const searchBody = {
+    query: {
+      bool: {
+        should: []
+      }
+    }
+  };
+
+  // Búsqueda por texto completo en title, content, tags y categories
+  if (!boolQuery) {
+    searchBody.query.bool.should.push({
+      multi_match: {
+        query: queryString,
+        fields: ['title', 'content', 'search_index'],
+        fuzziness: 'auto' // Opcional: Habilitar tolerancia a errores tipográficos
+      }
+    });
+  }
+
+  // Búsqueda booleana (opcional)
+  if (boolQuery) {
+    searchBody.query.bool = boolQuery;
+  }
+
+  // Filtrar por fecha (opcional)
+  if (options.hasOwnProperty('startDate') && options.hasOwnProperty('endDate')) {
+    const startDate = new Date(options.startDate).toISOString();
+    const endDate = new Date(options.endDate).toISOString();
+    searchBody.query.bool.filter = {
+      range: {
+        date: {
+          gte: startDate,
+          lte: endDate
+        }
+      }
+    };
+  }
+
+  // Filtrar por tags (opcional)
+  
+  if (options.hasOwnProperty('tags')) {
+    const tagsFilter = {
+      bool: {
+        should: options.tags.map(tag => ({ match: { tags: tag } }))
+      }
+    };
+    searchBody.query.bool.filter = searchBody.query.bool.filter || {};
+    searchBody.query.bool.filter = { bool: { must: [searchBody.query.bool.filter, tagsFilter] } };
+  }
+
+  // Filtrar por categorías (opcional)
+  if (options.hasOwnProperty('categories')) {
+    const categoriesFilter = {
+      bool: {
+        should: options.categories.map(category => ({ match: { categories: category } }))
+      }
+    };
+    searchBody.query.bool.filter = searchBody.query.bool.filter || {};
+    searchBody.query.bool.filter = { bool: { must: [searchBody.query.bool.filter, categoriesFilter] } };
+  }
+
+  // Realizar la búsqueda en Elasticsearch
+  try {
+    const response = await searchEngine.search({
+      index: 'posts', // Nombre de tu índice en Elasticsearch
+      body: searchBody
+    });
+
+    // Extraer los resultados y mapearlos a objetos Post
+    const posts = response.hits.hits.map(hit => {
+      const post = new Post();
+      post.id = hit._source.id;
+      post.title = hit._source.title;
+      post.content = hit._source.content;
+      // ...
+      return post;
+    });
+
+    return posts;
+  } catch (error) {
+    console.error('Error searching posts:', error);
+    return [];
+  }
+}
