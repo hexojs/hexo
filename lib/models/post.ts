@@ -278,7 +278,7 @@ async search(query, options = {}) {
   }
 
   // Filtrar por tags (opcional)
-  
+
   if (options.hasOwnProperty('tags')) {
     const tagsFilter = {
       bool: {
@@ -323,3 +323,4 @@ async search(query, options = {}) {
     return [];
   }
 }
+
