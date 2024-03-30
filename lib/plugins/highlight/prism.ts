@@ -16,7 +16,7 @@ module.exports = function(code, options) {
     lineNumber,
     mark: options.mark,
     tab: prismjsCfg.tab_replace,
-    disableStripIndent: prismjsCfg.disable_strip_indent
+    stripIndent: prismjsCfg.strip_indent
   };
 
   if (!prismHighlight) prismHighlight = require('hexo-util').prismHighlight;

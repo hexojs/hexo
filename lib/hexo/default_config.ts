@@ -49,14 +49,14 @@ export = {
     hljs: false,
     line_threshold: 0,
     first_line_number: 'always1',
-    disable_strip_indent: false
+    strip_indent: false
   },
   prismjs: {
     preprocess: true,
     line_number: true,
     tab_replace: '',
     exclude_languages: [],
-    disable_strip_indent: false
+    strip_indent: false
   },
   // Category & Tag
   default_category: 'uncategorized',
