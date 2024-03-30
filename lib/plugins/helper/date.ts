@@ -17,7 +17,7 @@ function getMoment(date: moment.MomentInput | moment.Moment, lang: string, timez
   return date;
 }
 
-function toISOString(date: string | number | Date | moment.Moment) {
+function toISOString(date?: string | number | Date | moment.Moment) {
   if (date == null) {
     return new Date().toISOString();
   }
@@ -29,19 +29,19 @@ function toISOString(date: string | number | Date | moment.Moment) {
   return new Date(date as (string | number)).toISOString();
 }
 
-function dateHelper(this: LocalsType, date: moment.Moment | moment.MomentInput, format?: string) {
+function dateHelper(this: LocalsType, date?: moment.Moment | moment.MomentInput, format?: string) {
   const { config } = this;
   const moment = getMoment(date, getLanguage(this), config.timezone);
   return moment.format(format || config.date_format);
 }
 
-function timeHelper(this: LocalsType, date: moment.Moment | moment.MomentInput, format?: string) {
+function timeHelper(this: LocalsType, date?: moment.Moment | moment.MomentInput, format?: string) {
   const { config } = this;
   const moment = getMoment(date, getLanguage(this), config.timezone);
   return moment.format(format || config.time_format);
 }
 
-function fullDateHelper(this: LocalsType, date: moment.Moment | moment.MomentInput, format: string) {
+function fullDateHelper(this: LocalsType, date?: moment.Moment | moment.MomentInput, format?: string) {
   if (format) {
     const moment = getMoment(date, getLanguage(this), this.config.timezone);
     return moment.format(format);
@@ -50,13 +50,13 @@ function fullDateHelper(this: LocalsType, date: moment.Moment | moment.MomentInp
   return `${this.date(date)} ${this.time(date)}`;
 }
 
-function relativeDateHelper(this: LocalsType, date: moment.Moment | moment.MomentInput) {
+function relativeDateHelper(this: LocalsType, date?: moment.Moment | moment.MomentInput) {
   const { config } = this;
   const moment = getMoment(date, getLanguage(this), config.timezone);
   return moment.fromNow();
 }
 
-function timeTagHelper(this: LocalsType, date: string | number | Date | moment.Moment, format: string) {
+function timeTagHelper(this: LocalsType, date?: string | number | Date | moment.Moment, format?: string) {
   return `<time datetime="${toISOString(date)}">${this.date(date, format)}</time>`;
 }
 
@@ -72,7 +72,7 @@ function getLanguage(ctx: LocalsType) {
  *
  * Moment defined locales: https://github.com/moment/moment/tree/master/locale
  */
-function _toMomentLocale(lang: string) {
+function _toMomentLocale(lang?: string) {
   if (lang === undefined) {
     return undefined;
   }

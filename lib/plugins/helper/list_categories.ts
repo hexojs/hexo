@@ -3,7 +3,7 @@ import type { CategorySchema, LocalsType } from '../../types';
 import type Query from 'warehouse/dist/query';
 
 interface Options {
-  style?: string;
+  style?: string | false;
   class?: string;
   depth?: number | string;
   orderby?: string;
@@ -13,11 +13,9 @@ interface Options {
   transform?: (name: string) => string;
   separator?: string;
   suffix?: string;
-  children_indicator?: boolean;
+  children_indicator?: string | boolean;
 }
 
-function listCategoriesHelper(this: LocalsType, options?: Options): string;
-function listCategoriesHelper(this: LocalsType, categories: Query<CategorySchema>, options?: Options): string;
 function listCategoriesHelper(this: LocalsType, categories?: Query<CategorySchema> | Options, options?: Options) {
   if (!options && (!categories || !Object.prototype.hasOwnProperty.call(categories, 'length'))) {
     options = categories as Options;

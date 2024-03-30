@@ -231,9 +231,9 @@ interface Result {
 }
 
 interface PostData {
-  title?: string;
+  title?: string | number;
   layout?: string;
-  slug?: string;
+  slug?: string | number;
   path?: string;
   [prop: string]: any;
 }
@@ -333,7 +333,10 @@ class Post {
     });
   }
 
-  publish(data: PostData, replace: boolean, callback?: NodeJSLikeCallback<Result>) {
+  publish(data: PostData, replace?: boolean);
+  publish(data: PostData, callback?: NodeJSLikeCallback<Result>);
+  publish(data: PostData, replace: boolean, callback?: NodeJSLikeCallback<Result>);
+  publish(data: PostData, replace?: boolean | NodeJSLikeCallback<Result>, callback?: NodeJSLikeCallback<Result>) {
     if (!callback && typeof replace === 'function') {
       callback = replace;
       replace = false;
@@ -366,7 +369,7 @@ class Post {
       data.content = data._content;
       data._content = undefined;
 
-      return this.create(data, replace);
+      return this.create(data, replace as boolean);
     }).then(post => {
       result.path = post.path;
       result.content = post.content;

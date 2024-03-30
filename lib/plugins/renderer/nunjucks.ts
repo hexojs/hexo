@@ -56,7 +56,7 @@ function njkCompile(data: StoreFunctionData): nunjucks.Template {
   return nunjucks.compile(text as string, env, data.path);
 }
 
-function njkRenderer(data: StoreFunctionData, locals: object): string {
+function njkRenderer(data: StoreFunctionData, locals?: any): string {
   return njkCompile(data).render(locals);
 }
 

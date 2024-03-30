@@ -5,7 +5,7 @@ import { url_for } from 'hexo-util';
 interface Options {
   format?: string;
   type?: string;
-  style?: string;
+  style?: string | false;
   transform?: (name: string) => string;
   separator?: string;
   show_count?: boolean;

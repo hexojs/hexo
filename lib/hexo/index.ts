@@ -660,7 +660,7 @@ class Hexo extends EventEmitter {
       });
   }
 
-  exit(err?: Error): Promise<void> {
+  exit(err?: any): Promise<void> {
     if (err) {
       this.log.fatal(
         { err },
@@ -674,11 +674,11 @@ class Hexo extends EventEmitter {
     });
   }
 
-  execFilter(type: string, data: any, options) {
+  execFilter(type: string, data: any, options?) {
     return this.extend.filter.exec(type, data, options);
   }
 
-  execFilterSync(type: string, data: any, options) {
+  execFilterSync(type: string, data: any, options?) {
     return this.extend.filter.execSync(type, data, options);
   }
 }

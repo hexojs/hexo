@@ -3,4 +3,3 @@ reporter: spec
 ui: bdd
 full-trace: true
 exit: true
-parallel: true

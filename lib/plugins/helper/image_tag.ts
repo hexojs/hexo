@@ -3,6 +3,7 @@ import type { LocalsType } from '../../types';
 
 interface Options {
   src?: string;
+  alt?: string;
   class?: string | string[];
 }
 

@@ -55,7 +55,7 @@ export = (ctx: Hexo) => {
       return result;
     }),
 
-    process: function postProcessor(file) {
+    process: function postProcessor(file: _File) {
       if (file.params.renderable) {
         return processPost(ctx, file);
       } else if (ctx.config.post_asset_folder) {
