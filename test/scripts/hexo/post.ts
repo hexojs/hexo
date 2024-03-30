@@ -3,7 +3,7 @@ import moment from 'moment';
 import { readFile, mkdirs, unlink, rmdir, writeFile, exists, stat, listDir } from 'hexo-fs';
 import { spy, useFakeTimers } from 'sinon';
 import { parse as yfm } from 'hexo-front-matter';
-import fixture from '../../fixtures/post_render';
+import { expected, content, expected_disable_nunjucks, content_for_issue_3346, expected_for_issue_3346, content_for_issue_4460 } from '../../fixtures/post_render';
 import { highlight } from 'hexo-util';
 import Hexo from '../../../lib/hexo';
 import chai from 'chai';
@@ -659,17 +659,17 @@ describe('Post', () => {
     hexo.extend.filter.register('after_post_render', afterHook);
 
     const data = await post.render('', {
-      content: fixture.content,
+      content,
       engine: 'markdown'
     });
-    data.content.trim().should.eql(fixture.expected);
+    data.content.trim().should.eql(expected);
     beforeHook.calledOnce.should.be.true;
     afterHook.calledOnce.should.be.true;
   });
 
   it('render() - callback', done => {
     post.render('', {
-      content: fixture.content,
+      content,
       engine: 'markdown'
     }, err => {
       done(err);
@@ -795,10 +795,10 @@ describe('Post', () => {
 
     try {
       const data = await post.render('', {
-        content: fixture.content,
+        content,
         engine: 'markdown'
       });
-      data.content.trim().should.eql(fixture.expected_disable_nunjucks);
+      data.content.trim().should.eql(expected_disable_nunjucks);
     } finally {
       renderer.disableNunjucks = false;
     }
@@ -811,10 +811,10 @@ describe('Post', () => {
 
     try {
       const data = await post.render('', {
-        content: fixture.content,
+        content,
         engine: 'markdown'
       });
-      data.content.trim().should.eql(fixture.expected);
+      data.content.trim().should.eql(expected);
     } finally {
       renderer.disableNunjucks = false;
     }
@@ -848,11 +848,11 @@ describe('Post', () => {
 
     try {
       const data = await post.render('', {
-        content: fixture.content,
+        content,
         engine: 'markdown',
         disableNunjucks: false
       });
-      data.content.trim().should.eql(fixture.expected);
+      data.content.trim().should.eql(expected);
     } finally {
       renderer.disableNunjucks = false;
     }
@@ -864,11 +864,11 @@ describe('Post', () => {
 
     try {
       const data = await post.render('', {
-        content: fixture.content,
+        content,
         engine: 'markdown',
         disableNunjucks: true
       });
-      data.content.trim().should.eql(fixture.expected_disable_nunjucks);
+      data.content.trim().should.eql(expected_disable_nunjucks);
     } finally {
       renderer.disableNunjucks = false;
     }
@@ -881,12 +881,12 @@ describe('Post', () => {
 
     try {
       const data = await post.render('', {
-        content: fixture.content,
+        content,
         engine: 'markdown',
         // @ts-ignore
         disableNunjucks: null
       });
-      data.content.trim().should.eql(fixture.expected_disable_nunjucks);
+      data.content.trim().should.eql(expected_disable_nunjucks);
     } finally {
       renderer.disableNunjucks = false;
     }
@@ -1155,14 +1155,14 @@ describe('Post', () => {
 
   // #3346
   it('render() - swig tag inside backtick code block', async () => {
-    const content = fixture.content_for_issue_3346;
+    const content = content_for_issue_3346;
 
     const data = await post.render('', {
       content,
       engine: 'markdown'
     });
 
-    data.content.trim().should.eql(fixture.expected_for_issue_3346);
+    data.content.trim().should.eql(expected_for_issue_3346);
   });
 
   // test for https://github.com/hexojs/hexo/pull/4171#issuecomment-594412367
@@ -1343,7 +1343,7 @@ describe('Post', () => {
   it('render() - issue #4460', async () => {
     hexo.config.syntax_highlighter = 'prismjs';
 
-    const content = fixture.content_for_issue_4460;
+    const content = content_for_issue_4460;
 
     const data = await post.render('', {
       content,

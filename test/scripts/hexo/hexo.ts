@@ -3,7 +3,7 @@ import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 // @ts-ignore
 import Promise from 'bluebird';
 import { spy } from 'sinon';
-import testUtil from '../../util';
+import { readStream } from '../../util';
 import { full_url_for } from 'hexo-util';
 import Hexo from '../../../lib/hexo';
 import chai from 'chai';
@@ -20,7 +20,7 @@ describe('Hexo', () => {
   const { route } = hexo;
 
   async function checkStream(stream, expected) {
-    const data = await testUtil.stream.read(stream);
+    const data = await readStream(stream);
     data.should.eql(expected);
   }
 
