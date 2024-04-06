@@ -18,6 +18,7 @@ export = (ctx: Hexo) => {
     for (let i = 0; i < len; i++) {
       const asset = PostAsset.findOne({post: this._id, slug: args[i]});
       if (asset) {
+        // img tag will call url_for so no need to call it here
         args[i] = encodeURL(new URL(asset.path, ctx.config.url).pathname);
         return img(ctx)(args);
       }

@@ -81,7 +81,7 @@ describe('post_link', () => {
   });
 
   it('should keep subdir', () => {
-    hexo.config.url = 'http://example.com/subdir';
+    hexo.config.root = '/subdir/';
     postLink(['foo']).should.eql('<a href="/subdir/foo/" title="Hello world">Hello world</a>');
   });
 });

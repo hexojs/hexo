@@ -1,4 +1,4 @@
-import { encodeURL } from 'hexo-util';
+import { url_for } from 'hexo-util';
 import { postFindOneFactory } from './';
 import type Hexo from '../../hexo';
 
@@ -17,7 +17,7 @@ export = (ctx: Hexo) => {
     const post = factory({ slug }) || factory({ title: slug });
     if (!post) return;
 
-    const link = encodeURL(new URL(post.path, ctx.config.url).pathname);
+    const link = url_for.call(ctx, post.path);
 
     return link;
   };
