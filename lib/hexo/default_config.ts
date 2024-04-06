@@ -48,13 +48,15 @@ export = {
     language_attr: false,
     hljs: false,
     line_threshold: 0,
-    first_line_number: 'always1'
+    first_line_number: 'always1',
+    strip_indent: true
   },
   prismjs: {
     preprocess: true,
     line_number: true,
     tab_replace: '',
-    exclude_languages: []
+    exclude_languages: [],
+    strip_indent: true
   },
   // Category & Tag
   default_category: 'uncategorized',
