@@ -17,7 +17,7 @@ export = (ctx: Hexo) => {
     const asset = PostAsset.findOne({post: this._id, slug});
     if (!asset) return;
 
-    const path = url_for.call(ctx, asset.path.replace(/\\/g, '/'));
+    const path = url_for.call(ctx, asset.path);
 
     return path;
   };

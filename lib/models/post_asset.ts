@@ -1,5 +1,5 @@
 import warehouse from 'warehouse';
-import { join } from 'path';
+import { join, posix } from 'path';
 import type Hexo from '../hexo';
 
 export = (ctx: Hexo) => {
@@ -19,7 +19,8 @@ export = (ctx: Hexo) => {
     // PostAsset.path is file path relative to `public_dir`
     // no need to urlescape, #1562
     // strip /\.html?$/ extensions on permalink, #2134
-    return join(post.path.replace(/\.html?$/, ''), this.slug);
+    // Replace backslashes on Windows using posix.join
+    return posix.join(post.path.replace(/\.html?$/, ''), this.slug);
   });
 
   PostAsset.virtual('source').get(function() {

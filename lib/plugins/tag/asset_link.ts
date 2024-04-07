@@ -28,7 +28,7 @@ export = (ctx: Hexo) => {
     const attrTitle = escapeHTML(title);
     if (escape === 'true') title = attrTitle;
 
-    const link = url_for.call(ctx, asset.path.replace(/\\/g, '/'));
+    const link = url_for.call(ctx, asset.path);
 
     return `<a href="${link}" title="${attrTitle}">${title}</a>`;
   };
