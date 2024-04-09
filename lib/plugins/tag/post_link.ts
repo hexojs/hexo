@@ -1,4 +1,4 @@
-import { url_for, encodeURL, escapeHTML } from 'hexo-util';
+import { url_for, escapeHTML } from 'hexo-util';
 import { postFindOneFactory } from './';
 import type Hexo from '../../hexo';
 
