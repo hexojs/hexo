@@ -19,7 +19,7 @@ export = (ctx: Hexo) => {
     // PostAsset.path is file path relative to `public_dir`
     // no need to urlescape, #1562
     // strip /\.html?$/ extensions on permalink, #2134
-    // Replace backslashes on Windows using posix.join
+    // Use path.posix.join to avoid path.join introducing unwanted backslashes on Windows.
     return posix.join(post.path.replace(/\.html?$/, ''), this.slug);
   });
 
