@@ -47,7 +47,7 @@ export = (ctx: Hexo) => function includeCodeTag(args: string[]) {
   // If the language is not defined, use file extension instead
   lang = lang || extname(path).substring(1);
 
-  const source = join(codeDir, path);
+  const source = join(codeDir, path).replace(/\\/g, '/');
 
   // Prevent path traversal: https://github.com/hexojs/hexo/issues/5250
   const Page = ctx.model('Page');

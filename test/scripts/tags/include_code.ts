@@ -99,7 +99,7 @@ describe('include_code', () => {
 
     it('to', async () => {
       const fixture = [
-        'if (tired && night){',
+        'if (tired && night) {',
         '  sleep();'
       ].join('\n');
       const expected = highlight(fixture, {
@@ -177,7 +177,7 @@ describe('include_code', () => {
 
     it('to', async () => {
       const fixture = [
-        'if (tired && night){',
+        'if (tired && night) {',
         '  sleep();'
       ].join('\n');
       const expected = prismHighlight(fixture, {
