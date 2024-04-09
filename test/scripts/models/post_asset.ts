@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { join, posix } from 'path';
 import Hexo from '../../../lib/hexo';
 import defaults from '../../../lib/hexo/default_config';
 
@@ -54,7 +54,7 @@ describe('PostAsset', () => {
       slug: 'foo.jpg',
       post: post._id
     });
-    data.path.should.eql(join(post.path, data.slug));
+    data.path.should.eql(posix.join(post.path, data.slug));
 
     PostAsset.removeById(data._id);
   });
@@ -66,7 +66,7 @@ describe('PostAsset', () => {
       slug: 'foo.htm',
       post: post._id
     });
-    data.path.should.eql(join(post.path, data.slug));
+    data.path.should.eql(posix.join(post.path, data.slug));
 
     PostAsset.removeById(data._id);
   });
@@ -78,7 +78,7 @@ describe('PostAsset', () => {
       slug: 'foo.htm',
       post: post._id
     });
-    data.path.should.eql(join(post.path, data.slug));
+    data.path.should.eql(posix.join(post.path, data.slug));
 
     PostAsset.removeById(data._id);
   });
@@ -90,7 +90,7 @@ describe('PostAsset', () => {
       slug: 'foo.html',
       post: post._id
     });
-    data.path.should.eql(join(post.path + '.htm-foo/', data.slug));
+    data.path.should.eql(posix.join(post.path + '.htm-foo/', data.slug));
 
     PostAsset.removeById(data._id);
   });

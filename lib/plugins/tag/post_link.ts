@@ -1,4 +1,4 @@
-import { encodeURL, escapeHTML } from 'hexo-util';
+import { url_for, escapeHTML } from 'hexo-util';
 import { postFindOneFactory } from './';
 import type Hexo from '../../hexo';
 
@@ -41,14 +41,7 @@ export = (ctx: Hexo) => {
     const attrTitle = escapeHTML(post.title || post.slug);
     if (escape === 'true') title = escapeHTML(title);
 
-    // guarantee the base url ends with a slash. (case of using a subdirectory in the url of the site)
-    let baseUrl = ctx.config.url;
-    if (!baseUrl.endsWith('/')) {
-      baseUrl += '/';
-    }
-
-    const url = new URL(post.path, baseUrl).pathname + (hash ? `#${hash}` : '');
-    const link = encodeURL(url);
+    const link = url_for.call(ctx, post.path + (hash ? `#${hash}` : ''));
 
     return `<a href="${link}" title="${attrTitle}">${title}</a>`;
   };
