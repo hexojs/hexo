@@ -1,4 +1,5 @@
-import { basename, extname, join, posix } from 'path';
+import { basename, extname, join } from 'path';
+import { url_for } from 'hexo-util';
 import type Hexo from '../../hexo';
 
 const rCaptionTitleFile = /(.*)?(?:\s+|^)(\/*\S+)/;
@@ -12,11 +13,6 @@ const rTo = /\s*to:(\d+)/i;
 * Syntax:
 *   {% include_code [title] [lang:language] path/to/file %}
 */
-
-const escapeBackslash = path => {
-  // Replace backslashes on Windows
-  return path.replace(/\\/g, '/');
-};
 
 export = (ctx: Hexo) => function includeCodeTag(args: string[]) {
   let codeDir = ctx.config.code_dir;
@@ -51,20 +47,20 @@ export = (ctx: Hexo) => function includeCodeTag(args: string[]) {
   // If the language is not defined, use file extension instead
   lang = lang || extname(path).substring(1);
 
-  const src = escapeBackslash(join(codeDir, path));
-
-  // If the title is not defined, use file name instead
-  const title = match[1] || basename(path);
-  const caption = `<span>${title}</span><a href="${posix.join(ctx.config.root, codeDir, path)}">view raw</a>`;
+  const source = join(codeDir, path);
 
   // Prevent path traversal: https://github.com/hexojs/hexo/issues/5250
   const Page = ctx.model('Page');
-  const doc = Page.findOne({ source: src });
+  const doc = Page.findOne({ source });
   if (!doc) return;
 
   let code = doc.content;
   const lines = code.split('\n');
   code = lines.slice(from, to).join('\n').trim();
+
+  // If the title is not defined, use file name instead
+  const title = match[1] || basename(path);
+  const caption = `<span>${title}</span><a href="${url_for.call(ctx, doc.path)}">view raw</a>`;
 
   if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
     const options = {

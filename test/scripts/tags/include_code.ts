@@ -16,7 +16,7 @@ describe('include_code', () => {
   const defaultCfg = JSON.parse(JSON.stringify(hexo.config));
 
   const fixture = [
-    'if (tired && night){',
+    'if (tired && night) {',
     '  sleep();',
     '}'
   ].join('\n');
