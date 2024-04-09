@@ -109,7 +109,7 @@ function processPage(ctx: Hexo, file: _File) {
 }
 
 function processAsset(ctx: Hexo, file: _File) {
-  const id = relative(ctx.base_dir, file.source).replace(/\\/g, '/');
+  const id = relative(ctx.base_dir, file.source);
   const Asset = ctx.model('Asset');
   const doc = Asset.findById(id);
 
