@@ -55,7 +55,7 @@ export = (ctx: Hexo) => function includeCodeTag(args: string[]) {
 
   return exists(src).then(exist => {
     if (exist) return readFile(src);
-  }).then((code: string) => {
+  }).then(code => {
     if (!code) return;
 
     const lines = code.split('\n');

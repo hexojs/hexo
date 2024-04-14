@@ -43,7 +43,7 @@ export = (ctx: Hexo) => function multiConfigPath(base: string, configPaths?: str
     }
 
     // files read synchronously to ensure proper overwrite order
-    const file = readFileSync(configPath) as string;
+    const file = readFileSync(configPath);
     const ext = extname(paths[i]).toLowerCase();
 
     if (ext === '.yml') {

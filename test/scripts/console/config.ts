@@ -65,7 +65,7 @@ describe('config', () => {
 
   async function writeConfig(...args) {
     await config({_: args});
-    const content = await readFile(hexo.config_path) as string;
+    const content = await readFile(hexo.config_path);
     return load(content) as any;
   }
 
@@ -107,7 +107,7 @@ describe('config', () => {
     await config({_: ['title', 'My Blog']});
 
     return readFile(configPath).then(content => {
-      const json = JSON.parse(content as string);
+      const json = JSON.parse(content);
 
       json.title.should.eql('My Blog');
 
