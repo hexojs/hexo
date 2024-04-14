@@ -74,6 +74,7 @@
     "@types/mocha": "^10.0.6",
     "@types/node": "^18.11.8 <18.19.9",
     "@types/nunjucks": "^3.2.2",
+    "@types/rewire": "^2.5.30",
     "@types/sinon": "^17.0.3",
     "@types/text-table": "^0.2.4",
     "c8": "^9.0.0",
@@ -86,6 +87,7 @@
     "husky": "^8.0.1",
     "lint-staged": "^15.2.0",
     "mocha": "^10.0.0",
+    "rewire": "^7.0.0",
     "sinon": "^17.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.3.2"
