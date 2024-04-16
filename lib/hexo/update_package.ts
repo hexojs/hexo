@@ -25,7 +25,7 @@ function readPkg(path: string): Promise<any> {
     if (!exist) return;
 
     return readFile(path).then(content => {
-      const pkg = JSON.parse(content as string);
+      const pkg = JSON.parse(content);
       if (typeof pkg.hexo !== 'object') return;
 
       return pkg;
