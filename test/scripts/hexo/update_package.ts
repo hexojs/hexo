@@ -25,7 +25,7 @@ describe('Update package.json', () => {
 
     await writeFile(packagePath, JSON.stringify(pkg));
     await updatePkg(hexo);
-    const content = await readFile(packagePath) as string;
+    const content = await readFile(packagePath);
     JSON.parse(content).hexo.version.should.eql(hexo.version);
     hexo.env.init.should.be.true;
 
@@ -40,7 +40,7 @@ describe('Update package.json', () => {
 
     await writeFile(packagePath, JSON.stringify(pkg));
     await updatePkg(hexo);
-    const content = await readFile(packagePath) as string;
+    const content = await readFile(packagePath);
     // Don't change the original package.json
     JSON.parse(content).should.eql(pkg);
     hexo.env.init.should.be.false;
@@ -57,7 +57,7 @@ describe('Update package.json', () => {
 
     await writeFile(packagePath, JSON.stringify(pkg));
     await updatePkg(hexo);
-    const content = await readFile(packagePath) as string;
+    const content = await readFile(packagePath);
     JSON.parse(content).should.eql(pkg);
     hexo.env.init.should.be.true;
 

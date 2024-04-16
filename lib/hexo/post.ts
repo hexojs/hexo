@@ -363,7 +363,7 @@ class Post {
       // Read the content
       src = join(draftDir, item);
       return readFile(src);
-    }).then((content: string) => {
+    }).then(content => {
       // Create post
       Object.assign(data, yfmParse(content));
       data.content = data._content;

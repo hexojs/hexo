@@ -19,7 +19,7 @@ function loadModuleList(ctx: Hexo, basedir: string): Promise<any> {
 
     // Read package.json and find dependencies
     return readFile(packagePath).then(content => {
-      const json = JSON.parse(content as string);
+      const json = JSON.parse(content);
       const deps = Object.keys(json.dependencies || {});
       const devDeps = Object.keys(json.devDependencies || {});
 

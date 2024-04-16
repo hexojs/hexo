@@ -43,7 +43,7 @@ describe('render', () => {
 
     await writeFile(src, body);
     await render({_: ['test.yml'], output: 'result.json'});
-    const result = await readFile(dest) as string;
+    const result = await readFile(dest);
     JSON.parse(result).should.eql({
       foo: 1,
       bar: {
@@ -64,7 +64,7 @@ describe('render', () => {
     await writeFile(src, body);
     await render({_: [src], output: 'result.json'});
 
-    const result = await readFile(dest) as string;
+    const result = await readFile(dest);
     JSON.parse(result).should.eql({
       foo: 1,
       bar: {
@@ -85,7 +85,7 @@ describe('render', () => {
     await writeFile(src, body);
     await render({_: ['test.yml'], output: dest});
 
-    const result = await readFile(dest) as string;
+    const result = await readFile(dest);
     JSON.parse(result).should.eql({
       foo: 1,
       bar: {
@@ -108,7 +108,7 @@ describe('render', () => {
     await writeFile(src, body);
     await render({_: ['test'], output: 'result.json', engine: 'yaml'});
 
-    const result = await readFile(dest) as string;
+    const result = await readFile(dest);
     JSON.parse(result).should.eql({
       foo: 1,
       bar: {
