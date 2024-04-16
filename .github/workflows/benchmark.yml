@@ -1,14 +1,19 @@
 name: Benchmark
 
 on:
+  workflow_dispatch:
   push:
+    branches:
+      - "master"
     paths:
       - "lib/**"
+      - ".github/workflows/benchmark.yml"
   pull_request:
     branches:
-      - master
-    paths-ignore:
-      - "test/scripts/**"
+      - "master"
+    paths:
+      - "lib/**"
+      - ".github/workflows/benchmark.yml"
 
 jobs:
   benchmark:

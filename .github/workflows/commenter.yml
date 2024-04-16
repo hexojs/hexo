@@ -13,10 +13,11 @@ permissions:
 
 jobs:
   comment-test:
+    name: How to test
     permissions:
       pull-requests: write # for marocchino/sticky-pull-request-comment to create or update PR comment
     runs-on: ubuntu-latest
-    if: ${{github.event_name == 'pull_request_target' }}
+    if: ${{github.event_name == 'pull_request_target' && github.event.workflow_run.conclusion=='success'}}
     steps:
       - name: Comment PR - How to test
         uses: marocchino/sticky-pull-request-comment@v2
@@ -33,6 +34,7 @@ jobs:
             ```
 
   comment-flamegraph:
+    name: Flamegraph
     permissions:
       pull-requests: write # for marocchino/sticky-pull-request-comment to create or update PR comment
       actions: read # get artifact
@@ -54,15 +56,17 @@ jobs:
           echo "pr_number=$(cat .tmp-comment-pr_number)" >> "$GITHUB_ENV"
 
       - name: combime comment
+        if: ${{env.pr_number!=''}}
         run: |
-          echo "## flamegraph" > ${{env.comment_result}}
+          echo "## Flamegraph" > ${{env.comment_result}}
           echo "" >> ${{env.comment_result}}
           cat .tmp-comment-flamegraph-*.md >> ${{env.comment_result}}
 
       - name: Comment PR - flamegraph
+        if: ${{env.pr_number!=''}}
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           number: ${{env.pr_number}}
-          header: flamegraph
+          header: Flamegraph
           path: ${{env.comment_result}}
