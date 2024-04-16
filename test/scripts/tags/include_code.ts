@@ -16,14 +16,18 @@ describe('include_code', () => {
   const defaultCfg = JSON.parse(JSON.stringify(hexo.config));
 
   const fixture = [
-    'if (tired && night){',
+    'if (tired && night) {',
     '  sleep();',
     '}'
   ].join('\n');
 
   const code = args => includeCode(args.split(' '));
 
-  before(() => writeFile(path, fixture));
+  before(async () => {
+    await writeFile(path, fixture);
+    await hexo.init();
+    await hexo.load();
+  });
 
   beforeEach(() => {
     hexo.config = JSON.parse(JSON.stringify(defaultCfg));
@@ -95,7 +99,7 @@ describe('include_code', () => {
 
     it('to', async () => {
       const fixture = [
-        'if (tired && night){',
+        'if (tired && night) {',
         '  sleep();'
       ].join('\n');
       const expected = highlight(fixture, {
@@ -173,7 +177,7 @@ describe('include_code', () => {
 
     it('to', async () => {
       const fixture = [
-        'if (tired && night){',
+        'if (tired && night) {',
         '  sleep();'
       ].join('\n');
       const expected = prismHighlight(fixture, {
