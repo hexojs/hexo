@@ -805,6 +805,32 @@ describe('post', () => {
     ]);
   });
 
+  // use `slug` as `title` of post when `title` is not specified.
+  // https://github.com/hexojs/hexo/issues/5372
+  it('post - without title - use filename', async () => {
+    hexo.config.use_filename_as_post_title = true;
+
+    const body = '';
+
+    const file = newFile({
+      path: 'bar.md',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+
+    await writeFile(file.source, body);
+    await process(file);
+    const post = Post.findOne({ source: file.path });
+
+    post.title.should.eql('bar');
+
+    return Promise.all([
+      post.remove(),
+      unlink(file.source)
+    ]);
+  });
+
   it('post - category is an alias for categories', async () => {
     const body = [
       'title: "Hello world"',

@@ -70,8 +70,8 @@ function processPost(ctx: Hexo, file: _File) {
   const { path } = file.params;
   const doc = Post.findOne({source: file.path});
   const { config } = ctx;
-  const { timezone: timezoneCfg } = config;
-  const updated_option = config.updated_option;
+  const { timezone: timezoneCfg, updated_option, use_filename_as_post_title } = config;
+
   let categories, tags;
 
   if (file.type === 'skip' && doc) {
@@ -107,6 +107,12 @@ function processPost(ctx: Hexo, file: _File) {
     for (let i = 0, len = keys.length; i < len; i++) {
       const key = keys[i];
       if (!preservedKeys[key]) data[key] = info[key];
+    }
+
+    // use `slug` as `title` of post when `title` is not specified.
+    // https://github.com/hexojs/hexo/issues/5372
+    if (use_filename_as_post_title && !Object.keys(data).includes('title')) {
+      data.title = info.title;
     }
 
     if (data.date) {
