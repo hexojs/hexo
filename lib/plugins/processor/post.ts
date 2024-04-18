@@ -1,7 +1,7 @@
 import { toDate, timezone, isExcludedFile, isTmpFile, isHiddenFile, isMatch } from './common';
 import Promise from 'bluebird';
 import { parse as yfm } from 'hexo-front-matter';
-import { extname, join } from 'path';
+import { extname, join, posix } from 'path';
 import { stat, listDir } from 'hexo-fs';
 import { slugize, Pattern, Permalink } from 'hexo-util';
 import { magenta } from 'picocolors';
@@ -278,16 +278,18 @@ function processAsset(ctx: Hexo, file: _File) {
     return;
   }
 
-  // TODO: Better post searching
-  const post = Post.toArray().find(post => file.source.startsWith(post.asset_dir));
-  if (post != null && (post.published || ctx._showDrafts())) {
-    return PostAsset.save({
-      _id: id,
-      slug: file.source.substring(post.asset_dir.length),
-      post: post._id,
-      modified: file.type !== 'skip',
-      renderable: file.params.renderable
-    });
+  if (Post.length > 0) {
+    const assetDir = id.slice(0, id.lastIndexOf('/'));
+    const post = Post.findOne(p => p.asset_dir.endsWith(posix.join(assetDir, '/')));
+    if (post != null && (post.published || ctx._showDrafts())) {
+      return PostAsset.save({
+        _id: id,
+        slug: file.source.substring(post.asset_dir.length),
+        post: post._id,
+        modified: file.type !== 'skip',
+        renderable: file.params.renderable
+      });
+    }
   }
 
   if (doc) {
