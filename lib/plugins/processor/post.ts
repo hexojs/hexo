@@ -269,11 +269,11 @@ function processAsset(ctx: Hexo, file: _File) {
   const PostAsset = ctx.model('PostAsset');
   const Post = ctx.model('Post');
   const id = file.source.substring(ctx.base_dir.length);
-  const doc = PostAsset.findById(id);
+  const postAsset = PostAsset.findById(id);
 
   if (file.type === 'delete' || Post.length === 0) {
-    if (doc) {
-      return doc.remove();
+    if (postAsset) {
+      return postAsset.remove();
     }
     return;
   }
@@ -288,9 +288,9 @@ function processAsset(ctx: Hexo, file: _File) {
     });
   };
 
-  if (doc) {
-    // `doc.post` is `Post.id`.
-    const post = Post.findById(doc.post);
+  if (postAsset) {
+    // `postAsset.post` is `Post.id`.
+    const post = Post.findById(postAsset.post);
     if (post != null && (post.published || ctx._showDrafts())) {
       return savePostAsset(post);
     }
@@ -303,7 +303,7 @@ function processAsset(ctx: Hexo, file: _File) {
   }
 
   // NOTE: Probably, unreachable.
-  if (doc) {
-    return doc.remove();
+  if (postAsset) {
+    return postAsset.remove();
   }
 }
