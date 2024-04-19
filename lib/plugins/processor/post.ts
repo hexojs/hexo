@@ -302,6 +302,7 @@ function processAsset(ctx: Hexo, file: _File) {
     return savePostAsset(post);
   }
 
+  // NOTE: Probably, unreachable.
   if (doc) {
     return doc.remove();
   }
