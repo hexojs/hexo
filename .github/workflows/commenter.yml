@@ -17,7 +17,7 @@ jobs:
     permissions:
       pull-requests: write # for marocchino/sticky-pull-request-comment to create or update PR comment
     runs-on: ubuntu-latest
-    if: ${{github.event_name == 'pull_request_target' && github.event.workflow_run.conclusion=='success'}}
+    if: ${{github.event_name == 'pull_request_target'}}
     steps:
       - name: Comment PR - How to test
         uses: marocchino/sticky-pull-request-comment@v2
@@ -39,7 +39,7 @@ jobs:
       pull-requests: write # for marocchino/sticky-pull-request-comment to create or update PR comment
       actions: read # get artifact
     runs-on: ubuntu-latest
-    if: ${{github.event_name == 'workflow_run' }}
+    if: ${{github.event_name == 'workflow_run' && github.event.workflow_run.conclusion=='success'}}
     env:
       comment_result: ".tmp-comment-flamegraph.md"
     steps:
