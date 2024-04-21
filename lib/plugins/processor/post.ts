@@ -111,7 +111,7 @@ function processPost(ctx: Hexo, file: _File) {
 
     // use `slug` as `title` of post when `title` is not specified.
     // https://github.com/hexojs/hexo/issues/5372
-    if (use_filename_as_post_title && !Object.keys(data).includes('title')) {
+    if (use_filename_as_post_title && !('title' in data)) {
       data.title = info.title;
     }
 
