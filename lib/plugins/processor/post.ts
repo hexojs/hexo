@@ -70,7 +70,7 @@ function processPost(ctx: Hexo, file: _File) {
   const { path } = file.params;
   const doc = Post.findOne({source: file.path});
   const { config } = ctx;
-  const { timezone: timezoneCfg, updated_option, use_filename_as_post_title } = config;
+  const { timezone: timezoneCfg, updated_option, use_slug_as_post_title } = config;
 
   let categories, tags;
 
@@ -111,7 +111,7 @@ function processPost(ctx: Hexo, file: _File) {
 
     // use `slug` as `title` of post when `title` is not specified.
     // https://github.com/hexojs/hexo/issues/5372
-    if (use_filename_as_post_title && !('title' in data)) {
+    if (use_slug_as_post_title && !('title' in data)) {
       data.title = info.title;
     }
 

@@ -808,7 +808,7 @@ describe('post', () => {
   // use `slug` as `title` of post when `title` is not specified.
   // https://github.com/hexojs/hexo/issues/5372
   it('post - without title - use filename', async () => {
-    hexo.config.use_filename_as_post_title = true;
+    hexo.config.use_slug_as_post_title = true;
 
     const body = '';
 
