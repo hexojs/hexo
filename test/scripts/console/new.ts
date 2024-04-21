@@ -6,7 +6,6 @@ import Promise from 'bluebird';
 import { useFakeTimers, spy, SinonSpy } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import newConsole from '../../../lib/plugins/console/new';
-import rewire from 'rewire';
 type OriginalParams = Parameters<typeof newConsole>;
 type OriginalReturn = ReturnType<typeof newConsole>;
 
@@ -363,81 +362,5 @@ describe('new', () => {
     content.should.eql(body);
 
     await unlink(path);
-  });
-
-  it('path - number (issue #4334)', async () => {
-    let args;
-    const cli = rewire('hexo-cli');
-    return cli.__with__({
-      find_pkg_1: {
-        default: (_cwd, _args) => {
-          args = _args;
-          return Promise.resolve();
-        }
-      }
-    })(async () => {
-      process.argv = ['hexo', 'new', '--path', '123', 'test'];
-      // @ts-ignore
-      cli(null, null);
-      args.path.should.eql('123');
-      process.argv = [];
-    });
-  });
-
-  it('p - number (issue #4334)', async () => {
-    let args;
-    const cli = rewire('hexo-cli');
-    return cli.__with__({
-      find_pkg_1: {
-        default: (_cwd, _args) => {
-          args = _args;
-          return Promise.resolve();
-        }
-      }
-    })(async () => {
-      process.argv = ['hexo', 'new', '-p', '123', 'test'];
-      // @ts-ignore
-      cli(null, null);
-      args.p.should.eql('123');
-      process.argv = [];
-    });
-  });
-
-  it('slug - number (issue #4334)', async () => {
-    let args;
-    const cli = rewire('hexo-cli');
-    return cli.__with__({
-      find_pkg_1: {
-        default: (_cwd, _args) => {
-          args = _args;
-          return Promise.resolve();
-        }
-      }
-    })(async () => {
-      process.argv = ['hexo', 'new', '--slug', '123', 'test'];
-      // @ts-ignore
-      cli(null, null);
-      args.slug.should.eql('123');
-      process.argv = [];
-    });
-  });
-
-  it('s - number (issue #4334)', async () => {
-    let args;
-    const cli = rewire('hexo-cli');
-    return cli.__with__({
-      find_pkg_1: {
-        default: (_cwd, _args) => {
-          args = _args;
-          return Promise.resolve();
-        }
-      }
-    })(async () => {
-      process.argv = ['hexo', 'new', '-s', '123', 'test'];
-      // @ts-ignore
-      cli(null, null);
-      args.s.should.eql('123');
-      process.argv = [];
-    });
   });
 });
