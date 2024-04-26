@@ -234,7 +234,7 @@ function scanAssetDir(ctx: Hexo, post) {
     if (err && err.code === 'ENOENT') return [];
     throw err;
   }).filter(item => !isExcludedFile(item, ctx.config)).map(item => {
-    const id = join(assetDir, item).substring(baseDirLength);
+    const id = join(assetDir, item).substring(baseDirLength).replace(/\\/g, '/');
     const renderablePath = id.substring(sourceDirLength + 1);
     const asset = PostAsset.findById(id);
 
@@ -268,7 +268,7 @@ function shouldSkipAsset(ctx: Hexo, post, asset) {
 function processAsset(ctx: Hexo, file: _File) {
   const PostAsset = ctx.model('PostAsset');
   const Post = ctx.model('Post');
-  const id = file.source.substring(ctx.base_dir.length);
+  const id = file.source.substring(ctx.base_dir.length).replace(/\\/g, '/');
   const postAsset = PostAsset.findById(id);
 
   if (file.type === 'delete' || Post.length === 0) {

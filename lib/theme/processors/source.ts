@@ -4,7 +4,7 @@ import type { _File } from '../../box';
 
 function process(file: _File) {
   const Asset = this.model('Asset');
-  const id = file.source.substring(this.base_dir.length);
+  const id = file.source.substring(this.base_dir.length).replace(/\\/g, '/');
   const { path } = file.params;
   const doc = Asset.findById(id);
 

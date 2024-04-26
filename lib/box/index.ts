@@ -113,7 +113,7 @@ class Box extends EventEmitter {
     const src = join(this.base, path);
 
     return Cache.compareFile(
-      src.substring(ctx.base_dir.length),
+      escapeBackslash(src.substring(ctx.base_dir.length)),
       () => getHash(src),
       () => stat(src)
     ).then(result => ({
@@ -129,7 +129,7 @@ class Box extends EventEmitter {
       if (!stats.isDirectory()) return;
 
       // Check existing files in cache
-      const relativeBase = base.substring(ctx.base_dir.length);
+      const relativeBase = escapeBackslash(base.substring(ctx.base_dir.length));
       const cacheFiles = Cache.filter(item => item._id.startsWith(relativeBase)).map(item => item._id.substring(relativeBase.length));
 
       // Handle deleted files
@@ -156,12 +156,11 @@ class Box extends EventEmitter {
     });
 
     return BlueBirdPromise.reduce(this.processors, (count, processor) => {
-      // patten supports *nix style path only, replace backslashes on Windows
-      const params = processor.pattern.match(escapeBackslash(path));
+      const params = processor.pattern.match(path);
       if (!params) return count;
 
       const file = new File({
-        // source is used for file system path, keep backslashes on Windows
+        // source is used for filesystem path, keep backslashes on Windows
         source: join(base, path),
         // path is used for URL path, replace backslashes on Windows
         path: escapeBackslash(path),
@@ -195,7 +194,7 @@ class Box extends EventEmitter {
     const { base } = this;
 
     function getPath(path) {
-      return path.substring(base.length);
+      return escapeBackslash(path.substring(base.length));
     }
 
     return this.process().then(() => watch(base, this.options)).then(watcher => {
@@ -215,7 +214,7 @@ class Box extends EventEmitter {
 
       watcher.on('addDir', path => {
         let prefix = getPath(path);
-        if (prefix) prefix += sep;
+        if (prefix) prefix += '/';
 
         this._readDir(path, prefix);
       });
@@ -288,7 +287,7 @@ function readDirWalker(ctx: Hexo, base: string, results: any[], ignore: any, pre
     const prefixPath = `${prefix}${path}`;
     if (stats) {
       if (stats.isDirectory()) {
-        return readDirWalker(ctx, fullpath, results, ignore, prefixPath + sep);
+        return readDirWalker(ctx, fullpath, results, ignore, `${prefixPath}/`);
       }
       if (!isIgnoreMatch(fullpath, ignore)) {
         results.push(prefixPath);
