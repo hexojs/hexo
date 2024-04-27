@@ -1,13 +1,14 @@
 import { toDate, timezone, isExcludedFile, isTmpFile, isHiddenFile, isMatch } from './common';
 import Promise from 'bluebird';
 import { parse as yfm } from 'hexo-front-matter';
-import { extname, join } from 'path';
+import { extname, join, posix, sep } from 'path';
 import { stat, listDir } from 'hexo-fs';
 import { slugize, Pattern, Permalink } from 'hexo-util';
 import { magenta } from 'picocolors';
 import type { _File } from '../../box';
 import type Hexo from '../../hexo';
 import type { Stats } from 'fs';
+import { PostSchema } from '../../types';
 
 const postDir = '_posts/';
 const draftDir = '_drafts/';
@@ -268,19 +269,16 @@ function processAsset(ctx: Hexo, file: _File) {
   const PostAsset = ctx.model('PostAsset');
   const Post = ctx.model('Post');
   const id = file.source.substring(ctx.base_dir.length);
-  const doc = PostAsset.findById(id);
+  const postAsset = PostAsset.findById(id);
 
-  if (file.type === 'delete') {
-    if (doc) {
-      return doc.remove();
+  if (file.type === 'delete' || Post.length === 0) {
+    if (postAsset) {
+      return postAsset.remove();
     }
-
     return;
   }
 
-  // TODO: Better post searching
-  const post = Post.toArray().find(post => file.source.startsWith(post.asset_dir));
-  if (post != null && (post.published || ctx._showDrafts())) {
+  const savePostAsset = (post: PostSchema) => {
     return PostAsset.save({
       _id: id,
       slug: file.source.substring(post.asset_dir.length),
@@ -288,9 +286,24 @@ function processAsset(ctx: Hexo, file: _File) {
       modified: file.type !== 'skip',
       renderable: file.params.renderable
     });
+  };
+
+  if (postAsset) {
+    // `postAsset.post` is `Post.id`.
+    const post = Post.findById(postAsset.post);
+    if (post != null && (post.published || ctx._showDrafts())) {
+      return savePostAsset(post);
+    }
   }
 
-  if (doc) {
-    return doc.remove();
+  const assetDir = id.slice(0, id.lastIndexOf(sep));
+  const post = Post.findOne(p => p.asset_dir.endsWith(posix.join(assetDir, '/')));
+  if (post != null && (post.published || ctx._showDrafts())) {
+    return savePostAsset(post);
+  }
+
+  // NOTE: Probably, unreachable.
+  if (postAsset) {
+    return postAsset.remove();
   }
 }
