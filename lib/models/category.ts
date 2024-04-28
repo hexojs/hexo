@@ -1,6 +1,7 @@
 import warehouse from 'warehouse';
 import { slugize, full_url_for } from 'hexo-util';
 import type Hexo from '../hexo';
+import type { CategorySchema } from '../types';
 
 export = (ctx: Hexo) => {
   const Category = new warehouse.Schema({
@@ -8,7 +9,7 @@ export = (ctx: Hexo) => {
     parent: { type: warehouse.Schema.Types.CUID, ref: 'Category'}
   });
 
-  Category.virtual('slug').get(function() {
+  Category.virtual('slug').get(function(this: CategorySchema) {
     let name = this.name;
 
     if (!name) return;
@@ -28,7 +29,7 @@ export = (ctx: Hexo) => {
     return str;
   });
 
-  Category.virtual('path').get(function() {
+  Category.virtual('path').get(function(this: CategorySchema) {
     let catDir = ctx.config.category_dir;
     if (catDir === '/') catDir = '';
     if (!catDir.endsWith('/')) catDir += '/';
@@ -36,11 +37,11 @@ export = (ctx: Hexo) => {
     return `${catDir + this.slug}/`;
   });
 
-  Category.virtual('permalink').get(function() {
+  Category.virtual('permalink').get(function(this: CategorySchema) {
     return full_url_for.call(ctx, this.path);
   });
 
-  Category.virtual('posts').get(function() {
+  Category.virtual('posts').get(function(this: CategorySchema) {
     const PostCategory = ctx.model('PostCategory');
 
     const ids = PostCategory.find({category_id: this._id}).map(item => item.post_id);
@@ -50,14 +51,14 @@ export = (ctx: Hexo) => {
     });
   });
 
-  Category.virtual('length').get(function() {
+  Category.virtual('length').get(function(this: CategorySchema) {
     const PostCategory = ctx.model('PostCategory');
 
     return PostCategory.find({category_id: this._id}).length;
   });
 
   // Check whether a category exists
-  Category.pre('save', data => {
+  Category.pre('save', (data: CategorySchema) => {
     const { name, parent } = data;
     if (!name) return;
 
@@ -73,7 +74,7 @@ export = (ctx: Hexo) => {
   });
 
   // Remove PostCategory references
-  Category.pre('remove', data => {
+  Category.pre('remove', (data: CategorySchema) => {
     const PostCategory = ctx.model('PostCategory');
     return PostCategory.remove({category_id: data._id});
   });

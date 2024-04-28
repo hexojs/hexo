@@ -8,6 +8,7 @@ import { EventEmitter } from 'events';
 import { isMatch, makeRe } from 'micromatch';
 import type Hexo from '../hexo';
 import type { NodeJSLikeCallback } from '../types';
+import type fs from 'fs';
 
 const defaultPattern = new Pattern(() => ({}));
 
@@ -101,7 +102,7 @@ class Box extends EventEmitter {
 
   _readDir(base: string, prefix = ''): BlueBirdPromise<any> {
     const { context: ctx } = this;
-    const results = [];
+    const results: string[] = [];
     return readDirWalker(ctx, base, results, this.ignore, prefix)
       .return(results)
       .map(path => this._checkFileStatus(path))
@@ -267,30 +268,30 @@ function toRegExp(ctx: Hexo, arg: string): RegExp | null {
   return result;
 }
 
-function isIgnoreMatch(path: string, ignore: string | any[]): boolean {
+function isIgnoreMatch(path: string, ignore: string | string[]): boolean {
   return path && ignore && ignore.length && isMatch(path, ignore);
 }
 
-function readDirWalker(ctx: Hexo, base: string, results: any[], ignore: any, prefix: string): BlueBirdPromise<any> {
+function readDirWalker(ctx: Hexo, base: string, results: string[], ignore: string | string[], prefix: string): BlueBirdPromise<any> {
   if (isIgnoreMatch(base, ignore)) return BlueBirdPromise.resolve();
 
   return BlueBirdPromise.map(readdir(base).catch(err => {
     ctx.log.error({ err }, 'Failed to read directory: %s', base);
     if (err && err.code === 'ENOENT') return [];
     throw err;
-  }), async path => {
-    const fullpath = join(base, path);
-    const stats = await stat(fullpath).catch(err => {
-      ctx.log.error({ err }, 'Failed to stat file: %s', fullpath);
+  }), async (path: string) => {
+    const fullPath = join(base, path);
+    const stats: fs.Stats = await stat(fullPath).catch(err => {
+      ctx.log.error({ err }, 'Failed to stat file: %s', fullPath);
       if (err && err.code === 'ENOENT') return null;
       throw err;
     });
     const prefixPath = `${prefix}${path}`;
     if (stats) {
       if (stats.isDirectory()) {
-        return readDirWalker(ctx, fullpath, results, ignore, prefixPath + sep);
+        return readDirWalker(ctx, fullPath, results, ignore, prefixPath + sep);
       }
-      if (!isIgnoreMatch(fullpath, ignore)) {
+      if (!isIgnoreMatch(fullPath, ignore)) {
         results.push(prefixPath);
       }
     }

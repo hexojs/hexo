@@ -1,6 +1,7 @@
 import warehouse from 'warehouse';
 import { join } from 'path';
 import type Hexo from '../hexo';
+import type { AssetSchema } from '../types';
 
 export = (ctx: Hexo) => {
   const Asset = new warehouse.Schema({
@@ -10,7 +11,7 @@ export = (ctx: Hexo) => {
     renderable: {type: Boolean, default: true}
   });
 
-  Asset.virtual('source').get(function() {
+  Asset.virtual('source').get(function(this: AssetSchema) {
     return join(ctx.base_dir, this._id);
   });
 

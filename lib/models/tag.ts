@@ -2,13 +2,14 @@ import warehouse from 'warehouse';
 import { slugize, full_url_for } from 'hexo-util';
 const { hasOwnProperty: hasOwn } = Object.prototype;
 import type Hexo from '../hexo';
+import type { TagSchema } from '../types';
 
 export = (ctx: Hexo) => {
   const Tag = new warehouse.Schema({
     name: {type: String, required: true}
   });
 
-  Tag.virtual('slug').get(function() {
+  Tag.virtual('slug').get(function(this: TagSchema) {
     const map = ctx.config.tag_map || {};
     let name = this.name;
     if (!name) return;
@@ -20,18 +21,18 @@ export = (ctx: Hexo) => {
     return slugize(name, {transform: ctx.config.filename_case});
   });
 
-  Tag.virtual('path').get(function() {
+  Tag.virtual('path').get(function(this: TagSchema) {
     let tagDir = ctx.config.tag_dir;
     if (!tagDir.endsWith('/')) tagDir += '/';
 
     return `${tagDir + this.slug}/`;
   });
 
-  Tag.virtual('permalink').get(function() {
+  Tag.virtual('permalink').get(function(this: TagSchema) {
     return full_url_for.call(ctx, this.path);
   });
 
-  Tag.virtual('posts').get(function() {
+  Tag.virtual('posts').get(function(this: TagSchema) {
     const PostTag = ctx.model('PostTag');
 
     const ids = PostTag.find({tag_id: this._id}).map(item => item.post_id);
@@ -41,7 +42,7 @@ export = (ctx: Hexo) => {
     });
   });
 
-  Tag.virtual('length').get(function() {
+  Tag.virtual('length').get(function(this: TagSchema) {
     // Note: this.posts.length is also working
     // But it's slow because `find` has to iterate over all posts
     const PostTag = ctx.model('PostTag');
@@ -50,7 +51,7 @@ export = (ctx: Hexo) => {
   });
 
   // Check whether a tag exists
-  Tag.pre('save', data => {
+  Tag.pre('save', (data: TagSchema) => {
     const { name } = data;
     if (!name) return;
 
@@ -63,7 +64,7 @@ export = (ctx: Hexo) => {
   });
 
   // Remove PostTag references
-  Tag.pre('remove', data => {
+  Tag.pre('remove', (data: TagSchema) => {
     const PostTag = ctx.model('PostTag');
     return PostTag.remove({tag_id: data._id});
   });

@@ -9,6 +9,7 @@ import type { _File } from '../../box';
 import type Hexo from '../../hexo';
 import type { Stats } from 'fs';
 import { PostSchema } from '../../types';
+import type Document from 'warehouse/dist/document';
 
 const postDir = '_posts/';
 const draftDir = '_drafts/';
@@ -278,7 +279,7 @@ function processAsset(ctx: Hexo, file: _File) {
     return;
   }
 
-  const savePostAsset = (post: PostSchema) => {
+  const savePostAsset = (post: Document<PostSchema>) => {
     return PostAsset.save({
       _id: id,
       slug: file.source.substring(post.asset_dir.length),
