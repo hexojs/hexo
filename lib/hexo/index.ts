@@ -626,6 +626,7 @@ class Hexo extends EventEmitter {
       const { data, layout } = generatorResult;
 
       if (!layout) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         if (data.modified == null || data.modified) {
           route.set(path, data);
