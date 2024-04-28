@@ -626,7 +626,10 @@ class Hexo extends EventEmitter {
       const { data, layout } = generatorResult;
 
       if (!layout) {
-        route.set(path, data);
+        // @ts-ignore
+        if (data.modified == null || data.modified) {
+          route.set(path, data);
+        }
         return path;
       }
 
