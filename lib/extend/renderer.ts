@@ -50,6 +50,9 @@ interface Store {
   [key: string]: StoreFunction;
 }
 
+/**
+ * A renderer is used to render content.
+ */
 class Renderer {
   public store: Store;
   public storeSync: SyncStore;

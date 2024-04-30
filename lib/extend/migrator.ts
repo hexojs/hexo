@@ -9,6 +9,9 @@ interface Store {
   [key: string]: StoreFunction
 }
 
+/**
+ * A migrator helps users migrate from other systems to Hexo.
+ */
 class Migrator {
   public store: Store;
 

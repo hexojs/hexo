@@ -11,6 +11,9 @@ interface Store {
   [key: string]: StoreFunction
 }
 
+/**
+ * A deployer helps users quickly deploy their site to a remote server without complicated commands.
+ */
 class Deployer {
   public store: Store;
 

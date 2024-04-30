@@ -23,6 +23,9 @@ interface Store {
   [key: string]: StoreFunction
 }
 
+/**
+ * A generator builds routes based on processed files.
+ */
 class Generator {
   public id: number;
   public store: Store;
