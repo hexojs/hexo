@@ -168,6 +168,7 @@ describe('Hexo', () => {
     themeConfig.a.b.should.eql(3);
 
     const Locals = hexo._generateLocals();
+    // @ts-expect-error
     const { theme: themeLocals } = new Locals('', {path: '', layout: [], data: {}});
 
     themeLocals.a.should.have.own.property('c');
@@ -187,6 +188,7 @@ describe('Hexo', () => {
     themeConfig.c.should.eql(3);
 
     const Locals = hexo._generateLocals();
+    // @ts-expect-error
     const { theme: themeLocals } = new Locals('', {path: '', layout: [], data: {}});
 
     themeLocals.should.have.own.property('c');
