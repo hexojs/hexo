@@ -111,13 +111,37 @@ function debounce(func: () => void, wait: number): () => void {
 }
 
 interface Args {
+
+  /**
+   * Enable debug mode. Display debug messages in the terminal and save debug.log in the root directory.
+   */
   debug?: boolean;
+
+  /**
+   * Enable safe mode. Don’t load any plugins.
+   */
   safe?: boolean;
+
+  /**
+   * Enable silent mode. Don’t display any messages in the terminal.
+   */
   silent?: boolean;
+
+  /**
+   * Enable to add drafts to the posts list.
+   */
   draft?: boolean;
+
+    /**
+   * Enable to add drafts to the posts list.
+   */
   drafts?: boolean;
   _?: string[];
   output?: string;
+
+  /**
+   * Specify the path of the configuration file.
+   */
   config?: string;
   [key: string]: any;
 }
@@ -407,6 +431,11 @@ class Hexo extends EventEmitter {
     });
   }
 
+  /**
+   * Load configuration and plugins.
+   * @returns {Promise}
+   * @link https://hexo.io/api#Initialize
+   */
   init(): Promise<void> {
     this.log.debug('Hexo version: %s', magenta(this.version));
     this.log.debug('Working directory: %s', magenta(tildify(this.base_dir)));
@@ -434,6 +463,14 @@ class Hexo extends EventEmitter {
     });
   }
 
+  /**
+   * Call any console command explicitly.
+   * @param name
+   * @param args
+   * @param callback
+   * @returns {Promise}
+   * @link https://hexo.io/api#Execute-Commands
+   */
   call(name: string, callback?: NodeJSLikeCallback<any>): Promise<any>;
   call(name: string, args: object, callback?: NodeJSLikeCallback<any>): Promise<any>;
   call(name: string, args?: object | NodeJSLikeCallback<any>, callback?: NodeJSLikeCallback<any>): Promise<any> {
@@ -500,6 +537,12 @@ class Hexo extends EventEmitter {
     return args.draft || args.drafts || this.config.render_drafts;
   }
 
+  /**
+   * Load all files in the source folder as well as the theme data.
+   * @param callback
+   * @returns {Promise}
+   * @link https://hexo.io/api#Load-Files
+   */
   load(callback?: NodeJSLikeCallback<any>): Promise<any> {
     return loadDatabase(this).then(() => {
       this.log.info('Start processing');
@@ -514,6 +557,13 @@ class Hexo extends EventEmitter {
     }).asCallback(callback);
   }
 
+  /**
+   * Load all files in the source folder as well as the theme data.
+   * Start watching for file changes continuously.
+   * @param callback
+   * @returns {Promise}
+   * @link https://hexo.io/api#Load-Files
+   */
   watch(callback?: NodeJSLikeCallback<any>): Promise<any> {
     let useCache = false;
     const { cache } = Object.assign({
@@ -666,6 +716,12 @@ class Hexo extends EventEmitter {
       });
   }
 
+  /**
+   * Exit gracefully and finish up important things such as saving the database.
+   * @param err
+   * @returns {Promise}
+   * @link https://hexo.io/api/#Exit
+   */
   exit(err?: any): Promise<void> {
     if (err) {
       this.log.fatal(
