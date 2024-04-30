@@ -1,7 +1,6 @@
 import { sep, join } from 'path';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import { spy } from 'sinon';
 import { readStream } from '../../util';
 import { full_url_for } from 'hexo-util';
@@ -231,7 +230,7 @@ describe('Hexo', () => {
     await hexo.watch();
     await checkStream(route.get('test.txt'), body); // Test for first generation
     await writeFile(target, newBody); // Update the file
-    await Promise.delay(300);
+    await BluebirdPromise.delay(300);
     await checkStream(route.get('test.txt'), newBody); // Check the new route
     hexo.unwatch(); // Stop watching
     await unlink(target); // Delete the file
@@ -300,9 +299,9 @@ describe('Hexo', () => {
   });
 
   it('exit() - error handling - promise', () => {
-    return Promise.all([
+    return BluebirdPromise.all([
       hexo.exit({ foo: 'bar' }),
-      new Promise((resolve, reject) => {
+      new BluebirdPromise((resolve, reject) => {
         hexo.once('exit', err => {
           try {
             err.should.eql({ foo: 'bar' });
@@ -433,7 +432,7 @@ describe('Hexo', () => {
     beforeHook.calledOnce.should.be.true;
     afterHook.calledOnce.should.be.true;
 
-    await Promise.all([
+    await BluebirdPromise.all([
       checkStream(route.get('foo'), 'foo'),
       checkStream(route.get('bar'), 'bar'),
       checkStream(route.get('baz'), 'baz')
@@ -533,7 +532,7 @@ describe('Hexo', () => {
   });
 
   it('_generate() - return nothing in generator', async () => {
-    // @ts-ignore
+    // @ts-expect-error
     hexo.extend.generator.register('test_nothing', () => {
       //
     });
@@ -675,7 +674,7 @@ describe('Hexo', () => {
 
   it('execFilter() - promise', async () => {
     const fn = str => {
-      return new Promise((resolve, reject) => {
+      return new BluebirdPromise((resolve, reject) => {
         resolve(str + 'bar');
       });
     };

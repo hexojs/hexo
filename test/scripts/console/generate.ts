@@ -1,7 +1,6 @@
 import { join } from 'path';
 import { emptyDir, exists, mkdirs, readFile, rmdir, stat, unlink, writeFile } from 'hexo-fs';
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import { spy } from 'sinon';
 import chai from 'chai';
 const should = chai.should();
@@ -30,7 +29,7 @@ describe('generate', () => {
   });
 
   const testGenerate = async (options?: any) => {
-    await Promise.all([
+    await BluebirdPromise.all([
       // Add some source files
       writeFile(join(hexo.source_dir, 'test.txt'), 'test'),
       writeFile(join(hexo.source_dir, 'faz', 'yo.txt'), 'yoooo'),
@@ -41,7 +40,7 @@ describe('generate', () => {
     ]);
     await generate(options);
 
-    const result = await Promise.all([
+    const result = await BluebirdPromise.all([
       readFile(join(hexo.public_dir, 'test.txt')),
       readFile(join(hexo.public_dir, 'faz', 'yo.txt')),
       exists(join(hexo.public_dir, 'foo.txt')),
@@ -59,7 +58,7 @@ describe('generate', () => {
   it('default', () => testGenerate());
 
   it('public_dir is not a directory', async () => {
-    await Promise.all([
+    await BluebirdPromise.all([
       // Add some source files
       writeFile(join(hexo.source_dir, 'test.txt'), 'test'),
       // Add some files to public folder
@@ -97,7 +96,7 @@ describe('generate', () => {
     result.should.eql(content);
 
     // Remove source files and generated files
-    await Promise.all([
+    await BluebirdPromise.all([
       unlink(src),
       unlink(dest)
     ]);
@@ -128,7 +127,7 @@ describe('generate', () => {
     result.should.eql(newContent);
 
     // Remove source files and generated files
-    await Promise.all([
+    await BluebirdPromise.all([
       unlink(src),
       unlink(dest)
     ]);
@@ -148,7 +147,7 @@ describe('generate', () => {
     let stats = await stat(dest);
     const mtime = stats.mtime.getTime();
 
-    await Promise.delay(1000);
+    await BluebirdPromise.delay(1000);
 
     // Force regenerate
     await generate({ force: true });
@@ -157,7 +156,7 @@ describe('generate', () => {
     stats.mtime.getTime().should.above(mtime);
 
     // Remove source files and generated files
-    await Promise.all([
+    await BluebirdPromise.all([
       unlink(src),
       unlink(dest)
     ]);
@@ -173,7 +172,7 @@ describe('generate', () => {
     // Update the file
     await writeFile(src, content);
 
-    await Promise.delay(300);
+    await BluebirdPromise.delay(300);
 
     // Check the updated file
     const result = await readFile(dest);
@@ -199,7 +198,7 @@ describe('generate', () => {
 
   it('update theme source files', async () => {
     // Add some source files
-    await Promise.all([
+    await BluebirdPromise.all([
       // Add some source files
       writeFile(join(hexo.theme_dir, 'source', 'a.txt'), 'a'),
       writeFile(join(hexo.theme_dir, 'source', 'b.txt'), 'b'),
@@ -208,7 +207,7 @@ describe('generate', () => {
     await generate();
 
     // Update source file
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(join(hexo.theme_dir, 'source', 'b.txt'), 'bb'),
       writeFile(join(hexo.theme_dir, 'source', 'c.njk'), 'cc')
     ]);
@@ -216,10 +215,10 @@ describe('generate', () => {
     // Generate again
     await generate();
 
-    await Promise.delay(300);
+    await BluebirdPromise.delay(300);
 
     // Read the updated source file
-    const result = await Promise.all([
+    const result = await BluebirdPromise.all([
       readFile(join(hexo.public_dir, 'b.txt')),
       readFile(join(hexo.public_dir, 'c.html'))
     ]);
@@ -229,7 +228,7 @@ describe('generate', () => {
   });
 
   it('proceeds after error when bail option is not set', async () => {
-    hexo.extend.renderer.register('err', 'html', () => Promise.reject(new Error('Testing unhandled exception')));
+    hexo.extend.renderer.register('err', 'html', () => BluebirdPromise.reject(new Error('Testing unhandled exception')));
     hexo.extend.generator.register('test_page', () =>
       [
         {
@@ -245,7 +244,7 @@ describe('generate', () => {
   });
 
   it('proceeds after error when bail option is set to false', async () => {
-    hexo.extend.renderer.register('err', 'html', () => Promise.reject(new Error('Testing unhandled exception')));
+    hexo.extend.renderer.register('err', 'html', () => BluebirdPromise.reject(new Error('Testing unhandled exception')));
     hexo.extend.generator.register('test_page', () =>
       [
         {
@@ -261,7 +260,7 @@ describe('generate', () => {
   });
 
   it('breaks after error when bail option is set to true', async () => {
-    hexo.extend.renderer.register('err', 'html', () => Promise.reject(new Error('Testing unhandled exception')));
+    hexo.extend.renderer.register('err', 'html', () => BluebirdPromise.reject(new Error('Testing unhandled exception')));
     hexo.extend.generator.register('test_page', () =>
       [
         {
@@ -295,7 +294,7 @@ describe('generate', () => {
         },
         {
           path: 'resource-3',
-          data: () => Promise.resolve(Buffer.from('string'))
+          data: () => BluebirdPromise.resolve(Buffer.from('string'))
         }
       ]
     );
@@ -322,13 +321,13 @@ describe('generate - watch (delete)', () => {
     const exist = await exists(hexo.base_dir);
     if (exist) {
       await emptyDir(hexo.base_dir);
-      await Promise.delay(500);
+      await BluebirdPromise.delay(500);
       await rmdir(hexo.base_dir);
     }
   });
 
   const testGenerate = async options => {
-    await Promise.all([
+    await BluebirdPromise.all([
       // Add some source files
       writeFile(join(hexo.source_dir, 'test.txt'), 'test'),
       writeFile(join(hexo.source_dir, 'faz', 'yo.txt'), 'yoooo'),
@@ -339,7 +338,7 @@ describe('generate - watch (delete)', () => {
     ]);
     await generate(options);
 
-    const result = await Promise.all([
+    const result = await BluebirdPromise.all([
       readFile(join(hexo.public_dir, 'test.txt')),
       readFile(join(hexo.public_dir, 'faz', 'yo.txt')),
       exists(join(hexo.public_dir, 'foo.txt')),
@@ -358,7 +357,7 @@ describe('generate - watch (delete)', () => {
     await testGenerate({ watch: true });
 
     await unlink(join(hexo.source_dir, 'test.txt'));
-    await Promise.delay(500);
+    await BluebirdPromise.delay(500);
 
     const exist = await exists(join(hexo.public_dir, 'test.txt'));
     exist.should.be.false;

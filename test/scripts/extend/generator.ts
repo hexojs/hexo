@@ -17,7 +17,7 @@ describe('Generator', () => {
     g.get('generator-0').should.exist;
 
     // no fn
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => g.register('test'), TypeError, 'fn must be a function');
   });
 

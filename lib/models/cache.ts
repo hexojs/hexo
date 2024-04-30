@@ -64,7 +64,7 @@ export = (ctx: Hexo) => {
       cache.modified = mtime;
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+      // @ts-expect-error
       // waiting warehouse v5.0.2
       return cache.save().thenReturn({
         type: 'update'

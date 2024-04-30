@@ -1,8 +1,7 @@
 import { exists, mkdirs, readFile, rmdir, unlink } from 'hexo-fs';
 import moment from 'moment';
 import { join } from 'path';
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import { useFakeTimers, spy, SinonSpy } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import newConsole from '../../../lib/plugins/console/new';
@@ -22,7 +21,7 @@ describe('new', () => {
 
     await mkdirs(hexo.base_dir);
     await hexo.init();
-    await Promise.all([
+    await BluebirdPromise.all([
       hexo.scaffold.set('post', [
         'title: {{ title }}',
         'date: {{ date }}',
@@ -202,7 +201,7 @@ describe('new', () => {
     const exist = await exists(path);
     exist.should.be.true;
 
-    await Promise.all([
+    await BluebirdPromise.all([
       unlink(path),
       unlink(join(hexo.source_dir, '_posts', 'Hello-World.md'))
     ]);
@@ -372,12 +371,12 @@ describe('new', () => {
       find_pkg_1: {
         default: (_cwd, _args) => {
           args = _args;
-          return Promise.resolve();
+          return BluebirdPromise.resolve();
         }
       }
     })(async () => {
       process.argv = ['hexo', 'new', '--path', '123', 'test'];
-      // @ts-ignore
+      // @ts-expect-error
       cli(null, null);
       args.path.should.eql('123');
       process.argv = [];
@@ -391,12 +390,12 @@ describe('new', () => {
       find_pkg_1: {
         default: (_cwd, _args) => {
           args = _args;
-          return Promise.resolve();
+          return BluebirdPromise.resolve();
         }
       }
     })(async () => {
       process.argv = ['hexo', 'new', '-p', '123', 'test'];
-      // @ts-ignore
+      // @ts-expect-error
       cli(null, null);
       args.p.should.eql('123');
       process.argv = [];
@@ -410,12 +409,12 @@ describe('new', () => {
       find_pkg_1: {
         default: (_cwd, _args) => {
           args = _args;
-          return Promise.resolve();
+          return BluebirdPromise.resolve();
         }
       }
     })(async () => {
       process.argv = ['hexo', 'new', '--slug', '123', 'test'];
-      // @ts-ignore
+      // @ts-expect-error
       cli(null, null);
       args.slug.should.eql('123');
       process.argv = [];
@@ -429,12 +428,12 @@ describe('new', () => {
       find_pkg_1: {
         default: (_cwd, _args) => {
           args = _args;
-          return Promise.resolve();
+          return BluebirdPromise.resolve();
         }
       }
     })(async () => {
       process.argv = ['hexo', 'new', '-s', '123', 'test'];
-      // @ts-ignore
+      // @ts-expect-error
       cli(null, null);
       args.s.should.eql('123');
       process.argv = [];

@@ -1,5 +1,4 @@
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 import { join } from 'path';
 import Hexo from '../../../lib/hexo';
@@ -11,7 +10,7 @@ describe('data', () => {
   const baseDir = join(__dirname, 'data_test');
   const hexo = new Hexo(baseDir);
   const processor = data(hexo);
-  const process = Promise.method(processor.process).bind(hexo);
+  const process = BluebirdPromise.method(processor.process).bind(hexo);
   const { source } = hexo;
   const { File } = source;
   const Data = hexo.model('Data');
@@ -114,7 +113,7 @@ describe('data', () => {
       type: 'update'
     });
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(file.source, body),
       Data.insert({
         _id: 'users',

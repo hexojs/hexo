@@ -23,7 +23,7 @@ export = {
   category_dir: 'categories',
   code_dir: 'downloads/code',
   i18n_dir: ':lang',
-  skip_render: [],
+  skip_render: [] as string[],
   // Writing
   new_post_name: ':title.md',
   default_layout: 'post',
@@ -44,7 +44,7 @@ export = {
     line_number: true,
     tab_replace: '',
     wrap: true,
-    exclude_languages: [],
+    exclude_languages: [] as string[],
     language_attr: false,
     hljs: false,
     line_threshold: 0,
@@ -55,7 +55,7 @@ export = {
     preprocess: true,
     line_number: true,
     tab_replace: '',
-    exclude_languages: [],
+    exclude_languages: [] as string[],
     strip_indent: true
   },
   // Category & Tag

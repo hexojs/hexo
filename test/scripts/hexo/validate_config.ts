@@ -17,8 +17,7 @@ describe('Validate config', () => {
   });
 
   it('config.url - undefined', () => {
-    // @ts-ignore
-    delete hexo.config.url;
+    delete(hexo.config as any).url;
 
     try {
       validateConfig(hexo);
@@ -30,7 +29,7 @@ describe('Validate config', () => {
   });
 
   it('config.url - wrong type', () => {
-    // @ts-ignore
+    // @ts-expect-error
     hexo.config.url = true;
 
     try {
@@ -68,8 +67,7 @@ describe('Validate config', () => {
   });
 
   it('config.root - undefined', () => {
-    // @ts-ignore
-    delete hexo.config.root;
+    delete(hexo.config as any).root;
 
     try {
       validateConfig(hexo);
@@ -81,7 +79,7 @@ describe('Validate config', () => {
   });
 
   it('config.root - wrong type', () => {
-    // @ts-ignore
+    // @ts-expect-error
     hexo.config.root = true;
 
     try {

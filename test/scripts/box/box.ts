@@ -2,8 +2,7 @@ import { join, sep } from 'path';
 import { appendFile, mkdir, mkdirs, rename, rmdir, stat, unlink, writeFile } from 'hexo-fs';
 import { hash, Pattern } from 'hexo-util';
 import { spy, match, assert as sinonAssert } from 'sinon';
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import Box from '../../../lib/box';
 import chai from 'chai';
@@ -65,7 +64,7 @@ describe('Box', () => {
 
   it('addProcessor() - no fn', () => {
     const box = newBox();
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => box.addProcessor('test'), 'fn must be a function');
   });
 
@@ -77,7 +76,7 @@ describe('Box', () => {
       data[file.path] = file;
     });
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(join(box.base, 'a.txt'), 'a'),
       writeFile(join(box.base, 'b', 'c.js'), 'c')
     ]);
@@ -125,7 +124,7 @@ describe('Box', () => {
     const processor = spy();
     box.addProcessor(processor);
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(path, 'a'),
       box.Cache.insert({
         _id: cacheId,
@@ -217,7 +216,7 @@ describe('Box', () => {
     const processor = spy();
     box.addProcessor(processor);
 
-    await Promise.all([
+    await BluebirdPromise.all([
       mkdirs(box.base),
       box.Cache.insert({
         _id: cacheId
@@ -282,7 +281,7 @@ describe('Box', () => {
       data[file.path] = file;
     });
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(join(box.base, 'foo.txt'), 'foo'),
       writeFile(join(box.base, 'ignore_me', 'bar.txt'), 'ignore_me')
     ]);
@@ -301,7 +300,7 @@ describe('Box', () => {
       data[file.path] = file;
     });
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(join(box.base, 'foo.txt'), 'foo'),
       writeFile(join(box.base, 'ignore_me', 'bar.txt'), 'ignore_me'),
       writeFile(join(box.base, 'ignore_me_too.txt'), 'ignore_me_too')
@@ -324,7 +323,7 @@ describe('Box', () => {
     await writeFile(src, 'a');
     await box.watch();
     box.isWatching().should.be.true;
-    await Promise.delay(500);
+    await BluebirdPromise.delay(500);
 
     sinonAssert.calledWithMatch(processor.firstCall, {
       source: src,
@@ -347,13 +346,13 @@ describe('Box', () => {
 
     box.addProcessor(processor);
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(src, 'a'),
       Cache.insert({_id: cacheId})
     ]);
     await box.watch();
     await appendFile(src, 'b');
-    await Promise.delay(500);
+    await BluebirdPromise.delay(500);
 
     sinonAssert.calledWithMatch(processor.lastCall, {
       source: src,
@@ -376,13 +375,13 @@ describe('Box', () => {
 
     box.addProcessor(processor);
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(src, 'a'),
       Cache.insert({_id: cacheId})
     ]);
     await box.watch();
     await unlink(src);
-    await Promise.delay(500);
+    await BluebirdPromise.delay(500);
 
     sinonAssert.calledWithMatch(processor.lastCall, {
       source: src,
@@ -407,13 +406,13 @@ describe('Box', () => {
 
     box.addProcessor(processor);
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(src, 'a'),
       Cache.insert({_id: cacheId})
     ]);
     await box.watch();
     await rename(src, newSrc);
-    await Promise.delay(500);
+    await BluebirdPromise.delay(500);
 
     for (const [file] of processor.args.slice(-2)) {
       switch (file.type) {
@@ -445,13 +444,13 @@ describe('Box', () => {
 
     box.addProcessor(processor);
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(src, 'a'),
       Cache.insert({_id: cacheId})
     ]);
     await box.watch();
     await rename(join(box.base, 'a'), join(box.base, 'b'));
-    await Promise.delay(500);
+    await BluebirdPromise.delay(500);
 
     for (const [file] of processor.args.slice(-2)) {
       switch (file.type) {
@@ -484,17 +483,17 @@ describe('Box', () => {
 
     box.addProcessor(processor);
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(src1, 'a'),
       Cache.insert({_id: cacheId1})
     ]);
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(src2, 'b'),
       Cache.insert({_id: cacheId2})
     ]);
     await box.watch();
     await appendFile(src1, 'aaa');
-    await Promise.delay(500);
+    await BluebirdPromise.delay(500);
 
     const file = processor.lastCall.args[0];
 
@@ -506,7 +505,7 @@ describe('Box', () => {
     });
 
     await appendFile(src2, 'bbb');
-    await Promise.delay(500);
+    await BluebirdPromise.delay(500);
 
     const file2 = processor.lastCall.args[0];
     file2.should.eql(file); // not changed
@@ -531,21 +530,21 @@ describe('Box', () => {
 
     box.addProcessor(processor);
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(src1, 'a'),
       Cache.insert({_id: cacheId1})
     ]);
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(src2, 'b'),
       Cache.insert({_id: cacheId2})
     ]);
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(src3, 'c'),
       Cache.insert({_id: cacheId3})
     ]);
     await box.watch();
     await appendFile(src1, 'aaa');
-    await Promise.delay(500);
+    await BluebirdPromise.delay(500);
 
     const file = processor.lastCall.args[0];
 
@@ -557,12 +556,12 @@ describe('Box', () => {
     });
 
     await appendFile(src2, 'bbb');
-    await Promise.delay(500);
+    await BluebirdPromise.delay(500);
 
     processor.lastCall.args[0].should.eql(file); // not changed
 
     await appendFile(src3, 'ccc');
-    await Promise.delay(500);
+    await BluebirdPromise.delay(500);
 
     processor.lastCall.args[0].should.eql(file); // not changed
 
@@ -592,7 +591,7 @@ describe('Box', () => {
       data.push(file.path);
     });
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(join(box.base, 'a.txt'), 'a'),
       writeFile(join(box.base, 'b', 'c.js'), 'c')
     ]);
