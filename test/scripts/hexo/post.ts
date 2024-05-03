@@ -650,6 +650,86 @@ describe('Post', () => {
     await unlink(data.path);
   });
 
+  // #5476 - yapinxxx
+  // it('publish() - filenames separated by spaces', async () => {
+  it('yapinxxx test', async () => {
+
+    const assetDir = join(hexo.source_dir, '_drafts');
+    const assetSpaceDir = join(assetDir, 'space file');
+    const assetSpace1Dir = join(assetDir, 'space file test1');
+    const assetSpace2Dir = join(assetDir, 'space file test2');
+    const assetSpace3Dir = join(assetDir, 'space file test 3');
+    const assetSpace4Dir = join(assetDir, 'space file test 4');
+
+
+    console.log(assetSpace1Dir, '####space 1 dir');
+    console.log(assetSpace3Dir, '####space 3 dir');
+    console.log(assetSpace4Dir, '####space 4 dir');
+
+    const newAssetDir = join(hexo.source_dir, '_posts');
+    const date = moment(now);
+    hexo.config.post_asset_folder = true;
+
+    const write_content = 'This is Hello World with Space';
+    const template = [
+      '---',
+      'title: Hello World',
+      'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
+      'tags:',
+      '---'
+    ].join('\n') + '\n';
+
+    const content = [template, write_content].join('\n');
+
+    // Put some files into the asset folder
+    await Promise.all([
+      writeFile(join(assetDir, 'space file.txt'), write_content),
+      writeFile(join(assetDir, 'space file test 0.txt'), write_content),
+      writeFile(join(assetDir, 'space file test 1.txt'), write_content),
+      writeFile(join(assetDir, 'space file test2.txt'), write_content),
+      writeFile(join(assetDir, 'space file test 3.txt'), write_content),
+
+      writeFile(join(assetSpaceDir, 'space file.txt'), write_content),
+
+      writeFile(join(assetSpace1Dir, 'space file10.txt'), write_content),
+      writeFile(join(assetSpace1Dir, 'space file test11.txt'), write_content),
+      writeFile(join(assetSpace1Dir, 'space file test12.txt'), write_content),
+      writeFile(join(assetSpace1Dir, 'space file test 13.txt'), write_content),
+
+
+      writeFile(join(assetSpace2Dir, 'space file20.txt'), write_content),
+
+      writeFile(join(assetSpace3Dir, 'space file30.txt'), write_content),
+      writeFile(join(assetSpace3Dir, 'space file test31.txt'), write_content),
+      writeFile(join(assetSpace3Dir, 'space file test32.txt'), write_content),
+      writeFile(join(assetSpace3Dir, 'space file test 33.txt'), write_content),
+
+      writeFile(join(assetSpace4Dir, 'space file.txt'), write_content),
+      writeFile(join(assetSpace4Dir, 'space file test41.txt'), write_content),
+      writeFile(join(assetSpace4Dir, 'space file test42.txt'), write_content),
+      writeFile(join(assetSpace4Dir, 'space file test 43.txt'), write_content)
+    ]);
+
+    const result = await post.publish({
+      slug: 'space file test',
+      title: 'Hello World'
+    });
+
+    listDir(assetDir).then(list => {
+      console.log(list, 'show all files asset ####');
+    });
+
+    listDir(newAssetDir).then(list => {
+      console.log(list, 'show all files new asset ####');
+    });
+
+    // result.path.should.eql(join(newAssetDir, 'space-file-test.md'));
+    // result.content.should.eql(content);
+
+    await unlink(result.path);
+  });
+
+
   it('render()', async () => {
     // TODO: validate data
     const beforeHook = spy();
