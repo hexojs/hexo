@@ -12,11 +12,11 @@ describe('Helper', () => {
     h.get('test').should.exist;
 
     // no fn
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => h.register('test'), TypeError, 'fn must be a function');
 
     // no name
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => h.register(), TypeError, 'name is required');
   });
 

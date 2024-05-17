@@ -1,8 +1,7 @@
 import { join } from 'path';
 import { rmdir, writeFile } from 'hexo-fs';
 import { highlight, prismHighlight } from 'hexo-util';
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import tagIncludeCode from '../../../lib/plugins/tag/include_code';
 import chai from 'chai';
@@ -11,7 +10,7 @@ const should = chai.should();
 describe('include_code', () => {
   const hexo = new Hexo(join(__dirname, 'include_code_test'));
   require('../../../lib/plugins/highlight/')(hexo);
-  const includeCode = Promise.method(tagIncludeCode(hexo));
+  const includeCode = BluebirdPromise.method(tagIncludeCode(hexo)) as (arg1: string[]) => BluebirdPromise<string>;
   const path = join(hexo.source_dir, hexo.config.code_dir, 'test.js');
   const defaultCfg = JSON.parse(JSON.stringify(hexo.config));
 

@@ -14,9 +14,9 @@ function listRoute(this: Hexo): void {
   console.log(s);
 }
 
-function buildTree(routes) {
-  const obj = {};
-  let cursor;
+function buildTree(routes: string[]) {
+  const obj: Record<string, any> = {};
+  let cursor: typeof obj;
 
   for (let i = 0, len = routes.length; i < len; i++) {
     const item = routes[i].split('/');
@@ -32,7 +32,7 @@ function buildTree(routes) {
   return obj;
 }
 
-function buildNodes(tree) {
+function buildNodes(tree: Record<string, any>) {
   const nodes = [];
 
   for (const [key, item] of Object.entries(tree)) {

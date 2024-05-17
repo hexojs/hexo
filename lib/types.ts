@@ -30,7 +30,8 @@ import type search_form from './plugins/helper/search_form';
 import type tag_cloud from './plugins/helper/tagcloud';
 import type toc from './plugins/helper/toc';
 import type url_for from './plugins/helper/url_for';
-import Model from 'warehouse/dist/model';
+import type Model from 'warehouse/dist/model';
+import type Document from 'warehouse/dist/document';
 
 export type NodeJSLikeCallback<R, E = any> = (err: E, result?: R) => void
 
@@ -47,30 +48,75 @@ export interface RenderData {
 }
 
 // Schema
+export interface TagSchema {
+  id?: string;
+  _id?: string;
+  name: string;
+  slug: string;
+  path: string;
+  permalink: string;
+  posts: any;
+  length: number;
+}
+
+export interface CategorySchema {
+  id?: string;
+  _id?: string;
+  name: string;
+  parent?: string;
+  slug: string;
+  path: string;
+  permalink: string;
+  posts: any;
+  length: number;
+}
+
+export interface PostCategorySchema {
+  _id?: string;
+  post_id: string;
+  category_id: string;
+}
+
+export interface PostTagSchema {
+  _id?: string;
+  post_id: string;
+  tag_id: string;
+}
+
+export interface PostAssetSchema {
+  _id: string;
+  slug: string;
+  modified: boolean;
+  post: string;
+  renderable: boolean;
+  path: string;
+  source: string;
+}
+
 export interface PostSchema {
-  id?: string | number;
-  _id?: string | number;
-  title?: string;
-  date?: moment.Moment,
-  updated?: moment.Moment,
-  comments?: boolean;
-  layout?: string;
-  _content?: string;
-  source?: string;
-  slug?: string;
+  id?: string;
+  _id?: string;
+  title: string;
+  date: moment.Moment,
+  updated: moment.Moment,
+  comments: boolean;
+  layout: string;
+  _content: string;
+  source: string;
+  slug: string;
   photos?: string[];
-  raw?: string;
-  published?: boolean;
+  raw: string;
+  published: boolean;
   content?: string;
   excerpt?: string;
   more?: string;
   author?: string;
-  asset_dir?: string;
-  full_source?: string;
-  path?: string;
-  permalink?: string;
-  categories?: any;
-  tags?: any;
+  asset_dir: string;
+  full_source: string;
+  path: string;
+  permalink: string;
+  categories: Query<CategorySchema>;
+  tags?: Query<TagSchema>;
   __permalink?: string;
   __post?: boolean;
   canonical_path?: string;
@@ -83,25 +129,28 @@ export interface PostSchema {
   total?: number;
   description?: string;
   [key: string]: any;
+  notPublished: () => boolean;
+  setTags: (tags: string[]) => any;
+  setCategories: (cats: (string | string[])[]) => any;
 }
 
 export interface PageSchema {
-  _id?: string | number;
-  title?: string;
-  date?: moment.Moment,
-  updated?: moment.Moment,
-  comments?: boolean;
-  layout?: string;
-  _content?: string;
-  source?: string;
-  path?: string;
-  raw?: string;
+  _id?: string;
+  title: string;
+  date: moment.Moment,
+  updated: moment.Moment,
+  comments: boolean;
+  layout: string;
+  _content: string;
+  source: string;
+  path: string;
+  raw: string;
   content?: string;
   excerpt?: string;
   more?: string;
+  full_source: string;
+  permalink: string;
   author?: string;
-  full_source?: string;
-  permalink?: string;
   tags?: any;
   canonical_path?: string;
   lang?: string;
@@ -114,30 +163,18 @@ export interface PageSchema {
   description?: string;
 }
 
-export interface CategorySchema {
-  id?: string | number;
-  _id?: string | number;
-  name?: string;
-  parent?: string | number;
-  slug?: string;
-  path?: string;
-  permalink?: string;
-  posts?: any;
-  length?: number;
-}
-
-export interface TagSchema {
-  id?: string | number;
-  _id?: string | number;
-  name?: string;
-}
-
 export interface AssetSchema {
   _id?: string;
   path: string;
   modified: boolean;
   renderable: boolean;
   source: string;
+}
+
+export interface CacheSchema {
+  _id: string;
+  hash: string;
+  modified: number;
 }
 
 export interface LocalsType {
@@ -225,7 +262,7 @@ export type SimplePostGenerator = {
 export type NormalPostGenerator = {
   path: string;
   layout: string[];
-  data: PostSchema;
+  data: PostSchema | Document<PostSchema>;
 }
 export type PostGenerator = SimplePostGenerator | NormalPostGenerator;
 

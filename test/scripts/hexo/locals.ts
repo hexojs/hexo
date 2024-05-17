@@ -6,7 +6,7 @@ describe('Locals', () => {
   const locals = new Locals();
 
   it('get() - name must be a string', () => {
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => locals.get(), 'name must be a string!');
   });
 
@@ -26,12 +26,12 @@ describe('Locals', () => {
   });
 
   it('set() - name must be a string', () => {
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => locals.set(), 'name must be a string!');
   });
 
   it('set() - value is required', () => {
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => locals.set('test'), 'value is required!');
   });
 
@@ -45,7 +45,7 @@ describe('Locals', () => {
   });
 
   it('remove() - name must be a string', () => {
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => locals.remove(), 'name must be a string!');
   });
 

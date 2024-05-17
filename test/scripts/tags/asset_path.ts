@@ -1,5 +1,4 @@
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import tagAssetPath from '../../../lib/plugins/tag/asset_path';
 import chai from 'chai';
@@ -24,7 +23,7 @@ describe('asset_path', () => {
   })).then(post_ => {
     post = post_;
 
-    return Promise.all([
+    return BluebirdPromise.all([
       PostAsset.insert({
         _id: 'bar',
         slug: 'bar',

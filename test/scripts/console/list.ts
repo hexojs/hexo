@@ -1,6 +1,5 @@
 import { spy, stub, assert as sinonAssert, SinonSpy } from 'sinon';
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import listConsole from '../../../lib/plugins/console/list';
 type OriginalParams = Parameters<typeof listConsole>;
@@ -24,7 +23,7 @@ describe('Console list', () => {
   it('has args', async () => {
     const logStub = stub(console, 'log');
 
-    hexo.load = () => Promise.resolve();
+    hexo.load = () => BluebirdPromise.resolve();
 
     const list: (...args: OriginalParams) => OriginalReturn = listConsole.bind(hexo);
 

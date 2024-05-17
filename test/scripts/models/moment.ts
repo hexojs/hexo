@@ -50,7 +50,7 @@ describe('SchemaTypeMoment', () => {
 
   it('validate() - required', () => {
     const type = new SchemaTypeMoment('test', {required: true});
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => type.validate(), '`test` is required!');
   });
 
@@ -70,7 +70,7 @@ describe('SchemaTypeMoment', () => {
   });
 
   it('parse()', () => {
-    type.parse('2014-11-03T07:45:41.237Z').should.eql(moment('2014-11-03T07:45:41.237Z'));
+    type.parse('2014-11-03T07:45:41.237Z')!.should.eql(moment('2014-11-03T07:45:41.237Z'));
     should.not.exist(type.parse());
   });
 

@@ -8,6 +8,10 @@ type Store = {
   };
 };
 
+/**
+ * An injector is used to add static code snippet to the `<head>` or/and `<body>` of generated HTML files.
+ * Hexo run injector before `after_render:html` filter is executed.
+ */
 class Injector {
   public store: Store;
   public cache: any;
