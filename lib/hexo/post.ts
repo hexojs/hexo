@@ -4,7 +4,7 @@ import Promise from 'bluebird';
 import { join, extname, basename } from 'path';
 import { magenta } from 'picocolors';
 import { load } from 'js-yaml';
-import { slugize, escapeRegExp } from 'hexo-util';
+import { slugize, escapeRegExp, deepMerge} from 'hexo-util';
 import { copyDir, exists, listDir, mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
 import { parse as yfmParse, split as yfmSplit, stringify as yfmStringify } from 'hexo-front-matter';
 import type Hexo from './index';
@@ -306,13 +306,9 @@ class Post {
       const jsonMode = separator.startsWith(';');
 
       // Parse front-matter
-      const obj = jsonMode ? JSON.parse(`{${frontMatter}}`) : load(frontMatter);
+      let obj = jsonMode ? JSON.parse(`{${frontMatter}}`) : load(frontMatter);
 
-      Object.keys(data)
-        .filter(key => !preservedKeys.includes(key) && obj[key] == null)
-        .forEach(key => {
-          obj[key] = data[key];
-        });
+      obj = deepMerge(obj, Object.fromEntries(Object.entries(data).filter(([key, value]) => !preservedKeys.includes(key) && value != null)));
 
       let content = '';
       // Prepend the separator
