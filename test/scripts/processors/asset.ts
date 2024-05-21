@@ -80,7 +80,7 @@ describe('asset', () => {
 
     await writeFile(file.source, 'foo');
     await process(file);
-    const id = join('source/', file.path);
+    const id = 'source/' + file.path;
     const asset = Asset.findById(id);
 
     asset._id.should.eql(id);
@@ -103,7 +103,7 @@ describe('asset', () => {
 
     await writeFile(file.source, 'foo');
     await process(file);
-    const id = join('../source/', 'foo.jpg'); // The id should a relative path, because the 'lib/models/assets.js' use asset path by joining base path with "_id" directly.
+    const id = '../source/foo.jpg'; // The id should a relative path,because the 'lib/models/assets.js' use asset path by joining base path with "_id" directly.
     const asset = Asset.findById(id);
     asset._id.should.eql(id);
     asset.path.should.eql(file.path);
@@ -122,7 +122,7 @@ describe('asset', () => {
       renderable: false
     });
 
-    const id = join('source/', file.path);
+    const id = 'source/' + file.path;
 
     await Promise.all([
       writeFile(file.source, 'test'),
@@ -153,7 +153,7 @@ describe('asset', () => {
       renderable: false
     });
 
-    const id = join('source/', file.path);
+    const id = 'source/' + file.path;
 
     await Promise.all([
       writeFile(file.source, 'test'),
@@ -179,7 +179,7 @@ describe('asset', () => {
       renderable: false
     });
 
-    const id = join('source/', file.path);
+    const id = 'source/' + file.path;
 
     await Asset.insert({
       _id: id,
@@ -197,7 +197,7 @@ describe('asset', () => {
       renderable: false
     });
 
-    const id = join('source/', file.path);
+    const id = 'source/' + file.path;
     await process(file);
 
     should.not.exist(Asset.findById(id));

@@ -56,7 +56,7 @@ describe('source', () => {
       type: 'create'
     });
 
-    const id = join('themes/test/', file.path);
+    const id = 'themes/test/' + file.path;
 
     await writeFile(file.source, 'test');
     await process(file);
@@ -77,7 +77,7 @@ describe('source', () => {
       type: 'update'
     });
 
-    const id = join('themes/test/', file.path);
+    const id = 'themes/test/' + file.path;
 
     await Promise.all([
       writeFile(file.source, 'test'),
@@ -104,7 +104,7 @@ describe('source', () => {
       type: 'skip'
     });
 
-    const id = join('themes/test/', file.path);
+    const id = 'themes/test/' + file.path;
 
     await Promise.all([
       writeFile(file.source, 'test'),
@@ -130,7 +130,7 @@ describe('source', () => {
       type: 'delete'
     });
 
-    const id = join('themes/test/', file.path);
+    const id = 'themes/test/' + file.path;
 
     await Asset.insert({
       _id: id,
@@ -146,7 +146,7 @@ describe('source', () => {
       type: 'delete'
     });
 
-    const id = join('themes/test/', file.path);
+    const id = 'themes/test/' + file.path;
 
     await process(file);
     should.not.exist(Asset.findById(id));
