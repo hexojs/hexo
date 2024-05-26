@@ -110,7 +110,7 @@ function getAndTruncateTocObj(str: string, options: {min_depth: number, max_dept
   if (data.length === 0) {
     return data;
   }
-  if (max_items < 1) {
+  if (max_items < 1 || max_items === Infinity) {
     return data;
   }
 
