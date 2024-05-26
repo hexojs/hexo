@@ -114,8 +114,9 @@ function getAndTruncateTocObj(str: string, options: {min_depth: number, max_dept
     return data;
   }
 
-  const min = Math.min(...data.map(item => item.level));
-  const max = Math.max(...data.map(item => item.level));
+  const levels = data.map(item => item.level);
+  const min = Math.min(...levels);
+  const max = Math.max(...levels);
 
   for (let currentLevel = max; data.length > max_items && currentLevel > min; currentLevel--) {
     data = data.filter(item => item.level < currentLevel);
