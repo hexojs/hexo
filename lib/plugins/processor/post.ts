@@ -71,8 +71,8 @@ function processPost(ctx: Hexo, file: _File) {
   const { path } = file.params;
   const doc = Post.findOne({source: file.path});
   const { config } = ctx;
-  const { timezone: timezoneCfg } = config;
-  const updated_option = config.updated_option;
+  const { timezone: timezoneCfg, updated_option, use_slug_as_post_title } = config;
+
   let categories, tags;
 
   if (file.type === 'skip' && doc) {
@@ -108,6 +108,12 @@ function processPost(ctx: Hexo, file: _File) {
     for (let i = 0, len = keys.length; i < len; i++) {
       const key = keys[i];
       if (!preservedKeys[key]) data[key] = info[key];
+    }
+
+    // use `slug` as `title` of post when `title` is not specified.
+    // https://github.com/hexojs/hexo/issues/5372
+    if (use_slug_as_post_title && !('title' in data)) {
+      data.title = info.title;
     }
 
     if (data.date) {
@@ -234,7 +240,7 @@ function scanAssetDir(ctx: Hexo, post) {
     if (err && err.code === 'ENOENT') return [];
     throw err;
   }).filter(item => !isExcludedFile(item, ctx.config)).map(item => {
-    const id = join(assetDir, item).substring(baseDirLength);
+    const id = join(assetDir, item).substring(baseDirLength).replace(/\\/g, '/');
     const renderablePath = id.substring(sourceDirLength + 1);
     const asset = PostAsset.findById(id);
 
@@ -268,7 +274,7 @@ function shouldSkipAsset(ctx: Hexo, post, asset) {
 function processAsset(ctx: Hexo, file: _File) {
   const PostAsset = ctx.model('PostAsset');
   const Post = ctx.model('Post');
-  const id = file.source.substring(ctx.base_dir.length);
+  const id = file.source.substring(ctx.base_dir.length).replace(/\\/g, '/');
   const postAsset = PostAsset.findById(id);
 
   if (file.type === 'delete' || Post.length === 0) {

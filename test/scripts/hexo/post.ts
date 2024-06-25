@@ -4,7 +4,7 @@ import { readFile, mkdirs, unlink, rmdir, writeFile, exists, stat, listDir } fro
 import { spy, useFakeTimers } from 'sinon';
 import { parse as yfm } from 'hexo-front-matter';
 import { expected, content, expected_disable_nunjucks, content_for_issue_3346, expected_for_issue_3346, content_for_issue_4460 } from '../../fixtures/post_render';
-import { highlight } from 'hexo-util';
+import { highlight, deepMerge } from 'hexo-util';
 import Hexo from '../../../lib/hexo';
 import chai from 'chai';
 const should = chai.should();
@@ -648,6 +648,43 @@ describe('Post', () => {
     const meta = yfm(data.content);
     meta.tags.should.eql(['tag', 'test']);
     await unlink(data.path);
+  });
+
+  // https:// github.com/hexojs/hexo/issues/5155
+  it('publish() - merge front-matter', async () => {
+    const prefixTags = ['prefixTag1', 'fooo'];
+    const customTags = ['customTag', 'fooo'];
+
+    await hexo.scaffold.set('customscaff', [
+      '---',
+      'title: {{ title }}',
+      'date: {{ date }}',
+      `tags: ${JSON.stringify(prefixTags)}`,
+      'qwe: 123',
+      'zxc: zxc',
+      '---'
+    ].join('\n'));
+
+    const path = join(hexo.source_dir, '_posts', 'fooo.md');
+    const data = await post.create({
+      title: 'fooo',
+      layout: 'draft',
+      tags: customTags,
+      qwe: 456,
+      asd: 'asd'
+    });
+    const result = await post.publish({
+      slug: 'fooo',
+      layout: 'customscaff'
+    });
+
+    const fmt = yfm(result.content);
+    fmt.tags.sort().should.eql(deepMerge(prefixTags, customTags).sort());
+    fmt.qwe.should.eql(456);
+    fmt.asd.should.eql('asd');
+    fmt.zxc.should.eql('zxc');
+
+    await unlink(path);
   });
 
   it('render()', async () => {
