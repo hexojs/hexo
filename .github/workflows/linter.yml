@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - "master"
-      - "v7.0.0"
     paths:
       - "lib/**"
       - "test/**"
