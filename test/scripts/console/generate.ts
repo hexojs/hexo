@@ -1,7 +1,5 @@
 import { join } from 'path';
 import { emptyDir, exists, mkdirs, readFile, rmdir, stat, unlink, writeFile } from 'hexo-fs';
-// @ts-ignore
-import Promise from 'bluebird';
 import { spy } from 'sinon';
 import chai from 'chai';
 const should = chai.should();
@@ -148,7 +146,7 @@ describe('generate', () => {
     let stats = await stat(dest);
     const mtime = stats.mtime.getTime();
 
-    await Promise.delay(1000);
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     // Force regenerate
     await generate({ force: true });
@@ -173,7 +171,7 @@ describe('generate', () => {
     // Update the file
     await writeFile(src, content);
 
-    await Promise.delay(300);
+    await new Promise(resolve => setTimeout(resolve, 300));
 
     // Check the updated file
     const result = await readFile(dest);
@@ -216,7 +214,7 @@ describe('generate', () => {
     // Generate again
     await generate();
 
-    await Promise.delay(300);
+    await new Promise(resolve => setTimeout(resolve, 300));
 
     // Read the updated source file
     const result = await Promise.all([
@@ -322,7 +320,7 @@ describe('generate - watch (delete)', () => {
     const exist = await exists(hexo.base_dir);
     if (exist) {
       await emptyDir(hexo.base_dir);
-      await Promise.delay(500);
+      await new Promise(resolve => setTimeout(resolve, 500));
       await rmdir(hexo.base_dir);
     }
   });
@@ -358,7 +356,7 @@ describe('generate - watch (delete)', () => {
     await testGenerate({ watch: true });
 
     await unlink(join(hexo.source_dir, 'test.txt'));
-    await Promise.delay(500);
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     const exist = await exists(join(hexo.public_dir, 'test.txt'));
     exist.should.be.false;

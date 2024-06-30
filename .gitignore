@@ -11,3 +11,4 @@ coverage/
 .tmp*
 .vscode
 dist/
+bun.lockb

@@ -1,14 +1,17 @@
 import Hexo from '../../../lib/hexo';
 import { exists, unlink } from 'hexo-fs';
-// @ts-ignore
-import Promise from 'bluebird';
 import saveDatabaseFilter from '../../../lib/plugins/filter/before_exit/save_database';
 type SaveDatabaseFilterParams = Parameters<typeof saveDatabaseFilter>
 type SaveDatabaseFilterReturn = ReturnType<typeof saveDatabaseFilter>
 
 describe('Save database', () => {
   const hexo = new Hexo();
-  const saveDatabase: (...args: SaveDatabaseFilterParams) => Promise<SaveDatabaseFilterReturn> = Promise.method(saveDatabaseFilter).bind(hexo);
+  const saveDatabase: (...args: SaveDatabaseFilterParams) => Promise<SaveDatabaseFilterReturn> = (...args: SaveDatabaseFilterParams) => {
+    return new Promise(resolve => {
+      const boundSaveDatabase = saveDatabaseFilter.bind(hexo);
+      resolve(boundSaveDatabase(...args));
+    });
+  };
   const dbPath = hexo.database.options.path;
 
   it('default', async () => {

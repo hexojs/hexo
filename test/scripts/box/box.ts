@@ -2,8 +2,6 @@ import { join, sep } from 'path';
 import { appendFile, mkdir, mkdirs, rename, rmdir, stat, unlink, writeFile } from 'hexo-fs';
 import { hash, Pattern } from 'hexo-util';
 import { spy, match, assert as sinonAssert } from 'sinon';
-// @ts-ignore
-import Promise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import Box from '../../../lib/box';
 import chai from 'chai';
@@ -323,7 +321,7 @@ describe('Box', () => {
     await writeFile(src, 'a');
     await box.watch();
     box.isWatching().should.be.true;
-    await Promise.delay(500);
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     sinonAssert.calledWithMatch(processor.firstCall, {
       source: src,
@@ -352,7 +350,7 @@ describe('Box', () => {
     ]);
     await box.watch();
     await appendFile(src, 'b');
-    await Promise.delay(500);
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     sinonAssert.calledWithMatch(processor.lastCall, {
       source: src,
@@ -381,7 +379,7 @@ describe('Box', () => {
     ]);
     await box.watch();
     await unlink(src);
-    await Promise.delay(500);
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     sinonAssert.calledWithMatch(processor.lastCall, {
       source: src,
@@ -412,7 +410,7 @@ describe('Box', () => {
     ]);
     await box.watch();
     await rename(src, newSrc);
-    await Promise.delay(500);
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     for (const [file] of processor.args.slice(-2)) {
       switch (file.type) {
@@ -450,7 +448,7 @@ describe('Box', () => {
     ]);
     await box.watch();
     await rename(join(box.base, 'a'), join(box.base, 'b'));
-    await Promise.delay(500);
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     for (const [file] of processor.args.slice(-2)) {
       switch (file.type) {
@@ -493,7 +491,7 @@ describe('Box', () => {
     ]);
     await box.watch();
     await appendFile(src1, 'aaa');
-    await Promise.delay(500);
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     const file = processor.lastCall.args[0];
 
@@ -505,7 +503,7 @@ describe('Box', () => {
     });
 
     await appendFile(src2, 'bbb');
-    await Promise.delay(500);
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     const file2 = processor.lastCall.args[0];
     file2.should.eql(file); // not changed
@@ -544,7 +542,7 @@ describe('Box', () => {
     ]);
     await box.watch();
     await appendFile(src1, 'aaa');
-    await Promise.delay(500);
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     const file = processor.lastCall.args[0];
 
@@ -556,12 +554,12 @@ describe('Box', () => {
     });
 
     await appendFile(src2, 'bbb');
-    await Promise.delay(500);
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     processor.lastCall.args[0].should.eql(file); // not changed
 
     await appendFile(src3, 'ccc');
-    await Promise.delay(500);
+    await new Promise(resolve => setTimeout(resolve, 500));
 
     processor.lastCall.args[0].should.eql(file); // not changed
 

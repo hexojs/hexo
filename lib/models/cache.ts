@@ -1,5 +1,5 @@
 import warehouse from 'warehouse';
-import Promise from 'bluebird';
+
 import type Hexo from '../hexo';
 
 export = (ctx: Hexo) => {

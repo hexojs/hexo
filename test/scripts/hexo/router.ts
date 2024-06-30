@@ -1,5 +1,3 @@
-// @ts-ignore
-import Promise from 'bluebird';
 import { Readable } from 'stream';
 import { join } from 'path';
 import crypto from 'crypto';

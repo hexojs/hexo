@@ -1,6 +1,6 @@
 import { join, extname } from 'path';
 import moment from 'moment';
-import Promise from 'bluebird';
+
 import { createSha1Hash, Permalink } from 'hexo-util';
 import { ensurePath } from 'hexo-fs';
 import type Hexo from '../../hexo';

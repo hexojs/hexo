@@ -1,5 +1,5 @@
 import { extname } from 'path';
-import Promise from 'bluebird';
+import { promisify } from 'util';
 import type { NodeJSLikeCallback } from '../types';
 
 const getExtname = (str: string) => {
@@ -98,10 +98,10 @@ class Renderer {
       this.storeSync[name] = fn;
       this.storeSync[name].output = output;
 
-      this.store[name] = Promise.method(fn);
+      this.store[name] = promisify(fn);
       this.store[name].disableNunjucks = (fn as StoreFunction).disableNunjucks;
     } else {
-      if (fn.length > 2) fn = Promise.promisify(fn);
+      if (fn.length > 2) fn = promisify(fn);
       this.store[name] = fn;
     }
 

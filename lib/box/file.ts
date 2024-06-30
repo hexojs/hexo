@@ -1,4 +1,3 @@
-import type Promise from 'bluebird';
 import { readFile, readFileSync, stat, statSync, type ReadFileOptions } from 'hexo-fs';
 import type fs from 'fs';
 

@@ -1,6 +1,5 @@
 import { dirname, extname, join } from 'path';
 import { parse as yfm } from 'hexo-front-matter';
-import Promise from 'bluebird';
 import type Theme from '.';
 import type Render from '../hexo/render';
 import type { NodeJSLikeCallback } from '../types';

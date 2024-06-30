@@ -1,4 +1,4 @@
-import Promise from 'bluebird';
+
 import { Pattern } from 'hexo-util';
 import type File from '../box/file';
 

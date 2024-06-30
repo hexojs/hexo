@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { exists, readFile, listDir } from 'hexo-fs';
-import Promise from 'bluebird';
+
 import { magenta } from 'picocolors';
 import type Hexo from './index';
 

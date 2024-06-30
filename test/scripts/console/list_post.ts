@@ -1,5 +1,5 @@
 // @ts-ignore
-import Promise from 'bluebird';
+
 import { stub, assert as sinonAssert } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import listPost from '../../../lib/plugins/console/list/post';

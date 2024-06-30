@@ -1,5 +1,3 @@
-import Promise from 'bluebird';
-
 export function readStream(stream): Promise<string> {
   return new Promise((resolve, reject) => {
     let data = '';

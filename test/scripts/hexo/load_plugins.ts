@@ -2,8 +2,6 @@ import { join, dirname } from 'path';
 import { writeFile, mkdir, rmdir, unlink } from 'hexo-fs';
 import Hexo from '../../../lib/hexo';
 import loadPlugins from '../../../lib/hexo/load_plugins';
-// @ts-ignore
-import Promise from 'bluebird';
 import chai from 'chai';
 const should = chai.should();
 

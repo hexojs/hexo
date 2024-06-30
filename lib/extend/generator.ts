@@ -1,4 +1,4 @@
-import Promise from 'bluebird';
+
 import type { NodeJSLikeCallback } from '../types';
 
 interface BaseObj {

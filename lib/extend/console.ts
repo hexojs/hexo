@@ -1,4 +1,4 @@
-import Promise from 'bluebird';
+
 import abbrev from 'abbrev';
 import type { NodeJSLikeCallback } from '../types';
 

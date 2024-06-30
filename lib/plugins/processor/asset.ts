@@ -1,5 +1,4 @@
 import { timezone, toDate, isExcludedFile, isMatch } from './common';
-import Promise from 'bluebird';
 import { parse as yfm } from 'hexo-front-matter';
 import { extname, relative } from 'path';
 import { Pattern } from 'hexo-util';
@@ -51,7 +50,7 @@ function processPage(ctx: Hexo, file: _File) {
   return Promise.all([
     file.stat(),
     file.read()
-  ]).spread((stats: Stats, content: string) => {
+  ]).then(([stats, content]) => {
     const data = yfm(content);
     const output = ctx.render.getOutput(path);
 
@@ -60,16 +59,16 @@ function processPage(ctx: Hexo, file: _File) {
 
     data.date = toDate(data.date);
 
-    if (data.date) {
-      if (timezoneCfg) data.date = timezone(data.date, timezoneCfg);
-    } else {
+    if (data.date && timezoneCfg) {
+      data.date = timezone(data.date, timezoneCfg);
+    } else if (!data.date) {
       data.date = stats.ctime;
     }
 
     data.updated = toDate(data.updated);
 
-    if (data.updated) {
-      if (timezoneCfg) data.updated = timezone(data.updated, timezoneCfg);
+    if (data.updated && timezoneCfg) {
+      data.updated = timezone(data.updated, timezoneCfg);
     } else if (updated_option === 'date') {
       data.updated = data.date;
     } else if (updated_option === 'empty') {

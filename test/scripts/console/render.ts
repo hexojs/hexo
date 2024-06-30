@@ -1,7 +1,5 @@
 import { mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
 import { join } from 'path';
-// @ts-ignore
-import Promise from 'bluebird';
 import { spy, SinonSpy } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import renderConsole from '../../../lib/plugins/console/render';

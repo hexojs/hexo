@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 import { exists, createReadStream } from 'hexo-fs';
-import Promise from 'bluebird';
+
 import { extname } from 'path';
 import { magenta } from 'picocolors';
 import type Hexo from '../../hexo';

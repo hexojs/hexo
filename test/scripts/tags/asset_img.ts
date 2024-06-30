@@ -1,5 +1,3 @@
-// @ts-ignore
-import Promise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import tagAssetImg from '../../../lib/plugins/tag/asset_img';
 import chai from 'chai';

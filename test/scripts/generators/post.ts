@@ -1,5 +1,3 @@
-// @ts-ignore
-import Promise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import postGenerator from '../../../lib/plugins/generator/post';
 import { NormalPostGenerator } from '../../../lib/types';
@@ -11,7 +9,16 @@ type PostGeneratorReturn = ReturnType<typeof postGenerator>;
 describe('post', () => {
   const hexo = new Hexo(__dirname, {silent: true});
   const Post = hexo.model('Post');
-  const generator: (...args: PostGeneratorParams) => Promise<PostGeneratorReturn> = Promise.method(postGenerator.bind(hexo));
+  const generator: (...args: PostGeneratorParams) => Promise<PostGeneratorReturn> = (...args: PostGeneratorParams) => {
+    return new Promise((resolve, reject) => {
+      const boundGenerator = postGenerator.bind(hexo);
+      try {
+        resolve(boundGenerator(...args));
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
 
   hexo.config.permalink = ':title/';
 

@@ -1,7 +1,5 @@
 import pathFn from 'path';
 import { mkdirs, writeFile, rmdir } from 'hexo-fs';
-// @ts-ignore
-import Promise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import fragmentCache from '../../../lib/plugins/helper/fragment_cache';
 import partialHelper from '../../../lib/plugins/helper/partial';

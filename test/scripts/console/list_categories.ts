@@ -1,5 +1,3 @@
-// @ts-ignore
-import Promise from 'bluebird';
 import { stub, assert as sinonAssert } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import listCategory from '../../../lib/plugins/console/list/category';
@@ -36,11 +34,11 @@ describe('Console list', () => {
 
     await hexo.init();
     const output = await Post.insert(posts);
-    await Promise.each([
+    await Promise.all([
       ['foo'],
       ['baz'],
       ['baz']
-    ], (tags, i) => output[i].setCategories(tags));
+    ].map((tags, i) => output[i].setCategories(tags)));
     await hexo.locals.invalidate();
     listCategories();
     sinonAssert.calledWithMatch(logStub, 'Name');

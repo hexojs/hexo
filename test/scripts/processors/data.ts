@@ -1,5 +1,3 @@
-// @ts-ignore
-import Promise from 'bluebird';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 import { join } from 'path';
 import Hexo from '../../../lib/hexo';
@@ -11,7 +9,17 @@ describe('data', () => {
   const baseDir = join(__dirname, 'data_test');
   const hexo = new Hexo(baseDir);
   const processor = data(hexo);
-  const process = Promise.method(processor.process).bind(hexo);
+  const process = (...args: unknown[]) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const boundProcess = processor.process.bind(hexo);
+        const result = boundProcess(...args);
+        resolve(result);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
   const { source } = hexo;
   const { File } = source;
   const Data = hexo.model('Data');

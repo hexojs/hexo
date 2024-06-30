@@ -1,7 +1,7 @@
 import yaml from 'js-yaml';
 import { exists, writeFile } from 'hexo-fs';
 import { extname } from 'path';
-import Promise from 'bluebird';
+
 import type Hexo from '../../hexo';
 
 interface ConfigArgs {
