@@ -1,4 +1,4 @@
-import Promise from 'bluebird';
+
 import type Hexo from '../../../hexo';
 
 function renderPostFilter(this: Hexo): Promise<[any[], any[]]> {

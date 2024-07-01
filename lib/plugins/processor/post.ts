@@ -1,5 +1,4 @@
 import { toDate, timezone, isExcludedFile, isTmpFile, isHiddenFile, isMatch } from './common';
-import Promise from 'bluebird';
 import { parse as yfm } from 'hexo-front-matter';
 import { extname, join, posix, sep } from 'path';
 import { stat, listDir } from 'hexo-fs';
@@ -90,9 +89,9 @@ function processPost(ctx: Hexo, file: _File) {
   return Promise.all([
     file.stat(),
     file.read()
-  ]).spread((stats: Stats, content: string) => {
+  ]).then(([stats, content]) => {
     const data = yfm(content);
-    const info = parseFilename(config.new_post_name, path);
+    const info = parseFilename(config.new_post_name, file.path);
     const keys = Object.keys(info);
 
     data.source = file.path;
@@ -126,16 +125,16 @@ function processPost(ctx: Hexo, file: _File) {
       );
     }
 
-    if (data.date) {
-      if (timezoneCfg) data.date = timezone(data.date, timezoneCfg);
+    if (data.date && timezoneCfg) {
+      data.date = timezone(data.date, timezoneCfg);
     } else {
       data.date = stats.birthtime;
     }
 
     data.updated = toDate(data.updated);
 
-    if (data.updated) {
-      if (timezoneCfg) data.updated = timezone(data.updated, timezoneCfg);
+    if (data.updated && timezoneCfg) {
+      data.updated = timezone(data.updated, timezoneCfg);
     } else if (updated_option === 'date') {
       data.updated = data.date;
     } else if (updated_option === 'empty') {
@@ -154,8 +153,8 @@ function processPost(ctx: Hexo, file: _File) {
       data.tag = undefined;
     }
 
-    categories = data.categories || [];
-    tags = data.tags || [];
+    let categories = data.categories || [];
+    let tags = data.tags || [];
 
     if (!Array.isArray(categories)) categories = [categories];
     if (!Array.isArray(tags)) tags = [tags];
@@ -182,11 +181,14 @@ function processPost(ctx: Hexo, file: _File) {
     }
 
     return Post.insert(data);
-  }).then(doc => Promise.all([
-    doc.setCategories(categories),
-    doc.setTags(tags),
-    scanAssetDir(ctx, doc)
-  ]));
+  }).then(doc => {
+    return Promise.all([
+      doc.setCategories(doc.categories || []),
+      doc.setTags(doc.tags || []),
+      scanAssetDir(ctx, doc)
+    ]);
+  });
+
 }
 
 function parseFilename(config: string, path: string) {

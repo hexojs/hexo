@@ -1,5 +1,3 @@
-// @ts-ignore
-import Promise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import tagcloudHelper from '../../../lib/plugins/helper/tagcloud';
 import chai from 'chai';

@@ -1,8 +1,6 @@
 import { spy, assert as sinonAssert } from 'sinon';
 import { join } from 'path';
 import { mkdirs, rmdir, unlink, writeFile} from 'hexo-fs';
-// @ts-ignore
-import Promise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import { config } from '../../../lib/theme/processors/config';
 import chai from 'chai';
@@ -12,7 +10,18 @@ type ConfigReturn = ReturnType<typeof config['process']>
 
 describe('config', () => {
   const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
-  const process: (...args: ConfigParams) => Promise<ConfigReturn> = Promise.method(config.process.bind(hexo));
+  const process: (...args: ConfigParams) => Promise<ConfigReturn> = (...args: ConfigParams) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const boundProcess = config.process.bind(hexo);
+        const result = boundProcess(...args);
+        resolve(result);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
+
   const themeDir = join(hexo.base_dir, 'themes', 'test');
 
   function newFile(options) {

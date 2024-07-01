@@ -1,6 +1,6 @@
 import Renderer from '../../../lib/extend/renderer';
 // @ts-ignore
-import Promise from 'bluebird';
+
 import chai from 'chai';
 const should = chai.should();
 

@@ -1,4 +1,4 @@
-import Promise from 'bluebird';
+
 import { exists, unlink, rmdir } from 'hexo-fs';
 import type Hexo from '../../hexo';
 

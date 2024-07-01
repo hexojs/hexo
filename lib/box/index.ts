@@ -1,5 +1,4 @@
 import { join, sep } from 'path';
-import BlueBirdPromise from 'bluebird';
 import File from './file';
 import { Pattern, createSha1Hash } from 'hexo-util';
 import { createReadStream, readdir, stat, watch } from 'hexo-fs';
@@ -99,7 +98,7 @@ class Box extends EventEmitter {
     });
   }
 
-  _readDir(base: string, prefix = ''): BlueBirdPromise<any> {
+  _readDir(base: string, prefix = ''): Promise<any> {
     const { context: ctx } = this;
     const results = [];
     return readDirWalker(ctx, base, results, this.ignore, prefix)
@@ -122,7 +121,7 @@ class Box extends EventEmitter {
     }));
   }
 
-  process(callback?: NodeJSLikeCallback<any>): BlueBirdPromise<any> {
+  process(callback?: NodeJSLikeCallback<any>): Promise<any> {
     const { base, Cache, context: ctx } = this;
 
     return stat(base).then(stats => {
@@ -141,9 +140,9 @@ class Box extends EventEmitter {
     }).asCallback(callback);
   }
 
-  _processFile(type: string, path: string): BlueBirdPromise<void> | BlueBirdPromise<string> {
+  async _processFile(type: string, path: string): Promise<void | string> {
     if (this._processingFiles[path]) {
-      return BlueBirdPromise.resolve();
+      return Promise.resolve();
     }
 
     this._processingFiles[path] = true;
@@ -155,45 +154,55 @@ class Box extends EventEmitter {
       path
     });
 
-    return BlueBirdPromise.reduce(this.processors, (count, processor) => {
-      const params = processor.pattern.match(path);
-      if (!params) return count;
+    try {
+      try {
+        const count_1 = await this.processors.reduce((promise, processor) => {
+          return promise.then(count => {
+            const params = processor.pattern.match(path);
+            if (!params) return count;
 
-      const file = new File({
-        // source is used for filesystem path, keep backslashes on Windows
-        source: join(base, path),
-        // path is used for URL path, replace backslashes on Windows
-        path: escapeBackslash(path),
-        params,
-        type
-      });
+            const file = new File({
+              // source is used for filesystem path, keep backslashes on Windows
+              source: join(base, path),
+              // path is used for URL path, replace backslashes on Windows
+              path: escapeBackslash(path),
+              params,
+              type
+            });
 
-      return Reflect.apply(BlueBirdPromise.method(processor.process), ctx, [file])
-        .thenReturn(count + 1);
-    }, 0).then(count => {
-      if (count) {
-        ctx.log.debug('Processed: %s', magenta(path));
+            return Promise.resolve(processor.process.call(ctx, file))
+              .then(() => count + 1);
+          });
+        }, Promise.resolve(0));
+        if (count_1) {
+          ctx.log.debug('Processed: %s', magenta(path));
+        }
+
+        this.emit('processAfter', {
+          type,
+          path
+        });
+      } catch (err) {
+        ctx.log.error({ err }, 'Process failed: %s', magenta(path));
       }
-
-      this.emit('processAfter', {
-        type,
-        path
-      });
-    }).catch(err => {
-      ctx.log.error({ err }, 'Process failed: %s', magenta(path));
-    }).finally(() => {
+    } finally {
       this._processingFiles[path] = false;
-    }).thenReturn(path);
+    }
+    return path;
   }
 
-  watch(callback?: NodeJSLikeCallback<never>): BlueBirdPromise<void> {
+  watch(callback?: NodeJSLikeCallback<never>): Promise<void> {
     if (this.isWatching()) {
-      return BlueBirdPromise.reject(new Error('Watcher has already started.')).asCallback(callback);
+      const error = new Error('Watcher has already started.');
+      if (callback) {
+        return Promise.reject(error).catch(callback);
+      }
+      return Promise.reject(error);
     }
 
     const { base } = this;
 
-    function getPath(path) {
+    function getPath(path: string) {
       return escapeBackslash(path.substring(base.length));
     }
 
@@ -218,7 +227,12 @@ class Box extends EventEmitter {
 
         this._readDir(path, prefix);
       });
-    }).asCallback(callback);
+    }).then(() => {
+      if (callback) callback(null);
+    }).catch(err => {
+      if (callback) callback(err);
+      else throw err;
+    });
   }
 
   unwatch(): void {
@@ -238,11 +252,11 @@ function escapeBackslash(path: string): string {
   return path.replace(/\\/g, '/');
 }
 
-function getHash(path: string): BlueBirdPromise<string> {
+function getHash(path: string): Promise<string> {
   const src = createReadStream(path);
   const hasher = createSha1Hash();
 
-  const finishedPromise = new BlueBirdPromise((resolve, reject) => {
+  const finishedPromise = new Promise((resolve, reject) => {
     src.once('error', reject);
     src.once('end', resolve);
   });
@@ -270,10 +284,10 @@ function isIgnoreMatch(path: string, ignore: string | any[]): boolean {
   return path && ignore && ignore.length && isMatch(path, ignore);
 }
 
-function readDirWalker(ctx: Hexo, base: string, results: any[], ignore: any, prefix: string): BlueBirdPromise<any> {
-  if (isIgnoreMatch(base, ignore)) return BlueBirdPromise.resolve();
+function readDirWalker(ctx: Hexo, base: string, results: any[], ignore: any, prefix: string): Promise<any> {
+  if (isIgnoreMatch(base, ignore)) return Promise.resolve();
 
-  return BlueBirdPromise.map(readdir(base).catch(err => {
+  return Promise.map(readdir(base).catch(err => {
     ctx.log.error({ err }, 'Failed to read directory: %s', base);
     if (err && err.code === 'ENOENT') return [];
     throw err;

@@ -1,7 +1,5 @@
 import { sep, join } from 'path';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
-// @ts-ignore
-import Promise from 'bluebird';
 import { spy } from 'sinon';
 import { readStream } from '../../util';
 import { full_url_for } from 'hexo-util';
@@ -229,7 +227,7 @@ describe('Hexo', () => {
     await hexo.watch();
     await checkStream(route.get('test.txt'), body); // Test for first generation
     await writeFile(target, newBody); // Update the file
-    await Promise.delay(300);
+    await new Promise(resolve => setTimeout(resolve, 300));
     await checkStream(route.get('test.txt'), newBody); // Check the new route
     hexo.unwatch(); // Stop watching
     await unlink(target); // Delete the file
@@ -300,7 +298,7 @@ describe('Hexo', () => {
   it('exit() - error handling - promise', () => {
     return Promise.all([
       hexo.exit({ foo: 'bar' }),
-      new Promise((resolve, reject) => {
+      new Promise<void>((resolve, reject) => {
         hexo.once('exit', err => {
           try {
             err.should.eql({ foo: 'bar' });

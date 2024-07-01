@@ -1,7 +1,5 @@
 import { join } from 'path';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
-// @ts-ignore
-import Promise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import { source } from '../../../lib/theme/processors/source';
 import chai from 'chai';
@@ -11,7 +9,16 @@ type SourceReturn = ReturnType<typeof source['process']>
 
 describe('source', () => {
   const hexo = new Hexo(join(__dirname, 'source_test'), {silent: true});
-  const process: (...args: SourceParams) => Promise<SourceReturn> = Promise.method(source.process.bind(hexo));
+  const process: (...args: SourceParams) => Promise<SourceReturn> = (...args: SourceParams) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const result = source.process.apply(hexo, args);
+        resolve(result);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
   const themeDir = join(hexo.base_dir, 'themes', 'test');
   const Asset = hexo.model('Asset');
 

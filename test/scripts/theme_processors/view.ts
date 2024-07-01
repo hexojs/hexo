@@ -1,7 +1,6 @@
 import { join } from 'path';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 // @ts-ignore
-import Promise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import { view } from '../../../lib/theme/processors/view';
 import chai from 'chai';
@@ -12,7 +11,13 @@ type ViewReturn = ReturnType<typeof view['process']>
 
 describe('view', () => {
   const hexo = new Hexo(join(__dirname, 'view_test'), {silent: true});
-  const process: (...args: ViewParams) => Promise<ViewReturn> = Promise.method(view.process.bind(hexo));
+  const process: (...args: ViewParams) => Promise<ViewReturn> = (...args: ViewParams) => {
+    try {
+      return Promise.resolve(view.process.apply(hexo, args));
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  };
   const themeDir = join(hexo.base_dir, 'themes', 'test');
 
   hexo.env.init = true;

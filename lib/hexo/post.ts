@@ -1,6 +1,6 @@
 import assert from 'assert';
 import moment from 'moment';
-import Promise from 'bluebird';
+
 import { join, extname, basename } from 'path';
 import { magenta } from 'picocolors';
 import { load } from 'js-yaml';

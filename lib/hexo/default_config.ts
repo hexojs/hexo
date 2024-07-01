@@ -23,7 +23,7 @@ export = {
   category_dir: 'categories',
   code_dir: 'downloads/code',
   i18n_dir: ':lang',
-  skip_render: [],
+  skip_render: [] as string[],
   // Writing
   new_post_name: ':title.md',
   default_layout: 'post',

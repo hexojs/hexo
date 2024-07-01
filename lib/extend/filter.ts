@@ -1,4 +1,4 @@
-import Promise from 'bluebird';
+
 
 const typeAlias = {
   pre: 'before_post_render',

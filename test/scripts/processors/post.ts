@@ -1,8 +1,6 @@
 
 import { join } from 'path';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
-// @ts-ignore
-import Promise from 'bluebird';
 import defaultConfig from '../../../lib/hexo/default_config';
 import Hexo from '../../../lib/hexo';
 import posts from '../../../lib/plugins/processor/post';
@@ -17,7 +15,16 @@ describe('post', () => {
   const baseDir = join(__dirname, 'post_test');
   const hexo = new Hexo(baseDir);
   const post = posts(hexo);
-  const process: (...args: PostParams) => Promise<PostReturn> = Promise.method(post.process.bind(hexo));
+  const process: (...args: PostParams) => Promise<PostReturn> = (...args: PostParams) => {
+    return new Promise((resolve, reject) => {
+      try {
+        const result = post.process.apply(hexo, args);
+        resolve(result);
+      } catch (error) {
+        reject(error);
+      }
+    });
+  };
   const { pattern } = post;
   const { source } = hexo;
   const { File } = source;

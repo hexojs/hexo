@@ -1,6 +1,4 @@
 import { spy, stub, assert as sinonAssert, SinonSpy } from 'sinon';
-// @ts-ignore
-import Promise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import listConsole from '../../../lib/plugins/console/list';
 type OriginalParams = Parameters<typeof listConsole>;

@@ -1,5 +1,5 @@
 import { extname } from 'path';
-import Promise from 'bluebird';
+
 import { readFile, readFileSync } from 'hexo-fs';
 import type Hexo from './index';
 import type { Renderer } from '../extend';

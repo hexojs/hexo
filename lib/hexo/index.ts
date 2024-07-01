@@ -1,4 +1,3 @@
-import Promise from 'bluebird';
 import { sep, join, dirname } from 'path';
 import tildify from 'tildify';
 import Database from 'warehouse';
@@ -86,13 +85,17 @@ const createLoadThemeRoute = function(generatorResult: NormalPageGenerator | Nor
             context: ctx,
             args: [locals]
           }))
-          .tap(result => {
+          .then(result => {
             if (useCache) {
               routeCache.set(generatorResult, result);
             }
-          }).tapCatch(err => {
+            return result;
+          })
+          .catch(err => {
             log.error({ err }, `Render HTML failed: ${magenta(path)}`);
+            throw err;
           });
+
       }
     }
 
@@ -423,15 +426,17 @@ class Hexo extends EventEmitter {
     require('../plugins/tag').default(this);
 
     // Load config
-    return Promise.each([
+    return Promise.all([
       'update_package', // Update package.json
       'load_config', // Load config
       'load_theme_config', // Load alternate theme config
       'load_plugins' // Load external plugins & scripts
-    ], name => require(`./${name}`)(this)).then(() => this.execFilter('after_init', null, { context: this })).then(() => {
+    ].map(name => require(`./${name}`)(this)))
+      .then(() => this.execFilter('after_init', null, { context: this }))
+      .then(() => {
       // Ready to go!
-      this.emit('ready');
-    });
+        this.emit('ready');
+      });
   }
 
   call(name: string, callback?: NodeJSLikeCallback<any>): Promise<any>;
@@ -600,14 +605,16 @@ class Hexo extends EventEmitter {
     const { log } = this;
 
     // Run generators
-    return Promise.map(Object.keys(generators), key => {
+    return Promise.all(Object.keys(generators).map(key => {
       const generator = generators[key];
 
       log.debug('Generator: %s', magenta(key));
       return Reflect.apply(generator, this, [siteLocals]);
-    }).reduce((result, data) => {
-      return data ? result.concat(data) : result;
-    }, []);
+    }))
+      .then((results: any[]) => results.reduce((result: any[], data: any) => {
+        return data ? result.concat(data) : result;
+      }, []));
+
   }
 
   _routerRefresh(runningGenerators: Promise<(AssetGenerator | PostGenerator | PageGenerator)[]>, useCache: boolean): Promise<void> {
@@ -616,23 +623,27 @@ class Hexo extends EventEmitter {
     const Locals = this._generateLocals();
     Locals.prototype.cache = useCache;
 
-    return runningGenerators.map((generatorResult: AssetGenerator | PostGenerator | PageGenerator) => {
-      if (typeof generatorResult !== 'object' || generatorResult.path == null) return undefined;
+    return runningGenerators.then(generators => {
+      return Promise.all(generators.map(generatorResult => {
+        if (typeof generatorResult !== 'object' || generatorResult.path == null) return undefined;
 
-      // add Route
-      const path = route.format(generatorResult.path);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const { data, layout } = generatorResult;
+        // add Route
+        const path = route.format(generatorResult.path);
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const { data, layout } = generatorResult;
 
-      if (!layout) {
-        route.set(path, data);
-        return path;
-      }
+        if (!layout) {
+          route.set(path, data);
+          return path;
+        }
 
-      return this.execFilter('template_locals', new Locals(path, data as unknown as NormalPageGenerator | NormalPostGenerator), { context: this })
-        .then(locals => { route.set(path, createLoadThemeRoute(generatorResult as NormalPageGenerator | NormalPostGenerator, locals, this)); })
-        .thenReturn(path);
+        return this.execFilter('template_locals', new Locals(path, data as unknown as NormalPageGenerator | NormalPostGenerator), { context: this })
+          .then(locals => {
+            route.set(path, createLoadThemeRoute(generatorResult as NormalPageGenerator | NormalPostGenerator, locals, this));
+            return path;
+          });
+      }));
     }).then(newRouteList => {
       // Remove old routes
       for (let i = 0, len = routeList.length; i < len; i++) {
@@ -644,6 +655,7 @@ class Hexo extends EventEmitter {
       }
     });
   }
+
 
   _generate(options: { cache?: boolean } = {}): Promise<any> {
     if (this._isGenerating) return;

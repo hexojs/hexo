@@ -2,7 +2,7 @@ import { exists, mkdirs, readFile, rmdir, unlink } from 'hexo-fs';
 import moment from 'moment';
 import { join } from 'path';
 // @ts-ignore
-import Promise from 'bluebird';
+
 import { useFakeTimers, spy, SinonSpy } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import newConsole from '../../../lib/plugins/console/new';

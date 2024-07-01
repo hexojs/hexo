@@ -1,6 +1,4 @@
 import { join, sep } from 'path';
-// @ts-ignore
-import Promise from 'bluebird';
 import { full_url_for } from 'hexo-util';
 import Hexo from '../../../lib/hexo';
 import chai from 'chai';
@@ -236,17 +234,24 @@ describe('Post', () => {
     });
   });
 
-  it('setTags() - sync problem', () => Post.insert([
-    {source: 'foo.md', slug: 'foo'},
-    {source: 'bar.md', slug: 'bar'}
-  ]).then(posts => Promise.all([
-    posts[0].setTags(['foo', 'bar']),
-    posts[1].setTags(['bar', 'baz'])
-  ]).thenReturn(posts)).then(posts => {
-    Tag.map(tag => tag.name).should.have.members(['foo', 'bar', 'baz']);
+  it('setTags() - sync problem', () => {
+    return Post.insert([
+      {source: 'foo.md', slug: 'foo'},
+      {source: 'bar.md', slug: 'bar'}
+    ]).then(posts => {
+      return Promise.all([
+        posts[0].setTags(['foo', 'bar']),
+        posts[1].setTags(['bar', 'baz'])
+      ]).then(() => {
+        const tagNames = Tag.map(tag => tag.name);
+        tagNames.should.have.members(['foo', 'bar', 'baz']);
+        return posts;
+      }).then(posts => {
+        return Promise.all(posts.map(post => Post.removeById(post._id)));
+      });
+    });
+  });
 
-    return posts;
-  }).map((post: any) => Post.removeById(post._id)));
 
   it('setTags() - empty tag', () => {
     let id;

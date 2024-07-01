@@ -2,7 +2,6 @@ import { extname, join } from 'path';
 import { exists, listDir, readFile, unlink, writeFile } from 'hexo-fs';
 import type Hexo from './index';
 import type { NodeJSLikeCallback } from '../types';
-import type Promise from 'bluebird';
 
 class Scaffold {
   public context: Hexo;
@@ -52,33 +51,71 @@ class Scaffold {
   }
 
   get(name: string, callback?: NodeJSLikeCallback<any>): Promise<string> {
-    return this._getScaffold(name).then(item => {
-      if (item) {
-        return readFile(item.path);
-      }
-
-      return this.defaults[name];
-    }).asCallback(callback);
+    return this._getScaffold(name)
+      .then(item => {
+        if (item) {
+          return readFile(item.path);
+        }
+        return this.defaults[name];
+      })
+      .then(result => {
+        if (callback) {
+          callback(null, result);
+        }
+        return result;
+      })
+      .catch(err => {
+        if (callback) {
+          callback(err);
+        }
+        throw err;
+      });
   }
+
 
   set(name: string, content: any, callback?: NodeJSLikeCallback<void>): Promise<void> {
     const { scaffoldDir } = this;
 
-    return this._getScaffold(name).then(item => {
-      let path = item ? item.path : join(scaffoldDir, name);
-      if (!extname(path)) path += '.md';
+    return this._getScaffold(name)
+      .then(item => {
+        let path = item ? item.path : join(scaffoldDir, name);
+        if (!extname(path)) path += '.md';
 
-      return writeFile(path, content);
-    }).asCallback(callback);
+        return writeFile(path, content);
+      })
+      .then(() => {
+        if (callback) {
+          callback(null);
+        }
+      })
+      .catch(err => {
+        if (callback) {
+          callback(err);
+        }
+        throw err;
+      });
   }
 
   remove(name: string, callback?: NodeJSLikeCallback<void>): Promise<void> {
-    return this._getScaffold(name).then(item => {
-      if (!item) return;
+    return this._getScaffold(name)
+      .then(item => {
+        if (!item) return;
 
-      return unlink(item.path);
-    }).asCallback(callback);
+        return unlink(item.path);
+      })
+      .then(() => {
+        if (callback) {
+          callback(null);
+        }
+      })
+      .catch(err => {
+        if (callback) {
+          callback(err);
+        }
+        throw err;
+      });
   }
+
 }
 
 export = Scaffold;
