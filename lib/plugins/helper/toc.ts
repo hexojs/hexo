@@ -3,6 +3,7 @@ import { tocObj, escapeHTML, encodeURL } from 'hexo-util';
 interface Options {
   min_depth?: number;
   max_depth?: number;
+  max_items?: number;
   class?: string;
   class_item?: string;
   class_link?: string;
@@ -17,6 +18,7 @@ function tocHelper(str: string, options: Options = {}) {
   options = Object.assign({
     min_depth: 1,
     max_depth: 6,
+    max_items: Infinity,
     class: 'toc',
     class_item: '',
     class_link: '',
@@ -27,7 +29,7 @@ function tocHelper(str: string, options: Options = {}) {
     list_number: true
   }, options);
 
-  const data = tocObj(str, { min_depth: options.min_depth, max_depth: options.max_depth });
+  const data = getAndTruncateTocObj(str, { min_depth: options.min_depth, max_depth: options.max_depth }, options.max_items);
 
   if (!data.length) return '';
 
@@ -100,6 +102,29 @@ function tocHelper(str: string, options: Options = {}) {
   }
 
   return result;
+}
+
+function getAndTruncateTocObj(str: string, options: {min_depth: number, max_depth: number}, max_items: number) {
+  let data = tocObj(str, { min_depth: options.min_depth, max_depth: options.max_depth });
+
+  if (data.length === 0) {
+    return data;
+  }
+  if (max_items < 1 || max_items === Infinity) {
+    return data;
+  }
+
+  const levels = data.map(item => item.level);
+  const min = Math.min(...levels);
+  const max = Math.max(...levels);
+
+  for (let currentLevel = max; data.length > max_items && currentLevel > min; currentLevel--) {
+    data = data.filter(item => item.level < currentLevel);
+  }
+
+  data = data.slice(0, max_items);
+
+  return data;
 }
 
 export = tocHelper;
