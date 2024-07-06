@@ -97,7 +97,7 @@ describe('Render', () => {
 
   it('render() - no path and text', async () => {
     try {
-      // @ts-ignore
+      // @ts-expect-error
       await hexo.render.render();
       should.fail('Return value must be rejected');
     } catch (err) {
@@ -236,7 +236,7 @@ describe('Render', () => {
   });
 
   it('renderSync() - no path and text', () => {
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => hexo.render.renderSync(), 'No input file or string!');
   });
 
@@ -298,7 +298,7 @@ describe('Render', () => {
     const result = hexo.render.renderSync(data);
 
     filter.calledOnce.should.be.true;
-    // @ts-ignore
+    // @ts-expect-error
     sinonAssert.calledWith(filter, data.text, data);
     result.should.eql(data.text.trim());
 

@@ -57,8 +57,7 @@ describe('config', () => {
       await config({_: ['server.port']});
       sinonAssert.calledWith(logStub, (hexo.config as any).server.port);
     } finally {
-      // @ts-ignore
-      delete hexo.config.server;
+      delete(hexo.config as any).server;
       logStub.restore();
     }
   });

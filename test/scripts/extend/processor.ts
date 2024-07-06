@@ -17,13 +17,13 @@ describe('Processor', () => {
     p.list()[1].should.exist;
 
     // more than one arg
-    // @ts-ignore
+    // @ts-expect-error
     p.register((a, b) => {});
 
     p.list()[1].should.exist;
 
     // no fn
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => p.register(), TypeError, 'fn must be a function');
   });
 
