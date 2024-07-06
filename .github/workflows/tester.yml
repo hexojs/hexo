@@ -4,17 +4,18 @@ on:
   push:
     branches:
       - "master"
-      - "v7.0.0"
     paths:
       - "lib/**"
       - "test/**"
       - "package.json"
+      - "tsconfig.json"
       - ".github/workflows/tester.yml"
   pull_request:
     paths:
       - "lib/**"
       - "test/**"
       - "package.json"
+      - "tsconfig.json"
       - ".github/workflows/tester.yml"
 
 permissions:

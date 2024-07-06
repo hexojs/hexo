@@ -58,6 +58,8 @@ export = {
     exclude_languages: [] as string[],
     strip_indent: true
   },
+  use_filename_as_post_title: false,
+
   // Category & Tag
   default_category: 'uncategorized',
   category_map: {},
