@@ -7,19 +7,19 @@
     <a href="https://www.npmjs.com/package/hexo">
       <img alt="NPM version" src="https://badge.fury.io/js/hexo.svg" />
     </a>
-    <a href="https://github.com/hexojs/hexo/actions?query=workflow%3ATester">
+    <a href="">
       <img alt="Required Node version" src="https://img.shields.io/node/v/hexo" />
     </a>
-    <a href="https://codecov.io/gh/anuraghazra/github-readme-stats">
+    <a href="https://github.com/hexojs/hexo/actions?query=workflow%3ATester">
       <img alt="Build Status" src="https://github.com/hexojs/hexo/workflows/Tester/badge.svg" />
     </a>
      <a href="https://libraries.io/npm/hexo">
       <img alt="dependencies Status" src="https://img.shields.io/librariesio/release/npm/hexo" />
     </a>
-    <a href="https://gitter.im/hexojs/hexo">
+    <a href="https://coveralls.io/r/hexojs/hexo?branch=master">
       <img alt="Coverage Status" src="https://coveralls.io/repos/hexojs/hexo/badge.svg?branch=master" />
     </a>
-    <a href="https://github.com/anuraghazra/github-readme-stats/pulls">
+    <a href="https://gitter.im/hexojs/hexo">
       <img alt="Gitter" src="https://badges.gitter.im/hexojs/hexo.svg" />
     </a>
     <a href="https://discord.gg/teM2Anj">
