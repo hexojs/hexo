@@ -1,27 +1,55 @@
-<img src="https://raw.githubusercontent.com/hexojs/logo/master/hexo-logo-avatar.png" alt="Hexo logo" width="100" height="100" align="right" />
+<p align="center">
+ <img width="100px" src="https://raw.githubusercontent.com/hexojs/logo/master/hexo-logo-avatar.png" align="center" alt="GitHub Readme Stats" />
+ <h2 align="center">Hexo</h2>
+ <p align="center">A fast, simple & powerful blog framework, powered by <a href="https://nodejs.org">Node.js</a>.</p>
+</p>
+  <p align="center">
+    <a href="https://www.npmjs.com/package/hexo">
+      <img alt="NPM version" src="https://badge.fury.io/js/hexo.svg" />
+    </a>
+    <a href="https://github.com/hexojs/hexo/actions?query=workflow%3ATester">
+      <img alt="Required Node version" src="https://img.shields.io/node/v/hexo" />
+    </a>
+    <a href="https://codecov.io/gh/anuraghazra/github-readme-stats">
+      <img alt="Build Status" src="https://github.com/hexojs/hexo/workflows/Tester/badge.svg" />
+    </a>
+     <a href="https://libraries.io/npm/hexo">
+      <img alt="dependencies Status" src="https://img.shields.io/librariesio/release/npm/hexo" />
+    </a>
+    <a href="https://gitter.im/hexojs/hexo">
+      <img alt="Coverage Status" src="https://coveralls.io/repos/hexojs/hexo/badge.svg?branch=master" />
+    </a>
+    <a href="https://github.com/anuraghazra/github-readme-stats/pulls">
+      <img alt="Gitter" src="https://badges.gitter.im/hexojs/hexo.svg" />
+    </a>
+    <a href="https://discord.gg/teM2Anj">
+      <img alt="Discord Chat" src="https://img.shields.io/badge/chat-on%20discord-7289da.svg" />
+    </a>
+    <br />
+        <a href="https://t.me/hexojs">
+      <img alt="Telegram Chat" src="https://img.shields.io/badge/chat-on%20telegram-32afed.svg" />
+    <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Fhexojs%2Fhexo?ref=badge_shield">
+      <img alt="FOSSA Status" src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhexojs%2Fhexo.svg?type=shield" />
+    <a href="CODE_OF_CONDUCT.md">
+      <img alt="Contributor Covenant" src="https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg" />
+  </p>
 
-# Hexo
+  <p align="center">
+    <a href="https://hexo.io">Website</a>
+    ·
+    <a href="https://hexo.io/docs/">Documentation</a>
+    ·
+    <a href="https://hexo.io/docs/#Installation">Installation Guide</a>
+    ·
+    <a href="https://hexo.io/docs/contributing">Contribution Guide</a>
+    ·
+    <a href="https://hexo.io/docs/contributing">Contribution Guide</a>
+    ·
+    <a href="https://hexo.io/api/">API</a>
+    ·
+    <a href="https://twitter.com/hexojs">Twitter</a>
+  </p>
 
-> A fast, simple & powerful blog framework, powered by [Node.js](https://nodejs.org).
-
-[Website](https://hexo.io) |
-[Documentation](https://hexo.io/docs/) |
-[Installation Guide](https://hexo.io/docs/#Installation) |
-[Contribution Guide](https://hexo.io/docs/contributing) |
-[Code of Conduct](CODE_OF_CONDUCT.md) |
-[API](https://hexo.io/api/) |
-[Twitter](https://twitter.com/hexojs)
-
-[![NPM version](https://badge.fury.io/js/hexo.svg)](https://www.npmjs.com/package/hexo)
-![Required Node version](https://img.shields.io/node/v/hexo)
-[![Build Status](https://github.com/hexojs/hexo/workflows/Tester/badge.svg)](https://github.com/hexojs/hexo/actions?query=workflow%3ATester)
-[![dependencies Status](https://img.shields.io/librariesio/release/npm/hexo)](https://libraries.io/npm/hexo)
-[![Coverage Status](https://coveralls.io/repos/hexojs/hexo/badge.svg?branch=master)](https://coveralls.io/r/hexojs/hexo?branch=master)
-[![Gitter](https://badges.gitter.im/hexojs/hexo.svg)](https://gitter.im/hexojs/hexo)
-[![Discord Chat](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/teM2Anj)
-[![Telegram Chat](https://img.shields.io/badge/chat-on%20telegram-32afed.svg)](https://t.me/hexojs)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhexojs%2Fhexo.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhexojs%2Fhexo?ref=badge_shield)
-[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 
 ## Features
 
