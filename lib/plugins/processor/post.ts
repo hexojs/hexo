@@ -50,7 +50,11 @@ export = (ctx: Hexo) => {
 
       // if post_asset_folder is set, restrict renderable files to default file extension
       if (result.renderable && ctx.config.post_asset_folder) {
-        result.renderable = (extname(ctx.config.new_post_name) === extname(path));
+        if (!Array.isArray(ctx.config.post_extensions) || ctx.config.post_extensions.length === 0) {
+          result.renderable = (extname(ctx.config.new_post_name) === extname(path));
+        } else {
+          result.renderable = ctx.config.post_extensions.includes(extname(path).slice(1));
+        }
       }
 
       return result;
