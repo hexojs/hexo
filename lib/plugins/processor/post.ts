@@ -48,7 +48,7 @@ export = (ctx: Hexo) => {
       // checks only if there is a renderer for the file type or if is included in skip_render
       result.renderable = ctx.render.isRenderable(path) && !isMatch(path, ctx.config.skip_render);
 
-      // if post_asset_folder is set, restrict renderable files to default file extension
+      // if post_asset_folder is set, restrict renderable files to post_extensions or the default file extension
       if (result.renderable && ctx.config.post_asset_folder) {
         if (!Array.isArray(ctx.config.post_extensions) || ctx.config.post_extensions.length === 0) {
           result.renderable = (extname(ctx.config.new_post_name) === extname(path));
