@@ -33,7 +33,7 @@ export = (ctx: Hexo) => {
     if (catDir === '/') catDir = '';
     if (!catDir.endsWith('/')) catDir += '/';
 
-    return `${catDir + this.slug}/`;
+    return `${catDir + this.slug}/index.html`;
   });
 
   Category.virtual('permalink').get(function() {

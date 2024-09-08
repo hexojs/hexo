@@ -35,9 +35,9 @@ describe('list_archives', () => {
 
     result.should.eql([
       '<ul class="archive-list">',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">1</span></li>',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a><span class="archive-list-count">1</span></li>',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">2</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/index.html">February 2014</a><span class="archive-list-count">1</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/index.html">October 2013</a><span class="archive-list-count">1</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/index.html">June 2013</a><span class="archive-list-count">2</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -49,8 +49,8 @@ describe('list_archives', () => {
 
     result.should.eql([
       '<ul class="archive-list">',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/">2014</a><span class="archive-list-count">1</span></li>',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/">2013</a><span class="archive-list-count">3</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/index.html">2014</a><span class="archive-list-count">1</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/index.html">2013</a><span class="archive-list-count">3</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -62,9 +62,9 @@ describe('list_archives', () => {
 
     result.should.eql([
       '<ul class="archive-list">',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">2014/2</a><span class="archive-list-count">1</span></li>',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">2013/10</a><span class="archive-list-count">1</span></li>',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">2013/6</a><span class="archive-list-count">2</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/index.html">2014/2</a><span class="archive-list-count">1</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/index.html">2013/10</a><span class="archive-list-count">1</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/index.html">2013/6</a><span class="archive-list-count">2</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -75,9 +75,9 @@ describe('list_archives', () => {
     });
 
     result.should.eql([
-      '<a class="archive-link" href="/archives/2014/02/">February 2014<span class="archive-count">1</span></a>',
-      '<a class="archive-link" href="/archives/2013/10/">October 2013<span class="archive-count">1</span></a>',
-      '<a class="archive-link" href="/archives/2013/06/">June 2013<span class="archive-count">2</span></a>'
+      '<a class="archive-link" href="/archives/2014/02/index.html">February 2014<span class="archive-count">1</span></a>',
+      '<a class="archive-link" href="/archives/2013/10/index.html">October 2013<span class="archive-count">1</span></a>',
+      '<a class="archive-link" href="/archives/2013/06/index.html">June 2013<span class="archive-count">2</span></a>'
     ].join(', '));
   });
 
@@ -88,9 +88,9 @@ describe('list_archives', () => {
 
     result.should.eql([
       '<ul class="archive-list">',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a></li>',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a></li>',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/index.html">February 2014</a></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/index.html">October 2013</a></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/index.html">June 2013</a></li>',
       '</ul>'
     ].join(''));
   });
@@ -102,9 +102,9 @@ describe('list_archives', () => {
     });
 
     result.should.eql([
-      '<a class="archive-link" href="/archives/2014/02/">February 2014</a>',
-      '<a class="archive-link" href="/archives/2013/10/">October 2013</a>',
-      '<a class="archive-link" href="/archives/2013/06/">June 2013</a>'
+      '<a class="archive-link" href="/archives/2014/02/index.html">February 2014</a>',
+      '<a class="archive-link" href="/archives/2013/10/index.html">October 2013</a>',
+      '<a class="archive-link" href="/archives/2013/06/index.html">June 2013</a>'
     ].join(', '));
   });
 
@@ -115,9 +115,9 @@ describe('list_archives', () => {
 
     result.should.eql([
       '<ul class="archive-list">',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">June 2013</a><span class="archive-list-count">2</span></li>',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">October 2013</a><span class="archive-list-count">1</span></li>',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">February 2014</a><span class="archive-list-count">1</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/index.html">June 2013</a><span class="archive-list-count">2</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/index.html">October 2013</a><span class="archive-list-count">1</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/index.html">February 2014</a><span class="archive-list-count">1</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -131,9 +131,9 @@ describe('list_archives', () => {
 
     result.should.eql([
       '<ul class="archive-list">',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">FEBRUARY 2014</a><span class="archive-list-count">1</span></li>',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">OCTOBER 2013</a><span class="archive-list-count">1</span></li>',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">JUNE 2013</a><span class="archive-list-count">2</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/index.html">FEBRUARY 2014</a><span class="archive-list-count">1</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/index.html">OCTOBER 2013</a><span class="archive-list-count">1</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/index.html">JUNE 2013</a><span class="archive-list-count">2</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -147,9 +147,9 @@ describe('list_archives', () => {
     });
 
     result.should.eql([
-      '<a class="archive-link" href="/archives/2014/02/">FEBRUARY 2014<span class="archive-count">1</span></a>',
-      '<a class="archive-link" href="/archives/2013/10/">OCTOBER 2013<span class="archive-count">1</span></a>',
-      '<a class="archive-link" href="/archives/2013/06/">JUNE 2013<span class="archive-count">2</span></a>'
+      '<a class="archive-link" href="/archives/2014/02/index.html">FEBRUARY 2014<span class="archive-count">1</span></a>',
+      '<a class="archive-link" href="/archives/2013/10/index.html">OCTOBER 2013<span class="archive-count">1</span></a>',
+      '<a class="archive-link" href="/archives/2013/06/index.html">JUNE 2013<span class="archive-count">2</span></a>'
     ].join(', '));
   });
 
@@ -160,9 +160,9 @@ describe('list_archives', () => {
     });
 
     result.should.eql([
-      '<a class="archive-link" href="/archives/2014/02/">February 2014<span class="archive-count">1</span></a>',
-      '<a class="archive-link" href="/archives/2013/10/">October 2013<span class="archive-count">1</span></a>',
-      '<a class="archive-link" href="/archives/2013/06/">June 2013<span class="archive-count">2</span></a>'
+      '<a class="archive-link" href="/archives/2014/02/index.html">February 2014<span class="archive-count">1</span></a>',
+      '<a class="archive-link" href="/archives/2013/10/index.html">October 2013<span class="archive-count">1</span></a>',
+      '<a class="archive-link" href="/archives/2013/06/index.html">June 2013<span class="archive-count">2</span></a>'
     ].join(''));
   });
 
@@ -173,9 +173,9 @@ describe('list_archives', () => {
 
     result.should.eql([
       '<ul class="test-list">',
-      '<li class="test-list-item"><a class="test-list-link" href="/archives/2014/02/">February 2014</a><span class="test-list-count">1</span></li>',
-      '<li class="test-list-item"><a class="test-list-link" href="/archives/2013/10/">October 2013</a><span class="test-list-count">1</span></li>',
-      '<li class="test-list-item"><a class="test-list-link" href="/archives/2013/06/">June 2013</a><span class="test-list-count">2</span></li>',
+      '<li class="test-list-item"><a class="test-list-link" href="/archives/2014/02/index.html">February 2014</a><span class="test-list-count">1</span></li>',
+      '<li class="test-list-item"><a class="test-list-link" href="/archives/2013/10/index.html">October 2013</a><span class="test-list-count">1</span></li>',
+      '<li class="test-list-item"><a class="test-list-link" href="/archives/2013/06/index.html">June 2013</a><span class="test-list-count">2</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -187,9 +187,9 @@ describe('list_archives', () => {
 
     result.should.eql([
       '<ul class="archive-list">',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">二月 2014</a><span class="archive-list-count">1</span></li>',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">十月 2013</a><span class="archive-list-count">1</span></li>',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">六月 2013</a><span class="archive-list-count">2</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/index.html">二月 2014</a><span class="archive-list-count">1</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/index.html">十月 2013</a><span class="archive-list-count">1</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/index.html">六月 2013</a><span class="archive-list-count">2</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -201,9 +201,9 @@ describe('list_archives', () => {
 
     result.should.eql([
       '<ul class="archive-list">',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">Februar 2014</a><span class="archive-list-count">1</span></li>',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">Oktober 2013</a><span class="archive-list-count">1</span></li>',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">Juni 2013</a><span class="archive-list-count">2</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/index.html">Februar 2014</a><span class="archive-list-count">1</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/index.html">Oktober 2013</a><span class="archive-list-count">1</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/index.html">Juni 2013</a><span class="archive-list-count">2</span></li>',
       '</ul>'
     ].join(''));
   });
@@ -216,9 +216,9 @@ describe('list_archives', () => {
 
     result.should.eql([
       '<ul class="archive-list">',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/">2014 02 +0900</a><span class="archive-list-count">1</span></li>',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/">2013 10 +0900</a><span class="archive-list-count">1</span></li>',
-      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/">2013 06 +0900</a><span class="archive-list-count">2</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2014/02/index.html">2014 02 +0900</a><span class="archive-list-count">1</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/10/index.html">2013 10 +0900</a><span class="archive-list-count">1</span></li>',
+      '<li class="archive-list-item"><a class="archive-list-link" href="/archives/2013/06/index.html">2013 06 +0900</a><span class="archive-list-count">2</span></li>',
       '</ul>'
     ].join(''));
 
