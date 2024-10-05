@@ -37,7 +37,7 @@ interface HexoContext extends Hexo {
 }
 
 interface StoreFunction {
-  (this: HexoContext, ...args: any[]): string;
+  (this: HexoContext, ...args: any[]): any;
 }
 
 interface Store {
