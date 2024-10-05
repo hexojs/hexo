@@ -1,11 +1,18 @@
+import Hexo from '../hexo';
+import { PageSchema } from '../types';
+
+interface HexoContext extends Hexo {
+  // https://github.com/dimaslanjaka/hexo-renderers/blob/147340f6d03a8d3103e9589ddf86778ed7f9019b/src/helper/related-posts.ts#L106-L113
+  page?: PageSchema;
+}
+
 interface StoreFunction {
-  (...args: any[]): string;
+  (this: HexoContext, ...args: any[]): string;
 }
 
 interface Store {
-  [key: string]: StoreFunction
+  [key: string]: StoreFunction;
 }
-
 
 class Helper {
   public store: Store;
