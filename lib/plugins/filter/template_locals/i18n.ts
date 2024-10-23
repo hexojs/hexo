@@ -13,7 +13,7 @@ function i18nLocalsFilter(this: Hexo, locals: LocalsType): void {
 
   if (!lang) {
     const pattern = new Pattern(`${i18nDir}/*path`);
-    const data = pattern.match(locals.path) as any;
+    const data = pattern.match(locals.path);
 
     if (data && 'lang' in data && i18nLanguages.includes(data.lang)) {
       lang = data.lang;
