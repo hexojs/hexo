@@ -1,5 +1,5 @@
 interface StoreFunction {
-  (...args: any[]): string;
+  (...args: any[]): any;
 }
 
 interface Store {
