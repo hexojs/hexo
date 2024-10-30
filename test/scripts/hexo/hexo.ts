@@ -218,8 +218,8 @@ describe('Hexo', () => {
     hexo.extend.filter.unregister('before_generate', validateThemeConfig);
   });
 
-  async function testWatch(path) {
-    const target = join(path, 'test.txt');
+  async function testWatch(path, fileName) {
+    const target = join(path, fileName);
     const body = 'test';
     const newBody = body + body;
 
@@ -227,17 +227,17 @@ describe('Hexo', () => {
 
     await writeFile(target, body);
     await hexo.watch();
-    await checkStream(route.get('test.txt'), body); // Test for first generation
+    await checkStream(route.get(fileName), body); // Test for first generation
     await writeFile(target, newBody); // Update the file
     await Promise.delay(300);
-    await checkStream(route.get('test.txt'), newBody); // Check the new route
+    await checkStream(route.get(fileName), newBody); // Check the new route
     hexo.unwatch(); // Stop watching
     await unlink(target); // Delete the file
   }
 
-  it('watch() - source', async () => await testWatch(hexo.source_dir));
+  it('watch() - source', async () => await testWatch(hexo.source_dir, 'source.test.watch.txt'));
 
-  it('watch() - theme', async () => await testWatch(join(hexo.theme_dir, 'source')));
+  it('watch() - theme', async () => await testWatch(join(hexo.theme_dir, 'source'), 'theme.test.watch.txt'));
 
   it('watch() - merge theme config', () => {
     const theme_config_1 = [
