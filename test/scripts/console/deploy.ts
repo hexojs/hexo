@@ -25,8 +25,7 @@ describe('deploy', () => {
   after(() => rmdir(hexo.base_dir));
 
   it('no deploy config', () => {
-    // @ts-ignore
-    delete hexo.config.deploy;
+    delete(hexo.config as any).deploy;
 
     const logStub = stub(console, 'log');
 

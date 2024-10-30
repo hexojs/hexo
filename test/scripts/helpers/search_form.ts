@@ -52,7 +52,7 @@ describe('search_form', () => {
   });
 
   it('button - ignore incorrect type', () => {
-    // @ts-ignore
+    // @ts-expect-error
     searchForm({button: {}, text: 'Find'}).should.eql('<form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form">'
       + '<input type="search" name="q" class="search-form-input" placeholder="Find">'
       + '<button type="submit" class="search-form-submit">Find</button>'

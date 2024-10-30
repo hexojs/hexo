@@ -1,5 +1,4 @@
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import postGenerator from '../../../lib/plugins/generator/post';
 import { NormalPostGenerator } from '../../../lib/types';
@@ -11,7 +10,7 @@ type PostGeneratorReturn = ReturnType<typeof postGenerator>;
 describe('post', () => {
   const hexo = new Hexo(__dirname, {silent: true});
   const Post = hexo.model('Post');
-  const generator: (...args: PostGeneratorParams) => Promise<PostGeneratorReturn> = Promise.method(postGenerator.bind(hexo));
+  const generator: (...args: PostGeneratorParams) => BluebirdPromise<PostGeneratorReturn> = BluebirdPromise.method(postGenerator.bind(hexo));
 
   hexo.config.permalink = ':title/';
 
@@ -79,6 +78,6 @@ describe('post', () => {
     data[2].data.prev!._id!.should.eq(posts[0]._id);
     should.not.exist(data[2].data.next);
 
-    await Promise.all(posts.map(post => post.remove()));
+    await BluebirdPromise.all(posts.map(post => post.remove()));
   });
 });

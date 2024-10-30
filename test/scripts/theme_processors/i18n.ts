@@ -1,7 +1,6 @@
 import { join } from 'path';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import { i18n } from '../../../lib/theme/processors/i18n';
 import chai from 'chai';
@@ -11,7 +10,7 @@ type I18nReturn = ReturnType<typeof i18n['process']>
 
 describe('i18n', () => {
   const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
-  const process: (...args: I18nParams) => Promise<I18nReturn> = Promise.method(i18n.process.bind(hexo));
+  const process: (...args: I18nParams) => BluebirdPromise<I18nReturn> = BluebirdPromise.method(i18n.process.bind(hexo));
   const themeDir = join(hexo.base_dir, 'themes', 'test');
 
   function newFile(options) {
@@ -26,7 +25,7 @@ describe('i18n', () => {
   }
 
   before(async () => {
-    await Promise.all([
+    await BluebirdPromise.all([
       mkdirs(themeDir),
       writeFile(hexo.config_path, 'theme: test')
     ]);

@@ -5,12 +5,13 @@ import Promise from 'bluebird';
 import Moment from './types/moment';
 import { full_url_for, Cache } from 'hexo-util';
 import type Hexo from '../hexo';
+import type { CategorySchema, PostCategorySchema, PostSchema } from '../types';
 
-function pickID(data) {
+function pickID(data: PostSchema | PostCategorySchema) {
   return data._id;
 }
 
-function removeEmptyTag(tags) {
+function removeEmptyTag(tags: string[]) {
   return tags.filter(tag => tag != null && tag !== '').map(tag => `${tag}`);
 }
 
@@ -44,25 +45,25 @@ export = (ctx: Hexo) => {
     more: {type: String}
   });
 
-  Post.virtual('path').get(function() {
+  Post.virtual('path').get(function(this: PostSchema) {
     const path = ctx.execFilterSync('post_permalink', this, {context: ctx});
     return typeof path === 'string' ? path : '';
   });
 
-  Post.virtual('permalink').get(function() {
+  Post.virtual('permalink').get(function(this: PostSchema) {
     return full_url_for.call(ctx, this.path);
   });
 
-  Post.virtual('full_source').get(function() {
+  Post.virtual('full_source').get(function(this: PostSchema) {
     return join(ctx.source_dir, this.source || '');
   });
 
-  Post.virtual('asset_dir').get(function() {
+  Post.virtual('asset_dir').get(function(this: PostSchema) {
     const src = this.full_source;
     return src.substring(0, src.length - extname(src).length) + sep;
   });
 
-  Post.virtual('tags').get(function() {
+  Post.virtual('tags').get(function(this: PostSchema) {
     return tagsGetterCache.apply(this._id, () => {
       const PostTag = ctx.model('PostTag');
       const Tag = ctx.model('Tag');
@@ -73,12 +74,12 @@ export = (ctx: Hexo) => {
     });
   });
 
-  Post.method('notPublished', function() {
+  Post.method('notPublished', function(this: PostSchema) {
     // The same condition as ctx._bindLocals
-    return (!ctx.config.future && this.date > Date.now()) || (!ctx._showDrafts() && this.published === false);
+    return (!ctx.config.future && this.date.valueOf() > Date.now()) || (!ctx._showDrafts() && this.published === false);
   });
 
-  Post.method('setTags', function(tags) {
+  Post.method('setTags', function(this: PostSchema, tags: string[]) {
     if (this.notPublished()) {
       // Ignore tags of draft posts
       // If the post is unpublished then the tag needs to be removed, thus the function cannot be returned early here
@@ -122,7 +123,7 @@ export = (ctx: Hexo) => {
     }).map(tag => PostTag.removeById(tag));
   });
 
-  Post.virtual('categories').get(function() {
+  Post.virtual('categories').get(function(this: PostSchema) {
     const PostCategory = ctx.model('PostCategory');
     const Category = ctx.model('Category');
 
@@ -131,7 +132,7 @@ export = (ctx: Hexo) => {
     return Category.find({_id: {$in: ids}});
   });
 
-  Post.method('setCategories', function(cats: string[]) {
+  Post.method('setCategories', function(this: PostSchema, cats: (string | string[])[]) {
     if (this.notPublished()) {
       cats = [];
     }
@@ -145,7 +146,7 @@ export = (ctx: Hexo) => {
     const PostCategory = ctx.model('PostCategory');
     const Category = ctx.model('Category');
     const id = this._id;
-    const allIds = [];
+    const allIds: string[] = [];
     const existed = PostCategory.find({post_id: id}, {lean: true}).map(pickID);
     const hasHierarchy = cats.filter(Array.isArray).length > 0;
 
@@ -157,7 +158,7 @@ export = (ctx: Hexo) => {
       // MUST USE "Promise.each".
       return Promise.each(catHierarchy, (cat, i) => {
         // Find the category by name
-        const data = Category.findOne({
+        const data: CategorySchema = Category.findOne({
           name: cat,
           parent: i ? parentIds[i - 1] : {$exists: false}
         }, {lean: true});
@@ -174,14 +175,14 @@ export = (ctx: Hexo) => {
 
         return Category.insert(obj).catch(err => {
           // Try to find the category again. Throw the error if not found
-          const data = Category.findOne({
+          const data: CategorySchema = Category.findOne({
             name: cat,
             parent: i ? parentIds[i - 1] : {$exists: false}
           }, {lean: true});
 
           if (data) return data;
           throw err;
-        }).then(data => {
+        }).then((data: CategorySchema) => {
           allIds.push(data._id);
           parentIds.push(data._id);
           return data;
@@ -189,10 +190,10 @@ export = (ctx: Hexo) => {
       });
     };
 
-    return (hasHierarchy ? Promise.each(cats, addHierarchy) : Promise.resolve(addHierarchy(cats))
+    return (hasHierarchy ? Promise.each(cats, addHierarchy) : Promise.resolve(addHierarchy(cats as string[]))
     ).then(() => allIds).map(catId => {
       // Find the reference
-      const ref = PostCategory.findOne({post_id: id, category_id: catId}, {lean: true});
+      const ref: PostCategorySchema = PostCategory.findOne({post_id: id, category_id: catId}, {lean: true});
       if (ref) return ref;
 
       // Insert the reference if not exist
@@ -200,24 +201,24 @@ export = (ctx: Hexo) => {
         post_id: id,
         category_id: catId
       });
-    }).then(postCats => // Remove old categories
+    }).then((postCats: PostCategorySchema[]) => // Remove old categories
       existed.filter(item => !postCats.map(pickID).includes(item))).map(cat => PostCategory.removeById(cat));
   });
 
   // Remove PostTag references
-  Post.pre('remove', data => {
+  Post.pre('remove', (data: PostSchema) => {
     const PostTag = ctx.model('PostTag');
     return PostTag.remove({post_id: data._id});
   });
 
   // Remove PostCategory references
-  Post.pre('remove', data => {
+  Post.pre('remove', (data: PostSchema) => {
     const PostCategory = ctx.model('PostCategory');
     return PostCategory.remove({post_id: data._id});
   });
 
   // Remove assets
-  Post.pre('remove', data => {
+  Post.pre('remove', (data: PostSchema) => {
     const PostAsset = ctx.model('PostAsset');
     return PostAsset.remove({post: data._id});
   });

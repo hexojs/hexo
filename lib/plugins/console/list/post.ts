@@ -2,15 +2,17 @@ import { gray, magenta, underline } from 'picocolors';
 import table from 'text-table';
 import { stringLength } from './common';
 import type Hexo from '../../../hexo';
+import type { PostSchema } from '../../../types';
+import type Model from 'warehouse/dist/model';
 
 function mapName(item) {
   return item.name;
 }
 
 function listPost(this: Hexo): void {
-  const Post = this.model('Post');
+  const Post: Model<PostSchema> = this.model('Post');
 
-  const data = Post.sort({published: -1, date: 1}).map(post => {
+  const data = Post.sort({published: -1, date: 1}).map((post: PostSchema) => {
     const date = post.published ? post.date.format('YYYY-MM-DD') : 'Draft';
     const tags = post.tags.map(mapName);
     const categories = post.categories.map(mapName);

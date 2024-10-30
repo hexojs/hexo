@@ -1,7 +1,6 @@
 import { mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
 import { join } from 'path';
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import { spy, SinonSpy } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import renderConsole from '../../../lib/plugins/console/render';
@@ -51,7 +50,7 @@ describe('render', () => {
       }
     });
 
-    await Promise.all([
+    await BluebirdPromise.all([
       unlink(src),
       unlink(dest)
     ]);
@@ -72,7 +71,7 @@ describe('render', () => {
       }
     });
 
-    await Promise.all([
+    await BluebirdPromise.all([
       unlink(src),
       unlink(dest)
     ]);
@@ -93,7 +92,7 @@ describe('render', () => {
       }
     });
 
-    await Promise.all([
+    await BluebirdPromise.all([
       unlink(src),
       unlink(dest)
     ]);
@@ -116,7 +115,7 @@ describe('render', () => {
       }
     });
 
-    await Promise.all([
+    await BluebirdPromise.all([
       unlink(src),
       unlink(dest)
     ]);
@@ -137,7 +136,7 @@ describe('render', () => {
       }
     }, null, '  '));
 
-    await Promise.all([
+    await BluebirdPromise.all([
       unlink(src),
       unlink(dest)
     ]);

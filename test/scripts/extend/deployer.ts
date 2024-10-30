@@ -12,11 +12,11 @@ describe('Deployer', () => {
     d.get('test').should.exist;
 
     // no name
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => d.register(), TypeError, 'name is required');
 
     // no fn
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => d.register('test'), TypeError, 'fn must be a function');
   });
 
