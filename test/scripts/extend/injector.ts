@@ -167,6 +167,7 @@ describe('Injector', () => {
     result.should.contain('<body id="body"><!-- hexo injector body_begin start --><!-- hexo injector body_begin end -->');
     result.should.contain('<!-- hexo injector body_end start --><script src="prism.js"></script><!-- hexo injector body_end end --></body>');
   });
+  
 
   it('exec() - multi-line head & body', () => {
     const content = [

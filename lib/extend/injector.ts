@@ -66,14 +66,7 @@ class Injector {
   }
 
   _injector(input: string, pattern: string | RegExp, flag: Entry, isBegin = true, currentType: string): string {
-    if (
-      (flag==='head_begin' && /<head.*?>\s*<!-- hexo injector head_begin start -->/.test(input)) ||
-      (flag==='body_begin' && /<body.*?>\s*<!-- hexo injector body_begin start -->/.test(input)) ||
-      (flag==='head_end' && /<!-- hexo injector head_end end -->\s*<\/head>/.test(input)) ||
-      (flag==='body_end' && /<!-- hexo injector body_end end -->\s*<\/body>/.test(input))
-    ) {
-      return input;
-    }
+    if (input.includes(`<!-- hexo injector ${flag}`)) return input;
 
     const code = this.cache.apply(`${flag}-${currentType}-code`, () => {
       const content = currentType === 'default' ? this.getText(flag, 'default') : this.getText(flag, currentType) + this.getText(flag, 'default');
