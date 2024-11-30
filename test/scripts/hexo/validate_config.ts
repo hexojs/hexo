@@ -54,6 +54,20 @@ describe('Validate config', () => {
     }
   });
 
+
+  it('config.url - not start with xx://', () => {
+    // @ts-ignore
+    hexo.config.url = 'localhost:4000';
+
+    try {
+      validateConfig(hexo);
+      should.fail();
+    } catch (e) {
+      e.name.should.eql('TypeError');
+      e.message.should.eql('Invalid config detected: "url" should be a valid URL!');
+    }
+  });
+
   // #4510
   it('config.url - slash', () => {
     hexo.config.url = '/';
