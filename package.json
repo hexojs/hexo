@@ -14,7 +14,7 @@
     "pretest": "npm run clean && npm run build",
     "test": "mocha test/scripts/**/*.ts --require ts-node/register",
     "test-cov": "c8 --reporter=lcovonly npm test -- --no-parallel",
-    "prepare": "husky install"
+    "prepare": "husky install",
     "build": "hexo generate"
   },
   "files": [
