@@ -15,6 +15,7 @@
     "test": "mocha test/scripts/**/*.ts --require ts-node/register",
     "test-cov": "c8 --reporter=lcovonly npm test -- --no-parallel",
     "prepare": "husky install"
+    "build": "hexo generate"
   },
   "files": [
     "dist/",
