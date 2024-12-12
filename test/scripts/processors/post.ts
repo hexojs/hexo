@@ -1359,4 +1359,42 @@ describe('post', () => {
       PostAsset.removeById(id)
     ]);
   });
+
+  it('post - post_extensions', async () => {
+    function fooRenderer() {
+      return '';
+    }
+
+    hexo.extend.renderer.register('md', 'html', fooRenderer, true);
+    hexo.extend.renderer.register('adoc', 'html', fooRenderer, true);
+    hexo.extend.renderer.register('ejs', 'html', fooRenderer, true);
+
+    hexo.config.post_asset_folder = true;
+    hexo.config.new_post_name = ':title.md';
+
+    hexo.config.post_extensions = null;
+    pattern.match('_posts/foo.md').should.have.property('renderable', true);
+    pattern.match('_posts/foo.adoc').should.have.property('renderable', false);
+    pattern.match('_posts/foo.ejs').should.have.property('renderable', false);
+
+    hexo.config.post_extensions = [];
+    pattern.match('_posts/foo.md').should.have.property('renderable', true);
+    pattern.match('_posts/foo.adoc').should.have.property('renderable', false);
+    pattern.match('_posts/foo.ejs').should.have.property('renderable', false);
+
+    hexo.config.post_extensions = ['adoc'];
+    pattern.match('_posts/foo.md').should.have.property('renderable', false);
+    pattern.match('_posts/foo.adoc').should.have.property('renderable', true);
+    pattern.match('_posts/foo.ejs').should.have.property('renderable', false);
+
+    hexo.config.post_extensions = ['md', 'adoc'];
+    pattern.match('_posts/foo.md').should.have.property('renderable', true);
+    pattern.match('_posts/foo.adoc').should.have.property('renderable', true);
+    pattern.match('_posts/foo.ejs').should.have.property('renderable', false);
+
+    hexo.config.post_extensions = ['md', 'adoc', 'ejs'];
+    pattern.match('_posts/foo.md').should.have.property('renderable', true);
+    pattern.match('_posts/foo.adoc').should.have.property('renderable', true);
+    pattern.match('_posts/foo.ejs').should.have.property('renderable', true);
+  });
 });
