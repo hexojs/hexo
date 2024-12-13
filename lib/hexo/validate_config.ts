@@ -12,6 +12,8 @@ export = (ctx: Hexo): void => {
   try {
     // eslint-disable-next-line no-new
     new URL(config.url);
+    // eslint-disable-next-line no-new
+    new URL('source/_post/xxx', config.url);
   } catch {
     throw new TypeError('Invalid config detected: "url" should be a valid URL!');
   }
