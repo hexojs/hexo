@@ -49,7 +49,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        node-version: ["14.x"]
+        node-version: ["22"]
     steps:
       - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
