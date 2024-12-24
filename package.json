@@ -59,7 +59,7 @@
     "picocolors": "^1.0.0",
     "pretty-hrtime": "^1.0.3",
     "resolve": "^1.22.0",
-    "strip-ansi": "^6.0.0",
+    "strip-ansi": "^7.1.0",
     "text-table": "^0.2.0",
     "tildify": "^2.0.0",
     "titlecase": "^1.1.3",
