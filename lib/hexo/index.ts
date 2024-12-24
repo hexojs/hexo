@@ -41,8 +41,6 @@ import type { AssetGenerator, LocalsType, NodeJSLikeCallback, NormalPageGenerato
 import type { AddSchemaTypeOptions } from 'warehouse/dist/types';
 import type Schema from 'warehouse/dist/schema';
 
-let resolveSync; // = require('resolve');
-
 const libDir = dirname(__dirname);
 const dbVersion = 1;
 
@@ -457,16 +455,9 @@ class Hexo extends EventEmitter {
       // Try to resolve the plugin with the Node.js's built-in require.resolve.
       return require.resolve(name, { paths: [basedir] });
     } catch (err) {
-      try {
-        // There was an error (likely the node_modules is corrupt or from early version of npm)
-        // Use Hexo prior 6.0.0's behavior (resolve.sync) to resolve the plugin.
-        resolveSync = resolveSync || require('resolve').sync;
-        return resolveSync(name, { basedir });
-      } catch (err) {
-        // There was an error (likely the plugin wasn't found), so return a possibly
-        // non-existing path that a later part of the resolution process will check.
-        return join(basedir, 'node_modules', name);
-      }
+      // There was an error (likely the node_modules is corrupt or from early version of npm),
+      // so return a possibly non-existing path that a later part of the resolution process will check.
+      return join(basedir, 'node_modules', name);
     }
   }
 
