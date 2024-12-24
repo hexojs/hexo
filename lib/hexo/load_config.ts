@@ -63,13 +63,12 @@ export = async (ctx: Hexo): Promise<void> => {
   }
   ctx.theme_script_dir = join(ctx.theme_dir, 'scripts') + sep;
   ctx.theme = new Theme(ctx, { ignored });
-
 };
 
 async function findConfigPath(path: string): Promise<string> {
   const { dir, name } = parse(path);
 
   const files = await readdir(dir);
-  const item = files.find(item => item.startsWith(name));
+  const item = files.find(item => item === name + '.json');
   if (item != null) return join(dir, item);
 }
