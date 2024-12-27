@@ -2,7 +2,7 @@ import type { PostGenerator, PostSchema, SiteLocals } from '../../types';
 import type Document from 'warehouse/dist/document';
 
 function postGenerator(locals: SiteLocals): PostGenerator[] {
-  const posts = locals.posts.sort('-date').toArray();
+  const posts = locals.posts.sort('-date');
   const { length } = posts;
 
   return posts.map((post: Document<PostSchema>, i: number) => {
