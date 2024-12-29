@@ -7,6 +7,10 @@ const rTargetAttr = /target=/i;
 const rRelAttr = /rel=/i;
 const rRelStrAttr = /rel=["']([^<>"']*)["']/i;
 
+const addNoopener = (relStr: string, rel: string) => {
+  return rel.includes('noopenner') ? relStr : `rel="${rel} noopener"`;
+};
+
 function externalLinkFilter(this: Hexo, data: string): string {
   if (!EXTERNAL_LINK_SITE_ENABLED) return;
 
@@ -31,9 +35,7 @@ function externalLinkFilter(this: Hexo, data: string): string {
       result += str;
     } else {
       if (rRelAttr.test(str)) {
-        result += str.replace(rRelStrAttr, (relStr, rel) => {
-          return rel.includes('noopenner') ? relStr : `rel="${rel} noopener"`;
-        }).replace('href=', 'target="_blank" href=');
+        result += str.replace(rRelStrAttr, addNoopener).replace('href=', 'target="_blank" href=');
       } else {
         result += str.replace('href=', 'target="_blank" rel="noopener" href=');
       }
