@@ -1,4 +1,4 @@
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import iframe from '../../../lib/plugins/tag/iframe';
 
 describe('iframe', () => {
