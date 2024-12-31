@@ -1,4 +1,4 @@
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import link from '../../../lib/plugins/tag/link';
 
 describe('link', () => {

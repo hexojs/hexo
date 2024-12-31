@@ -1,6 +1,6 @@
 import Hexo from '../../../lib/hexo';
 import decache from 'decache';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import type hexoMetaGeneratorInject from '../../../lib/plugins/filter/after_render/meta_generator';
 import chai from 'chai';
 const should = chai.should();
