@@ -40,7 +40,7 @@ describe('File', () => {
 
   // NOTE: Do not use `arrow function` here.
   //       See https://mochajs.org/#arrow-functions
-  before(async function () {
+  before(async function() {
     this.timeout(20000);
     await Promise.all([
       writeFile(file.source, body),
