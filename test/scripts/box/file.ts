@@ -38,7 +38,10 @@ describe('File', () => {
     params: {foo: 'bar'}
   });
 
-  before(async () => {
+  // NOTE: Do not use `arrow function` here.
+  //       See https://mochajs.org/#arrow-functions
+  before(async function() {
+    this.timeout(20000);
     await Promise.all([
       writeFile(file.source, body),
       hexo.init()
