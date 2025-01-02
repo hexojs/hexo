@@ -1,3 +1,4 @@
+import assert from 'assert';
 import type Hexo from './index';
 
 export = (ctx: Hexo): void => {
@@ -12,6 +13,8 @@ export = (ctx: Hexo): void => {
   try {
     // eslint-disable-next-line no-new
     new URL(config.url);
+    // eslint-disable-next-line no-new
+    assert(new URL(config.url).protocol.startsWith('http'));
   } catch {
     throw new TypeError('Invalid config detected: "url" should be a valid URL!');
   }
