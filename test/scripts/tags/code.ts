@@ -1,5 +1,5 @@
 import { escapeHTML, highlight as utilHighlight, prismHighlight } from 'hexo-util';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import Hexo from '../../../lib/hexo';
 import tagCode from '../../../lib/plugins/tag/code';
 

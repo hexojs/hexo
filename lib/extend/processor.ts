@@ -3,15 +3,15 @@ import { Pattern } from 'hexo-util';
 import type File from '../box/file';
 
 interface StoreFunction {
-  (file: File): any
+  (file: File | string): any;
 }
 
 type Store = {
-    pattern: Pattern;
-    process: StoreFunction
-  }[];
+  pattern: Pattern;
+  process: StoreFunction;
+}[];
 
-type patternType = Exclude<ConstructorParameters<typeof Pattern>[0], ((str: string) => string)>;
+type patternType = Exclude<ConstructorParameters<typeof Pattern>[0], (str: string) => string>;
 class Processor {
   public store: Store;
 
