@@ -11,6 +11,8 @@ describe('Post', () => {
   const Post = hexo.model('Post');
   const Tag = hexo.model('Tag');
   const Category = hexo.model('Category');
+  const ReadOnlyPostTag = hexo._binaryRelationIndex.post_tag;
+  const ReadOnlyPostCategory = hexo._binaryRelationIndex.post_category;
   const PostTag = hexo.model('PostTag');
   const PostCategory = hexo.model('PostCategory');
   const Asset = hexo.model('Asset');
@@ -427,6 +429,7 @@ describe('Post', () => {
   }).then(post => post.setTags(['foo', 'bar', 'baz'])
     .thenReturn(Post.findById(post._id))).then(post => Post.removeById(post._id)).then(post => {
     PostTag.find({post_id: post._id}).should.have.lengthOf(0);
+    ReadOnlyPostTag.find({post_id: post._id}).should.have.lengthOf(0);
     Tag.findOne({name: 'foo'}).posts.should.have.lengthOf(0);
     Tag.findOne({name: 'bar'}).posts.should.have.lengthOf(0);
     Tag.findOne({name: 'baz'}).posts.should.have.lengthOf(0);
@@ -438,6 +441,7 @@ describe('Post', () => {
   }).then(post => post.setCategories(['foo', 'bar', 'baz'])
     .thenReturn(Post.findById(post._id))).then(post => Post.removeById(post._id)).then(post => {
     PostCategory.find({post_id: post._id}).should.have.lengthOf(0);
+    ReadOnlyPostCategory.find({post_id: post._id}).should.have.lengthOf(0);
     Category.findOne({name: 'foo'}).posts.should.have.lengthOf(0);
     Category.findOne({name: 'bar'}).posts.should.have.lengthOf(0);
     Category.findOne({name: 'baz'}).posts.should.have.lengthOf(0);

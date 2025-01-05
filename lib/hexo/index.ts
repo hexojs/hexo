@@ -40,6 +40,7 @@ import type Box from '../box';
 import type { AssetGenerator, LocalsType, NodeJSLikeCallback, NormalPageGenerator, NormalPostGenerator, PageGenerator, PostGenerator, SiteLocals } from '../types';
 import type { AddSchemaTypeOptions } from 'warehouse/dist/types';
 import type Schema from 'warehouse/dist/schema';
+import BinaryRelationIndex from '../models/binary_relation_index';
 
 const libDir = dirname(__dirname);
 const dbVersion = 1;
@@ -276,6 +277,10 @@ class Hexo extends EventEmitter {
   static lib_dir: string;
   static core_dir: string;
   static version: string;
+  public _binaryRelationIndex: {
+    post_tag: BinaryRelationIndex<'post_id', 'tag_id'>;
+    post_category: BinaryRelationIndex<'post_id', 'category_id'>;
+  };
 
   constructor(base = process.cwd(), args: Args = {}) {
     super();
@@ -354,6 +359,10 @@ class Hexo extends EventEmitter {
     this.theme = new Theme(this);
     this.locals = new Locals();
     this._bindLocals();
+    this._binaryRelationIndex = {
+      post_tag: new BinaryRelationIndex<'post_id', 'tag_id'>('post_id', 'tag_id', 'PostTag', this),
+      post_category: new BinaryRelationIndex<'post_id', 'category_id'>('post_id', 'category_id', 'PostCategory', this)
+    };
   }
 
   _bindLocals(): void {
