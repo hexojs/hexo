@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { isTmpFile, isHiddenFile, ignoreTmpAndHiddenFile as pattern, toDate, timezone, isMatch } from '../../../lib/plugins/processor/common';
+import { isTmpFile, isHiddenFile, toDate, timezone, isMatch } from '../../../lib/plugins/processor/common';
 import chai from 'chai';
 const should = chai.should();
 
@@ -16,16 +16,6 @@ describe('common', () => {
     isHiddenFile('foo/_bar').should.be.true;
     isHiddenFile('.foo').should.be.true;
     isHiddenFile('foo/.bar').should.be.true;
-  });
-
-  it('ignoreTmpAndHiddenFile()', () => {
-    pattern.match('foo').should.be.true;
-    pattern.match('foo%').should.be.false;
-    pattern.match('foo~').should.be.false;
-    pattern.match('_foo').should.be.false;
-    pattern.match('foo/_bar').should.be.false;
-    pattern.match('.foo').should.be.false;
-    pattern.match('foo/.bar').should.be.false;
   });
 
   it('toDate()', () => {

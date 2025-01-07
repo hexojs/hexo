@@ -14,7 +14,7 @@
     "pretest": "npm run clean && npm run build",
     "test": "mocha test/scripts/**/*.ts --require ts-node/register",
     "test-cov": "c8 --reporter=lcovonly npm test -- --no-parallel",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "files": [
     "dist/",
@@ -77,13 +77,13 @@
     "0x": "^5.1.2",
     "c8": "^9.0.0",
     "chai": "^4.3.6",
-    "cheerio": "0.22.0",
+    "cheerio": "1.0.0",
     "decache": "^4.6.1",
     "eslint": "^8.48.0",
     "eslint-config-hexo": "^5.0.0",
     "hexo-renderer-marked": "^6.0.0",
-    "husky": "^8.0.1",
-    "lint-staged": "^15.2.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.3.0",
     "mocha": "^10.0.0",
     "sinon": "^17.0.1",
     "ts-node": "^10.9.1",
