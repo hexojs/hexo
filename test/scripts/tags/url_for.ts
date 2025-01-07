@@ -1,4 +1,4 @@
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import tagUrlFor from '../../../lib/plugins/tag/url_for';
 
 describe('url_for', () => {

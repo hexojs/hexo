@@ -1,4 +1,4 @@
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import pathFn from 'path';
 import Hexo from '../../../lib/hexo';
 import tagImg from '../../../lib/plugins/tag/img';
