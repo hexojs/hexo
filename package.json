@@ -11,7 +11,6 @@
     "build": "tsc -b",
     "clean": "tsc -b --clean",
     "eslint": "eslint lib test",
-    "pretest": "npm run clean && npm run build",
     "test": "mocha test/scripts/**/*.ts --require ts-node/register",
     "test-cov": "c8 --reporter=lcovonly npm test -- --no-parallel",
     "prepare": "husky"
