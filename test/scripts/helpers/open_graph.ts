@@ -1,5 +1,5 @@
 import moment from 'moment';
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import { encodeURL, htmlTag as tag } from 'hexo-util';
 import defaultConfig from '../../../lib/hexo/default_config';
 import Hexo from '../../../lib/hexo';

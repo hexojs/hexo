@@ -1,4 +1,4 @@
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import Hexo from '../../../lib/hexo';
 import jsHelper from '../../../lib/plugins/helper/js';
 type JsHelperParams = Parameters<typeof jsHelper>;

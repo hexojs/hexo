@@ -70,7 +70,7 @@ class Injector {
   }
 
   _injector(input: string, pattern: string | RegExp, flag: Entry, isBegin = true, currentType: string): string {
-    if (input.includes(`hexo injector ${flag}`)) return input;
+    if (input.includes(`<!-- hexo injector ${flag}`)) return input;
 
     const code = this.cache.apply(`${flag}-${currentType}-code`, () => {
       const content = currentType === 'default' ? this.getText(flag, 'default') : this.getText(flag, currentType) + this.getText(flag, 'default');
