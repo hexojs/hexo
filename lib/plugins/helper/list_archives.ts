@@ -79,7 +79,7 @@ function listArchivesHelper(this: LocalsType, options: Options = {}) {
       url += `${item.month}/`;
     }
 
-    return url_for.call(this, url);
+    return url_for.call(this, url + 'index.html');
   };
 
   if (style === 'list') {
