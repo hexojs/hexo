@@ -29,7 +29,7 @@ describe('Generator', () => {
       return [];
     });
 
-    const result = await g.get('test')({});
+    const result = await g.get('test')({} as any);
     result.should.eql('foo');
   });
 

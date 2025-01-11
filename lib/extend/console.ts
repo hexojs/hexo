@@ -1,6 +1,7 @@
 import Promise from 'bluebird';
 import abbrev from 'abbrev';
 import type { NodeJSLikeCallback } from '../types';
+import type Hexo from '../hexo';
 
 type Option = Partial<{
   usage: string;
@@ -20,9 +21,9 @@ interface Args {
   _: string[];
   [key: string]: string | boolean | string[];
 }
-type AnyFn = (args: Args, callback?: NodeJSLikeCallback<any>) => any;
+type AnyFn = (this: Hexo, args: Args, callback?: NodeJSLikeCallback<any>) => any;
 interface StoreFunction {
-  (args: Args): Promise<any>;
+  (this: Hexo, args: Args): Promise<any>;
   desc?: string;
   options?: Option;
 }

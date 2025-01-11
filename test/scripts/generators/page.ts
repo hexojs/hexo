@@ -1,8 +1,8 @@
 import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import pageGenerator from '../../../lib/plugins/generator/page';
-import { NormalPostGenerator } from '../../../lib/types';
 import chai from 'chai';
+import { BasicGeneratorReturn } from '../../../lib/types';
 const should = chai.should();
 type PageGeneratorParams = Parameters<typeof pageGenerator>;
 type PageGeneratorReturn = ReturnType<typeof pageGenerator>;
@@ -42,8 +42,8 @@ describe('page', () => {
       path: 'bar',
       layout: 'photo'
     });
-    const data = await generator(locals()) as NormalPostGenerator[];
-    data[0].layout.should.eql(['photo', 'page', 'post', 'index']);
+    const data = await generator(locals()) as BasicGeneratorReturn[];
+    data[0].layout!.should.eql(['photo', 'page', 'post', 'index']);
 
     page.remove();
   });
@@ -55,7 +55,7 @@ describe('page', () => {
         path: 'bar',
         layout
       });
-      const data = await generator(locals()) as NormalPostGenerator[];
+      const data = await generator(locals()) as BasicGeneratorReturn[];
       should.not.exist(data[0].layout);
 
       page.remove();

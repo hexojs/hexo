@@ -1,5 +1,6 @@
 import moment from 'moment';
 import type default_config from './hexo/default_config';
+import type i18n from 'hexo-i18n';
 import type Query from 'warehouse/dist/query';
 import type css from './plugins/helper/css';
 import type { date, date_xml, time, full_date, relative_date, time_tag, moment as _moment } from './plugins/helper/date';
@@ -30,8 +31,6 @@ import type search_form from './plugins/helper/search_form';
 import type tag_cloud from './plugins/helper/tagcloud';
 import type toc from './plugins/helper/toc';
 import type url_for from './plugins/helper/url_for';
-import type Model from 'warehouse/dist/model';
-import type Document from 'warehouse/dist/document';
 
 export type NodeJSLikeCallback<R, E = any> = (err: E, result?: R) => void
 
@@ -178,6 +177,7 @@ export interface CacheSchema {
 }
 
 export interface LocalsType {
+  // original properties from Locals class
   page: PostSchema | PageSchema;
   path: string;
   url: string;
@@ -188,6 +188,11 @@ export interface LocalsType {
   view_dir: string;
   site: any;
   cache?: boolean;
+
+  // i18n properties from i18nLocalsFilter
+  __: ReturnType<i18n['__']>;
+  _p: ReturnType<i18n['_p']>;
+
   body?: string;
   filename?: string;
   css: typeof css;
@@ -242,46 +247,37 @@ export interface LocalsType {
   truncate: typeof truncate;
   url_for: typeof url_for;
   word_wrap: typeof word_wrap;
-  __?: (key: string) => string;
-  _p?: (key: string, options?: any) => string;
 }
 
 // Generator return types
-export interface AssetGenerator {
-  path: string;
-  data: {
-    modified: boolean;
-    data?: () => any;
-  }
-}
+export interface BasicGeneratorReturn {
 
-export type SimplePostGenerator = {
+  /**
+   * Path not including the prefixing `/`.
+   */
   path: string;
-  data: string;
-}
-export type NormalPostGenerator = {
-  path: string;
-  layout: string[];
-  data: PostSchema | Document<PostSchema>;
-}
-export type PostGenerator = SimplePostGenerator | NormalPostGenerator;
 
+  /**
+   * Data
+   */
+  data?: any;
 
-export type SimplePageGenerator = {
-  path: string;
-  data: string;
+  /**
+   * Layout. Specify the layouts for rendering. The value can be a string or an array.
+   * If it’s ignored then the route will return `data` directly.
+   */
+  layout?: string | string[];
 }
-export type NormalPageGenerator = {
-  path: string;
-  layout: string[];
-  data: PageSchema;
-}
-export type PageGenerator = SimplePageGenerator | NormalPageGenerator;
 
 export interface SiteLocals {
   posts: Query<PostSchema>; // _Query
   pages: Query<PageSchema>; // _Query
-  categories: Model<CategorySchema>; // _Model
-  tags: Model<TagSchema>; // _Model
+  categories: Query<CategorySchema>; // _Query
+  tags: Query<TagSchema>; // _Query
   data: any;
+}
+
+export interface FilterOptions {
+  context?: any;
+  args?: any[];
 }

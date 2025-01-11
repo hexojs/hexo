@@ -1,4 +1,11 @@
-import type { PageGenerator, PageSchema, SiteLocals } from '../../types';
+import type { BasicGeneratorReturn, PageSchema, SiteLocals } from '../../types';
+
+type SimplePageGenerator = Omit<BasicGeneratorReturn, 'layout'> & { data: string };
+interface NormalPageGenerator extends BasicGeneratorReturn {
+  layout: string[];
+  data: PageSchema;
+}
+type PageGenerator = SimplePageGenerator | NormalPageGenerator;
 
 function pageGenerator(locals: SiteLocals): PageGenerator[] {
   return locals.pages.map((page: PageSchema) => {

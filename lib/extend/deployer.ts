@@ -1,8 +1,9 @@
 import Promise from 'bluebird';
 import type { NodeJSLikeCallback } from '../types';
+import type Hexo from '../hexo';
 
 interface StoreFunction {
-  (deployArg: { type: string; [key: string]: any }): Promise<any>;
+  (this: Hexo, deployArg: { type: string; [key: string]: any }): Promise<any>;
 }
 interface Store {
   [key: string]: StoreFunction;
@@ -29,6 +30,7 @@ class Deployer {
   register(
     name: string,
     fn: (
+      this: Hexo,
       deployArg: {
         type: string;
         [key: string]: any;

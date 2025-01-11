@@ -3,6 +3,7 @@ import chai from 'chai';
 const should = chai.should();
 
 describe('Migrator', () => {
+  const ctx = {};
   it('register()', () => {
     const d = new Migrator();
 
@@ -28,7 +29,7 @@ describe('Migrator', () => {
       callback && callback(null, 'foo');
     });
 
-    d.get('test')({
+    d.get('test').call(ctx, {
       foo: 'bar'
     }).then(result => {
       result.should.eql('foo');
@@ -43,7 +44,7 @@ describe('Migrator', () => {
       return 'foo';
     });
 
-    const result = await d.get('test')({
+    const result = await d.get('test').call(ctx, {
       foo: 'bar'
     });
 

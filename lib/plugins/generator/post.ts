@@ -1,5 +1,12 @@
-import type { PostGenerator, PostSchema, SiteLocals } from '../../types';
+import type { BasicGeneratorReturn, PostSchema, SiteLocals } from '../../types';
 import type Document from 'warehouse/dist/document';
+
+type SimplePostGenerator = Omit<BasicGeneratorReturn, 'layout'> & { data: string };
+interface NormalPostGenerator extends BasicGeneratorReturn {
+  data: PostSchema | Document<PostSchema>;
+  layout: string[];
+}
+type PostGenerator = SimplePostGenerator | NormalPostGenerator;
 
 function postGenerator(locals: SiteLocals): PostGenerator[] {
   const posts = locals.posts.sort('-date').toArray();

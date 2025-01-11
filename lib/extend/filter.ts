@@ -1,16 +1,11 @@
 import Promise from 'bluebird';
+import { FilterOptions } from '../types';
 
 const typeAlias = {
   pre: 'before_post_render',
   post: 'after_post_render',
   'after_render:html': '_after_html_render'
 };
-
-interface FilterOptions {
-  context?: any;
-  args?: any[];
-}
-
 
 interface StoreFunction {
   (data?: any, ...args: any[]): any;

@@ -1,10 +1,11 @@
 import { Cache } from 'hexo-util';
+import { LocalsType, PageSchema, PostSchema } from '../types';
 
 type Entry = 'head_begin' | 'head_end' | 'body_begin' | 'body_end';
 
 type Store = {
   [key in Entry]: {
-    [key: string]: Set<unknown>;
+    [key: string]: Set<string>;
   };
 };
 
@@ -14,7 +15,7 @@ type Store = {
  */
 class Injector {
   public store: Store;
-  public cache: any;
+  public cache: InstanceType<typeof Cache>;
   public page: any;
 
   constructor() {
@@ -42,8 +43,8 @@ class Injector {
     return arr.join('');
   }
 
-  getSize(entry: Entry) {
-    return this.cache.apply(`${entry}-size`, Object.keys(this.store[entry]).length);
+  getSize(entry: Entry): number {
+    return this.cache.apply(`${entry}-size`, Object.keys(this.store[entry]).length) as number;
   }
 
   register(entry: Entry, value: string | (() => string), to = 'default'): void {
@@ -77,7 +78,7 @@ class Injector {
 
       if (!content.length) return '';
       return '<!-- hexo injector ' + flag + ' start -->' + content + '<!-- hexo injector ' + flag + ' end -->';
-    });
+    }) as string;
 
     // avoid unnecessary replace() for better performance
     if (!code.length) return input;

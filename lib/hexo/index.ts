@@ -37,7 +37,7 @@ import loadDatabase from './load_database';
 import multiConfigPath from './multi_config_path';
 import { deepMerge, full_url_for } from 'hexo-util';
 import type Box from '../box';
-import type { AssetGenerator, LocalsType, NodeJSLikeCallback, NormalPageGenerator, NormalPostGenerator, PageGenerator, PostGenerator, SiteLocals } from '../types';
+import type { BasicGeneratorReturn, FilterOptions, LocalsType, NodeJSLikeCallback, SiteLocals } from '../types';
 import type { AddSchemaTypeOptions } from 'warehouse/dist/types';
 import type Schema from 'warehouse/dist/schema';
 
@@ -60,11 +60,11 @@ const mergeCtxThemeConfig = (ctx: Hexo) => {
 };
 
 // eslint-disable-next-line no-use-before-define
-const createLoadThemeRoute = function(generatorResult: NormalPageGenerator | NormalPostGenerator, locals: LocalsType, ctx: Hexo) {
+const createLoadThemeRoute = function(generatorResult: BasicGeneratorReturn, locals: LocalsType, ctx: Hexo) {
   const { log, theme } = ctx;
   const { path, cache: useCache } = locals;
 
-  const layout: string[] = [...new Set(castArray(generatorResult.layout))];
+  const layout = [...new Set<string>(castArray(generatorResult.layout))];
   const layoutLength = layout.length;
 
   // always use cache in fragment_cache
@@ -606,7 +606,7 @@ class Hexo extends EventEmitter {
     const localsObj = this.locals.toObject() as SiteLocals;
 
     class Locals {
-      page: NormalPageGenerator | NormalPostGenerator;
+      page: any;
       path: string;
       url: string;
       config: any;
@@ -617,7 +617,7 @@ class Hexo extends EventEmitter {
       site: SiteLocals;
       cache?: boolean;
 
-      constructor(path: string, locals: NormalPageGenerator | NormalPostGenerator) {
+      constructor(path: string, locals: any) {
         this.page = { ...locals };
         if (this.page.path == null) this.page.path = path;
         this.path = path;
@@ -634,7 +634,7 @@ class Hexo extends EventEmitter {
     return Locals;
   }
 
-  _runGenerators(): Promise<(AssetGenerator | PostGenerator | PageGenerator)[]> {
+  _runGenerators(): Promise<BasicGeneratorReturn[]> {
     this.locals.invalidate();
     const siteLocals = this.locals.toObject() as SiteLocals;
     const generators = this.extend.generator.list();
@@ -651,19 +651,17 @@ class Hexo extends EventEmitter {
     }, []);
   }
 
-  _routerRefresh(runningGenerators: Promise<(AssetGenerator | PostGenerator | PageGenerator)[]>, useCache: boolean): Promise<void> {
+  _routerRefresh(runningGenerators: Promise<BasicGeneratorReturn[]>, useCache: boolean): Promise<void> {
     const { route } = this;
     const routeList = route.list();
     const Locals = this._generateLocals();
     Locals.prototype.cache = useCache;
 
-    return runningGenerators.map((generatorResult: AssetGenerator | PostGenerator | PageGenerator) => {
+    return runningGenerators.map(generatorResult => {
       if (typeof generatorResult !== 'object' || generatorResult.path == null) return undefined;
 
       // add Route
       const path = route.format(generatorResult.path);
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
       const { data, layout } = generatorResult;
 
       if (!layout) {
@@ -671,8 +669,8 @@ class Hexo extends EventEmitter {
         return path;
       }
 
-      return this.execFilter('template_locals', new Locals(path, data as unknown as NormalPageGenerator | NormalPostGenerator), { context: this })
-        .then(locals => { route.set(path, createLoadThemeRoute(generatorResult as NormalPageGenerator | NormalPostGenerator, locals, this)); })
+      return this.execFilter('template_locals', new Locals(path, data), { context: this })
+        .then((locals: LocalsType) => { route.set(path, createLoadThemeRoute(generatorResult, locals, this)); })
         .thenReturn(path);
     }).then(newRouteList => {
       // Remove old routes
@@ -727,11 +725,11 @@ class Hexo extends EventEmitter {
     });
   }
 
-  execFilter(type: string, data: any, options?) {
+  execFilter(type: string, data: any, options?: FilterOptions) {
     return this.extend.filter.exec(type, data, options);
   }
 
-  execFilterSync(type: string, data: any, options?) {
+  execFilterSync(type: string, data: any, options?: FilterOptions) {
     return this.extend.filter.execSync(type, data, options);
   }
 }

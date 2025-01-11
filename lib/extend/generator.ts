@@ -1,22 +1,17 @@
 import Promise from 'bluebird';
-import type { NodeJSLikeCallback } from '../types';
+import type { BasicGeneratorReturn, NodeJSLikeCallback, SiteLocals } from '../types';
 
-interface BaseObj {
-  path: string;
-  data?: any;
-  layout?: string | string[];
-}
-type ReturnType = BaseObj | BaseObj[];
+type ReturnType = BasicGeneratorReturn | BasicGeneratorReturn[];
 type GeneratorReturnType = ReturnType | Promise<ReturnType>;
 
 interface GeneratorFunction {
-  (locals: any, callback?: NodeJSLikeCallback<any>): GeneratorReturnType;
+  (locals: SiteLocals, callback?: NodeJSLikeCallback<any>): GeneratorReturnType;
 }
 
 type StoreFunctionReturn = Promise<ReturnType>;
 
 interface StoreFunction {
-  (locals: any): StoreFunctionReturn;
+  (locals: SiteLocals): StoreFunctionReturn;
 }
 
 interface Store {

@@ -3,6 +3,7 @@ import chai from 'chai';
 const should = chai.should();
 
 describe('Console', () => {
+  const ctx = {};
   it('register()', () => {
     const c = new Console();
 
@@ -69,7 +70,7 @@ describe('Console', () => {
       callback && callback(null, 'foo');
     });
 
-    c.get('test')({
+    c.get('test').call(ctx, {
       _: [],
       foo: 'bar'
     }).then(result => {

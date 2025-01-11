@@ -1,7 +1,7 @@
 import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import postGenerator from '../../../lib/plugins/generator/post';
-import { NormalPostGenerator } from '../../../lib/types';
+import { BasicGeneratorReturn } from '../../../lib/types';
 import chai from 'chai';
 const should = chai.should();
 type PostGeneratorParams = Parameters<typeof postGenerator>;
@@ -46,8 +46,8 @@ describe('post', () => {
       slug: 'bar',
       layout: 'photo'
     });
-    const data = await generator(locals()) as NormalPostGenerator[];
-    data[0].layout.should.eql(['photo', 'post', 'page', 'index']);
+    const data = await generator(locals()) as BasicGeneratorReturn[];
+    data[0].layout!.should.eql(['photo', 'post', 'page', 'index']);
 
     post.remove();
   });
@@ -58,7 +58,7 @@ describe('post', () => {
       slug: 'bar',
       layout: false
     });
-    const data = await generator(locals()) as NormalPostGenerator[];
+    const data = await generator(locals()) as BasicGeneratorReturn[];
     should.not.exist(data[0].layout);
 
     post.remove();
@@ -70,7 +70,7 @@ describe('post', () => {
       {source: 'bar', slug: 'bar', date: 1e8 + 1},
       {source: 'baz', slug: 'baz', date: 1e8 - 1}
     ]);
-    const data = await generator(locals()) as NormalPostGenerator[];
+    const data = await generator(locals()) as BasicGeneratorReturn[];
     should.not.exist(data[0].data.prev);
     data[0].data.next!._id!.should.eq(posts[0]._id);
     data[1].data.prev!._id!.should.eq(posts[1]._id);

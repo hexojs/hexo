@@ -1,8 +1,9 @@
 import Promise from 'bluebird';
 import type { NodeJSLikeCallback } from '../types';
+import type Hexo from '../hexo';
 
 interface StoreFunction {
-  (args: any): Promise<any>;
+  (this: Hexo, args: any): Promise<any>;
 }
 
 interface Store {
@@ -27,7 +28,7 @@ class Migrator {
     return this.store[name];
   }
 
-  register(name: string, fn: (args: any, callback?: NodeJSLikeCallback<any>) => any): void {
+  register(name: string, fn: (this: Hexo, args: any, callback?: NodeJSLikeCallback<any>) => any): void {
     if (!name) throw new TypeError('name is required');
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 

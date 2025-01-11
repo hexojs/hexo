@@ -3,6 +3,7 @@ import chai from 'chai';
 const should = chai.should();
 
 describe('Deployer', () => {
+  const ctx = {};
   it('register()', () => {
     const d = new Deployer();
 
@@ -28,7 +29,7 @@ describe('Deployer', () => {
       callback && callback(null, 'foo');
     });
 
-    d.get('test')({
+    d.get('test').call(ctx, {
       type: '',
       foo: 'bar'
     }).then(result => {
@@ -44,7 +45,7 @@ describe('Deployer', () => {
       return 'foo';
     });
 
-    d.get('test')({
+    d.get('test').call(ctx, {
       type: '',
       foo: 'bar'
     }).then(result => {
