@@ -5,7 +5,7 @@ import type Hexo from '../../../hexo';
 import type { PostSchema } from '../../../types';
 import type Model from 'warehouse/dist/model';
 
-function mapName(item) {
+function mapName(item: any): string {
   return item.name;
 }
 

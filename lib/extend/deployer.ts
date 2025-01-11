@@ -2,13 +2,10 @@ import Promise from 'bluebird';
 import type { NodeJSLikeCallback } from '../types';
 
 interface StoreFunction {
-  (deployArg: {
-    type: string;
-    [key: string]: any
-  }, callback?: NodeJSLikeCallback<any>) : any;
+  (deployArg: { type: string; [key: string]: any }): Promise<any>;
 }
 interface Store {
-  [key: string]: StoreFunction
+  [key: string]: StoreFunction;
 }
 
 /**
@@ -29,7 +26,16 @@ class Deployer {
     return this.store[name];
   }
 
-  register(name: string, fn: StoreFunction): void {
+  register(
+    name: string,
+    fn: (
+      deployArg: {
+        type: string;
+        [key: string]: any;
+      },
+      callback?: NodeJSLikeCallback<any>
+    ) => any
+  ): void {
     if (!name) throw new TypeError('name is required');
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 

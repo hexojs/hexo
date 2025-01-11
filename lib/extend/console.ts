@@ -21,7 +21,8 @@ interface Args {
   [key: string]: string | boolean | string[];
 }
 type AnyFn = (args: Args, callback?: NodeJSLikeCallback<any>) => any;
-interface StoreFunction extends AnyFn {
+interface StoreFunction {
+  (args: Args): Promise<any>;
   desc?: string;
   options?: Option;
 }

@@ -10,7 +10,7 @@ export = {
   url: 'http://example.com',
   root: '/',
   permalink: ':year/:month/:day/:title/',
-  permalink_defaults: {},
+  permalink_defaults: {} as Record<string, string>,
   pretty_urls: {
     trailing_index: true,
     trailing_html: true
@@ -62,8 +62,8 @@ export = {
 
   // Category & Tag
   default_category: 'uncategorized',
-  category_map: {},
-  tag_map: {},
+  category_map: {} as Record<string, string>,
+  tag_map: {} as Record<string, string>,
   // Date / Time format
   date_format: 'YYYY-MM-DD',
   time_format: 'HH:mm:ss',
@@ -79,10 +79,10 @@ export = {
     cache: false
   },
   // Deployment
-  deploy: {},
+  deploy: {} as { type: string; [keys: string]: any } | { type: string; [keys: string]: any }[],
 
   // ignore files from processing
-  ignore: [],
+  ignore: [] as string[],
 
   // Category & Tag
   meta_generator: true
