@@ -7,6 +7,7 @@ describe('Tag', () => {
   const Tag = hexo.model('Tag');
   const Post = hexo.model('Post');
   const PostTag = hexo.model('PostTag');
+  const ReadOnlyPostTag = hexo._binaryRelationIndex.post_tag;
 
   before(() => hexo.init());
 
@@ -244,6 +245,7 @@ describe('Tag', () => {
     await Tag.removeById(tag._id!);
 
     PostTag.find({tag_id: tag._id}).should.have.lengthOf(0);
+    ReadOnlyPostTag.find({tag_id: tag._id}).should.have.lengthOf(0);
 
     await Promise.all(posts.map(post => Post.removeById(post._id)));
   });
