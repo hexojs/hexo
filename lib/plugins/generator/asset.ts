@@ -4,12 +4,19 @@ import Promise from 'bluebird';
 import { extname } from 'path';
 import { magenta } from 'picocolors';
 import type Hexo from '../../hexo';
-import type { AssetGenerator, AssetSchema } from '../../types';
+import type { AssetSchema, BaseGeneratorReturn } from '../../types';
 import type Document from 'warehouse/dist/document';
 
-interface Data {
+interface AssetData {
   modified: boolean;
   data?: () => any;
+}
+
+interface AssetGenerator extends BaseGeneratorReturn {
+  data: {
+    modified: boolean;
+    data?: () => any;
+  }
 }
 
 const process = (name: string, ctx: Hexo) => {
@@ -18,7 +25,7 @@ const process = (name: string, ctx: Hexo) => {
   })).map((asset: Document<AssetSchema>) => {
     const { source } = asset;
     let { path } = asset;
-    const data: Data = {
+    const data: AssetData = {
       modified: asset.modified
     };
 

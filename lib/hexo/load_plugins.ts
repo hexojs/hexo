@@ -10,7 +10,7 @@ export = (ctx: Hexo): Promise<void[][]> => {
   return loadModules(ctx).then(() => loadScripts(ctx));
 };
 
-function loadModuleList(ctx: Hexo, basedir: string): Promise<any> {
+function loadModuleList(ctx: Hexo, basedir: string): Promise<Record<string, string>> {
   const packagePath = join(basedir, 'package.json');
 
   // Make sure package.json exists
@@ -25,7 +25,7 @@ function loadModuleList(ctx: Hexo, basedir: string): Promise<any> {
 
       return basedir === ctx.base_dir ? deps.concat(devDeps) : deps;
     });
-  }).filter(name => {
+  }).filter((name: string) => {
     // Ignore plugins whose name is not started with "hexo-"
     if (!/^hexo-|^@[^/]+\/hexo-/.test(name)) return false;
 
@@ -38,12 +38,12 @@ function loadModuleList(ctx: Hexo, basedir: string): Promise<any> {
     // Make sure the plugin exists
     const path = ctx.resolvePlugin(name, basedir);
     return exists(path);
-  }).then(modules => {
+  }).then((modules: string[]) => {
     return Object.fromEntries(modules.map(name => [name, ctx.resolvePlugin(name, basedir)]));
   });
 }
 
-function loadModules(ctx: Hexo) {
+function loadModules(ctx: Hexo): Promise<void[]> {
   return Promise.map([ctx.base_dir, ctx.theme_dir], basedir => loadModuleList(ctx, basedir))
     .then(([hexoModuleList, themeModuleList]) => {
       return Object.entries(Object.assign(themeModuleList, hexoModuleList));
@@ -58,7 +58,7 @@ function loadModules(ctx: Hexo) {
     });
 }
 
-function loadScripts(ctx: Hexo) {
+function loadScripts(ctx: Hexo): Promise<void[][]> {
   const baseDirLength = ctx.base_dir.length;
 
   return Promise.filter([
@@ -77,6 +77,6 @@ function loadScripts(ctx: Hexo) {
   }));
 }
 
-function displayPath(path: string, baseDirLength: number) {
+function displayPath(path: string, baseDirLength: number): string {
   return magenta(path.substring(baseDirLength));
 }

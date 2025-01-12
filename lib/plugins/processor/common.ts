@@ -1,4 +1,3 @@
-import { Pattern } from 'hexo-util';
 import moment from 'moment-timezone';
 import micromatch from 'micromatch';
 
@@ -29,8 +28,8 @@ export {isTmpFile};
 export {isHiddenFile};
 export {isExcludedFile};
 
-export function toDate(date?: string | number | Date | moment.Moment) {
-  if (!date || moment.isMoment(date)) return date;
+export function toDate(date?: string | number | Date | moment.Moment): Date | undefined | moment.Moment {
+  if (!date || moment.isMoment(date)) return date as any;
 
   if (!(date instanceof Date)) {
     date = new Date(date);

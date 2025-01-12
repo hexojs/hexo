@@ -7,17 +7,12 @@ import { i18n } from './processors/i18n';
 import { source } from './processors/source';
 import { view } from './processors/view';
 import type Hexo from '../hexo';
-import type { Pattern } from 'hexo-util';
 
 class Theme extends Box {
   public config: any;
   public views: Record<string, Record<string, View>>;
   public i18n: I18n;
   public View: typeof View;
-  public processors: {
-    pattern: Pattern;
-    process: (...args: any[]) => any;
-  }[];
 
   constructor(ctx: Hexo, options?: any) {
     super(ctx, ctx.theme_dir, options);

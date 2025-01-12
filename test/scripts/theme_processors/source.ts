@@ -1,7 +1,6 @@
 import { join } from 'path';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import { source } from '../../../lib/theme/processors/source';
 import chai from 'chai';
@@ -11,7 +10,7 @@ type SourceReturn = ReturnType<typeof source['process']>
 
 describe('source', () => {
   const hexo = new Hexo(join(__dirname, 'source_test'), {silent: true});
-  const process: (...args: SourceParams) => Promise<SourceReturn> = Promise.method(source.process.bind(hexo));
+  const process: (...args: SourceParams) => BluebirdPromise<SourceReturn> = BluebirdPromise.method(source.process.bind(hexo));
   const themeDir = join(hexo.base_dir, 'themes', 'test');
   const Asset = hexo.model('Asset');
 
@@ -26,7 +25,7 @@ describe('source', () => {
   }
 
   before(async () => {
-    await Promise.all([
+    await BluebirdPromise.all([
       mkdirs(themeDir),
       writeFile(hexo.config_path, 'theme: test')
     ]);
@@ -79,7 +78,7 @@ describe('source', () => {
 
     const id = 'themes/test/' + file.path;
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(file.source, 'test'),
       Asset.insert({
         _id: id,
@@ -92,7 +91,7 @@ describe('source', () => {
 
     asset.modified.should.be.true;
 
-    await Promise.all([
+    await BluebirdPromise.all([
       unlink(file.source),
       Asset.removeById(id)
     ]);
@@ -106,7 +105,7 @@ describe('source', () => {
 
     const id = 'themes/test/' + file.path;
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(file.source, 'test'),
       Asset.insert({
         _id: id,
@@ -118,7 +117,7 @@ describe('source', () => {
     const asset = Asset.findById(id);
 
     asset.modified.should.be.false;
-    await Promise.all([
+    await BluebirdPromise.all([
       unlink(file.source),
       Asset.removeById(id)
     ]);

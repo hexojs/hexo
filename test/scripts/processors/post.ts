@@ -1,8 +1,7 @@
 
 import { join } from 'path';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import defaultConfig from '../../../lib/hexo/default_config';
 import Hexo from '../../../lib/hexo';
 import posts from '../../../lib/plugins/processor/post';
@@ -17,7 +16,7 @@ describe('post', () => {
   const baseDir = join(__dirname, 'post_test');
   const hexo = new Hexo(baseDir);
   const post = posts(hexo);
-  const process: (...args: PostParams) => Promise<PostReturn> = Promise.method(post.process.bind(hexo));
+  const process: (...args: PostParams) => BluebirdPromise<PostReturn> = BluebirdPromise.method(post.process.bind(hexo));
   const { pattern } = post;
   const { source } = hexo;
   const { File } = source;
@@ -149,7 +148,7 @@ describe('post', () => {
     asset.modified.should.be.true;
     asset.renderable.should.be.false;
 
-    await Promise.all([
+    await BluebirdPromise.all([
       Post.removeById(postId),
       unlink(file.source)
     ]);
@@ -184,7 +183,7 @@ describe('post', () => {
     const asset = PostAsset.findById(id);
     asset.modified.should.be.true;
 
-    await Promise.all([
+    await BluebirdPromise.all([
       Post.removeById(postId),
       unlink(file.source)
     ]);
@@ -219,7 +218,7 @@ describe('post', () => {
     const asset = PostAsset.findById(id);
     asset.modified.should.be.false;
 
-    await Promise.all([
+    await BluebirdPromise.all([
       Post.removeById(postId),
       unlink(file.source)
     ]);
@@ -311,7 +310,7 @@ describe('post', () => {
 
     const id = 'source/' + file.path;
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(file.source, 'test'),
       PostAsset.insert({
         _id: id,
@@ -353,7 +352,7 @@ describe('post', () => {
     post.slug.should.eql('foo');
     post.published.should.be.true;
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -382,7 +381,7 @@ describe('post', () => {
     post._id!.should.eql(id);
     post.title.should.eql('New world');
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -468,7 +467,7 @@ describe('post', () => {
     post.slug.should.eql('foo');
     post.date.format('YYYY-MM-DD').should.eql('2006-01-02');
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -496,7 +495,7 @@ describe('post', () => {
     post.slug.should.eql('20060102');
     post.date.format('YYYY-MM-DD').should.eql('2006-01-02');
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -523,7 +522,7 @@ describe('post', () => {
 
     post.lang.should.eql('zh');
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -550,7 +549,7 @@ describe('post', () => {
 
     post.slug.should.eql('foo');
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -576,7 +575,7 @@ describe('post', () => {
 
     post.published.should.be.false;
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -602,7 +601,7 @@ describe('post', () => {
 
     post.published.should.be.false;
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -629,7 +628,7 @@ describe('post', () => {
     post.date.toDate().setMilliseconds(0).should.eql(stats.birthtime.setMilliseconds(0));
     post.updated.toDate().setMilliseconds(0).should.eql(stats.mtime.setMilliseconds(0));
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -659,7 +658,7 @@ describe('post', () => {
     post.updated.toDate().setMilliseconds(0).should.eql(post.date.toDate().setMilliseconds(0));
     post.updated.toDate().setMilliseconds(0).should.not.eql(stats.mtime.setMilliseconds(0));
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -689,7 +688,7 @@ describe('post', () => {
     post.updated.toDate().setMilliseconds(0).should.eql(stats.mtime.setMilliseconds(0));
     post.updated.toDate().setMilliseconds(0).should.not.eql(post.date.toDate().setMilliseconds(0));
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -716,7 +715,7 @@ describe('post', () => {
 
     should.not.exist(post.updated);
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -749,7 +748,7 @@ describe('post', () => {
 
     should.not.exist(post.photo);
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -777,7 +776,7 @@ describe('post', () => {
       'https://hexo.io/foo.jpg'
     ]);
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -799,7 +798,7 @@ describe('post', () => {
 
     post.title.should.eql('');
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -854,7 +853,7 @@ describe('post', () => {
     should.not.exist(post.category);
     post.categories.map(item => item.name).should.eql(['foo', 'bar']);
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -880,7 +879,7 @@ describe('post', () => {
 
     post.categories.map(item => item.name).should.eql(['foo']);
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -908,7 +907,7 @@ describe('post', () => {
 
     post.categories.map(item => item.name).should.eql(['foo', 'bar', 'baz']);
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -937,7 +936,7 @@ describe('post', () => {
     should.not.exist(post.tag);
     post.tags.map(item => item.name).should.have.members(['foo', 'bar']);
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -963,7 +962,7 @@ describe('post', () => {
 
     post.tags.map(item => item.name).should.eql(['foo']);
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -1002,7 +1001,7 @@ describe('post', () => {
       };
     });
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(file.source, body),
       ...assetFiles.map(obj => writeFile(obj.path, obj.contents))
     ]);
@@ -1026,7 +1025,7 @@ describe('post', () => {
 
     post.remove();
 
-    await Promise.all([
+    await BluebirdPromise.all([
       unlink(file.source),
       ...assetFiles.map(obj => unlink(obj.path))
     ]);
@@ -1051,7 +1050,7 @@ describe('post', () => {
     const assetId = 'source/_posts/foo/bar.jpg';
     const assetPath = join(hexo.base_dir, assetId);
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(file.source, body),
       writeFile(assetPath, '')
     ]);
@@ -1071,7 +1070,7 @@ describe('post', () => {
 
     hexo.config.render_drafts = false;
 
-    await Promise.all([
+    await BluebirdPromise.all([
       post.remove(),
       unlink(file.source),
       unlink(assetPath)
@@ -1097,7 +1096,7 @@ describe('post', () => {
     const assetId = 'source/_posts/foo/bar.jpg';
     const assetPath = join(hexo.base_dir, assetId);
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(file.source, body),
       writeFile(assetPath, '')
     ]);
@@ -1115,7 +1114,7 @@ describe('post', () => {
     post.published.should.be.false;
     should.not.exist(PostAsset.findById(assetId));
 
-    await Promise.all([
+    await BluebirdPromise.all([
       post.remove(),
       unlink(file.source),
       unlink(assetPath)
@@ -1135,7 +1134,7 @@ describe('post', () => {
     const assetId = 'source/_posts/foo/bar.jpg';
     const assetPath = join(hexo.base_dir, assetId);
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(file.source, ''),
       writeFile(assetPath, '')
     ]);
@@ -1144,7 +1143,7 @@ describe('post', () => {
     should.not.exist(PostAsset.findById(assetId));
 
     post.remove();
-    await Promise.all([
+    await BluebirdPromise.all([
       unlink(file.source),
       unlink(assetPath)
     ]);
@@ -1172,7 +1171,7 @@ describe('post', () => {
     post.date.format(dateFormat).should.eql('2014-04-24 00:00:00');
     post.updated.format(dateFormat).should.eql('2015-05-05 00:00:00');
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -1201,7 +1200,7 @@ describe('post', () => {
     post.date.toDate().setMilliseconds(0).should.eql(stats.birthtime.setMilliseconds(0));
     post.updated.toDate().setMilliseconds(0).should.eql(stats.mtime.setMilliseconds(0));
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -1282,7 +1281,7 @@ describe('post', () => {
 
     post.__permalink.should.eql('foooo');
 
-    return Promise.all([
+    return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)
     ]);
@@ -1304,7 +1303,7 @@ describe('post', () => {
       type: 'create'
     });
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(file.source, 'test'),
       writeFile(assetFile.source, 'test')
     ]);
@@ -1315,7 +1314,7 @@ describe('post', () => {
 
     hexo.config.post_asset_folder = false;
 
-    return Promise.all([
+    return BluebirdPromise.all([
       unlink(file.source),
       unlink(assetFile.source),
       post.remove(),
@@ -1340,7 +1339,7 @@ describe('post', () => {
       type: 'create'
     });
 
-    await Promise.all([
+    await BluebirdPromise.all([
       writeFile(file.source, 'test'),
       writeFile(assetFile.source, 'test')
     ]);
@@ -1352,7 +1351,7 @@ describe('post', () => {
     hexo.config.post_asset_folder = false;
     hexo.config.skip_render = '' as any;
 
-    return Promise.all([
+    return BluebirdPromise.all([
       unlink(file.source),
       unlink(assetFile.source),
       post.remove(),

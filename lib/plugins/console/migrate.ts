@@ -6,7 +6,7 @@ interface MigrateArgs {
   [key: string]: any
 }
 
-function migrateConsole(this: Hexo, args: MigrateArgs) {
+function migrateConsole(this: Hexo, args: MigrateArgs): Promise<any> {
   // Display help message if user didn't input any arguments
   if (!args._.length) {
     return this.call('help', {_: ['migrate']});

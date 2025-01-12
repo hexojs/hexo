@@ -3,11 +3,12 @@ import chai from 'chai';
 const should = chai.should();
 
 describe('Console', () => {
+  const ctx = {};
   it('register()', () => {
     const c = new Console();
 
     // no name
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => c.register(), TypeError, 'name is required');
 
     // name, fn
@@ -16,18 +17,18 @@ describe('Console', () => {
     c.get('test').should.exist;
 
     // name, not fn
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => c.register('test'), TypeError, 'fn must be a function');
 
     // name, desc, fn
     c.register('test', 'this is a test', () => {});
 
     c.get('test').should.exist;
-    // @ts-ignore
-    c.get('test').desc.should.eql('this is a test');
+
+    c.get('test').desc!.should.eql('this is a test');
 
     // name, desc, not fn
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => c.register('test', 'this is a test'), TypeError, 'fn must be a function');
 
     // name, options, fn
@@ -44,7 +45,7 @@ describe('Console', () => {
     c.get('test').options!.init!.should.be.true;
 
     // name, desc, options, not fn
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => c.register('test', 'this is a test', {init: true}), TypeError, 'fn must be a function');
   });
 
@@ -69,7 +70,7 @@ describe('Console', () => {
       callback && callback(null, 'foo');
     });
 
-    c.get('test')({
+    c.get('test').call(ctx, {
       _: [],
       foo: 'bar'
     }).then(result => {

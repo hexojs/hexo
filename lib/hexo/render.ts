@@ -13,7 +13,7 @@ const getExtname = (str: string): string => {
   return ext.startsWith('.') ? ext.slice(1) : ext;
 };
 
-const toString = (result: any, options: StoreFunctionData) => {
+const toString = (result: any, options: StoreFunctionData): string => {
   if (!Object.prototype.hasOwnProperty.call(options, 'toString') || typeof result === 'string') return result;
 
   if (typeof options.toString === 'function') {

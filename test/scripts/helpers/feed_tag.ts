@@ -39,19 +39,17 @@ describe('feed_tag', () => {
   });
 
   it('invalid input - number', () => {
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => feed(123), 'path must be a string!');
   });
 
   it('invalid input - undefined', () => {
     delete ctx.config.feed;
-    // @ts-ignore
     feed().should.eql('');
   });
 
   it('invalid input - empty', () => {
     ctx.config.feed = {};
-    // @ts-ignore
     feed().should.eql('');
   });
 

@@ -27,7 +27,7 @@ function i18nLocalsFilter(this: Hexo, locals: LocalsType): void {
   page.lang = lang;
   page.canonical_path = page.canonical_path || locals.path;
 
-  const languages = [...new Set([].concat(lang, i18nConfigLanguages, i18nLanguages).filter(Boolean))];
+  const languages = [...new Set<string>([].concat(lang, i18nConfigLanguages, i18nLanguages).filter(Boolean))];
 
   locals.__ = i18n.__(languages);
   locals._p = i18n._p(languages);

@@ -1,6 +1,7 @@
 import tildify from 'tildify';
 import { magenta } from 'picocolors';
 import type Hexo from '../../hexo';
+import type Promise from 'bluebird';
 
 interface PublishArgs {
   _: string[]
@@ -9,7 +10,7 @@ interface PublishArgs {
   [key: string]: any
 }
 
-function publishConsole(this: Hexo, args: PublishArgs) {
+function publishConsole(this: Hexo, args: PublishArgs): Promise<void> {
   // Display help message if user didn't input any arguments
   if (!args._.length) {
     return this.call('help', {_: ['publish']});

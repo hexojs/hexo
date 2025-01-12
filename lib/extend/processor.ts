@@ -12,6 +12,10 @@ type Store = {
 }[];
 
 type patternType = Exclude<ConstructorParameters<typeof Pattern>[0], (str: string) => string>;
+
+/**
+ * A processor is used to process source files in the `source` folder.
+ */
 class Processor {
   public store: Store;
 

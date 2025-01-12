@@ -8,6 +8,7 @@ import { EventEmitter } from 'events';
 import { isMatch, makeRe } from 'micromatch';
 import type Hexo from '../hexo';
 import type { NodeJSLikeCallback } from '../types';
+import type fs from 'fs';
 
 const defaultPattern = new Pattern(() => ({}));
 
@@ -16,20 +17,26 @@ interface Processor {
   process: (file?: File) => any;
 }
 
+interface BoxOptions {
+  persistent: boolean;
+  awaitWriteFinish: { stabilityThreshold: number };
+  ignored: RegExp[];
+  [key: string]: any;
+}
+
 class Box extends EventEmitter {
-  public options: any;
+  public options: BoxOptions;
   public context: Hexo;
   public base: string;
   public processors: Processor[];
-  public _processingFiles: any;
-  public watcher: any;
+  public _processingFiles: Record<string, boolean>;
+  public watcher: Awaited<ReturnType<typeof watch>> | null;
   public Cache: any;
   // TODO: replace runtime class _File
   public File: any;
-  public ignore: any[];
-  public source: any;
+  public ignore: string[];
 
-  constructor(ctx: Hexo, base: string, options?: object) {
+  constructor(ctx: Hexo, base: string, options?: any) {
     super();
 
     this.options = Object.assign({
@@ -50,7 +57,7 @@ class Box extends EventEmitter {
     this.watcher = null;
     this.Cache = ctx.model('Cache');
     this.File = this._createFileClass();
-    let targets = this.options.ignored || [];
+    let targets = this.options.ignored as unknown as string[] || [];
     if (ctx.config.ignore && ctx.config.ignore.length) {
       targets = targets.concat(ctx.config.ignore);
     }
@@ -64,13 +71,13 @@ class Box extends EventEmitter {
     class _File extends File {
       public box: Box;
 
-      render(options?: object) {
+      render(options?: any) {
         return ctx.render.render({
           path: this.source
         }, options);
       }
 
-      renderSync(options?: object) {
+      renderSync(options?: any) {
         return ctx.render.renderSync({
           path: this.source
         }, options);
@@ -83,8 +90,8 @@ class Box extends EventEmitter {
   }
 
   addProcessor(pattern: (...args: any[]) => any): void;
-  addProcessor(pattern: string | RegExp | Pattern | ((...args: any[]) => any), fn: (...args: any[]) => any): void;
-  addProcessor(pattern: string | RegExp | Pattern | ((...args: any[]) => any), fn?: (...args: any[]) => any): void {
+  addProcessor(pattern: string | RegExp | Pattern | ((str: string) => any), fn: (...args: any[]) => any): void;
+  addProcessor(pattern: string | RegExp | Pattern | ((str: string) => any), fn?: (...args: any[]) => any): void {
     if (!fn && typeof pattern === 'function') {
       fn = pattern;
       pattern = defaultPattern;
@@ -99,16 +106,16 @@ class Box extends EventEmitter {
     });
   }
 
-  _readDir(base: string, prefix = ''): BlueBirdPromise<any> {
+  _readDir(base: string, prefix = ''): BlueBirdPromise<string[]> {
     const { context: ctx } = this;
-    const results = [];
+    const results: string[] = [];
     return readDirWalker(ctx, base, results, this.ignore, prefix)
       .return(results)
       .map(path => this._checkFileStatus(path))
       .map(file => this._processFile(file.type, file.path).return(file.path));
   }
 
-  _checkFileStatus(path: string) {
+  _checkFileStatus(path: string): { type: string; path: string } {
     const { Cache, context: ctx } = this;
     const src = join(this.base, path);
 
@@ -122,7 +129,7 @@ class Box extends EventEmitter {
     }));
   }
 
-  process(callback?: NodeJSLikeCallback<any>): BlueBirdPromise<any> {
+  process(callback?: NodeJSLikeCallback<any>): BlueBirdPromise<void | (string | void)[]> {
     const { base, Cache, context: ctx } = this;
 
     return stat(base).then(stats => {
@@ -130,18 +137,18 @@ class Box extends EventEmitter {
 
       // Check existing files in cache
       const relativeBase = escapeBackslash(base.substring(ctx.base_dir.length));
-      const cacheFiles = Cache.filter(item => item._id.startsWith(relativeBase)).map(item => item._id.substring(relativeBase.length));
+      const cacheFiles: string[] = Cache.filter(item => item._id.startsWith(relativeBase)).map(item => item._id.substring(relativeBase.length));
 
       // Handle deleted files
       return this._readDir(base)
-        .then((files: string[]) => cacheFiles.filter((path: string) => !files.includes(path)))
-        .map((path: string) => this._processFile(File.TYPE_DELETE, path) as PromiseLike<any>);
+        .then(files => cacheFiles.filter(path => !files.includes(path)))
+        .map(path => this._processFile(File.TYPE_DELETE, path));
     }).catch(err => {
       if (err && err.code !== 'ENOENT') throw err;
     }).asCallback(callback);
   }
 
-  _processFile(type: string, path: string): BlueBirdPromise<void> | BlueBirdPromise<string> {
+  _processFile(type: string, path: string): BlueBirdPromise<void | string> {
     if (this._processingFiles[path]) {
       return BlueBirdPromise.resolve();
     }
@@ -159,7 +166,7 @@ class Box extends EventEmitter {
       const params = processor.pattern.match(path);
       if (!params) return count;
 
-      const file = new File({
+      const file: File = new File({
         // source is used for filesystem path, keep backslashes on Windows
         source: join(base, path),
         // path is used for URL path, replace backslashes on Windows
@@ -266,30 +273,30 @@ function toRegExp(ctx: Hexo, arg: string): RegExp | null {
   return result;
 }
 
-function isIgnoreMatch(path: string, ignore: string | any[]): boolean {
+function isIgnoreMatch(path: string, ignore: string | string[]): boolean {
   return path && ignore && ignore.length && isMatch(path, ignore);
 }
 
-function readDirWalker(ctx: Hexo, base: string, results: any[], ignore: any, prefix: string): BlueBirdPromise<any> {
+function readDirWalker(ctx: Hexo, base: string, results: string[], ignore: string | string[], prefix: string): BlueBirdPromise<any> {
   if (isIgnoreMatch(base, ignore)) return BlueBirdPromise.resolve();
 
   return BlueBirdPromise.map(readdir(base).catch(err => {
     ctx.log.error({ err }, 'Failed to read directory: %s', base);
     if (err && err.code === 'ENOENT') return [];
     throw err;
-  }), async path => {
-    const fullpath = join(base, path);
-    const stats = await stat(fullpath).catch(err => {
-      ctx.log.error({ err }, 'Failed to stat file: %s', fullpath);
+  }), async (path: string) => {
+    const fullPath = join(base, path);
+    const stats: fs.Stats | null = await stat(fullPath).catch(err => {
+      ctx.log.error({ err }, 'Failed to stat file: %s', fullPath);
       if (err && err.code === 'ENOENT') return null;
       throw err;
     });
     const prefixPath = `${prefix}${path}`;
     if (stats) {
       if (stats.isDirectory()) {
-        return readDirWalker(ctx, fullpath, results, ignore, `${prefixPath}/`);
+        return readDirWalker(ctx, fullPath, results, ignore, `${prefixPath}/`);
       }
-      if (!isIgnoreMatch(fullpath, ignore)) {
+      if (!isIgnoreMatch(fullPath, ignore)) {
         results.push(prefixPath);
       }
     }

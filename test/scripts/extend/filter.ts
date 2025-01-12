@@ -30,7 +30,7 @@ describe('Filter', () => {
     f.list('after_post_render')[1].priority!.should.eql(50);
 
     // no fn
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => f.register(), TypeError, 'fn must be a function');
   });
 
@@ -73,13 +73,13 @@ describe('Filter', () => {
 
   it('unregister() - type is required', () => {
     const f = new Filter();
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => f.unregister(), 'type is required');
   });
 
   it('unregister() - fn must be a function', () => {
     const f = new Filter();
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => f.unregister('test'), 'fn must be a function');
   });
 

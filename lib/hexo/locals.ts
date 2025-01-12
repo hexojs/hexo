@@ -1,15 +1,15 @@
 import { Cache } from 'hexo-util';
 
 class Locals {
-  public cache: any;
-  public getters: any;
+  public cache: InstanceType<typeof Cache>;
+  public getters: Record<string, () => any>;
 
   constructor() {
     this.cache = new Cache();
     this.getters = {};
   }
 
-  get(name: string) {
+  get(name: string): any {
     if (typeof name !== 'string') throw new TypeError('name must be a string!');
 
     return this.cache.apply(name, () => {
@@ -47,7 +47,7 @@ class Locals {
     return this;
   }
 
-  toObject() {
+  toObject(): Record<string, any> {
     const result = {};
     const keys = Object.keys(this.getters);
 

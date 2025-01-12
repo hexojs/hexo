@@ -1,6 +1,7 @@
 import Promise from 'bluebird';
 import abbrev from 'abbrev';
 import type { NodeJSLikeCallback } from '../types';
+import type Hexo from '../hexo';
 
 type Option = Partial<{
   usage: string;
@@ -20,8 +21,9 @@ interface Args {
   _: string[];
   [key: string]: string | boolean | string[];
 }
-type AnyFn = (args: Args, callback?: NodeJSLikeCallback<any>) => any;
-interface StoreFunction extends AnyFn {
+type AnyFn = (this: Hexo, args: Args, callback?: NodeJSLikeCallback<any>) => any;
+interface StoreFunction {
+  (this: Hexo, args: Args): Promise<any>;
   desc?: string;
   options?: Option;
 }
@@ -33,6 +35,9 @@ interface Alias {
   [abbreviation: string]: string
 }
 
+/**
+ * The console forms the bridge between Hexo and its users. It registers and describes the available console commands.
+ */
 class Console {
   public store: Store;
   public alias: Alias;
