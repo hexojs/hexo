@@ -502,6 +502,8 @@ class Hexo extends EventEmitter {
 
   load(callback?: NodeJSLikeCallback<any>): Promise<any> {
     return loadDatabase(this).then(() => {
+      this._binaryRelationIndex.post_tag.load();
+      this._binaryRelationIndex.post_category.load();
       this.log.info('Start processing');
 
       return Promise.all([

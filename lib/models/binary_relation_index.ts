@@ -21,6 +21,15 @@ class BinaryRelationIndex<K extends PropertyKey, V extends PropertyKey> {
     this.ctx = ctx;
   }
 
+  load() {
+    this.keyIndex.clear();
+    this.valueIndex.clear();
+    const raw = this.ctx.model(this.schemaName).data;
+    for (const _id in raw) {
+      this.saveHook(raw[_id]);
+    }
+  }
+
   saveHook(data: BinaryRelationType<K, V> & { _id: PropertyKey }) {
     const _id = data._id;
     const key = data[this.key];
