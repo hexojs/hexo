@@ -62,7 +62,7 @@ describe('Renderer', () => {
     }
 
     renderer.compile = data => {
-      //
+      return () => {};
     };
 
     r.register('swig', 'html', renderer);

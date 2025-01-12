@@ -176,25 +176,100 @@ export interface CacheSchema {
   modified: number;
 }
 
+// Generator return types
+export interface BasicGeneratorReturn {
+
+  /**
+   * Path not including the prefixing `/`.
+   */
+  path: string;
+
+  /**
+   * Data
+   */
+  data?: any;
+
+  /**
+   * Layout. Specify the layouts for rendering. The value can be a string or an array.
+   * If it’s ignored then the route will return `data` directly.
+   */
+  layout?: string | string[];
+}
+
+export interface SiteLocals {
+
+  /**
+   * All posts
+   */
+  posts: Query<PostSchema>;
+
+  /**
+   * 	All pages
+   */
+  pages: Query<PageSchema>;
+
+  /**
+   * All categories
+   */
+  categories: Query<CategorySchema>;
+
+  /**
+   * All tags
+   */
+  tags: Query<TagSchema>;
+  data: any;
+}
+
 export interface LocalsType {
   // original properties from Locals class
-  page: PostSchema | PageSchema;
+  /**
+   * Page specific information and custom variables set in front-matter.
+   */
+  page: any;
+
+  /**
+   * Path of current page
+   */
   path: string;
+
+  /**
+   * Full URL of current page
+   */
   url: string;
+
+  /**
+   * Site configuration.
+   */
   config: typeof default_config;
+
+  /**
+   * 	Theme configuration. Inherits from site configuration.
+   */
   theme: any;
   layout: string | boolean;
+
+  /**
+   * 	Environment variables
+   */
   env: any;
   view_dir: string;
-  site: any;
+
+  /**
+   * Sitewide information.
+   */
+  site: SiteLocals;
   cache?: boolean;
 
   // i18n properties from i18nLocalsFilter
   __: ReturnType<i18n['__']>;
   _p: ReturnType<i18n['_p']>;
 
+  // result after renderer.compile
   body?: string;
+  // from _buildLocals
   filename?: string;
+
+  // helper functions from _bindHelpers
   css: typeof css;
   date: typeof date;
   date_xml: typeof date_xml;
@@ -247,34 +322,6 @@ export interface LocalsType {
   truncate: typeof truncate;
   url_for: typeof url_for;
   word_wrap: typeof word_wrap;
-}
-
-// Generator return types
-export interface BasicGeneratorReturn {
-
-  /**
-   * Path not including the prefixing `/`.
-   */
-  path: string;
-
-  /**
-   * Data
-   */
-  data?: any;
-
-  /**
-   * Layout. Specify the layouts for rendering. The value can be a string or an array.
-   * If it’s ignored then the route will return `data` directly.
-   */
-  layout?: string | string[];
-}
-
-export interface SiteLocals {
-  posts: Query<PostSchema>; // _Query
-  pages: Query<PageSchema>; // _Query
-  categories: Query<CategorySchema>; // _Query
-  tags: Query<TagSchema>; // _Query
-  data: any;
 }
 
 export interface FilterOptions {

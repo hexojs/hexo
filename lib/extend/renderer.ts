@@ -18,29 +18,37 @@ export interface StoreFunctionData {
 }
 
 export interface StoreSyncFunction {
-  [x: string]: any;
   (
     data: StoreFunctionData,
-    options: object,
-    // callback?: NodeJSLikeCallback<string>
+    options?: object
   ): any;
   output?: string;
-  compile?: (local: object) => any;
+  compile?: (data: StoreFunctionData) => (local: any) => any;
+  disableNunjucks?: boolean;
+  [key: string]: any;
 }
+
 export interface StoreFunction {
+  (
+    data: StoreFunctionData,
+    options?: object
+  ): Promise<any>;
+  output?: string;
+  compile?: (data: StoreFunctionData) => (local: any) => any;
+  disableNunjucks?: boolean;
+  [key: string]: any;
+}
+
+interface StoreFunctionWithCallback {
   (
     data: StoreFunctionData,
     options: object,
     callback?: NodeJSLikeCallback<any>
   ): Promise<any>;
-  (
-    data: StoreFunctionData,
-    options: object,
-    callback: NodeJSLikeCallback<string>
-  ): void;
   output?: string;
-  compile?: (local: object) => any;
+  compile?: (data: StoreFunctionData) => (local: any) => any;
   disableNunjucks?: boolean;
+  [key: string]: any;
 }
 
 interface SyncStore {
@@ -85,11 +93,11 @@ class Renderer {
     return renderer ? renderer.output : '';
   }
 
-  register(name: string, output: string, fn: StoreFunction): void;
-  register(name: string, output: string, fn: StoreFunction, sync: false): void;
+  register(name: string, output: string, fn: StoreFunctionWithCallback): void;
+  register(name: string, output: string, fn: StoreFunctionWithCallback, sync: false): void;
   register(name: string, output: string, fn: StoreSyncFunction, sync: true): void;
-  register(name: string, output: string, fn: StoreFunction | StoreSyncFunction, sync: boolean): void;
-  register(name: string, output: string, fn: StoreFunction | StoreSyncFunction, sync?: boolean) {
+  register(name: string, output: string, fn: StoreFunctionWithCallback | StoreSyncFunction, sync: boolean): void;
+  register(name: string, output: string, fn: StoreFunctionWithCallback | StoreSyncFunction, sync?: boolean) {
     if (!name) throw new TypeError('name is required');
     if (!output) throw new TypeError('output is required');
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');

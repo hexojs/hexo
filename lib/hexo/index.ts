@@ -609,10 +609,10 @@ class Hexo extends EventEmitter {
       page: any;
       path: string;
       url: string;
-      config: any;
+      config: Config;
       theme: any;
       layout: string;
-      env: any;
+      env: Env;
       view_dir: string;
       site: SiteLocals;
       cache?: boolean;
