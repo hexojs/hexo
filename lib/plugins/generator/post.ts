@@ -1,8 +1,8 @@
-import type { BasicGeneratorReturn, PostSchema, SiteLocals } from '../../types';
+import type { BaseGeneratorReturn, PostSchema, SiteLocals } from '../../types';
 import type Document from 'warehouse/dist/document';
 
-type SimplePostGenerator = Omit<BasicGeneratorReturn, 'layout'> & { data: string };
-interface NormalPostGenerator extends BasicGeneratorReturn {
+type SimplePostGenerator = Omit<BaseGeneratorReturn, 'layout'> & { data: string };
+interface NormalPostGenerator extends BaseGeneratorReturn {
   data: PostSchema | Document<PostSchema>;
   layout: string[];
 }

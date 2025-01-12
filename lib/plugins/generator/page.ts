@@ -1,7 +1,7 @@
-import type { BasicGeneratorReturn, PageSchema, SiteLocals } from '../../types';
+import type { BaseGeneratorReturn, PageSchema, SiteLocals } from '../../types';
 
-type SimplePageGenerator = Omit<BasicGeneratorReturn, 'layout'> & { data: string };
-interface NormalPageGenerator extends BasicGeneratorReturn {
+type SimplePageGenerator = Omit<BaseGeneratorReturn, 'layout'> & { data: string };
+interface NormalPageGenerator extends BaseGeneratorReturn {
   layout: string[];
   data: PageSchema;
 }

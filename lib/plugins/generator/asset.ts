@@ -4,7 +4,7 @@ import Promise from 'bluebird';
 import { extname } from 'path';
 import { magenta } from 'picocolors';
 import type Hexo from '../../hexo';
-import type { AssetSchema, BasicGeneratorReturn } from '../../types';
+import type { AssetSchema, BaseGeneratorReturn } from '../../types';
 import type Document from 'warehouse/dist/document';
 
 interface AssetData {
@@ -12,7 +12,7 @@ interface AssetData {
   data?: () => any;
 }
 
-interface AssetGenerator extends BasicGeneratorReturn {
+interface AssetGenerator extends BaseGeneratorReturn {
   data: {
     modified: boolean;
     data?: () => any;

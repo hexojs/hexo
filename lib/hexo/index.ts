@@ -37,7 +37,7 @@ import loadDatabase from './load_database';
 import multiConfigPath from './multi_config_path';
 import { deepMerge, full_url_for } from 'hexo-util';
 import type Box from '../box';
-import type { BasicGeneratorReturn, FilterOptions, LocalsType, NodeJSLikeCallback, SiteLocals } from '../types';
+import type { BaseGeneratorReturn, FilterOptions, LocalsType, NodeJSLikeCallback, SiteLocals } from '../types';
 import type { AddSchemaTypeOptions } from 'warehouse/dist/types';
 import type Schema from 'warehouse/dist/schema';
 
@@ -60,7 +60,7 @@ const mergeCtxThemeConfig = (ctx: Hexo) => {
 };
 
 // eslint-disable-next-line no-use-before-define
-const createLoadThemeRoute = function(generatorResult: BasicGeneratorReturn, locals: LocalsType, ctx: Hexo) {
+const createLoadThemeRoute = function(generatorResult: BaseGeneratorReturn, locals: LocalsType, ctx: Hexo) {
   const { log, theme } = ctx;
   const { path, cache: useCache } = locals;
 
@@ -634,7 +634,7 @@ class Hexo extends EventEmitter {
     return Locals;
   }
 
-  _runGenerators(): Promise<BasicGeneratorReturn[]> {
+  _runGenerators(): Promise<BaseGeneratorReturn[]> {
     this.locals.invalidate();
     const siteLocals = this.locals.toObject() as SiteLocals;
     const generators = this.extend.generator.list();
@@ -651,7 +651,7 @@ class Hexo extends EventEmitter {
     }, []);
   }
 
-  _routerRefresh(runningGenerators: Promise<BasicGeneratorReturn[]>, useCache: boolean): Promise<void> {
+  _routerRefresh(runningGenerators: Promise<BaseGeneratorReturn[]>, useCache: boolean): Promise<void> {
     const { route } = this;
     const routeList = route.list();
     const Locals = this._generateLocals();
