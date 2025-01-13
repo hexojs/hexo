@@ -224,7 +224,7 @@ describe('Tag', () => {
     });
   });
 
-  it.only('tag should get right locals', async () => {
+  it('tag should get right locals', async () => {
     let count = 0;
     hexo.extend.filter = new Filter();
     hexo.extend.tag = new Tag();
