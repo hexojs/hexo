@@ -112,7 +112,7 @@ describe('post_permalink', () => {
     postPermalink(posts[0]).should.eql(`${timestamp}/test0`);
     postPermalink(posts[1]).should.eql(`${timestamp}/test1`);
 
-    await Promise.all(
+    return Promise.all(
       posts.map(post => {
         return Post.removeById(post._id);
       })
