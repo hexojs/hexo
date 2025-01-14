@@ -35,6 +35,7 @@ function postPermalinkFilter(this: Hexo, data: PostSchema): string {
     second: date.format('ss'),
     i_month: date.format('M'),
     i_day: date.format('D'),
+    timestamp: date.format('X'),
     hash,
     category: config.default_category
   };
