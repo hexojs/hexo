@@ -29,7 +29,7 @@ export = (ctx: Hexo) => {
     return str;
   });
 
-  Category.virtual('path').get(function(this: CategorySchema) {
+  Category.virtual('path').get(function() {
     let catDir = ctx.config.category_dir;
     if (catDir === '/') catDir = '';
     if (!catDir.endsWith('/')) catDir += '/';
@@ -37,11 +37,11 @@ export = (ctx: Hexo) => {
     return `${catDir + this.slug}/`;
   });
 
-  Category.virtual('permalink').get(function(this: CategorySchema) {
+  Category.virtual('permalink').get(function() {
     return full_url_for.call(ctx, this.path);
   });
 
-  Category.virtual('posts').get(function(this: CategorySchema) {
+  Category.virtual('posts').get(function() {
     const PostCategory = ctx.model('PostCategory');
 
     const ids = PostCategory.find({category_id: this._id}).map(item => item.post_id);
@@ -51,7 +51,7 @@ export = (ctx: Hexo) => {
     });
   });
 
-  Category.virtual('length').get(function(this: CategorySchema) {
+  Category.virtual('length').get(function() {
     const PostCategory = ctx.model('PostCategory');
 
     return PostCategory.find({category_id: this._id}).length;
