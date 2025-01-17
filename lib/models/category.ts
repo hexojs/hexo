@@ -4,12 +4,12 @@ import type Hexo from '../hexo';
 import type { CategorySchema } from '../types';
 
 export = (ctx: Hexo) => {
-  const Category = new warehouse.Schema({
+  const Category = new warehouse.Schema<CategorySchema>({
     name: {type: String, required: true},
     parent: { type: warehouse.Schema.Types.CUID, ref: 'Category'}
   });
 
-  Category.virtual('slug').get(function(this: CategorySchema) {
+  Category.virtual('slug').get(function() {
     let name = this.name;
 
     if (!name) return;

@@ -5,11 +5,11 @@ import type Hexo from '../hexo';
 import type { TagSchema } from '../types';
 
 export = (ctx: Hexo) => {
-  const Tag = new warehouse.Schema({
+  const Tag = new warehouse.Schema<TagSchema>({
     name: {type: String, required: true}
   });
 
-  Tag.virtual('slug').get(function(this: TagSchema) {
+  Tag.virtual('slug').get(function() {
     const map = ctx.config.tag_map || {};
     let name = this.name;
     if (!name) return;
@@ -21,18 +21,18 @@ export = (ctx: Hexo) => {
     return slugize(name, {transform: ctx.config.filename_case});
   });
 
-  Tag.virtual('path').get(function(this: TagSchema) {
+  Tag.virtual('path').get(function() {
     let tagDir = ctx.config.tag_dir;
     if (!tagDir.endsWith('/')) tagDir += '/';
 
     return `${tagDir + this.slug}/`;
   });
 
-  Tag.virtual('permalink').get(function(this: TagSchema) {
+  Tag.virtual('permalink').get(function() {
     return full_url_for.call(ctx, this.path);
   });
 
-  Tag.virtual('posts').get(function(this: TagSchema) {
+  Tag.virtual('posts').get(function() {
     const PostTag = ctx.model('PostTag');
 
     const ids = PostTag.find({tag_id: this._id}).map(item => item.post_id);
@@ -42,7 +42,7 @@ export = (ctx: Hexo) => {
     });
   });
 
-  Tag.virtual('length').get(function(this: TagSchema) {
+  Tag.virtual('length').get(function() {
     // Note: this.posts.length is also working
     // But it's slow because `find` has to iterate over all posts
     const PostTag = ctx.model('PostTag');

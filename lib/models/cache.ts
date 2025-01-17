@@ -2,18 +2,17 @@ import warehouse from 'warehouse';
 import Promise from 'bluebird';
 import type Hexo from '../hexo';
 import type fs from 'fs';
-import type Model from 'warehouse/dist/model';
 import type Document from 'warehouse/dist/document';
 import type { CacheSchema } from '../types';
 
 export = (ctx: Hexo) => {
-  const Cache = new warehouse.Schema({
+  const Cache = new warehouse.Schema<CacheSchema>({
     _id: {type: String, required: true},
     hash: {type: String, default: ''},
     modified: {type: Number, default: Date.now() } // UnixTime
   });
 
-  Cache.static('compareFile', function(this: Model<CacheSchema>, id: string,
+  Cache.static('compareFile', function(id: string,
     hashFn: (id: string) => Promise<string>,
     statFn: (id: string) => Promise<fs.Stats>): Promise<{ type: string }> {
     const cache = this.findById(id) as Document<CacheSchema>;
@@ -45,7 +44,7 @@ export = (ctx: Hexo) => {
 
       // Get file hash
       return hashFn(id);
-    }).then((result: string | object) => {
+    }).then((result: string | { type: string }) => {
       // If the result is an object, skip the following steps because it's an
       // unchanged file
       if (typeof result === 'object') return result;
@@ -64,7 +63,6 @@ export = (ctx: Hexo) => {
       cache.modified = mtime;
 
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
       // waiting warehouse v5.0.2
       return cache.save().thenReturn({
         type: 'update'

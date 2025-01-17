@@ -4,6 +4,7 @@ import { stringLength } from './common';
 import type Hexo from '../../../hexo';
 import type { PostSchema } from '../../../types';
 import type Model from 'warehouse/dist/model';
+import type Document from 'warehouse/dist/document';
 
 function mapName(item: any): string {
   return item.name;
@@ -12,7 +13,7 @@ function mapName(item: any): string {
 function listPost(this: Hexo): void {
   const Post: Model<PostSchema> = this.model('Post');
 
-  const data = Post.sort({published: -1, date: 1}).map((post: PostSchema) => {
+  const data = Post.sort({published: -1, date: 1}).map((post: Document<PostSchema> & PostSchema) => {
     const date = post.published ? post.date.format('YYYY-MM-DD') : 'Draft';
     const tags = post.tags.map(mapName);
     const categories = post.categories.map(mapName);

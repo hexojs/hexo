@@ -1,6 +1,7 @@
 import { url_for } from 'hexo-util';
 import type { CategorySchema, LocalsType } from '../../types';
 import type Query from 'warehouse/dist/query';
+import type Document from 'warehouse/dist/document';
 
 interface Options {
   style?: string | false;
@@ -50,7 +51,7 @@ function listCategoriesHelper(this: LocalsType, categories?: Query<CategorySchem
   const hierarchicalList = (level: number, parent?: any) => {
     let result = '';
 
-    prepareQuery(parent).forEach((cat: CategorySchema) => {
+    prepareQuery(parent).forEach((cat: Document<CategorySchema> & CategorySchema) => {
       let child;
       if (!depth || level + 1 < depth) {
         child = hierarchicalList(level + 1, cat._id);

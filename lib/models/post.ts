@@ -18,7 +18,7 @@ function removeEmptyTag(tags: string[]) {
 const tagsGetterCache = new Cache();
 
 export = (ctx: Hexo) => {
-  const Post = new warehouse.Schema({
+  const Post = new warehouse.Schema<PostSchema>({
     id: String,
     title: {type: String, default: ''},
     date: {
@@ -45,25 +45,25 @@ export = (ctx: Hexo) => {
     more: {type: String}
   });
 
-  Post.virtual('path').get(function(this: PostSchema) {
+  Post.virtual('path').get(function() {
     const path = ctx.execFilterSync('post_permalink', this, {context: ctx});
     return typeof path === 'string' ? path : '';
   });
 
-  Post.virtual('permalink').get(function(this: PostSchema) {
+  Post.virtual('permalink').get(function() {
     return full_url_for.call(ctx, this.path);
   });
 
-  Post.virtual('full_source').get(function(this: PostSchema) {
+  Post.virtual('full_source').get(function() {
     return join(ctx.source_dir, this.source || '');
   });
 
-  Post.virtual('asset_dir').get(function(this: PostSchema) {
+  Post.virtual('asset_dir').get(function() {
     const src = this.full_source;
     return src.substring(0, src.length - extname(src).length) + sep;
   });
 
-  Post.virtual('tags').get(function(this: PostSchema) {
+  Post.virtual('tags').get(function() {
     return tagsGetterCache.apply(this._id, () => {
       const PostTag = ctx.model('PostTag');
       const Tag = ctx.model('Tag');
@@ -74,12 +74,12 @@ export = (ctx: Hexo) => {
     });
   });
 
-  Post.method('notPublished', function(this: PostSchema) {
+  Post.method('notPublished', function() {
     // The same condition as ctx._bindLocals
     return (!ctx.config.future && this.date.valueOf() > Date.now()) || (!ctx._showDrafts() && this.published === false);
   });
 
-  Post.method('setTags', function(this: PostSchema, tags: string[]) {
+  Post.method('setTags', function(tags: string[]) {
     if (this.notPublished()) {
       // Ignore tags of draft posts
       // If the post is unpublished then the tag needs to be removed, thus the function cannot be returned early here
@@ -123,7 +123,7 @@ export = (ctx: Hexo) => {
     }).map(tag => PostTag.removeById(tag));
   });
 
-  Post.virtual('categories').get(function(this: PostSchema) {
+  Post.virtual('categories').get(function() {
     const PostCategory = ctx.model('PostCategory');
     const Category = ctx.model('Category');
 
@@ -132,7 +132,7 @@ export = (ctx: Hexo) => {
     return Category.find({_id: {$in: ids}});
   });
 
-  Post.method('setCategories', function(this: PostSchema, cats: (string | string[])[]) {
+  Post.method('setCategories', function(cats: (string | string[])[]) {
     if (this.notPublished()) {
       cats = [];
     }

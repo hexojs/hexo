@@ -7,7 +7,7 @@ import type Hexo from '../hexo';
 import type { PageSchema } from '../types';
 
 export = (ctx: Hexo) => {
-  const Page = new warehouse.Schema({
+  const Page = new warehouse.Schema<PageSchema>({
     title: {type: String, default: ''},
     date: {
       type: Moment,
@@ -31,11 +31,11 @@ export = (ctx: Hexo) => {
     more: {type: String}
   });
 
-  Page.virtual('permalink').get(function(this: PageSchema) {
+  Page.virtual('permalink').get(function() {
     return full_url_for.call(ctx, this.path);
   });
 
-  Page.virtual('full_source').get(function(this: PageSchema) {
+  Page.virtual('full_source').get(function() {
     return join(ctx.source_dir, this.source || '');
   });
 
