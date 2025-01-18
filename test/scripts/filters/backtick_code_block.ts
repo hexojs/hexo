@@ -506,6 +506,80 @@ describe('Backtick code block', () => {
       codeBlock(data);
       data.content.should.contain('\n\n# New line');
     });
+
+    // https://github.com/hexojs/hexo/issues/5423
+    it('with ordered list', () => {
+      const data = {
+        content: [
+          '1. ``` js',
+          code,
+          '```',
+          '2. ``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      codeBlock(data);
+      data.content.should.eql([
+        '1. <hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js' }) + '</hexoPostRenderCodeBlock>',
+        '2. <hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js' }) + '</hexoPostRenderCodeBlock>'
+      ].join('\n'));
+    });
+
+    // https://github.com/hexojs/hexo/issues/5423
+    it('with unordered list', () => {
+      let data = {
+        content: [
+          '- ``` js',
+          code,
+          '```',
+          '- ``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      codeBlock(data);
+      data.content.should.eql([
+        '- <hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js' }) + '</hexoPostRenderCodeBlock>',
+        '- <hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js' }) + '</hexoPostRenderCodeBlock>'
+      ].join('\n'));
+
+      data = {
+        content: [
+          '* ``` js',
+          code,
+          '```',
+          '* ``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      codeBlock(data);
+      data.content.should.eql([
+        '* <hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js' }) + '</hexoPostRenderCodeBlock>',
+        '* <hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js' }) + '</hexoPostRenderCodeBlock>'
+      ].join('\n'));
+
+      data = {
+        content: [
+          '+ ``` js',
+          code,
+          '```',
+          '+ ``` js',
+          code,
+          '```'
+        ].join('\n')
+      };
+
+      codeBlock(data);
+      data.content.should.eql([
+        '+ <hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js' }) + '</hexoPostRenderCodeBlock>',
+        '+ <hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js' }) + '</hexoPostRenderCodeBlock>'
+      ].join('\n'));
+    });
   });
 
   describe('prismjs', () => {
