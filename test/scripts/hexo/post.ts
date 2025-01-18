@@ -1423,6 +1423,98 @@ describe('Post', () => {
     data.content.should.not.contains('&#96;'); // `
   });
 
+  it('render() - should support quotes in tags', async () => {
+    let content = '{{ "{{ }" }}';
+    let data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.eql('{{ }');
+
+    content = '{% blockquote "{% }"  %}test{% endblockquote %}';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.eql('<blockquote><p>test</p>\n<footer><strong>{% }</strong></footer></blockquote>');
+  });
+
+  it('render() - dont escape incomplete tags with complete tags', async () => {
+    // lost one character
+    let content = '{{ 1 }} \n `{% "%}" }` 22222';
+    let data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('&#123;% &quot;%&#125;&quot; &#125;');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    content = '{{ 1 }} \n `{% "%}" %` 22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('&#123;% &quot;%&#125;&quot; %');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    content = '{{ 1 }} \n `{# }` 22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('&#123;# &#125;');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    content = '{{ 1 }} \n `{{ "}}" }` 22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('&#123;&#123; &quot;&#125;&#125;&quot; &#125;');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    content = '{{ 1 }} \n `{{ %}` 22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('&#123;&#123; %&#125;');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    // lost two characters
+    content = '{{ 1 }} \n `{#` \n 22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('&#123;#');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    content = '{{ 1 }} \n `{%` \n 22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('&#123;%');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    content = '{{ 1 }} \n `{{ ` 22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('1');
+    data.content.should.contains('&#123;&#123; ');
+    data.content.should.contains('22222');
+  });
+
   it('render() - incomplete tags throw error', async () => {
     const content = 'nunjucks should throw {#  } error';
 
