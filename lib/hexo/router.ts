@@ -105,7 +105,6 @@ class Router extends EventEmitter {
   public routes: {
     [key: string]: Data | null;
   };
-  public emit: any;
 
   constructor() {
     super();

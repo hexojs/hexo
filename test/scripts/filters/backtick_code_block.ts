@@ -65,10 +65,8 @@ describe('Backtick code block', () => {
 
     const oldHljsCfg = hexo.config.highlight;
     const oldPrismCfg = hexo.config.prismjs;
-    // @ts-ignore
-    delete hexo.config.highlight;
-    // @ts-ignore
-    delete hexo.config.prismjs;
+    delete(hexo.config as any).highlight;
+    delete(hexo.config as any).prismjs;
 
     codeBlock(data);
     data.content.should.eql(content);

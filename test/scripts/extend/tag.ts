@@ -123,12 +123,12 @@ describe('Tag', () => {
   });
 
   it('register() - name is required', () => {
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => tag.register(), 'name is required');
   });
 
   it('register() - fn must be a function', () => {
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => tag.register('test'), 'fn must be a function');
   });
 
@@ -149,7 +149,7 @@ describe('Tag', () => {
   });
 
   it('unregister() - name is required', () => {
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => tag.unregister(), 'name is required');
   });
 
