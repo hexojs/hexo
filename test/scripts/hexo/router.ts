@@ -1,5 +1,4 @@
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import { Readable } from 'stream';
 import { join } from 'path';
 import crypto from 'crypto';
@@ -20,7 +19,7 @@ describe('Router', () => {
   }
 
   function checksum(stream) {
-    return new Promise((resolve, reject) => {
+    return new BluebirdPromise((resolve, reject) => {
       const hash = crypto.createHash('sha1');
 
       stream.on('readable', () => {
@@ -58,7 +57,7 @@ describe('Router', () => {
   });
 
   it('format() - path must be a string', () => {
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => router.format(() => {}), 'path must be a string!');
   });
 
@@ -111,12 +110,12 @@ describe('Router', () => {
   });
 
   it('set() - path must be a string', () => {
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => router.set(), 'path must be a string!');
   });
 
   it('set() - data is required', () => {
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => router.set('test'), 'data is required!');
   });
 
@@ -154,7 +153,7 @@ describe('Router', () => {
 
     router.set('test', () => createReadStream(path));
 
-    return Promise.all([
+    return BluebirdPromise.all([
       checksum(router.get('test')),
       checksum(createReadStream(path))
     ]).then((data: any) => {
@@ -163,7 +162,7 @@ describe('Router', () => {
   });
 
   it('get() - path must be a string', () => {
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => router.get(), 'path must be a string!');
   });
 
@@ -192,7 +191,7 @@ describe('Router', () => {
   });
 
   it('isModified() - path must be a string', () => {
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => router.isModified(), 'path must be a string!');
   });
 
@@ -209,7 +208,7 @@ describe('Router', () => {
   });
 
   it('remove() - path must be a string', () => {
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => router.remove(), 'path must be a string!');
   });
 });

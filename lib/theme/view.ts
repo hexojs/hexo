@@ -30,8 +30,8 @@ class View {
   public source: string;
   public _theme: Theme;
   public data: any;
-  public _compiled: any;
-  public _compiledSync: any;
+  public _compiled: (locals: any) => Promise<any>;
+  public _compiledSync: (locals: any) => any;
   public _helper: Helper;
   public _render: Render;
 
@@ -131,7 +131,7 @@ class View {
       text: this.data._content
     };
 
-    function buildFilterArguments(result: any): [string, any, any] {
+    function buildFilterArguments(result: any): [string, any, { context: any, args: any[] }] {
       const output = render.getOutput(ext) || ext;
       return [
         `after_render:${output}`,

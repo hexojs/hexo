@@ -2,11 +2,14 @@ import { magenta, underline, gray } from 'picocolors';
 import table from 'text-table';
 import { stringLength } from './common';
 import type Hexo from '../../../hexo';
+import type { PageSchema } from '../../../types';
+import type Model from 'warehouse/dist/model';
+import type Document from 'warehouse/dist/document';
 
 function listPage(this: Hexo): void {
-  const Page = this.model('Page');
+  const Page: Model<PageSchema> = this.model('Page');
 
-  const data = Page.sort({date: 1}).map(page => {
+  const data = Page.sort({date: 1}).map((page: Document<PageSchema> & PageSchema) => {
     const date = page.date.format('YYYY-MM-DD');
     return [gray(date), page.title, magenta(page.source)];
   });

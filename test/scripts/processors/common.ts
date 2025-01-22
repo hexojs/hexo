@@ -23,11 +23,11 @@ describe('common', () => {
     const d = new Date();
 
     should.not.exist(toDate());
-    toDate(m).should.eql(m);
-    toDate(d).should.eql(d);
-    toDate(1e8).should.eql(new Date(1e8));
-    toDate('2014-04-25T01:32:21.196Z').should.eql(new Date('2014-04-25T01:32:21.196Z'));
-    toDate('Apr 24 2014').should.eql(new Date(2014, 3, 24));
+    toDate(m)!.should.eql(m);
+    toDate(d)!.should.eql(d);
+    toDate(1e8)!.should.eql(new Date(1e8));
+    toDate('2014-04-25T01:32:21.196Z')!.should.eql(new Date('2014-04-25T01:32:21.196Z'));
+    toDate('Apr 24 2014')!.should.eql(new Date(2014, 3, 24));
     should.not.exist(toDate('foo'));
   });
 
