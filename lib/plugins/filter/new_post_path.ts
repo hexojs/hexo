@@ -18,7 +18,7 @@ const reservedKeys = {
   hash: true
 };
 
-function newPostPathFilter(this: Hexo, data: PostSchema = {}, replace?: boolean): Promise<string> {
+function newPostPathFilter(this: Hexo, data: Partial<PostSchema> = {}, replace?: boolean): Promise<string> {
   const sourceDir = this.source_dir;
   const draftDir = join(sourceDir, '_drafts');
   const postDir = join(sourceDir, '_posts');

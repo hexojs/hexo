@@ -1,8 +1,7 @@
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import postGenerator from '../../../lib/plugins/generator/post';
-import { NormalPostGenerator } from '../../../lib/types';
+import { BaseGeneratorReturn } from '../../../lib/types';
 import chai from 'chai';
 const should = chai.should();
 type PostGeneratorParams = Parameters<typeof postGenerator>;
@@ -11,7 +10,7 @@ type PostGeneratorReturn = ReturnType<typeof postGenerator>;
 describe('post', () => {
   const hexo = new Hexo(__dirname, {silent: true});
   const Post = hexo.model('Post');
-  const generator: (...args: PostGeneratorParams) => Promise<PostGeneratorReturn> = Promise.method(postGenerator.bind(hexo));
+  const generator: (...args: PostGeneratorParams) => BluebirdPromise<PostGeneratorReturn> = BluebirdPromise.method(postGenerator.bind(hexo));
 
   hexo.config.permalink = ':title/';
 
@@ -47,8 +46,8 @@ describe('post', () => {
       slug: 'bar',
       layout: 'photo'
     });
-    const data = await generator(locals()) as NormalPostGenerator[];
-    data[0].layout.should.eql(['photo', 'post', 'page', 'index']);
+    const data = await generator(locals()) as BaseGeneratorReturn[];
+    data[0].layout!.should.eql(['photo', 'post', 'page', 'index']);
 
     post.remove();
   });
@@ -59,7 +58,7 @@ describe('post', () => {
       slug: 'bar',
       layout: false
     });
-    const data = await generator(locals()) as NormalPostGenerator[];
+    const data = await generator(locals()) as BaseGeneratorReturn[];
     should.not.exist(data[0].layout);
 
     post.remove();
@@ -71,7 +70,7 @@ describe('post', () => {
       {source: 'bar', slug: 'bar', date: 1e8 + 1},
       {source: 'baz', slug: 'baz', date: 1e8 - 1}
     ]);
-    const data = await generator(locals()) as NormalPostGenerator[];
+    const data = await generator(locals()) as BaseGeneratorReturn[];
     should.not.exist(data[0].data.prev);
     data[0].data.next!._id!.should.eq(posts[0]._id);
     data[1].data.prev!._id!.should.eq(posts[1]._id);
@@ -79,6 +78,6 @@ describe('post', () => {
     data[2].data.prev!._id!.should.eq(posts[0]._id);
     should.not.exist(data[2].data.next);
 
-    await Promise.all(posts.map(post => post.remove()));
+    await BluebirdPromise.all(posts.map(post => post.remove()));
   });
 });

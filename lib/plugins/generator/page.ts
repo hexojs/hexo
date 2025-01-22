@@ -1,7 +1,15 @@
-import type { PageGenerator, PageSchema, SiteLocals } from '../../types';
+import type { BaseGeneratorReturn, PageSchema, SiteLocals } from '../../types';
+import type Document from 'warehouse/dist/document';
+
+type SimplePageGenerator = Omit<BaseGeneratorReturn, 'layout'> & { data: string };
+interface NormalPageGenerator extends BaseGeneratorReturn {
+  layout: string[];
+  data: PageSchema;
+}
+type PageGenerator = SimplePageGenerator | NormalPageGenerator;
 
 function pageGenerator(locals: SiteLocals): PageGenerator[] {
-  return locals.pages.map((page: PageSchema) => {
+  return locals.pages.map((page: Document<PageSchema> & PageSchema) => {
     const { path, layout } = page;
 
     if (!layout || layout === 'false' || layout === 'off') {
