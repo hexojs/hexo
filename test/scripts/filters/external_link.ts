@@ -127,7 +127,7 @@ describe('External link', () => {
       '<a href="https://baz.com/">Hexo</a>'
     ].join('\n');
 
-    // @ts-ignore
+    // @ts-expect-error
     hexo.config.external_link.exclude = ['foo.com', 'bar.com'];
 
     const result = externalLink(content);

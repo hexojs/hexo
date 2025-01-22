@@ -1,7 +1,6 @@
 import pathFn from 'path';
 import { mkdirs, writeFile, rmdir } from 'hexo-fs';
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import fragmentCache from '../../../lib/plugins/helper/fragment_cache';
 import partialHelper from '../../../lib/plugins/helper/partial';
@@ -32,7 +31,7 @@ describe('partial', () => {
   const partial: (...args: PartialHelperParams) => PartialHelperReturn = partialHelper(hexo).bind(ctx);
 
   before(async () => {
-    await Promise.all([
+    await BluebirdPromise.all([
       mkdirs(themeDir),
       writeFile(hexo.config_path, 'theme: test')
     ]);
@@ -87,7 +86,7 @@ describe('partial', () => {
   });
 
   it('name must be a string', () => {
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => partial(), 'name must be a string!');
   });
 });

@@ -4,9 +4,10 @@ import Moment from './types/moment';
 import moment from 'moment';
 import { full_url_for } from 'hexo-util';
 import type Hexo from '../hexo';
+import type { PageSchema } from '../types';
 
 export = (ctx: Hexo) => {
-  const Page = new warehouse.Schema({
+  const Page = new warehouse.Schema<PageSchema>({
     title: {type: String, default: ''},
     date: {
       type: Moment,
