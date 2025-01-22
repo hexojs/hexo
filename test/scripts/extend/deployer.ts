@@ -3,6 +3,7 @@ import chai from 'chai';
 const should = chai.should();
 
 describe('Deployer', () => {
+  const ctx = {};
   it('register()', () => {
     const d = new Deployer();
 
@@ -12,11 +13,11 @@ describe('Deployer', () => {
     d.get('test').should.exist;
 
     // no name
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => d.register(), TypeError, 'name is required');
 
     // no fn
-    // @ts-ignore
+    // @ts-expect-error
     should.throw(() => d.register('test'), TypeError, 'fn must be a function');
   });
 
@@ -28,7 +29,7 @@ describe('Deployer', () => {
       callback && callback(null, 'foo');
     });
 
-    d.get('test')({
+    d.get('test').call(ctx, {
       type: '',
       foo: 'bar'
     }).then(result => {
@@ -44,7 +45,7 @@ describe('Deployer', () => {
       return 'foo';
     });
 
-    d.get('test')({
+    d.get('test').call(ctx, {
       type: '',
       foo: 'bar'
     }).then(result => {

@@ -1,5 +1,4 @@
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import tagcloudHelper from '../../../lib/plugins/helper/tagcloud';
 import chai from 'chai';
@@ -27,7 +26,7 @@ describe('tagcloud', () => {
       {source: 'boo', slug: 'boo'}
     ]);
     // TODO: Warehouse needs to add a mutex lock when writing data to avoid data sync problem
-    await Promise.all([
+    await BluebirdPromise.all([
       ['bcd'],
       ['bcd', 'cde'],
       ['bcd', 'cde', 'abc'],
@@ -53,7 +52,7 @@ describe('tagcloud', () => {
     const hexo = new Hexo(__dirname);
     await hexo.init();
     hexo.locals.invalidate();
-    // @ts-ignore
+    // @ts-expect-error
     hexo.site = hexo.locals.toObject();
     const tagcloud: (...args: TagcloudHelperParams) => TagcloudHelperReturn = tagcloudHelper.bind(hexo);
 

@@ -4,9 +4,10 @@ import Promise from 'bluebird';
 import prettyHrtime from 'pretty-hrtime';
 import { cyan, magenta } from 'picocolors';
 import tildify from 'tildify';
-import { PassThrough } from 'stream';
+import { PassThrough, type Readable } from 'stream';
 import { createSha1Hash } from 'hexo-util';
 import type Hexo from '../../hexo';
+import type Router from '../../hexo/router';
 
 interface GenerateArgs {
   f?: boolean
@@ -22,14 +23,14 @@ interface GenerateArgs {
   [key: string]: any
 }
 
-class Generater {
+class Generator {
   public context: Hexo;
   public force: boolean;
   public bail: boolean;
   public concurrency: string;
   public watch: boolean;
   public deploy: boolean;
-  public generatingFiles: Set<any>;
+  public generatingFiles: Set<string>;
   public start: [number, number];
   public args: GenerateArgs;
 
@@ -44,7 +45,7 @@ class Generater {
     this.start = process.hrtime();
     this.args = args;
   }
-  generateFile(path: string) {
+  generateFile(path: string): Promise<void | boolean> {
     const publicDir = this.context.public_dir;
     const { generatingFiles } = this;
     const { route } = this.context;
@@ -54,7 +55,7 @@ class Generater {
     // Lock the file
     generatingFiles.add(path);
 
-    let promise;
+    let promise: Promise<boolean>;
 
     if (this.force) {
       promise = this.writeFile(path, true);
@@ -71,7 +72,7 @@ class Generater {
       generatingFiles.delete(path);
     });
   }
-  writeFile(path: string, force?: boolean): Promise<any> {
+  writeFile(path: string, force?: boolean): Promise<boolean> {
     const { route, log } = this.context;
     const publicDir = this.context.public_dir;
     const Cache = this.context.model('Cache');
@@ -79,7 +80,7 @@ class Generater {
     const buffers = [];
     const hasher = createSha1Hash();
 
-    const finishedPromise = new Promise((resolve, reject) => {
+    const finishedPromise = new Promise<void>((resolve, reject) => {
       dataStream.once('error', reject);
       dataStream.once('end', resolve);
     });
@@ -125,7 +126,7 @@ class Generater {
       throw err;
     });
   }
-  wrapDataStream(dataStream) {
+  wrapDataStream(dataStream: ReturnType<Router['get']>): Readable {
     const { log } = this.context;
     // Pass original stream with all data and errors
     if (this.bail) {
@@ -205,8 +206,8 @@ class Generater {
   }
 }
 
-function generateConsole(this: Hexo, args: GenerateArgs = {}) {
-  const generator = new Generater(this, args);
+function generateConsole(this: Hexo, args: GenerateArgs = {}): Promise<any> {
+  const generator = new Generator(this, args);
 
   if (generator.watch) {
     return generator.execWatch();

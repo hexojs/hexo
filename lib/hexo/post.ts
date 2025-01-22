@@ -33,19 +33,19 @@ const isNonWhiteSpaceChar = (char: string) => char !== '\r'
   && char !== ' ';
 
 class PostRenderEscape {
-  public stored: any[];
+  public stored: string[];
   public length: number;
 
   constructor() {
     this.stored = [];
   }
 
-  static escapeContent(cache: any[], flag: string, str: string) {
+  static escapeContent(cache: string[], flag: string, str: string) {
     return `<!--${flag}\uFFFC${cache.push(str) - 1}-->`;
   }
 
-  static restoreContent(cache: any[]) {
-    return (_, index) => {
+  static restoreContent(cache: string[]) {
+    return (_: string, index: number) => {
       assert(cache[index]);
       const value = cache[index];
       cache[index] = null;
@@ -202,7 +202,7 @@ class PostRenderEscape {
   }
 }
 
-const prepareFrontMatter = (data: any, jsonMode: boolean) => {
+const prepareFrontMatter = (data: any, jsonMode: boolean): Record<string, string> => {
   for (const [key, item] of Object.entries(data)) {
     if (moment.isMoment(item)) {
       data[key] = item.utc().format('YYYY-MM-DD HH:mm:ss');
@@ -236,8 +236,8 @@ const createAssetFolder = (path: string, assetFolder: boolean) => {
 };
 
 interface Result {
-  path?: string;
-  content?: string;
+  path: string;
+  content: string;
 }
 
 interface PostData {
@@ -245,6 +245,7 @@ interface PostData {
   layout?: string;
   slug?: string | number;
   path?: string;
+  date?: moment.Moment;
   [prop: string]: any;
 }
 
@@ -255,9 +256,9 @@ class Post {
     this.context = context;
   }
 
-  create(data: PostData, callback?: NodeJSLikeCallback<any>);
-  create(data: PostData, replace: boolean, callback?: NodeJSLikeCallback<any>);
-  create(data: PostData, replace: boolean | (NodeJSLikeCallback<any>), callback?: NodeJSLikeCallback<any>) {
+  create(data: PostData, callback?: NodeJSLikeCallback<any>): Promise<Result>;
+  create(data: PostData, replace: boolean, callback?: NodeJSLikeCallback<any>): Promise<Result>;
+  create(data: PostData, replace: boolean | (NodeJSLikeCallback<any>), callback?: NodeJSLikeCallback<any>): Promise<Result> {
     if (!callback && typeof replace === 'function') {
       callback = replace;
       replace = false;
@@ -277,7 +278,7 @@ class Post {
         context: ctx
       }),
       this._renderScaffold(data)
-    ]).spread((path, content) => {
+    ]).spread((path: string, content: string) => {
       const result = { path, content };
 
       return Promise.all<void, void | string>([
@@ -303,7 +304,7 @@ class Post {
 
   _renderScaffold(data: PostData) {
     const { tag } = this.context.extend;
-    let splitted;
+    let splitted: ReturnType<typeof yfmSplit>;
 
     return this._getScaffold(data.layout).then(scaffold => {
       splitted = yfmSplit(scaffold);
@@ -339,10 +340,10 @@ class Post {
     });
   }
 
-  publish(data: PostData, replace?: boolean);
-  publish(data: PostData, callback?: NodeJSLikeCallback<Result>);
-  publish(data: PostData, replace: boolean, callback?: NodeJSLikeCallback<Result>);
-  publish(data: PostData, replace?: boolean | NodeJSLikeCallback<Result>, callback?: NodeJSLikeCallback<Result>) {
+  publish(data: PostData, replace?: boolean): Promise<Result>;
+  publish(data: PostData, callback?: NodeJSLikeCallback<Result>): Promise<Result>;
+  publish(data: PostData, replace: boolean, callback?: NodeJSLikeCallback<Result>): Promise<Result>;
+  publish(data: PostData, replace?: boolean | NodeJSLikeCallback<Result>, callback?: NodeJSLikeCallback<Result>): Promise<Result> {
     if (!callback && typeof replace === 'function') {
       callback = replace;
       replace = false;
@@ -357,7 +358,7 @@ class Post {
     data.slug = slug;
     const regex = new RegExp(`^${escapeRegExp(slug)}(?:[^\\/\\\\]+)`);
     let src = '';
-    const result: Result = {};
+    const result: Result = {} as any;
 
     data.layout = (data.layout || config.default_layout).toLowerCase();
 

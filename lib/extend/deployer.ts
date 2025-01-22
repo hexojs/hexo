@@ -1,16 +1,17 @@
 import Promise from 'bluebird';
 import type { NodeJSLikeCallback } from '../types';
+import type Hexo from '../hexo';
 
 interface StoreFunction {
-  (deployArg: {
-    type: string;
-    [key: string]: any
-  }, callback?: NodeJSLikeCallback<any>) : any;
+  (this: Hexo, deployArg: { type: string; [key: string]: any }): Promise<any>;
 }
 interface Store {
-  [key: string]: StoreFunction
+  [key: string]: StoreFunction;
 }
 
+/**
+ * A deployer helps users quickly deploy their site to a remote server without complicated commands.
+ */
 class Deployer {
   public store: Store;
 
@@ -26,7 +27,17 @@ class Deployer {
     return this.store[name];
   }
 
-  register(name: string, fn: StoreFunction): void {
+  register(
+    name: string,
+    fn: (
+      this: Hexo,
+      deployArg: {
+        type: string;
+        [key: string]: any;
+      },
+      callback?: NodeJSLikeCallback<any>
+    ) => any
+  ): void {
     if (!name) throw new TypeError('name is required');
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 

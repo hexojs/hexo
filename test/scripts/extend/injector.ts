@@ -18,7 +18,7 @@ describe('Injector', () => {
 
     // no name
     try {
-      // @ts-ignore
+      // @ts-expect-error
       i.register();
     } catch (err) {
       err.should.be
@@ -52,7 +52,7 @@ describe('Injector', () => {
     const i = new Injector();
 
     const str = '<link rel="stylesheet" href="DPlayer.min.css" />';
-    // @ts-ignore
+    // @ts-expect-error
     i.register('foo', str);
 
     i.get('head_end').should.contains(str);

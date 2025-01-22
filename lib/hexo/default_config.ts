@@ -10,7 +10,7 @@ export = {
   url: 'http://example.com',
   root: '/',
   permalink: ':year/:month/:day/:title/',
-  permalink_defaults: {},
+  permalink_defaults: {} as Record<string, string>,
   pretty_urls: {
     trailing_index: true,
     trailing_html: true
@@ -23,7 +23,7 @@ export = {
   category_dir: 'categories',
   code_dir: 'downloads/code',
   i18n_dir: ':lang',
-  skip_render: [],
+  skip_render: [] as string[],
   // Writing
   new_post_name: ':title.md',
   default_layout: 'post',
@@ -44,7 +44,7 @@ export = {
     line_number: true,
     tab_replace: '',
     wrap: true,
-    exclude_languages: [],
+    exclude_languages: [] as string[],
     language_attr: false,
     hljs: false,
     line_threshold: 0,
@@ -55,15 +55,15 @@ export = {
     preprocess: true,
     line_number: true,
     tab_replace: '',
-    exclude_languages: [],
+    exclude_languages: [] as string[],
     strip_indent: true
   },
   use_filename_as_post_title: false,
 
   // Category & Tag
   default_category: 'uncategorized',
-  category_map: {},
-  tag_map: {},
+  category_map: {} as Record<string, string>,
+  tag_map: {} as Record<string, string>,
   // Date / Time format
   date_format: 'YYYY-MM-DD',
   time_format: 'HH:mm:ss',
@@ -79,10 +79,10 @@ export = {
     cache: false
   },
   // Deployment
-  deploy: {},
+  deploy: {} as { type: string; [keys: string]: any } | { type: string; [keys: string]: any }[],
 
   // ignore files from processing
-  ignore: [],
+  ignore: [] as string[],
 
   // Category & Tag
   meta_generator: true
