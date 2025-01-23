@@ -1485,7 +1485,6 @@ describe('Post', () => {
   // https://github.com/hexojs/hexo/issues/5433
   it('render() - code fence nesting in comments', async () => {
     const code = 'alert("Hello world")';
-    const highlighted = highlight(code);
     const content = [
       'foo',
       '<!--',
@@ -1504,7 +1503,9 @@ describe('Post', () => {
     data.content.should.eql([
       '<p>foo</p>',
       '<!--',
-      `<hexoPostRenderCodeBlock>${highlighted}</hexoPostRenderCodeBlock>`,
+      '```',
+      code,
+      '```',
       '-->',
       '<p>bar</p>',
       ''
