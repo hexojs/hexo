@@ -96,6 +96,29 @@ describe('post_permalink', () => {
     Post.removeById(post._id);
   });
 
+  it('timestamp', async () => {
+    hexo.config.permalink = ':timestamp/:slug';
+    const timestamp = '1736401514';
+    const dates = [
+      moment('2025-01-09 05:45:14Z'),
+      moment('2025-01-08 22:45:14-07')
+    ];
+    const posts = await Post.insert(
+      dates.map((date, idx) => {
+        return { source: `test${idx}.md`, slug: `test${idx}`, date: date };
+      })
+    );
+
+    postPermalink(posts[0]).should.eql(`${timestamp}/test0`);
+    postPermalink(posts[1]).should.eql(`${timestamp}/test1`);
+
+    return Promise.all(
+      posts.map(post => {
+        return Post.removeById(post._id);
+      })
+    );
+  });
+
   it('time is omitted in front-matter', async () => {
     hexo.config.permalink = ':year/:month/:day/:hour/:minute/:second/:post_title/';
 

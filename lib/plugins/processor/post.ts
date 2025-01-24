@@ -8,11 +8,12 @@ import { magenta } from 'picocolors';
 import type { _File } from '../../box';
 import type Hexo from '../../hexo';
 import type { Stats } from 'fs';
-import { PostSchema } from '../../types';
+import { PostAssetSchema, PostSchema } from '../../types';
+import type Document from 'warehouse/dist/document';
 
 const postDir = '_posts/';
 const draftDir = '_drafts/';
-let permalink;
+let permalink: Permalink;
 
 const preservedKeys = {
   title: true,
@@ -91,7 +92,7 @@ function processPost(ctx: Hexo, file: _File) {
     file.stat(),
     file.read()
   ]).spread((stats: Stats, content: string) => {
-    const data = yfm(content);
+    const data: PostSchema = yfm(content);
     const info = parseFilename(config.new_post_name, path);
     const keys = Object.keys(info);
 
@@ -113,35 +114,36 @@ function processPost(ctx: Hexo, file: _File) {
     // use `slug` as `title` of post when `title` is not specified.
     // https://github.com/hexojs/hexo/issues/5372
     if (use_slug_as_post_title && !('title' in data)) {
+      // @ts-expect-error - title is not in data
       data.title = info.title;
     }
 
     if (data.date) {
-      data.date = toDate(data.date);
+      data.date = toDate(data.date) as any;
     } else if (info && info.year && (info.month || info.i_month) && (info.day || info.i_day)) {
       data.date = new Date(
         info.year,
         parseInt(info.month || info.i_month, 10) - 1,
         parseInt(info.day || info.i_day, 10)
-      );
+      ) as any;
     }
 
     if (data.date) {
-      if (timezoneCfg) data.date = timezone(data.date, timezoneCfg);
+      if (timezoneCfg) data.date = timezone(data.date, timezoneCfg) as any;
     } else {
-      data.date = stats.birthtime;
+      data.date = stats.birthtime as any;
     }
 
-    data.updated = toDate(data.updated);
+    data.updated = toDate(data.updated) as any;
 
     if (data.updated) {
-      if (timezoneCfg) data.updated = timezone(data.updated, timezoneCfg);
+      if (timezoneCfg) data.updated = timezone(data.updated, timezoneCfg) as any;
     } else if (updated_option === 'date') {
       data.updated = data.date;
     } else if (updated_option === 'empty') {
       data.updated = undefined;
     } else {
-      data.updated = stats.mtime;
+      data.updated = stats.mtime as any;
     }
 
     if (data.category && !data.categories) {
@@ -182,7 +184,7 @@ function processPost(ctx: Hexo, file: _File) {
     }
 
     return Post.insert(data);
-  }).then(doc => Promise.all([
+  }).then((doc: PostSchema) => Promise.all([
     doc.setCategories(categories),
     doc.setTags(tags),
     scanAssetDir(ctx, doc)
@@ -206,7 +208,7 @@ function parseFilename(config: string, path: string) {
     });
   }
 
-  const data = permalink.parse(path);
+  const data = permalink.parse(path) as Record<string, any>;
 
   if (data) {
     if (data.title !== undefined) {
@@ -222,7 +224,7 @@ function parseFilename(config: string, path: string) {
   };
 }
 
-function scanAssetDir(ctx: Hexo, post) {
+function scanAssetDir(ctx: Hexo, post: PostSchema) {
   if (!ctx.config.post_asset_folder) return;
 
   const assetDir = post.asset_dir;
@@ -256,7 +258,7 @@ function scanAssetDir(ctx: Hexo, post) {
   });
 }
 
-function shouldSkipAsset(ctx: Hexo, post, asset) {
+function shouldSkipAsset(ctx: Hexo, post: PostSchema, asset: Document<PostAssetSchema>) {
   if (!ctx._showDrafts()) {
     if (post.published === false && asset) {
       // delete existing draft assets if draft posts are hidden
@@ -284,7 +286,7 @@ function processAsset(ctx: Hexo, file: _File) {
     return;
   }
 
-  const savePostAsset = (post: PostSchema) => {
+  const savePostAsset = (post: Document<PostSchema>) => {
     return PostAsset.save({
       _id: id,
       slug: file.source.substring(post.asset_dir.length),

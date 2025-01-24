@@ -1,5 +1,4 @@
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import { stub, assert as sinonAssert } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import listPost from '../../../lib/plugins/console/list/post';
@@ -45,7 +44,7 @@ describe('Console list', () => {
 
     await hexo.init();
     const output = await Post.insert(posts);
-    await Promise.each(tags, (tags, i) => output[i].setTags(tags));
+    await BluebirdPromise.each(tags, (tags, i) => output[i].setTags(tags));
     await hexo.locals.invalidate();
 
     listPosts();

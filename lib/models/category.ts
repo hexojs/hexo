@@ -1,9 +1,10 @@
 import warehouse from 'warehouse';
 import { slugize, full_url_for } from 'hexo-util';
 import type Hexo from '../hexo';
+import type { CategorySchema } from '../types';
 
 export = (ctx: Hexo) => {
-  const Category = new warehouse.Schema({
+  const Category = new warehouse.Schema<CategorySchema>({
     name: {type: String, required: true},
     parent: { type: warehouse.Schema.Types.CUID, ref: 'Category'}
   });
@@ -57,7 +58,7 @@ export = (ctx: Hexo) => {
   });
 
   // Check whether a category exists
-  Category.pre('save', data => {
+  Category.pre('save', (data: CategorySchema) => {
     const { name, parent } = data;
     if (!name) return;
 
@@ -73,7 +74,7 @@ export = (ctx: Hexo) => {
   });
 
   // Remove PostCategory references
-  Category.pre('remove', data => {
+  Category.pre('remove', (data: CategorySchema) => {
     const PostCategory = ctx.model('PostCategory');
     return PostCategory.remove({category_id: data._id});
   });

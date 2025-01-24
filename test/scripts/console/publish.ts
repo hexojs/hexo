@@ -1,8 +1,7 @@
 import { exists, mkdirs, readFile, rmdir, unlink } from 'hexo-fs';
 import moment from 'moment';
 import { join } from 'path';
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import { useFakeTimers, spy, SinonSpy, SinonFakeTimers } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import publishConsole from '../../../lib/plugins/console/publish';
@@ -119,7 +118,7 @@ describe('publish', () => {
     const exist = await exists(path);
     exist.should.be.true;
 
-    await Promise.all([
+    await BluebirdPromise.all([
       unlink(path),
       unlink(join(hexo.source_dir, '_posts', 'Hello-World.md'))
     ]);

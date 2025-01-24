@@ -2,9 +2,10 @@ import warehouse from 'warehouse';
 import { slugize, full_url_for } from 'hexo-util';
 const { hasOwnProperty: hasOwn } = Object.prototype;
 import type Hexo from '../hexo';
+import type { TagSchema } from '../types';
 
 export = (ctx: Hexo) => {
-  const Tag = new warehouse.Schema({
+  const Tag = new warehouse.Schema<TagSchema>({
     name: {type: String, required: true}
   });
 
@@ -50,7 +51,7 @@ export = (ctx: Hexo) => {
   });
 
   // Check whether a tag exists
-  Tag.pre('save', data => {
+  Tag.pre('save', (data: TagSchema) => {
     const { name } = data;
     if (!name) return;
 
@@ -63,7 +64,7 @@ export = (ctx: Hexo) => {
   });
 
   // Remove PostTag references
-  Tag.pre('remove', data => {
+  Tag.pre('remove', (data: TagSchema) => {
     const PostTag = ctx.model('PostTag');
     return PostTag.remove({tag_id: data._id});
   });
