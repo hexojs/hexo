@@ -44,8 +44,7 @@ function externalLinkFilter(this: Hexo, data: string): string {
   }
   result += data.slice(lastIndex);
 
-  // prevent gc memory leak
-  return result.replace('#'.repeat(result.length + 1), '');
+  return result;
 }
 
 export = externalLinkFilter;
