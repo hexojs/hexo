@@ -1,6 +1,5 @@
 import { join, sep } from 'path';
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import { full_url_for } from 'hexo-util';
 import Hexo from '../../../lib/hexo';
 import chai from 'chai';
@@ -241,7 +240,7 @@ describe('Post', () => {
   it('setTags() - sync problem', () => Post.insert([
     {source: 'foo.md', slug: 'foo'},
     {source: 'bar.md', slug: 'bar'}
-  ]).then(posts => Promise.all([
+  ]).then(posts => BluebirdPromise.all([
     posts[0].setTags(['foo', 'bar']),
     posts[1].setTags(['bar', 'baz'])
   ]).thenReturn(posts)).then(posts => {
@@ -308,7 +307,7 @@ describe('Post', () => {
 
       postA.categories.map(cat => cat._id).should.eql(postB.categories.map(cat => cat._id));
 
-      return Promise.all([
+      return BluebirdPromise.all([
         Post.removeById(postIdA),
         Post.removeById(postIdB)
       ]);
@@ -346,7 +345,7 @@ describe('Post', () => {
         postCategoriesA.should.not.include(catId);
       });
 
-      return Promise.all([
+      return BluebirdPromise.all([
         Post.removeById(postIdA),
         Post.removeById(postIdB)
       ]);
@@ -450,7 +449,7 @@ describe('Post', () => {
   it('remove related assets when a post is removed', () => Post.insert({
     source: 'foo.md',
     slug: 'bar'
-  }).then(post => Promise.all([
+  }).then(post => BluebirdPromise.all([
     Asset.insert({_id: 'foo', path: 'foo'}),
     Asset.insert({_id: 'bar', path: 'bar'}),
     Asset.insert({_id: 'baz', path: 'bar'})
