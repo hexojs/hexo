@@ -42,9 +42,9 @@ export = (ctx: Hexo) => {
   });
 
   Category.virtual('posts').get(function() {
-    const PostCategory = ctx.model('PostCategory');
+    const ReadOnlyPostCategory = ctx._binaryRelationIndex.post_category;
 
-    const ids = PostCategory.find({category_id: this._id}).map(item => item.post_id);
+    const ids = ReadOnlyPostCategory.find({category_id: this._id}).map(item => item.post_id);
 
     return ctx.locals.get('posts').find({
       _id: {$in: ids}
@@ -52,9 +52,9 @@ export = (ctx: Hexo) => {
   });
 
   Category.virtual('length').get(function() {
-    const PostCategory = ctx.model('PostCategory');
+    const ReadOnlyPostCategory = ctx._binaryRelationIndex.post_category;
 
-    return PostCategory.find({category_id: this._id}).length;
+    return ReadOnlyPostCategory.find({category_id: this._id}).length;
   });
 
   // Check whether a category exists
