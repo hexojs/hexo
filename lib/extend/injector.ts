@@ -1,16 +1,21 @@
 import { Cache } from 'hexo-util';
+import { LocalsType, PageSchema, PostSchema } from '../types';
 
 type Entry = 'head_begin' | 'head_end' | 'body_begin' | 'body_end';
 
 type Store = {
   [key in Entry]: {
-    [key: string]: Set<unknown>;
+    [key: string]: Set<string>;
   };
 };
 
+/**
+ * An injector is used to add static code snippet to the `<head>` or/and `<body>` of generated HTML files.
+ * Hexo run injector before `after_render:html` filter is executed.
+ */
 class Injector {
   public store: Store;
-  public cache: any;
+  public cache: InstanceType<typeof Cache>;
   public page: any;
 
   constructor() {
@@ -38,8 +43,8 @@ class Injector {
     return arr.join('');
   }
 
-  getSize(entry: Entry) {
-    return this.cache.apply(`${entry}-size`, Object.keys(this.store[entry]).length);
+  getSize(entry: Entry): number {
+    return this.cache.apply(`${entry}-size`, Object.keys(this.store[entry]).length) as number;
   }
 
   register(entry: Entry, value: string | (() => string), to = 'default'): void {
@@ -66,14 +71,14 @@ class Injector {
   }
 
   _injector(input: string, pattern: string | RegExp, flag: Entry, isBegin = true, currentType: string): string {
-    if (input.includes(`hexo injector ${flag}`)) return input;
+    if (input.includes(`<!-- hexo injector ${flag}`)) return input;
 
     const code = this.cache.apply(`${flag}-${currentType}-code`, () => {
       const content = currentType === 'default' ? this.getText(flag, 'default') : this.getText(flag, currentType) + this.getText(flag, 'default');
 
       if (!content.length) return '';
       return '<!-- hexo injector ' + flag + ' start -->' + content + '<!-- hexo injector ' + flag + ' end -->';
-    });
+    }) as string;
 
     // avoid unnecessary replace() for better performance
     if (!code.length) return input;

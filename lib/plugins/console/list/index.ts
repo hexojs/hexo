@@ -5,6 +5,7 @@ import route from './route';
 import tag from './tag';
 import category from './category';
 import type Hexo from '../../../hexo';
+import type Promise from 'bluebird';
 
 interface ListArgs {
   _: string[]
@@ -16,7 +17,7 @@ const store = {
 
 const alias = abbrev(Object.keys(store));
 
-function listConsole(this: Hexo, args: ListArgs) {
+function listConsole(this: Hexo, args: ListArgs): Promise<void> {
   const type = args._.shift();
 
   // Display help message if user didn't input any arguments

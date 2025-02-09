@@ -2,9 +2,10 @@ import warehouse from 'warehouse';
 import { slugize, full_url_for } from 'hexo-util';
 const { hasOwnProperty: hasOwn } = Object.prototype;
 import type Hexo from '../hexo';
+import type { TagSchema } from '../types';
 
 export = (ctx: Hexo) => {
-  const Tag = new warehouse.Schema({
+  const Tag = new warehouse.Schema<TagSchema>({
     name: {type: String, required: true}
   });
 
@@ -32,9 +33,9 @@ export = (ctx: Hexo) => {
   });
 
   Tag.virtual('posts').get(function() {
-    const PostTag = ctx.model('PostTag');
+    const ReadOnlyPostTag = ctx._binaryRelationIndex.post_tag;
 
-    const ids = PostTag.find({tag_id: this._id}).map(item => item.post_id);
+    const ids = ReadOnlyPostTag.find({tag_id: this._id}).map(item => item.post_id);
 
     return ctx.locals.get('posts').find({
       _id: {$in: ids}
@@ -44,13 +45,13 @@ export = (ctx: Hexo) => {
   Tag.virtual('length').get(function() {
     // Note: this.posts.length is also working
     // But it's slow because `find` has to iterate over all posts
-    const PostTag = ctx.model('PostTag');
+    const ReadOnlyPostTag = ctx._binaryRelationIndex.post_tag;
 
-    return PostTag.find({tag_id: this._id}).length;
+    return ReadOnlyPostTag.find({tag_id: this._id}).length;
   });
 
   // Check whether a tag exists
-  Tag.pre('save', data => {
+  Tag.pre('save', (data: TagSchema) => {
     const { name } = data;
     if (!name) return;
 
@@ -63,7 +64,7 @@ export = (ctx: Hexo) => {
   });
 
   // Remove PostTag references
-  Tag.pre('remove', data => {
+  Tag.pre('remove', (data: TagSchema) => {
     const PostTag = ctx.model('PostTag');
     return PostTag.remove({tag_id: data._id});
   });

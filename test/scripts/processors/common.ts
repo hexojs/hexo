@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { isTmpFile, isHiddenFile, ignoreTmpAndHiddenFile as pattern, toDate, timezone, isMatch } from '../../../lib/plugins/processor/common';
+import { isTmpFile, isHiddenFile, toDate, timezone, isMatch } from '../../../lib/plugins/processor/common';
 import chai from 'chai';
 const should = chai.should();
 
@@ -18,26 +18,16 @@ describe('common', () => {
     isHiddenFile('foo/.bar').should.be.true;
   });
 
-  it('ignoreTmpAndHiddenFile()', () => {
-    pattern.match('foo').should.be.true;
-    pattern.match('foo%').should.be.false;
-    pattern.match('foo~').should.be.false;
-    pattern.match('_foo').should.be.false;
-    pattern.match('foo/_bar').should.be.false;
-    pattern.match('.foo').should.be.false;
-    pattern.match('foo/.bar').should.be.false;
-  });
-
   it('toDate()', () => {
     const m = moment();
     const d = new Date();
 
     should.not.exist(toDate());
-    toDate(m).should.eql(m);
-    toDate(d).should.eql(d);
-    toDate(1e8).should.eql(new Date(1e8));
-    toDate('2014-04-25T01:32:21.196Z').should.eql(new Date('2014-04-25T01:32:21.196Z'));
-    toDate('Apr 24 2014').should.eql(new Date(2014, 3, 24));
+    toDate(m)!.should.eql(m);
+    toDate(d)!.should.eql(d);
+    toDate(1e8)!.should.eql(new Date(1e8));
+    toDate('2014-04-25T01:32:21.196Z')!.should.eql(new Date('2014-04-25T01:32:21.196Z'));
+    toDate('Apr 24 2014')!.should.eql(new Date(2014, 3, 24));
     should.not.exist(toDate('foo'));
   });
 

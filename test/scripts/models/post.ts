@@ -1,6 +1,5 @@
 import { join, sep } from 'path';
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import { full_url_for } from 'hexo-util';
 import Hexo from '../../../lib/hexo';
 import chai from 'chai';
@@ -11,6 +10,8 @@ describe('Post', () => {
   const Post = hexo.model('Post');
   const Tag = hexo.model('Tag');
   const Category = hexo.model('Category');
+  const ReadOnlyPostTag = hexo._binaryRelationIndex.post_tag;
+  const ReadOnlyPostCategory = hexo._binaryRelationIndex.post_category;
   const PostTag = hexo.model('PostTag');
   const PostCategory = hexo.model('PostCategory');
   const Asset = hexo.model('Asset');
@@ -239,7 +240,7 @@ describe('Post', () => {
   it('setTags() - sync problem', () => Post.insert([
     {source: 'foo.md', slug: 'foo'},
     {source: 'bar.md', slug: 'bar'}
-  ]).then(posts => Promise.all([
+  ]).then(posts => BluebirdPromise.all([
     posts[0].setTags(['foo', 'bar']),
     posts[1].setTags(['bar', 'baz'])
   ]).thenReturn(posts)).then(posts => {
@@ -306,7 +307,7 @@ describe('Post', () => {
 
       postA.categories.map(cat => cat._id).should.eql(postB.categories.map(cat => cat._id));
 
-      return Promise.all([
+      return BluebirdPromise.all([
         Post.removeById(postIdA),
         Post.removeById(postIdB)
       ]);
@@ -344,7 +345,7 @@ describe('Post', () => {
         postCategoriesA.should.not.include(catId);
       });
 
-      return Promise.all([
+      return BluebirdPromise.all([
         Post.removeById(postIdA),
         Post.removeById(postIdB)
       ]);
@@ -427,6 +428,7 @@ describe('Post', () => {
   }).then(post => post.setTags(['foo', 'bar', 'baz'])
     .thenReturn(Post.findById(post._id))).then(post => Post.removeById(post._id)).then(post => {
     PostTag.find({post_id: post._id}).should.have.lengthOf(0);
+    ReadOnlyPostTag.find({post_id: post._id}).should.have.lengthOf(0);
     Tag.findOne({name: 'foo'}).posts.should.have.lengthOf(0);
     Tag.findOne({name: 'bar'}).posts.should.have.lengthOf(0);
     Tag.findOne({name: 'baz'}).posts.should.have.lengthOf(0);
@@ -438,6 +440,7 @@ describe('Post', () => {
   }).then(post => post.setCategories(['foo', 'bar', 'baz'])
     .thenReturn(Post.findById(post._id))).then(post => Post.removeById(post._id)).then(post => {
     PostCategory.find({post_id: post._id}).should.have.lengthOf(0);
+    ReadOnlyPostCategory.find({post_id: post._id}).should.have.lengthOf(0);
     Category.findOne({name: 'foo'}).posts.should.have.lengthOf(0);
     Category.findOne({name: 'bar'}).posts.should.have.lengthOf(0);
     Category.findOne({name: 'baz'}).posts.should.have.lengthOf(0);
@@ -446,7 +449,7 @@ describe('Post', () => {
   it('remove related assets when a post is removed', () => Post.insert({
     source: 'foo.md',
     slug: 'bar'
-  }).then(post => Promise.all([
+  }).then(post => BluebirdPromise.all([
     Asset.insert({_id: 'foo', path: 'foo'}),
     Asset.insert({_id: 'bar', path: 'bar'}),
     Asset.insert({_id: 'baz', path: 'bar'})

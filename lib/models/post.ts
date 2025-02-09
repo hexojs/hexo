@@ -5,19 +5,20 @@ import Promise from 'bluebird';
 import Moment from './types/moment';
 import { full_url_for, Cache } from 'hexo-util';
 import type Hexo from '../hexo';
+import type { CategorySchema, PostCategorySchema, PostSchema } from '../types';
 
-function pickID(data) {
+function pickID(data: PostSchema | PostCategorySchema) {
   return data._id;
 }
 
-function removeEmptyTag(tags) {
+function removeEmptyTag(tags: string[]) {
   return tags.filter(tag => tag != null && tag !== '').map(tag => `${tag}`);
 }
 
 const tagsGetterCache = new Cache();
 
 export = (ctx: Hexo) => {
-  const Post = new warehouse.Schema({
+  const Post = new warehouse.Schema<PostSchema>({
     id: String,
     title: {type: String, default: ''},
     date: {
@@ -64,10 +65,10 @@ export = (ctx: Hexo) => {
 
   Post.virtual('tags').get(function() {
     return tagsGetterCache.apply(this._id, () => {
-      const PostTag = ctx.model('PostTag');
+      const ReadOnlyPostTag = ctx._binaryRelationIndex.post_tag;
       const Tag = ctx.model('Tag');
 
-      const ids = PostTag.find({post_id: this._id}, {lean: true}).map(item => item.tag_id);
+      const ids = ReadOnlyPostTag.find({post_id: this._id}).map(item => item.tag_id);
 
       return Tag.find({_id: {$in: ids}});
     });
@@ -75,10 +76,10 @@ export = (ctx: Hexo) => {
 
   Post.method('notPublished', function() {
     // The same condition as ctx._bindLocals
-    return (!ctx.config.future && this.date > Date.now()) || (!ctx._showDrafts() && this.published === false);
+    return (!ctx.config.future && this.date.valueOf() > Date.now()) || (!ctx._showDrafts() && this.published === false);
   });
 
-  Post.method('setTags', function(tags) {
+  Post.method('setTags', function(tags: string[]) {
     if (this.notPublished()) {
       // Ignore tags of draft posts
       // If the post is unpublished then the tag needs to be removed, thus the function cannot be returned early here
@@ -87,10 +88,11 @@ export = (ctx: Hexo) => {
     tagsGetterCache.flush();
     tags = removeEmptyTag(tags);
 
+    const ReadOnlyPostTag = ctx._binaryRelationIndex.post_tag;
     const PostTag = ctx.model('PostTag');
     const Tag = ctx.model('Tag');
     const id = this._id;
-    const existed = PostTag.find({post_id: id}, {lean: true}).map(pickID);
+    const existed = ReadOnlyPostTag.find({post_id: id}).map(pickID);
 
     return Promise.map(tags, tag => {
       // Find the tag by name
@@ -107,7 +109,7 @@ export = (ctx: Hexo) => {
       });
     }).map(tag => {
       // Find the reference
-      const ref = PostTag.findOne({post_id: id, tag_id: tag._id}, {lean: true});
+      const ref = ReadOnlyPostTag.findOne({post_id: id, tag_id: tag._id});
       if (ref) return ref;
 
       // Insert the reference if not exist
@@ -123,15 +125,15 @@ export = (ctx: Hexo) => {
   });
 
   Post.virtual('categories').get(function() {
-    const PostCategory = ctx.model('PostCategory');
+    const ReadOnlyPostCategory = ctx._binaryRelationIndex.post_category;
     const Category = ctx.model('Category');
 
-    const ids = PostCategory.find({post_id: this._id}, {lean: true}).map(item => item.category_id);
+    const ids = ReadOnlyPostCategory.find({post_id: this._id}).map(item => item.category_id);
 
     return Category.find({_id: {$in: ids}});
   });
 
-  Post.method('setCategories', function(cats: string[]) {
+  Post.method('setCategories', function(cats: (string | string[])[]) {
     if (this.notPublished()) {
       cats = [];
     }
@@ -142,11 +144,12 @@ export = (ctx: Hexo) => {
       return Array.isArray(cat) ? removeEmptyTag(cat) : `${cat}`;
     });
 
+    const ReadOnlyPostCategory = ctx._binaryRelationIndex.post_category;
     const PostCategory = ctx.model('PostCategory');
     const Category = ctx.model('Category');
     const id = this._id;
-    const allIds = [];
-    const existed = PostCategory.find({post_id: id}, {lean: true}).map(pickID);
+    const allIds: string[] = [];
+    const existed = ReadOnlyPostCategory.find({post_id: id}).map(pickID);
     const hasHierarchy = cats.filter(Array.isArray).length > 0;
 
     // Add a hierarchy of categories
@@ -157,7 +160,7 @@ export = (ctx: Hexo) => {
       // MUST USE "Promise.each".
       return Promise.each(catHierarchy, (cat, i) => {
         // Find the category by name
-        const data = Category.findOne({
+        const data: CategorySchema = Category.findOne({
           name: cat,
           parent: i ? parentIds[i - 1] : {$exists: false}
         }, {lean: true});
@@ -174,14 +177,14 @@ export = (ctx: Hexo) => {
 
         return Category.insert(obj).catch(err => {
           // Try to find the category again. Throw the error if not found
-          const data = Category.findOne({
+          const data: CategorySchema = Category.findOne({
             name: cat,
             parent: i ? parentIds[i - 1] : {$exists: false}
           }, {lean: true});
 
           if (data) return data;
           throw err;
-        }).then(data => {
+        }).then((data: CategorySchema) => {
           allIds.push(data._id);
           parentIds.push(data._id);
           return data;
@@ -189,10 +192,10 @@ export = (ctx: Hexo) => {
       });
     };
 
-    return (hasHierarchy ? Promise.each(cats, addHierarchy) : Promise.resolve(addHierarchy(cats))
+    return (hasHierarchy ? Promise.each(cats, addHierarchy) : Promise.resolve(addHierarchy(cats as string[]))
     ).then(() => allIds).map(catId => {
       // Find the reference
-      const ref = PostCategory.findOne({post_id: id, category_id: catId}, {lean: true});
+      const ref: PostCategorySchema = ReadOnlyPostCategory.findOne({post_id: id, category_id: catId});
       if (ref) return ref;
 
       // Insert the reference if not exist
@@ -200,24 +203,24 @@ export = (ctx: Hexo) => {
         post_id: id,
         category_id: catId
       });
-    }).then(postCats => // Remove old categories
+    }).then((postCats: PostCategorySchema[]) => // Remove old categories
       existed.filter(item => !postCats.map(pickID).includes(item))).map(cat => PostCategory.removeById(cat));
   });
 
   // Remove PostTag references
-  Post.pre('remove', data => {
+  Post.pre('remove', (data: PostSchema) => {
     const PostTag = ctx.model('PostTag');
     return PostTag.remove({post_id: data._id});
   });
 
   // Remove PostCategory references
-  Post.pre('remove', data => {
+  Post.pre('remove', (data: PostSchema) => {
     const PostCategory = ctx.model('PostCategory');
     return PostCategory.remove({post_id: data._id});
   });
 
   // Remove assets
-  Post.pre('remove', data => {
+  Post.pre('remove', (data: PostSchema) => {
     const PostAsset = ctx.model('PostAsset');
     return PostAsset.remove({post: data._id});
   });

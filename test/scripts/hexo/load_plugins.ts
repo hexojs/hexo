@@ -2,8 +2,7 @@ import { join, dirname } from 'path';
 import { writeFile, mkdir, rmdir, unlink } from 'hexo-fs';
 import Hexo from '../../../lib/hexo';
 import loadPlugins from '../../../lib/hexo/load_plugins';
-// @ts-ignore
-import Promise from 'bluebird';
+import BluebirdPromise from 'bluebird';
 import chai from 'chai';
 const should = chai.should();
 
@@ -85,7 +84,7 @@ describe('Load plugins', () => {
     const name = 'hexo-plugin-test';
     const path = join(hexo.plugin_dir, name, 'index.js');
 
-    return Promise.all([
+    return BluebirdPromise.all([
       createPackageFile(name),
       writeFile(path, script)
     ]).then(() => loadPlugins(hexo)).then(() => {
@@ -98,7 +97,7 @@ describe('Load plugins', () => {
     const name = 'hexo-async-plugin-test';
     const path = join(hexo.plugin_dir, name, 'index.js');
 
-    return Promise.all([
+    return BluebirdPromise.all([
       createPackageFile(name),
       writeFile(path, asyncScript)
     ]).then(() => loadPlugins(hexo)).then(() => {
@@ -111,7 +110,7 @@ describe('Load plugins', () => {
     const name = '@some-scope/hexo-plugin-test';
     const path = join(hexo.plugin_dir, name, 'index.js');
 
-    return Promise.all([
+    return BluebirdPromise.all([
       createPackageFile(name),
       writeFile(path, script)
     ]).then(() => loadPlugins(hexo)).then(() => {
@@ -124,7 +123,7 @@ describe('Load plugins', () => {
     const name = 'hexo-plugin-test';
     const path = join(hexo.plugin_dir, name, 'index.js');
 
-    return Promise.all([
+    return BluebirdPromise.all([
       createPackageFileWithDevDeps(name),
       writeFile(path, script)
     ]).then(() => loadPlugins(hexo)).then(() => {
@@ -136,7 +135,7 @@ describe('Load plugins', () => {
   it('load plugins in the theme\'s package.json', async () => {
     const name = 'hexo-plugin-test';
     const path = join(hexo.plugin_dir, name, 'index.js');
-    return Promise.all([
+    return BluebirdPromise.all([
       createPackageFile(name, join(hexo.theme_dir, 'package.json')),
       writeFile(path, script)
     ]).then(() => loadPlugins(hexo)).then(() => {
@@ -150,7 +149,7 @@ describe('Load plugins', () => {
     const name = 'hexo-theme-test_theme';
     const path = join(hexo.plugin_dir, name, 'index.js');
 
-    await Promise.all([
+    await BluebirdPromise.all([
       createPackageFile(name),
       writeFile(path, script)
     ]);
@@ -166,7 +165,7 @@ describe('Load plugins', () => {
     const name = '@hexojs/hexo-theme-test_theme';
     const path = join(hexo.plugin_dir, name, 'index.js');
 
-    await Promise.all([
+    await BluebirdPromise.all([
       createPackageFile(name),
       writeFile(path, script)
     ]);
@@ -182,7 +181,7 @@ describe('Load plugins', () => {
     const name = 'another-plugin';
     const path = join(hexo.plugin_dir, name, 'index.js');
 
-    await Promise.all([
+    await BluebirdPromise.all([
       createPackageFile(name),
       writeFile(path, script)
     ]);
@@ -197,7 +196,7 @@ describe('Load plugins', () => {
     const name = '@types/hexo-test-plugin';
     const path = join(hexo.plugin_dir, name, 'index.js');
 
-    return Promise.all([
+    return BluebirdPromise.all([
       createPackageFile(name),
       writeFile(path, script)
     ]).then(() => loadPlugins(hexo)).then(() => {

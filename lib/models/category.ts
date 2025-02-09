@@ -1,9 +1,10 @@
 import warehouse from 'warehouse';
 import { slugize, full_url_for } from 'hexo-util';
 import type Hexo from '../hexo';
+import type { CategorySchema } from '../types';
 
 export = (ctx: Hexo) => {
-  const Category = new warehouse.Schema({
+  const Category = new warehouse.Schema<CategorySchema>({
     name: {type: String, required: true},
     parent: { type: warehouse.Schema.Types.CUID, ref: 'Category'}
   });
@@ -41,9 +42,9 @@ export = (ctx: Hexo) => {
   });
 
   Category.virtual('posts').get(function() {
-    const PostCategory = ctx.model('PostCategory');
+    const ReadOnlyPostCategory = ctx._binaryRelationIndex.post_category;
 
-    const ids = PostCategory.find({category_id: this._id}).map(item => item.post_id);
+    const ids = ReadOnlyPostCategory.find({category_id: this._id}).map(item => item.post_id);
 
     return ctx.locals.get('posts').find({
       _id: {$in: ids}
@@ -51,13 +52,13 @@ export = (ctx: Hexo) => {
   });
 
   Category.virtual('length').get(function() {
-    const PostCategory = ctx.model('PostCategory');
+    const ReadOnlyPostCategory = ctx._binaryRelationIndex.post_category;
 
-    return PostCategory.find({category_id: this._id}).length;
+    return ReadOnlyPostCategory.find({category_id: this._id}).length;
   });
 
   // Check whether a category exists
-  Category.pre('save', data => {
+  Category.pre('save', (data: CategorySchema) => {
     const { name, parent } = data;
     if (!name) return;
 
@@ -73,7 +74,7 @@ export = (ctx: Hexo) => {
   });
 
   // Remove PostCategory references
-  Category.pre('remove', data => {
+  Category.pre('remove', (data: CategorySchema) => {
     const PostCategory = ctx.model('PostCategory');
     return PostCategory.remove({category_id: data._id});
   });

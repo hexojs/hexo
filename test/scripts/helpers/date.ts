@@ -236,11 +236,11 @@ describe('date', () => {
   it('toMomentLocale', () => {
     (toMomentLocale(undefined) === undefined).should.be.true;
     // @ts-ignore
-    toMomentLocale(null).should.eql('en');
-    toMomentLocale('').should.eql('en');
-    toMomentLocale('en').should.eql('en');
-    toMomentLocale('default').should.eql('en');
-    toMomentLocale('zh-CN').should.eql('zh-cn');
-    toMomentLocale('zh_CN').should.eql('zh-cn');
+    toMomentLocale(null)!.should.eql('en');
+    toMomentLocale('')!.should.eql('en');
+    toMomentLocale('en')!.should.eql('en');
+    toMomentLocale('default')!.should.eql('en');
+    toMomentLocale('zh-CN')!.should.eql('zh-cn');
+    toMomentLocale('zh_CN')!.should.eql('zh-cn');
   });
 });

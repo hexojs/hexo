@@ -17,8 +17,7 @@ describe('Validate config', () => {
   });
 
   it('config.url - undefined', () => {
-    // @ts-ignore
-    delete hexo.config.url;
+    delete(hexo.config as any).url;
 
     try {
       validateConfig(hexo);
@@ -30,7 +29,7 @@ describe('Validate config', () => {
   });
 
   it('config.url - wrong type', () => {
-    // @ts-ignore
+    // @ts-expect-error
     hexo.config.url = true;
 
     try {
@@ -44,6 +43,20 @@ describe('Validate config', () => {
 
   it('config.url - empty', () => {
     hexo.config.url = ' ';
+
+    try {
+      validateConfig(hexo);
+      should.fail();
+    } catch (e) {
+      e.name.should.eql('TypeError');
+      e.message.should.eql('Invalid config detected: "url" should be a valid URL!');
+    }
+  });
+
+
+  it('config.url - not start with xx://', () => {
+    // @ts-ignore
+    hexo.config.url = 'localhost:4000';
 
     try {
       validateConfig(hexo);
@@ -68,8 +81,7 @@ describe('Validate config', () => {
   });
 
   it('config.root - undefined', () => {
-    // @ts-ignore
-    delete hexo.config.root;
+    delete(hexo.config as any).root;
 
     try {
       validateConfig(hexo);
@@ -81,7 +93,7 @@ describe('Validate config', () => {
   });
 
   it('config.root - wrong type', () => {
-    // @ts-ignore
+    // @ts-expect-error
     hexo.config.root = true;
 
     try {

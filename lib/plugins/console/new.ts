@@ -2,6 +2,7 @@ import tildify from 'tildify';
 import { magenta } from 'picocolors';
 import { basename } from 'path';
 import Hexo from '../../hexo';
+import type Promise from 'bluebird';
 
 const reservedKeys = {
   _: true,
@@ -31,7 +32,7 @@ interface NewArgs {
   [key: string]: any
 }
 
-function newConsole(this: Hexo, args: NewArgs) {
+function newConsole(this: Hexo, args: NewArgs): Promise<void> {
   const path = args.p || args.path;
   let title: string;
   if (args._.length) {
