@@ -33,9 +33,9 @@ export = (ctx: Hexo) => {
   });
 
   Tag.virtual('posts').get(function() {
-    const PostTag = ctx.model('PostTag');
+    const ReadOnlyPostTag = ctx._binaryRelationIndex.post_tag;
 
-    const ids = PostTag.find({tag_id: this._id}).map(item => item.post_id);
+    const ids = ReadOnlyPostTag.find({tag_id: this._id}).map(item => item.post_id);
 
     return ctx.locals.get('posts').find({
       _id: {$in: ids}
@@ -45,9 +45,9 @@ export = (ctx: Hexo) => {
   Tag.virtual('length').get(function() {
     // Note: this.posts.length is also working
     // But it's slow because `find` has to iterate over all posts
-    const PostTag = ctx.model('PostTag');
+    const ReadOnlyPostTag = ctx._binaryRelationIndex.post_tag;
 
-    return PostTag.find({tag_id: this._id}).length;
+    return ReadOnlyPostTag.find({tag_id: this._id}).length;
   });
 
   // Check whether a tag exists
