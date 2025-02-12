@@ -705,6 +705,9 @@ class Hexo extends EventEmitter {
     this.emit('generateBefore');
 
     // Run before_generate filters
+    // https://github.com/hexojs/hexo/issues/5287
+    // locals should be invalidated before before_generate filters because tags may use locals
+    this.locals.invalidate();
     return this.execFilter('before_generate', null, { context: this })
       .then(() => this._routerRefresh(this._runGenerators(), useCache)).then(() => {
         this.emit('generateAfter');
