@@ -8,5 +8,20 @@ export = (ctx: Hexo) => {
     category_id: {type: warehouse.Schema.Types.CUID, ref: 'Category'}
   });
 
+  PostCategory.pre('save', data => {
+    ctx._binaryRelationIndex.post_category.removeHook(data);
+    return data;
+  });
+
+  PostCategory.post('save', data => {
+    ctx._binaryRelationIndex.post_category.saveHook(data);
+    return data;
+  });
+
+  PostCategory.pre('remove', data => {
+    ctx._binaryRelationIndex.post_category.removeHook(data);
+    return data;
+  });
+
   return PostCategory;
 };
