@@ -1,6 +1,7 @@
-import type { LocalsType } from '../../types';
+import type Query from 'warehouse/dist/query';
+import type { LocalsType, PostSchema } from '../../types';
 import { toMomentLocale } from './date';
-import { url_for } from 'hexo-util';
+import { url_for, Cache } from 'hexo-util';
 
 interface Options {
   format?: string;
@@ -19,6 +20,8 @@ interface Data {
   month: number;
   count: number;
 }
+
+const postsCache = new Cache();
 
 function listArchivesHelper(this: LocalsType, options: Options = {}) {
   const { config } = this;
@@ -41,7 +44,7 @@ function listArchivesHelper(this: LocalsType, options: Options = {}) {
     format = type === 'monthly' ? 'MMMM YYYY' : 'YYYY';
   }
 
-  const posts = this.site.posts.sort('date', order);
+  const posts = config.relative_link ? postsCache.apply(`date-${order}`, () => this.site.posts.sort('date', order)) as Query<PostSchema> : this.site.posts.sort('date', order);
   if (!posts.length) return result;
 
   const data: Data[] = [];

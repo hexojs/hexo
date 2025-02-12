@@ -44,7 +44,7 @@ class Injector {
   }
 
   getSize(entry: Entry): number {
-    return this.cache.apply(`${entry}-size`, Object.keys(this.store[entry]).length) as number;
+    return this.cache.apply(`${entry}-size`, () => Object.keys(this.store[entry]).length) as number;
   }
 
   register(entry: Entry, value: string | (() => string), to = 'default'): void {
