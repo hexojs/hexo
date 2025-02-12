@@ -65,10 +65,10 @@ export = (ctx: Hexo) => {
 
   Post.virtual('tags').get(function() {
     return tagsGetterCache.apply(this._id, () => {
-      const PostTag = ctx.model('PostTag');
+      const ReadOnlyPostTag = ctx._binaryRelationIndex.post_tag;
       const Tag = ctx.model('Tag');
 
-      const ids = PostTag.find({post_id: this._id}, {lean: true}).map(item => item.tag_id);
+      const ids = ReadOnlyPostTag.find({post_id: this._id}).map(item => item.tag_id);
 
       return Tag.find({_id: {$in: ids}});
     });
@@ -88,10 +88,11 @@ export = (ctx: Hexo) => {
     tagsGetterCache.flush();
     tags = removeEmptyTag(tags);
 
+    const ReadOnlyPostTag = ctx._binaryRelationIndex.post_tag;
     const PostTag = ctx.model('PostTag');
     const Tag = ctx.model('Tag');
     const id = this._id;
-    const existed = PostTag.find({post_id: id}, {lean: true}).map(pickID);
+    const existed = ReadOnlyPostTag.find({post_id: id}).map(pickID);
 
     return Promise.map(tags, tag => {
       // Find the tag by name
@@ -108,7 +109,7 @@ export = (ctx: Hexo) => {
       });
     }).map(tag => {
       // Find the reference
-      const ref = PostTag.findOne({post_id: id, tag_id: tag._id}, {lean: true});
+      const ref = ReadOnlyPostTag.findOne({post_id: id, tag_id: tag._id});
       if (ref) return ref;
 
       // Insert the reference if not exist
@@ -124,10 +125,10 @@ export = (ctx: Hexo) => {
   });
 
   Post.virtual('categories').get(function() {
-    const PostCategory = ctx.model('PostCategory');
+    const ReadOnlyPostCategory = ctx._binaryRelationIndex.post_category;
     const Category = ctx.model('Category');
 
-    const ids = PostCategory.find({post_id: this._id}, {lean: true}).map(item => item.category_id);
+    const ids = ReadOnlyPostCategory.find({post_id: this._id}).map(item => item.category_id);
 
     return Category.find({_id: {$in: ids}});
   });
@@ -143,11 +144,12 @@ export = (ctx: Hexo) => {
       return Array.isArray(cat) ? removeEmptyTag(cat) : `${cat}`;
     });
 
+    const ReadOnlyPostCategory = ctx._binaryRelationIndex.post_category;
     const PostCategory = ctx.model('PostCategory');
     const Category = ctx.model('Category');
     const id = this._id;
     const allIds: string[] = [];
-    const existed = PostCategory.find({post_id: id}, {lean: true}).map(pickID);
+    const existed = ReadOnlyPostCategory.find({post_id: id}).map(pickID);
     const hasHierarchy = cats.filter(Array.isArray).length > 0;
 
     // Add a hierarchy of categories
@@ -193,7 +195,7 @@ export = (ctx: Hexo) => {
     return (hasHierarchy ? Promise.each(cats, addHierarchy) : Promise.resolve(addHierarchy(cats as string[]))
     ).then(() => allIds).map(catId => {
       // Find the reference
-      const ref: PostCategorySchema = PostCategory.findOne({post_id: id, category_id: catId}, {lean: true});
+      const ref: PostCategorySchema = ReadOnlyPostCategory.findOne({post_id: id, category_id: catId});
       if (ref) return ref;
 
       // Insert the reference if not exist

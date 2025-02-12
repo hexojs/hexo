@@ -6,6 +6,7 @@ describe('Category', () => {
   const hexo = new Hexo();
   const Category = hexo.model('Category');
   const Post = hexo.model('Post');
+  const ReadOnlyPostCategory = hexo._binaryRelationIndex.post_category;
   const PostCategory = hexo.model('PostCategory');
 
   before(() => hexo.init());
@@ -283,6 +284,7 @@ describe('Category', () => {
     await Category.removeById(cat._id!);
 
     PostCategory.find({category_id: cat._id}).should.have.lengthOf(0);
+    ReadOnlyPostCategory.find({category_id: cat._id}).should.have.lengthOf(0);
 
     await Promise.all(posts.map(post => post.remove()));
   });
