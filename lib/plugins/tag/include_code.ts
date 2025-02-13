@@ -50,8 +50,8 @@ export = (ctx: Hexo) => function includeCodeTag(args: string[]) {
   const source = join(codeDir, path).replace(/\\/g, '/');
 
   // Prevent path traversal: https://github.com/hexojs/hexo/issues/5250
-  const Page = ctx.model('Page');
-  const doc = Page.findOne({ source });
+  const Code = ctx.model('Code');
+  const doc = Code.findOne({ _id: source });
   if (!doc) return;
 
   let code = doc.content;

@@ -346,6 +346,12 @@ export interface PageSchema extends BasePagePostSchema {
   tag?: string;
 }
 
+export interface CodeSchema {
+  _id: string;
+  path: string;
+  content: string;
+}
+
 export interface AssetSchema {
   _id?: string;
   path: string;
