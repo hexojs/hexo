@@ -69,9 +69,7 @@ function parseArgs(args: string[]): HighlightOptions {
             let b = +cur.slice(hyphen + 1);
             if (Number.isNaN(a) || Number.isNaN(b)) continue;
             if (b < a) { // switch a & b
-              const temp = a;
-              a = b;
-              b = temp;
+              [a, b] = [b, a];
             }
 
             for (; a <= b; a++) {
