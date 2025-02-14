@@ -23,9 +23,7 @@ function parseArgs(args: string) {
   const mark: number[] = [];
   let firstLine = 1;
   for (let i = 0; i < len; i++) {
-    const kv = matches[i].split(':');
-    const key = kv[0];
-    const value = kv[1];
+    const [key, value] = matches[i].split(':');
 
     switch (key) {
       case 'highlight':
@@ -51,9 +49,7 @@ function parseArgs(args: string) {
             let b = +cur.slice(hyphen + 1);
             if (Number.isNaN(a) || Number.isNaN(b)) continue;
             if (b < a) { // switch a & b
-              const temp = a;
-              a = b;
-              b = temp;
+              [a, b] = [b, a];
             }
 
             for (; a <= b; a++) {
