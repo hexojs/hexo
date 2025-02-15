@@ -84,7 +84,7 @@ class PostRenderEscape {
    * @param {string} str
    * @returns string
    */
-  escapeAllSwigTags(str: string) {
+  escapeAllSwigTags(str: string, block_swig_tag_map: { [name: string]: boolean }) {
     if (!/(\{\{.+?\}\})|(\{#.+?#\})|(\{%.+?%\})/s.test(str)) {
       return str;
     }
@@ -158,7 +158,7 @@ class PostRenderEscape {
             buffer = '';
           } else if (char === '%' && next_char === '}' && swig_string_quote === '') { // From swig back to plain text
             idx++;
-            if (swig_tag_name !== '' && str.includes(`end${swig_tag_name}`)) {
+            if (swig_tag_name !== '' && (block_swig_tag_map[swig_tag_name] ?? false)) {
               state = STATE_SWIG_FULL_TAG;
               swig_start_idx[state] = idx;
             } else {
@@ -518,7 +518,7 @@ class Post {
       data.content = cacheObj.escapeCodeBlocks(data.content);
       // Escape all Nunjucks/Swig tags
       if (disableNunjucks === false) {
-        data.content = cacheObj.escapeAllSwigTags(data.content);
+        data.content = cacheObj.escapeAllSwigTags(data.content, tag.block_swig_tag_map);
       }
 
       const options: { highlight?: boolean; } = data.markdown || {};
