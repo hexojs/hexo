@@ -10,9 +10,12 @@ import type { Stats } from 'fs';
 import { PageSchema } from '../../types';
 
 export = (ctx: Hexo) => {
+  let codeDir = ctx.config.code_dir;
+  if (!codeDir.endsWith('/')) codeDir += '/';
   return {
     pattern: new Pattern(path => {
       if (isExcludedFile(path, ctx.config)) return;
+      if (path.startsWith(codeDir)) return;
 
       return {
         renderable: ctx.render.isRenderable(path) && !isMatch(path, ctx.config.skip_render)
