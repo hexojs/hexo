@@ -4,7 +4,7 @@ import Promise from 'bluebird';
 import { extname } from 'path';
 import { magenta } from 'picocolors';
 import type Hexo from '../../hexo';
-import type { AssetSchema, BaseGeneratorReturn } from '../../types';
+import type { AssetSchema, BaseGeneratorReturn, PostAssetSchema } from '../../types';
 import type Document from 'warehouse/dist/document';
 
 interface AssetData {
@@ -20,9 +20,9 @@ interface AssetGenerator extends BaseGeneratorReturn {
 }
 
 const process = (name: string, ctx: Hexo) => {
-  return Promise.filter(ctx.model(name).toArray(), (asset: Document<AssetSchema>) => exists(asset.source).tap(exist => {
+  return Promise.filter(ctx.model(name).toArray(), (asset: Document<AssetSchema> | Document<PostAssetSchema>) => exists(asset.source).tap(exist => {
     if (!exist) return asset.remove();
-  })).map((asset: Document<AssetSchema>) => {
+  })).map((asset: Document<AssetSchema> | Document<PostAssetSchema>) => {
     const { source } = asset;
     let { path } = asset;
     const data: AssetData = {

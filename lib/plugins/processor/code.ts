@@ -11,7 +11,8 @@ export = (ctx: Hexo) => {
       return path.startsWith(codeDir);
     }),
     process: function codeProcessor(file: _File) {
-      const id = relative(ctx.config.source_dir, relative(ctx.base_dir, file.source)).replace(/\\/g, '/');
+      const id = relative(ctx.base_dir, file.source).replace(/\\/g, '/');
+      const slug = relative(ctx.config.source_dir, id).replace(/\\/g, '/');
       const Code = ctx.model('Code');
       const doc = Code.findById(id);
 
@@ -23,10 +24,16 @@ export = (ctx: Hexo) => {
         return;
       }
 
+      if (file.type === 'skip' && doc) {
+        return;
+      }
+
       return file.read().then(content => {
         return Code.save({
           _id: id,
           path: file.path,
+          slug,
+          modified: file.type !== 'skip',
           content
         });
       });
