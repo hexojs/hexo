@@ -1,16 +1,11 @@
 import { EventEmitter } from 'events';
 import Promise from 'bluebird';
-import Stream, { Readable } from 'stream';
+import Stream from 'stream';
+const { Readable } = Stream;
 
 interface Data {
   data: any;
   modified: boolean;
-}
-
-declare module 'stream' {
-  export default class _Stream extends Stream {
-    readable: boolean;
-  }
 }
 
 class RouteStream extends Readable {
@@ -57,7 +52,7 @@ class RouteStream extends Readable {
     this._ended = true;
 
     data().then(data => {
-      if (data instanceof Stream && data.readable) {
+      if (data instanceof Stream && (data as Stream.Readable).readable) {
         data.on('data', d => {
           this.push(d);
         });
