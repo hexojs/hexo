@@ -1,7 +1,6 @@
 import { EventEmitter } from 'events';
 import Promise from 'bluebird';
-import Stream from 'stream';
-const { Readable } = Stream;
+import Stream, { Readable } from 'stream';
 
 interface Data {
   data: any;
