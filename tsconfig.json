@@ -5,6 +5,7 @@
     "sourceMap": true,
     "outDir": "dist",
     "declaration": true,
+    "skipLibCheck": true,
     "esModuleInterop": true,
     "types": [
       "node",

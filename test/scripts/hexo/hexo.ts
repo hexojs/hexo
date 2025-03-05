@@ -153,6 +153,45 @@ describe('Hexo', () => {
 
   it('load() - theme', async () => await testLoad(join(hexo.theme_dir, 'source')));
 
+
+  it('load() - load database', async () => {
+    hexo._dbLoaded = false;
+    const dbPath = hexo.database.options.path;
+
+    const fixture = {
+      meta: {
+        version: 1,
+        warehouse: require('warehouse').version
+      },
+      models: {
+        PostTag: [
+          { _id: 'cuid111111111111111111113', post_id: 'cuid111111111111111111111', tag_id: 'cuid111111111111111111112' }
+        ],
+        Tag: [
+          { _id: 'cuid111111111111111111112', name: 'foo' }
+        ],
+        Post: [
+          { _id: 'cuid111111111111111111111', source: 'test', slug: 'test' }
+        ]
+      }
+    };
+    await writeFile(dbPath, JSON.stringify(fixture));
+    await hexo.load();
+    // check Model
+    hexo.model('PostTag').toArray({lean: true}).length.should.eql(fixture.models.PostTag.length);
+    hexo.model('Tag').toArray({lean: true}).length.should.eql(fixture.models.Tag.length);
+    hexo.model('Post').toArray({lean: true}).length.should.eql(fixture.models.Post.length);
+    hexo._binaryRelationIndex.post_tag.keyIndex.size.should.eql(1);
+    hexo._binaryRelationIndex.post_tag.valueIndex.size.should.eql(1);
+    await unlink(dbPath);
+    // clean up
+    await hexo.model('PostTag').removeById('cuid111111111111111111113');
+    await hexo.model('Tag').removeById('cuid111111111111111111112');
+    await hexo.model('Post').removeById('cuid111111111111111111111');
+    hexo._binaryRelationIndex.post_tag.keyIndex.clear();
+    hexo._binaryRelationIndex.post_tag.valueIndex.clear();
+  });
+
   // Issue #3964
   it('load() - merge theme config - deep clone', async () => {
     const hexo = new Hexo(__dirname, { silent: true });
