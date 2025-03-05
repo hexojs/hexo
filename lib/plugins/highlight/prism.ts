@@ -1,8 +1,11 @@
-// Lazy require prismjs
-let prismHighlight;
+import type { HighlightOptions } from '../../extend/syntax_highlight';
+import type Hexo from '../../hexo';
 
-module.exports = function(code, options) {
-  const prismjsCfg = this.config.prismjs || {};
+// Lazy require prismjs
+let prismHighlight: typeof import('hexo-util').prismHighlight;
+
+module.exports = function(this: Hexo, code: string, options: HighlightOptions) {
+  const prismjsCfg = this.config.prismjs || {} as any;
   const line_threshold = options.line_threshold || prismjsCfg.line_threshold || 0;
   const shouldUseLineNumbers = typeof options.line_number === 'undefined' ? prismjsCfg.line_number : options.line_number;
   const surpassesLineThreshold = options.lines_length > line_threshold;
@@ -10,11 +13,11 @@ module.exports = function(code, options) {
 
   const prismjsOptions = {
     caption: options.caption,
-    firstLine: options.firstLine,
+    firstLine: options.firstLine as number,
     isPreprocess: prismjsCfg.preprocess,
     lang: options.lang,
     lineNumber,
-    mark: options.mark,
+    mark: Array.isArray(options.mark) ? String(options.mark) : options.mark,
     tab: prismjsCfg.tab_replace,
     stripIndent: prismjsCfg.strip_indent
   };
