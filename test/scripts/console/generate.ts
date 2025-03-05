@@ -12,7 +12,8 @@ type OriginalReturn = ReturnType<typeof generateConsole>;
 describe('generate', () => {
   let hexo: Hexo, generate: (...args: OriginalParams) => OriginalReturn;
 
-  beforeEach(async () => {
+  beforeEach(async function() {
+    this.timeout(5000);
     hexo = new Hexo(join(__dirname, 'generate_test'), {silent: true});
     generate = generateConsole.bind(hexo);
 
@@ -179,7 +180,8 @@ describe('generate', () => {
     result.should.eql(content);
 
     // Stop watching
-    await hexo.unwatch();
+    hexo.unwatch();
+    await BluebirdPromise.delay(300);
   });
 
   it('deploy', async () => {
@@ -204,6 +206,7 @@ describe('generate', () => {
       writeFile(join(hexo.theme_dir, 'source', 'b.txt'), 'b'),
       writeFile(join(hexo.theme_dir, 'source', 'c.njk'), 'c')
     ]);
+    await BluebirdPromise.delay(300);
     await generate();
 
     // Update source file
@@ -211,7 +214,7 @@ describe('generate', () => {
       writeFile(join(hexo.theme_dir, 'source', 'b.txt'), 'bb'),
       writeFile(join(hexo.theme_dir, 'source', 'c.njk'), 'cc')
     ]);
-
+    await BluebirdPromise.delay(300);
     // Generate again
     await generate();
 

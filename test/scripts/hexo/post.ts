@@ -666,7 +666,7 @@ describe('Post', () => {
     ].join('\n'));
 
     const path = join(hexo.source_dir, '_posts', 'fooo.md');
-    const data = await post.create({
+    await post.create({
       title: 'fooo',
       layout: 'draft',
       tags: customTags,
@@ -1485,6 +1485,16 @@ describe('Post', () => {
     data.content.should.contains('&#123;&#123; %&#125;');
     data.content.should.contains('1');
     data.content.should.contains('22222');
+
+    content = '{{ 1 }} \n `{% custom %}` 22222  `{% endcustom }`';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('1');
+    data.content.should.contains('&#123;% custom %&#125;');
+    data.content.should.contains('22222');
+    data.content.should.contains('&#123;% endcustom &#125;');
 
     // lost two characters
     content = '{{ 1 }} \n `{#` \n 22222';

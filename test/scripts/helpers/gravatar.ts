@@ -6,7 +6,7 @@ describe('gravatar', () => {
     return crypto.createHash('md5').update(str).digest('hex');
   }
 
-  const gravatar = gravatarHelper as any;
+  const gravatar = gravatarHelper;
 
   const email = 'abc@abc.com';
   const hash = md5(email);

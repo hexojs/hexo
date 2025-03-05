@@ -10,10 +10,10 @@ export interface HighlightOptions {
 
   // plugins/tag/code.ts
   language_attr?: boolean | undefined;
-  firstLine?: number;
+  firstLine?: string | number;
   line_number?: boolean | undefined;
   line_threshold?: number | undefined;
-  mark?: number[];
+  mark?: number[] | string;
   wrap?: boolean | undefined;
 
 }
