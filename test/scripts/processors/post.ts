@@ -1,6 +1,6 @@
 
 import { join } from 'path';
-import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
+import { exists, mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 import BluebirdPromise from 'bluebird';
 import defaultConfig from '../../../lib/hexo/default_config';
 import Hexo from '../../../lib/hexo';
@@ -352,6 +352,49 @@ describe('post', () => {
     post.slug.should.eql('foo');
     post.published.should.be.true;
 
+    return BluebirdPromise.all([
+      post.remove(),
+      unlink(file.source)
+    ]);
+  });
+
+  it('post - type: create - post_asset_folder enabled without asset', async () => {
+    hexo.config.post_asset_folder = true;
+
+    const fooPath = join(hexo.source_dir, '_posts', 'foo');
+    if (await exists(fooPath)) {
+      await rmdir(fooPath);
+    }
+
+    const body = [
+      'title: "Hello world"',
+      'date: 2006-01-02 15:04:05',
+      'updated: 2014-12-13 01:02:03',
+      '---',
+      'The quick brown fox jumps over the lazy dog'
+    ].join('\n');
+
+    const file = newFile({
+      path: 'foo.html',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+
+    await writeFile(file.source, body);
+    await process(file);
+    const post = Post.findOne({ source: file.path });
+
+    post.title.should.eql('Hello world');
+    post.date.format(dateFormat).should.eql('2006-01-02 15:04:05');
+    post.updated.format(dateFormat).should.eql('2014-12-13 01:02:03');
+    post._content.should.eql('The quick brown fox jumps over the lazy dog');
+    post.source.should.eql(file.path);
+    post.raw.should.eql(body);
+    post.slug.should.eql('foo');
+    post.published.should.be.true;
+
+    hexo.config.post_asset_folder = false;
     return BluebirdPromise.all([
       post.remove(),
       unlink(file.source)

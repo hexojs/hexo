@@ -1,21 +1,10 @@
+import type { HighlightOptions } from '../../extend/syntax_highlight';
 import type Hexo from '../../hexo';
 
-interface Options {
-  line_threshold?: number;
-  line_number?: boolean;
-  lines_length?: number;
-  language_attr?: boolean;
-  caption?: string;
-  firstLine?: number;
-  lang?: string;
-  mark?: number[];
-  firstLineNumber?: number;
-}
-
 // Lazy require highlight.js
-let highlight;
+let highlight: typeof import('hexo-util').highlight;
 
-module.exports = function highlightFilter(this: Hexo, code: string, options: Options) {
+module.exports = function highlightFilter(this: Hexo, code: string, options: HighlightOptions) {
   const hljsCfg = this.config.highlight || {} as any;
   const line_threshold = options.line_threshold || hljsCfg.line_threshold || 0;
   const shouldUseLineNumbers = typeof options.line_number === 'undefined' ? hljsCfg.line_number : options.line_number;
@@ -26,19 +15,19 @@ module.exports = function highlightFilter(this: Hexo, code: string, options: Opt
   const hljsOptions = {
     autoDetect: hljsCfg.auto_detect,
     caption: options.caption,
-    firstLine: options.firstLine,
+    firstLine: options.firstLine as number,
     gutter,
     hljs: hljsCfg.hljs,
     lang: options.lang,
     languageAttr,
-    mark: options.mark,
+    mark: options.mark as number[],
     tab: hljsCfg.tab_replace,
     wrap: hljsCfg.wrap,
     stripIndent: hljsCfg.strip_indent
   };
   if (hljsCfg.first_line_number === 'inline') {
     if (typeof options.firstLineNumber !== 'undefined') {
-      hljsOptions.firstLine = options.firstLineNumber;
+      hljsOptions.firstLine = options.firstLineNumber as number;
     } else {
       hljsOptions.gutter = false;
     }

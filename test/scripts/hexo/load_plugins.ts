@@ -4,6 +4,7 @@ import Hexo from '../../../lib/hexo';
 import loadPlugins from '../../../lib/hexo/load_plugins';
 import BluebirdPromise from 'bluebird';
 import chai from 'chai';
+import { spy } from 'sinon';
 const should = chai.should();
 
 describe('Load plugins', () => {
@@ -90,6 +91,20 @@ describe('Load plugins', () => {
     ]).then(() => loadPlugins(hexo)).then(() => {
       validate(path);
       return unlink(path);
+    });
+  });
+
+  it('fail to load plugins', () => {
+    const logSpy = spy();
+    hexo.log.error = logSpy;
+    const name = 'hexo-plugin-test';
+    const path = join(hexo.plugin_dir, name, 'index.js');
+    return BluebirdPromise.all([
+      createPackageFile(name),
+      writeFile(path, 'throw new Error("test")')
+    ]).then(() => loadPlugins(hexo)).then(() => {
+      logSpy.args[0][1].should.contains('Plugin load failed: %s');
+      logSpy.args[0][2].should.contains('hexo-plugin-test');
     });
   });
 
@@ -216,6 +231,20 @@ describe('Load plugins', () => {
     validate(path);
     return unlink(path);
   });
+
+  it('fail to load scripts', async () => {
+    const logSpy = spy();
+    hexo.log.error = logSpy;
+    const path = join(hexo.script_dir, 'test.js');
+
+    writeFile(path, 'throw new Error("test")');
+    await loadPlugins(hexo);
+
+    logSpy.args[0][1].should.contains('Script load failed: %s');
+    logSpy.args[0][2].should.contains('test.js');
+    return unlink(path);
+  });
+
 
   it('load theme scripts', () => {
     const path = join(hexo.theme_script_dir, 'test.js');
