@@ -30,6 +30,22 @@ const isNonWhiteSpaceChar = (char: string) => char !== '\r'
   && char !== '\v'
   && char !== ' ';
 
+class StringBuilder {
+  private parts: string[];
+
+  constructor() {
+    this.parts = [];
+  }
+
+  append(str: string): void {
+    this.parts.push(str);
+  }
+
+  toString(): string {
+    return this.parts.join('');
+  }
+}
+
 class PostRenderEscape {
   public stored: string[];
   public length: number;
@@ -74,7 +90,7 @@ class PostRenderEscape {
     }
     let state = STATE_PLAINTEXT;
     let buffer = '';
-    let output = '';
+    const output = new StringBuilder();
 
     let swig_tag_name_begin = false;
     let swig_tag_name_end = false;
@@ -120,10 +136,10 @@ class PostRenderEscape {
               swig_tag_name_end = false;
               swig_start_idx[state] = idx;
             } else {
-              output += char;
+              output.append(char);
             }
           } else {
-            output += char;
+            output.append(char);
           }
         } else if (state === STATE_SWIG_TAG) {
           if (char === '"' || char === '\'') {
@@ -138,7 +154,7 @@ class PostRenderEscape {
             // From swig back to plain text
             swig_tag_name = '';
             state = STATE_PLAINTEXT;
-            output += `{%${buffer}${char}`;
+            output.append(`{%${buffer}${char}`);
             buffer = '';
           } else if (char === '%' && next_char === '}' && swig_string_quote === '') { // From swig back to plain text
             idx++;
@@ -148,7 +164,7 @@ class PostRenderEscape {
             } else {
               swig_tag_name = '';
               state = STATE_PLAINTEXT;
-              output += PostRenderEscape.escapeContent(this.stored, 'swig', `{%${buffer}%}`);
+              output.append(PostRenderEscape.escapeContent(this.stored, 'swig', `{%${buffer}%}`));
             }
 
             buffer = '';
@@ -183,12 +199,12 @@ class PostRenderEscape {
           if (char === '}' && next_char !== '}' && swig_string_quote === '') {
             // From swig back to plain text
             state = STATE_PLAINTEXT;
-            output += `{{${buffer}${char}`;
+            output.append(`{{${buffer}${char}`);
             buffer = '';
           } else if (char === '}' && next_char === '}' && swig_string_quote === '') {
             idx++;
             state = STATE_PLAINTEXT;
-            output += PostRenderEscape.escapeContent(this.stored, 'swig', `{{${buffer}}}`);
+            output.append(PostRenderEscape.escapeContent(this.stored, 'swig', `{{${buffer}}}`));
             buffer = '';
           } else {
             buffer = buffer + char;
@@ -220,7 +236,7 @@ class PostRenderEscape {
 
             if (swig_full_tag_found && swig_full_tag_end_buffer.includes(`end${swig_tag_name}`)) {
               state = STATE_PLAINTEXT;
-              output += PostRenderEscape.escapeContent(this.stored, 'swig', `{%${swig_full_tag_start_buffer}%}${buffer}{%${swig_full_tag_end_buffer}%}`);
+              output.append(PostRenderEscape.escapeContent(this.stored, 'swig', `{%${swig_full_tag_start_buffer}%}${buffer}{%${swig_full_tag_end_buffer}%}`));
               idx = _idx;
               swig_full_tag_start_buffer = '';
               swig_full_tag_end_buffer = '';
@@ -242,15 +258,15 @@ class PostRenderEscape {
       buffer = '';
       swig_string_quote = '';
       if (state === STATE_SWIG_FULL_TAG) {
-        output += `{%${swig_full_tag_start_buffer}%`;
+        output.append(`{%${swig_full_tag_start_buffer}%`);
       } else {
-        output += '{';
+        output.append('{');
       }
       swig_full_tag_start_buffer = '';
       state = STATE_PLAINTEXT;
     }
 
-    return output;
+    return output.toString();
   }
 }
 
