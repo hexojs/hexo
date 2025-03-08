@@ -81,7 +81,7 @@
     "cheerio": "1.0.0",
     "decache": "^4.6.1",
     "eslint": "^9.17.0",
-    "eslint-config-hexo": "github:yoshinorin/eslint-config-hexo#chore/migrate-to-flatconfig",
+    "eslint-config-hexo": "^6.0.0",
     "hexo-renderer-marked": "^6.0.0",
     "husky": "^9.1.7",
     "lint-staged": "^15.3.0",
