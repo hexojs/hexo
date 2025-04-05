@@ -85,9 +85,6 @@ class PostRenderEscape {
    * @returns string
    */
   escapeAllSwigTags(str: string) {
-    if (!/(\{\{.+?\}\})|(\{#.+?#\})|(\{%.+?%\})/s.test(str)) {
-      return str;
-    }
     let state = STATE_PLAINTEXT;
     let buffer = '';
     const output = new StringBuilder();
@@ -517,7 +514,8 @@ class Post {
     }).then(() => {
       data.content = cacheObj.escapeCodeBlocks(data.content);
       // Escape all Nunjucks/Swig tags
-      if (disableNunjucks === false) {
+      const hasTag = /(\{\{.+?\}\})|(\{#.+?#\})|(\{%.+?%\})/s.test(data.content);
+      if (disableNunjucks === false && hasTag) {
         data.content = cacheObj.escapeAllSwigTags(data.content);
       }
 
@@ -539,7 +537,10 @@ class Post {
           if (disableNunjucks) return data.content;
 
           // Render with Nunjucks
-          return tag.render(data.content, data);
+          if (hasTag) {
+            return tag.render(data.content, data);
+          }
+          return data.content;
         }
       }, options);
     }).then(content => {
