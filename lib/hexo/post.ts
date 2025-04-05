@@ -13,6 +13,7 @@ import type { NodeJSLikeCallback, RenderData } from '../types';
 const preservedKeys = ['title', 'slug', 'path', 'layout', 'date', 'content'];
 
 const rHexoPostRenderEscape = /<hexoPostRenderCodeBlock>([\s\S]+?)<\/hexoPostRenderCodeBlock>/g;
+const rSwigTag = /(\{\{.+?\}\})|(\{#.+?#\})|(\{%.+?%\})/s;
 
 const rSwigPlaceHolder = /(?:<|&lt;)!--swig\uFFFC(\d+)--(?:>|&gt;)/g;
 const rCodeBlockPlaceHolder = /(?:<|&lt;)!--code\uFFFC(\d+)--(?:>|&gt;)/g;
@@ -514,9 +515,12 @@ class Post {
     }).then(() => {
       data.content = cacheObj.escapeCodeBlocks(data.content);
       // Escape all Nunjucks/Swig tags
-      const hasTag = /(\{\{.+?\}\})|(\{#.+?#\})|(\{%.+?%\})/s.test(data.content);
-      if (disableNunjucks === false && hasTag) {
-        data.content = cacheObj.escapeAllSwigTags(data.content);
+      let hasTag = true;
+      if (disableNunjucks === false) {
+        hasTag = rSwigTag.test(data.content);
+        if (hasTag) {
+          data.content = cacheObj.escapeAllSwigTags(data.content);
+        }
       }
 
       const options: { highlight?: boolean; } = data.markdown || {};
@@ -534,13 +538,10 @@ class Post {
           data.content = cacheObj.restoreAllSwigTags(content);
 
           // Return content after replace the placeholders
-          if (disableNunjucks) return data.content;
+          if (disableNunjucks || !hasTag) return data.content;
 
-          // Render with Nunjucks
-          if (hasTag) {
-            return tag.render(data.content, data);
-          }
-          return data.content;
+          // Render with Nunjucks if there are Swig tags
+          return tag.render(data.content, data);
         }
       }, options);
     }).then(content => {
