@@ -1,4 +1,4 @@
-import { join, parse } from 'path';
+import { join, parse, basename, extname } from 'path';
 import tildify from 'tildify';
 import { exists, readdir } from 'hexo-fs';
 import { magenta } from 'picocolors';
@@ -36,7 +36,7 @@ function findConfigPath(path: string): Promise<string> {
   const { dir, name } = parse(path);
 
   return readdir(dir).then(files => {
-    const item = files.find(item => item.startsWith(name));
+    const item = files.find(item => basename(item, extname(item)) === name);
     if (item != null) return join(dir, item);
   });
 }

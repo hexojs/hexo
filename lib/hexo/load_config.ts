@@ -1,4 +1,4 @@
-import { sep, resolve, join, parse } from 'path';
+import { sep, resolve, join, parse, basename, extname } from 'path';
 import tildify from 'tildify';
 import Theme from '../theme';
 import Source from './source';
@@ -63,13 +63,12 @@ export = async (ctx: Hexo): Promise<void> => {
   }
   ctx.theme_script_dir = join(ctx.theme_dir, 'scripts') + sep;
   ctx.theme = new Theme(ctx, { ignored });
-
 };
 
 async function findConfigPath(path: string): Promise<string> {
   const { dir, name } = parse(path);
 
   const files = await readdir(dir);
-  const item = files.find(item => item.startsWith(name));
+  const item = files.find(item => basename(item, extname(item)) === name);
   if (item != null) return join(dir, item);
 }

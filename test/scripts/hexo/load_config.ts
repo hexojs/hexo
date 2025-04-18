@@ -14,6 +14,7 @@ describe('Load config', () => {
   after(() => rmdir(hexo.base_dir));
 
   beforeEach(() => {
+    hexo.config_path = join(hexo.base_dir, '_config.yml');
     hexo.config = JSON.parse(JSON.stringify(defaultConfig));
   });
 
@@ -41,6 +42,7 @@ describe('Load config', () => {
       await writeFile(configPath, '{"baz": 3}');
       await loadConfig(hexo);
       hexo.config.baz.should.eql(3);
+      hexo.config_path.should.eql(configPath);
     } finally {
       await unlink(configPath);
     }
@@ -53,6 +55,7 @@ describe('Load config', () => {
       await writeFile(configPath, 'foo: 1');
       await loadConfig(hexo);
       hexo.config.should.eql(defaultConfig);
+      hexo.config_path.should.not.eql(configPath);
     } finally {
       await unlink(configPath);
     }
