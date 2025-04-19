@@ -42,6 +42,7 @@ class SchemaTypeMoment extends warehouse.SchemaType<moment.Moment> {
     return value;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   match(value, query, data?) {
     return value ? value.valueOf() === query.valueOf() : false;
   }
@@ -60,28 +61,34 @@ class SchemaTypeMoment extends warehouse.SchemaType<moment.Moment> {
     if (value) return toMoment(value);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   value(value?, data?) {
     // FIXME: Same as above. Also a dirty hack.
     return value ? value._d.toISOString() : value;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   q$day(value, query, data?) {
     return value ? value.date() === query : false;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   q$month(value, query, data?) {
     return value ? value.month() === query : false;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   q$year(value, query, data?) {
     return value ? value.year() === query : false;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   u$inc(value, update, data?) {
     if (!value) return value;
     return value.add(update);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   u$dec(value, update, data?) {
     if (!value) return value;
     return value.subtract(update);

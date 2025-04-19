@@ -59,6 +59,7 @@ class NunjucksTag {
     return node;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   run(context, args, body, callback) {
     return this._run(context, args, '');
   }
@@ -80,6 +81,7 @@ class NunjucksBlock extends NunjucksTag {
     return new nodes.CallExtension(this, 'run', node, [body]);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _parseBody(parser, nodes, lexer) {
     const body = parser.parseUntilBlocks(`end${this.tags[0]}`);
 
@@ -87,6 +89,7 @@ class NunjucksBlock extends NunjucksTag {
     return body;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   run(context, args, body, callback) {
     return this._run(context, args, trimBody(body));
   }
