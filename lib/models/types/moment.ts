@@ -20,11 +20,7 @@ class SchemaTypeMoment extends warehouse.SchemaType<moment.Moment> {
     value = super.cast(value, data);
     if (value == null) return value;
 
-    const { options } = this;
     value = toMoment(value);
-
-    if (options.language) value = value.locale(toMomentLocale(options.language));
-    if (options.timezone) value = value.tz(options.timezone);
 
     return value;
   }
