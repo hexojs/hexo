@@ -8,7 +8,12 @@ module.exports = [
       '@typescript-eslint/no-var-requires': 0,
       '@typescript-eslint/no-require-imports': 0,
       'n/no-missing-require': 0,
-      'n/no-missing-import': 0
+      'n/no-missing-import': 0,
+      '@typescript-eslint/no-unused-vars': [
+        'error', {
+          'argsIgnorePattern': '^_'
+        }
+      ]
     }
   }
 ];

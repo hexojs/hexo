@@ -5,8 +5,7 @@ import type fs from 'fs';
 import type Document from 'warehouse/dist/document';
 import type { CacheSchema } from '../types';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export = (ctx: Hexo) => {
+export = (_ctx: Hexo) => {
   const Cache = new warehouse.Schema<CacheSchema>({
     _id: {type: String, required: true},
     hash: {type: String, default: ''},
