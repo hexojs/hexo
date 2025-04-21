@@ -188,6 +188,7 @@ declare module 'module' {
     _cache: any;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 interface Hexo {
 
   /**
@@ -270,6 +271,7 @@ interface Hexo {
   emit(event: string, ...args: any[]): any;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 class Hexo extends EventEmitter {
   public base_dir: string;
   public public_dir: string;
@@ -500,7 +502,7 @@ class Hexo extends EventEmitter {
     try {
       // Try to resolve the plugin with the Node.js's built-in require.resolve.
       return require.resolve(name, { paths: [basedir] });
-    } catch (err) {
+    } catch {
       // There was an error (likely the node_modules is corrupt or from early version of npm),
       // so return a possibly non-existing path that a later part of the resolution process will check.
       return join(basedir, 'node_modules', name);
