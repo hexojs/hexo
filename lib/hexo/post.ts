@@ -515,10 +515,10 @@ class Post {
     }).then(() => {
       data.content = cacheObj.escapeCodeBlocks(data.content);
       // Escape all Nunjucks/Swig tags
-      let hasTag = true;
+      let hasSwigTag = true;
       if (disableNunjucks === false) {
-        hasTag = rSwigTag.test(data.content);
-        if (hasTag) {
+        hasSwigTag = rSwigTag.test(data.content);
+        if (hasSwigTag) {
           data.content = cacheObj.escapeAllSwigTags(data.content);
         }
       }
@@ -538,7 +538,7 @@ class Post {
           data.content = cacheObj.restoreAllSwigTags(content);
 
           // Return content after replace the placeholders
-          if (disableNunjucks || !hasTag) return data.content;
+          if (disableNunjucks || !hasSwigTag) return data.content;
 
           // Render with Nunjucks if there are Swig tags
           return tag.render(data.content, data);
