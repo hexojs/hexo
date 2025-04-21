@@ -1,5 +1,4 @@
 import { Cache } from 'hexo-util';
-import { LocalsType, PageSchema, PostSchema } from '../types';
 
 type Entry = 'head_begin' | 'head_end' | 'body_begin' | 'body_end';
 

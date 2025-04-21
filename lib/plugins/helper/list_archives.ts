@@ -36,7 +36,7 @@ function listArchivesHelper(this: LocalsType, options: Options = {}) {
   const order = options.order || -1;
   const compareFunc = type === 'monthly'
     ? (yearA, monthA, yearB, monthB) => yearA === yearB && monthA === monthB
-    : (yearA, monthA, yearB, monthB) => yearA === yearB;
+    : (yearA, _monthA, yearB, _monthB) => yearA === yearB;
 
   let result = '';
 
