@@ -7,10 +7,10 @@ describe('SchemaTypeMoment', () => {
   const type = new SchemaTypeMoment('test');
 
   it('cast()', () => {
-    type.cast(1e8).should.eql(moment(1e8));
-    type.cast(new Date(2014, 1, 1)).should.eql(moment(new Date(2014, 1, 1)));
-    type.cast('2014-11-03T07:45:41.237Z').should.eql(moment('2014-11-03T07:45:41.237Z'));
-    type.cast(moment(1e8)).valueOf().should.eql(1e8);
+    type.cast(1e8).should.eql(moment.utc(1e8).tz('UTC'));
+    type.cast(new Date(2014, 1, 1)).should.eql(moment.utc(new Date(2014, 1, 1)).tz('UTC'));
+    type.cast('2014-11-03T07:45:41.237Z').should.eql(moment.utc('2014-11-03T07:45:41.237Z').tz('UTC'));
+    type.cast(moment.utc(1e8)).valueOf().should.eql(1e8);
   });
 
   it('cast() - default', () => {
@@ -52,7 +52,7 @@ describe('SchemaTypeMoment', () => {
   });
 
   it('parse()', () => {
-    type.parse('2014-11-03T07:45:41.237Z')!.should.eql(moment('2014-11-03T07:45:41.237Z'));
+    type.parse('2014-11-03T07:45:41.237Z')!.should.eql(moment.utc('2014-11-03T07:45:41.237Z').tz('UTC'));
     should.not.exist(type.parse());
   });
 

@@ -28,11 +28,21 @@ export {isTmpFile};
 export {isHiddenFile};
 export {isExcludedFile};
 
+// This function is used by `asset.ts` and `post.ts`
+// To handle dates like `date: Apr 24 2014` in front-matter
 export function toDate(date?: string | number | Date | moment.Moment): Date | undefined | moment.Moment {
   if (!date || moment.isMoment(date)) return date as any;
 
   if (!(date instanceof Date)) {
+    // hexo-front-matter now always returns date in UTC
+    // but `new Date()` uses local timezone by default
+    // We have to reset offset
+    // to make the behavior consistent with hexo-front-matter
     date = new Date(date);
+    const ms = date.getTime();
+    const offset = date.getTimezoneOffset();
+    const diff = offset * DURATION_MINUTE;
+    date = new Date(ms - diff);
   }
 
   if (isNaN(date.getTime())) return;
@@ -43,12 +53,11 @@ export function toDate(date?: string | number | Date | moment.Moment): Date | un
 export function adjustDateForTimezone(date: Date | moment.Moment, timezone: string) {
   if (moment.isMoment(date)) date = date.toDate();
 
-  const offset = date.getTimezoneOffset();
   const ms = date.getTime();
   const target = moment.tz.zone(timezone).utcOffset(ms);
-  const diff = (offset - target) * DURATION_MINUTE;
+  const diff = target * DURATION_MINUTE;
 
-  return new Date(ms - diff);
+  return new Date(ms + diff);
 }
 
 export {isMatch};
