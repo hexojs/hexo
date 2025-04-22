@@ -1,5 +1,5 @@
 import warehouse from 'warehouse';
-import { moment, toMomentLocale } from '../../plugins/helper/date';
+import { moment } from '../../plugins/helper/date';
 
 // It'll pollute the moment module.
 // declare module 'moment' {
@@ -20,13 +20,7 @@ class SchemaTypeMoment extends warehouse.SchemaType<moment.Moment> {
     value = super.cast(value, data);
     if (value == null) return value;
 
-    const { options } = this;
-    value = toMoment(value);
-
-    if (options.language) value = value.locale(toMomentLocale(options.language));
-    if (options.timezone) value = value.tz(options.timezone);
-
-    return value;
+    return toMoment(value);
   }
 
   validate(value, data?) {
