@@ -28,7 +28,7 @@ describe('Tag Errors', () => {
     const tag = new Tag();
 
     tag.register('test',
-      (args, content) => { return ''; },
+      (_args, _content) => { return ''; },
       { ends: true });
 
     const body = [
@@ -49,7 +49,7 @@ describe('Tag Errors', () => {
     const tag = new Tag();
 
     tag.register('test',
-      (args, content) => { return ''; },
+      (_args, _content) => { return ''; },
       { ends: true });
 
     const body = [
@@ -85,7 +85,7 @@ describe('Tag Errors', () => {
     const tag = new Tag();
 
     tag.register('test',
-      (args, content) => { return ''; },
+      (_args, _content) => { return ''; },
       { ends: true });
 
     const body = [
@@ -106,7 +106,7 @@ describe('Tag Errors', () => {
     const tag = new Tag();
 
     tag.register('test',
-      (args, content) => { return ''; },
+      (_args, _content) => { return ''; },
       { ends: true });
 
     const body = [
@@ -128,7 +128,7 @@ describe('Tag Errors', () => {
     const tag = new Tag();
 
     tag.register('test',
-      (args, content) => { return ''; },
+      (_args, _content) => { return ''; },
       { ends: true });
 
     const body = [

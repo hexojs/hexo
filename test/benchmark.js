@@ -1,5 +1,3 @@
-'use strict';
-
 const { performance, PerformanceObserver } = require('perf_hooks');
 const { spawn } = require('child_process');
 const { spawn: spawnAsync } = require('hexo-util');
