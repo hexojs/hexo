@@ -711,7 +711,7 @@ describe('Hexo', () => {
 
   it('execFilter() - promise', async () => {
     const fn = str => {
-      return new BluebirdPromise((resolve, reject) => {
+      return new BluebirdPromise((resolve, _reject) => {
         resolve(str + 'bar');
       });
     };
