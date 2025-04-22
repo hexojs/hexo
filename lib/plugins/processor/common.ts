@@ -40,7 +40,7 @@ export function toDate(date?: string | number | Date | moment.Moment): Date | un
   return date;
 }
 
-export function timezone(date: Date | moment.Moment, timezone: string) {
+export function adjustDateForTimezone(date: Date | moment.Moment, timezone: string) {
   if (moment.isMoment(date)) date = date.toDate();
 
   const offset = date.getTimezoneOffset();
