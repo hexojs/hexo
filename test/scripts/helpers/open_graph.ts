@@ -590,6 +590,20 @@ describe('open_graph', () => {
     result.should.have.string(meta({property: 'article:tag', content: keywords[1]}));
   });
 
+  // https://github.com/hexojs/hexo/issues/5458
+  it('keywords - page tags sorted', () => {
+    const ctx = {
+      page: { tags: ['web', 'optimize'] },
+      config: hexo.config,
+      is_post: isPost
+    };
+
+    const result = openGraph.call(ctx);
+    const keywords = ['web', 'optimize'].sort();
+
+    result.should.have.string(meta({ property: 'article:tag', content: keywords[0] }) + '\n' + meta({ property: 'article:tag', content: keywords[1] }));
+  });
+
   it('keywords - config keywords array', () => {
     hexo.config.keywords = ['optimize', 'web'];
     const ctx = {
