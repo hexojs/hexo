@@ -206,11 +206,23 @@ type RegisterOptions = {
 class Tag {
   public env: Environment;
   public source: string;
+  public block_swig_tag_map: { [name: string]: boolean };
 
   constructor() {
     this.env = new Environment(null, {
       autoescape: false
     });
+    this.block_swig_tag_map = {
+      if: true,
+      for: true,
+      each: true,
+      all: true,
+      macro: true,
+      block: true,
+      raw: true,
+      filter: true,
+      call: true
+    };
   }
 
   register(name: string, fn: TagFunction): void
@@ -246,6 +258,7 @@ class Tag {
     }
 
     this.env.addExtension(name, tag);
+    this.block_swig_tag_map[name] = !!options.ends;
   }
 
   unregister(name: string): void {
@@ -254,6 +267,7 @@ class Tag {
     const { env } = this;
 
     if (env.hasExtension(name)) env.removeExtension(name);
+    delete this.block_swig_tag_map[name];
   }
 
   render(str: string): Promise<any>;

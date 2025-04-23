@@ -1525,6 +1525,36 @@ describe('Post', () => {
     data.content.should.contains('22222');
   });
 
+  it('render() - tag prefix collision during escape swig tag (issue #5635)', async () => {
+    hexo.extend.tag.register('testtagblock', (args, content) => {
+      return 'rendered_test_tag_block';
+    }, { ends: true });
+    hexo.extend.tag.register('testtag', args => {
+      return 'rendered_test_tag';
+    });
+
+    const content = [
+      'x{% testtag name  %}',
+      '## Title',
+      '{% testtagblock %}',
+      'content in block tag',
+      '{% endtesttagblock %}'
+    ].join('\n');
+
+    const data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+
+    hexo.extend.tag.unregister('testtagblock');
+    hexo.extend.tag.unregister('testtag');
+
+    data.content.should.contains('rendered_test_tag_block');
+    data.content.should.contains('rendered_test_tag');
+    data.content.should.contains('<h2');
+    data.content.should.not.contains('## Title');
+  });
+
   it('render() - incomplete tags throw error', async () => {
     const content = 'nunjucks should throw {#  } error';
 
