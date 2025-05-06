@@ -51,7 +51,7 @@ describe('Tag', () => {
   it('register()', async () => {
     const tag = new Tag();
 
-    tag.register('test', (args, content) => args.join(' '));
+    tag.register('test', (args, _content) => args.join(' '));
 
     const result = await tag.render('{% test foo.bar | abcdef > fn(a, b, c) < fn() %}');
     result.should.eql('foo.bar | abcdef > fn(a, b, c) < fn()');
@@ -60,7 +60,7 @@ describe('Tag', () => {
   it('register() - async', async () => {
     const tag = new Tag();
 
-    tag.register('test', async (args, content) => args.join(' '), { async: true });
+    tag.register('test', async (args, _content) => args.join(' '), { async: true });
 
     const result = await tag.render('{% test foo bar %}');
     result.should.eql('foo bar');
@@ -99,7 +99,7 @@ describe('Tag', () => {
   it('register() - nested test', async () => {
     const tag = new Tag();
 
-    tag.register('test', (args, content) => content, true);
+    tag.register('test', (_args, content) => content, true);
 
     const str = [
       '{% test %}',
@@ -156,7 +156,7 @@ describe('Tag', () => {
   it('register() - async callback', async () => {
     const tag = new Tag();
 
-    tag.register('test', async (args, content, callback) => {
+    tag.register('test', async (args, _content, callback) => {
       callback && callback(null, args.join(' '));
       return '';
     }, { async: true });
@@ -178,7 +178,7 @@ describe('Tag', () => {
   it('unregister()', () => {
     const tag = new Tag();
 
-    tag.register('test', async (args, content) => args.join(' '), {async: true});
+    tag.register('test', async (args, _content) => args.join(' '), {async: true});
     tag.unregister('test');
 
     return tag.render('{% test foo bar %}')

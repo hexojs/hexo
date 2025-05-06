@@ -1534,7 +1534,7 @@ describe('Post', () => {
         engine: 'markdown'
       });
       should.fail();
-    } catch (err) {}
+    } catch {}
   });
 
   // https://github.com/hexojs/hexo/issues/5401

@@ -18,7 +18,7 @@ describe('Processor', () => {
 
     // more than one arg
     // @ts-expect-error
-    p.register((a, b) => {});
+    p.register((_a, _b) => {});
 
     p.list()[1].should.exist;
 
