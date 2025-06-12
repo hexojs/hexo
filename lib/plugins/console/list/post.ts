@@ -1,5 +1,5 @@
 import { gray, magenta, underline } from 'picocolors';
-import table from 'text-table';
+import table from 'fast-text-table';
 import { stringLength } from './common';
 import type Hexo from '../../../hexo';
 import type { PostSchema } from '../../../types';
