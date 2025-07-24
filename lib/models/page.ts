@@ -11,14 +11,10 @@ export = (ctx: Hexo) => {
     title: {type: String, default: ''},
     date: {
       type: Moment,
-      default: moment,
-      language: ctx.config.languages,
-      timezone: ctx.config.timezone
+      default: moment
     },
     updated: {
-      type: Moment,
-      language: ctx.config.languages,
-      timezone: ctx.config.timezone
+      type: Moment
     },
     comments: {type: Boolean, default: true},
     layout: {type: String, default: 'page'},

@@ -59,7 +59,7 @@ class NunjucksTag {
     return node;
   }
 
-  run(context, args, body, callback) {
+  run(context, args, _body, _callback) {
     return this._run(context, args, '');
   }
 
@@ -80,14 +80,14 @@ class NunjucksBlock extends NunjucksTag {
     return new nodes.CallExtension(this, 'run', node, [body]);
   }
 
-  _parseBody(parser, nodes, lexer) {
+  _parseBody(parser, _nodes, _lexer) {
     const body = parser.parseUntilBlocks(`end${this.tags[0]}`);
 
     parser.advanceAfterBlockEnd();
     return body;
   }
 
-  run(context, args, body, callback) {
+  run(context, args, body, _callback) {
     return this._run(context, args, trimBody(body));
   }
 }
