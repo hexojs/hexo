@@ -1,7 +1,7 @@
 import r from '../../../lib/plugins/renderer/nunjucks';
 import { dirname, join } from 'path';
 import chai from 'chai';
-const should = chai.should();
+const _should = chai.should();
 
 
 describe('nunjucks', () => {

@@ -48,7 +48,7 @@ describe('Renderer', () => {
     yaml.should.eql('foo');
 
     // sync
-    r.register('swig', 'html', (data, options) => 'foo', true);
+    r.register('swig', 'html', (_data, _options) => 'foo', true);
 
     const swig = await r.get('swig')({}, {});
     swig.should.eql('foo');
@@ -57,11 +57,11 @@ describe('Renderer', () => {
   it('register() - compile', () => {
     const r = new Renderer();
 
-    function renderer(data, locals) {
+    function renderer(_data, _locals) {
       return BluebirdPromise.resolve();
     }
 
-    renderer.compile = data => {
+    renderer.compile = _ => {
       return () => {};
     };
 
