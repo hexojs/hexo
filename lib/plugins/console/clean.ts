@@ -2,7 +2,6 @@ import Promise from 'bluebird';
 import { exists, unlink, rmdir } from 'hexo-fs';
 import type Hexo from '../../hexo';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function cleanConsole(this: Hexo, _args?: any) {
   return Promise.all([
     deleteDatabase(this),
