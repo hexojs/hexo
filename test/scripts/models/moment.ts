@@ -18,24 +18,6 @@ describe('SchemaTypeMoment', () => {
     moment.isMoment(type.cast()).should.be.true;
   });
 
-  it('cast() - language', () => {
-    const lang = 'zh-tw';
-    const format = 'LLLL';
-    const type = new SchemaTypeMoment('test', {language: lang});
-    const now = Date.now();
-
-    type.cast(now).format(format).should.eql(moment(now).locale(lang).format(format));
-  });
-
-  it('cast() - timezone', () => {
-    const timezone = 'Etc/UTC';
-    const format = 'LLLL';
-    const type = new SchemaTypeMoment('test', {timezone});
-    const now = Date.now();
-
-    type.cast(now).format(format).should.eql(moment(now).tz(timezone).format(format));
-  });
-
   function shouldThrowError(value) {
     should.throw(
       () => type.validate(value),

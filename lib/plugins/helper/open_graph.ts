@@ -162,7 +162,7 @@ function openGraphHelper(this: LocalsType, options: Options = {}) {
 
     keywords.map(tag => {
       return tag.name ? tag.name : tag;
-    }).filter(Boolean).forEach(keyword => {
+    }).filter(Boolean).sort().forEach(keyword => {
       result += og('article:tag', keyword);
     });
   }

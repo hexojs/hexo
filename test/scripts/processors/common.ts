@@ -1,5 +1,5 @@
 import moment from 'moment';
-import { isTmpFile, isHiddenFile, toDate, timezone, isMatch } from '../../../lib/plugins/processor/common';
+import { isTmpFile, isHiddenFile, toDate, adjustDateForTimezone, isMatch } from '../../../lib/plugins/processor/common';
 import chai from 'chai';
 const should = chai.should();
 
@@ -33,16 +33,16 @@ describe('common', () => {
 
   it('timezone() - date', () => {
     const d = new Date(Date.UTC(1972, 2, 29, 0, 0, 0));
-    const d_timezone_UTC = timezone(d, 'UTC').getTime();
-    (timezone(d, 'Asia/Shanghai').getTime() - d_timezone_UTC).should.eql(-8 * 3600 * 1000);
-    (timezone(d, 'Asia/Bangkok').getTime() - d_timezone_UTC).should.eql(-7 * 3600 * 1000);
-    (timezone(d, 'America/Los_Angeles').getTime() - d_timezone_UTC).should.eql(8 * 3600 * 1000);
+    const d_timezone_UTC = adjustDateForTimezone(d, 'UTC').getTime();
+    (adjustDateForTimezone(d, 'Asia/Shanghai').getTime() - d_timezone_UTC).should.eql(-8 * 3600 * 1000);
+    (adjustDateForTimezone(d, 'Asia/Bangkok').getTime() - d_timezone_UTC).should.eql(-7 * 3600 * 1000);
+    (adjustDateForTimezone(d, 'America/Los_Angeles').getTime() - d_timezone_UTC).should.eql(8 * 3600 * 1000);
   });
 
   it('timezone() - moment', () => {
     const d = moment(new Date(Date.UTC(1972, 2, 29, 0, 0, 0)));
-    const d_timezone_UTC = timezone(d, 'UTC').getTime();
-    (timezone(d, 'Europe/Moscow').getTime() - d_timezone_UTC).should.eql(-3 * 3600 * 1000);
+    const d_timezone_UTC = adjustDateForTimezone(d, 'UTC').getTime();
+    (adjustDateForTimezone(d, 'Europe/Moscow').getTime() - d_timezone_UTC).should.eql(-3 * 3600 * 1000);
   });
 
   it('isMatch() - string', () => {

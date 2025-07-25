@@ -1,5 +1,4 @@
 import { Cache } from 'hexo-util';
-import { LocalsType, PageSchema, PostSchema } from '../types';
 
 type Entry = 'head_begin' | 'head_end' | 'body_begin' | 'body_end';
 
@@ -44,7 +43,7 @@ class Injector {
   }
 
   getSize(entry: Entry): number {
-    return this.cache.apply(`${entry}-size`, Object.keys(this.store[entry]).length) as number;
+    return this.cache.apply(`${entry}-size`, () => Object.keys(this.store[entry]).length) as number;
   }
 
   register(entry: Entry, value: string | (() => string), to = 'default'): void {

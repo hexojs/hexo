@@ -1,4 +1,4 @@
-import { toDate, timezone, isExcludedFile, isTmpFile, isHiddenFile, isMatch } from './common';
+import { toDate, adjustDateForTimezone, isExcludedFile, isTmpFile, isHiddenFile, isMatch } from './common';
 import Promise from 'bluebird';
 import { parse as yfm } from 'hexo-front-matter';
 import { extname, join, posix, sep } from 'path';
@@ -72,7 +72,7 @@ function processPost(ctx: Hexo, file: _File) {
   const { path } = file.params;
   const doc = Post.findOne({source: file.path});
   const { config } = ctx;
-  const { timezone: timezoneCfg, updated_option, use_slug_as_post_title } = config;
+  const { timezone, updated_option, use_slug_as_post_title } = config;
 
   let categories, tags;
 
@@ -129,7 +129,7 @@ function processPost(ctx: Hexo, file: _File) {
     }
 
     if (data.date) {
-      if (timezoneCfg) data.date = timezone(data.date, timezoneCfg) as any;
+      if (timezone) data.date = adjustDateForTimezone(data.date, timezone) as any;
     } else {
       data.date = stats.birthtime as any;
     }
@@ -137,7 +137,7 @@ function processPost(ctx: Hexo, file: _File) {
     data.updated = toDate(data.updated) as any;
 
     if (data.updated) {
-      if (timezoneCfg) data.updated = timezone(data.updated, timezoneCfg) as any;
+      if (timezone) data.updated = adjustDateForTimezone(data.updated, timezone) as any;
     } else if (updated_option === 'date') {
       data.updated = data.date;
     } else if (updated_option === 'empty') {

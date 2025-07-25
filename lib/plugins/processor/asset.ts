@@ -1,4 +1,4 @@
-import { timezone, toDate, isExcludedFile, isMatch } from './common';
+import { adjustDateForTimezone, toDate, isExcludedFile, isMatch } from './common';
 import Promise from 'bluebird';
 import { parse as yfm } from 'hexo-front-matter';
 import { extname, relative } from 'path';
@@ -34,7 +34,7 @@ function processPage(ctx: Hexo, file: _File) {
   const { path } = file;
   const doc = Page.findOne({source: path});
   const { config } = ctx;
-  const { timezone: timezoneCfg } = config;
+  const { timezone } = config;
   const updated_option = config.updated_option;
 
   if (file.type === 'skip' && doc) {
@@ -62,7 +62,7 @@ function processPage(ctx: Hexo, file: _File) {
     data.date = toDate(data.date) as any;
 
     if (data.date) {
-      if (timezoneCfg) data.date = timezone(data.date, timezoneCfg) as any;
+      if (timezone) data.date = adjustDateForTimezone(data.date, timezone) as any;
     } else {
       data.date = stats.ctime as any;
     }
@@ -70,7 +70,7 @@ function processPage(ctx: Hexo, file: _File) {
     data.updated = toDate(data.updated) as any;
 
     if (data.updated) {
-      if (timezoneCfg) data.updated = timezone(data.updated, timezoneCfg) as any;
+      if (timezone) data.updated = adjustDateForTimezone(data.updated, timezone) as any;
     } else if (updated_option === 'date') {
       data.updated = data.date;
     } else if (updated_option === 'empty') {

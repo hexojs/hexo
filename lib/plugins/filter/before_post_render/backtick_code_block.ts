@@ -1,17 +1,83 @@
+import type { HighlightOptions } from '../../../extend/syntax_highlight';
 import type Hexo from '../../../hexo';
 import type { RenderData } from '../../../types';
 
-const rBacktick = /^((?:[^\S\r\n]*>){0,3}[^\S\r\n]*)(`{3,}|~{3,})[^\S\r\n]*((?:.*?[^`\s])?)[^\S\r\n]*\n((?:[\s\S]*?\n)?)(?:(?:[^\S\r\n]*>){0,3}[^\S\r\n]*)\2[^\S\r\n]?(\n+|$)/gm;
+const rBacktick = /^((?:(?:[^\S\r\n]*>){0,3}|[-*+]|[0-9]+\.)[^\S\r\n]*)(`{3,}|~{3,})[^\S\r\n]*((?:.*?[^`\s])?)[^\S\r\n]*\n((?:[\s\S]*?\n)?)(?:(?:[^\S\r\n]*>){0,3}[^\S\r\n]*)\2[^\S\r\n]?(\n+|$)/gm;
 const rAllOptions = /([^\s]+)\s+(.+?)\s+(https?:\/\/\S+|\/\S+)\s*(.+)?/;
 const rLangCaption = /([^\s]+)\s*(.+)?/;
+const rAdditionalOptions = /\s((?:line_number|line_threshold|first_line|wrap|mark|language_attr|highlight):\S+)/g;
 
 const escapeSwigTag = (str: string) => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
-interface Options {
-  lang: string,
-  caption: string,
-  lines_length: number,
-  firstLineNumber?: string | number
+function parseArgs(args: string) {
+  const matches = [];
+
+  let match: RegExpExecArray | null, language_attr: boolean,
+    line_number: boolean, line_threshold: number, wrap: boolean;
+  let enableHighlight = true;
+  while ((match = rAdditionalOptions.exec(args)) !== null) {
+    matches.push(match[1]);
+  }
+
+  const len = matches.length;
+  const mark: number[] = [];
+  let firstLine = 1;
+  for (let i = 0; i < len; i++) {
+    const [key, value] = matches[i].split(':');
+
+    switch (key) {
+      case 'highlight':
+        enableHighlight = value === 'true';
+        break;
+      case 'line_number':
+        line_number = value === 'true';
+        break;
+      case 'line_threshold':
+        if (!isNaN(Number(value))) line_threshold = +value;
+        break;
+      case 'first_line':
+        if (!isNaN(Number(value))) firstLine = +value;
+        break;
+      case 'wrap':
+        wrap = value === 'true';
+        break;
+      case 'mark': {
+        for (const cur of value.split(',')) {
+          const hyphen = cur.indexOf('-');
+          if (hyphen !== -1) {
+            let a = +cur.slice(0, hyphen);
+            let b = +cur.slice(hyphen + 1);
+            if (Number.isNaN(a) || Number.isNaN(b)) continue;
+            if (b < a) { // switch a & b
+              [a, b] = [b, a];
+            }
+
+            for (; a <= b; a++) {
+              mark.push(a);
+            }
+          }
+          if (!isNaN(Number(cur))) mark.push(+cur);
+        }
+        break;
+      }
+      case 'language_attr': {
+        language_attr = value === 'true';
+        break;
+      }
+    }
+  }
+  return {
+    options: {
+      language_attr,
+      firstLine,
+      line_number,
+      line_threshold,
+      mark,
+      wrap
+    },
+    enableHighlight,
+    _args: args.replace(rAdditionalOptions, '')
+  };
 }
 
 export = (ctx: Hexo): (data: RenderData) => void => {
@@ -25,6 +91,10 @@ export = (ctx: Hexo): (data: RenderData) => void => {
 
       // neither highlight or prismjs is enabled, return escaped content directly.
       if (!ctx.extend.highlight.query(ctx.config.syntax_highlighter)) return escapeSwigTag($0);
+
+      const parsedArgs = parseArgs(_args);
+      if (!parsedArgs.enableHighlight) return escapeSwigTag($0);
+      _args = parsedArgs._args;
 
       // Extract language and caption of code blocks
       const args = _args.split('=').shift();
@@ -54,10 +124,11 @@ export = (ctx: Hexo): (data: RenderData) => void => {
         content = content.replace(regexp, '');
       }
 
-      const options: Options = {
+      const options: HighlightOptions = {
         lang,
         caption,
-        lines_length: content.split('\n').length
+        lines_length: content.split('\n').length,
+        ...parsedArgs.options
       };
       // setup line number by inline
       _args = _args.replace('=+', '=');
