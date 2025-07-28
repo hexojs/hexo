@@ -5,6 +5,7 @@
   "compilerOptions": {
     "outDir": "tmp/dist",
     "noEmit": true,
+    "allowJs": true,
     "types": ["node", "mocha"]
   },
   "include": [
