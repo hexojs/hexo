@@ -39,7 +39,7 @@ describe('view', () => {
   it('pattern', () => {
     const { pattern } = view;
 
-    pattern.match('layout/index.njk').path.should.eql('index.njk');
+    (pattern.match('layout/index.njk') as any).path.should.eql('index.njk');
     should.not.exist(pattern.match('index.njk'));
     should.not.exist(pattern.match('view/index.njk'));
   });
