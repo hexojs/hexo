@@ -766,4 +766,19 @@ declare global {
   const hexo: Hexo;
 }
 
-export = Hexo;
+// Assign the Hexo class to the global scope for backward compatibility
+if (typeof globalThis !== 'undefined') {
+  (globalThis as any).hexo = Hexo;
+}
+if (typeof global !== 'undefined') {
+  (global as any).hexo = Hexo;
+}
+
+// For ESM compatibility
+export default Hexo;
+// For CommonJS compatibility
+if (typeof module != 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = Hexo;
+  // For ESM compatibility
+  module.exports.default = Hexo;
+}
