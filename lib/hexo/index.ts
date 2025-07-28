@@ -8,6 +8,7 @@ import { magenta, underline } from 'picocolors';
 import tildify from 'tildify';
 import { runInThisContext } from 'vm';
 import Database from 'warehouse';
+import './globals';
 
 const { version } = JSON.parse(readFileSync(join(__dirname, '../../package.json')));
 
@@ -187,13 +188,6 @@ interface Env {
 type DefaultConfigType = typeof defaultConfig;
 interface Config extends DefaultConfigType {
   [key: string]: any;
-}
-
-// Node.js internal APIs
-declare module 'module' {
-  function _nodeModulePaths(path: string): string[];
-  function _resolveFilename(request: string, parent: Module, isMain?: any, options?: any): string;
-  const _extensions: NodeJS.RequireExtensions, _cache: any;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -782,13 +776,6 @@ Hexo.prototype.core_dir = Hexo.core_dir;
 Hexo.version = version;
 Hexo.prototype.version = Hexo.version;
 
-// define global variable
-// this useful for plugin written in typescript
-declare global {
-  // eslint-disable-next-line one-var
-  const hexo: Hexo;
-}
-
 // Assign the Hexo class to the global scope for backward compatibility
 if (typeof globalThis !== 'undefined') {
   (globalThis as any).hexo = Hexo;
@@ -796,6 +783,20 @@ if (typeof globalThis !== 'undefined') {
 if (typeof global !== 'undefined') {
   (global as any).hexo = Hexo;
 }
+
+// define global variable for plugins written in typescript (ESM & CJS)
+/* eslint-disable @typescript-eslint/no-namespace */
+declare global {
+  // For globalThis.hexo (ESM and CJS)
+  let hexo: Hexo;
+
+  namespace NodeJS {
+    interface Global {
+      hexo: Hexo;
+    }
+  }
+}
+/* eslint-enable @typescript-eslint/no-namespace */
 
 // For ESM compatibility
 export default Hexo;
