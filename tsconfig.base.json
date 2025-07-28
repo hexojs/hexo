@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es2020",
+    "target": "ESNext",
+    "module": "ESNext",
     "sourceMap": true,
     "outDir": "dist",
     "declaration": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
+    "moduleResolution": "node",
     "types": [
       "node",
       "mocha"

@@ -1,7 +1,9 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "commonjs",
+    "target": "es2020",
+    "moduleResolution": "node",
     "outDir": "dist/cjs"
   },
   "include": ["lib/**/*.ts"],
