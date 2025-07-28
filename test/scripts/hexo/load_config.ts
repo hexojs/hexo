@@ -4,7 +4,7 @@ import { makeRe } from 'micromatch';
 import loadConfig from '../../../lib/hexo/load_config';
 import defaultConfig from '../../../lib/hexo/default_config';
 import Hexo from '../../../lib/hexo';
-import deepClone from '../../util/deepClone';
+import { jsonParse, jsonStringify } from 'hexo-util';
 
 describe('Load config', () => {
   const hexo = new Hexo(join(__dirname, 'config_test'), { silent: true });
@@ -16,7 +16,7 @@ describe('Load config', () => {
 
   beforeEach(() => {
     hexo.config_path = join(hexo.base_dir, '_config.yml');
-    hexo.config = deepClone(defaultConfig);
+    hexo.config = jsonParse(jsonStringify(defaultConfig));
   });
 
   it('config file does not exist', async () => {
