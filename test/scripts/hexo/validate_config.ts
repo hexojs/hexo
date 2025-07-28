@@ -3,6 +3,7 @@ import Hexo from '../../../lib/hexo';
 import validateConfig from '../../../lib/hexo/validate_config';
 import defaultConfig from '../../../lib/hexo/default_config';
 import chai from 'chai';
+import deepClone from '../../util/deepClone';
 const should = chai.should();
 
 describe('Validate config', () => {
@@ -11,7 +12,7 @@ describe('Validate config', () => {
 
   beforeEach(() => {
     logSpy = spy();
-    hexo.config = JSON.parse(JSON.stringify(defaultConfig));
+    hexo.config = deepClone(defaultConfig);
     hexo.log.warn = logSpy;
     hexo.log.info = spy();
   });

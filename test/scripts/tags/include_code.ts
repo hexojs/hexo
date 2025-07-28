@@ -5,6 +5,7 @@ import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import tagIncludeCode from '../../../lib/plugins/tag/include_code';
 import chai from 'chai';
+import deepClone from '../../util/deepClone';
 const should = chai.should();
 
 describe('include_code', () => {
@@ -12,21 +13,11 @@ describe('include_code', () => {
   require('../../../lib/plugins/highlight/')(hexo);
   const includeCode = BluebirdPromise.method(tagIncludeCode(hexo)) as (arg1: string[]) => BluebirdPromise<string>;
   const path = join(hexo.source_dir, hexo.config.code_dir, 'test.js');
-  // Manually clone only the plain config values needed for tests (avoid circular refs)
-  const defaultCfg = {
-    ...hexo.config,
-    highlight: { ...hexo.config.highlight },
-    code_dir: hexo.config.code_dir,
-    syntax_highlighter: hexo.config.syntax_highlighter
-  };
+  const defaultCfg = deepClone(hexo.config);
 
-  const fixture = [
-    'if (tired && night) {',
-    '  sleep();',
-    '}'
-  ].join('\n');
+  const fixture = ['if (tired && night) {', '  sleep();', '}'].join('\n');
 
-  const code = args => includeCode(args.split(' '));
+  const code = (args: string) => includeCode(args.split(' '));
 
   before(async () => {
     await writeFile(path, fixture);
@@ -35,10 +26,7 @@ describe('include_code', () => {
   });
 
   beforeEach(() => {
-    // Restore only the config values that are changed in tests
-    hexo.config.highlight = { ...defaultCfg.highlight };
-    hexo.config.code_dir = defaultCfg.code_dir;
-    hexo.config.syntax_highlighter = defaultCfg.syntax_highlighter;
+    hexo.config = deepClone(defaultCfg);
   });
 
   after(() => rmdir(hexo.base_dir));
@@ -93,9 +81,7 @@ describe('include_code', () => {
     });
 
     it('from', async () => {
-      const fixture = [
-        '}'
-      ].join('\n');
+      const fixture = ['}'].join('\n');
       const expected = highlight(fixture, {
         lang: 'js',
         caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
@@ -106,10 +92,7 @@ describe('include_code', () => {
     });
 
     it('to', async () => {
-      const fixture = [
-        'if (tired && night) {',
-        '  sleep();'
-      ].join('\n');
+      const fixture = ['if (tired && night) {', '  sleep();'].join('\n');
       const expected = highlight(fixture, {
         lang: 'js',
         caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
@@ -120,9 +103,7 @@ describe('include_code', () => {
     });
 
     it('from and to', async () => {
-      const fixture = [
-        'sleep();'
-      ].join('\n');
+      const fixture = ['sleep();'].join('\n');
       const expected = highlight(fixture, {
         lang: 'js',
         caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
@@ -171,9 +152,7 @@ describe('include_code', () => {
     });
 
     it('from', async () => {
-      const fixture = [
-        '}'
-      ].join('\n');
+      const fixture = ['}'].join('\n');
       const expected = prismHighlight(fixture, {
         lang: 'js',
         caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
@@ -184,10 +163,7 @@ describe('include_code', () => {
     });
 
     it('to', async () => {
-      const fixture = [
-        'if (tired && night) {',
-        '  sleep();'
-      ].join('\n');
+      const fixture = ['if (tired && night) {', '  sleep();'].join('\n');
       const expected = prismHighlight(fixture, {
         lang: 'js',
         caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
@@ -198,9 +174,7 @@ describe('include_code', () => {
     });
 
     it('from and to', async () => {
-      const fixture = [
-        'sleep();'
-      ].join('\n');
+      const fixture = ['sleep();'].join('\n');
       const expected = prismHighlight(fixture, {
         lang: 'js',
         caption: '<span>Hello world</span><a href="/downloads/code/test.js">view raw</a>'
