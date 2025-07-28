@@ -2,7 +2,7 @@ import warehouse from 'warehouse';
 import type Hexo from '../hexo';
 import { PostTagSchema } from '../types';
 
-export = (ctx: Hexo) => {
+const postTag = (ctx: Hexo) => {
   const PostTag = new warehouse.Schema<PostTagSchema>({
     post_id: {type: warehouse.Schema.Types.CUID, ref: 'Post'},
     tag_id: {type: warehouse.Schema.Types.CUID, ref: 'Tag'}
@@ -25,3 +25,12 @@ export = (ctx: Hexo) => {
 
   return PostTag;
 };
+
+// For ESM compatibility
+export default postTag;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = postTag;
+  // For ESM compatibility
+  module.exports.default = postTag;
+}

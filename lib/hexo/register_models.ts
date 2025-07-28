@@ -1,7 +1,7 @@
 import * as models from '../models';
 import type Hexo from './index';
 
-export = (ctx: Hexo): void => {
+const registerModels = (ctx: Hexo): void => {
   const db = ctx.database;
 
   const keys = Object.keys(models);
@@ -11,3 +11,12 @@ export = (ctx: Hexo): void => {
     db.model(key, models[key](ctx));
   }
 };
+
+// For ESM compatibility
+export default registerModels;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = registerModels;
+  // For ESM compatibility
+  module.exports.default = registerModels;
+}

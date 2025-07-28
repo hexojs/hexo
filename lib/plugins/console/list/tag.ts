@@ -25,4 +25,8 @@ function listTag(this: Hexo): void {
   if (data.length === 1) console.log('No tags.');
 }
 
-export = listTag;
+export default listTag;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = listTag;
+  module.exports.default = listTag;
+}

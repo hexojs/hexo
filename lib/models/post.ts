@@ -17,7 +17,7 @@ function removeEmptyTag(tags: string[]) {
 
 const tagsGetterCache = new Cache();
 
-export = (ctx: Hexo) => {
+const post = (ctx: Hexo) => {
   const Post = new warehouse.Schema<PostSchema>({
     id: String,
     title: {type: String, default: ''},
@@ -223,3 +223,12 @@ export = (ctx: Hexo) => {
 
   return Post;
 };
+
+// For ESM compatibility
+export default post;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = post;
+  // For ESM compatibility
+  module.exports.default = post;
+}

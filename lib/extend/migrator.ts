@@ -42,4 +42,9 @@ class Migrator {
   }
 }
 
-export = Migrator;
+// For ESM/CommonJS compatibility
+export default Migrator;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = Migrator;
+  module.exports.default = Migrator;
+}

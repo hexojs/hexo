@@ -50,4 +50,8 @@ function numberFormatHelper(num: number, options: Options = {}) {
   return before + (after ? separator + after : '');
 }
 
-export = numberFormatHelper;
+export default numberFormatHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = numberFormatHelper;
+  module.exports.default = numberFormatHelper;
+}

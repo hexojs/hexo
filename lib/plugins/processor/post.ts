@@ -25,7 +25,7 @@ const preservedKeys = {
   hash: true
 };
 
-export = (ctx: Hexo) => {
+const postProcessor = (ctx: Hexo) => {
   return {
     pattern: new Pattern(path => {
       if (isTmpFile(path)) return;
@@ -92,7 +92,7 @@ function processPost(ctx: Hexo, file: _File) {
     file.stat(),
     file.read()
   ]).spread((stats: Stats, content: string) => {
-    const data: PostSchema = yfm(content);
+    const data = yfm(content) as unknown as PostSchema;
     const info = parseFilename(config.new_post_name, path);
     const keys = Object.keys(info);
 
@@ -314,4 +314,13 @@ function processAsset(ctx: Hexo, file: _File) {
   if (postAsset) {
     return postAsset.remove();
   }
+}
+
+// For ESM compatibility
+export default postProcessor;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = postProcessor;
+  // For ESM compatibility
+  module.exports.default = postProcessor;
 }

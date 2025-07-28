@@ -32,4 +32,8 @@ function externalLinkFilter(this: Hexo, data: RenderData): void {
   });
 }
 
-export = externalLinkFilter;
+export default externalLinkFilter;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = externalLinkFilter;
+  module.exports.default = externalLinkFilter;
+}

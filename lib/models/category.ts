@@ -3,7 +3,7 @@ import { slugize, full_url_for } from 'hexo-util';
 import type Hexo from '../hexo';
 import type { CategorySchema } from '../types';
 
-export = (ctx: Hexo) => {
+const category = (ctx: Hexo) => {
   const Category = new warehouse.Schema<CategorySchema>({
     name: {type: String, required: true},
     parent: { type: warehouse.Schema.Types.CUID, ref: 'Category'}
@@ -81,3 +81,12 @@ export = (ctx: Hexo) => {
 
   return Category;
 };
+
+// For ESM compatibility
+export default category;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = category;
+  // For ESM compatibility
+  module.exports.default = category;
+}

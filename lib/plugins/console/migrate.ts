@@ -30,4 +30,8 @@ function migrateConsole(this: Hexo, args: MigrateArgs): Promise<any> {
   return Reflect.apply(migrators[type], this, [args]);
 }
 
-export = migrateConsole;
+export default migrateConsole;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = migrateConsole;
+  module.exports.default = migrateConsole;
+}

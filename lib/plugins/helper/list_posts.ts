@@ -67,4 +67,8 @@ function listPostsHelper(this: LocalsType, posts?: Query<PostSchema> | Options, 
   return result;
 }
 
-export = listPostsHelper;
+export default listPostsHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = listPostsHelper;
+  module.exports.default = listPostsHelper;
+}

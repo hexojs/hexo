@@ -32,4 +32,8 @@ function pageGenerator(locals: SiteLocals): PageGenerator[] {
   });
 }
 
-export = pageGenerator;
+export default pageGenerator;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = pageGenerator;
+  module.exports.default = pageGenerator;
+}

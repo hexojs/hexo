@@ -80,7 +80,7 @@ function parseArgs(args: string) {
   };
 }
 
-export = (ctx: Hexo): (data: RenderData) => void => {
+const backtickCodeBlock = (ctx: Hexo): (data: RenderData) => void => {
   return function backtickCodeBlock(data: RenderData): void {
     const dataContent = data.content;
 
@@ -150,3 +150,12 @@ export = (ctx: Hexo): (data: RenderData) => void => {
     });
   };
 };
+
+// For ESM compatibility
+export default backtickCodeBlock;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = backtickCodeBlock;
+  // For ESM compatibility
+  module.exports.default = backtickCodeBlock;
+}

@@ -56,7 +56,7 @@ const parseFooter = (args: string[], ctx: Hexo) => {
 *   {% endblockquote %}
 */
 
-export = (ctx: Hexo) => function blockquoteTag(args: string[], content: string) {
+const blockquote = (ctx: Hexo) => function blockquoteTag(args: string[], content: string) {
   const footer = parseFooter(args, ctx);
 
   let result = '<blockquote>';
@@ -66,3 +66,12 @@ export = (ctx: Hexo) => function blockquoteTag(args: string[], content: string) 
 
   return result;
 };
+
+// For ESM compatibility
+export default blockquote;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = blockquote;
+  // For ESM compatibility
+  module.exports.default = blockquote;
+}

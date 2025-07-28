@@ -553,4 +553,9 @@ class Post {
   }
 }
 
-export = Post;
+// For ESM/CommonJS compatibility
+export default Post;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = Post;
+  module.exports.default = Post;
+}

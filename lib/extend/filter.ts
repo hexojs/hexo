@@ -109,4 +109,9 @@ class Filter {
   }
 }
 
-export = Filter;
+// For ESM/CommonJS compatibility
+export default Filter;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = Filter;
+  module.exports.default = Filter;
+}

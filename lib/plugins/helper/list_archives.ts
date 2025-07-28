@@ -125,4 +125,8 @@ function listArchivesHelper(this: LocalsType, options: Options = {}) {
   return result;
 }
 
-export = listArchivesHelper;
+export default listArchivesHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = listArchivesHelper;
+  module.exports.default = listArchivesHelper;
+}

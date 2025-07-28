@@ -8,7 +8,7 @@ import type Hexo from '../../hexo';
  * Syntax:
  *   {% post_path slug | title %}
  */
-export = (ctx: Hexo) => {
+const postPath = (ctx: Hexo) => {
   return function postPathTag(args: any[]) {
     const slug = args.shift();
     if (!slug) return;
@@ -22,3 +22,12 @@ export = (ctx: Hexo) => {
     return link;
   };
 };
+
+// For ESM compatibility
+export default postPath;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = postPath;
+  // For ESM compatibility
+  module.exports.default = postPath;
+}

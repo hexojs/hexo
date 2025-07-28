@@ -9,4 +9,9 @@ class Source extends Box {
   }
 }
 
-export = Source;
+// For ESM/CommonJS compatibility
+export default Source;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = Source;
+  module.exports.default = Source;
+}

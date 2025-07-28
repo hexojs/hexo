@@ -55,4 +55,8 @@ function assetGenerator(this: Hexo): Promise<AssetGenerator[]> {
   ]).then(data => [].concat(...data));
 }
 
-export = assetGenerator;
+export default assetGenerator;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = assetGenerator;
+  module.exports.default = assetGenerator;
+}

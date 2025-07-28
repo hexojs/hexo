@@ -1,4 +1,4 @@
-export = {
+const defaultConfig = {
   // Site
   title: 'Hexo',
   subtitle: '',
@@ -87,3 +87,12 @@ export = {
   // Category & Tag
   meta_generator: true
 };
+
+// For ESM compatibility
+export default defaultConfig;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = defaultConfig;
+  // For ESM compatibility
+  module.exports.default = defaultConfig;
+}

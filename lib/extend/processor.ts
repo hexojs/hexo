@@ -52,4 +52,8 @@ class Processor {
   }
 }
 
-export = Processor;
+export default Processor;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = Processor;
+  module.exports.default = Processor;
+}

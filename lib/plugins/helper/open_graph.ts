@@ -199,4 +199,8 @@ function openGraphHelper(this: LocalsType, options: Options = {}) {
   return result.trim();
 }
 
-export = openGraphHelper;
+export default openGraphHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = openGraphHelper;
+  module.exports.default = openGraphHelper;
+}

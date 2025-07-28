@@ -127,4 +127,8 @@ function getAndTruncateTocObj(str: string, options: {min_depth: number, max_dept
   return data;
 }
 
-export = tocHelper;
+export default tocHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = tocHelper;
+  module.exports.default = tocHelper;
+}

@@ -8,7 +8,7 @@ import type Hexo from '../../hexo';
  * Syntax:
  *   {% post_link slug | title [title] [escape] %}
  */
-export = (ctx: Hexo) => {
+const postLink = (ctx: Hexo) => {
   return function postLinkTag(args: string[]) {
     let slug = args.shift();
     if (!slug) {
@@ -46,3 +46,12 @@ export = (ctx: Hexo) => {
     return `<a href="${link}" title="${attrTitle}">${title}</a>`;
   };
 };
+
+// For ESM compatibility
+export default postLink;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = postLink;
+  // For ESM compatibility
+  module.exports.default = postLink;
+}

@@ -9,7 +9,7 @@ import type Hexo from '../../hexo';
 import type { Stats } from 'fs';
 import { PageSchema } from '../../types';
 
-export = (ctx: Hexo) => {
+const assetProcessor = (ctx: Hexo) => {
   return {
     pattern: new Pattern(path => {
       if (isExcludedFile(path, ctx.config)) return;
@@ -28,6 +28,12 @@ export = (ctx: Hexo) => {
     }
   };
 };
+
+export default assetProcessor;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = assetProcessor;
+  module.exports.default = assetProcessor;
+}
 
 function processPage(ctx: Hexo, file: _File) {
   const Page = ctx.model('Page');
@@ -53,7 +59,7 @@ function processPage(ctx: Hexo, file: _File) {
     file.stat(),
     file.read()
   ]).spread((stats: Stats, content: string) => {
-    const data: PageSchema = yfm(content);
+    const data = yfm(content) as unknown as PageSchema;
     const output = ctx.render.getOutput(path);
 
     data.source = path;

@@ -27,4 +27,8 @@ function listPage(this: Hexo): void {
   if (data.length === 1) console.log('No pages.');
 }
 
-export = listPage;
+export default listPage;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = listPage;
+  module.exports.default = listPage;
+}

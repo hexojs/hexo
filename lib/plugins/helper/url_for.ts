@@ -5,6 +5,12 @@ interface Options {
   relative?: boolean
 }
 
-export = function(this: LocalsType, path: string, options: Options = {}) {
+const urlForHelper = function(this: LocalsType, path: string, options: Options = {}) {
   return url_for.call(this, path, options);
+};
+
+export default urlForHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = urlForHelper;
+  module.exports.default = urlForHelper;
 }

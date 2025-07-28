@@ -6,7 +6,7 @@ import { deepMerge } from 'hexo-util';
 import type Hexo from './index';
 import type Promise from 'bluebird';
 
-export = (ctx: Hexo): Promise<void> => {
+const loadThemeConfig = (ctx: Hexo): Promise<void> => {
   if (!ctx.env.init) return;
   if (!ctx.config.theme) return;
 
@@ -39,4 +39,13 @@ function findConfigPath(path: string): Promise<string> {
     const item = files.find(item => basename(item, extname(item)) === name);
     if (item != null) return join(dir, item);
   });
+};
+
+// For ESM compatibility
+export default loadThemeConfig;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = loadThemeConfig;
+  // For ESM compatibility
+  module.exports.default = loadThemeConfig;
 }

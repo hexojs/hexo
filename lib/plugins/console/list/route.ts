@@ -49,4 +49,8 @@ function buildNodes(tree: Record<string, any>) {
   return nodes;
 }
 
-export = listRoute;
+export default listRoute;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = listRoute;
+  module.exports.default = listRoute;
+}

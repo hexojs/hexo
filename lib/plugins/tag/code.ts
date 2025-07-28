@@ -114,7 +114,7 @@ function parseArgs(args: string[]): HighlightOptions {
   };
 }
 
-export = (ctx: Hexo) => function codeTag(args: string[], content: string) {
+const codeTag = (ctx: Hexo) => function codeTag(args: string[], content: string) {
 
   // If neither highlight.js nor prism.js is enabled, return escaped code directly
   if (!ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
@@ -145,3 +145,12 @@ export = (ctx: Hexo) => function codeTag(args: string[], content: string) {
 
   return content.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 };
+
+// For ESM compatibility
+export default codeTag;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = codeTag;
+  // For ESM compatibility
+  module.exports.default = codeTag;
+}

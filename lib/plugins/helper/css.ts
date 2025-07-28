@@ -3,7 +3,8 @@ import moize from 'moize';
 import type { LocalsType } from '../../types';
 
 let relative_link = true;
-function cssHelper(this: LocalsType, ...args: any[]) {
+
+function cssHelperImpl(this: LocalsType, ...args: any[]) {
   let result = '\n';
 
   relative_link = this.config.relative_link;
@@ -25,10 +26,16 @@ function cssHelper(this: LocalsType, ...args: any[]) {
   return result;
 }
 
-export = moize(cssHelper, {
+const cssHelper = moize(cssHelperImpl, {
   maxSize: 10,
   isDeepEqual: true,
   updateCacheForKey() {
     return relative_link;
   }
 });
+
+export default cssHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = cssHelper;
+  module.exports.default = cssHelper;
+}

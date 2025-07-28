@@ -13,7 +13,7 @@ function i18nLocalsFilter(this: Hexo, locals: LocalsType): void {
 
   if (!lang) {
     const pattern = new Pattern(`${i18nDir}/*path`);
-    const data = pattern.match(locals.path);
+    const data = pattern.match(locals.path) as Record<string, any>;
 
     if (data && 'lang' in data && i18nLanguages.includes(data.lang)) {
       lang = data.lang;
@@ -33,4 +33,9 @@ function i18nLocalsFilter(this: Hexo, locals: LocalsType): void {
   locals._p = i18n._p(languages);
 }
 
-export = i18nLocalsFilter;
+// For ESM/CommonJS compatibility
+export default i18nLocalsFilter;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = i18nLocalsFilter;
+  module.exports.default = i18nLocalsFilter;
+}

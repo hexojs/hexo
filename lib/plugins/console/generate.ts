@@ -220,4 +220,8 @@ function generateConsole(this: Hexo, args: GenerateArgs = {}): Promise<any> {
   });
 }
 
-export = generateConsole;
+export default generateConsole;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = generateConsole;
+  module.exports.default = generateConsole;
+}

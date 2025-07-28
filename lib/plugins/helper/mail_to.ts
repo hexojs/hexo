@@ -24,7 +24,7 @@ interface Attrs {
   [key: string]: any;
 }
 
-function mailToHelper(path: string | string[], text?: string, options: Options = {}) {
+function mailToHelperImpl(path: string | string[], text?: string, options: Options = {}) {
   if (Array.isArray(path)) path = path.join(',');
   if (!text) text = path;
 
@@ -54,7 +54,13 @@ function mailToHelper(path: string | string[], text?: string, options: Options =
   return htmlTag('a', attrs as Attrs, text);
 }
 
-export = moize(mailToHelper, {
+const mailToHelper = moize(mailToHelperImpl, {
   maxSize: 10,
   isDeepEqual: true
 });
+
+export default mailToHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = mailToHelper;
+  module.exports.default = mailToHelper;
+}

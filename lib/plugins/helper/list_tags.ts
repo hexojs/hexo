@@ -121,4 +121,8 @@ function listTagsHelperFactory(tags?: Query<TagSchema> | Options, options?: Opti
   }).call(this, tags, options);
 }
 
-export = listTagsHelperFactory;
+export default listTagsHelperFactory;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = listTagsHelperFactory;
+  module.exports.default = listTagsHelperFactory;
+}

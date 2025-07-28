@@ -49,4 +49,8 @@ function renderConsole(this: Hexo, args: RenderArgs): Promise<void> {
   });
 }
 
-export = renderConsole;
+export default renderConsole;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = renderConsole;
+  module.exports.default = renderConsole;
+}

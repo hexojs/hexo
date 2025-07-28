@@ -25,4 +25,8 @@ function imageTagHelper(this: LocalsType, path: string, options: Options = {}) {
   return htmlTag('img', attrs as Attrs);
 }
 
-export = imageTagHelper;
+export default imageTagHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = imageTagHelper;
+  module.exports.default = imageTagHelper;
+}

@@ -52,4 +52,8 @@ function feedTagHelper(this: LocalsType, path?: string, options: Options = {}) {
   return moize.deep(makeFeedTag.bind(this))(path, options, (config as any).feed, config.title);
 }
 
-export = feedTagHelper;
+export default feedTagHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = feedTagHelper;
+  module.exports.default = feedTagHelper;
+}

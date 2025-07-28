@@ -28,4 +28,8 @@ function listConsole(this: Hexo, args: ListArgs): Promise<void> {
   return this.load().then(() => Reflect.apply(store[alias[type]], this, [args]));
 }
 
-export = listConsole;
+export default listConsole;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = listConsole;
+  module.exports.default = listConsole;
+}

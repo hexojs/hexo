@@ -6,7 +6,7 @@ import { full_url_for } from 'hexo-util';
 import type Hexo from '../hexo';
 import type { PageSchema } from '../types';
 
-export = (ctx: Hexo) => {
+const page = (ctx: Hexo) => {
   const Page = new warehouse.Schema<PageSchema>({
     title: {type: String, default: ''},
     date: {
@@ -37,3 +37,12 @@ export = (ctx: Hexo) => {
 
   return Page;
 };
+
+// For ESM compatibility
+export default page;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = page;
+  // For ESM compatibility
+  module.exports.default = page;
+}

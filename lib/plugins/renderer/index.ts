@@ -1,6 +1,6 @@
 import type Hexo from '../../hexo';
 
-export = (ctx: Hexo) => {
+const rendererIndex = (ctx: Hexo) => {
   const { renderer } = ctx.extend;
 
   const plain = require('./plain');
@@ -22,3 +22,9 @@ export = (ctx: Hexo) => {
   renderer.register('njk', 'html', nunjucks, true);
   renderer.register('j2', 'html', nunjucks, true);
 };
+
+export default rendererIndex;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = rendererIndex;
+  module.exports.default = rendererIndex;
+}

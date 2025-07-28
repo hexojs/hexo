@@ -1,7 +1,7 @@
 import { Cache } from 'hexo-util';
 import type Hexo from '../../hexo';
 
-export = (ctx: Hexo) => {
+const fragmentCacheHelper = (ctx: Hexo) => {
   const cache = new Cache();
 
   // reset cache for watch mode
@@ -16,3 +16,9 @@ export = (ctx: Hexo) => {
     return result;
   };
 };
+
+export default fragmentCacheHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = fragmentCacheHelper;
+  module.exports.default = fragmentCacheHelper;
+}

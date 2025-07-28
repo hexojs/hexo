@@ -17,4 +17,8 @@ function hexoMetaGeneratorInject(this: Hexo, data: string): string {
   return data.replace('</head>', `${META_GENERATOR_TAG}</head>`);
 }
 
-export = hexoMetaGeneratorInject;
+export default hexoMetaGeneratorInject;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = hexoMetaGeneratorInject;
+  module.exports.default = hexoMetaGeneratorInject;
+}

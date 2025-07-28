@@ -89,4 +89,9 @@ function toMoment(value) {
   return moment(value);
 }
 
-export = SchemaTypeMoment;
+// For ESM/CommonJS compatibility
+export default SchemaTypeMoment;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = SchemaTypeMoment;
+  module.exports.default = SchemaTypeMoment;
+}

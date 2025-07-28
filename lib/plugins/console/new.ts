@@ -64,4 +64,8 @@ function newConsole(this: Hexo, args: NewArgs): Promise<void> {
   });
 }
 
-export = newConsole;
+export default newConsole;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = newConsole;
+  module.exports.default = newConsole;
+}

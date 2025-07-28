@@ -8,7 +8,7 @@ import { deepMerge } from 'hexo-util';
 import validateConfig from './validate_config';
 import type Hexo from './index';
 
-export = async (ctx: Hexo): Promise<void> => {
+const loadConfig = async (ctx: Hexo): Promise<void> => {
   if (!ctx.env.init) return;
 
   const baseDir = ctx.base_dir;
@@ -71,4 +71,13 @@ async function findConfigPath(path: string): Promise<string> {
   const files = await readdir(dir);
   const item = files.find(item => basename(item, extname(item)) === name);
   if (item != null) return join(dir, item);
+}
+
+// For ESM compatibility
+export default loadConfig;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = loadConfig;
+  // For ESM compatibility
+  module.exports.default = loadConfig;
 }

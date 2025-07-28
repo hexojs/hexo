@@ -19,4 +19,9 @@ function renderPostFilter(this: Hexo): Promise<[any[], any[]]> {
   ]);
 }
 
-export = renderPostFilter;
+// For ESM/CommonJS compatibility
+export default renderPostFilter;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = renderPostFilter;
+  module.exports.default = renderPostFilter;
+}

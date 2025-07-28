@@ -44,4 +44,8 @@ function linkToHelper(this: LocalsType, path: string, text?: string, options: Op
   return htmlTag('a', attrs as Attrs, text);
 }
 
-export = linkToHelper;
+export default linkToHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = linkToHelper;
+  module.exports.default = linkToHelper;
+}

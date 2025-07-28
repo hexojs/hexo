@@ -1,6 +1,4 @@
 {
-  // This is the TypeScript configuration file for the Hexo project.
-  "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "module": "commonjs",
     "target": "es2020",
@@ -10,7 +8,15 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "resolveJsonModule": true,
-    "types": ["node", "mocha"]
+    "types": [
+      "node",
+      "mocha"
+    ],
+    "typeRoots": [
+      "node_modules/@types",
+      "lib/hexo"
+    ],
   },
-  "exclude": ["**/node_modules/**", "**/tmp/**", "./dist"]
+  "include": ["lib/**/*.ts"],
+  "exclude": ["**/node_modules", "**/.tmp*", "dist"]
 }

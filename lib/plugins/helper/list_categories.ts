@@ -123,4 +123,8 @@ function listCategoriesHelper(this: LocalsType, categories?: Query<CategorySchem
   return flatList(0);
 }
 
-export = listCategoriesHelper;
+export default listCategoriesHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = listCategoriesHelper;
+  module.exports.default = listCategoriesHelper;
+}

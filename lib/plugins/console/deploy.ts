@@ -61,4 +61,8 @@ function deployConsole(this: Hexo, args: DeployArgs): Promise<any> {
   });
 }
 
-export = deployConsole;
+export default deployConsole;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = deployConsole;
+  module.exports.default = deployConsole;
+}

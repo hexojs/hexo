@@ -83,4 +83,9 @@ class Helper {
   }
 }
 
-export = Helper;
+// For ESM/CommonJS compatibility
+export default Helper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = Helper;
+  module.exports.default = Helper;
+}

@@ -84,4 +84,11 @@ class Theme extends Box {
   }
 }
 
-export = Theme;
+// For ESM compatibility
+export default Theme;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = Theme;
+  // For ESM compatibility
+  module.exports.default = Theme;
+}

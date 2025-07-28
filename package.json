@@ -2,14 +2,29 @@
   "name": "hexo",
   "version": "7.3.0",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
-  "main": "dist/hexo",
+  "main": "dist/cjs/hexo/index.js",
+  "module": "dist/esm/hexo/index.js",
+  "types": "./dist/esm/hexo/index.d.ts",
   "bin": {
     "hexo": "./bin/hexo"
   },
+  "exports": {
+    ".": {
+      "import": "./dist/esm/hexo/index.js",
+      "require": "./dist/cjs/hexo/index.js"
+    },
+    "./package.json": "./package.json",
+    "./bin/hexo": {
+      "import": "./bin/hexo.mjs",
+      "require": "./bin/hexo"
+    }
+  },
   "scripts": {
     "prepublishOnly": "npm install && npm run clean && npm run build",
-    "build": "tsc -b",
-    "clean": "tsc -b --clean",
+    "build": "npm run build:cjs && npm run build:esm",
+    "build:cjs": "tsc -b tsconfig.cjs.json",
+    "build:esm": "tsc -b tsconfig.esm.json",
+    "clean": "npx --yes rimraf dist tmp/dist",
     "eslint": "eslint lib test",
     "test": "mocha test/scripts/**/*.ts --require ts-node/register",
     "test-cov": "c8 --reporter=lcovonly npm test -- --no-parallel",
@@ -19,7 +34,6 @@
     "dist/",
     "bin/"
   ],
-  "types": "./dist/hexo/index.d.ts",
   "repository": "hexojs/hexo",
   "homepage": "https://hexo.io/",
   "funding": {

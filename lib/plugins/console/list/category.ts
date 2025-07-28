@@ -25,4 +25,8 @@ function listCategory(this: Hexo): void {
   if (data.length === 1) console.log('No categories.');
 }
 
-export = listCategory;
+export default listCategory;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = listCategory;
+  module.exports.default = listCategory;
+}

@@ -77,4 +77,9 @@ function postPermalinkFilter(this: Hexo, data: PostSchema): string {
   return permalink_stringify;
 }
 
-export = postPermalinkFilter;
+// For ESM/CommonJS compatibility
+export default postPermalinkFilter;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = postPermalinkFilter;
+  module.exports.default = postPermalinkFilter;
+}

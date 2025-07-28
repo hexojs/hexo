@@ -1,6 +1,6 @@
 import type Hexo from '../../hexo';
 
-export = (ctx: Hexo) => {
+const filter = (ctx: Hexo) => {
   const { filter } = ctx.extend;
 
   require('./after_render')(ctx);
@@ -13,3 +13,12 @@ export = (ctx: Hexo) => {
   filter.register('new_post_path', require('./new_post_path'));
   filter.register('post_permalink', require('./post_permalink'));
 };
+
+// For ESM compatibility
+export default filter;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = filter;
+  // For ESM compatibility
+  module.exports.default = filter;
+}

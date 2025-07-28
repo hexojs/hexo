@@ -171,4 +171,8 @@ function paginatorHelper(this: LocalsType, options: Options = {}) {
   return tags.join('');
 }
 
-export = paginatorHelper;
+export default paginatorHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = paginatorHelper;
+  module.exports.default = paginatorHelper;
+}

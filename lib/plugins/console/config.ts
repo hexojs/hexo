@@ -87,4 +87,8 @@ function castValue(value: string): any {
   return value;
 }
 
-export = configConsole;
+export default configConsole;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = configConsole;
+  module.exports.default = configConsole;
+}

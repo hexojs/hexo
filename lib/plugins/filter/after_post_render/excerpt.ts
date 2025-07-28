@@ -20,4 +20,8 @@ function excerptFilter(data: RenderData): void {
   }
 }
 
-export = excerptFilter;
+export default excerptFilter;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = excerptFilter;
+  module.exports.default = excerptFilter;
+}

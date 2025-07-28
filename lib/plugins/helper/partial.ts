@@ -7,7 +7,7 @@ interface Options {
   only?: boolean;
 }
 
-export = (ctx: Hexo) => function partial(this: LocalsType, name: string, locals?: any, options: Options = {}) {
+const partialHelper = (ctx: Hexo) => function partial(this: LocalsType, name: string, locals?: any, options: Options = {}) {
   if (typeof name !== 'string') throw new TypeError('name must be a string!');
 
   const { cache } = options;
@@ -38,3 +38,9 @@ export = (ctx: Hexo) => function partial(this: LocalsType, name: string, locals?
 
   return view.renderSync(viewLocals);
 };
+
+export default partialHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = partialHelper;
+  module.exports.default = partialHelper;
+}

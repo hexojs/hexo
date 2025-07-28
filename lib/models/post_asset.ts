@@ -3,7 +3,7 @@ import { join, posix } from 'path';
 import type Hexo from '../hexo';
 import type { PostAssetSchema } from '../types';
 
-export = (ctx: Hexo) => {
+const postAsset = (ctx: Hexo) => {
   const PostAsset = new warehouse.Schema<PostAssetSchema>({
     _id: {type: String, required: true},
     slug: {type: String, required: true},
@@ -30,3 +30,12 @@ export = (ctx: Hexo) => {
 
   return PostAsset;
 };
+
+// For ESM compatibility
+export default postAsset;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = postAsset;
+  // For ESM compatibility
+  module.exports.default = postAsset;
+}

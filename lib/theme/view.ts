@@ -161,4 +161,11 @@ class View {
   }
 }
 
-export = View;
+// For ESM compatibility
+export default View;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = View;
+  // For ESM compatibility
+  module.exports.default = View;
+}
