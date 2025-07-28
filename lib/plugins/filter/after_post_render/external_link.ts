@@ -1,6 +1,6 @@
 import { isExternalLink } from 'hexo-util';
-import type Hexo from '../../../hexo';
-import type { RenderData } from '../../../types';
+import type Hexo from '../../../hexo/index.js';
+import type { RenderData } from '../../../types.js';
 
 let EXTERNAL_LINK_POST_ENABLED = true;
 const rATag = /<a(?:\s+?|\s+?[^<>]+?\s+?)href=["']((?:https?:|\/\/)[^<>"']+)["'][^<>]*>/gi;

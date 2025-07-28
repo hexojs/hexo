@@ -1,6 +1,6 @@
 import warehouse from 'warehouse';
-import type Hexo from '../hexo';
-import { PostTagSchema } from '../types';
+import type Hexo from '../hexo/index.js';
+import { PostTagSchema } from '../types.js';
 
 const postTag = (ctx: Hexo) => {
   const PostTag = new warehouse.Schema<PostTagSchema>({

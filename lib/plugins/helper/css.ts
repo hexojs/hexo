@@ -1,6 +1,6 @@
 import { htmlTag, url_for } from 'hexo-util';
 import moize from 'moize';
-import type { LocalsType } from '../../types';
+import type { LocalsType } from '../../types.js';
 
 let relative_link = true;
 

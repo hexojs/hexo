@@ -1,5 +1,5 @@
 import { url_for } from 'hexo-util';
-import type { LocalsType, PostSchema } from '../../types';
+import type { LocalsType, PostSchema } from '../../types.js';
 import type Query from 'warehouse/dist/query';
 
 interface Options {

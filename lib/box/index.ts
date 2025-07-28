@@ -1,13 +1,13 @@
 import { join, sep } from 'path';
 import BlueBirdPromise from 'bluebird';
-import File from './file';
+import File from './file.js';
 import { Pattern, createSha1Hash } from 'hexo-util';
 import { createReadStream, readdir, stat, watch } from 'hexo-fs';
 import { magenta } from 'picocolors';
 import { EventEmitter } from 'events';
 import { isMatch, makeRe } from 'micromatch';
-import type Hexo from '../hexo';
-import type { NodeJSLikeCallback } from '../types';
+import type Hexo from '../hexo/index.js';
+import type { NodeJSLikeCallback } from '../types.js';
 import type fs from 'fs';
 
 const defaultPattern = new Pattern(() => ({}));

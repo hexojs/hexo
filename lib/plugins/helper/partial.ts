@@ -1,6 +1,6 @@
 import { dirname, join } from 'path';
-import type Hexo from '../../hexo';
-import type { LocalsType } from '../../types';
+import type Hexo from '../../hexo/index.js';
+import type { LocalsType } from '../../types.js';
 
 interface Options {
   cache?: boolean | string;

@@ -2,7 +2,7 @@ import { stripIndent } from 'hexo-util';
 import { cyan, magenta, red, bold } from 'picocolors';
 import { Environment } from 'nunjucks';
 import Promise from 'bluebird';
-import type { NodeJSLikeCallback } from '../types';
+import type { NodeJSLikeCallback } from '../types.js';
 
 const rSwigRawFullBlock = /{% *raw *%}/;
 const rCodeTag = /<code[^<>]*>[\s\S]+?<\/code>/g;

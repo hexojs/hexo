@@ -1,7 +1,7 @@
 import { createSha1Hash, Permalink, slugize } from 'hexo-util';
 import { basename } from 'path';
-import type Hexo from '../../hexo';
-import type { PostSchema } from '../../types';
+import type Hexo from '../../hexo/index.js';
+import type { PostSchema } from '../../types.js';
 
 let permalink: Permalink;
 

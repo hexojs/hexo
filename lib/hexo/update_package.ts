@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { writeFile, exists, readFile } from 'hexo-fs';
-import type Hexo from './index';
+import type Hexo from './index.js';
 import type Promise from 'bluebird';
 
 const updatePackage = (ctx: Hexo): Promise<void> => {

@@ -1,5 +1,5 @@
 import { url_for } from 'hexo-util';
-import type { CategorySchema, LocalsType } from '../../types';
+import type { CategorySchema, LocalsType } from '../../types.js';
 import type Query from 'warehouse/dist/query';
 import type Document from 'warehouse/dist/document';
 

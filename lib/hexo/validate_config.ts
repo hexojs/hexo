@@ -1,5 +1,5 @@
 import assert from 'assert';
-import type Hexo from './index';
+import type Hexo from './index.js';
 
 const validateConfig = (ctx: Hexo): void => {
   const { config, log } = ctx;

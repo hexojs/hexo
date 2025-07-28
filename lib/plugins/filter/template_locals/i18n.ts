@@ -1,6 +1,6 @@
 import { Pattern } from 'hexo-util';
-import type Hexo from '../../../hexo';
-import type { LocalsType } from '../../../types';
+import type Hexo from '../../../hexo/index.js';
+import type { LocalsType } from '../../../types.js';
 
 function i18nLocalsFilter(this: Hexo, locals: LocalsType): void {
   const { i18n } = this.theme;

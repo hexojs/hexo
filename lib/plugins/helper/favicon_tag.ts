@@ -1,5 +1,5 @@
 import { url_for } from 'hexo-util';
-import type { LocalsType } from '../../types';
+import type { LocalsType } from '../../types.js';
 
 function faviconTagHelper(this: LocalsType, path: string) {
   return `<link rel="shortcut icon" href="${url_for.call(this, path)}">`;

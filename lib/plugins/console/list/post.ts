@@ -1,8 +1,8 @@
 import { gray, magenta, underline } from 'picocolors';
 import table from 'fast-text-table';
-import { stringLength } from './common';
-import type Hexo from '../../../hexo';
-import type { PostSchema } from '../../../types';
+import { stringLength } from './common.js';
+import type Hexo from '../../../hexo/index.js';
+import type { PostSchema } from '../../../types.js';
 import type Model from 'warehouse/dist/model';
 import type Document from 'warehouse/dist/document';
 

@@ -1,12 +1,12 @@
 import { extname } from 'path';
-import Box from '../box';
-import View from './view';
+import Box from '../box/index.js';
+import View from './view.js';
 import I18n from 'hexo-i18n';
-import { config } from './processors/config';
-import { i18n } from './processors/i18n';
-import { source } from './processors/source';
-import { view } from './processors/view';
-import type Hexo from '../hexo';
+import { config } from './processors/config.js';
+import { i18n } from './processors/i18n.js';
+import { source } from './processors/source.js';
+import { view } from './processors/view.js';
+import type Hexo from '../hexo/index.js';
 
 class Theme extends Box {
   public config: any;

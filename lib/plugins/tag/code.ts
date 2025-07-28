@@ -1,8 +1,8 @@
 // Based on: https://raw.github.com/imathis/octopress/master/plugins/code_block.rb
 
 import { escapeHTML } from 'hexo-util';
-import type Hexo from '../../hexo';
-import type { HighlightOptions } from '../../extend/syntax_highlight';
+import type Hexo from '../../hexo/index.js';
+import type { HighlightOptions } from '../../extend/syntax_highlight.js';
 
 const rCaptionUrlTitle = /(\S[\S\s]*)\s+(https?:\/\/\S+)\s+(.+)/i;
 const rCaptionUrl = /(\S[\S\s]*)\s+(https?:\/\/\S+)/i;

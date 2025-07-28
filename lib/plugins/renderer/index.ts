@@ -1,4 +1,4 @@
-import type Hexo from '../../hexo';
+import type Hexo from '../../hexo/index.js';
 
 const rendererIndex = (ctx: Hexo) => {
   const { renderer } = ctx.extend;

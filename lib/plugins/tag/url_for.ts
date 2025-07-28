@@ -1,5 +1,5 @@
 import { url_for, htmlTag } from 'hexo-util';
-import type Hexo from '../../hexo';
+import type Hexo from '../../hexo/index.js';
 
 /**
  * Url for tag

@@ -1,8 +1,8 @@
 import warehouse from 'warehouse';
 import { slugize, full_url_for } from 'hexo-util';
 const { hasOwnProperty: hasOwn } = Object.prototype;
-import type Hexo from '../hexo';
-import type { TagSchema } from '../types';
+import type Hexo from '../hexo/index.js';
+import type { TagSchema } from '../types.js';
 
 const tag = (ctx: Hexo) => {
   const Tag = new warehouse.Schema<TagSchema>({

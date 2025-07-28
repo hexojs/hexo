@@ -1,12 +1,12 @@
 import { sep, resolve, join, parse, basename, extname } from 'path';
 import tildify from 'tildify';
-import Theme from '../theme';
-import Source from './source';
+import Theme from '../theme/index.js';
+import Source from './source.js';
 import { exists, readdir } from 'hexo-fs';
 import { magenta } from 'picocolors';
 import { deepMerge } from 'hexo-util';
-import validateConfig from './validate_config';
-import type Hexo from './index';
+import validateConfig from './validate_config.js';
+import type Hexo from './index.js';
 
 const loadConfig = async (ctx: Hexo): Promise<void> => {
   if (!ctx.env.init) return;

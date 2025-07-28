@@ -1,5 +1,5 @@
 import { htmlTag, url_for } from 'hexo-util';
-import type { LocalsType } from '../../types';
+import type { LocalsType } from '../../types.js';
 
 interface Options {
   id?: string;

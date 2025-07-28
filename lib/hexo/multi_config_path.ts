@@ -2,7 +2,7 @@ import { isAbsolute, resolve, join, extname } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'hexo-fs';
 import yml from 'js-yaml';
 import { deepMerge } from 'hexo-util';
-import type Hexo from './index';
+import type Hexo from './index.js';
 
 const multiConfigPath = (ctx: Hexo) => function multiConfigPath(base: string, configPaths?: string, outputDir?: string): string {
   const { log } = ctx;

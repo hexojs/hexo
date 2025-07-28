@@ -2,7 +2,7 @@ import { join } from 'path';
 import { exists, readFile, listDir } from 'hexo-fs';
 import Promise from 'bluebird';
 import { magenta } from 'picocolors';
-import type Hexo from './index';
+import type Hexo from './index.js';
 
 const loadPlugins = (ctx: Hexo): Promise<void[][]> => {
   if (!ctx.env.init || ctx.env.safe) return;

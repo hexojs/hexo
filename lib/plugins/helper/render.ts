@@ -1,4 +1,4 @@
-import type Hexo from '../../hexo';
+import type Hexo from '../../hexo/index.js';
 
 const renderHelper = (ctx: Hexo) => function render(text: string, engine: string, options:object = {}) {
   return ctx.render.renderSync({

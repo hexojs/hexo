@@ -1,10 +1,10 @@
 import { dirname, extname, join } from 'path';
 import { parse as yfm } from 'hexo-front-matter';
 import Promise from 'bluebird';
-import type Theme from '.';
-import type Render from '../hexo/render';
-import type { NodeJSLikeCallback } from '../types';
-import type { Helper } from '../extend/index';
+import type Theme from './index.js';
+import type Render from '../hexo/render.js';
+import type { NodeJSLikeCallback } from '../types.js';
+import type { Helper } from '../extend/index.js';
 
 const assignIn = (target: any, ...sources: any[]) => {
   const length = sources.length;

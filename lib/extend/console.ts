@@ -1,7 +1,7 @@
 import Promise from 'bluebird';
 import abbrev from 'abbrev';
-import type { NodeJSLikeCallback } from '../types';
-import type Hexo from '../hexo';
+import type { NodeJSLikeCallback } from '../types.js';
+import type Hexo from '../hexo/index.js';
 
 type Option = Partial<{
   usage: string;

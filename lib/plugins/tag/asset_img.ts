@@ -1,6 +1,6 @@
-import img from './img';
+import img from './img.js';
 import { encodeURL } from 'hexo-util';
-import type Hexo from '../../hexo';
+import type Hexo from '../../hexo/index.js';
 
 /**
  * Asset image tag

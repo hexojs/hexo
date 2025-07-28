@@ -1,6 +1,6 @@
 import Promise from 'bluebird';
 import { exists, unlink, rmdir } from 'hexo-fs';
-import type Hexo from '../../hexo';
+import type Hexo from '../../hexo/index.js';
 
 function cleanConsole(this: Hexo): Promise<[void, void, any]> {
   return Promise.all([

@@ -1,5 +1,5 @@
-import * as models from '../models';
-import type Hexo from './index';
+import * as models from '../models/index.js';
+import type Hexo from './index.js';
 
 const registerModels = (ctx: Hexo): void => {
   const db = ctx.database;

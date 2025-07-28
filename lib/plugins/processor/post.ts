@@ -1,14 +1,14 @@
-import { toDate, adjustDateForTimezone, isExcludedFile, isTmpFile, isHiddenFile, isMatch } from './common';
+import { toDate, adjustDateForTimezone, isExcludedFile, isTmpFile, isHiddenFile, isMatch } from './common.js';
 import Promise from 'bluebird';
 import { parse as yfm } from 'hexo-front-matter';
 import { extname, join, posix, sep } from 'path';
 import { stat, listDir } from 'hexo-fs';
 import { slugize, Pattern, Permalink } from 'hexo-util';
 import { magenta } from 'picocolors';
-import type { _File } from '../../box';
-import type Hexo from '../../hexo';
+import type { _File } from '../../box/index.js';
+import type Hexo from '../../hexo/index.js';
 import type { Stats } from 'fs';
-import { PostAssetSchema, PostSchema } from '../../types';
+import { PostAssetSchema, PostSchema } from '../../types.js';
 import type Document from 'warehouse/dist/document';
 
 const postDir = '_posts/';

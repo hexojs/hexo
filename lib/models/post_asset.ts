@@ -1,7 +1,7 @@
 import warehouse from 'warehouse';
 import { join, posix } from 'path';
-import type Hexo from '../hexo';
-import type { PostAssetSchema } from '../types';
+import type Hexo from '../hexo/index.js';
+import type { PostAssetSchema } from '../types.js';
 
 const postAsset = (ctx: Hexo) => {
   const PostAsset = new warehouse.Schema<PostAssetSchema>({

@@ -1,10 +1,10 @@
 import { extname } from 'path';
 import Promise from 'bluebird';
 import { readFile, readFileSync } from 'hexo-fs';
-import type Hexo from './index';
-import type { Renderer } from '../extend/index';
-import type { StoreFunction, StoreFunctionData, StoreSyncFunction } from '../extend/renderer';
-import { NodeJSLikeCallback } from '../types';
+import type Hexo from './index.js';
+import type { Renderer } from '../extend/index.js';
+import type { StoreFunction, StoreFunctionData, StoreSyncFunction } from '../extend/renderer.js';
+import { NodeJSLikeCallback } from '../types.js';
 
 const getExtname = (str: string): string => {
   if (typeof str !== 'string') return '';

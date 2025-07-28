@@ -1,4 +1,4 @@
-import type Hexo from '../../../hexo';
+import type Hexo from '../../../hexo/index.js';
 
 let NEED_INJECT = true;
 let META_GENERATOR_TAG;

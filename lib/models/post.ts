@@ -2,10 +2,10 @@ import warehouse from 'warehouse';
 import moment from 'moment';
 import { extname, join, sep } from 'path';
 import Promise from 'bluebird';
-import Moment from './types/moment';
+import Moment from './types/moment.js';
 import { full_url_for, Cache } from 'hexo-util';
-import type Hexo from '../hexo';
-import type { CategorySchema, PostCategorySchema, PostSchema } from '../types';
+import type Hexo from '../hexo/index.js';
+import type { CategorySchema, PostCategorySchema, PostSchema } from '../types.js';
 
 function pickID(data: PostSchema | PostCategorySchema) {
   return data._id;

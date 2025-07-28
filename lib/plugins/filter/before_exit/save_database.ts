@@ -1,4 +1,4 @@
-import type Hexo from '../../../hexo';
+import type Hexo from '../../../hexo/index.js';
 
 function saveDatabaseFilter(this: Hexo): Promise<void> {
   if (!this.env.init || !this._dbLoaded) return;

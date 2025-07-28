@@ -1,5 +1,5 @@
 import { Cache } from 'hexo-util';
-import type Hexo from '../../hexo';
+import type Hexo from '../../hexo/index.js';
 
 const fragmentCacheHelper = (ctx: Hexo) => {
   const cache = new Cache();

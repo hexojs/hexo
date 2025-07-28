@@ -1,5 +1,5 @@
 import { Pattern } from 'hexo-util';
-import type { _File } from '../../box';
+import type { _File } from '../../box/index.js';
 import type Theme from '..';
 
 function process(file: _File): Promise<void> {

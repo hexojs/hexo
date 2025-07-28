@@ -1,4 +1,4 @@
-import type Hexo from '../../../hexo';
+import type Hexo from '../../../hexo/index.js';
 
 const beforeGenerateIndex = (ctx: Hexo) => {
   const { filter } = ctx.extend;

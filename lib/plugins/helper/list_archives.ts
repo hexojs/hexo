@@ -1,6 +1,6 @@
 import type Query from 'warehouse/dist/query';
-import type { LocalsType, PostSchema } from '../../types';
-import { toMomentLocale } from './date';
+import type { LocalsType, PostSchema } from '../../types.js';
+import { toMomentLocale } from './date.js';
 import { url_for, Cache } from 'hexo-util';
 
 interface Options {

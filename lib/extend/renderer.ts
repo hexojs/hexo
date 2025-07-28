@@ -1,6 +1,6 @@
 import { extname } from 'path';
 import Promise from 'bluebird';
-import type { NodeJSLikeCallback } from '../types';
+import type { NodeJSLikeCallback } from '../types.js';
 
 const getExtname = (str: string) => {
   if (typeof str !== 'string') return '';

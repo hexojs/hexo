@@ -1,5 +1,5 @@
 import moize from 'moize';
-import type { LocalsType } from '../../types';
+import type { LocalsType } from '../../types.js';
 
 interface Options {
   class?: string;

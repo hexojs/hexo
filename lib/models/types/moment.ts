@@ -1,5 +1,5 @@
 import warehouse from 'warehouse';
-import { moment } from '../../plugins/helper/date';
+import { moment } from '../../plugins/helper/date.js';
 
 // It'll pollute the moment module.
 // declare module 'moment' {

@@ -1,6 +1,6 @@
 import Promise from 'bluebird';
 import { Pattern } from 'hexo-util';
-import type File from '../box/file';
+import type File from '../box/file.js';
 
 interface StoreFunction {
   (file: File | string): any;

@@ -1,5 +1,5 @@
 import archy from 'archy';
-import type Hexo from '../../../hexo';
+import type Hexo from '../../../hexo/index.js';
 
 function listRoute(this: Hexo): void {
   const routes = this.route.list().sort();

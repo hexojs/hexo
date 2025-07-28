@@ -1,5 +1,5 @@
 import { url_for } from 'hexo-util';
-import type Hexo from '../../hexo';
+import type Hexo from '../../hexo/index.js';
 
 /**
  * Asset path tag

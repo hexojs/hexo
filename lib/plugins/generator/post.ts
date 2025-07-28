@@ -1,4 +1,4 @@
-import type { BaseGeneratorReturn, PostSchema, SiteLocals } from '../../types';
+import type { BaseGeneratorReturn, PostSchema, SiteLocals } from '../../types.js';
 import type Document from 'warehouse/dist/document';
 
 type SimplePostGenerator = Omit<BaseGeneratorReturn, 'layout'> & { data: string };

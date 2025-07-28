@@ -1,4 +1,4 @@
-import type { RenderData } from '../../../types';
+import type { RenderData } from '../../../types.js';
 
 const rExcerpt = /<!-- ?more ?-->/i;
 

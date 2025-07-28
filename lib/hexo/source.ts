@@ -1,5 +1,5 @@
-import Box from '../box';
-import type Hexo from './index';
+import Box from '../box/index.js';
+import type Hexo from './index.js';
 
 class Source extends Box {
   constructor(ctx: Hexo) {

@@ -1,5 +1,5 @@
 import Promise from 'bluebird';
-import type { BaseGeneratorReturn, NodeJSLikeCallback, SiteLocals } from '../types';
+import type { BaseGeneratorReturn, NodeJSLikeCallback, SiteLocals } from '../types.js';
 
 type ReturnType = BaseGeneratorReturn | BaseGeneratorReturn[];
 type GeneratorReturnType = ReturnType | Promise<ReturnType>;

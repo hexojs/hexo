@@ -1,6 +1,6 @@
 import { url_for } from 'hexo-util';
-import { postFindOneFactory } from './';
-import type Hexo from '../../hexo';
+import { postFindOneFactory } from './index.js';
+import type Hexo from '../../hexo/index.js';
 
 /**
  * Post path tag

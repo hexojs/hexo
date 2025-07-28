@@ -1,6 +1,6 @@
 import warehouse from 'warehouse';
-import type Hexo from '../hexo';
-import { PostCategorySchema } from '../types';
+import type Hexo from '../hexo/index.js';
+import { PostCategorySchema } from '../types.js';
 
 const postCategory = (ctx: Hexo) => {
   const PostCategory = new warehouse.Schema<PostCategorySchema>({

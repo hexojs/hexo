@@ -1,4 +1,4 @@
-import type Hexo from '../../hexo';
+import type Hexo from '../../hexo/index.js';
 
 const processorIndex = (ctx: Hexo) => {
   const { processor } = ctx.extend;

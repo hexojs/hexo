@@ -1,4 +1,4 @@
-import type Hexo from '../../hexo';
+import type Hexo from '../../hexo/index.js';
 
 function registerConsoleCommands(ctx: Hexo) {
   const { console } = ctx.extend;

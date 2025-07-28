@@ -1,4 +1,4 @@
-import type Hexo from '../../hexo';
+import type Hexo from '../../hexo/index.js';
 
 module.exports = (ctx: Hexo) => {
   const { highlight } = ctx.extend;

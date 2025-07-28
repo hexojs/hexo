@@ -1,5 +1,5 @@
 import Promise from 'bluebird';
-import { FilterOptions } from '../types';
+import { FilterOptions } from '../types.js';
 
 const typeAlias = {
   pre: 'before_post_render',

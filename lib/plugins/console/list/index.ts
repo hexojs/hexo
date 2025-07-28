@@ -1,10 +1,10 @@
 import abbrev from 'abbrev';
-import page from './page';
-import post from './post';
-import route from './route';
-import tag from './tag';
-import category from './category';
-import type Hexo from '../../../hexo';
+import page from './page.js';
+import post from './post.js';
+import route from './route.js';
+import tag from './tag.js';
+import category from './category.js';
+import type Hexo from '../../../hexo/index.js';
 import type Promise from 'bluebird';
 
 interface ListArgs {

@@ -2,8 +2,8 @@ import { exists, createReadStream } from 'hexo-fs';
 import Promise from 'bluebird';
 import { extname } from 'path';
 import { magenta } from 'picocolors';
-import type Hexo from '../../hexo';
-import type { AssetSchema, BaseGeneratorReturn } from '../../types';
+import type Hexo from '../../hexo/index.js';
+import type { AssetSchema, BaseGeneratorReturn } from '../../types.js';
 import type Document from 'warehouse/dist/document';
 
 interface AssetData {

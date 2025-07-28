@@ -1,4 +1,4 @@
-import type { BaseGeneratorReturn, PageSchema, SiteLocals } from '../../types';
+import type { BaseGeneratorReturn, PageSchema, SiteLocals } from '../../types.js';
 import type Document from 'warehouse/dist/document';
 
 type SimplePageGenerator = Omit<BaseGeneratorReturn, 'layout'> & { data: string };

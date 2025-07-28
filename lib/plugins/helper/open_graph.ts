@@ -1,7 +1,7 @@
 import { isMoment, isDate, Moment } from 'moment';
 import { encodeURL, prettyUrls, stripHTML, escapeHTML } from 'hexo-util';
 import moize from 'moize';
-import type { LocalsType } from '../../types';
+import type { LocalsType } from '../../types.js';
 
 const localeMap = {
   'en': 'en_US',

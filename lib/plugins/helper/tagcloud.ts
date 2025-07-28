@@ -1,6 +1,6 @@
 import { Color, url_for } from 'hexo-util';
 import moize from 'moize';
-import type { LocalsType, TagSchema } from '../../types';
+import type { LocalsType, TagSchema } from '../../types.js';
 import type Query from 'warehouse/dist/query';
 
 interface Options {

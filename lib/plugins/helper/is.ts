@@ -1,4 +1,4 @@
-import type { LocalsType } from '../../types';
+import type { LocalsType } from '../../types.js';
 
 function isCurrentHelper(this: LocalsType, path = '/', strict: boolean) {
   const currentPath = this.path.replace(/^[^/].*/, '/$&');

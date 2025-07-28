@@ -1,7 +1,7 @@
 import tildify from 'tildify';
 import { magenta } from 'picocolors';
 import { basename } from 'path';
-import Hexo from '../../hexo';
+import Hexo from '../../hexo/index.js';
 import type Promise from 'bluebird';
 
 const reservedKeys = {
