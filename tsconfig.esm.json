@@ -4,5 +4,7 @@
     "module": "ESNext",
     "moduleResolution": "node",
     "outDir": "dist/esm"
-  }
+  },
+  "include": ["lib/**/*.ts"],
+  "exclude": ["test", "dist", "node_modules", "tmp", ".tmp*"]
 }
