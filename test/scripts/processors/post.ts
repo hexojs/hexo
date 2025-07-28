@@ -1155,6 +1155,7 @@ describe('post', () => {
     await process(file);
 
     post.published.should.be.false;
+    await process(file);
     should.not.exist(PostAsset.findById(assetId));
 
     await BluebirdPromise.all([
