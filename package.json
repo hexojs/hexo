@@ -27,8 +27,10 @@
     "clean": "npx --yes rimraf dist tmp/dist",
     "eslint": "eslint lib test",
     "pretest": "npm run build",
+    "test-ts": "node -e \"process.env.MOCHA_ENV='ts'; require('child_process').spawnSync('mocha', {stdio: 'inherit', shell: true})\"",
+    "test-cjs": "node -e \"process.env.MOCHA_ENV='cjs'; require('child_process').spawnSync('mocha', {stdio: 'inherit', shell: true})\"",
     "test": "mocha",
-    "test-cov": "c8 --reporter=lcovonly npm test -- --no-parallel",
+    "test-cov": "c8 --reporter=lcovonly npm run test-ts -- --no-parallel",
     "prepare": "husky"
   },
   "files": [
