@@ -23,7 +23,7 @@
     "build": "npm run build-cjs && npm run build-esm && npm run build-copy",
     "build-cjs": "tsc -b tsconfig.cjs.json",
     "build-esm": "tsc -b tsconfig.esm.json",
-    "build-copy": "npx --yes cpx package.json dist/",
+    "build-copy": "node scripts/copy-files.js",
     "clean": "npx --yes rimraf dist tmp/dist",
     "eslint": "eslint lib test",
     "pretest": "npm run build",

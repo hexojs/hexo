@@ -784,20 +784,6 @@ if (typeof global !== 'undefined') {
   (global as any).hexo = Hexo;
 }
 
-// define global variable for plugins written in typescript (ESM & CJS)
-/* eslint-disable @typescript-eslint/no-namespace */
-declare global {
-  // For globalThis.hexo (ESM and CJS)
-  let hexo: Hexo;
-
-  namespace NodeJS {
-    interface Global {
-      hexo: Hexo;
-    }
-  }
-}
-/* eslint-enable @typescript-eslint/no-namespace */
-
 // For ESM compatibility
 export default Hexo;
 // For CommonJS compatibility
