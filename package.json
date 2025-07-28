@@ -26,6 +26,7 @@
     "build:copy": "npx --yes cpx package.json dist/",
     "clean": "npx --yes rimraf dist tmp/dist",
     "eslint": "eslint lib test",
+    "pretest": "npm run build",
     "test": "mocha",
     "test-cov": "c8 --reporter=lcovonly npm test -- --no-parallel",
     "prepare": "husky"
