@@ -23,7 +23,7 @@ import {
   Processor,
   Renderer,
   Tag
-} from '../extend';
+} from '../extend/index';
 
 import { deepMerge, full_url_for } from 'hexo-util';
 import type Schema from 'warehouse/dist/schema';

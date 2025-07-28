@@ -2,7 +2,7 @@ import { extname } from 'path';
 import Promise from 'bluebird';
 import { readFile, readFileSync } from 'hexo-fs';
 import type Hexo from './index';
-import type { Renderer } from '../extend';
+import type { Renderer } from '../extend/index';
 import type { StoreFunction, StoreFunctionData, StoreSyncFunction } from '../extend/renderer';
 import { NodeJSLikeCallback } from '../types';
 

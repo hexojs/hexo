@@ -4,7 +4,7 @@ import Promise from 'bluebird';
 import type Theme from '.';
 import type Render from '../hexo/render';
 import type { NodeJSLikeCallback } from '../types';
-import type { Helper } from '../extend';
+import type { Helper } from '../extend/index';
 
 const assignIn = (target: any, ...sources: any[]) => {
   const length = sources.length;
