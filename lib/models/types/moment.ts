@@ -10,7 +10,7 @@ import { moment } from '../../plugins/helper/date.js';
 // }
 
 class SchemaTypeMoment extends warehouse.SchemaType<moment.Moment> {
-  public options: any;
+  declare options: any;
 
   constructor(name, options = {}) {
     super(name, options);
