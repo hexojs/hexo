@@ -12,7 +12,13 @@ describe('include_code', () => {
   require('../../../lib/plugins/highlight/')(hexo);
   const includeCode = BluebirdPromise.method(tagIncludeCode(hexo)) as (arg1: string[]) => BluebirdPromise<string>;
   const path = join(hexo.source_dir, hexo.config.code_dir, 'test.js');
-  const defaultCfg = JSON.parse(JSON.stringify(hexo.config));
+  // Manually clone only the plain config values needed for tests (avoid circular refs)
+  const defaultCfg = {
+    ...hexo.config,
+    highlight: { ...hexo.config.highlight },
+    code_dir: hexo.config.code_dir,
+    syntax_highlighter: hexo.config.syntax_highlighter
+  };
 
   const fixture = [
     'if (tired && night) {',
@@ -29,7 +35,10 @@ describe('include_code', () => {
   });
 
   beforeEach(() => {
-    hexo.config = JSON.parse(JSON.stringify(defaultCfg));
+    // Restore only the config values that are changed in tests
+    hexo.config.highlight = { ...defaultCfg.highlight };
+    hexo.config.code_dir = defaultCfg.code_dir;
+    hexo.config.syntax_highlighter = defaultCfg.syntax_highlighter;
   });
 
   after(() => rmdir(hexo.base_dir));
