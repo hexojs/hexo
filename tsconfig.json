@@ -2,15 +2,15 @@
   // TypeScript configuration for Hexo project.
   // For better IDE support (e.g., VSCode), ensure paths and options are correct.
   "extends": "./tsconfig.base.json",
+  "ts-node": {
+    "experimentalSpecifierResolution": "node"
+  },
   "compilerOptions": {
     "outDir": "tmp/dist",
     "noEmit": true,
     "allowJs": true,
     "types": ["node", "mocha"]
   },
-  "include": [
-    "lib/**/*.ts",
-    "test/**/*.ts"
-  ],
+  "include": ["lib/**/*.ts", "test/**/*.ts"],
   "exclude": ["**/node_modules/**", "**/tmp/**", "./dist"]
 }

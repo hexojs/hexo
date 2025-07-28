@@ -26,7 +26,7 @@
     "build:copy": "npx --yes cpx package.json dist/",
     "clean": "npx --yes rimraf dist tmp/dist",
     "eslint": "eslint lib test",
-    "test": "mocha test/scripts/**/*.{ts,cjs,mjs} --require ts-node/register",
+    "test": "mocha",
     "test-cov": "c8 --reporter=lcovonly npm test -- --no-parallel",
     "prepare": "husky"
   },
