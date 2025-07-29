@@ -1,5 +1,5 @@
 import chai from 'chai';
-import isClass from '../../util/isClass';
+import isClass from '../../util/isClass.cjs';
 chai.should();
 
 describe('Hexo dual-mode import (ESM and CJS)', function() {

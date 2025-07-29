@@ -1,4 +1,4 @@
 {
-  "*.js": "eslint --fix",
-  "*.ts": "eslint --fix"
+  "*.js": "eslint --fix --config eslint.config.cjs",
+  "*.ts": "eslint --fix --config eslint.config.cjs"
 }

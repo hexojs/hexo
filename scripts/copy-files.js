@@ -1,8 +1,8 @@
-
 // This script copies files to their correct destinations for the build process.
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 function copyFileSync(src, dest) {
   const destDir = path.dirname(dest);
@@ -12,22 +12,18 @@ function copyFileSync(src, dest) {
   fs.copyFileSync(src, dest);
 }
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 const baseDir = path.resolve(__dirname, '..');
 
 // Copy package.json to dist/
-copyFileSync(
-  path.join(baseDir, 'package.json'),
-  path.join(baseDir, 'dist/package.json')
-);
+
+copyFileSync(path.join(baseDir, 'package.json'), path.join(baseDir, 'dist/package.json'));
 
 // Copy globals.d.ts to dist/esm/hexo/globals.d.ts
-copyFileSync(
-  path.join(baseDir, 'lib/hexo/globals.d.ts'),
-  path.join(baseDir, 'dist/esm/hexo/globals.d.ts')
-);
+
+copyFileSync(path.join(baseDir, 'lib/hexo/globals.d.ts'), path.join(baseDir, 'dist/esm/hexo/globals.d.ts'));
 
 // Copy globals.d.ts to dist/cjs/hexo/globals.d.ts
-copyFileSync(
-  path.join(baseDir, 'lib/hexo/globals.d.ts'),
-  path.join(baseDir, 'dist/cjs/hexo/globals.d.ts')
-);
+
+copyFileSync(path.join(baseDir, 'lib/hexo/globals.d.ts'), path.join(baseDir, 'dist/cjs/hexo/globals.d.ts'));

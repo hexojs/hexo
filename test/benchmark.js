@@ -1,11 +1,15 @@
-const { performance, PerformanceObserver } = require('perf_hooks');
-const { spawn } = require('child_process');
-const { spawn: spawnAsync } = require('hexo-util');
-const { rmdir, exists } = require('hexo-fs');
-const { appendFileSync: appendFile } = require('fs');
-const { resolve } = require('path');
-const log = require('hexo-log').default();
-const { red } = require('picocolors');
+import { performance, PerformanceObserver } from 'perf_hooks';
+import { spawn } from 'child_process';
+import { spawn as spawnAsync } from 'hexo-util';
+import { rmdir, exists } from 'hexo-fs';
+import { appendFileSync as appendFile } from 'fs';
+import { resolve, dirname } from 'path';
+import hexoLog from 'hexo-log';
+import * as pc from 'picocolors';
+import os from 'os';
+import { fileURLToPath } from 'url';
+
+const log = hexoLog.default();
 const hooks = [
   { regex: /Hexo version/, tag: 'hexo-begin' },
   { regex: /Start processing/, tag: 'processing' },
@@ -15,7 +19,8 @@ const hooks = [
   { regex: /Database saved/, tag: 'database-saved' }
 ];
 
-const isWin32 = require('os').platform() === 'win32';
+const isWin32 = os.platform() === 'win32';
+
 
 const npmScript = isWin32 ? 'npm.cmd' : 'npm';
 
@@ -25,7 +30,9 @@ const hexoBin = resolve(testDir, 'node_modules/.bin/hexo');
 
 const isGitHubActions = process.env.GITHUB_ACTIONS;
 
-const zeroEks = require('0x');
+import zeroEksImport from '0x';
+const zeroEks = zeroEksImport;
+
 
 let isProfiling = process.argv.join(' ').includes('--profiling');
 let isBenchmark = process.argv.join(' ').includes('--benchmark');
@@ -34,6 +41,10 @@ if (!isProfiling && !isBenchmark) {
   isProfiling = true;
   isBenchmark = true;
 }
+
+// __dirname replacement for ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 (async () => {
   await init();
@@ -75,7 +86,7 @@ async function run_benchmark(name) {
             'Cost time (s)': `${duration.toFixed(2)}s`
           };
           if (duration > 20) {
-            log.fatal(red('!! Performance regression detected !!'));
+            log.fatal(pc.red('!! Performance regression detected !!'));
           }
         });
 
