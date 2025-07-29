@@ -12,5 +12,5 @@
     "typeRoots": ["node_modules/@types", "lib/hexo"]
   },
   "include": ["./lib/**/*.ts", "./test/**/*.ts", "lib/hexo/globals.d.ts"],
-  "exclude": ["**/node_modules", "**/tmp/**", "**/dist/**", "**/coverage/**", "**/.vscode/**", "**/.git/**", "dist", "tmp"]
+  "exclude": ["**/node_modules", "**/tmp/**", "**/dist/**", "**/coverage/**", "**/.vscode/**", "**/.git/**", "dist", "tmp",".tmp*"]
 }

@@ -13,3 +13,4 @@ coverage/
 dist/
 .yarn/
 *.ignore
+.tmp*
