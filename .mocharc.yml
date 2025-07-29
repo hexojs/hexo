@@ -1,0 +1,7 @@
+color: true
+reporter: spec
+ui: bdd
+full-trace: true
+exit: true
+spec: test/scripts/**/*.ts
+extension: ['ts']

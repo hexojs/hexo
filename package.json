@@ -25,13 +25,12 @@
     "build-cjs": "tsc -b tsconfig.cjs.json",
     "build-esm": "tsc -b tsconfig.esm.json",
     "build-copy": "node scripts/copy-files.js",
+    "build-test": "tsc -b tsconfig.json",
     "clean": "npx --yes rimraf dist tmp/dist",
     "eslint": "eslint --config eslint.config.cjs lib test",
     "pretest": "npm run build",
-    "test-ts": "node -e \"process.env.MOCHA_ENV='ts'; require('child_process').spawnSync('mocha', {stdio: 'inherit', shell: true})\"",
-    "test-cjs": "node -e \"process.env.MOCHA_ENV='cjs'; require('child_process').spawnSync('mocha', {stdio: 'inherit', shell: true})\"",
-    "test": "mocha",
-    "test-cov": "c8 --reporter=lcovonly npm run test-ts -- --no-parallel",
+    "test": "mocha --loader=ts-node/esm",
+    "test-cov": "c8 --reporter=lcovonly npm run test -- --no-parallel",
     "prepare": "husky"
   },
   "files": [
