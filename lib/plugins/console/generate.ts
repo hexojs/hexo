@@ -2,7 +2,7 @@ import { exists, writeFile, unlink, stat, mkdirs } from 'hexo-fs';
 import { join } from 'path';
 import Promise from 'bluebird';
 import prettyHrtime from 'pretty-hrtime';
-import { cyan, magenta } from 'picocolors';
+import * as picocolors from 'picocolors';
 import tildify from 'tildify';
 import { PassThrough, type Readable } from 'stream';
 import { createSha1Hash } from 'hexo-util';
@@ -108,7 +108,7 @@ class Generator {
         hash
       }).then(() => // Write cache data to public folder
         writeFile(dest, Buffer.concat(buffers))).then(() => {
-        log.info('Generated: %s', magenta(path));
+        log.info('Generated: %s', picocolors.magenta(path));
         return true;
       });
     });
@@ -119,7 +119,7 @@ class Generator {
     const dest = join(publicDir, path);
 
     return unlink(dest).then(() => {
-      log.info('Deleted: %s', magenta(path));
+      log.info('Deleted: %s', picocolors.magenta(path));
     }, err => {
       // Skip ENOENT errors (file was deleted)
       if (err && err.code === 'ENOENT') return;
@@ -148,7 +148,7 @@ class Generator {
 
     // Show the loading time
     const interval = prettyHrtime(process.hrtime(this.start));
-    log.info('Files loaded in %s', cyan(interval));
+    log.info('Files loaded in %s', picocolors.cyan(interval));
 
     // Reset the timer for later usage
     this.start = process.hrtime();
@@ -157,7 +157,7 @@ class Generator {
     // Check the public folder
     return stat(publicDir).then(stats => {
       if (!stats.isDirectory()) {
-        throw new Error(`${magenta(tildify(publicDir))} is not a directory`);
+        throw new Error(`${picocolors.magenta(tildify(publicDir))} is not a directory`);
       }
     }).catch(err => {
       // Create public folder if not exists
@@ -182,7 +182,7 @@ class Generator {
       const interval = prettyHrtime(process.hrtime(this.start));
       const count = result.filter(Boolean).length;
 
-      log.info('%d files generated in %s', count.toString(), cyan(interval));
+      log.info('%d files generated in %s', count.toString(), picocolors.cyan(interval));
     });
   }
   execWatch(): Promise<void> {

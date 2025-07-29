@@ -2,7 +2,7 @@ import { resolve } from 'path';
 import tildify from 'tildify';
 import prettyHrtime from 'pretty-hrtime';
 import { writeFile } from 'hexo-fs';
-import { cyan, magenta } from 'picocolors';
+import * as picocolors from 'picocolors';
 import type Hexo from '../../hexo/index.js';
 import type Promise from 'bluebird';
 
@@ -44,7 +44,7 @@ function renderConsole(this: Hexo, args: RenderArgs): Promise<void> {
     const dest = resolve(baseDir, output);
     const interval = prettyHrtime(process.hrtime(start));
 
-    log.info('Rendered in %s: %s -> %s', cyan(interval), magenta(tildify(src)), magenta(tildify(dest)));
+    log.info('Rendered in %s: %s -> %s', picocolors.cyan(interval), picocolors.magenta(tildify(src)), picocolors.magenta(tildify(dest)));
     return writeFile(dest, result);
   });
 }

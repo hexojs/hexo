@@ -1,4 +1,4 @@
-import { gray, magenta, underline } from 'picocolors';
+import * as picocolors from 'picocolors';
 import table from 'fast-text-table';
 import { stringLength } from './common.js';
 import type Hexo from '../../../hexo/index.js';
@@ -19,16 +19,16 @@ function listPost(this: Hexo): void {
     const categories = post.categories.map(mapName);
 
     return [
-      gray(date),
+      picocolors.gray(date),
       post.title,
-      magenta(post.source),
+      picocolors.magenta(post.source),
       categories.join(', '),
       tags.join(', ')
     ];
   });
 
   // Table header
-  const header = ['Date', 'Title', 'Path', 'Category', 'Tags'].map(str => underline(str));
+  const header = ['Date', 'Title', 'Path', 'Category', 'Tags'].map(str => picocolors.underline(str));
 
   data.unshift(header);
 

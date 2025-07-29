@@ -1,7 +1,7 @@
 import { join, parse, basename, extname } from 'path';
 import tildify from 'tildify';
 import { exists, readdir } from 'hexo-fs';
-import { magenta } from 'picocolors';
+import * as picocolors from 'picocolors';
 import { deepMerge } from 'hexo-util';
 import type Hexo from './index.js';
 import type Promise from 'bluebird';
@@ -22,7 +22,7 @@ const loadThemeConfig = (ctx: Hexo): Promise<void> => {
   }).then(config => {
     if (!config || typeof config !== 'object') return;
 
-    ctx.log.debug('Second Theme Config loaded: %s', magenta(tildify(configPath)));
+    ctx.log.debug('Second Theme Config loaded: %s', picocolors.magenta(tildify(configPath)));
 
     // ctx.config.theme_config should have highest priority
     // If ctx.config.theme_config exists, then merge it with _config.[theme].yml

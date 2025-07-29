@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { exists, readFile, listDir } from 'hexo-fs';
 import Promise from 'bluebird';
-import { magenta } from 'picocolors';
+import * as picocolors from 'picocolors';
 import type Hexo from './index.js';
 
 const loadPlugins = (ctx: Hexo): Promise<void[][]> => {
@@ -51,9 +51,9 @@ function loadModules(ctx: Hexo): Promise<void[]> {
     .map(([name, path]) => {
       // Load plugins
       return ctx.loadPlugin(path as string).then(() => {
-        ctx.log.debug('Plugin loaded: %s', magenta(name));
+        ctx.log.debug('Plugin loaded: %s', picocolors.magenta(name));
       }).catch(err => {
-        ctx.log.error({err}, 'Plugin load failed: %s', magenta(name));
+        ctx.log.error({err}, 'Plugin load failed: %s', picocolors.magenta(name));
       });
     });
 }
@@ -78,7 +78,7 @@ function loadScripts(ctx: Hexo): Promise<void[][]> {
 }
 
 function displayPath(path: string, baseDirLength: number): string {
-  return magenta(path.substring(baseDirLength));
+  return picocolors.magenta(path.substring(baseDirLength));
 };
 
 // For ESM compatibility

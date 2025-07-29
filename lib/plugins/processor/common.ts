@@ -1,5 +1,5 @@
 import moment from 'moment-timezone';
-import micromatch from 'micromatch';
+import * as micromatch from 'micromatch';
 
 const DURATION_MINUTE = 1000 * 60;
 

@@ -1,5 +1,5 @@
 import tildify from 'tildify';
-import { magenta } from 'picocolors';
+import * as picocolors from 'picocolors';
 import { basename } from 'path';
 import Hexo from '../../hexo/index.js';
 import type Promise from 'bluebird';
@@ -60,7 +60,7 @@ function newConsole(this: Hexo, args: NewArgs): Promise<void> {
   }
 
   return this.post.create(data, args.r || args.replace).then(post => {
-    this.log.info('Created: %s', magenta(tildify(post.path)));
+    this.log.info('Created: %s', picocolors.magenta(tildify(post.path)));
   });
 }
 

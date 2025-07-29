@@ -1,5 +1,5 @@
 import { exists } from 'hexo-fs';
-import { underline, magenta } from 'picocolors';
+import * as picocolors from 'picocolors';
 import type Hexo from '../../hexo/index.js';
 import type Promise from 'bluebird';
 
@@ -20,7 +20,7 @@ function deployConsole(this: Hexo, args: DeployArgs): Promise<any> {
     help += 'You should configure deployment settings in _config.yml first!\n\n';
     help += 'Available deployer plugins:\n';
     help += `  ${Object.keys(deployers).join(', ')}\n\n`;
-    help += `For more help, you can check the online docs: ${underline('https://hexo.io/')}`;
+    help += `For more help, you can check the online docs: ${picocolors.underline('https://hexo.io/')}`;
 
     console.log(help);
     return;
@@ -47,14 +47,14 @@ function deployConsole(this: Hexo, args: DeployArgs): Promise<any> {
     const { type } = item;
 
     if (!deployers[type]) {
-      this.log.error('Deployer not found: %s', magenta(type));
+      this.log.error('Deployer not found: %s', picocolors.magenta(type));
       return;
     }
 
-    this.log.info('Deploying: %s', magenta(type));
+    this.log.info('Deploying: %s', picocolors.magenta(type));
 
     return (Reflect.apply(deployers[type], this, [{ ...item, ...args }]) as any).then(() => {
-      this.log.info('Deploy done: %s', magenta(type));
+      this.log.info('Deploy done: %s', picocolors.magenta(type));
     });
   }).then(() => {
     this.emit('deployAfter');

@@ -1,5 +1,5 @@
 import { stripIndent } from 'hexo-util';
-import { cyan, magenta, red, bold } from 'picocolors';
+import * as picocolors from 'picocolors';
 import { Environment } from 'nunjucks';
 import Promise from 'bluebird';
 import type { NodeJSLikeCallback } from '../types.js';
@@ -140,9 +140,9 @@ const LINES_OF_CONTEXT = 5;
 
 const getContext = (lines: string[], errLine: number, location: string, type: string) => {
   const message = [
-    location + ' ' + red(type),
-    cyan('    =====               Context Dump               ====='),
-    cyan('    === (line number probably different from source) ===')
+    location + ' ' + picocolors.red(type),
+    picocolors.cyan('    =====               Context Dump               ====='),
+    picocolors.cyan('    === (line number probably different from source) ===')
   ];
 
   message.push(
@@ -151,13 +151,13 @@ const getContext = (lines: string[], errLine: number, location: string, type: st
       .map(lnNum => {
         const line = '  ' + lnNum + ' | ' + lines[lnNum - 1];
         if (lnNum === errLine) {
-          return cyan(bold(line));
+          return picocolors.cyan(picocolors.bold(line));
         }
 
-        return cyan(line);
+        return picocolors.cyan(line);
       })
   );
-  message.push(cyan(
+  message.push(picocolors.cyan(
     '    =====             Context Dump Ends            ====='));
 
   return message;
@@ -176,7 +176,7 @@ class NunjucksError extends Error {
  * @return {Error}    New error object with embedded context
  */
 const formatNunjucksError = (err: Error, input: string, source = ''): Error => {
-  err.message = err.message.replace('(unknown path)', source ? magenta(source) : '');
+  err.message = err.message.replace('(unknown path)', source ? picocolors.magenta(source) : '');
 
   const match = err.message.match(/Line (\d+), Column \d+/);
   if (!match) return err;

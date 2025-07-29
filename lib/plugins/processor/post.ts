@@ -4,7 +4,7 @@ import { parse as yfm } from 'hexo-front-matter';
 import { extname, join, posix, sep } from 'path';
 import { stat, listDir } from 'hexo-fs';
 import { slugize, Pattern, Permalink } from 'hexo-util';
-import { magenta } from 'picocolors';
+import * as picocolors from 'picocolors';
 import type { _File } from '../../box/index.js';
 import type Hexo from '../../hexo/index.js';
 import type { Stats } from 'fs';
@@ -178,7 +178,7 @@ function processPost(ctx: Hexo, file: _File) {
 
     if (doc) {
       if (file.type !== 'update') {
-        ctx.log.warn(`Trying to "create" ${magenta(file.path)}, but the file already exists!`);
+        ctx.log.warn(`Trying to "create" ${picocolors.magenta(file.path)}, but the file already exists!`);
       }
       return doc.replace(data);
     }
