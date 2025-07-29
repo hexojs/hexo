@@ -8,7 +8,6 @@ import { magenta, underline } from 'picocolors';
 import tildify from 'tildify';
 import { runInThisContext } from 'vm';
 import Database from 'warehouse';
-import './globals';
 
 const { version } = JSON.parse(readFileSync(join(__dirname, '../../package.json')));
 
@@ -57,7 +56,6 @@ const castArray = (obj: any) => {
   return Array.isArray(obj) ? obj : [obj];
 };
 
-
 const mergeCtxThemeConfig = (ctx: Hexo) => {
   // Merge hexo.config.theme_config into hexo.theme.config before post rendering & generating
   // config.theme_config has "_config.[theme].yml" merged in load_theme_config.js
@@ -65,7 +63,6 @@ const mergeCtxThemeConfig = (ctx: Hexo) => {
     ctx.theme.config = deepMerge(ctx.theme.config, ctx.config.theme_config);
   }
 };
-
 
 const createLoadThemeRoute = function(generatorResult: BaseGeneratorReturn, locals: LocalsType, ctx: Hexo) {
   const { log, theme } = ctx;
@@ -519,19 +516,21 @@ class Hexo extends EventEmitter {
     return readFile(path)
       .then(script => {
         // Based on: https://github.com/nodejs/node-v0.x-archive/blob/v0.10.33/src/node.js#L516
-        const module = new Module(path);
-        module.filename = path;
-        module.paths = Module._nodeModulePaths(path);
+
+        const mod = new Module(path);
+        mod.filename = path;
+        // Use 'as any' to access Node.js internals
+        mod.paths = (Module as any)._nodeModulePaths(path);
 
         function req(path: string) {
-          return module.require(path);
+          return mod.require(path);
         }
 
-        req.resolve = (request: string) => Module._resolveFilename(request, module);
+        req.resolve = (request: string) => (Module as any)._resolveFilename(request, mod);
 
         req.main = require.main;
-        req.extensions = Module._extensions;
-        req.cache = Module._cache;
+        req.extensions = (Module as any)._extensions;
+        req.cache = (Module as any)._cache;
 
         script = `(async function(exports, require, module, __filename, __dirname, hexo){${script}\n});`;
 

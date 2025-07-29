@@ -5,6 +5,6 @@
     "moduleResolution": "node",
     "outDir": "dist/esm"
   },
-  "include": ["lib/**/*.ts"],
+  "include": ["lib/**/*.ts", "lib/hexo/globals.d.ts"],
   "exclude": ["test", "dist", "node_modules", "tmp", ".tmp*"]
 }

@@ -9,15 +9,9 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "moduleResolution": "node",
-    "types": [
-      "node",
-      "mocha"
-    ],
-    "typeRoots": [
-      "node_modules/@types",
-      "lib/hexo"
-    ],
+    "types": ["node", "mocha"],
+    "typeRoots": ["node_modules/@types", "lib/hexo"]
   },
-  "include": ["lib/**/*.ts"],
-  "exclude": ["**/node_modules", "**/.tmp*", "dist"]
+  "include": ["lib/**/*.ts", "lib/hexo/globals.d.ts"],
+  "exclude": ["**/node_modules", "**/tmp/**", "**/dist/**"]
 }
