@@ -1,8 +1,7 @@
-import Hexo from '../../../lib/hexo';
-import decache from 'decache';
-import externalLinkFilter from '../../../lib/plugins/filter/after_render/external_link';
-import externalLinkPostFilter from '../../../lib/plugins/filter/after_post_render/external_link';
 import chai from 'chai';
+import decache from 'decache';
+import externalLinkPostFilter from '../../../lib/plugins/filter/after_post_render/external_link';
+import externalLinkFilter from '../../../lib/plugins/filter/after_render/external_link';
 const should = chai.should();
 type ExternalLinkParams = Parameters<typeof externalLinkFilter>;
 type ExternalLinkReturn = ReturnType<typeof externalLinkFilter>;
@@ -10,21 +9,26 @@ type ExternalLinkPostParams = Parameters<typeof externalLinkPostFilter>;
 type ExternalLinkPostReturn = ReturnType<typeof externalLinkPostFilter>;
 
 describe('External link', () => {
-  const hexo = new Hexo();
-  let externalLink: (...args: ExternalLinkParams) => ExternalLinkReturn;
+  let hexo: import('../../../lib/hexo').default,
+    externalLink: (...args: ExternalLinkParams) => ExternalLinkReturn;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    const Hexo = (await import('../../../lib/hexo')).default;
+    hexo = new Hexo();
+    // Set config before using it
+    hexo.config = Object.assign({}, hexo.config, {
+      url: 'https://example.com',
+      external_link: {
+        enable: true,
+        field: 'site',
+        exclude: ''
+      }
+    });
     decache('../../../lib/plugins/filter/after_render/external_link');
-    externalLink = require('../../../lib/plugins/filter/after_render/external_link').bind(hexo);
+    const mod = await import('../../../lib/plugins/filter/after_render/external_link');
+    const fn = mod.default || mod;
+    externalLink = (typeof fn === 'function' ? fn.bind(hexo) : fn) as (...args: ExternalLinkParams) => ExternalLinkReturn;
   });
-  hexo.config = {
-    url: 'https://example.com',
-    external_link: {
-      enable: true,
-      field: 'site',
-      exclude: ''
-    }
-  } as any;
 
   it('disabled', () => {
     const content = 'foo'
@@ -143,24 +147,28 @@ describe('External link', () => {
 });
 
 describe('External link - post', () => {
-  const Hexo = require('../../../lib/hexo');
-  const hexo = new Hexo();
+  let hexo: import('../../../lib/hexo').default,
+    externalLink: (...args: ExternalLinkPostParams) => ExternalLinkPostReturn;
 
-  let externalLink: (...args: ExternalLinkPostParams) => ExternalLinkPostReturn;
-
-  beforeEach(() => {
-    decache('../../../lib/plugins/filter/after_post_render/external_link');
-    externalLink = require('../../../lib/plugins/filter/after_post_render/external_link').bind(hexo);
+  before(async () => {
+    const Hexo = (await import('../../../lib/hexo')).default;
+    hexo = new Hexo();
+    hexo.config = Object.assign({}, hexo.config, {
+      url: 'https://example.com',
+      external_link: {
+        enable: true,
+        field: 'post',
+        exclude: ''
+      }
+    });
   });
 
-  hexo.config = {
-    url: 'https://example.com',
-    external_link: {
-      enable: true,
-      field: 'post',
-      exclude: ''
-    }
-  };
+  beforeEach(async () => {
+    decache('../../../lib/plugins/filter/after_post_render/external_link');
+    const mod = await import('../../../lib/plugins/filter/after_post_render/external_link');
+    const fn = mod.default || mod;
+    externalLink = (typeof fn === 'function' ? fn.bind(hexo) : fn) as (...args: ExternalLinkPostParams) => ExternalLinkPostReturn;
+  });
 
   it('disabled', () => {
     const content = 'foo<a href="https://hexo.io/">Hexo</a>bar';
@@ -254,7 +262,7 @@ describe('External link - post', () => {
       + 'bar';
 
     const data = {content};
-    hexo.config.external_link = false;
+    hexo.config.external_link = false as any;
 
     externalLink(data);
     data.content.should.eql(content);
@@ -294,7 +302,7 @@ describe('External link - post', () => {
       '<a href="https://baz.com/">Hexo</a>'
     ].join('\n');
 
-    hexo.config.external_link.exclude = ['foo.com', 'bar.com'];
+    hexo.config.external_link.exclude = ['foo.com', 'bar.com'] as any;
 
     const data = {content};
     externalLink(data);
