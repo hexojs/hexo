@@ -7,8 +7,13 @@ const should = chai.should();
 
 describe('Backtick code block', () => {
   const hexo = new Hexo();
-  require('../../../lib/plugins/highlight/')(hexo);
-  const codeBlock = defaultCodeBlock(hexo);
+  let codeBlock: ReturnType<typeof defaultCodeBlock>;
+
+  before(async () => {
+    (await import('../../../lib/plugins/highlight/index')).default(hexo);
+    codeBlock = defaultCodeBlock(hexo);
+    await hexo.init();
+  });
 
   const code = [
     'if (tired && night) {',
