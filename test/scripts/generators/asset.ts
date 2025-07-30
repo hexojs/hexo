@@ -1,4 +1,5 @@
-import { join } from 'path';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 import { readStream } from '../../util';
 import Hexo from '../../../lib/hexo';
@@ -9,8 +10,23 @@ const should = chai.should();
 type AssetParams = Parameters<typeof assetGenerator>
 type AssetReturn = ReturnType<typeof assetGenerator>
 
+// Cross-compatible __dirname for ESM and CJS, without require
+let __hexo_dirname: string;
+if (typeof __dirname !== 'undefined') {
+  // CJS
+  __hexo_dirname = __dirname;
+} else {
+  // ESM (only works in ESM context)
+  let url = '';
+  try {
+    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
+    url = import.meta.url;
+  } catch {}
+  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
+}
+
 describe('asset', () => {
-  const hexo = new Hexo(join(__dirname, 'asset_test'), {silent: true});
+  const hexo = new Hexo(join(__hexo_dirname, 'asset_test'), {silent: true});
   const generator: (...args: AssetParams) => AssetReturn = assetGenerator.bind(hexo);
   const Asset = hexo.model('Asset');
 

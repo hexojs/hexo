@@ -1,3 +1,5 @@
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import postGenerator from '../../../lib/plugins/generator/post';
@@ -7,8 +9,23 @@ const should = chai.should();
 type PostGeneratorParams = Parameters<typeof postGenerator>;
 type PostGeneratorReturn = ReturnType<typeof postGenerator>;
 
+// Cross-compatible __dirname for ESM and CJS, without require
+let __hexo_dirname: string;
+if (typeof __dirname !== 'undefined') {
+  // CJS
+  __hexo_dirname = __dirname;
+} else {
+  // ESM (only works in ESM context)
+  let url = '';
+  try {
+    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
+    url = import.meta.url;
+  } catch {}
+  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
+}
+
 describe('post', () => {
-  const hexo = new Hexo(__dirname, {silent: true});
+  const hexo = new Hexo(__hexo_dirname, {silent: true});
   const Post = hexo.model('Post');
   const generator: (...args: PostGeneratorParams) => BluebirdPromise<PostGeneratorReturn> = BluebirdPromise.method(postGenerator.bind(hexo));
 

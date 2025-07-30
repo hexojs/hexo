@@ -1,4 +1,5 @@
-import { join } from 'path';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 import { emptyDir, exists, mkdirs, readFile, rmdir, stat, unlink, writeFile } from 'hexo-fs';
 import BluebirdPromise from 'bluebird';
 import { spy } from 'sinon';
@@ -9,12 +10,27 @@ import generateConsole from '../../../lib/plugins/console/generate';
 type OriginalParams = Parameters<typeof generateConsole>;
 type OriginalReturn = ReturnType<typeof generateConsole>;
 
+// Cross-compatible __dirname for ESM and CJS, without require
+let __hexo_dirname: string;
+if (typeof __dirname !== 'undefined') {
+  // CJS
+  __hexo_dirname = __dirname;
+} else {
+  // ESM (only works in ESM context)
+  let url = '';
+  try {
+    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
+    url = import.meta.url;
+  } catch {}
+  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
+}
+
 describe('generate', () => {
   let hexo: Hexo, generate: (...args: OriginalParams) => OriginalReturn;
 
   beforeEach(async function() {
     this.timeout(5000);
-    hexo = new Hexo(join(__dirname, 'generate_test'), {silent: true});
+    hexo = new Hexo(join(__hexo_dirname, 'generate_test'), {silent: true});
     generate = generateConsole.bind(hexo);
 
     await mkdirs(hexo.base_dir);
@@ -312,7 +328,7 @@ describe('generate', () => {
 
 // #3975 workaround for Windows
 describe('generate - watch (delete)', () => {
-  const hexo = new Hexo(join(__dirname, 'generate_test'), {silent: true});
+  const hexo = new Hexo(join(__hexo_dirname, 'generate_test'), {silent: true});
   const generate: (...args: OriginalParams) => OriginalReturn = generateConsole.bind(hexo);
 
   beforeEach(async () => {

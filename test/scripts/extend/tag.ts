@@ -1,4 +1,4 @@
-import { join } from 'path';
+import { join, dirname } from 'path';
 import Tag from '../../../lib/extend/tag';
 import chai from 'chai';
 import Hexo from '../../../lib/hexo';
@@ -7,6 +7,7 @@ import posts from '../../../lib/plugins/processor/post';
 import Filter from '../../../lib/extend/filter';
 import renderPostFilter from '../../../lib/plugins/filter/before_generate/render_post';
 import { mkdirs, rmdir, writeFile } from 'hexo-fs';
+import { fileURLToPath } from 'url';
 // @ts-ignore
 import Promise from 'bluebird';
 const should = chai.should();
@@ -14,10 +15,25 @@ const should = chai.should();
 type PostParams = Parameters<ReturnType<typeof posts>['process']>
 type PostReturn = ReturnType<ReturnType<typeof posts>['process']>
 
+// Cross-compatible __dirname for ESM and CJS, without require
+let __hexo_dirname: string;
+if (typeof __dirname !== 'undefined') {
+  // CJS
+  __hexo_dirname = __dirname;
+} else {
+  // ESM (only works in ESM context)
+  let url = '';
+  try {
+    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
+    url = import.meta.url;
+  } catch {}
+  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
+}
+
 describe('Tag', () => {
   const tag = new Tag();
 
-  const baseDir = join(__dirname, 'post_test');
+  const baseDir = join(__hexo_dirname, 'post_test');
   const hexo = new Hexo(baseDir);
   const post = posts(hexo);
   const process: (...args: PostParams) => Promise<PostReturn> = Promise.method(post.process.bind(hexo));

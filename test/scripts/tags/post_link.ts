@@ -1,10 +1,27 @@
 import Hexo from '../../../lib/hexo';
 import tagPostLink from '../../../lib/plugins/tag/post_link';
 import chai from 'chai';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 const should = chai.should();
 
+// Cross-compatible __dirname for ESM and CJS, without require
+let __hexo_dirname: string;
+if (typeof __dirname !== 'undefined') {
+  // CJS
+  __hexo_dirname = __dirname;
+} else {
+  // ESM (only works in ESM context)
+  let url = '';
+  try {
+    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
+    url = import.meta.url;
+  } catch {}
+  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
+}
+
 describe('post_link', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(__hexo_dirname);
   const postLink = tagPostLink(hexo);
   const Post = hexo.model('Post');
 

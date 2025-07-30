@@ -1,11 +1,28 @@
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { spy, assert as sinonAssert, stub, SinonSpy } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import migrateConsole from '../../../lib/plugins/console/migrate';
 type OriginalParams = Parameters<typeof migrateConsole>;
 type OriginalReturn = ReturnType<typeof migrateConsole>;
 
+// Cross-compatible __dirname for ESM and CJS, without require
+let __hexo_dirname: string;
+if (typeof __dirname !== 'undefined') {
+  // CJS
+  __hexo_dirname = __dirname;
+} else {
+  // ESM (only works in ESM context)
+  let url = '';
+  try {
+    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
+    url = import.meta.url;
+  } catch {}
+  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
+}
+
 describe('migrate', () => {
-  const hexo = new Hexo(__dirname, { silent: true });
+  const hexo = new Hexo(__hexo_dirname, { silent: true });
   const migrate: (...args: OriginalParams) => OriginalReturn = migrateConsole.bind(hexo);
 
   it('default', async () => {
@@ -20,7 +37,7 @@ describe('migrate', () => {
   });
 
   it('no args', async () => {
-    const hexo = new Hexo(__dirname, { silent: true });
+    const hexo = new Hexo(__hexo_dirname, { silent: true });
     hexo.call = spy();
     const migrate: (...args: OriginalParams) => OriginalReturn = migrateConsole.bind(hexo);
 

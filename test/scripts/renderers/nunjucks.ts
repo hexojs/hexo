@@ -1,11 +1,26 @@
 import r from '../../../lib/plugins/renderer/nunjucks';
 import { dirname, join } from 'path';
 import chai from 'chai';
+import { fileURLToPath } from 'url';
 const _should = chai.should();
 
+// Cross-compatible __dirname for ESM and CJS, without require
+let __hexo_dirname: string;
+if (typeof __dirname !== 'undefined') {
+  // CJS
+  __hexo_dirname = __dirname;
+} else {
+  // ESM (only works in ESM context)
+  let url = '';
+  try {
+    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
+    url = import.meta.url;
+  } catch {}
+  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
+}
 
 describe('nunjucks', () => {
-  const fixturePath = join(dirname(dirname(__dirname)), 'fixtures', 'hello.njk');
+  const fixturePath = join(dirname(dirname(__hexo_dirname)), 'fixtures', 'hello.njk');
 
   it('render from string', () => {
     const body = [

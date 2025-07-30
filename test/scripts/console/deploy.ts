@@ -1,5 +1,6 @@
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 import { exists, mkdirs, readFile, rmdir, writeFile } from 'hexo-fs';
-import { join } from 'path';
 import { spy, stub, assert as sinonAssert } from 'sinon';
 import chai from 'chai';
 const should = chai.should();
@@ -8,8 +9,22 @@ import deployConsole from '../../../lib/plugins/console/deploy';
 type OriginalParams = Parameters<typeof deployConsole>;
 type OriginalReturn = ReturnType<typeof deployConsole>;
 
+// Cross-compatible __dirname for ESM and CJS, without require
+let __hexo_dirname: string;
+if (typeof __dirname !== 'undefined') {
+  // CJS
+  __hexo_dirname = __dirname;
+} else {
+  // ESM (only works in ESM context)
+  let url = '';
+  try {
+    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
+    url = import.meta.url;
+  } catch {}
+  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
+}
 describe('deploy', () => {
-  const hexo = new Hexo(join(__dirname, 'deploy_test'), { silent: true });
+  const hexo = new Hexo(join(__hexo_dirname, 'deploy_test'), { silent: true });
   const deploy: (...args: OriginalParams) => OriginalReturn = deployConsole.bind(hexo);
 
   before(async () => {
@@ -97,7 +112,7 @@ describe('deploy', () => {
 
   it('deployer not found', async () => {
     const logSpy = spy();
-    const hexo = new Hexo(join(__dirname, 'deploy_test'));
+    const hexo = new Hexo(join(__hexo_dirname, 'deploy_test'));
     hexo.log.error = logSpy;
 
     const deploy: (...args: OriginalParams) => OriginalReturn = deployConsole.bind(hexo);

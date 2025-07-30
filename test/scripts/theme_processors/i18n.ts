@@ -1,15 +1,31 @@
-import { join } from 'path';
-import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 import BluebirdPromise from 'bluebird';
+import chai from 'chai';
+import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 import Hexo from '../../../lib/hexo';
 import { i18n } from '../../../lib/theme/processors/i18n';
-import chai from 'chai';
 const should = chai.should();
 type I18nParams = Parameters<typeof i18n['process']>
 type I18nReturn = ReturnType<typeof i18n['process']>
 
+// Cross-compatible __dirname for ESM and CJS, without require
+let __hexo_dirname: string;
+if (typeof __dirname !== 'undefined') {
+  // CJS
+  __hexo_dirname = __dirname;
+} else {
+  // ESM (only works in ESM context)
+  let url = '';
+  try {
+    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
+    url = import.meta.url;
+  } catch {}
+  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
+}
+
 describe('i18n', () => {
-  const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
+  const hexo = new Hexo(join(__hexo_dirname, 'config_test'), {silent: true});
   const process: (...args: I18nParams) => BluebirdPromise<I18nReturn> = BluebirdPromise.method(i18n.process.bind(hexo));
   const themeDir = join(hexo.base_dir, 'themes', 'test');
 

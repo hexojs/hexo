@@ -1,6 +1,7 @@
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
 import { exists, mkdirs, readFile, rmdir, unlink } from 'hexo-fs';
 import moment from 'moment';
-import { join } from 'path';
 import BluebirdPromise from 'bluebird';
 import { useFakeTimers, spy, SinonSpy } from 'sinon';
 import Hexo from '../../../lib/hexo';
@@ -8,8 +9,23 @@ import newConsole from '../../../lib/plugins/console/new';
 type OriginalParams = Parameters<typeof newConsole>;
 type OriginalReturn = ReturnType<typeof newConsole>;
 
+// Cross-compatible __dirname for ESM and CJS, without require
+let __hexo_dirname: string;
+if (typeof __dirname !== 'undefined') {
+  // CJS
+  __hexo_dirname = __dirname;
+} else {
+  // ESM (only works in ESM context)
+  let url = '';
+  try {
+    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
+    url = import.meta.url;
+  } catch {}
+  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
+}
+
 describe('new', () => {
-  const hexo = new Hexo(join(__dirname, 'new_test'), {silent: true});
+  const hexo = new Hexo(join(__hexo_dirname, 'new_test'), {silent: true});
   const n: (...args: OriginalParams) => OriginalReturn = newConsole.bind(hexo);
   const post = hexo.post;
   const now = Date.now();

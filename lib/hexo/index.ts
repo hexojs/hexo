@@ -8,9 +8,6 @@ import * as picocolors from 'picocolors';
 import tildify from 'tildify';
 import { runInThisContext } from 'vm';
 import Database from 'warehouse/dist/database';
-
-const version = '__HEXO_VERSION__';
-
 import {
   Console,
   Deployer,
@@ -24,7 +21,6 @@ import {
   Renderer,
   Tag
 } from '../extend/index.js';
-
 import { deepMerge, full_url_for } from 'hexo-util';
 import type Schema from 'warehouse/dist/schema';
 import type { AddSchemaTypeOptions } from 'warehouse/dist/types';
@@ -42,8 +38,24 @@ import Render from './render.js';
 import Router from './router.js';
 import Scaffold from './scaffold.js';
 import Source from './source.js';
+import { fileURLToPath } from 'url';
 
-const libDir = dirname(__dirname);
+// Cross-compatible __dirname for ESM and CJS, without require
+let __hexo_dirname: string;
+if (typeof __dirname !== 'undefined') {
+  // CJS
+  __hexo_dirname = __dirname;
+} else {
+  // ESM (only works in ESM context)
+  let url = '';
+  try {
+    url = import.meta.url;
+  } catch {}
+  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
+}
+const version = '__HEXO_VERSION__';
+
+const libDir = dirname(__hexo_dirname);
 const dbVersion = 1;
 
 const stopWatcher = (box: Box) => {
