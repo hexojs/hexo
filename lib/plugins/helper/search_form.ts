@@ -1,4 +1,4 @@
-import moize from 'moize';
+import * as moizeModule from 'moize';
 import type { LocalsType } from '../../types.js';
 
 interface Options {
@@ -15,6 +15,8 @@ function searchFormHelperImpl(this: LocalsType, options: Options = {}) {
   return `<form action="//google.com/search" method="get" accept-charset="UTF-8" class="${className}"><input type="search" name="q" class="${className}-input"${text ? ` placeholder="${text}"` : ''}>${button ? `<button type="submit" class="${className}-submit">${typeof button === 'string' ? button : text}</button>` : ''}<input type="hidden" name="sitesearch" value="${config.url}"></form>`;
 }
 
+// ESM compatibility
+const moize = (moizeModule.default || moizeModule) as unknown as moizeModule.Moize;
 const searchFormHelper = moize.deep(searchFormHelperImpl);
 
 export default searchFormHelper;

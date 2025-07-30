@@ -7,7 +7,7 @@ import { dirname, join, sep } from 'path';
 import * as picocolors from 'picocolors';
 import tildify from 'tildify';
 import { runInThisContext } from 'vm';
-import Database from 'warehouse';
+import Database from 'warehouse/dist/database';
 
 const { version } = JSON.parse(readFileSync(join(__dirname, '../../package.json')));
 

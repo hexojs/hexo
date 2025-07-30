@@ -5,3 +5,4 @@ full-trace: true
 exit: true
 spec: test/scripts/**/*.ts
 extension: ['ts']
+require: ['ts-node/register']

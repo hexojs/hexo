@@ -1,6 +1,6 @@
 import { Pattern } from 'hexo-util';
 import type { _File } from '../../box/index.js';
-import type Theme from '..';
+import type Theme from '../index.js';
 
 function process(file: _File): Promise<void> {
   const { path } = file.params;

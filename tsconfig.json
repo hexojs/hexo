@@ -6,11 +6,26 @@
     "experimentalSpecifierResolution": "node"
   },
   "compilerOptions": {
+    // change to 'es2020' or 'commonjs' to act like an CJS module
+    // change to 'esnext' or 'node16' to act like an ES module
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "target": "es2020",
     "outDir": "tmp/dist",
     "allowJs": true,
     "types": ["node", "mocha"],
     "typeRoots": ["node_modules/@types", "lib/hexo"]
   },
   "include": ["./lib/**/*.ts", "./test/**/*.ts", "lib/hexo/globals.d.ts"],
-  "exclude": ["**/node_modules", "**/tmp/**", "**/dist/**", "**/coverage/**", "**/.vscode/**", "**/.git/**", "dist", "tmp",".tmp*"]
+  "exclude": [
+    "**/node_modules",
+    "**/tmp/**",
+    "**/dist/**",
+    "**/coverage/**",
+    "**/.vscode/**",
+    "**/.git/**",
+    "dist",
+    "tmp",
+    ".tmp*"
+  ]
 }

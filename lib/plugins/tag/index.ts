@@ -1,5 +1,8 @@
-import moize from 'moize';
+import * as moizeModule from 'moize';
 import type Hexo from '../../hexo/index.js';
+
+// ESM compatibility
+const moize = (moizeModule.default || moizeModule) as unknown as moizeModule.Moize;
 
 export default (ctx: Hexo) => {
   const { tag } = ctx.extend;

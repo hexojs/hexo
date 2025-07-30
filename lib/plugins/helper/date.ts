@@ -1,8 +1,10 @@
 import moment from 'moment-timezone';
 const { isMoment } = moment;
-import moize from 'moize';
+import * as moizeModule from 'moize';
 import type { LocalsType } from '../../types.js';
 
+// ESM compatibility
+const moize = (moizeModule.default || moizeModule) as unknown as moizeModule.Moize;
 const isDate = (value: moment.MomentInput | moment.Moment): boolean =>
   typeof value === 'object' && value instanceof Date && !isNaN(value.getTime());
 

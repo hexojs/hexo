@@ -1,5 +1,5 @@
 import * as picocolors from 'picocolors';
-import table from 'fast-text-table';
+import * as fastTextTable from 'fast-text-table';
 import { stringLength } from './common.js';
 import type Hexo from '../../../hexo/index.js';
 import type { PageSchema } from '../../../types.js';
@@ -9,7 +9,7 @@ import type Document from 'warehouse/dist/document';
 function listPage(this: Hexo): void {
   const Page: Model<PageSchema> = this.model('Page');
 
-  const data = Page.sort({date: 1}).map((page: Document<PageSchema> & PageSchema) => {
+  const data = Page.sort({ date: 1 }).map((page: Document<PageSchema> & PageSchema) => {
     const date = page.date.format('YYYY-MM-DD');
     return [picocolors.gray(date), page.title, picocolors.magenta(page.source)];
   });
@@ -19,6 +19,8 @@ function listPage(this: Hexo): void {
 
   data.unshift(header);
 
+  // ESM Compatibility
+  const table = (fastTextTable.default || fastTextTable) as unknown as typeof fastTextTable.default;
   const t = table(data, {
     stringLength
   });

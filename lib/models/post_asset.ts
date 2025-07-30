@@ -1,14 +1,14 @@
-import warehouse from 'warehouse';
+import Schema from 'warehouse/dist/schema';
 import { join, posix } from 'path';
 import type Hexo from '../hexo/index.js';
 import type { PostAssetSchema } from '../types.js';
 
 const postAsset = (ctx: Hexo) => {
-  const PostAsset = new warehouse.Schema<PostAssetSchema>({
+  const PostAsset = new Schema<PostAssetSchema>({
     _id: {type: String, required: true},
     slug: {type: String, required: true},
     modified: {type: Boolean, default: true},
-    post: {type: warehouse.Schema.Types.CUID, ref: 'Post'},
+    post: {type: Schema.Types.CUID, ref: 'Post'},
     renderable: {type: Boolean, default: true}
   });
 

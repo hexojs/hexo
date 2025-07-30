@@ -1,8 +1,10 @@
 import { isMoment, isDate, Moment } from 'moment';
 import { encodeURL, prettyUrls, stripHTML, escapeHTML } from 'hexo-util';
-import moize from 'moize';
+import * as moizeModule from 'moize';
 import type { LocalsType } from '../../types.js';
 
+// ESM compatibility
+const moize = (moizeModule.default || moizeModule) as unknown as moizeModule.Moize;
 const localeMap = {
   'en': 'en_US',
   'de': 'de_DE',

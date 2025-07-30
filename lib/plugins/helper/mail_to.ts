@@ -1,5 +1,8 @@
 import { htmlTag } from 'hexo-util';
-import moize from 'moize';
+import * as moizeModule from 'moize';
+
+// ESM compatibility
+const moize = (moizeModule.default || moizeModule) as unknown as moizeModule.Moize;
 
 interface Options {
   href?: string;

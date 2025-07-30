@@ -1,5 +1,5 @@
 import * as picocolors from 'picocolors';
-import table from 'fast-text-table';
+import * as fastTextTable from 'fast-text-table';
 import { stringLength } from './common.js';
 import type Hexo from '../../../hexo/index.js';
 import type { PostSchema } from '../../../types.js';
@@ -13,18 +13,12 @@ function mapName(item: any): string {
 function listPost(this: Hexo): void {
   const Post: Model<PostSchema> = this.model('Post');
 
-  const data = Post.sort({published: -1, date: 1}).map((post: Document<PostSchema> & PostSchema) => {
+  const data = Post.sort({ published: -1, date: 1 }).map((post: Document<PostSchema> & PostSchema) => {
     const date = post.published ? post.date.format('YYYY-MM-DD') : 'Draft';
     const tags = post.tags.map(mapName);
     const categories = post.categories.map(mapName);
 
-    return [
-      picocolors.gray(date),
-      post.title,
-      picocolors.magenta(post.source),
-      categories.join(', '),
-      tags.join(', ')
-    ];
+    return [picocolors.gray(date), post.title, picocolors.magenta(post.source), categories.join(', '), tags.join(', ')];
   });
 
   // Table header
@@ -32,6 +26,8 @@ function listPost(this: Hexo): void {
 
   data.unshift(header);
 
+  // ESM Compatibility
+  const table = (fastTextTable.default || fastTextTable) as unknown as typeof fastTextTable.default;
   const t = table(data, {
     stringLength
   });

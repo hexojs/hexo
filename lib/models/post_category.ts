@@ -1,11 +1,11 @@
-import warehouse from 'warehouse';
+import Schema from 'warehouse/dist/schema';
 import type Hexo from '../hexo/index.js';
 import { PostCategorySchema } from '../types.js';
 
 const postCategory = (ctx: Hexo) => {
-  const PostCategory = new warehouse.Schema<PostCategorySchema>({
-    post_id: {type: warehouse.Schema.Types.CUID, ref: 'Post'},
-    category_id: {type: warehouse.Schema.Types.CUID, ref: 'Category'}
+  const PostCategory = new Schema<PostCategorySchema>({
+    post_id: {type: Schema.Types.CUID, ref: 'Post'},
+    category_id: {type: Schema.Types.CUID, ref: 'Category'}
   });
 
   PostCategory.pre('save', data => {

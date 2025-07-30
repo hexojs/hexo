@@ -1,10 +1,10 @@
-import warehouse from 'warehouse';
 import { join } from 'path';
+import Schema from 'warehouse/dist/schema';
 import type Hexo from '../hexo/index.js';
 import type { AssetSchema } from '../types.js';
 
 const asset = (ctx: Hexo) => {
-  const Asset = new warehouse.Schema<AssetSchema>({
+  const Asset = new Schema<AssetSchema>({
     _id: {type: String, required: true},
     path: {type: String, required: true},
     modified: {type: Boolean, default: true},

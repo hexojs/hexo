@@ -1,7 +1,9 @@
 import { url_for } from 'hexo-util';
-import moize from 'moize';
+import * as moizeModule from 'moize';
 import type { LocalsType } from '../../types.js';
 
+// ESM compatibility
+const moize = (moizeModule.default || moizeModule) as unknown as moizeModule.Moize;
 const feedFn = (str = '') => {
   if (str) return str.replace(/2$/, '');
   return str;

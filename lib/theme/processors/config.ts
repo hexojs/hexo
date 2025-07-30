@@ -1,6 +1,6 @@
 import { Pattern } from 'hexo-util';
 import type { _File } from '../../box/index.js';
-import Theme from '..';
+import Theme from '../index.js';
 
 function process(file: _File) {
   if (file.type === 'delete') {

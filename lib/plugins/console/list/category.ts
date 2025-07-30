@@ -1,10 +1,10 @@
 import * as picocolors from 'picocolors';
-import table from 'fast-text-table';
 import { stringLength } from './common.js';
 import type Hexo from '../../../hexo/index.js';
 import type { CategorySchema } from '../../../types.js';
 import type Model from 'warehouse/dist/model';
 import type Document from 'warehouse/dist/document';
+import * as fastTextTable from 'fast-text-table';
 
 function listCategory(this: Hexo): void {
   const categories: Model<CategorySchema> = this.model('Category');
@@ -16,6 +16,8 @@ function listCategory(this: Hexo): void {
 
   data.unshift(header);
 
+  // ESM Compatibility
+  const table = ((fastTextTable.default || fastTextTable) as unknown as typeof fastTextTable.default);
   const t = table(data, {
     align: ['l', 'r'],
     stringLength

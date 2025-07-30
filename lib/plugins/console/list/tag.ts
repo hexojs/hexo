@@ -1,5 +1,5 @@
 import * as picocolors from 'picocolors';
-import table from 'fast-text-table';
+import * as fastTextTable from 'fast-text-table';
 import { stringLength } from './common.js';
 import type Hexo from '../../../hexo/index.js';
 import type { TagSchema } from '../../../types.js';
@@ -9,13 +9,19 @@ import type Document from 'warehouse/dist/document';
 function listTag(this: Hexo): void {
   const Tag: Model<TagSchema> = this.model('Tag');
 
-  const data = Tag.sort({name: 1}).map((tag: Document<TagSchema> & TagSchema) => [tag.name, String(tag.length), picocolors.magenta(tag.path)]);
+  const data = Tag.sort({ name: 1 }).map((tag: Document<TagSchema> & TagSchema) => [
+    tag.name,
+    String(tag.length),
+    picocolors.magenta(tag.path)
+  ]);
 
   // Table header
   const header = ['Name', 'Posts', 'Path'].map(str => picocolors.underline(str));
 
   data.unshift(header);
 
+  // ESM Compatibility
+  const table = (fastTextTable.default || fastTextTable) as unknown as typeof fastTextTable.default;
   const t = table(data, {
     align: ['l', 'r', 'l'],
     stringLength

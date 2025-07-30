@@ -1,4 +1,4 @@
-import warehouse from 'warehouse';
+import SchemaType from 'warehouse/dist/schematype';
 import { moment } from '../../plugins/helper/date.js';
 
 // It'll pollute the moment module.
@@ -9,7 +9,7 @@ import { moment } from '../../plugins/helper/date.js';
 //   }
 // }
 
-class SchemaTypeMoment extends warehouse.SchemaType<moment.Moment> {
+class SchemaTypeMoment extends SchemaType<moment.Moment> {
   declare options: any;
 
   constructor(name: string, options = {}) {

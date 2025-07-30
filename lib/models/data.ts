@@ -1,9 +1,9 @@
-import warehouse from 'warehouse';
+import Schema from 'warehouse/dist/schema';
 import type Hexo from '../hexo/index.js';
 import { DataSchema } from '../types.js';
 
 const data = (_ctx: Hexo) => {
-  const Data = new warehouse.Schema<DataSchema>({
+  const Data = new Schema<DataSchema>({
     _id: {type: String, required: true},
     data: Object
   });

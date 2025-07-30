@@ -1,7 +1,10 @@
 import { Color, url_for } from 'hexo-util';
-import moize from 'moize';
+import * as moizeModule from 'moize';
 import type { LocalsType, TagSchema } from '../../types.js';
 import type Query from 'warehouse/dist/query';
+
+// ESM compatibility
+const moize = (moizeModule.default || moizeModule) as unknown as moizeModule.Moize;
 
 interface Options {
   min_font?: number;

@@ -1,4 +1,4 @@
-import warehouse from 'warehouse';
+import Schema from 'warehouse/dist/schema';
 import Promise from 'bluebird';
 import type Hexo from '../hexo/index.js';
 import type fs from 'fs';
@@ -6,7 +6,7 @@ import type Document from 'warehouse/dist/document';
 import type { CacheSchema } from '../types.js';
 
 const cache = (_ctx: Hexo) => {
-  const Cache = new warehouse.Schema<CacheSchema>({
+  const Cache = new Schema<CacheSchema>({
     _id: {type: String, required: true},
     hash: {type: String, default: ''},
     modified: {type: Number, default: Date.now() } // UnixTime

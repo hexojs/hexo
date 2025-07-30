@@ -1,4 +1,4 @@
-import warehouse from 'warehouse';
+import Schema from 'warehouse/dist/schema';
 import { join } from 'path';
 import Moment from './types/moment.js';
 import moment from 'moment';
@@ -7,7 +7,7 @@ import type Hexo from '../hexo/index.js';
 import type { PageSchema } from '../types.js';
 
 const page = (ctx: Hexo) => {
-  const Page = new warehouse.Schema<PageSchema>({
+  const Page = new Schema<PageSchema>({
     title: {type: String, default: ''},
     date: {
       type: Moment,

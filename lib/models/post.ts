@@ -1,4 +1,4 @@
-import warehouse from 'warehouse';
+import Schema from 'warehouse/dist/schema';
 import moment from 'moment';
 import { extname, join, sep } from 'path';
 import Promise from 'bluebird';
@@ -18,7 +18,7 @@ function removeEmptyTag(tags: string[]) {
 const tagsGetterCache = new Cache();
 
 const post = (ctx: Hexo) => {
-  const Post = new warehouse.Schema<PostSchema>({
+  const Post = new Schema<PostSchema>({
     id: String,
     title: {type: String, default: ''},
     date: {
