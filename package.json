@@ -21,11 +21,12 @@
   },
   "scripts": {
     "prepublishOnly": "npm install && npm run clean && npm run build",
-    "build": "npm run build-cjs && npm run build-esm && npm run build-copy",
+    "build": "npm run build-cjs && npm run build-esm && npm run build-copy && npm run replace-version",
     "build-cjs": "tsc -b tsconfig.cjs.json",
     "build-esm": "tsc -b tsconfig.esm.json",
     "build-copy": "node scripts/copy-files.js",
     "build-test": "tsc -b tsconfig.json",
+    "replace-version": "node scripts/replace-version.js",
     "clean": "npx --yes rimraf dist tmp/dist",
     "eslint": "eslint --config eslint.config.cjs lib test",
     "pretest": "npm run build",

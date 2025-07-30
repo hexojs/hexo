@@ -1,6 +1,6 @@
 import Promise from 'bluebird';
 import { EventEmitter } from 'events';
-import { readFile, readFileSync } from 'hexo-fs';
+import { readFile } from 'hexo-fs';
 import logger from 'hexo-log';
 import Module from 'module';
 import { dirname, join, sep } from 'path';
@@ -9,7 +9,7 @@ import tildify from 'tildify';
 import { runInThisContext } from 'vm';
 import Database from 'warehouse/dist/database';
 
-const { version } = JSON.parse(readFileSync(join(__dirname, '../../package.json')));
+const version = '__HEXO_VERSION__';
 
 import {
   Console,
