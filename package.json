@@ -29,7 +29,7 @@
     "replace-version": "node scripts/replace-version.js",
     "clean": "npx --yes rimraf dist tmp/dist",
     "eslint": "eslint --config eslint.config.cjs lib test",
-    "pretest": "npm run build",
+    "pretest": "node scripts/pretest.js",
     "test": "mocha --loader=ts-node/esm",
     "test-cov": "c8 --reporter=lcovonly npm run test -- --no-parallel",
     "prepare": "husky"
