@@ -1,9 +1,9 @@
 import type Hexo from '../../../hexo/index.js';
+import i18n from './i18n.js';
 
 const templateLocals = (ctx: Hexo) => {
   const { filter } = ctx.extend;
-
-  filter.register('template_locals', require('./i18n'));
+  filter.register('template_locals', i18n);
 };
 
 // For ESM compatibility

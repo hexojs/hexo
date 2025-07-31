@@ -1,9 +1,10 @@
 import type Hexo from '../../../hexo/index.js';
+import saveDatabase from './save_database.js';
 
 const beforeExitIndex = (ctx: Hexo) => {
   const { filter } = ctx.extend;
 
-  filter.register('before_exit', require('./save_database'));
+  filter.register('before_exit', saveDatabase);
 };
 
 export default beforeExitIndex;
