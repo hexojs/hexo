@@ -5,8 +5,13 @@ import tagCode from '../../../lib/plugins/tag/code';
 
 describe('code', () => {
   const hexo = new Hexo();
-  require('../../../lib/plugins/highlight/')(hexo);
-  const codeTag = tagCode(hexo);
+  let codeTag: ReturnType<typeof tagCode>;
+  // Use dynamic import for ESM compatibility
+  before(async () => {
+    const registerHighlight = (await import('../../../lib/plugins/highlight/index.js')).default;
+    registerHighlight(hexo);
+    codeTag = tagCode(hexo);
+  });
 
   const fixture = [
     'if (tired && night){',
@@ -14,17 +19,17 @@ describe('code', () => {
     '}'
   ].join('\n');
 
-  function code(args, content) {
+  function code(args: string, content: string) {
     return codeTag(args.split(' '), content);
   }
 
-  function highlight(code, options?) {
+  function highlight(code: string, options?: Record<string, any>) {
     return utilHighlight(code, options || {})
       .replace(/{/g, '&#123;')
       .replace(/}/g, '&#125;');
   }
 
-  function prism(code, options?) {
+  function prism(code: string, options?: Record<string, any>) {
     return prismHighlight(code, options || {})
       .replace(/{/g, '&#123;')
       .replace(/}/g, '&#125;');
