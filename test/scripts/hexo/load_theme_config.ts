@@ -1,17 +1,25 @@
-import { join } from 'path';
-import { mkdirs, unlink, writeFile, rmdir } from 'hexo-fs';
-import Hexo from '../../../lib/hexo';
 import chai from 'chai';
+import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
+import { join } from 'path';
+import Hexo from '../../../lib/hexo';
 import { testCwd } from '../../util/env';
+import type load_theme_config from '../../../lib/hexo/load_theme_config';
+
 const should = chai.should();
 
 describe('Load alternate theme config', () => {
   const hexo = new Hexo(join(testCwd, 'config_test'), {silent: true});
-  const loadThemeConfig = require('../../../lib/hexo/load_theme_config');
+  let loadThemeConfig: typeof load_theme_config;
 
   hexo.env.init = true;
 
-  before(() => mkdirs(hexo.base_dir).then(() => hexo.init()));
+  before(async () => {
+    await mkdirs(hexo.base_dir);
+    await hexo.init();
+    // Dynamically import the ES module
+    const imported = await import('../../../lib/hexo/load_theme_config');
+    loadThemeConfig = (imported.default || imported) as typeof load_theme_config;
+  });
 
   after(() => rmdir(hexo.base_dir));
 
