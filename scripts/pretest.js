@@ -29,10 +29,25 @@ function getAllFiles(dir) {
 }
 
 function needsBuild() {
-  if (!fs.existsSync(markerFile)) return true;
+  if (!fs.existsSync(markerFile)) {
+    console.log('[pretest] Build needed: marker file does not exist:', markerFile);
+    return true;
+  }
   const markerMtime = fs.statSync(markerFile).mtimeMs;
   const files = getAllFiles(libDir).concat(extraFiles);
-  return files.some(f => fs.existsSync(f) && fs.statSync(f).mtimeMs > markerMtime);
+  for (const f of files) {
+    if (fs.existsSync(f)) {
+      const mtime = fs.statSync(f).mtimeMs;
+      if (mtime > markerMtime) {
+        console.log(`[pretest] Build needed: file newer than marker: ${f} (mtime: ${mtime}, marker: ${markerMtime})`);
+        return true;
+      }
+    } else {
+      console.log(`[pretest] File missing (ignored for build check): ${f}`);
+    }
+  }
+  console.log('[pretest] No build needed. Marker is up to date.');
+  return false;
 }
 
 function isTestEnv() {
