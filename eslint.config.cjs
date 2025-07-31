@@ -1,6 +1,7 @@
 const config = require('eslint-config-hexo/ts');
 const testConfig = require('eslint-config-hexo/test');
 
+/** @type {import('eslint').Linter.Config[]} */
 module.exports = [
   // Configurations applied globally
   ...config,
@@ -24,7 +25,17 @@ module.exports = [
       'test/**/*.ts'
     ],
     languageOptions: {
-      ...testConfig.languageOptions
+      ...testConfig.languageOptions,
+      global: {
+        ...testConfig.languageOptions.global,
+        'chai': true,
+        'describe': true,
+        'it': true,
+        'before': true,
+        'after': true,
+        'beforeEach': true,
+        'afterEach': true
+      }
     },
     rules: {
       ...testConfig.rules,
