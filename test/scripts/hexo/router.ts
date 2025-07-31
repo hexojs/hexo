@@ -1,13 +1,13 @@
 import BluebirdPromise from 'bluebird';
-import { Readable } from 'stream';
-import { join } from 'path';
-import { testCwd } from '../../util/env';
+import chai from 'chai';
 import crypto from 'crypto';
 import { createReadStream } from 'hexo-fs';
-import { spy, assert as sinonAssert } from 'sinon';
-import { readStream } from '../../util';
+import { join } from 'path';
+import { assert as sinonAssert, spy } from 'sinon';
+import { Readable } from 'stream';
 import Router from '../../../lib/hexo/router';
-import chai from 'chai';
+import { readStream } from '../../util';
+
 const should = chai.should();
 
 describe('Router', () => {
@@ -150,7 +150,7 @@ describe('Router', () => {
   });
 
   it('get() - large readable stream (more than 65535 bits)', () => {
-    const path = join(testCwd, '../../fixtures/banner.jpg');
+    const path = join(process.cwd(), 'test/fixtures/banner.jpg');
 
     router.set('test', () => createReadStream(path));
 
