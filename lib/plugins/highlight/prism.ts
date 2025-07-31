@@ -1,8 +1,9 @@
 import type { HighlightOptions } from '../../extend/syntax_highlight.js';
 import type Hexo from '../../hexo/index.js';
+import * as hexoUtil from 'hexo-util';
 
 // Lazy require prismjs
-let prismHighlight: typeof import('hexo-util').prismHighlight;
+let prismHighlight: typeof hexoUtil.prismHighlight;
 
 const prismFilter = function(this: Hexo, code: string, options: HighlightOptions) {
   const prismjsCfg = this.config.prismjs || {} as any;
@@ -22,11 +23,11 @@ const prismFilter = function(this: Hexo, code: string, options: HighlightOptions
     stripIndent: prismjsCfg.strip_indent
   };
 
-  if (!prismHighlight) prismHighlight = require('hexo-util').prismHighlight;
+  if (!prismHighlight) prismHighlight = hexoUtil.prismHighlight;
 
   if (Array.isArray(prismjsCfg.exclude_languages) && prismjsCfg.exclude_languages.includes(prismjsOptions.lang)) {
     // Only wrap with <pre><code class="lang"></code></pre>
-    return `<pre><code class="${prismjsOptions.lang}">${require('hexo-util').escapeHTML(code)}</code></pre>`;
+    return `<pre><code class="${prismjsOptions.lang}">${hexoUtil.escapeHTML(code)}</code></pre>`;
   }
   return prismHighlight(code, prismjsOptions);
 };
