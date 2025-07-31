@@ -28,7 +28,7 @@ function toISOString(date?: string | number | Date | moment.Moment) {
     return date.toISOString();
   }
 
-  return new Date(date as (string | number)).toISOString();
+  return new Date(date as string | number).toISOString();
 }
 
 function dateHelper(this: LocalsType, date?: moment.Moment | moment.MomentInput, format?: string) {
@@ -87,11 +87,11 @@ function _toMomentLocale(lang?: string) {
   return lang.toLowerCase().replace('_', '-');
 }
 
-export {dateHelper as date};
-export {toISOString as date_xml};
-export {timeHelper as time};
-export {fullDateHelper as full_date};
-export {relativeDateHelper as relative_date};
-export {timeTagHelper as time_tag};
-export {moment};
+export { dateHelper as date };
+export { toISOString as date_xml };
+export { timeHelper as time };
+export { fullDateHelper as full_date };
+export { relativeDateHelper as relative_date };
+export { timeTagHelper as time_tag };
+export { moment };
 export const toMomentLocale = moize.shallow(_toMomentLocale);

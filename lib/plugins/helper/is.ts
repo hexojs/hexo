@@ -39,7 +39,7 @@ function isArchiveHelper() {
   return Boolean(this.page.archive);
 }
 
-function isYearHelper(year?) {
+function isYearHelper(year?: any) {
   const { page } = this;
   if (!page.archive) return false;
 
@@ -50,7 +50,7 @@ function isYearHelper(year?) {
   return Boolean(page.year);
 }
 
-function isMonthHelper(year?, month?) {
+function isMonthHelper(year?: any, month?: any) {
   const { page } = this;
   if (!page.archive) return false;
 
@@ -65,7 +65,7 @@ function isMonthHelper(year?, month?) {
   return Boolean(page.year && page.month);
 }
 
-function isCategoryHelper(category?) {
+function isCategoryHelper(category?: any) {
   if (category) {
     return this.page.category === category;
   }
@@ -73,7 +73,7 @@ function isCategoryHelper(category?) {
   return Boolean(this.page.category);
 }
 
-function isTagHelper(tag?) {
+function isTagHelper(tag?: any) {
   if (tag) {
     return this.page.tag === tag;
   }
@@ -81,13 +81,13 @@ function isTagHelper(tag?) {
   return Boolean(this.page.tag);
 }
 
-export {isCurrentHelper as current};
-export {isHomeHelper as home};
-export {isHomeFirstPageHelper as home_first_page};
-export {isPostHelper as post};
-export {isPageHelper as page};
-export {isArchiveHelper as archive};
-export {isYearHelper as year};
-export {isMonthHelper as month};
-export {isCategoryHelper as category};
-export {isTagHelper as tag};
+export { isCurrentHelper as current };
+export { isHomeHelper as home };
+export { isHomeFirstPageHelper as home_first_page };
+export { isPostHelper as post };
+export { isPageHelper as page };
+export { isArchiveHelper as archive };
+export { isYearHelper as year };
+export { isMonthHelper as month };
+export { isCategoryHelper as category };
+export { isTagHelper as tag };
