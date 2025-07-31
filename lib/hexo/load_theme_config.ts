@@ -1,7 +1,7 @@
 import { join, parse, basename, extname } from 'path';
 import tildify from 'tildify';
 import { exists, readdir } from 'hexo-fs';
-import * as picocolors from 'picocolors';
+import picocolors from 'picocolors';
 import { deepMerge } from 'hexo-util';
 import type Hexo from './index.js';
 import type Promise from 'bluebird';

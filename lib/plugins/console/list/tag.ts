@@ -1,4 +1,4 @@
-import * as picocolors from 'picocolors';
+import picocolors from 'picocolors';
 import * as fastTextTable from 'fast-text-table';
 import { stringLength } from './common.js';
 import type Hexo from '../../../hexo/index.js';

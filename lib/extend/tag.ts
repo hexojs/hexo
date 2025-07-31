@@ -1,5 +1,5 @@
 import { stripIndent } from 'hexo-util';
-import * as picocolors from 'picocolors';
+import picocolors from 'picocolors';
 import { Environment } from 'nunjucks';
 import Promise from 'bluebird';
 import type { NodeJSLikeCallback } from '../types.js';

@@ -3,7 +3,7 @@ import tildify from 'tildify';
 import Theme from '../theme/index.js';
 import Source from './source.js';
 import { exists, readdir } from 'hexo-fs';
-import * as picocolors from 'picocolors';
+import picocolors from 'picocolors';
 import { deepMerge } from 'hexo-util';
 import validateConfig from './validate_config.js';
 import type Hexo from './index.js';

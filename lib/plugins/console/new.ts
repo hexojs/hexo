@@ -1,5 +1,5 @@
 import tildify from 'tildify';
-import * as picocolors from 'picocolors';
+import picocolors from 'picocolors';
 import { basename } from 'path';
 import Hexo from '../../hexo/index.js';
 import type Promise from 'bluebird';

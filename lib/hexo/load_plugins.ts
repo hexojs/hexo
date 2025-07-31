@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { exists, readFile, listDir } from 'hexo-fs';
 import Promise from 'bluebird';
-import * as picocolors from 'picocolors';
+import picocolors from 'picocolors';
 import type Hexo from './index.js';
 
 const loadPlugins = (ctx: Hexo): Promise<void[][]> => {

@@ -3,7 +3,7 @@ import BlueBirdPromise from 'bluebird';
 import File from './file.js';
 import { Pattern, createSha1Hash } from 'hexo-util';
 import { createReadStream, readdir, stat, watch } from 'hexo-fs';
-import * as picocolors from 'picocolors';
+import picocolors from 'picocolors';
 import { EventEmitter } from 'events';
 import * as micromatch from 'micromatch';
 import type Hexo from '../hexo/index.js';

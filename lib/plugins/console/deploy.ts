@@ -1,5 +1,5 @@
 import { exists } from 'hexo-fs';
-import * as picocolors from 'picocolors';
+import picocolors from 'picocolors';
 import type Hexo from '../../hexo/index.js';
 import type Promise from 'bluebird';
 

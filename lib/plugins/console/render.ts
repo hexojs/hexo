@@ -2,7 +2,7 @@ import { resolve } from 'path';
 import tildify from 'tildify';
 import prettyHrtime from 'pretty-hrtime';
 import { writeFile } from 'hexo-fs';
-import * as picocolors from 'picocolors';
+import picocolors from 'picocolors';
 import type Hexo from '../../hexo/index.js';
 import type Promise from 'bluebird';
 

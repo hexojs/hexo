@@ -2,7 +2,7 @@ import assert from 'assert';
 import moment from 'moment';
 import Promise from 'bluebird';
 import { join, extname, basename } from 'path';
-import * as picocolors from 'picocolors';
+import picocolors from 'picocolors';
 import { load } from 'js-yaml';
 import { slugize, escapeRegExp, deepMerge} from 'hexo-util';
 import { copyDir, exists, listDir, mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';

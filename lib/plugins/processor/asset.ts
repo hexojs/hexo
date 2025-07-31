@@ -3,7 +3,7 @@ import Promise from 'bluebird';
 import { parse as yfm } from 'hexo-front-matter';
 import { extname, relative } from 'path';
 import { Pattern } from 'hexo-util';
-import * as picocolors from 'picocolors';
+import picocolors from 'picocolors';
 import type { _File } from '../../box/index.js';
 import type Hexo from '../../hexo/index.js';
 import type { Stats } from 'fs';

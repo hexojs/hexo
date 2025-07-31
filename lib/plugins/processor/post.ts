@@ -4,7 +4,7 @@ import { parse as yfm } from 'hexo-front-matter';
 import { extname, join, posix, sep } from 'path';
 import { stat, listDir } from 'hexo-fs';
 import { slugize, Pattern, Permalink } from 'hexo-util';
-import * as picocolors from 'picocolors';
+import picocolors from 'picocolors';
 import type { _File } from '../../box/index.js';
 import type Hexo from '../../hexo/index.js';
 import type { Stats } from 'fs';

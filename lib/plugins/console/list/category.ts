@@ -1,4 +1,4 @@
-import * as picocolors from 'picocolors';
+import picocolors from 'picocolors';
 import { stringLength } from './common.js';
 import type Hexo from '../../../hexo/index.js';
 import type { CategorySchema } from '../../../types.js';

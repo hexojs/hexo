@@ -1,4 +1,4 @@
-import * as picocolors from 'picocolors';
+import picocolors from 'picocolors';
 import type Hexo from '../../hexo/index.js';
 
 interface MigrateArgs {

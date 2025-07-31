@@ -2,7 +2,7 @@ import { exists, writeFile, unlink, stat, mkdirs } from 'hexo-fs';
 import { join } from 'path';
 import Promise from 'bluebird';
 import prettyHrtime from 'pretty-hrtime';
-import * as picocolors from 'picocolors';
+import picocolors from 'picocolors';
 import tildify from 'tildify';
 import { PassThrough, type Readable } from 'stream';
 import { createSha1Hash } from 'hexo-util';
