@@ -8,8 +8,7 @@ const __dirname = path.dirname(__filename);
 const libDir = path.resolve(__dirname, '../lib');
 const markerFile = path.resolve(__dirname, '../tmp/.last_build');
 const extraFiles = [
-  path.resolve(__dirname, '../test/utils.cjs'),
-  path.resolve(__dirname, '../test/dual_mode.spec.ts'),
+  path.resolve(__dirname, '../test/dual_mode/dual.spec.ts'),
   __filename
 ];
 
