@@ -1,9 +1,19 @@
 import type Hexo from '../../hexo/index.js';
+import clean from './clean.js';
+import config from './config.js';
+import deploy from './deploy.js';
+import generate from './generate.js';
+import list from './list/index.js';
+import migrate from './migrate.js';
+import newCmd from './new.js';
+import publish from './publish.js';
+import render from './render.js';
 
 function registerConsoleCommands(ctx: Hexo) {
   const { console } = ctx.extend;
 
-  console.register('clean', 'Remove generated files and cache.', require('./clean'));
+
+  console.register('clean', 'Remove generated files and cache.', clean);
 
   console.register('config', 'Get or set configurations.', {
     usage: '[name] [value]',
@@ -11,14 +21,14 @@ function registerConsoleCommands(ctx: Hexo) {
       {name: 'name', desc: 'Setting name. Leave it blank if you want to show all configurations.'},
       {name: 'value', desc: 'New value of a setting. Leave it blank if you just want to show a single configuration.'}
     ]
-  }, require('./config'));
+  }, config);
 
   console.register('deploy', 'Deploy your website.', {
     options: [
       {name: '--setup', desc: 'Setup without deployment'},
       {name: '-g, --generate', desc: 'Generate before deployment'}
     ]
-  }, require('./deploy'));
+  }, deploy);
 
   console.register('generate', 'Generate static files.', {
     options: [
@@ -28,7 +38,7 @@ function registerConsoleCommands(ctx: Hexo) {
       {name: '-b, --bail', desc: 'Raise an error if any unhandled exception is thrown during generation'},
       {name: '-c, --concurrency', desc: 'Maximum number of files to be generated in parallel. Default is infinity'}
     ]
-  }, require('./generate'));
+  }, generate);
 
   console.register('list', 'List the information of the site', {
     desc: 'List the information of the site.',
@@ -36,7 +46,7 @@ function registerConsoleCommands(ctx: Hexo) {
     arguments: [
       {name: 'type', desc: 'Available types: page, post, route, tag, category'}
     ]
-  }, require('./list'));
+  }, list);
 
   console.register('migrate', 'Migrate your site from other system to Hexo.', {
     init: true,
@@ -44,7 +54,7 @@ function registerConsoleCommands(ctx: Hexo) {
     arguments: [
       {name: 'type', desc: 'Migrator type.'}
     ]
-  }, require('./migrate'));
+  }, migrate);
 
   console.register('new', 'Create a new post.', {
     usage: '[layout] <title>',
@@ -57,7 +67,7 @@ function registerConsoleCommands(ctx: Hexo) {
       {name: '-s, --slug', desc: 'Post slug. Customize the URL of the post.'},
       {name: '-p, --path', desc: 'Post path. Customize the path of the post.'}
     ]
-  }, require('./new'));
+  }, newCmd);
 
   console.register('publish', 'Moves a draft post from _drafts to _posts folder.', {
     usage: '[layout] <filename>',
@@ -65,7 +75,7 @@ function registerConsoleCommands(ctx: Hexo) {
       {name: 'layout', desc: 'Post layout. Use post, page, draft or whatever you want.'},
       {name: 'filename', desc: 'Draft filename. "hello-world" for example.'}
     ]
-  }, require('./publish'));
+  }, publish);
 
   console.register('render', 'Render files with renderer plugins.', {
     init: true,
@@ -76,7 +86,7 @@ function registerConsoleCommands(ctx: Hexo) {
       {name: '--engine', desc: 'Specify render engine'},
       {name: '--pretty', desc: 'Prettify JSON output'}
     ]
-  }, require('./render'));
+  }, render);
 }
 
 // For ESM compatibility
