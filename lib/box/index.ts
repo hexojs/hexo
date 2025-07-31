@@ -5,7 +5,7 @@ import { Pattern, createSha1Hash } from 'hexo-util';
 import { createReadStream, readdir, stat, watch } from 'hexo-fs';
 import picocolors from 'picocolors';
 import { EventEmitter } from 'events';
-import * as micromatch from 'micromatch';
+import micromatch from 'micromatch';
 import type Hexo from '../hexo/index.js';
 import type { NodeJSLikeCallback } from '../types.js';
 import type fs from 'fs';
