@@ -1,30 +1,15 @@
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
 import { mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
 import BluebirdPromise from 'bluebird';
 import { spy, SinonSpy } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import renderConsole from '../../../lib/plugins/console/render';
+import { testCwd } from '../../util/env';
 type OriginalParams = Parameters<typeof renderConsole>;
 type OriginalReturn = ReturnType<typeof renderConsole>;
 
-// Cross-compatible __dirname for ESM and CJS, without require
-let __hexo_dirname: string;
-if (typeof __dirname !== 'undefined') {
-  // CJS
-  __hexo_dirname = __dirname;
-} else {
-  // ESM (only works in ESM context)
-  let url = '';
-  try {
-    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
-    url = import.meta.url;
-  } catch {}
-  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
-}
-
 describe('render', () => {
-  const hexo = new Hexo(join(__hexo_dirname, 'render_test'), {silent: true});
+  const hexo = new Hexo(join(testCwd, 'render_test'), {silent: true});
   const render: (...args: OriginalParams) => OriginalReturn = renderConsole.bind(hexo);
 
   before(async () => {
@@ -41,7 +26,7 @@ describe('render', () => {
   ].join('\n');
 
   it('no args', async () => {
-    const hexo = new Hexo(join(__hexo_dirname, 'render_test'), {silent: true});
+    const hexo = new Hexo(join(testCwd, 'render_test'), {silent: true});
     hexo.call = spy();
     const render: (...args: OriginalParams) => OriginalReturn = renderConsole.bind(hexo);
 

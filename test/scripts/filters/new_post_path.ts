@@ -1,5 +1,5 @@
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
+import { testCwd } from '../../util/env';
 import moment from 'moment';
 import { createSha1Hash } from 'hexo-util';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
@@ -8,23 +8,8 @@ import newPostPathFilter from '../../../lib/plugins/filter/new_post_path';
 type NewPostPathFilterParams = Parameters<typeof newPostPathFilter>;
 type NewPostPathFilterReturn = ReturnType<typeof newPostPathFilter>;
 
-// Cross-compatible __dirname for ESM and CJS, without require
-let __hexo_dirname: string;
-if (typeof __dirname !== 'undefined') {
-  // CJS
-  __hexo_dirname = __dirname;
-} else {
-  // ESM (only works in ESM context)
-  let url = '';
-  try {
-    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
-    url = import.meta.url;
-  } catch {}
-  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
-}
-
 describe('new_post_path', () => {
-  const hexo = new Hexo(join(__hexo_dirname, 'new_post_path_test'));
+  const hexo = new Hexo(join(testCwd, 'new_post_path_test'));
   const newPostPath: (...args: NewPostPathFilterParams) => NewPostPathFilterReturn = newPostPathFilter.bind(hexo);
   const sourceDir = hexo.source_dir;
   const draftDir = join(sourceDir, '_drafts');

@@ -4,15 +4,15 @@ import BluebirdPromise from 'bluebird';
 import { spy } from 'sinon';
 import { readStream } from '../../util';
 import { full_url_for } from 'hexo-util';
-import Hexo from '../../../lib/hexo';
+import Hexo, { version } from '../../../lib/hexo';
 import chai from 'chai';
+import { testCwd } from '../../util/env';
 const should = chai.should();
 
 describe('Hexo', () => {
-  const base_dir = join(__dirname, 'hexo_test');
+  const base_dir = join(testCwd, 'hexo_test');
   const hexo = new Hexo(base_dir, { silent: true });
-  const coreDir = join(__dirname, '../../..');
-  const { version } = require('../../../package.json');
+  const coreDir = join(testCwd, '../../..');
   const Post = hexo.model('Post');
   const Page = hexo.model('Page');
   const Data = hexo.model('Data');
@@ -44,19 +44,19 @@ describe('Hexo', () => {
   hexo.extend.console.register('test', args => args);
 
   it('constructor', () => {
-    const hexo = new Hexo(__dirname);
+    const hexo = new Hexo(testCwd);
 
-    /* eslint-disable no-path-concat */
+
     hexo.core_dir.should.eql(coreDir + sep);
     hexo.lib_dir.should.eql(join(coreDir, 'lib') + sep);
     hexo.version.should.eql(version);
-    hexo.base_dir.should.eql(__dirname + sep);
-    hexo.public_dir.should.eql(join(__dirname, 'public') + sep);
-    hexo.source_dir.should.eql(join(__dirname, 'source') + sep);
-    hexo.plugin_dir.should.eql(join(__dirname, 'node_modules') + sep);
-    hexo.script_dir.should.eql(join(__dirname, 'scripts') + sep);
-    hexo.scaffold_dir.should.eql(join(__dirname, 'scaffolds') + sep);
-    /* eslint-enable no-path-concat */
+    hexo.base_dir.should.eql(testCwd + sep);
+    hexo.public_dir.should.eql(join(testCwd, 'public') + sep);
+    hexo.source_dir.should.eql(join(testCwd, 'source') + sep);
+    hexo.plugin_dir.should.eql(join(testCwd, 'node_modules') + sep);
+    hexo.script_dir.should.eql(join(testCwd, 'scripts') + sep);
+    hexo.scaffold_dir.should.eql(join(testCwd, 'scaffolds') + sep);
+
     hexo.env.should.eql({
       args: {},
       debug: false,
@@ -67,7 +67,7 @@ describe('Hexo', () => {
       cmd: '',
       init: false
     });
-    hexo.config_path.should.eql(join(__dirname, '_config.yml'));
+    hexo.config_path.should.eql(join(testCwd, '_config.yml'));
   });
 
   it('constructs multi-config', () => {
@@ -110,7 +110,7 @@ describe('Hexo', () => {
   });
 
   it('init()', async () => {
-    const hexo = new Hexo(join(__dirname, 'hexo_test'), {silent: true});
+    const hexo = new Hexo(join(testCwd, 'hexo_test'), {silent: true});
     const hook = spy();
 
     hexo.extend.filter.register('after_init', hook);
@@ -153,7 +153,6 @@ describe('Hexo', () => {
 
   it('load() - theme', async () => await testLoad(join(hexo.theme_dir, 'source')));
 
-
   it('load() - load database', async () => {
     hexo._dbLoaded = false;
     const dbPath = hexo.database.options.path;
@@ -194,7 +193,7 @@ describe('Hexo', () => {
 
   // Issue #3964
   it('load() - merge theme config - deep clone', async () => {
-    const hexo = new Hexo(__dirname, { silent: true });
+    const hexo = new Hexo(testCwd, { silent: true });
     hexo.theme.config = { a: { b: 1, c: 2 } };
     hexo.config.theme_config = { a: { b: 3 } };
 
@@ -213,7 +212,7 @@ describe('Hexo', () => {
   });
 
   it('load() - merge theme config - null theme.config', async () => {
-    const hexo = new Hexo(__dirname, { silent: true });
+    const hexo = new Hexo(testCwd, { silent: true });
     hexo.theme.config = null;
     hexo.config.theme_config = { c: 3 };
 
@@ -236,7 +235,7 @@ describe('Hexo', () => {
   //  - after_post_render
   //  - before_generate
   it('load() - merge theme config - filter', async () => {
-    const hexo = new Hexo(__dirname, { silent: true });
+    const hexo = new Hexo(testCwd, { silent: true });
 
     const validateThemeConfig = function() {
       this.theme.config.a.b.should.eql(3);
@@ -289,7 +288,7 @@ describe('Hexo', () => {
       '  c: 3'
     ].join('\n');
 
-    const hexo = new Hexo(__dirname, { silent: true });
+    const hexo = new Hexo(testCwd, { silent: true });
     hexo.config.theme_config = { a: { b: 3, d: 4 } };
     const theme_config_path = join(hexo.theme_dir, '_config.yml');
 
@@ -639,7 +638,6 @@ describe('Hexo', () => {
       data: { count: () => count++ }
     }));
 
-
     await hexo._generate({cache: true}); // First generate
     await checkStream(route.get('test'), '0');
     await checkStream(route.get('test'), '0'); // should return cached result
@@ -659,7 +657,6 @@ describe('Hexo', () => {
       layout: 'test',
       data: { count: () => count++ }
     }));
-
 
     await hexo._generate({ cache: false }); // First generate
     await checkStream(route.get('test'), '0');

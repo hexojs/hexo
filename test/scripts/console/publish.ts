@@ -1,31 +1,16 @@
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
 import { exists, mkdirs, readFile, rmdir, unlink } from 'hexo-fs';
 import moment from 'moment';
 import BluebirdPromise from 'bluebird';
 import { useFakeTimers, spy, SinonSpy, SinonFakeTimers } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import publishConsole from '../../../lib/plugins/console/publish';
+import { testCwd } from '../../util/env';
 type OriginalParams = Parameters<typeof publishConsole>;
 type OriginalReturn = ReturnType<typeof publishConsole>;
 
-// Cross-compatible __dirname for ESM and CJS, without require
-let __hexo_dirname: string;
-if (typeof __dirname !== 'undefined') {
-  // CJS
-  __hexo_dirname = __dirname;
-} else {
-  // ESM (only works in ESM context)
-  let url = '';
-  try {
-    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
-    url = import.meta.url;
-  } catch {}
-  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
-}
-
 describe('publish', () => {
-  const hexo = new Hexo(join(__hexo_dirname, 'publish_test'), {silent: true});
+  const hexo = new Hexo(join(testCwd, 'publish_test'), {silent: true});
   const publish: (...args: OriginalParams) => OriginalReturn = publishConsole.bind(hexo);
   const post = hexo.post;
   const now = Date.now();
@@ -88,7 +73,7 @@ describe('publish', () => {
   });
 
   it('no args', async () => {
-    const hexo = new Hexo(join(__hexo_dirname, 'publish_test'), {silent: true});
+    const hexo = new Hexo(join(testCwd, 'publish_test'), {silent: true});
     hexo.call = spy();
     const publish: (...args: OriginalParams) => OriginalReturn = publishConsole.bind(hexo);
 

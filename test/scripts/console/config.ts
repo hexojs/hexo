@@ -1,32 +1,17 @@
 import { mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
-import { dirname, join } from 'path';
+import { join } from 'path';
 import { load } from 'js-yaml';
 import { stub, assert as sinonAssert } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import configConsole from '../../../lib/plugins/console/config';
+import { testCwd } from '../../util/env';
 type OriginalParams = Parameters<typeof configConsole>;
 type OriginalReturn = ReturnType<typeof configConsole>;
 import chai from 'chai';
-import { fileURLToPath } from 'url';
-
-// Cross-compatible __dirname for ESM and CJS, without require
-let __hexo_dirname: string;
-if (typeof __dirname !== 'undefined') {
-  // CJS
-  __hexo_dirname = __dirname;
-} else {
-  // ESM (only works in ESM context)
-  let url = '';
-  try {
-    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
-    url = import.meta.url;
-  } catch {}
-  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
-}
 const should = chai.should();
 
 describe('config', () => {
-  const hexo = new Hexo(join(__hexo_dirname, 'config_test'), {silent: true});
+  const hexo = new Hexo(join(testCwd, 'config_test'), {silent: true});
   const config: (...args: OriginalParams) => OriginalReturn = configConsole.bind(hexo);
 
   before(async () => {

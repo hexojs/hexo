@@ -7,11 +7,13 @@ import { expected, content, expected_disable_nunjucks, content_for_issue_3346, e
 import { highlight, deepMerge, jsonStringify, jsonParse } from 'hexo-util';
 import Hexo from '../../../lib/hexo';
 import chai from 'chai';
+import { testCwd } from '../../util/env';
+
 const should = chai.should();
 const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
 describe('Post', () => {
-  const hexo = new Hexo(join(__dirname, 'post_test'));
+  const hexo = new Hexo(join(testCwd, 'post_test'));
   require('../../../lib/plugins/highlight/')(hexo);
   const { post } = hexo;
   const now = Date.now();

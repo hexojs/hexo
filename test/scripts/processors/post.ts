@@ -1,7 +1,7 @@
-
 import { join } from 'path';
 import { exists, mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 import BluebirdPromise from 'bluebird';
+import { testCwd } from '../../util/env';
 import defaultConfig from '../../../lib/hexo/default_config';
 import Hexo from '../../../lib/hexo';
 import posts from '../../../lib/plugins/processor/post';
@@ -13,7 +13,7 @@ type PostReturn = ReturnType<ReturnType<typeof posts>['process']>
 const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 
 describe('post', () => {
-  const baseDir = join(__dirname, 'post_test');
+  const baseDir = join(testCwd, 'post_test');
   const hexo = new Hexo(baseDir);
   const post = posts(hexo);
   const process: (...args: PostParams) => BluebirdPromise<PostReturn> = BluebirdPromise.method(post.process.bind(hexo));
@@ -130,7 +130,6 @@ describe('post', () => {
       type: 'create',
       renderable: false
     });
-
 
     const doc = await Post.insert({
       source: '_posts/foo.html',
@@ -278,7 +277,6 @@ describe('post', () => {
     Post.removeById(postId);
   });
 
-
   it('asset - skip if can\'t find a matching post', async () => {
     hexo.config.post_asset_folder = true;
 
@@ -413,7 +411,6 @@ describe('post', () => {
       type: 'update',
       renderable: true
     });
-
 
     const doc = await Post.insert({ source: file.path, slug: 'foo' });
     await writeFile(file.source, body);

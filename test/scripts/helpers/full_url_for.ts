@@ -25,7 +25,6 @@ describe('full_url_for', () => {
     fullUrlFor('/index.html').should.eql(ctx.config.url + '/');
   });
 
-
   it('external url', () => {
     [
       'https://hexo.io/',

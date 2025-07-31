@@ -806,8 +806,6 @@ describe('Backtick code block', () => {
       codeBlock(data);
       data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
     });
-
-
     it('without language name - ignore tab character', () => {
       const data = {
         content: [

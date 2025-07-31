@@ -1,6 +1,7 @@
 import BluebirdPromise from 'bluebird';
 import { Readable } from 'stream';
 import { join } from 'path';
+import { testCwd } from '../../util/env';
 import crypto from 'crypto';
 import { createReadStream } from 'hexo-fs';
 import { spy, assert as sinonAssert } from 'sinon';
@@ -149,7 +150,7 @@ describe('Router', () => {
   });
 
   it('get() - large readable stream (more than 65535 bits)', () => {
-    const path = join(__dirname, '../../fixtures/banner.jpg');
+    const path = join(testCwd, '../../fixtures/banner.jpg');
 
     router.set('test', () => createReadStream(path));
 

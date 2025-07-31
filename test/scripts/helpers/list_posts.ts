@@ -1,27 +1,11 @@
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { testCwd } from '../../util/env';
 import Hexo from '../../../lib/hexo';
 import listPostsHelper from '../../../lib/plugins/helper/list_posts';
 type ListPostsHelperParams = Parameters<typeof listPostsHelper>;
 type ListPostsHelperReturn = ReturnType<typeof listPostsHelper>;
 
-// Cross-compatible __dirname for ESM and CJS, without require
-let __hexo_dirname: string;
-if (typeof __dirname !== 'undefined') {
-  // CJS
-  __hexo_dirname = __dirname;
-} else {
-  // ESM (only works in ESM context)
-  let url = '';
-  try {
-    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
-    url = import.meta.url;
-  } catch {}
-  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
-}
-
 describe('list_posts', () => {
-  const hexo = new Hexo(__hexo_dirname);
+  const hexo = new Hexo(testCwd);
   const Post = hexo.model('Post');
 
   const ctx: any = {

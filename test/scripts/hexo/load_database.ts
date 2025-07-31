@@ -2,9 +2,10 @@ import { join } from 'path';
 import Hexo from '../../../lib/hexo';
 import { exists, mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 import loadDatabase from '../../../lib/hexo/load_database';
+import { testCwd } from '../../util/env';
 
 describe('Load database', () => {
-  const hexo = new Hexo(join(__dirname, 'db_test'), {silent: true});
+  const hexo = new Hexo(join(testCwd, 'db_test'), {silent: true});
   const dbPath = hexo.database.options.path;
 
   const fixture = {
@@ -61,7 +62,7 @@ describe('Load database', () => {
 // Clean-up is not necessary (unlike the above tests),
 // because the db file is already removed if invalid
 describe('Load database - load failed', () => {
-  const hexo = new Hexo(join(__dirname), {silent: true});
+  const hexo = new Hexo(testCwd, {silent: true});
   const dbPath = hexo.database.options.path;
 
   it('database load failed', async () => {

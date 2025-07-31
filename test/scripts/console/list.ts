@@ -1,29 +1,13 @@
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
 import { spy, stub, assert as sinonAssert, SinonSpy } from 'sinon';
 import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import listConsole from '../../../lib/plugins/console/list';
+import { testCwd } from '../../util/env';
 type OriginalParams = Parameters<typeof listConsole>;
 type OriginalReturn = ReturnType<typeof listConsole>;
 
-// Cross-compatible __dirname for ESM and CJS, without require
-let __hexo_dirname: string;
-if (typeof __dirname !== 'undefined') {
-  // CJS
-  __hexo_dirname = __dirname;
-} else {
-  // ESM (only works in ESM context)
-  let url = '';
-  try {
-    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
-    url = import.meta.url;
-  } catch {}
-  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
-}
-
 describe('Console list', () => {
-  const hexo = new Hexo(__hexo_dirname);
+  const hexo = new Hexo(testCwd);
 
   it('no args', () => {
     hexo.call = spy();

@@ -1,27 +1,11 @@
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { testCwd } from '../../util/env';
 import Hexo from '../../../lib/hexo';
 import imageTag from '../../../lib/plugins/helper/image_tag';
 type imageTagParams = Parameters<typeof imageTag>;
 type imageTagReturn = ReturnType<typeof imageTag>;
 
-// Cross-compatible __dirname for ESM and CJS, without require
-let __hexo_dirname: string;
-if (typeof __dirname !== 'undefined') {
-  // CJS
-  __hexo_dirname = __dirname;
-} else {
-  // ESM (only works in ESM context)
-  let url = '';
-  try {
-    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
-    url = import.meta.url;
-  } catch {}
-  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
-}
-
 describe('image_tag', () => {
-  const hexo = new Hexo(__hexo_dirname);
+  const hexo = new Hexo(testCwd);
 
   const ctx: any = {
     config: hexo.config

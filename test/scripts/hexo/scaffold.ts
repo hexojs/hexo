@@ -2,10 +2,12 @@ import { join } from 'path';
 import { exists, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
 import Hexo from '../../../lib/hexo';
 import chai from 'chai';
+import { testCwd } from '../../util/env';
+
 const should = chai.should();
 
 describe('Scaffold', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
   const scaffold = hexo.scaffold;
   const scaffoldDir = hexo.scaffold_dir;
 

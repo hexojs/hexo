@@ -5,12 +5,14 @@ import Hexo from '../../../lib/hexo';
 import defaults from '../../../lib/hexo/default_config';
 import assets from '../../../lib/plugins/processor/asset';
 import chai from 'chai';
+import { testCwd } from '../../util/env';
+
 const should = chai.should();
 
 const dateFormat = 'YYYY-MM-DD HH:mm:ss';
 
 describe('asset', () => {
-  const baseDir = join(__dirname, 'asset_test');
+  const baseDir = join(testCwd, 'asset_test');
   const hexo = new Hexo(baseDir);
   const asset = assets(hexo);
   const process = asset.process.bind(hexo);
@@ -288,7 +290,6 @@ describe('asset', () => {
       type: 'update',
       renderable: true
     });
-
 
     const doc = await Page.insert({ source: file.path, path: 'hello.html' });
     await writeFile(file.source, body);

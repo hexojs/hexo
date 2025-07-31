@@ -1,4 +1,5 @@
 import { join, dirname } from 'path';
+import { testCwd } from '../../util/env';
 import { writeFile, mkdir, rmdir, unlink } from 'hexo-fs';
 import Hexo from '../../../lib/hexo';
 import loadPlugins from '../../../lib/hexo/load_plugins';
@@ -8,12 +9,12 @@ import { spy } from 'sinon';
 const should = chai.should();
 
 describe('Load plugins', () => {
-  const hexo = new Hexo(join(__dirname, 'plugin_test'), { silent: true }) as any;
+  const hexo = new Hexo(join(testCwd, 'plugin_test'), { silent: true }) as any;
 
   const script = [
     'hexo._script_test = {',
     '  filename: __filename,',
-    '  dirname: __dirname,',
+    '  dirname: testCwd,',
     '  module: module,',
     '  require: require',
     '}'
@@ -26,7 +27,7 @@ describe('Load plugins', () => {
     'await afunc()',
     'hexo._script_test = {',
     '  filename: __filename,',
-    '  dirname: __dirname,',
+    '  dirname: testCwd,',
     '  module: module,',
     '  require: require',
     '}'
@@ -244,7 +245,6 @@ describe('Load plugins', () => {
     logSpy.args[0][2].should.contains('test.js');
     return unlink(path);
   });
-
 
   it('load theme scripts', () => {
     const path = join(hexo.theme_script_dir, 'test.js');

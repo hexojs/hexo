@@ -2,9 +2,10 @@ import { join } from 'path';
 import { readFile, unlink, writeFile } from 'hexo-fs';
 import Hexo from '../../../lib/hexo';
 import updatePkg from '../../../lib/hexo/update_package';
+import { testCwd } from '../../util/env';
 
 describe('Update package.json', () => {
-  const hexo = new Hexo(__dirname, {silent: true});
+  const hexo = new Hexo(testCwd, {silent: true});
   const packagePath = join(hexo.base_dir, 'package.json');
 
   beforeEach(() => {

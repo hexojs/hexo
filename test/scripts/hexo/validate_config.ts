@@ -54,7 +54,6 @@ describe('Validate config', () => {
     }
   });
 
-
   it('config.url - not start with xx://', () => {
     // @ts-ignore
     hexo.config.url = 'localhost:4000';

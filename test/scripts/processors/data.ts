@@ -1,13 +1,14 @@
 import BluebirdPromise from 'bluebird';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 import { join } from 'path';
+import { testCwd } from '../../util/env';
 import Hexo from '../../../lib/hexo';
 import data from '../../../lib/plugins/processor/data';
 import chai from 'chai';
 const should = chai.should();
 
 describe('data', () => {
-  const baseDir = join(__dirname, 'data_test');
+  const baseDir = join(testCwd, 'data_test');
   const hexo = new Hexo(baseDir);
   const processor = data(hexo);
   const process = BluebirdPromise.method(processor.process).bind(hexo);

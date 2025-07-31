@@ -1,27 +1,12 @@
-import { dirname, join } from 'path';
+import { join } from 'path';
 import { rmdir, stat, statSync, writeFile } from 'hexo-fs';
 import { load } from 'js-yaml';
 import Hexo from '../../../lib/hexo';
 import Box from '../../../lib/box';
-import { fileURLToPath } from 'url';
-
-// Cross-compatible __dirname for ESM and CJS, without require
-let __hexo_dirname: string;
-if (typeof __dirname !== 'undefined') {
-  // CJS
-  __hexo_dirname = __dirname;
-} else {
-  // ESM (only works in ESM context)
-  let url = '';
-  try {
-    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
-    url = import.meta.url;
-  } catch {}
-  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
-}
+import { testCwd } from '../../util/env';
 
 describe('File', () => {
-  const hexo = new Hexo(__hexo_dirname);
+  const hexo = new Hexo(testCwd);
   const box = new Box(hexo, join(hexo.base_dir, 'file_test'));
   const { File } = box;
 

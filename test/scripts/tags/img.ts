@@ -1,28 +1,11 @@
 import * as cheerio from 'cheerio';
-import pathFn, { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import pathFn from 'path';
+import { testCwd } from '../../util/env';
 import Hexo from '../../../lib/hexo';
 import tagImg from '../../../lib/plugins/tag/img';
 
-
-// Cross-compatible __dirname for ESM and CJS, without require
-let __hexo_dirname: string;
-if (typeof __dirname !== 'undefined') {
-  // CJS
-  __hexo_dirname = __dirname;
-} else {
-  // ESM (only works in ESM context)
-  let url = '';
-  try {
-    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
-    url = import.meta.url;
-  } catch {}
-  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
-}
-
-
 describe('img', () => {
-  const hexo = new Hexo(pathFn.join(__hexo_dirname, 'img_test'));
+  const hexo = new Hexo(pathFn.join(testCwd, 'img_test'));
   const img = tagImg(hexo);
 
   before(() => hexo.init());

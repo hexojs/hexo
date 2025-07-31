@@ -1,13 +1,16 @@
 import { join, sep, resolve } from 'path';
 import { writeFile, unlink, mkdirs, rmdir } from 'hexo-fs';
-import { makeRe } from 'micromatch';
+import * as micromatch from 'micromatch';
 import loadConfig from '../../../lib/hexo/load_config';
 import defaultConfig from '../../../lib/hexo/default_config';
 import Hexo from '../../../lib/hexo';
 import { jsonParse, jsonStringify } from 'hexo-util';
 
+const { makeRe } = micromatch;
+
+import { testCwd } from '../../util/env';
 describe('Load config', () => {
-  const hexo = new Hexo(join(__dirname, 'config_test'), { silent: true });
+  const hexo = new Hexo(join(testCwd, 'config_test'), { silent: true });
   hexo.env.init = true;
 
   before(() => mkdirs(hexo.base_dir).then(() => hexo.init()));
@@ -63,8 +66,8 @@ describe('Load config', () => {
   });
 
   it('custom config path', async () => {
-    const configPath = join(__dirname, 'werwerwer.yml');
-    hexo.config_path = join(__dirname, 'werwerwer.yml');
+    const configPath = join(testCwd, 'werwerwer.yml');
+    hexo.config_path = join(testCwd, 'werwerwer.yml');
 
     try {
       await writeFile(configPath, 'foo: 1');
@@ -77,8 +80,8 @@ describe('Load config', () => {
   });
 
   it('custom config path with different extension name', async () => {
-    const realPath = join(__dirname, 'werwerwer.json');
-    hexo.config_path = join(__dirname, 'werwerwer.yml');
+    const realPath = join(testCwd, 'werwerwer.json');
+    hexo.config_path = join(testCwd, 'werwerwer.yml');
 
     try {
       await writeFile(realPath, '{"foo": 2}');

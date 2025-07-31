@@ -3,32 +3,15 @@ import Hexo from '../../../lib/hexo';
 import cleanConsole from '../../../lib/plugins/console/clean';
 type OriginalParams = Parameters<typeof cleanConsole>;
 type OriginalReturn = ReturnType<typeof cleanConsole>;
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
-
-// Cross-compatible __dirname for ESM and CJS, without require
-let __hexo_dirname: string;
-if (typeof __dirname !== 'undefined') {
-  // CJS
-  __hexo_dirname = __dirname;
-} else {
-  // ESM (only works in ESM context)
-  let url = '';
-  try {
-    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
-    url = import.meta.url;
-  } catch {}
-  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
-}
+import { testCwd } from '../../util/env';
 
 describe('clean', () => {
   let hexo: Hexo, clean: (...args: OriginalParams) => OriginalReturn;
 
   beforeEach(() => {
-    hexo = new Hexo(__hexo_dirname, {silent: true});
+    hexo = new Hexo(testCwd, {silent: true});
     clean = cleanConsole.bind(hexo);
   });
-
 
   it('delete database', async () => {
     const dbPath = hexo.database.options.path;

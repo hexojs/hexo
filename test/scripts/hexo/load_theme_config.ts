@@ -2,10 +2,11 @@ import { join } from 'path';
 import { mkdirs, unlink, writeFile, rmdir } from 'hexo-fs';
 import Hexo from '../../../lib/hexo';
 import chai from 'chai';
+import { testCwd } from '../../util/env';
 const should = chai.should();
 
 describe('Load alternate theme config', () => {
-  const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
+  const hexo = new Hexo(join(testCwd, 'config_test'), {silent: true});
   const loadThemeConfig = require('../../../lib/hexo/load_theme_config');
 
   hexo.env.init = true;

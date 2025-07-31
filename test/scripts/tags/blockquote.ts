@@ -1,23 +1,9 @@
 import Hexo from '../../../lib/hexo';
 import tagBlockquote from '../../../lib/plugins/tag/blockquote';
-
-// Cross-compatible __dirname for ESM and CJS, without require
-let __hexo_dirname: string;
-if (typeof __dirname !== 'undefined') {
-  // CJS
-  __hexo_dirname = __dirname;
-} else {
-  // ESM (only works in ESM context)
-  let url = '';
-  try {
-    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
-    url = import.meta.url;
-  } catch {}
-  __hexo_dirname = url ? require('path').dirname(require('url').fileURLToPath(url)) : '';
-}
+import { testCwd } from '../../util/env';
 
 describe('blockquote', () => {
-  const hexo = new Hexo(__hexo_dirname);
+  const hexo = new Hexo(testCwd);
   const blockquote = tagBlockquote(hexo);
 
   before(() => hexo.init().then(() => hexo.loadPlugin(require.resolve('hexo-renderer-marked'))));

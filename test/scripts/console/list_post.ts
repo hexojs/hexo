@@ -1,5 +1,4 @@
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { testCwd } from '../../util/env';
 import BluebirdPromise from 'bluebird';
 import { stub, assert as sinonAssert } from 'sinon';
 import Hexo from '../../../lib/hexo';
@@ -7,23 +6,9 @@ import listPost from '../../../lib/plugins/console/list/post';
 type OriginalParams = Parameters<typeof listPost>;
 type OriginalReturn = ReturnType<typeof listPost>;
 
-// Cross-compatible __dirname for ESM and CJS, without require
-let __hexo_dirname: string;
-if (typeof __dirname !== 'undefined') {
-  // CJS
-  __hexo_dirname = __dirname;
-} else {
-  // ESM (only works in ESM context)
-  let url = '';
-  try {
-    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
-    url = import.meta.url;
-  } catch {}
-  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
-}
 
 describe('Console list', () => {
-  const hexo = new Hexo(__hexo_dirname);
+  const hexo = new Hexo(testCwd);
   const Post = hexo.model('Post');
 
   const listPosts: (...args: OriginalParams) => OriginalReturn = listPost.bind(hexo);

@@ -1,30 +1,16 @@
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { testCwd } from '../../util/env';
 import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import tagcloudHelper from '../../../lib/plugins/helper/tagcloud';
 import chai from 'chai';
+
 const should = chai.should();
+
 type TagcloudHelperParams = Parameters<typeof tagcloudHelper>;
 type TagcloudHelperReturn = ReturnType<typeof tagcloudHelper>;
 
-// Cross-compatible __dirname for ESM and CJS, without require
-let __hexo_dirname: string;
-if (typeof __dirname !== 'undefined') {
-  // CJS
-  __hexo_dirname = __dirname;
-} else {
-  // ESM (only works in ESM context)
-  let url = '';
-  try {
-    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
-    url = import.meta.url;
-  } catch {}
-  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
-}
-
 describe('tagcloud', () => {
-  const hexo = new Hexo(__hexo_dirname);
+  const hexo = new Hexo(testCwd);
   const Post = hexo.model('Post');
   const Tag = hexo.model('Tag');
 
@@ -66,7 +52,7 @@ describe('tagcloud', () => {
   });
 
   it('no tags', async () => {
-    const hexo = new Hexo(__hexo_dirname);
+    const hexo = new Hexo(testCwd);
     await hexo.init();
     hexo.locals.invalidate();
     // @ts-expect-error

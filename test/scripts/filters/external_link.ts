@@ -255,7 +255,6 @@ describe('External link - post', () => {
     ].join('\n'));
   });
 
-
   it('backward compatibility', () => {
     const content = 'foo'
       + '<a href="https://hexo.io/">Hexo</a>'

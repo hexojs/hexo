@@ -1,6 +1,6 @@
 import { spy, assert as sinonAssert } from 'sinon';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { join } from 'path';
+import { testCwd } from '../../util/env';
 import { mkdirs, rmdir, unlink, writeFile} from 'hexo-fs';
 import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
@@ -9,24 +9,8 @@ import chai from 'chai';
 const should = chai.should();
 type ConfigParams = Parameters<typeof config['process']>
 type ConfigReturn = ReturnType<typeof config['process']>
-
-// Cross-compatible __dirname for ESM and CJS, without require
-let __hexo_dirname: string;
-if (typeof __dirname !== 'undefined') {
-  // CJS
-  __hexo_dirname = __dirname;
-} else {
-  // ESM (only works in ESM context)
-  let url = '';
-  try {
-    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
-    url = import.meta.url;
-  } catch {}
-  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
-}
-
 describe('config', () => {
-  const hexo = new Hexo(join(__hexo_dirname, 'config_test'), {silent: true});
+  const hexo = new Hexo(join(testCwd, 'config_test'), {silent: true});
   const process: (...args: ConfigParams) => BluebirdPromise<ConfigReturn> = BluebirdPromise.method(config.process.bind(hexo));
   const themeDir = join(hexo.base_dir, 'themes', 'test');
 
