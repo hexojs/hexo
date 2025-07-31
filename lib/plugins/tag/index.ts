@@ -1,5 +1,19 @@
 import * as moizeModule from 'moize';
 import type Hexo from '../../hexo/index.js';
+import blockquote from './blockquote.js';
+import code from './code.js';
+import iframe from './iframe.js';
+import img from './img.js';
+import includeCode from './include_code.js';
+import link from './link.js';
+import postPath from './post_path.js';
+import postLink from './post_link.js';
+import assetPath from './asset_path.js';
+import assetLink from './asset_link.js';
+import assetImg from './asset_img.js';
+import pullquote from './pullquote.js';
+import urlFor from './url_for.js';
+import fullUrlFor from './full_url_for.js';
 
 // ESM compatibility
 const moize = (moizeModule.default || moizeModule) as unknown as moizeModule.Moize;
@@ -7,49 +21,37 @@ const moize = (moizeModule.default || moizeModule) as unknown as moizeModule.Moi
 export default (ctx: Hexo) => {
   const { tag } = ctx.extend;
 
-  const blockquote = require('./blockquote')(ctx);
+  tag.register('quote', blockquote(ctx), true);
+  tag.register('blockquote', blockquote(ctx), true);
 
-  tag.register('quote', blockquote, true);
-  tag.register('blockquote', blockquote, true);
+  tag.register('code', code(ctx), true);
+  tag.register('codeblock', code(ctx), true);
 
-  const code = require('./code')(ctx);
+  tag.register('iframe', iframe);
 
-  tag.register('code', code, true);
-  tag.register('codeblock', code, true);
+  tag.register('img', img(ctx));
+  tag.register('image', img(ctx));
 
-  tag.register('iframe', require('./iframe'));
-
-  const img = require('./img')(ctx);
-
-  tag.register('img', img);
-  tag.register('image', img);
-
-  const includeCode = require('./include_code')(ctx);
-
-  tag.register('include_code', includeCode, {async: true});
-  tag.register('include-code', includeCode, {async: true});
-
-  const link = require('./link');
+  tag.register('include_code', includeCode(ctx), {async: true});
+  tag.register('include-code', includeCode(ctx), {async: true});
 
   tag.register('a', link);
   tag.register('link', link);
   tag.register('anchor', link);
 
-  tag.register('post_path', require('./post_path')(ctx));
-  tag.register('post_link', require('./post_link')(ctx));
+  tag.register('post_path', postPath(ctx));
+  tag.register('post_link', postLink(ctx));
 
-  tag.register('asset_path', require('./asset_path')(ctx));
-  tag.register('asset_link', require('./asset_link')(ctx));
+  tag.register('asset_path', assetPath(ctx));
+  tag.register('asset_link', assetLink(ctx));
 
-  const assetImg = require('./asset_img')(ctx);
+  tag.register('asset_img', assetImg(ctx));
+  tag.register('asset_image', assetImg(ctx));
 
-  tag.register('asset_img', assetImg);
-  tag.register('asset_image', assetImg);
+  tag.register('pullquote', pullquote(ctx), true);
 
-  tag.register('pullquote', require('./pullquote')(ctx), true);
-
-  tag.register('url_for', require('./url_for')(ctx));
-  tag.register('full_url_for', require('./full_url_for')(ctx));
+  tag.register('url_for', urlFor(ctx));
+  tag.register('full_url_for', fullUrlFor(ctx));
 };
 
 // Use WeakMap to track different ctx (in case there is any)
