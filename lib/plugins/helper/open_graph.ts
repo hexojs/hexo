@@ -1,7 +1,9 @@
-import { isMoment, isDate, Moment } from 'moment';
+import * as moment from 'moment';
 import { encodeURL, prettyUrls, stripHTML, escapeHTML } from 'hexo-util';
 import * as moizeModule from 'moize';
 import type { LocalsType } from '../../types.js';
+
+const { isMoment, isDate } = moment;
 
 // ESM compatibility
 const moize = (moizeModule.default || moizeModule) as unknown as moizeModule.Moize;
@@ -64,8 +66,8 @@ interface Options {
   url?: string;
   site_name?: string;
   twitter_card?: string;
-  date?: Moment | Date | false;
-  updated?: Moment | Date | false;
+  date?: moment.Moment | Date | false;
+  updated?: moment.Moment | Date | false;
   language?: string;
   author?: string;
   twitter_image?: string;
