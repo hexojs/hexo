@@ -1,11 +1,28 @@
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import * as cheerio from 'cheerio';
 import Hexo from '../../../lib/hexo';
 import jsHelper from '../../../lib/plugins/helper/js';
 type JsHelperParams = Parameters<typeof jsHelper>;
 type JsHelperReturn = ReturnType<typeof jsHelper>;
 
+// Cross-compatible __dirname for ESM and CJS, without require
+let __hexo_dirname: string;
+if (typeof __dirname !== 'undefined') {
+  // CJS
+  __hexo_dirname = __dirname;
+} else {
+  // ESM (only works in ESM context)
+  let url = '';
+  try {
+    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
+    url = import.meta.url;
+  } catch {}
+  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
+}
+
 describe('js', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(__hexo_dirname);
 
   const ctx: any = {
     config: hexo.config

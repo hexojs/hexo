@@ -1,16 +1,32 @@
-import pathFn from 'path';
-import { mkdirs, writeFile, rmdir } from 'hexo-fs';
 import BluebirdPromise from 'bluebird';
+import chai from 'chai';
+import { mkdirs, rmdir, writeFile } from 'hexo-fs';
+import pathFn, { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import Hexo from '../../../lib/hexo';
 import fragmentCache from '../../../lib/plugins/helper/fragment_cache';
 import partialHelper from '../../../lib/plugins/helper/partial';
-import chai from 'chai';
 const should = chai.should();
 type PartialHelperParams = Parameters<ReturnType<typeof partialHelper>>;
 type PartialHelperReturn = ReturnType<ReturnType<typeof partialHelper>>;
 
+// Cross-compatible __dirname for ESM and CJS, without require
+let __hexo_dirname: string;
+if (typeof __dirname !== 'undefined') {
+  // CJS
+  __hexo_dirname = __dirname;
+} else {
+  // ESM (only works in ESM context)
+  let url = '';
+  try {
+    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
+    url = import.meta.url;
+  } catch {}
+  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
+}
+
 describe('partial', () => {
-  const hexo = new Hexo(pathFn.join(__dirname, 'partial_test'), {silent: true});
+  const hexo = new Hexo(pathFn.join(__hexo_dirname, 'partial_test'), {silent: true});
   const themeDir = pathFn.join(hexo.base_dir, 'themes', 'test');
   const viewDir = pathFn.join(themeDir, 'layout') + pathFn.sep;
   const viewName = 'article.njk';

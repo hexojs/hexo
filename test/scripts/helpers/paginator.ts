@@ -1,11 +1,28 @@
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { url_for } from 'hexo-util';
 import Hexo from '../../../lib/hexo';
 import paginatorHelper from '../../../lib/plugins/helper/paginator';
 type PaginatorHelperParams = Parameters<typeof paginatorHelper>;
 type PaginatorHelperReturn = ReturnType<typeof paginatorHelper>;
 
+// Cross-compatible __dirname for ESM and CJS, without require
+let __hexo_dirname: string;
+if (typeof __dirname !== 'undefined') {
+  // CJS
+  __hexo_dirname = __dirname;
+} else {
+  // ESM (only works in ESM context)
+  let url = '';
+  try {
+    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
+    url = import.meta.url;
+  } catch {}
+  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
+}
+
 describe('paginator', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(__hexo_dirname);
 
   const ctx: any = {
     page: {

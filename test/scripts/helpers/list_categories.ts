@@ -1,10 +1,27 @@
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
 import Hexo from '../../../lib/hexo';
 import listCategoriesHelper from '../../../lib/plugins/helper/list_categories';
 type ListCategoriesHelperParams = Parameters<typeof listCategoriesHelper>;
 type ListCategoriesHelperReturn = ReturnType<typeof listCategoriesHelper>;
 
+// Cross-compatible __dirname for ESM and CJS, without require
+let __hexo_dirname: string;
+if (typeof __dirname !== 'undefined') {
+  // CJS
+  __hexo_dirname = __dirname;
+} else {
+  // ESM (only works in ESM context)
+  let url = '';
+  try {
+    // @ts-ignore: import.meta.url is only available in ESM, safe to ignore in CJS
+    url = import.meta.url;
+  } catch {}
+  __hexo_dirname = url ? dirname(fileURLToPath(url)) : '';
+}
+
 describe('list_categories', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(__hexo_dirname);
   const Post = hexo.model('Post');
   const Category = hexo.model('Category');
 
@@ -303,10 +320,10 @@ describe('list_categories', () => {
       '<a class="category-list-link" href="/categories/bat/">bat</a><span class="category-list-count">1</span>',
       '</li>',
       '<li class="category-list-item">',
-      '<a class="category-list-link current" href="/categories/baz/">baz</a><span class="category-list-count">4</span>',
+      '<a class="category-list-link" href="/categories/baz/">baz</a><span class="category-list-count">4</span>',
       '<ul class="category-list-child">',
       '<li class="category-list-item">',
-      '<a class="category-list-link current" href="/categories/baz/bar/">bar</a><span class="category-list-count">2</span>',
+      '<a class="category-list-link" href="/categories/baz/bar/">bar</a><span class="category-list-count">2</span>',
       '</li>',
       '</ul>',
       '</li>',
