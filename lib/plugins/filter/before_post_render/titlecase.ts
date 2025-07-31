@@ -1,11 +1,8 @@
 import type { RenderData } from '../../../types.js';
+import titlecase from 'titlecase';
 
-let titlecase: (str: string) => string;
-
-function titlecaseFilter(data: RenderData): void {
+function titlecaseFilter(this: any, data: RenderData): void {
   if (!(typeof data.titlecase !== 'undefined' ? data.titlecase : this.config.titlecase) || !data.title) return;
-
-  if (!titlecase) titlecase = require('titlecase');
   data.title = titlecase(data.title);
 }
 

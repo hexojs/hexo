@@ -93,6 +93,7 @@
     "@types/node": "^20.17.6",
     "@types/nunjucks": "^3.2.2",
     "@types/sinon": "^17.0.3",
+    "@types/titlecase": "^1.1.2",
     "c8": "^9.0.0",
     "chai": "^4.3.6",
     "cheerio": "1.0.0",
