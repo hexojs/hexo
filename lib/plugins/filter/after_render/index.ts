@@ -1,10 +1,12 @@
 import type Hexo from '../../../hexo/index.js';
+import externalLink from './external_link.js';
+import metaGenerator from './meta_generator.js';
 
 const afterRenderIndex = (ctx: Hexo) => {
   const { filter } = ctx.extend;
 
-  filter.register('after_render:html', require('./external_link'));
-  filter.register('after_render:html', require('./meta_generator'));
+  filter.register('after_render:html', externalLink);
+  filter.register('after_render:html', metaGenerator);
 };
 
 export default afterRenderIndex;
