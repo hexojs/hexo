@@ -1,16 +1,19 @@
 import type Hexo from '../../hexo/index.js';
+import asset from './asset.js';
+import data from './data.js';
+import post from './post.js';
 
 const processorIndex = (ctx: Hexo) => {
   const { processor } = ctx.extend;
 
-  function register(name: string) {
-    const obj = require(`./${name}`)(ctx);
-    processor.register(obj.pattern, obj.process);
-  }
+  const assetObj = asset(ctx);
+  processor.register(assetObj.pattern, assetObj.process);
 
-  register('asset');
-  register('data');
-  register('post');
+  const dataObj = data(ctx);
+  processor.register(dataObj.pattern, dataObj.process);
+
+  const postObj = post(ctx);
+  processor.register(postObj.pattern, postObj.process);
 };
 
 export default processorIndex;
