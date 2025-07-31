@@ -1,8 +1,9 @@
 import type { HighlightOptions } from '../../extend/syntax_highlight.js';
 import type Hexo from '../../hexo/index.js';
+import * as hexoUtil from 'hexo-util';
 
 // Lazy require highlight.js
-let highlight: typeof import('hexo-util').highlight;
+let highlight: typeof hexoUtil.highlight;
 
 const highlightFilter = function(this: Hexo, code: string, options: HighlightOptions) {
   const hljsCfg = this.config.highlight || {} as any;
@@ -40,7 +41,7 @@ const highlightFilter = function(this: Hexo, code: string, options: HighlightOpt
     hljsOptions.autoDetect = false;
   }
 
-  if (!highlight) highlight = require('hexo-util').highlight;
+  if (!highlight) highlight = hexoUtil.highlight;
 
   return highlight(code, hljsOptions);
 };
