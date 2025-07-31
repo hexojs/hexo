@@ -6,7 +6,7 @@ import * as hexoUtil from 'hexo-util';
 let highlight: typeof hexoUtil.highlight;
 
 const highlightFilter = function(this: Hexo, code: string, options: HighlightOptions) {
-  const hljsCfg = this.config.highlight || {} as any;
+  const hljsCfg = this.config.highlight || ({} as any);
   const line_threshold = options.line_threshold || hljsCfg.line_threshold || 0;
   const shouldUseLineNumbers = typeof options.line_number === 'undefined' ? hljsCfg.line_number : options.line_number;
   const surpassesLineThreshold = options.lines_length > line_threshold;
@@ -46,11 +46,10 @@ const highlightFilter = function(this: Hexo, code: string, options: HighlightOpt
   return highlight(code, hljsOptions);
 };
 
+export default highlightFilter;
 
-// Support both ESM and CommonJS
+// CommonJS compatibility
 if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
   module.exports = highlightFilter;
   module.exports.default = highlightFilter;
 }
-
-export default highlightFilter;

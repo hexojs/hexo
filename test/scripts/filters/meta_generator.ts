@@ -1,8 +1,9 @@
-import Hexo from '../../../lib/hexo';
-import decache from 'decache';
-import * as cheerio from 'cheerio';
-import type hexoMetaGeneratorInject from '../../../lib/plugins/filter/after_render/meta_generator';
 import chai from 'chai';
+import * as cheerio from 'cheerio';
+import decache from 'decache';
+import Hexo from '../../../lib/hexo';
+import type hexoMetaGeneratorInject from '../../../lib/plugins/filter/after_render/meta_generator';
+
 const should = chai.should();
 type hexoMetaGeneratorInjectParams = Parameters<typeof hexoMetaGeneratorInject>;
 type hexoMetaGeneratorInjectReturn = ReturnType<typeof hexoMetaGeneratorInject>;
@@ -11,9 +12,10 @@ describe('Meta Generator', () => {
   const hexo = new Hexo();
   let metaGenerator: (...args: hexoMetaGeneratorInjectParams) => hexoMetaGeneratorInjectReturn;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     decache('../../../lib/plugins/filter/after_render/meta_generator');
-    metaGenerator = require('../../../lib/plugins/filter/after_render/meta_generator').bind(hexo);
+    const mod = await import('../../../lib/plugins/filter/after_render/meta_generator.js');
+    metaGenerator = mod.default.bind(hexo);
   });
 
   it('default', () => {

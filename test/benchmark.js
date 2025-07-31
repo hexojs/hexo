@@ -21,7 +21,6 @@ const hooks = [
 
 const isWin32 = os.platform() === 'win32';
 
-
 const npmScript = isWin32 ? 'npm.cmd' : 'npm';
 
 const testDir = resolve('.tmp-hexo-theme-unit-test');
@@ -32,7 +31,6 @@ const isGitHubActions = process.env.GITHUB_ACTIONS;
 
 import zeroEksImport from '0x';
 const zeroEks = zeroEksImport;
-
 
 let isProfiling = process.argv.join(' ').includes('--profiling');
 let isBenchmark = process.argv.join(' ').includes('--benchmark');

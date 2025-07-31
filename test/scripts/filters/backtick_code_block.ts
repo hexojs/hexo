@@ -3,6 +3,7 @@ import defaultConfig from '../../../lib/hexo/default_config';
 import Hexo from '../../../lib/hexo';
 import defaultCodeBlock from '../../../lib/plugins/filter/before_post_render/backtick_code_block';
 import chai from 'chai';
+
 const should = chai.should();
 
 describe('Backtick code block', () => {

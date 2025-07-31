@@ -3,6 +3,7 @@ import Hexo from '../../../lib/hexo';
 import { exists, mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 import loadDatabase from '../../../lib/hexo/load_database';
 import { testCwd } from '../../util/env';
+import warehouse from 'warehouse';
 
 describe('Load database', () => {
   const hexo = new Hexo(join(testCwd, 'db_test'), {silent: true});
@@ -11,7 +12,7 @@ describe('Load database', () => {
   const fixture = {
     meta: {
       version: 1,
-      warehouse: require('warehouse').version
+      warehouse: warehouse.version
     },
     models: {
       Test: [

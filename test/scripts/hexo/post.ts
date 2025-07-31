@@ -10,11 +10,15 @@ import chai from 'chai';
 import { testCwd } from '../../util/env';
 
 const should = chai.should();
-const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
+const escapeSwigTag = (str: string) => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
 describe('Post', () => {
   const hexo = new Hexo(join(testCwd, 'post_test'));
-  require('../../../lib/plugins/highlight/')(hexo);
+  // Use dynamic import for ESM module
+  before(async () => {
+    const highlightPlugin = (await import('../../../lib/plugins/highlight/index.js')).default;
+    highlightPlugin(hexo);
+  });
   const { post } = hexo;
   const now = Date.now();
   let clock;
@@ -27,7 +31,8 @@ describe('Post', () => {
     await hexo.init();
 
     // Load marked renderer for testing
-    await hexo.loadPlugin(require.resolve('hexo-renderer-marked'));
+    const rendererPath = join(process.cwd(), 'node_modules/hexo-renderer-marked/index.js');
+    await hexo.loadPlugin(rendererPath);
     await hexo.scaffold.set('post', [
       '---',
       'title: {{ title }}',

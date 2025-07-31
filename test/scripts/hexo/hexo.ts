@@ -6,25 +6,34 @@ import { readStream } from '../../util';
 import { full_url_for } from 'hexo-util';
 import Hexo, { version } from '../../../lib/hexo';
 import chai from 'chai';
-import { testCwd } from '../../util/env';
+import { projectDir, testCwd } from '../../util/env';
+import { createRequire } from 'module';
+
 const should = chai.should();
+
+const require = createRequire(import.meta.url);
 
 describe('Hexo', () => {
   const base_dir = join(testCwd, 'hexo_test');
   const hexo = new Hexo(base_dir, { silent: true });
-  const coreDir = join(testCwd, '../../..');
+  const coreDir = projectDir;
   const Post = hexo.model('Post');
   const Page = hexo.model('Page');
   const Data = hexo.model('Data');
   const { route } = hexo;
+  let pluginsGeneratorAsset: typeof import('../../../lib/plugins/generator/asset').default;
 
-  async function checkStream(stream, expected) {
+  before(async () => {
+    pluginsGeneratorAsset = (await import('../../../lib/plugins/generator/asset')).default;
+  });
+
+  async function checkStream(stream: NodeJS.ReadableStream, expected: string) {
     const data = await readStream(stream);
     data.should.eql(expected);
   }
 
   function loadAssetGenerator() {
-    hexo.extend.generator.register('asset', require('../../../lib/plugins/generator/asset'));
+    hexo.extend.generator.register('asset', pluginsGeneratorAsset);
   }
 
   before(async () => {

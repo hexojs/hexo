@@ -1,6 +1,6 @@
 import type Hexo from '../../hexo/index.js';
-import * as highlightjsModule from './highlight';
-import * as prismModule from './prism';
+import * as highlightjsModule from './highlight.js';
+import * as prismModule from './prism.js';
 
 const highlightjs = (highlightjsModule as any).default || (highlightjsModule as any);
 const prism = (prismModule as any).default || (prismModule as any);
@@ -13,10 +13,10 @@ const registerHighlight = (ctx: Hexo) => {
   highlight.register('prismjs', prism);
 };
 
-// Support both ESM and CommonJS
+export default registerHighlight;
+
+// CommonJS compatibility
 if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
   module.exports = registerHighlight;
   module.exports.default = registerHighlight;
 }
-
-export default registerHighlight;
