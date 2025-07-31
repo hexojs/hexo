@@ -1,3 +1,4 @@
+import { join } from 'path';
 import Hexo from '../../../lib/hexo';
 import renderPostFilter from '../../../lib/plugins/filter/before_generate/render_post';
 import { content, expected } from '../../fixtures/post_render';
@@ -12,7 +13,8 @@ describe('Render post', () => {
 
   before(async () => {
     await hexo.init();
-    await hexo.loadPlugin(require.resolve('hexo-renderer-marked'));
+    const rendererPath = join(process.cwd(), 'node_modules/hexo-renderer-marked/index.js');
+    await hexo.loadPlugin(rendererPath);
   });
 
   it('post', async () => {

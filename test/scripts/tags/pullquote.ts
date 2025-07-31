@@ -1,11 +1,17 @@
+import { join } from 'path';
 import Hexo from '../../../lib/hexo';
 import tagPullquote from '../../../lib/plugins/tag/pullquote';
 import { testCwd } from '../../util/env';
+
 describe('pullquote', () => {
   const hexo = new Hexo(testCwd);
   const pullquote = tagPullquote(hexo);
 
-  before(() => hexo.init().then(() => hexo.loadPlugin(require.resolve('hexo-renderer-marked'))));
+  before(async () => {
+    await hexo.init();
+    const rendererPath = join(process.cwd(), 'node_modules/hexo-renderer-marked/index.js');
+    await hexo.loadPlugin(rendererPath);
+  });
 
   it('default', () => {
     const result = pullquote([], '123456 **bold** and *italic*');
