@@ -4,7 +4,7 @@ import { readFile } from 'hexo-fs';
 import logger from 'hexo-log';
 import Module from 'module';
 import { dirname, join, sep } from 'path';
-import * as picocolors from 'picocolors';
+import picocolors from 'picocolors';
 import tildify from 'tildify';
 import { runInThisContext } from 'vm';
 import Database from 'warehouse/dist/database';
@@ -41,7 +41,7 @@ import Source from './source.js';
 import { getDirname } from './cross_dirname.js';
 
 const libDir = dirname(getDirname());
-const version = '__HEXO_VERSION__';
+export const version = '__HEXO_VERSION__';
 const dbVersion = 1;
 
 const stopWatcher = (box: Box) => {
@@ -438,39 +438,56 @@ class Hexo extends EventEmitter {
 
   /**
    * Load configuration and plugins.
-   * @returns {Promise}
    * @link https://hexo.io/api#Initialize
    */
   init(): Promise<void> {
     this.log.debug('Hexo version: %s', picocolors.magenta(this.version));
     this.log.debug('Working directory: %s', picocolors.magenta(tildify(this.base_dir)));
 
-    // Load internal plugins
-    require('../plugins/console/index.js')(this);
-    require('../plugins/filter/index.js')(this);
-    require('../plugins/generator/index.js')(this);
-    require('../plugins/helper/index.js')(this);
-    require('../plugins/highlight/index.js')(this);
-    require('../plugins/injector/index.js')(this);
-    require('../plugins/processor/index.js')(this);
-    require('../plugins/renderer/index.js')(this);
-    require('../plugins/tag/index.js').default(this);
+    // Merge both sequences into a single promise chain
+    return (
+      Promise.resolve()
+        // Load internal plugins sequentially
+        .then(() => import('../plugins/console/index.js'))
+        .then((m: any) => (m.default ?? m)(this))
+        .then(() => import('../plugins/filter/index.js'))
+        .then((m: any) => (m.default ?? m)(this))
+        .then(() => import('../plugins/generator/index.js'))
+        .then((m: any) => (m.default ?? m)(this))
+        .then(() => import('../plugins/helper/index.js'))
+        .then((m: any) => (m.default ?? m)(this))
+        .then(() => import('../plugins/highlight/index.js'))
+        .then((m: any) => (m.default ?? m)(this))
+        .then(() => import('../plugins/injector/index.js'))
+        .then((m: any) => (m.default ?? m)(this))
+        .then(() => import('../plugins/processor/index.js'))
+        .then((m: any) => (m.default ?? m)(this))
+        .then(() => import('../plugins/renderer/index.js'))
+        .then((m: any) => (m.default ?? m)(this))
+        .then(() => import('../plugins/tag/index.js'))
+        .then((m: any) => (m.default ?? m)(this))
 
-    // Load config
-    return Promise.each(
-      [
-        'update_package', // Update package.json
-        'load_config', // Load config
-        'load_theme_config', // Load alternate theme config
-        'load_plugins' // Load external plugins & scripts
-      ],
-      name => require(`./${name}`)(this)
-    )
-      .then(() => this.execFilter('after_init', null, { context: this }))
-      .then(() => {
-        // Ready to go!
-        this.emit('ready');
-      });
+        // Load config files sequentially
+        .then(() =>
+          Promise.each(
+            [
+              'update_package', // Update package.json
+              'load_config', // Load config
+              'load_theme_config', // Load alternate theme config
+              'load_plugins' // Load external plugins & scripts
+            ],
+            name => require(`./${name}`)(this)
+          )
+        )
+
+        // Execute filters
+        .then(() => this.execFilter('after_init', null, { context: this }))
+
+        // Ready event
+        .then(() => {
+          this.emit('ready');
+        })
+    );
   }
 
   /**
