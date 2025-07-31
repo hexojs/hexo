@@ -468,17 +468,19 @@ class Hexo extends EventEmitter {
         .then((m: any) => (m.default ?? m)(this))
 
         // Load config files sequentially
-        .then(() =>
-          Promise.each(
-            [
-              'update_package', // Update package.json
-              'load_config', // Load config
-              'load_theme_config', // Load alternate theme config
-              'load_plugins' // Load external plugins & scripts
-            ],
-            name => require(`./${name}`)(this)
-          )
-        )
+        .then(() => {
+          const loaders = [
+            () => import('./update_package.js'), // Update package.json
+            () => import('./load_config.js'), // Load config
+            () => import('./load_theme_config.js'), // Load alternate theme config
+            () => import('./load_plugins.js') // Load external plugins & scripts
+          ];
+
+          return Promise.each(
+            loaders,
+            loader => loader().then((m: any) => (m.default ?? m)(this))
+          );
+        })
 
         // Execute filters
         .then(() => this.execFilter('after_init', null, { context: this }))
