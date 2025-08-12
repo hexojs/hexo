@@ -84,6 +84,9 @@ export = {
   // ignore files from processing
   ignore: [] as string[],
 
+  // VS Code integration
+  use_vscode_edit_md: false,
+
   // Category & Tag
   meta_generator: true
 };
