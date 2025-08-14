@@ -1,11 +1,11 @@
-import warehouse from 'warehouse';
-import type Hexo from '../hexo';
-import { PostTagSchema } from '../types';
+import Schema from 'warehouse/dist/schema';
+import type Hexo from '../hexo/index.js';
+import { PostTagSchema } from '../types.js';
 
-export = (ctx: Hexo) => {
-  const PostTag = new warehouse.Schema<PostTagSchema>({
-    post_id: {type: warehouse.Schema.Types.CUID, ref: 'Post'},
-    tag_id: {type: warehouse.Schema.Types.CUID, ref: 'Tag'}
+const postTag = (ctx: Hexo) => {
+  const PostTag = new Schema<PostTagSchema>({
+    post_id: {type: Schema.Types.CUID, ref: 'Post'},
+    tag_id: {type: Schema.Types.CUID, ref: 'Tag'}
   });
 
   PostTag.pre('save', data => {
@@ -25,3 +25,12 @@ export = (ctx: Hexo) => {
 
   return PostTag;
 };
+
+// For ESM compatibility
+export default postTag;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = postTag;
+  // For ESM compatibility
+  module.exports.default = postTag;
+}

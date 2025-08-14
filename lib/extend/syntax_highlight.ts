@@ -1,4 +1,4 @@
-import type Hexo from '../hexo';
+import type Hexo from '../hexo/index.js';
 
 export interface HighlightOptions {
   lang: string | undefined,
@@ -61,3 +61,8 @@ class SyntaxHighlight {
 }
 
 export default SyntaxHighlight;
+// CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = SyntaxHighlight;
+  module.exports.default = SyntaxHighlight;
+}

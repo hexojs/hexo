@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "sourceMap": true,
+    "outDir": "dist",
+    "declaration": true,
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "esModuleInterop": true,
+    "types": ["node", "mocha"],
+    "typeRoots": ["node_modules/@types", "lib/hexo"]
+  },
+  "include": ["lib/**/*.ts", "lib/hexo/globals.d.ts"],
+  "exclude": ["**/node_modules", "**/tmp/**", "**/dist/**", ".tmp*"]
+}

@@ -1,4 +1,5 @@
 import pathFn from 'path';
+import { testCwd } from '../../util/env';
 import osFn from 'os';
 import { writeFileSync, rmdirSync, unlinkSync, readFileSync } from 'hexo-fs';
 import yml from 'js-yaml';
@@ -6,7 +7,7 @@ import Hexo from '../../../lib/hexo';
 import multiConfigPath from '../../../lib/hexo/multi_config_path';
 
 describe('config flag handling', () => {
-  const hexo = new Hexo(pathFn.join(__dirname, 'test_dir')) as any;
+  const hexo = new Hexo(pathFn.join(testCwd, 'test_dir')) as any;
 
   const mcp = multiConfigPath(hexo);
   const base = hexo.base_dir;

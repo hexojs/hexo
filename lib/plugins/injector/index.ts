@@ -1,6 +1,12 @@
-import type Hexo from '../../hexo';
+import type Hexo from '../../hexo/index.js';
 
-export = (ctx: Hexo) => {
+const injectorIndex = (ctx: Hexo) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { injector } = ctx.extend;
 };
+
+export default injectorIndex;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = injectorIndex;
+  module.exports.default = injectorIndex;
+}

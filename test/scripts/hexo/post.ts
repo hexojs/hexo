@@ -4,15 +4,21 @@ import { readFile, mkdirs, unlink, rmdir, writeFile, exists, stat, listDir } fro
 import { spy, useFakeTimers } from 'sinon';
 import { parse as yfm } from 'hexo-front-matter';
 import { expected, content, expected_disable_nunjucks, content_for_issue_3346, expected_for_issue_3346, content_for_issue_4460 } from '../../fixtures/post_render';
-import { highlight, deepMerge } from 'hexo-util';
+import { highlight, deepMerge, jsonStringify, jsonParse } from 'hexo-util';
 import Hexo from '../../../lib/hexo';
 import chai from 'chai';
+import { testCwd } from '../../util/env';
+
 const should = chai.should();
-const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
+const escapeSwigTag = (str: string) => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
 describe('Post', () => {
-  const hexo = new Hexo(join(__dirname, 'post_test'));
-  require('../../../lib/plugins/highlight/')(hexo);
+  const hexo = new Hexo(join(testCwd, 'post_test'));
+  // Use dynamic import for ESM module
+  before(async () => {
+    const highlightPlugin = (await import('../../../lib/plugins/highlight/index.js')).default;
+    highlightPlugin(hexo);
+  });
   const { post } = hexo;
   const now = Date.now();
   let clock;
@@ -25,7 +31,8 @@ describe('Post', () => {
     await hexo.init();
 
     // Load marked renderer for testing
-    await hexo.loadPlugin(require.resolve('hexo-renderer-marked'));
+    const rendererPath = join(process.cwd(), 'node_modules/hexo-renderer-marked/index.js');
+    await hexo.loadPlugin(rendererPath);
     await hexo.scaffold.set('post', [
       '---',
       'title: {{ title }}',
@@ -40,7 +47,7 @@ describe('Post', () => {
       '---'
     ].join('\n'));
 
-    defaultCfg = JSON.parse(JSON.stringify(hexo.config));
+    defaultCfg = jsonParse(jsonStringify(hexo.config));
   });
 
   after(() => {
@@ -49,7 +56,7 @@ describe('Post', () => {
   });
 
   afterEach(() => {
-    hexo.config = JSON.parse(JSON.stringify(defaultCfg));
+    hexo.config = jsonParse(jsonStringify(defaultCfg));
   });
 
   it('create()', async () => {

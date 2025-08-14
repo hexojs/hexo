@@ -1,11 +1,13 @@
+import { testCwd } from '../../util/env';
 import * as cheerio from 'cheerio';
 import Hexo from '../../../lib/hexo';
 import cssHelper from '../../../lib/plugins/helper/css';
 type CssHelperParams = Parameters<typeof cssHelper>;
 type CssHelperReturn = ReturnType<typeof cssHelper>;
 
+
 describe('css', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
 
   const ctx: any = {
     config: hexo.config

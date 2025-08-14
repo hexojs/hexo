@@ -1,5 +1,5 @@
-import Hexo from '../hexo';
-import { PageSchema } from '../types';
+import Hexo from '../hexo/index.js';
+import { PageSchema } from '../types.js';
 import * as hutil from 'hexo-util';
 
 interface HexoContext extends Hexo {
@@ -83,4 +83,9 @@ class Helper {
   }
 }
 
-export = Helper;
+// For ESM/CommonJS compatibility
+export default Helper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = Helper;
+  module.exports.default = Helper;
+}

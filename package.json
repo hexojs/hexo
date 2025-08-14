@@ -2,24 +2,42 @@
   "name": "hexo",
   "version": "7.3.0",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
-  "main": "dist/hexo",
-  "bin": {
-    "hexo": "./bin/hexo"
+  "type": "module",
+  "main": "dist/cjs/hexo/index.js",
+  "module": "dist/esm/hexo/index.js",
+  "types": "./dist/esm/hexo/index.d.ts",
+  "bin": "./bin/hexo",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/hexo/index.js",
+      "require": "./dist/cjs/hexo/index.js"
+    },
+    "./package.json": "./package.json",
+    "./dist/package.json": "./package.json",
+    "./bin/hexo": {
+      "import": "./bin/hexo.mjs",
+      "require": "./bin/hexo"
+    }
   },
   "scripts": {
     "prepublishOnly": "npm install && npm run clean && npm run build",
-    "build": "tsc -b",
-    "clean": "tsc -b --clean",
-    "eslint": "eslint lib test",
-    "test": "mocha test/scripts/**/*.ts --require ts-node/register",
-    "test-cov": "c8 --reporter=lcovonly npm test -- --no-parallel",
+    "build": "npm run build-cjs && npm run build-esm && npm run build-copy && npm run replace-version",
+    "build-cjs": "tsc -b tsconfig.cjs.json",
+    "build-esm": "tsc -b tsconfig.esm.json",
+    "build-copy": "node scripts/copy-files.js",
+    "build-test": "tsc -b tsconfig.json",
+    "replace-version": "node scripts/replace-version.js",
+    "clean": "npx --yes rimraf dist tmp/dist",
+    "eslint": "eslint --config eslint.config.cjs lib test",
+    "pretest": "node scripts/pretest.js",
+    "test": "mocha --loader=ts-node/esm",
+    "test-cov": "c8 --reporter=lcovonly npm run test -- --no-parallel",
     "prepare": "husky"
   },
   "files": [
     "dist/",
     "bin/"
   ],
-  "types": "./dist/hexo/index.d.ts",
   "repository": "hexojs/hexo",
   "homepage": "https://hexo.io/",
   "funding": {
@@ -64,6 +82,7 @@
     "warehouse": "^6.0.0"
   },
   "devDependencies": {
+    "0x": "^5.1.2",
     "@types/abbrev": "^1.1.3",
     "@types/bluebird": "^3.5.37",
     "@types/chai": "^4.3.11",
@@ -74,7 +93,7 @@
     "@types/node": "^20.17.6",
     "@types/nunjucks": "^3.2.2",
     "@types/sinon": "^17.0.3",
-    "0x": "^5.1.2",
+    "@types/titlecase": "^1.1.2",
     "c8": "^9.0.0",
     "chai": "^4.3.6",
     "cheerio": "1.0.0",

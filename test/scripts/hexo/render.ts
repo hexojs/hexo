@@ -4,10 +4,12 @@ import yaml from 'js-yaml';
 import { spy, assert as sinonAssert } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import chai from 'chai';
+import { testCwd } from '../../util/env';
+
 const should = chai.should();
 
 describe('Render', () => {
-  const hexo = new Hexo(join(__dirname, 'render_test'));
+  const hexo = new Hexo(join(testCwd, 'render_test'));
 
   hexo.config.meta_generator = false;
 

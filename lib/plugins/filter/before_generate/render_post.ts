@@ -1,5 +1,5 @@
 import Promise from 'bluebird';
-import type Hexo from '../../../hexo';
+import type Hexo from '../../../hexo/index.js';
 import type Model from 'warehouse/dist/model';
 
 function renderPostFilter(this: Hexo): Promise<[any[], any[]]> {
@@ -19,4 +19,9 @@ function renderPostFilter(this: Hexo): Promise<[any[], any[]]> {
   ]);
 }
 
-export = renderPostFilter;
+// For ESM/CommonJS compatibility
+export default renderPostFilter;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = renderPostFilter;
+  module.exports.default = renderPostFilter;
+}

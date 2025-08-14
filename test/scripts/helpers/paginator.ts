@@ -1,3 +1,4 @@
+import { testCwd } from '../../util/env';
 import { url_for } from 'hexo-util';
 import Hexo from '../../../lib/hexo';
 import paginatorHelper from '../../../lib/plugins/helper/paginator';
@@ -5,7 +6,7 @@ type PaginatorHelperParams = Parameters<typeof paginatorHelper>;
 type PaginatorHelperReturn = ReturnType<typeof paginatorHelper>;
 
 describe('paginator', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
 
   const ctx: any = {
     page: {

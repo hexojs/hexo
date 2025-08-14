@@ -10,5 +10,5 @@ function log(...args: any[]) {
   return Reflect.apply(console.log, null, args);
 }
 
-export {inspectObject};
-export {log};
+export { inspectObject };
+export { log };

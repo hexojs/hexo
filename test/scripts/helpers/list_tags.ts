@@ -1,10 +1,11 @@
+import { testCwd } from '../../util/env';
 import Hexo from '../../../lib/hexo';
 import listTagsHelper from '../../../lib/plugins/helper/list_tags';
 type ListTagsHelperParams = Parameters<typeof listTagsHelper>;
 type ListTagsHelperReturn = ReturnType<typeof listTagsHelper>;
 
 describe('list_tags', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
   const Post = hexo.model('Post');
   const Tag = hexo.model('Tag');
 
@@ -209,7 +210,7 @@ describe('list_tags', () => {
 });
 
 describe('list_tags transform', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
   const Post = hexo.model('Post');
 
   const ctx: any = {

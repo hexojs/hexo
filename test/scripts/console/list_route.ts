@@ -1,11 +1,12 @@
 import { stub, assert as sinonAssert } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import listRoute from '../../../lib/plugins/console/list/route';
+import { testCwd } from '../../util/env';
 type OriginalParams = Parameters<typeof listRoute>;
 type OriginalReturn = ReturnType<typeof listRoute>;
 
 describe('Console list', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
 
   const listRoutes: (...args: OriginalParams) => OriginalReturn = listRoute.bind(hexo);
   const { route } = hexo;

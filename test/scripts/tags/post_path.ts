@@ -1,10 +1,11 @@
 import Hexo from '../../../lib/hexo';
 import tagPostPath from '../../../lib/plugins/tag/post_path';
 import chai from 'chai';
-const should = chai.should();
+import { testCwd } from '../../util/env';
 
+const should = chai.should();
 describe('post_path', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
   const postPath = tagPostPath(hexo);
   const Post = hexo.model('Post');
 

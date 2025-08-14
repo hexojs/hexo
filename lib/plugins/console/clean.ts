@@ -1,6 +1,6 @@
 import Promise from 'bluebird';
 import { exists, unlink, rmdir } from 'hexo-fs';
-import type Hexo from '../../hexo';
+import type Hexo from '../../hexo/index.js';
 
 function cleanConsole(this: Hexo): Promise<[void, void, any]> {
   return Promise.all([
@@ -34,4 +34,8 @@ function deletePublicDir(ctx: Hexo): Promise<void> {
   });
 }
 
-export = cleanConsole;
+export default cleanConsole;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = cleanConsole;
+  module.exports.default = cleanConsole;
+}

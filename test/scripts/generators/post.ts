@@ -1,3 +1,4 @@
+import { testCwd } from '../../util/env';
 import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import postGenerator from '../../../lib/plugins/generator/post';
@@ -8,7 +9,7 @@ type PostGeneratorParams = Parameters<typeof postGenerator>;
 type PostGeneratorReturn = ReturnType<typeof postGenerator>;
 
 describe('post', () => {
-  const hexo = new Hexo(__dirname, {silent: true});
+  const hexo = new Hexo(testCwd, {silent: true});
   const Post = hexo.model('Post');
   const generator: (...args: PostGeneratorParams) => BluebirdPromise<PostGeneratorReturn> = BluebirdPromise.method(postGenerator.bind(hexo));
 

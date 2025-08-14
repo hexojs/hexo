@@ -1,8 +1,9 @@
+import { testCwd } from '../../util/env';
 import Hexo from '../../../lib/hexo';
 import renderHelper from '../../../lib/plugins/helper/render';
 
 describe('render', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
   const render = renderHelper(hexo);
 
   before(() => hexo.init());

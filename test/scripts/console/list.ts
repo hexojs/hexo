@@ -2,11 +2,12 @@ import { spy, stub, assert as sinonAssert, SinonSpy } from 'sinon';
 import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import listConsole from '../../../lib/plugins/console/list';
+import { testCwd } from '../../util/env';
 type OriginalParams = Parameters<typeof listConsole>;
 type OriginalReturn = ReturnType<typeof listConsole>;
 
 describe('Console list', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
 
   it('no args', () => {
     hexo.call = spy();

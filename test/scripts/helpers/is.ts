@@ -1,8 +1,9 @@
+import { testCwd } from '../../util/env';
 import Hexo from '../../../lib/hexo';
 import { current, home, home_first_page, post, page, archive, year, month, category, tag } from '../../../lib/plugins/helper/is';
 
 describe('is', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
 
   it('is_current', async () => {
     await current.call({path: 'index.html', config: hexo.config}).should.be.true;

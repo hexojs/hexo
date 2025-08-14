@@ -1,9 +1,9 @@
 import { exists, createReadStream } from 'hexo-fs';
 import Promise from 'bluebird';
 import { extname } from 'path';
-import { magenta } from 'picocolors';
-import type Hexo from '../../hexo';
-import type { AssetSchema, BaseGeneratorReturn } from '../../types';
+import picocolors from 'picocolors';
+import type Hexo from '../../hexo/index.js';
+import type { AssetSchema, BaseGeneratorReturn } from '../../types.js';
 import type Document from 'warehouse/dist/document';
 
 interface AssetData {
@@ -38,7 +38,7 @@ const process = (name: string, ctx: Hexo) => {
         path: source,
         toString: true
       }).catch((err: Error) => {
-        ctx.log.error({err}, 'Asset render failed: %s', magenta(path));
+        ctx.log.error({err}, 'Asset render failed: %s', picocolors.magenta(path));
       });
     } else {
       data.data = () => createReadStream(source);
@@ -55,4 +55,8 @@ function assetGenerator(this: Hexo): Promise<AssetGenerator[]> {
   ]).then(data => [].concat(...data));
 }
 
-export = assetGenerator;
+export default assetGenerator;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = assetGenerator;
+  module.exports.default = assetGenerator;
+}

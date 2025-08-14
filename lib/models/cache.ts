@@ -1,12 +1,12 @@
-import warehouse from 'warehouse';
+import Schema from 'warehouse/dist/schema';
 import Promise from 'bluebird';
-import type Hexo from '../hexo';
+import type Hexo from '../hexo/index.js';
 import type fs from 'fs';
 import type Document from 'warehouse/dist/document';
-import type { CacheSchema } from '../types';
+import type { CacheSchema } from '../types.js';
 
-export = (_ctx: Hexo) => {
-  const Cache = new warehouse.Schema<CacheSchema>({
+const cache = (_ctx: Hexo) => {
+  const Cache = new Schema<CacheSchema>({
     _id: {type: String, required: true},
     hash: {type: String, default: ''},
     modified: {type: Number, default: Date.now() } // UnixTime
@@ -70,3 +70,12 @@ export = (_ctx: Hexo) => {
 
   return Cache;
 };
+
+// For ESM compatibility
+export default cache;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = cache;
+  // For ESM compatibility
+  module.exports.default = cache;
+}

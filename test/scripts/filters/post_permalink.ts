@@ -212,7 +212,6 @@ describe('post_permalink', () => {
     hexo.config.post_asset_folder = false;
   });
 
-
   it('permalink - should end with / or .html - 2', async () => {
     hexo.config.post_asset_folder = true;
 

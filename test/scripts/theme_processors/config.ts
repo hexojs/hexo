@@ -1,5 +1,6 @@
 import { spy, assert as sinonAssert } from 'sinon';
 import { join } from 'path';
+import { testCwd } from '../../util/env';
 import { mkdirs, rmdir, unlink, writeFile} from 'hexo-fs';
 import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
@@ -8,9 +9,8 @@ import chai from 'chai';
 const should = chai.should();
 type ConfigParams = Parameters<typeof config['process']>
 type ConfigReturn = ReturnType<typeof config['process']>
-
 describe('config', () => {
-  const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
+  const hexo = new Hexo(join(testCwd, 'config_test'), {silent: true});
   const process: (...args: ConfigParams) => BluebirdPromise<ConfigReturn> = BluebirdPromise.method(config.process.bind(hexo));
   const themeDir = join(hexo.base_dir, 'themes', 'test');
 

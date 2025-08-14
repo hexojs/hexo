@@ -3,9 +3,10 @@ import { rmdir, stat, statSync, writeFile } from 'hexo-fs';
 import { load } from 'js-yaml';
 import Hexo from '../../../lib/hexo';
 import Box from '../../../lib/box';
+import { testCwd } from '../../util/env';
 
 describe('File', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
   const box = new Box(hexo, join(hexo.base_dir, 'file_test'));
   const { File } = box;
 

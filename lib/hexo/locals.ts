@@ -62,4 +62,9 @@ class Locals {
   }
 }
 
-export = Locals;
+// For ESM/CommonJS compatibility
+export default Locals;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = Locals;
+  module.exports.default = Locals;
+}

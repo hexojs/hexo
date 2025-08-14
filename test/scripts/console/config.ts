@@ -4,13 +4,14 @@ import { load } from 'js-yaml';
 import { stub, assert as sinonAssert } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import configConsole from '../../../lib/plugins/console/config';
+import { testCwd } from '../../util/env';
 type OriginalParams = Parameters<typeof configConsole>;
 type OriginalReturn = ReturnType<typeof configConsole>;
 import chai from 'chai';
 const should = chai.should();
 
 describe('config', () => {
-  const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
+  const hexo = new Hexo(join(testCwd, 'config_test'), {silent: true});
   const config: (...args: OriginalParams) => OriginalReturn = configConsole.bind(hexo);
 
   before(async () => {

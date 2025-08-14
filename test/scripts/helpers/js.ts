@@ -1,3 +1,4 @@
+import { testCwd } from '../../util/env';
 import * as cheerio from 'cheerio';
 import Hexo from '../../../lib/hexo';
 import jsHelper from '../../../lib/plugins/helper/js';
@@ -5,7 +6,7 @@ type JsHelperParams = Parameters<typeof jsHelper>;
 type JsHelperReturn = ReturnType<typeof jsHelper>;
 
 describe('js', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
 
   const ctx: any = {
     config: hexo.config

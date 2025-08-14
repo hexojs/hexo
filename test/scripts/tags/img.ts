@@ -1,11 +1,11 @@
 import * as cheerio from 'cheerio';
 import pathFn from 'path';
+import { testCwd } from '../../util/env';
 import Hexo from '../../../lib/hexo';
 import tagImg from '../../../lib/plugins/tag/img';
 
-
 describe('img', () => {
-  const hexo = new Hexo(pathFn.join(__dirname, 'img_test'));
+  const hexo = new Hexo(pathFn.join(testCwd, 'img_test'));
   const img = tagImg(hexo);
 
   before(() => hexo.init());

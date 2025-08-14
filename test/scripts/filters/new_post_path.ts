@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { testCwd } from '../../util/env';
 import moment from 'moment';
 import { createSha1Hash } from 'hexo-util';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
@@ -8,7 +9,7 @@ type NewPostPathFilterParams = Parameters<typeof newPostPathFilter>;
 type NewPostPathFilterReturn = ReturnType<typeof newPostPathFilter>;
 
 describe('new_post_path', () => {
-  const hexo = new Hexo(join(__dirname, 'new_post_path_test'));
+  const hexo = new Hexo(join(testCwd, 'new_post_path_test'));
   const newPostPath: (...args: NewPostPathFilterParams) => NewPostPathFilterReturn = newPostPathFilter.bind(hexo);
   const sourceDir = hexo.source_dir;
   const draftDir = join(sourceDir, '_drafts');

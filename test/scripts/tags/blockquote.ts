@@ -1,11 +1,17 @@
+import { join } from 'path';
 import Hexo from '../../../lib/hexo';
 import tagBlockquote from '../../../lib/plugins/tag/blockquote';
+import { testCwd } from '../../util/env';
 
 describe('blockquote', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
   const blockquote = tagBlockquote(hexo);
 
-  before(() => hexo.init().then(() => hexo.loadPlugin(require.resolve('hexo-renderer-marked'))));
+  before(async () => {
+    await hexo.init();
+    const rendererPath = join(process.cwd(), 'node_modules/hexo-renderer-marked/index.js');
+    await hexo.loadPlugin(rendererPath);
+  });
 
   const bq = (args, content?) => blockquote(args.split(' '), content || '');
 

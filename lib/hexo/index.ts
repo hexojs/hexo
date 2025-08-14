@@ -1,15 +1,13 @@
 import Promise from 'bluebird';
-import { sep, join, dirname } from 'path';
-import tildify from 'tildify';
-import Database from 'warehouse';
-import { magenta, underline } from 'picocolors';
 import { EventEmitter } from 'events';
 import { readFile } from 'hexo-fs';
-import Module from 'module';
-import { runInThisContext } from 'vm';
-const { version } = require('../../package.json');
 import logger from 'hexo-log';
-
+import Module from 'module';
+import { dirname, join, sep } from 'path';
+import picocolors from 'picocolors';
+import tildify from 'tildify';
+import { runInThisContext } from 'vm';
+import Database from 'warehouse/dist/database';
 import {
   Console,
   Deployer,
@@ -22,36 +20,40 @@ import {
   Processor,
   Renderer,
   Tag
-} from '../extend';
-
-import Render from './render';
-import registerModels from './register_models';
-import Post from './post';
-import Scaffold from './scaffold';
-import Source from './source';
-import Router from './router';
-import Theme from '../theme';
-import Locals from './locals';
-import defaultConfig from './default_config';
-import loadDatabase from './load_database';
-import multiConfigPath from './multi_config_path';
+} from '../extend/index.js';
 import { deepMerge, full_url_for } from 'hexo-util';
-import type Box from '../box';
-import type { BaseGeneratorReturn, FilterOptions, LocalsType, NodeJSLikeCallback, SiteLocals } from '../types';
-import type { AddSchemaTypeOptions } from 'warehouse/dist/types';
 import type Schema from 'warehouse/dist/schema';
-import BinaryRelationIndex from '../models/binary_relation_index';
+import type { AddSchemaTypeOptions } from 'warehouse/dist/types';
+import type Box from '../box/index.js';
+import BinaryRelationIndex from '../models/binary_relation_index.js';
+import Theme from '../theme/index.js';
+import type { BaseGeneratorReturn, FilterOptions, LocalsType, NodeJSLikeCallback, SiteLocals } from '../types.js';
+import defaultConfig from './default_config.js';
+import loadDatabase from './load_database.js';
+import Locals from './locals.js';
+import multiConfigPath from './multi_config_path.js';
+import Post from './post.js';
+import registerModels from './register_models.js';
+import Render from './render.js';
+import Router from './router.js';
+import Scaffold from './scaffold.js';
+import Source from './source.js';
+import { getDirname } from './cross_dirname.js';
 
-const libDir = dirname(__dirname);
+const libDir = dirname(getDirname());
+export const version = '__HEXO_VERSION__';
 const dbVersion = 1;
 
-const stopWatcher = (box: Box) => { if (box.isWatching()) box.unwatch(); };
+const stopWatcher = (box: Box) => {
+  if (box.isWatching()) box.unwatch();
+};
 
 const routeCache = new WeakMap();
 
-const castArray = (obj: any) => { return Array.isArray(obj) ? obj : [obj]; };
+const castArray = (obj: any) => {
+  return Array.isArray(obj) ? obj : [obj];
+};
 
-// eslint-disable-next-line no-use-before-define
 const mergeCtxThemeConfig = (ctx: Hexo) => {
   // Merge hexo.config.theme_config into hexo.theme.config before post rendering & generating
   // config.theme_config has "_config.[theme].yml" merged in load_theme_config.js
@@ -60,7 +62,6 @@ const mergeCtxThemeConfig = (ctx: Hexo) => {
   }
 };
 
-// eslint-disable-next-line no-use-before-define
 const createLoadThemeRoute = function(generatorResult: BaseGeneratorReturn, locals: LocalsType, ctx: Hexo) {
   const { log, theme } = ctx;
   const { path, cache: useCache } = locals;
@@ -78,24 +79,28 @@ const createLoadThemeRoute = function(generatorResult: BaseGeneratorReturn, loca
       const view = theme.getView(name);
 
       if (view) {
-        log.debug(`Rendering HTML ${name}: ${magenta(path)}`);
-        return view.render(locals)
+        log.debug(`Rendering HTML ${name}: ${picocolors.magenta(path)}`);
+        return view
+          .render(locals)
           .then(result => ctx.extend.injector.exec(result, locals))
-          .then(result => ctx.execFilter('_after_html_render', result, {
-            context: ctx,
-            args: [locals]
-          }))
+          .then(result =>
+            ctx.execFilter('_after_html_render', result, {
+              context: ctx,
+              args: [locals]
+            })
+          )
           .tap(result => {
             if (useCache) {
               routeCache.set(generatorResult, result);
             }
-          }).tapCatch(err => {
-            log.error({ err }, `Render HTML failed: ${magenta(path)}`);
+          })
+          .tapCatch(err => {
+            log.error({ err }, `Render HTML failed: ${picocolors.magenta(path)}`);
           });
       }
     }
 
-    log.warn(`No layout: ${magenta(path)}`);
+    log.warn(`No layout: ${picocolors.magenta(path)}`);
   };
 };
 
@@ -131,7 +136,7 @@ interface Args {
    */
   draft?: boolean;
 
-    /**
+  /**
    * Enable to add drafts to the posts list.
    */
   drafts?: boolean;
@@ -151,17 +156,17 @@ interface Query {
 }
 
 interface Extend {
-  console: Console,
-  deployer: Deployer,
-  filter: Filter,
-  generator: Generator,
-  helper: Helper,
-  highlight: Highlight,
-  injector: Injector,
-  migrator: Migrator,
-  processor: Processor,
-  renderer: Renderer,
-  tag: Tag
+  console: Console;
+  deployer: Deployer;
+  filter: Filter;
+  generator: Generator;
+  helper: Helper;
+  highlight: Highlight;
+  injector: Injector;
+  migrator: Migrator;
+  processor: Processor;
+  renderer: Renderer;
+  tag: Tag;
 }
 
 interface Env {
@@ -178,14 +183,6 @@ interface Env {
 type DefaultConfigType = typeof defaultConfig;
 interface Config extends DefaultConfigType {
   [key: string]: any;
-}
-
-// Node.js internal APIs
-declare module 'module' {
-  function _nodeModulePaths(path: string): string[];
-  function _resolveFilename(request: string, parent: Module, isMain?: any, options?: any): string;
-  const _extensions: NodeJS.RequireExtensions,
-    _cache: any;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -237,7 +234,7 @@ interface Hexo {
    * @param listener
    * @link https://hexo.io/api/events.html#new
    */
-  on(event: 'new', listener: (post: { path: string; content: string; }) => any): this;
+  on(event: 'new', listener: (post: { path: string; content: string }) => any): this;
 
   /**
    * Emitted before processing begins. This event returns a path representing the root directory of the box.
@@ -376,8 +373,7 @@ class Hexo extends EventEmitter {
 
     const mcp = multiConfigPath(this);
 
-    this.config_path = args.config ? mcp(base, args.config, args.output)
-      : join(base, '_config.yml');
+    this.config_path = args.config ? mcp(base, args.config, args.output) : join(base, '_config.yml');
 
     registerModels(this);
 
@@ -442,34 +438,58 @@ class Hexo extends EventEmitter {
 
   /**
    * Load configuration and plugins.
-   * @returns {Promise}
    * @link https://hexo.io/api#Initialize
    */
   init(): Promise<void> {
-    this.log.debug('Hexo version: %s', magenta(this.version));
-    this.log.debug('Working directory: %s', magenta(tildify(this.base_dir)));
+    this.log.debug('Hexo version: %s', picocolors.magenta(this.version));
+    this.log.debug('Working directory: %s', picocolors.magenta(tildify(this.base_dir)));
 
-    // Load internal plugins
-    require('../plugins/console')(this);
-    require('../plugins/filter')(this);
-    require('../plugins/generator')(this);
-    require('../plugins/helper')(this);
-    require('../plugins/highlight')(this);
-    require('../plugins/injector')(this);
-    require('../plugins/processor')(this);
-    require('../plugins/renderer')(this);
-    require('../plugins/tag').default(this);
+    // Merge both sequences into a single promise chain
+    return (
+      Promise.resolve()
+        // Load internal plugins sequentially
+        .then(() => import('../plugins/console/index.js'))
+        .then((m: any) => (m.default ?? m)(this))
+        .then(() => import('../plugins/filter/index.js'))
+        .then((m: any) => (m.default ?? m)(this))
+        .then(() => import('../plugins/generator/index.js'))
+        .then((m: any) => (m.default ?? m)(this))
+        .then(() => import('../plugins/helper/index.js'))
+        .then((m: any) => (m.default ?? m)(this))
+        .then(() => import('../plugins/highlight/index.js'))
+        .then((m: any) => (m.default ?? m)(this))
+        .then(() => import('../plugins/injector/index.js'))
+        .then((m: any) => (m.default ?? m)(this))
+        .then(() => import('../plugins/processor/index.js'))
+        .then((m: any) => (m.default ?? m)(this))
+        .then(() => import('../plugins/renderer/index.js'))
+        .then((m: any) => (m.default ?? m)(this))
+        .then(() => import('../plugins/tag/index.js'))
+        .then((m: any) => (m.default ?? m)(this))
 
-    // Load config
-    return Promise.each([
-      'update_package', // Update package.json
-      'load_config', // Load config
-      'load_theme_config', // Load alternate theme config
-      'load_plugins' // Load external plugins & scripts
-    ], name => require(`./${name}`)(this)).then(() => this.execFilter('after_init', null, { context: this })).then(() => {
-      // Ready to go!
-      this.emit('ready');
-    });
+        // Load config files sequentially
+        .then(() => {
+          const loaders = [
+            () => import('./update_package.js'), // Update package.json
+            () => import('./load_config.js'), // Load config
+            () => import('./load_theme_config.js'), // Load alternate theme config
+            () => import('./load_plugins.js') // Load external plugins & scripts
+          ];
+
+          return Promise.each(
+            loaders,
+            loader => loader().then((m: any) => (m.default ?? m)(this))
+          );
+        })
+
+        // Execute filters
+        .then(() => this.execFilter('after_init', null, { context: this }))
+
+        // Ready event
+        .then(() => {
+          this.emit('ready');
+        })
+    );
   }
 
   /**
@@ -510,28 +530,32 @@ class Hexo extends EventEmitter {
   }
 
   loadPlugin(path: string, callback?: NodeJSLikeCallback<any>): Promise<any> {
-    return readFile(path).then(script => {
-      // Based on: https://github.com/nodejs/node-v0.x-archive/blob/v0.10.33/src/node.js#L516
-      const module = new Module(path);
-      module.filename = path;
-      module.paths = Module._nodeModulePaths(path);
+    return readFile(path)
+      .then(script => {
+        // Based on: https://github.com/nodejs/node-v0.x-archive/blob/v0.10.33/src/node.js#L516
 
-      function req(path: string) {
-        return module.require(path);
-      }
+        const mod = new Module(path);
+        mod.filename = path;
+        // Use 'as any' to access Node.js internals
+        mod.paths = (Module as any)._nodeModulePaths(path);
 
-      req.resolve = (request: string) => Module._resolveFilename(request, module);
+        function req(path: string) {
+          return mod.require(path);
+        }
 
-      req.main = require.main;
-      req.extensions = Module._extensions;
-      req.cache = Module._cache;
+        req.resolve = (request: string) => (Module as any)._resolveFilename(request, mod);
 
-      script = `(async function(exports, require, module, __filename, __dirname, hexo){${script}\n});`;
+        req.main = require.main;
+        req.extensions = (Module as any)._extensions;
+        req.cache = (Module as any)._cache;
 
-      const fn = runInThisContext(script, path);
+        script = `(async function(exports, require, module, __filename, __dirname, hexo){${script}\n});`;
 
-      return fn(module.exports, req, module, path, dirname(path), this);
-    }).asCallback(callback);
+        const fn = runInThisContext(script, path);
+
+        return fn(module.exports, req, module, path, dirname(path), this);
+      })
+      .asCallback(callback);
   }
 
   _showDrafts(): boolean {
@@ -546,19 +570,19 @@ class Hexo extends EventEmitter {
    * @link https://hexo.io/api#Load-Files
    */
   load(callback?: NodeJSLikeCallback<any>): Promise<any> {
-    return loadDatabase(this).then(() => {
-      this._binaryRelationIndex.post_tag.load();
-      this._binaryRelationIndex.post_category.load();
-      this.log.info('Start processing');
+    return loadDatabase(this)
+      .then(() => {
+        this._binaryRelationIndex.post_tag.load();
+        this._binaryRelationIndex.post_category.load();
+        this.log.info('Start processing');
 
-      return Promise.all([
-        this.source.process(),
-        this.theme.process()
-      ]);
-    }).then(() => {
-      mergeCtxThemeConfig(this);
-      return this._generate({ cache: false });
-    }).asCallback(callback);
+        return Promise.all([this.source.process(), this.theme.process()]);
+      })
+      .then(() => {
+        mergeCtxThemeConfig(this);
+        return this._generate({ cache: false });
+      })
+      .asCallback(callback);
   }
 
   /**
@@ -570,9 +594,12 @@ class Hexo extends EventEmitter {
    */
   watch(callback?: NodeJSLikeCallback<any>): Promise<any> {
     let useCache = false;
-    const { cache } = Object.assign({
-      cache: false
-    }, this.config.server);
+    const { cache } = Object.assign(
+      {
+        cache: false
+      },
+      this.config.server
+    );
     const { alias } = this.extend.console;
 
     if (alias[this.env.cmd] === 'server' && cache) {
@@ -581,24 +608,24 @@ class Hexo extends EventEmitter {
     }
     this._watchBox = debounce(() => this._generate({ cache: useCache }), 100);
 
-    return loadDatabase(this).then(() => {
-      this.log.info('Start processing');
+    return loadDatabase(this)
+      .then(() => {
+        this.log.info('Start processing');
 
-      return Promise.all([
-        this.source.watch(),
-        this.theme.watch()
-      ]);
-    }).then(() => {
-      mergeCtxThemeConfig(this);
-
-      this.source.on('processAfter', this._watchBox);
-      this.theme.on('processAfter', () => {
-        this._watchBox();
+        return Promise.all([this.source.watch(), this.theme.watch()]);
+      })
+      .then(() => {
         mergeCtxThemeConfig(this);
-      });
 
-      return this._generate({ cache: useCache });
-    }).asCallback(callback);
+        this.source.on('processAfter', this._watchBox);
+        this.theme.on('processAfter', () => {
+          this._watchBox();
+          mergeCtxThemeConfig(this);
+        });
+
+        return this._generate({ cache: useCache });
+      })
+      .asCallback(callback);
   }
 
   unwatch(): void {
@@ -657,7 +684,7 @@ class Hexo extends EventEmitter {
     return Promise.map(Object.keys(generators), key => {
       const generator = generators[key];
 
-      log.debug('Generator: %s', magenta(key));
+      log.debug('Generator: %s', picocolors.magenta(key));
       return Reflect.apply(generator, this, [siteLocals]);
     }).reduce((result, data) => {
       return data ? result.concat(data) : result;
@@ -670,31 +697,35 @@ class Hexo extends EventEmitter {
     const Locals = this._generateLocals();
     Locals.prototype.cache = useCache;
 
-    return runningGenerators.map(generatorResult => {
-      if (typeof generatorResult !== 'object' || generatorResult.path == null) return undefined;
+    return runningGenerators
+      .map(generatorResult => {
+        if (typeof generatorResult !== 'object' || generatorResult.path == null) return undefined;
 
-      // add Route
-      const path = route.format(generatorResult.path);
-      const { data, layout } = generatorResult;
+        // add Route
+        const path = route.format(generatorResult.path);
+        const { data, layout } = generatorResult;
 
-      if (!layout) {
-        route.set(path, data);
-        return path;
-      }
-
-      return this.execFilter('template_locals', new Locals(path, data), { context: this })
-        .then((locals: LocalsType) => { route.set(path, createLoadThemeRoute(generatorResult, locals, this)); })
-        .thenReturn(path);
-    }).then(newRouteList => {
-      // Remove old routes
-      for (let i = 0, len = routeList.length; i < len; i++) {
-        const item = routeList[i];
-
-        if (!newRouteList.includes(item)) {
-          route.remove(item);
+        if (!layout) {
+          route.set(path, data);
+          return path;
         }
-      }
-    });
+
+        return this.execFilter('template_locals', new Locals(path, data), { context: this })
+          .then((locals: LocalsType) => {
+            route.set(path, createLoadThemeRoute(generatorResult, locals, this));
+          })
+          .thenReturn(path);
+      })
+      .then(newRouteList => {
+        // Remove old routes
+        for (let i = 0, len = routeList.length; i < len; i++) {
+          const item = routeList[i];
+
+          if (!newRouteList.includes(item)) {
+            route.remove(item);
+          }
+        }
+      });
   }
 
   _generate(options: { cache?: boolean } = {}): Promise<any> {
@@ -711,12 +742,14 @@ class Hexo extends EventEmitter {
     // locals should be invalidated before before_generate filters because tags may use locals
     this.locals.invalidate();
     return this.execFilter('before_generate', null, { context: this })
-      .then(() => this._routerRefresh(this._runGenerators(), useCache)).then(() => {
+      .then(() => this._routerRefresh(this._runGenerators(), useCache))
+      .then(() => {
         this.emit('generateAfter');
 
         // Run after_generate filters
         return this.execFilter('after_generate', null, { context: this });
-      }).finally(() => {
+      })
+      .finally(() => {
         this._isGenerating = false;
       });
   }
@@ -732,7 +765,7 @@ class Hexo extends EventEmitter {
       this.log.fatal(
         { err },
         'Something\'s wrong. Maybe you can find the solution here: %s',
-        underline('https://hexo.io/docs/troubleshooting.html')
+        picocolors.underline('https://hexo.io/docs/troubleshooting.html')
       );
     }
 
@@ -759,11 +792,19 @@ Hexo.prototype.core_dir = Hexo.core_dir;
 Hexo.version = version;
 Hexo.prototype.version = Hexo.version;
 
-// define global variable
-// this useful for plugin written in typescript
-declare global {
-  // eslint-disable-next-line one-var
-  const hexo: Hexo;
+// Assign the Hexo class to the global scope for backward compatibility
+if (typeof globalThis !== 'undefined') {
+  (globalThis as any).hexo = Hexo;
+}
+if (typeof global !== 'undefined') {
+  (global as any).hexo = Hexo;
 }
 
-export = Hexo;
+// For ESM compatibility
+export default Hexo;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = Hexo;
+  // For ESM compatibility
+  module.exports.default = Hexo;
+}

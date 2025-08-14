@@ -1,14 +1,14 @@
 import { sep, resolve, join, parse, basename, extname } from 'path';
 import tildify from 'tildify';
-import Theme from '../theme';
-import Source from './source';
+import Theme from '../theme/index.js';
+import Source from './source.js';
 import { exists, readdir } from 'hexo-fs';
-import { magenta } from 'picocolors';
+import picocolors from 'picocolors';
 import { deepMerge } from 'hexo-util';
-import validateConfig from './validate_config';
-import type Hexo from './index';
+import validateConfig from './validate_config.js';
+import type Hexo from './index.js';
 
-export = async (ctx: Hexo): Promise<void> => {
+const loadConfig = async (ctx: Hexo): Promise<void> => {
   if (!ctx.env.init) return;
 
   const baseDir = ctx.base_dir;
@@ -21,7 +21,7 @@ export = async (ctx: Hexo): Promise<void> => {
   let config = await ctx.render.render({ path });
   if (!config || typeof config !== 'object') return;
 
-  ctx.log.debug('Config loaded: %s', magenta(tildify(configPath)));
+  ctx.log.debug('Config loaded: %s', picocolors.magenta(tildify(configPath)));
 
   ctx.config = deepMerge(ctx.config, config);
   // If root is not exist, create it by config.url
@@ -71,4 +71,13 @@ async function findConfigPath(path: string): Promise<string> {
   const files = await readdir(dir);
   const item = files.find(item => basename(item, extname(item)) === name);
   if (item != null) return join(dir, item);
+}
+
+// For ESM compatibility
+export default loadConfig;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = loadConfig;
+  // For ESM compatibility
+  module.exports.default = loadConfig;
 }

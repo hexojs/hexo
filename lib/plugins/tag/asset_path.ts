@@ -1,5 +1,5 @@
 import { url_for } from 'hexo-util';
-import type Hexo from '../../hexo';
+import type Hexo from '../../hexo/index.js';
 
 /**
  * Asset path tag
@@ -7,7 +7,7 @@ import type Hexo from '../../hexo';
  * Syntax:
  *   {% asset_path slug %}
  */
-export = (ctx: Hexo) => {
+const assetPath = (ctx: Hexo) => {
   const PostAsset = ctx.model('PostAsset');
 
   return function assetPathTag(args: string[]) {
@@ -22,3 +22,12 @@ export = (ctx: Hexo) => {
     return path;
   };
 };
+
+// For ESM compatibility
+export default assetPath;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = assetPath;
+  // For ESM compatibility
+  module.exports.default = assetPath;
+}

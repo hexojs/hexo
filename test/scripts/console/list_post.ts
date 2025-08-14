@@ -1,3 +1,4 @@
+import { testCwd } from '../../util/env';
 import BluebirdPromise from 'bluebird';
 import { stub, assert as sinonAssert } from 'sinon';
 import Hexo from '../../../lib/hexo';
@@ -5,8 +6,9 @@ import listPost from '../../../lib/plugins/console/list/post';
 type OriginalParams = Parameters<typeof listPost>;
 type OriginalReturn = ReturnType<typeof listPost>;
 
+
 describe('Console list', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
   const Post = hexo.model('Post');
 
   const listPosts: (...args: OriginalParams) => OriginalReturn = listPost.bind(hexo);

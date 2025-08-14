@@ -2,11 +2,12 @@ import BluebirdPromise from 'bluebird';
 import { stub, assert as sinonAssert } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import listTag from '../../../lib/plugins/console/list/tag';
+import { testCwd } from '../../util/env';
 type OriginalParams = Parameters<typeof listTag>;
 type OriginalReturn = ReturnType<typeof listTag>;
 
 describe('Console list', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
   const Post = hexo.model('Post');
 
   const listTags: (...args: OriginalParams) => OriginalReturn = listTag.bind(hexo);

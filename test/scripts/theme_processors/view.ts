@@ -1,16 +1,15 @@
-import { join } from 'path';
-import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 import BluebirdPromise from 'bluebird';
+import chai from 'chai';
+import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
+import { join } from 'path';
+import { testCwd } from '../../util/env';
 import Hexo from '../../../lib/hexo';
 import { view } from '../../../lib/theme/processors/view';
-import chai from 'chai';
 const should = chai.should();
-type ViewParams = Parameters<typeof view['process']>
-type ViewReturn = ReturnType<typeof view['process']>
-
-
+type ViewParams = Parameters<(typeof view)['process']>;
+type ViewReturn = ReturnType<(typeof view)['process']>;
 describe('view', () => {
-  const hexo = new Hexo(join(__dirname, 'view_test'), {silent: true});
+  const hexo = new Hexo(join(testCwd, 'view_test'), { silent: true });
   const process: (...args: ViewParams) => BluebirdPromise<ViewReturn> = BluebirdPromise.method(view.process.bind(hexo));
   const themeDir = join(hexo.base_dir, 'themes', 'test');
 
@@ -19,7 +18,7 @@ describe('view', () => {
   function newFile(options) {
     const { path } = options;
 
-    options.params = {path};
+    options.params = { path };
     options.path = 'layout/' + path;
     options.source = join(themeDir, options.path);
 
@@ -27,10 +26,7 @@ describe('view', () => {
   }
 
   before(async () => {
-    await BluebirdPromise.all([
-      mkdirs(themeDir),
-      writeFile(hexo.config_path, 'theme: test')
-    ]);
+    await BluebirdPromise.all([mkdirs(themeDir), writeFile(hexo.config_path, 'theme: test')]);
     await hexo.init();
   });
 
@@ -39,17 +35,13 @@ describe('view', () => {
   it('pattern', () => {
     const { pattern } = view;
 
-    pattern.match('layout/index.njk').path.should.eql('index.njk');
+    (pattern.match('layout/index.njk') as { path: string }).path.should.eql('index.njk');
     should.not.exist(pattern.match('index.njk'));
     should.not.exist(pattern.match('view/index.njk'));
   });
 
   it('type: create', async () => {
-    const body = [
-      'foo: bar',
-      '---',
-      'test'
-    ].join('\n');
+    const body = ['foo: bar', '---', 'test'].join('\n');
 
     const file = newFile({
       path: 'index.njk',

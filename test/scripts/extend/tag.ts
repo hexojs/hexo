@@ -9,6 +9,7 @@ import renderPostFilter from '../../../lib/plugins/filter/before_generate/render
 import { mkdirs, rmdir, writeFile } from 'hexo-fs';
 // @ts-ignore
 import Promise from 'bluebird';
+import { testCwd } from '../../util/env';
 const should = chai.should();
 
 type PostParams = Parameters<ReturnType<typeof posts>['process']>
@@ -17,7 +18,7 @@ type PostReturn = ReturnType<ReturnType<typeof posts>['process']>
 describe('Tag', () => {
   const tag = new Tag();
 
-  const baseDir = join(__dirname, 'post_test');
+  const baseDir = join(testCwd, 'post_test');
   const hexo = new Hexo(baseDir);
   const post = posts(hexo);
   const process: (...args: PostParams) => Promise<PostReturn> = Promise.method(post.process.bind(hexo));

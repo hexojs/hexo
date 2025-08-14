@@ -1,6 +1,6 @@
 import type Query from 'warehouse/dist/query';
-import type { LocalsType, PostSchema } from '../../types';
-import { toMomentLocale } from './date';
+import type { LocalsType, PostSchema } from '../../types.js';
+import { toMomentLocale } from './date.js';
 import { url_for, Cache } from 'hexo-util';
 
 interface Options {
@@ -125,4 +125,8 @@ function listArchivesHelper(this: LocalsType, options: Options = {}) {
   return result;
 }
 
-export = listArchivesHelper;
+export default listArchivesHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = listArchivesHelper;
+  module.exports.default = listArchivesHelper;
+}

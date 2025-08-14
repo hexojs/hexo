@@ -1,10 +1,11 @@
+import { testCwd } from '../../util/env';
 import Hexo from '../../../lib/hexo';
 import faviconTag from '../../../lib/plugins/helper/favicon_tag';
 type faviconTagParams = Parameters<typeof faviconTag>;
 type faviconTagReturn = ReturnType<typeof faviconTag>;
 
 describe('favicon_tag', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
 
   const ctx = {
     config: hexo.config

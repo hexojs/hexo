@@ -1,13 +1,14 @@
 import { join } from 'path';
+import { testCwd } from '../../util/env';
 import { mkdirs, rmdir, writeFile } from 'hexo-fs';
 import moment from 'moment';
 import { fake, assert as sinonAssert } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import chai from 'chai';
-const should = chai.should();
 
+const should = chai.should();
 describe('View', () => {
-  const hexo = new Hexo(join(__dirname, 'theme_test'));
+  const hexo = new Hexo(join(testCwd, 'theme_test'));
   const themeDir = join(hexo.base_dir, 'themes', 'test');
   const { compile } = Object.assign({}, hexo.extend.renderer.store.njk);
 

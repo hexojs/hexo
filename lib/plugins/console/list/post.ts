@@ -1,8 +1,8 @@
-import { gray, magenta, underline } from 'picocolors';
-import table from 'fast-text-table';
-import { stringLength } from './common';
-import type Hexo from '../../../hexo';
-import type { PostSchema } from '../../../types';
+import picocolors from 'picocolors';
+import * as fastTextTable from 'fast-text-table';
+import { stringLength } from './common.js';
+import type Hexo from '../../../hexo/index.js';
+import type { PostSchema } from '../../../types.js';
 import type Model from 'warehouse/dist/model';
 import type Document from 'warehouse/dist/document';
 
@@ -13,25 +13,21 @@ function mapName(item: any): string {
 function listPost(this: Hexo): void {
   const Post: Model<PostSchema> = this.model('Post');
 
-  const data = Post.sort({published: -1, date: 1}).map((post: Document<PostSchema> & PostSchema) => {
+  const data = Post.sort({ published: -1, date: 1 }).map((post: Document<PostSchema> & PostSchema) => {
     const date = post.published ? post.date.format('YYYY-MM-DD') : 'Draft';
     const tags = post.tags.map(mapName);
     const categories = post.categories.map(mapName);
 
-    return [
-      gray(date),
-      post.title,
-      magenta(post.source),
-      categories.join(', '),
-      tags.join(', ')
-    ];
+    return [picocolors.gray(date), post.title, picocolors.magenta(post.source), categories.join(', '), tags.join(', ')];
   });
 
   // Table header
-  const header = ['Date', 'Title', 'Path', 'Category', 'Tags'].map(str => underline(str));
+  const header = ['Date', 'Title', 'Path', 'Category', 'Tags'].map(str => picocolors.underline(str));
 
   data.unshift(header);
 
+  // ESM Compatibility
+  const table = (fastTextTable.default || fastTextTable) as unknown as typeof fastTextTable.default;
   const t = table(data, {
     stringLength
   });
@@ -40,4 +36,8 @@ function listPost(this: Hexo): void {
   if (data.length === 1) console.log('No posts.');
 }
 
-export = listPost;
+export default listPost;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = listPost;
+  module.exports.default = listPost;
+}

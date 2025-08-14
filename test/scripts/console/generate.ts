@@ -6,6 +6,7 @@ import chai from 'chai';
 const should = chai.should();
 import Hexo from '../../../lib/hexo';
 import generateConsole from '../../../lib/plugins/console/generate';
+import { testCwd } from '../../util/env';
 type OriginalParams = Parameters<typeof generateConsole>;
 type OriginalReturn = ReturnType<typeof generateConsole>;
 
@@ -14,7 +15,7 @@ describe('generate', () => {
 
   beforeEach(async function() {
     this.timeout(5000);
-    hexo = new Hexo(join(__dirname, 'generate_test'), {silent: true});
+    hexo = new Hexo(join(testCwd, 'generate_test'), {silent: true});
     generate = generateConsole.bind(hexo);
 
     await mkdirs(hexo.base_dir);
@@ -312,7 +313,7 @@ describe('generate', () => {
 
 // #3975 workaround for Windows
 describe('generate - watch (delete)', () => {
-  const hexo = new Hexo(join(__dirname, 'generate_test'), {silent: true});
+  const hexo = new Hexo(join(testCwd, 'generate_test'), {silent: true});
   const generate: (...args: OriginalParams) => OriginalReturn = generateConsole.bind(hexo);
 
   beforeEach(async () => {

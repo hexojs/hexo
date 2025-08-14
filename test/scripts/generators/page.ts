@@ -1,3 +1,4 @@
+import { testCwd } from '../../util/env';
 import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import pageGenerator from '../../../lib/plugins/generator/page';
@@ -8,7 +9,7 @@ type PageGeneratorParams = Parameters<typeof pageGenerator>;
 type PageGeneratorReturn = ReturnType<typeof pageGenerator>;
 
 describe('page', () => {
-  const hexo = new Hexo(__dirname, {silent: true});
+  const hexo = new Hexo(testCwd, {silent: true});
   const Page = hexo.model('Page');
   const generator: (...args: PageGeneratorParams) => BluebirdPromise<PageGeneratorReturn> = BluebirdPromise.method(pageGenerator.bind(hexo));
 

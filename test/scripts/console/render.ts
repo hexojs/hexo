@@ -1,14 +1,15 @@
-import { mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
 import { join } from 'path';
+import { mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
 import BluebirdPromise from 'bluebird';
 import { spy, SinonSpy } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import renderConsole from '../../../lib/plugins/console/render';
+import { testCwd } from '../../util/env';
 type OriginalParams = Parameters<typeof renderConsole>;
 type OriginalReturn = ReturnType<typeof renderConsole>;
 
 describe('render', () => {
-  const hexo = new Hexo(join(__dirname, 'render_test'), {silent: true});
+  const hexo = new Hexo(join(testCwd, 'render_test'), {silent: true});
   const render: (...args: OriginalParams) => OriginalReturn = renderConsole.bind(hexo);
 
   before(async () => {
@@ -25,7 +26,7 @@ describe('render', () => {
   ].join('\n');
 
   it('no args', async () => {
-    const hexo = new Hexo(join(__dirname, 'render_test'), {silent: true});
+    const hexo = new Hexo(join(testCwd, 'render_test'), {silent: true});
     hexo.call = spy();
     const render: (...args: OriginalParams) => OriginalReturn = renderConsole.bind(hexo);
 

@@ -1,12 +1,12 @@
-import warehouse from 'warehouse';
+import Schema from 'warehouse/dist/schema';
 import { slugize, full_url_for } from 'hexo-util';
-import type Hexo from '../hexo';
-import type { CategorySchema } from '../types';
+import type Hexo from '../hexo/index.js';
+import type { CategorySchema } from '../types.js';
 
-export = (ctx: Hexo) => {
-  const Category = new warehouse.Schema<CategorySchema>({
+const category = (ctx: Hexo) => {
+  const Category = new Schema<CategorySchema>({
     name: {type: String, required: true},
-    parent: { type: warehouse.Schema.Types.CUID, ref: 'Category'}
+    parent: { type: Schema.Types.CUID, ref: 'Category'}
   });
 
   Category.virtual('slug').get(function() {
@@ -81,3 +81,12 @@ export = (ctx: Hexo) => {
 
   return Category;
 };
+
+// For ESM compatibility
+export default category;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = category;
+  // For ESM compatibility
+  module.exports.default = category;
+}

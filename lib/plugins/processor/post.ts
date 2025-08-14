@@ -1,14 +1,14 @@
-import { toDate, adjustDateForTimezone, isExcludedFile, isTmpFile, isHiddenFile, isMatch } from './common';
+import { toDate, adjustDateForTimezone, isExcludedFile, isTmpFile, isHiddenFile, isMatch } from './common.js';
 import Promise from 'bluebird';
 import { parse as yfm } from 'hexo-front-matter';
 import { extname, join, posix, sep } from 'path';
 import { stat, listDir } from 'hexo-fs';
 import { slugize, Pattern, Permalink } from 'hexo-util';
-import { magenta } from 'picocolors';
-import type { _File } from '../../box';
-import type Hexo from '../../hexo';
+import picocolors from 'picocolors';
+import type { _File } from '../../box/index.js';
+import type Hexo from '../../hexo/index.js';
 import type { Stats } from 'fs';
-import { PostAssetSchema, PostSchema } from '../../types';
+import { PostAssetSchema, PostSchema } from '../../types.js';
 import type Document from 'warehouse/dist/document';
 
 const postDir = '_posts/';
@@ -25,7 +25,7 @@ const preservedKeys = {
   hash: true
 };
 
-export = (ctx: Hexo) => {
+const postProcessor = (ctx: Hexo) => {
   return {
     pattern: new Pattern(path => {
       if (isTmpFile(path)) return;
@@ -92,7 +92,7 @@ function processPost(ctx: Hexo, file: _File) {
     file.stat(),
     file.read()
   ]).spread((stats: Stats, content: string) => {
-    const data: PostSchema = yfm(content);
+    const data = yfm(content) as unknown as PostSchema;
     const info = parseFilename(config.new_post_name, path);
     const keys = Object.keys(info);
 
@@ -178,7 +178,7 @@ function processPost(ctx: Hexo, file: _File) {
 
     if (doc) {
       if (file.type !== 'update') {
-        ctx.log.warn(`Trying to "create" ${magenta(file.path)}, but the file already exists!`);
+        ctx.log.warn(`Trying to "create" ${picocolors.magenta(file.path)}, but the file already exists!`);
       }
       return doc.replace(data);
     }
@@ -314,4 +314,13 @@ function processAsset(ctx: Hexo, file: _File) {
   if (postAsset) {
     return postAsset.remove();
   }
+}
+
+// For ESM compatibility
+export default postProcessor;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = postProcessor;
+  // For ESM compatibility
+  module.exports.default = postProcessor;
 }

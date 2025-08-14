@@ -1,11 +1,11 @@
 import r from '../../../lib/plugins/renderer/nunjucks';
-import { dirname, join } from 'path';
+import { join, dirname } from 'path';
 import chai from 'chai';
+import { testCwd } from '../../util/env';
 const _should = chai.should();
 
-
 describe('nunjucks', () => {
-  const fixturePath = join(dirname(dirname(__dirname)), 'fixtures', 'hello.njk');
+  const fixturePath = join(dirname(dirname(testCwd)), 'fixtures', 'hello.njk');
 
   it('render from string', () => {
     const body = [

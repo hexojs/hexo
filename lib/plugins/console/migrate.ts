@@ -1,5 +1,5 @@
-import { underline, magenta } from 'picocolors';
-import type Hexo from '../../hexo';
+import picocolors from 'picocolors';
+import type Hexo from '../../hexo/index.js';
 
 interface MigrateArgs {
   _: string[]
@@ -18,10 +18,10 @@ function migrateConsole(this: Hexo, args: MigrateArgs): Promise<any> {
   if (!migrators[type]) {
     let help = '';
 
-    help += `${magenta(type)} migrator plugin is not installed.\n\n`;
+    help += `${picocolors.magenta(type)} migrator plugin is not installed.\n\n`;
     help += 'Installed migrator plugins:\n';
     help += `  ${Object.keys(migrators).join(', ')}\n\n`;
-    help += `For more help, you can check the online docs: ${underline('https://hexo.io/')}`;
+    help += `For more help, you can check the online docs: ${picocolors.underline('https://hexo.io/')}`;
 
     console.log(help);
     return;
@@ -30,4 +30,8 @@ function migrateConsole(this: Hexo, args: MigrateArgs): Promise<any> {
   return Reflect.apply(migrators[type], this, [args]);
 }
 
-export = migrateConsole;
+export default migrateConsole;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = migrateConsole;
+  module.exports.default = migrateConsole;
+}
