@@ -14,7 +14,13 @@ interface Options {
   list_number?: boolean;
 }
 
-function tocHelper(str: string, options: Options = {}) {
+/**
+ * Hexo TOC helper: generates a nested <ol> list from markdown headings
+ * @param {string} str      Raw markdown/html string
+ * @param {Options} options Configuration options
+ */
+function tocHelper(str, options: Options = {}) {
+  // Default options
   options = Object.assign({
     min_depth: 1,
     max_depth: 6,
@@ -29,10 +35,15 @@ function tocHelper(str: string, options: Options = {}) {
     list_number: true
   }, options);
 
-  const data = getAndTruncateTocObj(str, { min_depth: options.min_depth, max_depth: options.max_depth }, options.max_items);
+  // Extract and truncate flat TOC data
+  const flat = getAndTruncateTocObj(
+    str,
+    { min_depth: options.min_depth, max_depth: options.max_depth },
+    options.max_items
+  );
+  if (!flat.length) return '';
 
-  if (!data.length) return '';
-
+  // Prepare class names
   const className = escapeHTML(options.class);
   const itemClassName = escapeHTML(options.class_item || options.class + '-item');
   const linkClassName = escapeHTML(options.class_link || options.class + '-link');
@@ -42,89 +53,89 @@ function tocHelper(str: string, options: Options = {}) {
   const levelClassName = escapeHTML(options.class_level || options.class + '-level');
   const listNumber = options.list_number;
 
-  let result = `<ol class="${className}">`;
+  // Build tree, assign numbers, render HTML
+  const tree = buildTree(flat);
+  if (listNumber) assignNumbers(tree);
 
-  const lastNumber = [0, 0, 0, 0, 0, 0];
-  let firstLevel = 0;
-  let lastLevel = 0;
+  function render(list, depth = 0) {
+    if (!list.length) return '';
+    const olCls = depth === 0 ? className : childClassName;
+    let out = `<ol class="${olCls}">`;
 
-  for (let i = 0, len = data.length; i < len; i++) {
-    const el = data[i];
-    const { level, id, text } = el;
-    const href = id ? `#${encodeURL(id)}` : null;
-
-    if (!el.unnumbered) {
-      lastNumber[level - 1]++;
-    }
-
-    for (let i = level; i <= 5; i++) {
-      lastNumber[i] = 0;
-    }
-
-    if (firstLevel) {
-      for (let i = level; i < lastLevel; i++) {
-        result += '</li></ol>';
+    list.forEach(node => {
+      const lvl = node.level;
+      out += `<li class="${itemClassName} ${levelClassName}-${lvl}">`;
+      out += `<a class="${linkClassName}"${node.id ? ` href="#${encodeURL(node.id)}"` : ''}>`;
+      if (listNumber && !node.unnumbered) {
+        out += `<span class="${numberClassName}">${node.number}</span> `;
       }
+      out += `<span class="${textClassName}">${node.text}</span></a>`;
+      out += render(node.children, depth + 1);
+      out += '</li>';
+    });
 
-      if (level > lastLevel) {
-        result += `<ol class="${childClassName}">`;
-      } else {
-        result += '</li>';
-      }
-    } else {
-      firstLevel = level;
-    }
-
-    result += `<li class="${itemClassName} ${levelClassName}-${level}">`;
-    if (href) {
-      result += `<a class="${linkClassName}" href="${href}">`;
-    } else {
-      result += `<a class="${linkClassName}">`;
-    }
-
-    if (listNumber && !el.unnumbered) {
-      result += `<span class="${numberClassName}">`;
-
-      for (let i = firstLevel - 1; i < level; i++) {
-        result += `${lastNumber[i]}.`;
-      }
-
-      result += '</span> ';
-    }
-
-    result += `<span class="${textClassName}">${text}</span></a>`;
-
-    lastLevel = level;
+    out += '</ol>';
+    return out;
   }
 
-  for (let i = firstLevel - 1; i < lastLevel; i++) {
-    result += '</li></ol>';
-  }
-
-  return result;
+  return render(tree);
 }
 
-function getAndTruncateTocObj(str: string, options: {min_depth: number, max_depth: number}, max_items: number) {
-  let data = tocObj(str, { min_depth: options.min_depth, max_depth: options.max_depth });
-
-  if (data.length === 0) {
-    return data;
+/**
+ * Extract flat TOC data and enforce max_items
+ */
+function getAndTruncateTocObj(str, { min_depth, max_depth }, max_items) {
+  let data = tocObj(str, { min_depth, max_depth });
+  if (max_items < Infinity && data.length > max_items) {
+    const levels = data.map(i => i.level);
+    const min = Math.min(...levels);
+    let curMax = Math.max(...levels);
+    // remove deeper headings until within limit
+    while (data.length > max_items && curMax > min) {
+      // eslint-disable-next-line no-loop-func
+      data = data.filter(i => i.level < curMax);
+      curMax--;
+    }
+    data = data.slice(0, max_items);
   }
-  if (max_items < 1 || max_items === Infinity) {
-    return data;
-  }
-
-  const levels = data.map(item => item.level);
-  const min = Math.min(...levels);
-  const max = Math.max(...levels);
-
-  for (let currentLevel = max; data.length > max_items && currentLevel > min; currentLevel--) {
-    data = data.filter(item => item.level < currentLevel);
-  }
-
-  data = data.slice(0, max_items);
-
   return data;
+}
+
+/**
+ * Build nested tree from flat heading list
+ */
+function buildTree(headings) {
+  const root = { level: 0, children: [] };
+  const stack = [root];
+
+  headings.forEach(h => {
+    // pop until parent.level < h.level
+    while (stack[stack.length - 1].level >= h.level) {
+      stack.pop();
+    }
+    const parent = stack[stack.length - 1];
+    const node = { ...h, children: [] };
+    parent.children.push(node);
+    stack.push(node);
+  });
+
+  return root.children;
+}
+
+/**
+ * Assign hierarchical numbering to each node
+ */
+function assignNumbers(nodes) {
+  const counters = [];
+  function dfs(list, depth) {
+    counters[depth] = 0;
+    list.forEach(node => {
+      counters[depth]++;
+      node.number = counters.slice(0, depth + 1).join('.') + '.';
+      if (node.children.length) dfs(node.children, depth + 1);
+    });
+  }
+  dfs(nodes, 0);
 }
 
 export = tocHelper;
