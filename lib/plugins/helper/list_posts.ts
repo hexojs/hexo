@@ -1,5 +1,5 @@
 import { url_for } from 'hexo-util';
-import type { LocalsType, PostSchema } from '../../types';
+import type { LocalsType, PostSchema } from '../../types.js';
 import type Query from 'warehouse/dist/query';
 
 interface Options {
@@ -67,4 +67,8 @@ function listPostsHelper(this: LocalsType, posts?: Query<PostSchema> | Options, 
   return result;
 }
 
-export = listPostsHelper;
+export default listPostsHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = listPostsHelper;
+  module.exports.default = listPostsHelper;
+}

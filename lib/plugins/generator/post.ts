@@ -1,4 +1,4 @@
-import type { BaseGeneratorReturn, PostSchema, SiteLocals } from '../../types';
+import type { BaseGeneratorReturn, PostSchema, SiteLocals } from '../../types.js';
 import type Document from 'warehouse/dist/document';
 
 type SimplePostGenerator = Omit<BaseGeneratorReturn, 'layout'> & { data: string };
@@ -38,4 +38,8 @@ function postGenerator(locals: SiteLocals): PostGenerator[] {
   });
 }
 
-export = postGenerator;
+export default postGenerator;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = postGenerator;
+  module.exports.default = postGenerator;
+}

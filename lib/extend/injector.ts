@@ -113,4 +113,9 @@ class Injector {
   }
 }
 
-export = Injector;
+// For ESM/CommonJS compatibility
+export default Injector;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = Injector;
+  module.exports.default = Injector;
+}

@@ -24,4 +24,9 @@ function iframeTag(args: string[]) {
   return htmlTag('iframe', attrs, '');
 }
 
-export = iframeTag;
+// For ESM/CommonJS compatibility
+export default iframeTag;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = iframeTag;
+  module.exports.default = iframeTag;
+}

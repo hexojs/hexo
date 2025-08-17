@@ -1,15 +1,15 @@
-import { exists, mkdirs, readFile, rmdir, writeFile } from 'hexo-fs';
 import { join } from 'path';
+import { exists, mkdirs, readFile, rmdir, writeFile } from 'hexo-fs';
 import { spy, stub, assert as sinonAssert } from 'sinon';
 import chai from 'chai';
 const should = chai.should();
 import Hexo from '../../../lib/hexo';
 import deployConsole from '../../../lib/plugins/console/deploy';
+import { testCwd } from '../../util/env';
 type OriginalParams = Parameters<typeof deployConsole>;
 type OriginalReturn = ReturnType<typeof deployConsole>;
-
 describe('deploy', () => {
-  const hexo = new Hexo(join(__dirname, 'deploy_test'), { silent: true });
+  const hexo = new Hexo(join(testCwd, 'deploy_test'), { silent: true });
   const deploy: (...args: OriginalParams) => OriginalReturn = deployConsole.bind(hexo);
 
   before(async () => {
@@ -97,7 +97,7 @@ describe('deploy', () => {
 
   it('deployer not found', async () => {
     const logSpy = spy();
-    const hexo = new Hexo(join(__dirname, 'deploy_test'));
+    const hexo = new Hexo(join(testCwd, 'deploy_test'));
     hexo.log.error = logSpy;
 
     const deploy: (...args: OriginalParams) => OriginalReturn = deployConsole.bind(hexo);

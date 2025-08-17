@@ -2,13 +2,13 @@ import assert from 'assert';
 import moment from 'moment';
 import Promise from 'bluebird';
 import { join, extname, basename } from 'path';
-import { magenta } from 'picocolors';
+import picocolors from 'picocolors';
 import { load } from 'js-yaml';
 import { slugize, escapeRegExp, deepMerge} from 'hexo-util';
 import { copyDir, exists, listDir, mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
 import { parse as yfmParse, split as yfmSplit, stringify as yfmStringify } from 'hexo-front-matter';
-import type Hexo from './index';
-import type { NodeJSLikeCallback, RenderData } from '../types';
+import type Hexo from './index.js';
+import type { NodeJSLikeCallback, RenderData } from '../types.js';
 
 const preservedKeys = ['title', 'slug', 'path', 'layout', 'date', 'content'];
 
@@ -486,7 +486,7 @@ class Post {
     if (!isPost) {
       return promise.then(content => {
         data.content = content;
-        ctx.log.debug('Rendering file: %s', magenta(source));
+        ctx.log.debug('Rendering file: %s', picocolors.magenta(source));
 
         return ctx.render.render({
           text: data.content,
@@ -526,7 +526,7 @@ class Post {
       const options: { highlight?: boolean; } = data.markdown || {};
       if (!config.syntax_highlighter) options.highlight = null;
 
-      ctx.log.debug('Rendering post: %s', magenta(source));
+      ctx.log.debug('Rendering post: %s', picocolors.magenta(source));
       // Render with markdown or other renderer
       return ctx.render.render({
         text: data.content,
@@ -553,4 +553,9 @@ class Post {
   }
 }
 
-export = Post;
+// For ESM/CommonJS compatibility
+export default Post;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = Post;
+  module.exports.default = Post;
+}

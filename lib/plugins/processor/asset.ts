@@ -1,15 +1,15 @@
-import { adjustDateForTimezone, toDate, isExcludedFile, isMatch } from './common';
+import { adjustDateForTimezone, toDate, isExcludedFile, isMatch } from './common.js';
 import Promise from 'bluebird';
 import { parse as yfm } from 'hexo-front-matter';
 import { extname, relative } from 'path';
 import { Pattern } from 'hexo-util';
-import { magenta } from 'picocolors';
-import type { _File } from '../../box';
-import type Hexo from '../../hexo';
+import picocolors from 'picocolors';
+import type { _File } from '../../box/index.js';
+import type Hexo from '../../hexo/index.js';
 import type { Stats } from 'fs';
-import { PageSchema } from '../../types';
+import { PageSchema } from '../../types.js';
 
-export = (ctx: Hexo) => {
+const assetProcessor = (ctx: Hexo) => {
   return {
     pattern: new Pattern(path => {
       if (isExcludedFile(path, ctx.config)) return;
@@ -28,6 +28,12 @@ export = (ctx: Hexo) => {
     }
   };
 };
+
+export default assetProcessor;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = assetProcessor;
+  module.exports.default = assetProcessor;
+}
 
 function processPage(ctx: Hexo, file: _File) {
   const Page = ctx.model('Page');
@@ -53,7 +59,7 @@ function processPage(ctx: Hexo, file: _File) {
     file.stat(),
     file.read()
   ]).spread((stats: Stats, content: string) => {
-    const data: PageSchema = yfm(content);
+    const data = yfm(content) as unknown as PageSchema;
     const output = ctx.render.getOutput(path);
 
     data.source = path;
@@ -100,7 +106,7 @@ function processPage(ctx: Hexo, file: _File) {
 
     if (doc) {
       if (file.type !== 'update') {
-        ctx.log.warn(`Trying to "create" ${magenta(file.path)}, but the file already exists!`);
+        ctx.log.warn(`Trying to "create" ${picocolors.magenta(file.path)}, but the file already exists!`);
       }
       return doc.replace(data);
     }

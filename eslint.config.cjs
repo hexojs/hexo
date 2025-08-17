@@ -1,6 +1,7 @@
 const config = require('eslint-config-hexo/ts');
 const testConfig = require('eslint-config-hexo/test');
 
+/** @type {import('eslint').Linter.Config[]} */
 module.exports = [
   // Configurations applied globally
   ...config,
@@ -12,29 +13,39 @@ module.exports = [
       'n/no-missing-require': 0,
       'n/no-missing-import': 0,
       '@typescript-eslint/no-unused-vars': [
-        'error', {
-          'argsIgnorePattern': '^_'
+        'error',
+        {
+          argsIgnorePattern: '^_'
         }
       ]
     }
   },
   // Configurations applied only to test files
   {
-    files: [
-      'test/**/*.ts'
-    ],
+    files: ['test/**/*.ts'],
     languageOptions: {
-      ...testConfig.languageOptions
+      ...testConfig.languageOptions,
+      globals: {
+        ...(testConfig.languageOptions || {}).globals,
+        chai: true,
+        describe: true,
+        it: true,
+        before: true,
+        after: true,
+        beforeEach: true,
+        afterEach: true
+      }
     },
     rules: {
       ...testConfig.rules,
       '@typescript-eslint/ban-ts-comment': 0,
       '@typescript-eslint/no-unused-expressions': 0,
       '@typescript-eslint/no-unused-vars': [
-        'error', {
-          'varsIgnorePattern': '^_',
-          'argsIgnorePattern': '^_',
-          'caughtErrorsIgnorePattern': '^_'
+        'error',
+        {
+          varsIgnorePattern: '^_',
+          argsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_'
         }
       ]
     }

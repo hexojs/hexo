@@ -1,7 +1,7 @@
 import nunjucks, { Environment } from 'nunjucks';
 import { readFileSync } from 'hexo-fs';
 import { dirname } from 'path';
-import type { StoreFunctionData } from '../../extend/renderer';
+import type { StoreFunctionData } from '../../extend/renderer.js';
 
 function toArray(value) {
   if (Array.isArray(value)) {
@@ -65,4 +65,9 @@ njkRenderer.compile = (data: StoreFunctionData): (locals: any) => string => {
   return locals => njkCompile(data).render(locals);
 };
 
-export = njkRenderer;
+// For ESM/CommonJS compatibility
+export default njkRenderer;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = njkRenderer;
+  module.exports.default = njkRenderer;
+}

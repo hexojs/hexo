@@ -1,15 +1,16 @@
+import { join } from 'path';
 import { exists, mkdirs, readFile, rmdir, unlink } from 'hexo-fs';
 import moment from 'moment';
-import { join } from 'path';
 import BluebirdPromise from 'bluebird';
 import { useFakeTimers, spy, SinonSpy } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import newConsole from '../../../lib/plugins/console/new';
+import { testCwd } from '../../util/env';
 type OriginalParams = Parameters<typeof newConsole>;
 type OriginalReturn = ReturnType<typeof newConsole>;
 
 describe('new', () => {
-  const hexo = new Hexo(join(__dirname, 'new_test'), {silent: true});
+  const hexo = new Hexo(join(testCwd, 'new_test'), {silent: true});
   const n: (...args: OriginalParams) => OriginalReturn = newConsole.bind(hexo);
   const post = hexo.post;
   const now = Date.now();

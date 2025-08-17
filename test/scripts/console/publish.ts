@@ -1,15 +1,16 @@
+import { join } from 'path';
 import { exists, mkdirs, readFile, rmdir, unlink } from 'hexo-fs';
 import moment from 'moment';
-import { join } from 'path';
 import BluebirdPromise from 'bluebird';
 import { useFakeTimers, spy, SinonSpy, SinonFakeTimers } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import publishConsole from '../../../lib/plugins/console/publish';
+import { testCwd } from '../../util/env';
 type OriginalParams = Parameters<typeof publishConsole>;
 type OriginalReturn = ReturnType<typeof publishConsole>;
 
 describe('publish', () => {
-  const hexo = new Hexo(join(__dirname, 'publish_test'), {silent: true});
+  const hexo = new Hexo(join(testCwd, 'publish_test'), {silent: true});
   const publish: (...args: OriginalParams) => OriginalReturn = publishConsole.bind(hexo);
   const post = hexo.post;
   const now = Date.now();
@@ -72,7 +73,7 @@ describe('publish', () => {
   });
 
   it('no args', async () => {
-    const hexo = new Hexo(join(__dirname, 'publish_test'), {silent: true});
+    const hexo = new Hexo(join(testCwd, 'publish_test'), {silent: true});
     hexo.call = spy();
     const publish: (...args: OriginalParams) => OriginalReturn = publishConsole.bind(hexo);
 

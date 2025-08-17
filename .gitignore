@@ -11,3 +11,6 @@ coverage/
 .tmp*
 .vscode
 dist/
+.yarn/
+*.ignore
+.tmp*

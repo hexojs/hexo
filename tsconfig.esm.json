@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "target": "es2020",
+    "moduleResolution": "node",
+    "outDir": "dist/esm"
+  },
+  "include": ["lib/**/*.ts", "lib/hexo/globals.d.ts"],
+  "exclude": ["test", "dist", "node_modules", "tmp", ".tmp*"]
+}

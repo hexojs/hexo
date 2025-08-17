@@ -1,10 +1,11 @@
+import { testCwd } from '../../util/env';
 import Hexo from '../../../lib/hexo';
 import mailToHelper from '../../../lib/plugins/helper/mail_to';
 type MailToHelperParams = Parameters<typeof mailToHelper>;
 type MailToHelperReturn = ReturnType<typeof mailToHelper>;
 
 describe('mail_to', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
 
   const ctx: any = {
     config: hexo.config

@@ -1,5 +1,5 @@
 import { htmlTag, url_for } from 'hexo-util';
-import type Hexo from '../../hexo';
+import type Hexo from '../../hexo/index.js';
 
 const rUrl = /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=+$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=+$,\w]+@)[A-Za-z0-9.-]+)((?:\/[+~%/.\w-_]*)?\??(?:[-+=&;%@.\w_]*)#?(?:[.!/\\w]*))?)/;
 const rMetaDoubleQuote = /"?([^"]+)?"?/;
@@ -11,7 +11,7 @@ const rMetaSingleQuote = /'?([^']+)?'?/;
 * Syntax:
 *   {% img [class names] /path/to/image [width] [height] [title text [alt text]] %}
 */
-export = (ctx: Hexo) => {
+const img = (ctx: Hexo) => {
 
   return function imgTag(args: string[]) {
     const classes = [];
@@ -62,3 +62,12 @@ export = (ctx: Hexo) => {
     return htmlTag('img', attrs);
   };
 };
+
+// For ESM compatibility
+export default img;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = img;
+  // For ESM compatibility
+  module.exports.default = img;
+}

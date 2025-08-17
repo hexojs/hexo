@@ -1,5 +1,5 @@
 import { htmlTag, url_for } from 'hexo-util';
-import type { LocalsType } from '../../types';
+import type { LocalsType } from '../../types.js';
 
 interface Options {
   src?: string;
@@ -25,4 +25,8 @@ function imageTagHelper(this: LocalsType, path: string, options: Options = {}) {
   return htmlTag('img', attrs as Attrs);
 }
 
-export = imageTagHelper;
+export default imageTagHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = imageTagHelper;
+  module.exports.default = imageTagHelper;
+}

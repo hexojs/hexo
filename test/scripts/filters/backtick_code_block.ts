@@ -3,12 +3,18 @@ import defaultConfig from '../../../lib/hexo/default_config';
 import Hexo from '../../../lib/hexo';
 import defaultCodeBlock from '../../../lib/plugins/filter/before_post_render/backtick_code_block';
 import chai from 'chai';
+
 const should = chai.should();
 
 describe('Backtick code block', () => {
   const hexo = new Hexo();
-  require('../../../lib/plugins/highlight/')(hexo);
-  const codeBlock = defaultCodeBlock(hexo);
+  let codeBlock: ReturnType<typeof defaultCodeBlock>;
+
+  before(async () => {
+    (await import('../../../lib/plugins/highlight/index')).default(hexo);
+    codeBlock = defaultCodeBlock(hexo);
+    await hexo.init();
+  });
 
   const code = [
     'if (tired && night) {',
@@ -801,8 +807,6 @@ describe('Backtick code block', () => {
       codeBlock(data);
       data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
     });
-
-
     it('without language name - ignore tab character', () => {
       const data = {
         content: [

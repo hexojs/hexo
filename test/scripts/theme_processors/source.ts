@@ -1,15 +1,15 @@
-import { join } from 'path';
-import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 import BluebirdPromise from 'bluebird';
+import chai from 'chai';
+import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
+import { join } from 'path';
+import { testCwd } from '../../util/env';
 import Hexo from '../../../lib/hexo';
 import { source } from '../../../lib/theme/processors/source';
-import chai from 'chai';
 const should = chai.should();
 type SourceParams = Parameters<typeof source['process']>
 type SourceReturn = ReturnType<typeof source['process']>
-
 describe('source', () => {
-  const hexo = new Hexo(join(__dirname, 'source_test'), {silent: true});
+  const hexo = new Hexo(join(testCwd, 'source_test'), {silent: true});
   const process: (...args: SourceParams) => BluebirdPromise<SourceReturn> = BluebirdPromise.method(source.process.bind(hexo));
   const themeDir = join(hexo.base_dir, 'themes', 'test');
   const Asset = hexo.model('Asset');

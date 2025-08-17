@@ -1,9 +1,11 @@
 import { htmlTag, url_for } from 'hexo-util';
-import moize from 'moize';
-import type { LocalsType } from '../../types';
+import * as moizeModule from 'moize';
+import type { LocalsType } from '../../types.js';
 
+// ESM compatibility
+const moize = (moizeModule.default || moizeModule) as unknown as moizeModule.Moize;
 let relative_link = true;
-function jsHelper(this: LocalsType, ...args: any[]) {
+function jsHelperImpl(this: LocalsType, ...args: any[]) {
   let result = '\n';
 
   relative_link = this.config.relative_link;
@@ -25,10 +27,16 @@ function jsHelper(this: LocalsType, ...args: any[]) {
   return result;
 }
 
-export = moize(jsHelper, {
+const jsHelper = moize(jsHelperImpl, {
   maxSize: 10,
   isDeepEqual: true,
   updateCacheForKey() {
     return relative_link;
   }
 });
+
+export default jsHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = jsHelper;
+  module.exports.default = jsHelper;
+}

@@ -1,11 +1,12 @@
 import { spy, assert as sinonAssert, stub, SinonSpy } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import migrateConsole from '../../../lib/plugins/console/migrate';
+import { testCwd } from '../../util/env';
 type OriginalParams = Parameters<typeof migrateConsole>;
 type OriginalReturn = ReturnType<typeof migrateConsole>;
 
 describe('migrate', () => {
-  const hexo = new Hexo(__dirname, { silent: true });
+  const hexo = new Hexo(testCwd, { silent: true });
   const migrate: (...args: OriginalParams) => OriginalReturn = migrateConsole.bind(hexo);
 
   it('default', async () => {
@@ -20,7 +21,7 @@ describe('migrate', () => {
   });
 
   it('no args', async () => {
-    const hexo = new Hexo(__dirname, { silent: true });
+    const hexo = new Hexo(testCwd, { silent: true });
     hexo.call = spy();
     const migrate: (...args: OriginalParams) => OriginalReturn = migrateConsole.bind(hexo);
 

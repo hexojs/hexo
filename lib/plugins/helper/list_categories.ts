@@ -1,5 +1,5 @@
 import { url_for } from 'hexo-util';
-import type { CategorySchema, LocalsType } from '../../types';
+import type { CategorySchema, LocalsType } from '../../types.js';
 import type Query from 'warehouse/dist/query';
 import type Document from 'warehouse/dist/document';
 
@@ -123,4 +123,8 @@ function listCategoriesHelper(this: LocalsType, categories?: Query<CategorySchem
   return flatList(0);
 }
 
-export = listCategoriesHelper;
+export default listCategoriesHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = listCategoriesHelper;
+  module.exports.default = listCategoriesHelper;
+}

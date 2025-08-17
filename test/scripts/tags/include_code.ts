@@ -1,18 +1,25 @@
-import { join } from 'path';
-import { rmdir, writeFile } from 'hexo-fs';
-import { highlight, prismHighlight } from 'hexo-util';
 import BluebirdPromise from 'bluebird';
+import chai from 'chai';
+import { rmdir, writeFile } from 'hexo-fs';
+import { highlight, jsonParse, jsonStringify, prismHighlight } from 'hexo-util';
+import { join } from 'path';
 import Hexo from '../../../lib/hexo';
 import tagIncludeCode from '../../../lib/plugins/tag/include_code';
-import chai from 'chai';
+import { testCwd } from '../../util/env';
+
 const should = chai.should();
 
 describe('include_code', () => {
-  const hexo = new Hexo(join(__dirname, 'include_code_test'));
-  require('../../../lib/plugins/highlight/')(hexo);
-  const includeCode = BluebirdPromise.method(tagIncludeCode(hexo)) as (arg1: string[]) => BluebirdPromise<string>;
+  const hexo = new Hexo(join(testCwd, 'include_code_test'));
+  let includeCode: (arg1: string[]) => BluebirdPromise<string>;
+  // Register highlight plugin before initializing includeCode
+  before(async () => {
+    const registerHighlight = (await import('../../../lib/plugins/highlight/index.js')).default;
+    registerHighlight(hexo);
+    includeCode = BluebirdPromise.method(tagIncludeCode(hexo)) as (arg1: string[]) => BluebirdPromise<string>;
+  });
   const path = join(hexo.source_dir, hexo.config.code_dir, 'test.js');
-  const defaultCfg = JSON.parse(JSON.stringify(hexo.config));
+  const defaultCfg = jsonParse(jsonStringify(hexo.config));
 
   const fixture = [
     'if (tired && night) {',
@@ -29,7 +36,7 @@ describe('include_code', () => {
   });
 
   beforeEach(() => {
-    hexo.config = JSON.parse(JSON.stringify(defaultCfg));
+    hexo.config = jsonParse(jsonStringify(defaultCfg));
   });
 
   after(() => rmdir(hexo.base_dir));

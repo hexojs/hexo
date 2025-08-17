@@ -1,11 +1,14 @@
+
+import { testCwd } from '../../util/env';
 import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import tagAssetImg from '../../../lib/plugins/tag/asset_img';
 import chai from 'chai';
+
 const should = chai.should();
 
 describe('asset_img', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
   const assetImgTag = tagAssetImg(hexo);
   const Post = hexo.model('Post');
   const PostAsset = hexo.model('PostAsset');

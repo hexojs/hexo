@@ -1,10 +1,11 @@
+import { testCwd } from '../../util/env';
 import Hexo from '../../../lib/hexo';
 import listArchivesHelper from '../../../lib/plugins/helper/list_archives';
 type ListArchivesHelperParams = Parameters<typeof listArchivesHelper>;
 type ListArchivesHelperReturn = ReturnType<typeof listArchivesHelper>;
 
 describe('list_archives', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
   const Post = hexo.model('Post');
 
   const ctx: any = {

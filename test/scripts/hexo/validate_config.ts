@@ -3,6 +3,7 @@ import Hexo from '../../../lib/hexo';
 import validateConfig from '../../../lib/hexo/validate_config';
 import defaultConfig from '../../../lib/hexo/default_config';
 import chai from 'chai';
+import { jsonParse, jsonStringify } from 'hexo-util';
 const should = chai.should();
 
 describe('Validate config', () => {
@@ -11,7 +12,7 @@ describe('Validate config', () => {
 
   beforeEach(() => {
     logSpy = spy();
-    hexo.config = JSON.parse(JSON.stringify(defaultConfig));
+    hexo.config = jsonParse(jsonStringify(defaultConfig));
     hexo.log.warn = logSpy;
     hexo.log.info = spy();
   });
@@ -52,7 +53,6 @@ describe('Validate config', () => {
       e.message.should.eql('Invalid config detected: "url" should be a valid URL!');
     }
   });
-
 
   it('config.url - not start with xx://', () => {
     // @ts-ignore

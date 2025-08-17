@@ -1,13 +1,16 @@
+import { testCwd } from '../../util/env';
 import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import tagcloudHelper from '../../../lib/plugins/helper/tagcloud';
 import chai from 'chai';
+
 const should = chai.should();
+
 type TagcloudHelperParams = Parameters<typeof tagcloudHelper>;
 type TagcloudHelperReturn = ReturnType<typeof tagcloudHelper>;
 
 describe('tagcloud', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
   const Post = hexo.model('Post');
   const Tag = hexo.model('Tag');
 
@@ -49,7 +52,7 @@ describe('tagcloud', () => {
   });
 
   it('no tags', async () => {
-    const hexo = new Hexo(__dirname);
+    const hexo = new Hexo(testCwd);
     await hexo.init();
     hexo.locals.invalidate();
     // @ts-expect-error

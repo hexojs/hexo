@@ -1,11 +1,12 @@
-import type { HighlightOptions } from '../../extend/syntax_highlight';
-import type Hexo from '../../hexo';
+import type { HighlightOptions } from '../../extend/syntax_highlight.js';
+import type Hexo from '../../hexo/index.js';
+import * as hexoUtil from 'hexo-util';
 
 // Lazy require highlight.js
-let highlight: typeof import('hexo-util').highlight;
+let highlight: typeof hexoUtil.highlight;
 
-module.exports = function highlightFilter(this: Hexo, code: string, options: HighlightOptions) {
-  const hljsCfg = this.config.highlight || {} as any;
+const highlightFilter = function(this: Hexo, code: string, options: HighlightOptions) {
+  const hljsCfg = this.config.highlight || ({} as any);
   const line_threshold = options.line_threshold || hljsCfg.line_threshold || 0;
   const shouldUseLineNumbers = typeof options.line_number === 'undefined' ? hljsCfg.line_number : options.line_number;
   const surpassesLineThreshold = options.lines_length > line_threshold;
@@ -40,7 +41,15 @@ module.exports = function highlightFilter(this: Hexo, code: string, options: Hig
     hljsOptions.autoDetect = false;
   }
 
-  if (!highlight) highlight = require('hexo-util').highlight;
+  if (!highlight) highlight = hexoUtil.highlight;
 
   return highlight(code, hljsOptions);
 };
+
+export default highlightFilter;
+
+// CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = highlightFilter;
+  module.exports.default = highlightFilter;
+}

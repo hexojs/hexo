@@ -1,5 +1,5 @@
 import { full_url_for, htmlTag } from 'hexo-util';
-import type Hexo from '../../hexo';
+import type Hexo from '../../hexo/index.js';
 
 /**
  * Full url for tag
@@ -7,7 +7,7 @@ import type Hexo from '../../hexo';
  * Syntax:
  *   {% full_url_for text path %}
  */
-export = (ctx: Hexo) => {
+const fullUrlFor = (ctx: Hexo) => {
   return function fullUrlForTag([text, path]) {
     const url = full_url_for.call(ctx, path);
     const attrs = {
@@ -16,3 +16,12 @@ export = (ctx: Hexo) => {
     return htmlTag('a', attrs, text);
   };
 };
+
+// For ESM compatibility
+export default fullUrlFor;
+// For CommonJS compatibility
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = fullUrlFor;
+  // For ESM compatibility
+  module.exports.default = fullUrlFor;
+}

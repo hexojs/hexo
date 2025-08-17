@@ -1,5 +1,5 @@
-import Box from '../box';
-import type Hexo from './index';
+import Box from '../box/index.js';
+import type Hexo from './index.js';
 
 class Source extends Box {
   constructor(ctx: Hexo) {
@@ -9,4 +9,9 @@ class Source extends Box {
   }
 }
 
-export = Source;
+// For ESM/CommonJS compatibility
+export default Source;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = Source;
+  module.exports.default = Source;
+}

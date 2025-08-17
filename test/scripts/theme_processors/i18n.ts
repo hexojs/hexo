@@ -1,15 +1,15 @@
-import { join } from 'path';
-import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 import BluebirdPromise from 'bluebird';
+import chai from 'chai';
+import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
+import { join } from 'path';
+import { testCwd } from '../../util/env';
 import Hexo from '../../../lib/hexo';
 import { i18n } from '../../../lib/theme/processors/i18n';
-import chai from 'chai';
 const should = chai.should();
 type I18nParams = Parameters<typeof i18n['process']>
 type I18nReturn = ReturnType<typeof i18n['process']>
-
 describe('i18n', () => {
-  const hexo = new Hexo(join(__dirname, 'config_test'), {silent: true});
+  const hexo = new Hexo(join(testCwd, 'config_test'), {silent: true});
   const process: (...args: I18nParams) => BluebirdPromise<I18nReturn> = BluebirdPromise.method(i18n.process.bind(hexo));
   const themeDir = join(hexo.base_dir, 'themes', 'test');
 

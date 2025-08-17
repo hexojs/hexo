@@ -1,11 +1,13 @@
 import { join } from 'path';
+import { testCwd } from '../../util/env';
 import { mkdirs, rmdir, writeFile } from 'hexo-fs';
 import Hexo from '../../../lib/hexo';
 import chai from 'chai';
+
 const should = chai.should();
 
 describe('Theme', () => {
-  const hexo = new Hexo(join(__dirname, 'theme_test'), {silent: true});
+  const hexo = new Hexo(join(testCwd, 'theme_test'), {silent: true});
   const themeDir = join(hexo.base_dir, 'themes', 'test');
 
   before(async () => {

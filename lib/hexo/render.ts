@@ -1,10 +1,10 @@
 import { extname } from 'path';
 import Promise from 'bluebird';
 import { readFile, readFileSync } from 'hexo-fs';
-import type Hexo from './index';
-import type { Renderer } from '../extend';
-import type { StoreFunction, StoreFunctionData, StoreSyncFunction } from '../extend/renderer';
-import { NodeJSLikeCallback } from '../types';
+import type Hexo from './index.js';
+import type { Renderer } from '../extend/index.js';
+import type { StoreFunction, StoreFunctionData, StoreSyncFunction } from '../extend/renderer.js';
+import { NodeJSLikeCallback } from '../types.js';
 
 const getExtname = (str: string): string => {
   if (typeof str !== 'string') return '';
@@ -138,4 +138,9 @@ class Render {
   }
 }
 
-export = Render;
+// For ESM/CommonJS compatibility
+export default Render;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = Render;
+  module.exports.default = Render;
+}

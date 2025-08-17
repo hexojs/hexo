@@ -1,5 +1,5 @@
 import { isExternalLink } from 'hexo-util';
-import type Hexo from '../../../hexo';
+import type Hexo from '../../../hexo/index.js';
 
 let EXTERNAL_LINK_SITE_ENABLED = true;
 const rATag = /<a(?:\s+?|\s+?[^<>]+?\s+?)href=["']((?:https?:|\/\/)[^<>"']+)["'][^<>]*>/gi;
@@ -23,7 +23,7 @@ function externalLinkFilter(this: Hexo, data: string): string {
 
   let result = '';
   let lastIndex = 0;
-  let match;
+  let match: RegExpExecArray;
 
   while ((match = rATag.exec(data)) !== null) {
     result += data.slice(lastIndex, match.index);
@@ -47,4 +47,8 @@ function externalLinkFilter(this: Hexo, data: string): string {
   return result;
 }
 
-export = externalLinkFilter;
+export default externalLinkFilter;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = externalLinkFilter;
+  module.exports.default = externalLinkFilter;
+}

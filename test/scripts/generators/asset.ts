@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { testCwd } from '../../util/env';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
 import { readStream } from '../../util';
 import Hexo from '../../../lib/hexo';
@@ -9,8 +10,9 @@ const should = chai.should();
 type AssetParams = Parameters<typeof assetGenerator>
 type AssetReturn = ReturnType<typeof assetGenerator>
 
+
 describe('asset', () => {
-  const hexo = new Hexo(join(__dirname, 'asset_test'), {silent: true});
+  const hexo = new Hexo(join(testCwd, 'asset_test'), {silent: true});
   const generator: (...args: AssetParams) => AssetReturn = assetGenerator.bind(hexo);
   const Asset = hexo.model('Asset');
 

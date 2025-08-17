@@ -1,8 +1,9 @@
+import { testCwd } from '../../util/env';
 import Hexo from '../../../lib/hexo';
 import fragmentCache from '../../../lib/plugins/helper/fragment_cache';
 
 describe('fragment_cache', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
   const fragment_cache = fragmentCache(hexo);
 
   fragment_cache.call({cache: true}, 'foo', () => 123);

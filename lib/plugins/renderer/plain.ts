@@ -1,7 +1,12 @@
-import type { StoreFunctionData } from '../../extend/renderer';
+import type { StoreFunctionData } from '../../extend/renderer.js';
 
 function plainRenderer(data: StoreFunctionData): string {
   return data.text;
 }
 
-export = plainRenderer;
+// For ESM/CommonJS compatibility
+export default plainRenderer;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = plainRenderer;
+  module.exports.default = plainRenderer;
+}

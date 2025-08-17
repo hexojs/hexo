@@ -1,6 +1,6 @@
 import Promise from 'bluebird';
 
-export function readStream(stream): Promise<string> {
+export function readStream(stream: NodeJS.ReadableStream): Promise<string> {
   return new Promise((resolve, reject) => {
     let data = '';
 

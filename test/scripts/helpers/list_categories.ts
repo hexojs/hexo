@@ -1,10 +1,11 @@
+import { testCwd } from '../../util/env';
 import Hexo from '../../../lib/hexo';
 import listCategoriesHelper from '../../../lib/plugins/helper/list_categories';
 type ListCategoriesHelperParams = Parameters<typeof listCategoriesHelper>;
 type ListCategoriesHelperReturn = ReturnType<typeof listCategoriesHelper>;
 
 describe('list_categories', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
   const Post = hexo.model('Post');
   const Category = hexo.model('Category');
 
@@ -303,10 +304,10 @@ describe('list_categories', () => {
       '<a class="category-list-link" href="/categories/bat/">bat</a><span class="category-list-count">1</span>',
       '</li>',
       '<li class="category-list-item">',
-      '<a class="category-list-link current" href="/categories/baz/">baz</a><span class="category-list-count">4</span>',
+      '<a class="category-list-link" href="/categories/baz/">baz</a><span class="category-list-count">4</span>',
       '<ul class="category-list-child">',
       '<li class="category-list-item">',
-      '<a class="category-list-link current" href="/categories/baz/bar/">bar</a><span class="category-list-count">2</span>',
+      '<a class="category-list-link" href="/categories/baz/bar/">bar</a><span class="category-list-count">2</span>',
       '</li>',
       '</ul>',
       '</li>',

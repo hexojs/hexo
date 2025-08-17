@@ -1,8 +1,12 @@
-import { isMoment, isDate, Moment } from 'moment';
+import * as moment from 'moment';
 import { encodeURL, prettyUrls, stripHTML, escapeHTML } from 'hexo-util';
-import moize from 'moize';
-import type { LocalsType } from '../../types';
+import * as moizeModule from 'moize';
+import type { LocalsType } from '../../types.js';
 
+const { isMoment, isDate } = moment;
+
+// ESM compatibility
+const moize = (moizeModule.default || moizeModule) as unknown as moizeModule.Moize;
 const localeMap = {
   'en': 'en_US',
   'de': 'de_DE',
@@ -62,8 +66,8 @@ interface Options {
   url?: string;
   site_name?: string;
   twitter_card?: string;
-  date?: Moment | Date | false;
-  updated?: Moment | Date | false;
+  date?: moment.Moment | Date | false;
+  updated?: moment.Moment | Date | false;
   language?: string;
   author?: string;
   twitter_image?: string;
@@ -199,4 +203,8 @@ function openGraphHelper(this: LocalsType, options: Options = {}) {
   return result.trim();
 }
 
-export = openGraphHelper;
+export default openGraphHelper;
+if (typeof module !== 'undefined' && typeof module.exports === 'object' && module.exports !== null) {
+  module.exports = openGraphHelper;
+  module.exports.default = openGraphHelper;
+}

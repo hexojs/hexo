@@ -6,10 +6,11 @@ import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import Box from '../../../lib/box';
 import chai from 'chai';
+import { testCwd } from '../../util/env';
 const should = chai.should();
 
 describe('Box', () => {
-  const baseDir = join(__dirname, 'box_tmp');
+  const baseDir = join(testCwd, 'box_tmp');
 
   const newBox = (path?, config?) => {
     const hexo = new Hexo(baseDir, { silent: true });

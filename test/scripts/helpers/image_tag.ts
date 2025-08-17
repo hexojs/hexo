@@ -1,10 +1,11 @@
+import { testCwd } from '../../util/env';
 import Hexo from '../../../lib/hexo';
 import imageTag from '../../../lib/plugins/helper/image_tag';
 type imageTagParams = Parameters<typeof imageTag>;
 type imageTagReturn = ReturnType<typeof imageTag>;
 
 describe('image_tag', () => {
-  const hexo = new Hexo(__dirname);
+  const hexo = new Hexo(testCwd);
 
   const ctx: any = {
     config: hexo.config
