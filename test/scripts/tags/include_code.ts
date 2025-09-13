@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { rmdir, writeFile } from 'hexo-fs';
-import { highlight, prismHighlight } from 'hexo-util';
+import { escapeHTML, highlight, prismHighlight } from 'hexo-util';
 import BluebirdPromise from 'bluebird';
 import Hexo from '../../../lib/hexo';
 import tagIncludeCode from '../../../lib/plugins/tag/include_code';
@@ -54,6 +54,16 @@ describe('include_code', () => {
       });
 
       const result = await code('Hello world test.js');
+      result.should.eql(expected);
+    });
+
+    it('uses html tag in title', async () => {
+      const expected = highlight(fixture, {
+        lang: 'js',
+        caption: `<span>${escapeHTML('<strong>Bold</strong>')}</span><a href="/downloads/code/test.js">view raw</a>`
+      });
+
+      const result = await code('<strong>Bold</strong> test.js');
       result.should.eql(expected);
     });
 
@@ -208,6 +218,16 @@ describe('include_code', () => {
       });
 
       const result = await code('Hello world test.js');
+      result.should.eql(expected);
+    });
+
+    it('uses html tag in title', async () => {
+      const expected = prismHighlight(fixture, {
+        lang: 'js',
+        caption: `<span>${escapeHTML('<strong>Bold</strong>')}</span><a href="/downloads/code/test.js">view raw</a>`
+      });
+
+      const result = await code('<strong>Bold</strong> test.js');
       result.should.eql(expected);
     });
 

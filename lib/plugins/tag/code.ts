@@ -1,6 +1,6 @@
 // Based on: https://raw.github.com/imathis/octopress/master/plugins/code_block.rb
 
-import { escapeHTML } from 'hexo-util';
+import { escapeHTML, htmlTag } from 'hexo-util';
 import type Hexo from '../../hexo';
 import type { HighlightOptions } from '../../extend/syntax_highlight';
 
@@ -95,11 +95,11 @@ function parseArgs(args: string[]): HighlightOptions {
   let match, caption = '';
 
   if ((match = arg.match(rCaptionUrlTitle)) != null) {
-    caption = `<span>${match[1]}</span><a href="${match[2]}">${match[3]}</a>`;
+    caption = htmlTag('span', {}, match[1]) + htmlTag('a', { href: match[2] }, match[3]);
   } else if ((match = arg.match(rCaptionUrl)) != null) {
-    caption = `<span>${match[1]}</span><a href="${match[2]}">link</a>`;
+    caption = htmlTag('span', {}, match[1]) + htmlTag('a', { href: match[2] }, 'link');
   } else if ((match = arg.match(rCaption)) != null) {
-    caption = `<span>${match[0]}</span>`;
+    caption = htmlTag('span', {}, match[0]);
   }
 
   return {

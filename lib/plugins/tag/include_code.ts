@@ -1,5 +1,5 @@
 import { basename, extname, join } from 'path';
-import { url_for } from 'hexo-util';
+import { htmlTag, url_for } from 'hexo-util';
 import type Hexo from '../../hexo';
 
 const rCaptionTitleFile = /(.*)?(?:\s+|^)(\/*\S+)/;
@@ -60,7 +60,7 @@ export = (ctx: Hexo) => function includeCodeTag(args: string[]) {
 
   // If the title is not defined, use file name instead
   const title = match[1] || basename(path);
-  const caption = `<span>${title}</span><a href="${url_for.call(ctx, doc.path)}">view raw</a>`;
+  const caption = htmlTag('span', {}, title) + `<a href="${url_for.call(ctx, doc.path)}">view raw</a>`;
 
   if (ctx.extend.highlight.query(ctx.config.syntax_highlighter)) {
     const options = {
