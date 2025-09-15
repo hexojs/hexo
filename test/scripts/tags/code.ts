@@ -94,6 +94,13 @@ describe('code', () => {
       }));
     });
 
+    it('uses html tag in title', () => {
+      const result = code('<strong>Bold</strong>', fixture);
+      result.should.eql(highlight(fixture, {
+        caption: `<span>${escapeHTML('<strong>Bold</strong>')}</span>`
+      }));
+    });
+
     it('link', () => {
       const result = code('Hello world https://hexo.io/', fixture);
       const expected = highlight(fixture, {
@@ -107,6 +114,15 @@ describe('code', () => {
       const result = code('Hello world https://hexo.io/ Hexo', fixture);
       const expected = highlight(fixture, {
         caption: '<span>Hello world</span><a href="https://hexo.io/">Hexo</a>'
+      });
+
+      result.should.eql(expected);
+    });
+
+    it('uses html tag in link text', () => {
+      const result = code('Hello world https://hexo.io/ <strong>Bold</strong>', fixture);
+      const expected = highlight(fixture, {
+        caption: `<span>Hello world</span><a href="https://hexo.io/">${escapeHTML('<strong>Bold</strong>')}</a>`
       });
 
       result.should.eql(expected);
