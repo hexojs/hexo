@@ -147,14 +147,8 @@ class PostRenderEscape {
               swig_string_quote = '';
             }
           }
-          // {% } or {% %
-          if (((char !== '%' && next_char === '}') || (char === '%' && next_char !== '}')) && swig_string_quote === '') {
-            // From swig back to plain text
-            swig_tag_name = '';
-            state = STATE_PLAINTEXT;
-            output.append(`{%${buffer}${char}`);
-            buffer = '';
-          } else if (char === '%' && next_char === '}' && swig_string_quote === '') { // From swig back to plain text
+          // Check for valid tag ending %}
+          if (char === '%' && next_char === '}' && swig_string_quote === '') { // From swig back to plain text
             idx++;
             if (swig_tag_name !== '' && str.includes(`end${swig_tag_name}`)) {
               state = STATE_SWIG_FULL_TAG;
