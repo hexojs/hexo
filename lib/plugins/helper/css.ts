@@ -16,10 +16,14 @@ function cssHelper(this: LocalsType, ...args: any[]) {
       }
       result += `<link rel="stylesheet" href="${url_for.call(this, path)}">\n`;
     } else {
+      const newItem = {
+        rel: 'stylesheet',
+        ...item
+      };
       // Custom attributes
-      item.href = url_for.call(this, item.href);
-      if (!item.href.endsWith('.css')) item.href += '.css';
-      result += htmlTag('link', { rel: 'stylesheet', ...item }) + '\n';
+      newItem.href = url_for.call(this, newItem.href);
+      if (!newItem.href.endsWith('.css')) newItem.href += '.css';
+      result += htmlTag('link', newItem) + '\n';
     }
   });
   return result;
