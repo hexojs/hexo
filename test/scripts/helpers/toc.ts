@@ -432,6 +432,19 @@ describe('toc', () => {
     toc(input).should.eql('');
   });
 
+  it('skipping heading level', () => {
+    const input = [
+      '<h1>Title 1</h1>',
+      '<h3>Title 3</h3>',
+      '<h4>Title 4</h4>',
+      '<h2>Title 2</h2>',
+      '<h5>Title 5</h5>',
+      '<h1>Title 1</h1>'
+    ].join('');
+
+    toc(input).should.eql('<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Title 1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">Title 3</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">1.1.1.</span> <span class="toc-text">Title 4</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">Title 2</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link"><span class="toc-number">1.2.1.</span> <span class="toc-text">Title 5</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">Title 1</span></a></li></ol>');
+  });
+
   it('unnumbered headings', () => {
     const className = 'toc';
 
