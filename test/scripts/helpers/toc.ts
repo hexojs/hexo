@@ -1,4 +1,4 @@
-import { encodeURL, escapeHTML } from 'hexo-util';
+import { escapeHTML } from 'hexo-util';
 import toc from '../../../lib/plugins/helper/toc';
 
 describe('toc', () => {
@@ -389,22 +389,27 @@ describe('toc', () => {
     const des = de.replace(/-/g, ' ');
     const ru = 'Я-люблю-русский';
     const rus = ru.replace(/-/g, ' ');
+    const special = '%20';
     const input = [
       `<h1 id="${zh}">${zhs}</h1>`,
       `<h1 id="${de}">${des}</h1>`,
-      `<h1 id="${ru}">${rus}</h1>`
+      `<h1 id="${ru}">${rus}</h1>`,
+      `<h1 id="${special}">${special}</h1>`
     ].join('');
 
     const expected = [
       `<ol class="${className}">`,
       `<li class="${className}-item ${className}-level-1">`,
-      `<a class="${className}-link" href="#${encodeURL(zh)}"><span class="${className}-text">${zhs}</span></a>`,
+      `<a class="${className}-link" href="#${encodeURI(zh)}"><span class="${className}-text">${zhs}</span></a>`,
       '</li>',
       `<li class="${className}-item ${className}-level-1">`,
-      `<a class="${className}-link" href="#${encodeURL(de)}"><span class="${className}-text">${des}</span></a>`,
+      `<a class="${className}-link" href="#${encodeURI(de)}"><span class="${className}-text">${des}</span></a>`,
       '</li>',
       `<li class="${className}-item ${className}-level-1">`,
-      `<a class="${className}-link" href="#${encodeURL(ru)}"><span class="${className}-text">${rus}</span></a>`,
+      `<a class="${className}-link" href="#${encodeURI(ru)}"><span class="${className}-text">${rus}</span></a>`,
+      '</li>',
+      `<li class="${className}-item ${className}-level-1">`,
+      `<a class="${className}-link" href="#${encodeURI(special)}"><span class="${className}-text">${special}</span></a>`,
       '</li></ol>'
     ].join('');
 
