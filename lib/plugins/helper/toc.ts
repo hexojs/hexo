@@ -1,4 +1,4 @@
-import { tocObj, escapeHTML, encodeURL } from 'hexo-util';
+import { tocObj, escapeHTML } from 'hexo-util';
 
 interface Options {
   min_depth?: number;
@@ -51,7 +51,7 @@ function tocHelper(str: string, options: Options = {}) {
   for (let i = 0, len = data.length; i < len; i++) {
     const el = data[i];
     const { level, id, text } = el;
-    const href = id ? `#${encodeURL(id)}` : null;
+    const href = id ? `#${encodeURI(id)}` : null;
 
     if (!el.unnumbered) {
       lastNumber[level - 1]++;
