@@ -15,7 +15,7 @@ export = (ctx: Hexo) => function partial(this: LocalsType, name: string, locals?
   const currentView = this.filename.substring(viewDir.length);
   const path = join(dirname(currentView), name);
   const view = ctx.theme.getView(path) || ctx.theme.getView(name);
-  const viewLocals = { layout: false };
+  const viewLocals: Record<string, any> = {};
 
   if (!view) {
     throw new Error(`Partial ${name} does not exist. (in ${currentView})`);
