@@ -304,8 +304,24 @@ function processAsset(ctx: Hexo, file: _File) {
     }
   }
 
-  const assetDir = id.slice(0, id.lastIndexOf(sep));
-  const post = Post.findOne(p => p.asset_dir.endsWith(posix.join(assetDir, '/')));
+  // NOTE: Must use `posix.sep` ('/') because id is normalized to use forward slashes.
+  //       Using os-specific `sep` would fail on Windows where backslashes wouldn't match.
+  const relativeAssetDirPath = id.slice(0, id.lastIndexOf(posix.sep));
+
+  // Convert relative path to OS-specific absolute path with trailing separator
+  const absoluteAssetDirPath = join(ctx.base_dir, relativeAssetDirPath) + sep;
+
+  /* NOTE:
+     Using `Post.filter()` instead to ensure we get the correct post.
+     Because `Post.findOne()` with a query function or object does not work as expected here.
+     It returns an incorrect post even when the condition doesn't match.
+
+     Examples that didn't work:
+       - `Post.findOne(p => p.asset_dir === absoluteAssetDirPath)`  // returned wrong post
+       - `Post.findOne({asset_dir: absoluteAssetDirPath})`          // returned null
+  */
+  const posts = Post.filter(p => p.asset_dir === absoluteAssetDirPath);
+  const post = posts.length === 1 ? posts.data[0] : null;
   if (post != null && (post.published || ctx._showDrafts())) {
     return savePostAsset(post);
   }
