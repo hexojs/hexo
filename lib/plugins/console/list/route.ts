@@ -1,4 +1,4 @@
-import archy from 'archy';
+import archy from 'fast-archy';
 import type Hexo from '../../../hexo';
 
 function listRoute(this: Hexo): void {
