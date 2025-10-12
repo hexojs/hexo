@@ -2,7 +2,7 @@ import { isExternalLink } from 'hexo-util';
 import type Hexo from '../../../hexo';
 
 let EXTERNAL_LINK_SITE_ENABLED = true;
-const rATag = /<a(?:\s+?|\s+?[^<>]+?\s+?)href=["']((?:https?:|\/\/)[^<>"']+)["'][^<>]*>/gi;
+const rATag = /<a\s[^<>]*?href=["']((?:https?:|\/\/)[^<>"']+)["'][^<>]*>/gi;
 const rTargetAttr = /target=/i;
 const rRelAttr = /rel=/i;
 const rRelStrAttr = /rel=["']([^<>"']*)["']/i;
