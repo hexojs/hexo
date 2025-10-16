@@ -31,6 +31,7 @@ class BinaryRelationIndex<K extends PropertyKey, V extends PropertyKey> {
   }
 
   saveHook(data: BinaryRelationType<K, V> & { _id: PropertyKey }) {
+    if (!data) return;
     const _id = data._id;
     const key = data[this.key];
     const value = data[this.value];
