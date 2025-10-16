@@ -1120,6 +1120,60 @@ describe('post', () => {
     ]);
   });
 
+  it('asset - post_asset_folder enabled with hot processing', async () => {
+    hexo.config.post_asset_folder = true;
+
+    const [post1, post2] = await Promise.all([
+      Post.insert({ source: '_posts/foo.html', slug: 'foo' }),
+      Post.insert({ source: '_posts/bar.html', slug: 'bar' })
+    ]);
+
+    const firstAsset = newFile({
+      path: 'bar/image1.jpg',
+      published: true,
+      type: 'create',
+      renderable: false
+    });
+
+    await writeFile(firstAsset.source, 'test1');
+    // cold processing
+    await process(firstAsset);
+
+    const firstAssetId = 'source/_posts/bar/image1.jpg';
+    const firstAssetRecord = PostAsset.findById(firstAssetId);
+    firstAssetRecord._id.should.eql(firstAssetId);
+    firstAssetRecord.post.should.eql(post2._id);
+    firstAssetRecord.slug.should.eql('image1.jpg');
+
+    const secondAsset = newFile({
+      path: 'bar/image2.jpg',
+      published: true,
+      type: 'create',
+      renderable: false
+    });
+
+    await writeFile(secondAsset.source, 'test2');
+    // hot processing
+    await process(secondAsset);
+
+    const secondAssetId = 'source/_posts/bar/image2.jpg';
+    const secondAssetRecord = PostAsset.findById(secondAssetId);
+
+    secondAssetRecord._id.should.eql(secondAssetId);
+    secondAssetRecord.post.should.eql(post2._id);
+    secondAssetRecord.slug.should.eql('image2.jpg');
+    secondAssetRecord.modified.should.be.true;
+
+    hexo.config.post_asset_folder = false;
+
+    await BluebirdPromise.all([
+      Post.removeById(post1._id),
+      Post.removeById(post2._id),
+      unlink(firstAsset.source),
+      unlink(secondAsset.source)
+    ]);
+  });
+
   it('post - delete existing draft assets if draft posts are hidden', async () => {
     hexo.config.post_asset_folder = true;
 
