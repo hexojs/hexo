@@ -1,4 +1,4 @@
-import { encodeURL, escapeHTML } from 'hexo-util';
+import { escapeHTML } from 'hexo-util';
 import toc from '../../../lib/plugins/helper/toc';
 
 describe('toc', () => {
@@ -389,22 +389,27 @@ describe('toc', () => {
     const des = de.replace(/-/g, ' ');
     const ru = 'Я-люблю-русский';
     const rus = ru.replace(/-/g, ' ');
+    const special = '%20';
     const input = [
       `<h1 id="${zh}">${zhs}</h1>`,
       `<h1 id="${de}">${des}</h1>`,
-      `<h1 id="${ru}">${rus}</h1>`
+      `<h1 id="${ru}">${rus}</h1>`,
+      `<h1 id="${special}">${special}</h1>`
     ].join('');
 
     const expected = [
       `<ol class="${className}">`,
       `<li class="${className}-item ${className}-level-1">`,
-      `<a class="${className}-link" href="#${encodeURL(zh)}"><span class="${className}-text">${zhs}</span></a>`,
+      `<a class="${className}-link" href="#${encodeURI(zh)}"><span class="${className}-text">${zhs}</span></a>`,
       '</li>',
       `<li class="${className}-item ${className}-level-1">`,
-      `<a class="${className}-link" href="#${encodeURL(de)}"><span class="${className}-text">${des}</span></a>`,
+      `<a class="${className}-link" href="#${encodeURI(de)}"><span class="${className}-text">${des}</span></a>`,
       '</li>',
       `<li class="${className}-item ${className}-level-1">`,
-      `<a class="${className}-link" href="#${encodeURL(ru)}"><span class="${className}-text">${rus}</span></a>`,
+      `<a class="${className}-link" href="#${encodeURI(ru)}"><span class="${className}-text">${rus}</span></a>`,
+      '</li>',
+      `<li class="${className}-item ${className}-level-1">`,
+      `<a class="${className}-link" href="#${encodeURI(special)}"><span class="${className}-text">${special}</span></a>`,
       '</li></ol>'
     ].join('');
 
@@ -430,6 +435,19 @@ describe('toc', () => {
     const input = '<h9000>bar</h9000>';
 
     toc(input).should.eql('');
+  });
+
+  it('skipping heading level', () => {
+    const input = [
+      '<h1>Title 1</h1>',
+      '<h3>Title 3</h3>',
+      '<h4>Title 4</h4>',
+      '<h2>Title 2</h2>',
+      '<h5>Title 5</h5>',
+      '<h1>Title 1</h1>'
+    ].join('');
+
+    toc(input).should.eql('<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Title 1</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">Title 3</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">1.1.1.</span> <span class="toc-text">Title 4</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">Title 2</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link"><span class="toc-number">1.2.1.</span> <span class="toc-text">Title 5</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">Title 1</span></a></li></ol>');
   });
 
   it('unnumbered headings', () => {
