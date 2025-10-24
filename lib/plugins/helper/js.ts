@@ -16,10 +16,11 @@ function jsHelper(this: LocalsType, ...args: any[]) {
       }
       result += `<script src="${url_for.call(this, path)}"></script>\n`;
     } else {
+      const newItem = { ...item };
       // Custom attributes
-      item.src = url_for.call(this, item.src);
-      if (!item.src.endsWith('.js')) item.src += '.js';
-      result += htmlTag('script', { ...item }, '') + '\n';
+      newItem.src = url_for.call(this, newItem.src);
+      if (!newItem.src.endsWith('.js')) newItem.src += '.js';
+      result += htmlTag('script', newItem, '') + '\n';
     }
   });
   return result;

@@ -255,7 +255,7 @@ describe('Tag', () => {
       'date: 2023-09-03 16:59:46',
       'tags: foo',
       '---'
-    ];
+    ].join('\n');
 
     const file2 = newFile({
       path: 'test2.html',
@@ -269,7 +269,7 @@ describe('Tag', () => {
       'date: 2023-09-03 16:59:49',
       'tags: foo',
       '---'
-    ];
+    ].join('\n');
 
     const file3 = newFile({
       path: 'test3.html',
