@@ -93,7 +93,12 @@ function processPost(ctx: Hexo, file: _File) {
     file.read()
   ]).spread((stats: Stats, content: string) => {
     const data: PostSchema = yfm(content);
-    const info = parseFilename(config.new_post_name, path);
+    // FIXME: Avoid using `new_post_name` for filename parsing here.
+    //        The parsing result is used as the `slug`, but it's not obvious to users that changing `new_post_name` would affect the `slug`.
+    const info = parseFilename([...new Set([
+      config.new_post_name,
+      config.permalink
+    ])], path);
     const keys = Object.keys(info);
 
     data.source = file.path;
@@ -191,8 +196,14 @@ function processPost(ctx: Hexo, file: _File) {
   ]));
 }
 
-function parseFilename(config: string, path: string) {
-  config = config.substring(0, config.length - extname(config).length);
+function parseFilename(configs: Array<string>, path: string) {
+  if (configs.length === 0) {
+    return {
+      title: slugize(path)
+    };
+  }
+  const appliedConfig = configs.shift();
+  const config = appliedConfig.substring(0, appliedConfig.length - extname(appliedConfig).length);
   path = path.substring(0, path.length - extname(path).length);
 
   if (!permalink || permalink.rule !== config) {
@@ -219,9 +230,7 @@ function parseFilename(config: string, path: string) {
     });
   }
 
-  return {
-    title: slugize(path)
-  };
+  return parseFilename(configs, path);
 }
 
 function scanAssetDir(ctx: Hexo, post: PostSchema) {
