@@ -1525,6 +1525,53 @@ describe('Post', () => {
     data.content.should.contains('22222');
   });
 
+  it('render() - tags with swig character', async () => {
+    const tagSpy = spy();
+    hexo.extend.tag.register('testTag', (args, content) => {
+      tagSpy(args, content);
+      return '';
+    }, {
+      ends: true
+    });
+    let content = '{% testTag 111 222 %}\n3333\n{% endtestTag %}';
+    await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    tagSpy.calledOnce.should.be.true;
+    tagSpy.firstCall.args[0].should.eql(['111', '222']);
+    tagSpy.firstCall.args[1].should.eql('3333');
+
+    content = '{% testTag 111% % 222 %}\n333\n{% endtestTag %}';
+    await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    tagSpy.calledTwice.should.be.true;
+    tagSpy.secondCall.args[0].should.eql(['111%', '%', '222']);
+    tagSpy.secondCall.args[1].should.eql('333');
+
+    content = '{% testTag 111 } 222} %}\n333\n{% endtestTag %}';
+    await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    tagSpy.calledThrice.should.be.true;
+    tagSpy.thirdCall.args[0].should.eql(['111', '}', '222}']);
+    tagSpy.thirdCall.args[1].should.eql('333');
+
+    content = '{% testTag 111 222 %}\n333% % } %}\n{% endtestTag %}';
+    await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    tagSpy.callCount.should.eql(4);
+    tagSpy.getCall(3).args[0].should.eql(['111', '222']);
+    tagSpy.getCall(3).args[1].should.eql('333% % } %}');
+
+    hexo.extend.tag.unregister('testTag');
+  });
+
   it('render() - incomplete tags throw error', async () => {
     const content = 'nunjucks should throw {#  } error';
 
