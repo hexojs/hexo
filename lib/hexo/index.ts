@@ -582,6 +582,8 @@ class Hexo extends EventEmitter {
     this._watchBox = debounce(() => this._generate({ cache: useCache }), 100);
 
     return loadDatabase(this).then(() => {
+      this._binaryRelationIndex.post_tag.load();
+      this._binaryRelationIndex.post_category.load();
       this.log.info('Start processing');
 
       return Promise.all([
