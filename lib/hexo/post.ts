@@ -13,10 +13,12 @@ import type { NodeJSLikeCallback, RenderData } from '../types';
 const preservedKeys = ['title', 'slug', 'path', 'layout', 'date', 'content'];
 
 const rHexoPostRenderEscape = /<hexoPostRenderCodeBlock>([\s\S]+?)<\/hexoPostRenderCodeBlock>/g;
+const rCommentEscape = /(<!--[\s\S]*?-->)/g;
 const rSwigTag = /(\{\{.+?\}\})|(\{#.+?#\})|(\{%.+?%\})/s;
 
 const rSwigPlaceHolder = /(?:<|&lt;)!--swig\uFFFC(\d+)--(?:>|&gt;)/g;
 const rCodeBlockPlaceHolder = /(?:<|&lt;)!--code\uFFFC(\d+)--(?:>|&gt;)/g;
+const rCommentHolder = /(?:<|&lt;)!--comment\uFFFC(\d+)--(?:>|&gt;)/g;
 
 const STATE_PLAINTEXT = 0;
 const STATE_SWIG_VAR = 1;
@@ -59,6 +61,14 @@ class PostRenderEscape {
 
   restoreCodeBlocks(str: string) {
     return str.replace(rCodeBlockPlaceHolder, PostRenderEscape.restoreContent(this.stored));
+  }
+
+  restoreComments(str: string) {
+    return str.replace(rCommentHolder, PostRenderEscape.restoreContent(this.stored));
+  }
+
+  escapeComments(str: string) {
+    return str.replace(rCommentEscape, (_, content) => PostRenderEscape.escapeContent(this.stored, 'comment', content));
   }
 
   escapeCodeBlocks(str: string) {
@@ -502,6 +512,8 @@ class Post {
       // Run "before_post_render" filters
       return ctx.execFilter('before_post_render', data, { context: ctx });
     }).then(() => {
+      // Escape all comments to avoid conflict with Nunjucks and code block
+      data.content = cacheObj.escapeComments(data.content);
       data.content = cacheObj.escapeCodeBlocks(data.content);
       // Escape all Nunjucks/Swig tags
       let hasSwigTag = true;
@@ -535,6 +547,7 @@ class Post {
       }, options);
     }).then(content => {
       data.content = cacheObj.restoreCodeBlocks(content);
+      data.content = cacheObj.restoreComments(data.content);
 
       // Run "after_post_render" filters
       return ctx.execFilter('after_post_render', data, { context: ctx });

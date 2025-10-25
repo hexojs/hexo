@@ -1601,4 +1601,63 @@ describe('Post', () => {
 
     data.content.should.eql('<a href="https://hexo.io/" title="tttitle" target="">foobar</a>');
   });
+
+  // https://github.com/hexojs/hexo/issues/5433
+  it('render() - nunjucks nesting in comments', async () => {
+    const content = [
+      'foo',
+      '<!--',
+      '{% raw %}',
+      'test',
+      '{% endraw %}',
+      '-->',
+      'bar'
+    ].join('\n');
+
+    const data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.should.eql([
+      '<p>foo</p>',
+      '<!--',
+      '{% raw %}',
+      'test',
+      '{% endraw %}',
+      '-->',
+      '<p>bar</p>',
+      ''
+    ].join('\n'));
+  });
+
+  // https://github.com/hexojs/hexo/issues/5433
+  it('render() - code fence nesting in comments', async () => {
+    const code = 'alert("Hello world")';
+    const content = [
+      'foo',
+      '<!--',
+      '```',
+      code,
+      '```',
+      '-->',
+      'bar'
+    ].join('\n');
+
+    const data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.should.eql([
+      '<p>foo</p>',
+      '<!--',
+      '```',
+      code,
+      '```',
+      '-->',
+      '<p>bar</p>',
+      ''
+    ].join('\n'));
+  });
 });
