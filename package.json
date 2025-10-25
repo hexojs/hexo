@@ -48,7 +48,7 @@
     "hexo-fs": "^5.0.0",
     "hexo-i18n": "^2.0.0",
     "hexo-log": "^4.1.0",
-    "hexo-util": "^3.3.0",
+    "hexo-util": "^4.0.0",
     "js-yaml": "^4.1.0",
     "js-yaml-js-types": "^1.0.1",
     "micromatch": "^4.0.8",
