@@ -20,7 +20,10 @@
     "bin/"
   ],
   "types": "./dist/hexo/index.d.ts",
-  "repository": "hexojs/hexo",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hexojs/hexo.git"
+  },
   "homepage": "https://hexo.io/",
   "funding": {
     "type": "opencollective",
