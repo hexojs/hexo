@@ -1,6 +1,6 @@
 {
   "name": "hexo",
-  "version": "8.0.0",
+  "version": "8.1.0",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
   "main": "dist/hexo",
   "bin": {
@@ -20,7 +20,10 @@
     "bin/"
   ],
   "types": "./dist/hexo/index.d.ts",
-  "repository": "hexojs/hexo",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hexojs/hexo.git"
+  },
   "homepage": "https://hexo.io/",
   "funding": {
     "type": "opencollective",
