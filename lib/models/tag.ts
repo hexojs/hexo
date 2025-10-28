@@ -25,7 +25,7 @@ export = (ctx: Hexo) => {
     let tagDir = ctx.config.tag_dir;
     if (!tagDir.endsWith('/')) tagDir += '/';
 
-    return `${tagDir + this.slug}/`;
+    return `${tagDir + this.slug}/index.html`;
   });
 
   Tag.virtual('permalink').get(function() {

@@ -99,7 +99,7 @@ describe('Category', () => {
     const data = await Category.insert({
       name: 'foo'
     });
-    data.path.should.eql(hexo.config.category_dir + '/' + data.slug + '/');
+    data.path.should.eql(hexo.config.category_dir + '/' + data.slug + '/index.html');
 
     Category.removeById(data._id);
   });
@@ -129,7 +129,7 @@ describe('Category', () => {
     const data = await Category.insert({
       name: 'foo'
     });
-    data.permalink.should.eql(hexo.config.url + '/' + data.path.replace(/\.html$/, ''));
+    data.permalink.should.eql(hexo.config.url + '/' + data.path);
 
     Category.removeById(data._id);
   });
