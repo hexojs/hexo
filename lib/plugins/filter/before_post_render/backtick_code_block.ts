@@ -90,6 +90,7 @@ export = (ctx: Hexo): (data: RenderData) => void => {
     const commentStarts = [];
     const commentEnds = [];
     let match: RegExpExecArray | null;
+    rCommentEscape.lastIndex = 0;
     while ((match = rCommentEscape.exec(dataContent)) !== null) {
       commentStarts.push(match.index);
       commentEnds.push(match.index + match[0].length);
