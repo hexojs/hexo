@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  hexo:
+    build: .
+    container_name: hexo-dev
+    image: hexo-dev:latest
+    volumes:
+      - .:/usr/src/hexo
+    working_dir: /usr/src/hexo
+    command: npm test
+    environment:
+      - NODE_ENV=development
+    tty: true
