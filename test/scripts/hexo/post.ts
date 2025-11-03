@@ -1631,6 +1631,89 @@ describe('Post', () => {
     ].join('\n'));
   });
 
+  it('render() - incomplete comments', async () => {
+    const content = [
+      'foo',
+      '<!--',
+      'test',
+      '{% raw %}',
+      'bar',
+      '{% endraw %}'
+    ].join('\n');
+
+    const data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.should.eql([
+      '<p>foo</p>',
+      '<!--',
+      'test',
+      '{% raw %}',
+      'bar',
+      '{% endraw %}'
+    ].join('\n'));
+  });
+
+  // https://github.com/hexojs/hexo/issues/5716
+  it('render() - comments nesting in nunjucks', async () => {
+    const tagSpy = spy();
+    hexo.extend.tag.register('testTag', (args, content) => {
+      tagSpy(args, content);
+      return '';
+    }, {
+      ends: true
+    });
+    let content = [
+      '{% testTag %}',
+      'foo',
+      '<!--',
+      'test',
+      '-->',
+      'bar',
+      '{% endtestTag %}'
+    ].join('\n');
+
+    let data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.should.eql('');
+    tagSpy.calledOnce.should.be.true;
+    tagSpy.firstCall.args[1].should.eql([
+      'foo',
+      '<!--',
+      'test',
+      '-->',
+      'bar'
+    ].join('\n'));
+
+    content = [
+      '{% testTag %}',
+      'foo',
+      '<!-- test -->',
+      'bar',
+      '{% endtestTag %}'
+    ].join('\n');
+
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.should.eql('');
+    tagSpy.calledTwice.should.be.true;
+    tagSpy.secondCall.args[1].should.eql([
+      'foo',
+      '<!-- test -->',
+      'bar'
+    ].join('\n'));
+
+    hexo.extend.tag.unregister('testTag');
+  });
+
   // https://github.com/hexojs/hexo/issues/5433
   it('render() - code fence nesting in comments', async () => {
     const code = 'alert("Hello world")';
@@ -1656,6 +1739,32 @@ describe('Post', () => {
       code,
       '```',
       '-->',
+      '<p>bar</p>',
+      ''
+    ].join('\n'));
+  });
+
+  // https://github.com/hexojs/hexo/issues/5715
+  it('render() - comment nesting in code fence', async () => {
+    const code = 'alert("Hello world")';
+    const content = [
+      'foo',
+      '```',
+      '<!--',
+      code,
+      '-->',
+      '```',
+      'bar'
+    ].join('\n');
+
+    const data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.should.eql([
+      '<p>foo</p>',
+      '<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--</span><br><span class="line">alert(&quot;Hello world&quot;)</span><br><span class="line">--&gt;</span><br></pre></td></tr></table></figure>',
       '<p>bar</p>',
       ''
     ].join('\n'));
