@@ -39,10 +39,8 @@ export function toDate(date?: string | number | Date | moment.Moment): Date | un
     // We have to reset offset
     // to make the behavior consistent with hexo-front-matter
     date = new Date(date);
-    const ms = date.getTime();
-    const offset = date.getTimezoneOffset();
-    const diff = offset * DURATION_MINUTE;
-    date = new Date(ms - diff);
+    // Adjust for local timezone offset to ensure UTC consistency
+    date = new Date(date.getTime() - date.getTimezoneOffset() * DURATION_MINUTE);
   }
 
   if (isNaN(date.getTime())) return;
