@@ -40,7 +40,7 @@ export function toDate(date?: string | number | Date | moment.Moment): Date | un
     // to make the behavior consistent with hexo-front-matter
     date = new Date(date);
     // Adjust for local timezone offset to ensure UTC consistency
-    date = new Date(date.getTime() - date.getTimezoneOffset() * DURATION_MINUTE);
+    date = new Date(date.getTime() - (date.getTimezoneOffset() * DURATION_MINUTE));
   }
 
   if (isNaN(date.getTime())) return;
