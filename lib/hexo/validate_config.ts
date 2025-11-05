@@ -27,14 +27,15 @@ export = (ctx: Hexo): void => {
   }
 
   if (!config.timezone) {
-    log.warn('No timezone setting detected! Using LocalTimeZone as the default timezone.');
-    log.warn('This behavior will be changed to UTC in the next major version. Please set timezone explicitly (e.g. LocalTimeZone or America/New_York) in _config.yml to avoid this warning.');
+    log.warn('No timezone setting detected! Using the default timezone UTC.');
+    config.timezone = 'UTC';
   } else {
     const configTimezone = moment.tz.zone(config.timezone);
     if (!configTimezone) {
       log.warn(
-        `Invalid timezone setting detected! "${config.timezone}" is not a valid timezone.`
+        `Invalid timezone setting detected! "${config.timezone}" is not a valid timezone. Using the default timezone UTC.`
       );
+      config.timezone = 'UTC';
     } else {
       const machineTimezone = moment.tz.guess();
       if (configTimezone.name !== machineTimezone) {
