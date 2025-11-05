@@ -1,4 +1,5 @@
 import assert from 'assert';
+import moment from 'moment-timezone';
 import type Hexo from './index';
 
 export = (ctx: Hexo): void => {
@@ -24,5 +25,24 @@ export = (ctx: Hexo): void => {
   if (config.root.trim().length <= 0) {
     throw new TypeError('Invalid config detected: "root" should not be empty!');
   }
-};
 
+  if (!config.timezone) {
+    log.warn('No timezone setting detected! Using the default timezone UTC.');
+    config.timezone = 'UTC';
+  } else {
+    const configTimezone = moment.tz.zone(config.timezone);
+    if (!configTimezone) {
+      log.warn(
+        `Invalid timezone setting detected! "${config.timezone}" is not a valid timezone. Using the default timezone UTC.`
+      );
+      config.timezone = 'UTC';
+    } else {
+      const machineTimezone = moment.tz.guess();
+      if (configTimezone.name !== machineTimezone) {
+        log.warn(
+          `The timezone "${config.timezone}" setting is different from your machine timezone "${machineTimezone}". Make sure this is intended.`
+        );
+      }
+    }
+  }
+};
