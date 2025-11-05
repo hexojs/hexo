@@ -7,7 +7,7 @@ import tagIncludeCode from '../../../lib/plugins/tag/include_code';
 import chai from 'chai';
 const should = chai.should();
 
-describe('include_code', () => {
+describe('include_code_js', () => {
   const hexo = new Hexo(join(__dirname, 'include_code_test'));
   require('../../../lib/plugins/highlight/')(hexo);
   const includeCode = BluebirdPromise.method(tagIncludeCode(hexo)) as (arg1: string[]) => BluebirdPromise<string>;
@@ -242,5 +242,41 @@ describe('include_code', () => {
       const result = await code('test.js');
       result.should.eql('<pre><code>' + fixture + '</code></pre>');
     });
+  });
+});
+
+describe('include_code_j2', () => {
+  const hexo = new Hexo(join(__dirname, 'include_code_test'));
+  require('../../../lib/plugins/highlight/')(hexo);
+  const includeCode = BluebirdPromise.method(tagIncludeCode(hexo)) as (arg1: string[]) => BluebirdPromise<string>;
+  const path = join(hexo.source_dir, hexo.config.code_dir, 'test.j2');
+  const defaultCfg = JSON.parse(JSON.stringify(hexo.config));
+
+  const fixture = [
+    '{{ 1 }}'
+  ].join('\n');
+
+  const code = args => includeCode(args.split(' '));
+
+  before(async () => {
+    await writeFile(path, fixture);
+    await hexo.init();
+    await hexo.load();
+  });
+
+  beforeEach(() => {
+    hexo.config = JSON.parse(JSON.stringify(defaultCfg));
+  });
+
+  after(() => rmdir(hexo.base_dir));
+
+  it('default', async () => {
+    const expected = highlight(fixture, {
+      lang: 'jinja2',
+      caption: '<span>test.j2</span><a href="/downloads/code/test.j2">view raw</a>'
+    });
+
+    const result = await code('test.j2');
+    result.should.eql(expected);
   });
 });
