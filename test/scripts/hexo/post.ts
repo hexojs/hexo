@@ -1248,7 +1248,7 @@ describe('Post', () => {
       engine: 'markdown'
     });
 
-    data.content.trim().should.eql(`<p>In Go’s templates, blocks look like this: <code>${escapeSwigTag('{{block "template name" .}} (content) {{end}}')}</code>.</p>`);
+    data.content.trim().should.eql(`<p>In Go’s templates, blocks look like this: <code>${escapeSwigTag('{{block &quot;template name&quot; .}} (content) {{end}}')}</code>.</p>`);
   });
 
   // https://github.com/hexojs/hexo/issues/3346#issuecomment-595497849
@@ -1768,5 +1768,516 @@ describe('Post', () => {
       '<p>bar</p>',
       ''
     ].join('\n'));
+  });
+
+  // Inline code block tests
+  describe('inline code blocks', () => {
+    it('render() - inline code with swig tags should not be processed', async () => {
+      const content = '`{{ 1 + 1 }}` should output 2: {{ 1 + 1 }}';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql(`<p><code>${escapeSwigTag('{{ 1 + 1 }}')}</code> should output 2: 2</p>`);
+    });
+
+    it('render() - inline code with swig comment', async () => {
+      const content = 'This is `{# comment #}` inline code';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql(`<p>This is <code>${escapeSwigTag('{# comment #}')}</code> inline code</p>`);
+    });
+
+    it('render() - inline code with swig tag', async () => {
+      const content = 'This is `{% test %}test{% endtest %}` inline code';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql(`<p>This is <code>${escapeSwigTag('{% test %}test{% endtest %}')}</code> inline code</p>`);
+    });
+
+    it('render() - inline code with HTML comment', async () => {
+      const content = 'This is `<!-- comment -->` inline code';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql('<p>This is <code>&lt;!-- comment --&gt;</code> inline code</p>');
+    });
+
+    it('render() - multiple inline codes with different swig tags', async () => {
+      const content = '`{{ var }}` and `{% tag %}` and `{# comment #}` test';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql(`<p><code>${escapeSwigTag('{{ var }}')}</code> and <code>${escapeSwigTag('{% tag %}')}</code> and <code>${escapeSwigTag('{# comment #}')}</code> test</p>`);
+    });
+
+    it('render() - double backticks inline code', async () => {
+      const content = '``code with ` backtick``';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql('<p><code>code with ` backtick</code></p>');
+    });
+
+    it('render() - double backticks with swig tag', async () => {
+      const content = '``{{ 1 + 1 }}``';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql(`<p><code>${escapeSwigTag('{{ 1 + 1 }}')}</code></p>`);
+    });
+
+    it('render() - triple backticks inline code with double backticks inside', async () => {
+      const content = '```code with `` inside```';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql('<p><code>code with `` inside</code></p>');
+    });
+
+    it('render() - unclosed inline code backtick', async () => {
+      const content = 'This is `unclosed code';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql('<p>This is &#96;unclosed code</p>');
+    });
+
+    it('render() - unclosed inline code with swig tag after', async () => {
+      const content = 'This is `unclosed {{ 1 + 1 }}';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      // The backtick is treated as plain text, swig tag should be processed
+      data.content.trim().should.include('&#96;unclosed');
+      data.content.trim().should.include('2');
+    });
+
+    it('render() - inline code with empty newline should backtrack', async () => {
+      let content = 'This is `code with {{ 1 }}\n\nnewline` test';
+      let data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql('<p>This is &#96;code with 1</p>\n<p>newline&#96; test</p>');
+      content = 'This is `code with {{ 1 }}\r\n\r\nnewline` test';
+
+      data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+      data.content.trim().should.eql('<p>This is &#96;code with 1</p>\n<p>newline&#96; test</p>');
+
+      data.content.trim().should.eql('<p>This is &#96;code with 1</p>\n<p>newline&#96; test</p>');
+      content = 'This is `code with {{ 1 }}\r\n\nnewline` test';
+
+      data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+      data.content.trim().should.eql('<p>This is &#96;code with 1</p>\n<p>newline&#96; test</p>');
+
+      data.content.trim().should.eql('<p>This is &#96;code with 1</p>\n<p>newline&#96; test</p>');
+      content = 'This is `code with {{ 1 }}\n\r\nnewline` test';
+
+      data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+      data.content.trim().should.eql('<p>This is &#96;code with 1</p>\n<p>newline&#96; test</p>');
+    });
+
+    it('render() - inline code with newline', async () => {
+      const content = 'This is `code with\nnewline` test';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+      data.content.trim().should.eql('<p>This is <code>code with newline</code> test</p>');
+    });
+
+    it('render() - inline code with newline and swig tag after', async () => {
+      const content = 'Text `code\n{% tag %}test{% endtag %}';
+
+      hexo.extend.tag.register('tag', (args, content) => {
+        return content;
+      }, {
+        ends: true
+      });
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      // Backtick should be treated as plain text, swig tag processed
+      data.content.trim().should.include('&#96;code');
+      data.content.should.not.eql('');
+
+      hexo.extend.tag.unregister('tag');
+    });
+
+    it('render() - mismatched backtick counts', async () => {
+      const content = '``code` test';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      // The single backtick doesn't match double backticks
+      data.content.trim().should.eql('<p>&#96;&#96;code&#96; test</p>');
+    });
+
+    it('render() - inline code at start of line', async () => {
+      const content = '`{{ test }}` at start';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql(`<p><code>${escapeSwigTag('{{ test }}')}</code> at start</p>`);
+    });
+
+    it('render() - inline code at end of line', async () => {
+      const content = 'at end `{{ test }}`';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql(`<p>at end <code>${escapeSwigTag('{{ test }}')}</code></p>`);
+    });
+
+    it('render() - only inline code in line', async () => {
+      const content = '`{{ test }}`';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql(`<p><code>${escapeSwigTag('{{ test }}')}</code></p>`);
+    });
+  });
+
+  describe('inline code with comments', () => {
+    it('render() - comment containing inline code', async () => {
+      const content = '<!-- `{{ test }}` --> outside';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include('<!-- `{{ test }}` -->');
+      data.content.trim().should.include('outside');
+    });
+
+    it('render() - inline code containing comment start', async () => {
+      const content = 'This is `<!-- comment` test';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql('<p>This is <code>&lt;!-- comment</code> test</p>');
+    });
+
+    it('render() - inline code containing full comment', async () => {
+      const content = 'This is `<!-- comment -->` test';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql('<p>This is <code>&lt;!-- comment --&gt;</code> test</p>');
+    });
+
+    it('render() - comment then inline code', async () => {
+      const content = '<!-- comment -->\n`{{ code }}`';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+      console.log(data.content.trim());
+
+      data.content.trim().should.include('<!-- comment -->');
+      data.content.trim().should.include(`<code>${escapeSwigTag('{{ code }}')}</code>`);
+    });
+
+    it('render() - inline code then comment', async () => {
+      const content = '`{{ code }}`\n<!-- comment -->';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include(`<code>${escapeSwigTag('{{ code }}')}</code>`);
+      data.content.trim().should.include('<!-- comment -->');
+    });
+
+    it('render() - unclosed comment with inline code', async () => {
+      const content = '<!-- `{{ code }}` test';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      // Unclosed comment should escape everything to the end
+      data.content.trim().should.include('<!-- `{{ code }}` test');
+    });
+  });
+
+  describe('inline code with swig tags', () => {
+    it('render() - swig tag containing inline code', async () => {
+      const tagSpy = spy();
+      hexo.extend.tag.register('testTag', (args, content) => {
+        tagSpy(args, content);
+        return content;
+      }, {
+        ends: true
+      });
+
+      const content = '{% testTag %}` test `{% endtestTag %}';
+
+      await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      tagSpy.calledOnce.should.be.true;
+      tagSpy.firstCall.args[1].should.include('` test `');
+
+      hexo.extend.tag.unregister('testTag');
+    });
+
+    it('render() - inline code containing swig tag start', async () => {
+      const content = 'This is `{% tag` test';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql('<p>This is <code>{% tag</code> test</p>');
+    });
+
+    it('render() - inline code with unclosed swig tag', async () => {
+      const content = 'This is `{% tag arg` test';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql('<p>This is <code>{% tag arg</code> test</p>');
+    });
+
+    it('render() - unclosed inline code with swig tag', async () => {
+      const content = 'This is `code {% tag %}test{% endtag %}';
+      hexo.extend.tag.register('tag', () => {
+        return '123';
+      }, {
+        ends: true
+      });
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      // Backtick becomes plain text, swig tag should be processed
+      data.content.trim().should.include('&#96;code');
+      data.content.trim().should.include('123');
+
+      hexo.extend.tag.unregister('tag');
+    });
+  });
+
+  describe('complex nesting scenarios', () => {
+    it('render() - inline code, comment, and swig tag mixed', async () => {
+      const content = '`{{ a }}` <!-- comment --> {{ b }} `{% c %}`';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include(`<code>${escapeSwigTag('{{ a }}')}</code>`);
+      data.content.trim().should.include('<!-- comment -->');
+      data.content.trim().should.include(`<code>${escapeSwigTag('{% c %}')}</code>`);
+    });
+
+    it('render() - multiple inline codes separated by swig tags', async () => {
+      const content = '`{{ a }}` {{ b }} `{{ c }}`';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include(`<code>${escapeSwigTag('{{ a }}')}</code>`);
+      data.content.trim().should.include(`<code>${escapeSwigTag('{{ c }}')}</code>`);
+    });
+
+    it('render() - inline code with complex swig tag inside', async () => {
+      const content = '`{% if true %}{{ test }}{% endif %}`';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql(`<p><code>${escapeSwigTag('{% if true %}{{ test }}{% endif %}')}</code></p>`);
+    });
+
+    it('render() - inline code with nested curly braces', async () => {
+      const content = '`{{ { key: "value" } }}`';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql(`<p><code>${escapeSwigTag('{{ { key: &quot;value&quot; } }}')}</code></p>`);
+    });
+
+    it('render() - empty inline code', async () => {
+      const content = 'This is `` empty';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql('<p>This is &#96;&#96; empty</p>');
+    });
+
+    it('render() - inline code with only spaces', async () => {
+      const content = 'This is `   ` spaces';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql('<p>This is <code>   </code> spaces</p>');
+    });
+
+    it('render() - consecutive inline codes', async () => {
+      const content = '`{{ a }}`<!-- -->`{{ b }}`';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include(`<code>${escapeSwigTag('{{ a }}')}</code>`);
+      data.content.trim().should.include('<!-- -->');
+      data.content.trim().should.include(`<code>${escapeSwigTag('{{ b }}')}</code>`);
+    });
+
+    it('render() - inline code at line boundaries', async () => {
+      const content = 'line1 `{{ a }}`\n`{{ b }}` line2';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include(`<code>${escapeSwigTag('{{ a }}')}</code>`);
+      data.content.trim().should.include(`<code>${escapeSwigTag('{{ b }}')}</code>`);
+    });
+
+    it('render() - very long inline code', async () => {
+      const longCode = '{{ ' + 'x'.repeat(100) + ' }}';
+      const content = `\`${longCode}\``;
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include(`<code>${escapeSwigTag(longCode)}</code>`);
+    });
+
+    it('render() - inline code with all special characters', async () => {
+      const content = '`{{ a }} {% b %} {# c #} <!-- d -->`';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include(escapeSwigTag('{{ a }}'));
+      data.content.trim().should.include(escapeSwigTag('{% b %}'));
+      data.content.trim().should.include(escapeSwigTag('{# c #}'));
+    });
+
+    it('render() - inline code followed by unclosed comment', async () => {
+      const content = '`{{ code }}` <!-- unclosed';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include(`<code>${escapeSwigTag('{{ code }}')}</code>`);
+      data.content.trim().should.include('<!-- unclosed');
+    });
+
+    it('render() - multiple backtick counts mixed', async () => {
+      const content = '`a` ``b`` ```c```';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include('<code>a</code>');
+      data.content.trim().should.include('<code>b</code>');
+      data.content.trim().should.include('<code>c</code>');
+    });
   });
 });
