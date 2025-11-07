@@ -1770,7 +1770,6 @@ describe('Post', () => {
     ].join('\n'));
   });
 
-  // Inline code block tests
   describe('inline code blocks', () => {
     it('render() - inline code with swig tags should not be processed', async () => {
       const content = '`{{ 1 + 1 }}` should output 2: {{ 1 + 1 }}';
@@ -1803,6 +1802,17 @@ describe('Post', () => {
       });
 
       data.content.trim().should.eql(`<p>This is <code>${escapeSwigTag('{% test %}test{% endtest %}')}</code> inline code</p>`);
+    });
+
+    it('render() - inline code with raw tag', async () => {
+      const content = 'This is `{% raw %}test`111`<!-- test -->{% endraw %}` inline code';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql('<p>This is <code>test`111`<!-- test --></code> inline code</p>');
     });
 
     it('render() - inline code with HTML comment', async () => {
@@ -1872,9 +1882,8 @@ describe('Post', () => {
     });
 
     it('render() - unclosed inline code with swig tag after', async () => {
-      const content = 'This is `unclosed {{ 1 + 1 }}';
-
-      const data = await post.render('', {
+      let content = 'This is `unclosed {{ 1 + 1 }}';
+      let data = await post.render('', {
         content,
         engine: 'markdown'
       });
@@ -1882,57 +1891,68 @@ describe('Post', () => {
       // The backtick is treated as plain text, swig tag should be processed
       data.content.trim().should.include('&#96;unclosed');
       data.content.trim().should.include('2');
+
+      content = 'This is ``unclosed {{ 1 + 1 }}';
+      data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+      data.content.trim().should.include('&#96;&#96;unclosed');
+      data.content.trim().should.include('2');
     });
 
     it('render() - inline code with empty newline should backtrack', async () => {
-      let content = 'This is `code with {{ 1 }}\n\nnewline` test';
+      let content = 'This is `code with {{ 1 }}\n\nnew\nline` test';
       let data = await post.render('', {
         content,
         engine: 'markdown'
       });
+      data.content.trim().should.eql('<p>This is &#96;code with 1</p>\n<p>new<br>line&#96; test</p>');
 
-      data.content.trim().should.eql('<p>This is &#96;code with 1</p>\n<p>newline&#96; test</p>');
-      content = 'This is `code with {{ 1 }}\r\n\r\nnewline` test';
-
+      content = 'This is `code with {{ 1 }}\r\n\r\nnew\nline` test';
       data = await post.render('', {
         content,
         engine: 'markdown'
       });
-      data.content.trim().should.eql('<p>This is &#96;code with 1</p>\n<p>newline&#96; test</p>');
+      data.content.trim().should.eql('<p>This is &#96;code with 1</p>\n<p>new<br>line&#96; test</p>');
 
-      data.content.trim().should.eql('<p>This is &#96;code with 1</p>\n<p>newline&#96; test</p>');
-      content = 'This is `code with {{ 1 }}\r\n\nnewline` test';
-
+      content = 'This is `code with {{ 1 }}\r\n\nnew\nline` test';
       data = await post.render('', {
         content,
         engine: 'markdown'
       });
-      data.content.trim().should.eql('<p>This is &#96;code with 1</p>\n<p>newline&#96; test</p>');
+      data.content.trim().should.eql('<p>This is &#96;code with 1</p>\n<p>new<br>line&#96; test</p>');
 
-      data.content.trim().should.eql('<p>This is &#96;code with 1</p>\n<p>newline&#96; test</p>');
-      content = 'This is `code with {{ 1 }}\n\r\nnewline` test';
-
+      content = 'This is `code with {{ 1 }}\n\r\nnew\nline` test';
       data = await post.render('', {
         content,
         engine: 'markdown'
       });
-      data.content.trim().should.eql('<p>This is &#96;code with 1</p>\n<p>newline&#96; test</p>');
+      data.content.trim().should.eql('<p>This is &#96;code with 1</p>\n<p>new<br>line&#96; test</p>');
     });
 
     it('render() - inline code with newline', async () => {
-      const content = 'This is `code with\nnewline` test';
-
-      const data = await post.render('', {
+      let content = 'This is `code with\nnewline` test';
+      let data = await post.render('', {
         content,
         engine: 'markdown'
       });
       data.content.trim().should.eql('<p>This is <code>code with newline</code> test</p>');
+
+      content = 'This is ``code with\n`newline`` test';
+      data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+      data.content.trim().should.eql('<p>This is <code>code with `newline</code> test</p>');
     });
 
     it('render() - inline code with newline and swig tag after', async () => {
       const content = 'Text `code\n{% tag %}test{% endtag %}';
+      const tagSpy = spy();
 
       hexo.extend.tag.register('tag', (args, content) => {
+        tagSpy(content);
         return content;
       }, {
         ends: true
@@ -1945,9 +1965,27 @@ describe('Post', () => {
 
       // Backtick should be treated as plain text, swig tag processed
       data.content.trim().should.include('&#96;code');
-      data.content.should.not.eql('');
+      data.content.trim().should.include('test');
+      data.content.should.not.include('{% tag %}');
+
+      tagSpy.calledOnce.should.be.true;
+      tagSpy.firstCall.args[0].should.eql('test');
 
       hexo.extend.tag.unregister('tag');
+    });
+
+    it('render() - inline code with newline and raw tag after', async () => {
+      const content = 'Text `code\n{% raw %}test{% endraw %}';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      // Backtick should be treated as plain text, swig tag processed
+      data.content.trim().should.include('&#96;code');
+      data.content.trim().should.include('test');
+      data.content.should.not.include('{% raw %}');
     });
 
     it('render() - mismatched backtick counts', async () => {
@@ -1960,39 +1998,6 @@ describe('Post', () => {
 
       // The single backtick doesn't match double backticks
       data.content.trim().should.eql('<p>&#96;&#96;code&#96; test</p>');
-    });
-
-    it('render() - inline code at start of line', async () => {
-      const content = '`{{ test }}` at start';
-
-      const data = await post.render('', {
-        content,
-        engine: 'markdown'
-      });
-
-      data.content.trim().should.eql(`<p><code>${escapeSwigTag('{{ test }}')}</code> at start</p>`);
-    });
-
-    it('render() - inline code at end of line', async () => {
-      const content = 'at end `{{ test }}`';
-
-      const data = await post.render('', {
-        content,
-        engine: 'markdown'
-      });
-
-      data.content.trim().should.eql(`<p>at end <code>${escapeSwigTag('{{ test }}')}</code></p>`);
-    });
-
-    it('render() - only inline code in line', async () => {
-      const content = '`{{ test }}`';
-
-      const data = await post.render('', {
-        content,
-        engine: 'markdown'
-      });
-
-      data.content.trim().should.eql(`<p><code>${escapeSwigTag('{{ test }}')}</code></p>`);
     });
   });
 

@@ -180,6 +180,16 @@ class PostRenderEscape {
             // Reset idx to position right after the opening backticks
             idx = inline_code_start + inline_code_backtick_count - 1;
             state = STATE_PLAINTEXT;
+          } else if (char === '{' && next_char === '%' && str.slice(idx).match(/^\{% *raw *%\}/)) {
+            // we may have raw tag in inline code
+            const raw_tag_end_match = str.slice(idx).match(/\{% *endraw *%\}/);
+            if (raw_tag_end_match) {
+              pushAndReset(str.slice(inline_code_start, idx));
+              // escape the raw tag content
+              pushAndReset(PostRenderEscape.escapeContent(this.stored, 'swig', str.slice(idx, idx + raw_tag_end_match.index! + raw_tag_end_match[0].length)));
+              idx = idx + raw_tag_end_match.index! + raw_tag_end_match[0].length - 1;
+              swig_start_idx[state] = idx + 1;
+            }
           } else if (char === '`') {
             // Count consecutive backticks
             let backtick_count = 1;
