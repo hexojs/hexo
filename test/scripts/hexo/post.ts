@@ -1920,14 +1920,25 @@ describe('Post', () => {
     });
 
     it('render() - inline code with raw tag', async () => {
-      const content = 'This is `{% raw %}test`111`<!-- test -->{% endraw %}` inline code';
+      const content = 'This is `{% raw %}test`111`<!-- test -->\ntest`111`<!-- test -->{% endraw %}` inline code';
 
       const data = await post.render('', {
         content,
         engine: 'markdown'
       });
 
-      data.content.trim().should.eql('<p>This is <code>test`111`<!-- test --></code> inline code</p>');
+      data.content.trim().should.eql('<p>This is <code>test`111`<!-- test -->\ntest`111`<!-- test --></code> inline code</p>');
+    });
+
+    it('render() - inline code with multi raw tag', async () => {
+      const content = 'This is `{% raw %}test`111`<!-- test -->{% endraw %}{% raw %}test`111`<!-- test -->{% endraw %}` inline code';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql('<p>This is <code>test`111`<!-- test -->test`111`<!-- test --></code> inline code</p>');
     });
 
     it('render() - inline code with HTML comment', async () => {
@@ -2113,6 +2124,32 @@ describe('Post', () => {
 
       // The single backtick doesn't match double backticks
       data.content.trim().should.eql('<p>&#96;&#96;code&#96; test</p>');
+    });
+
+    it('render() - escaped backticks', async () => {
+      let content = '\\`escaped code\\` test';
+      let data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql('<p>`escaped code` test</p>');
+
+      content = '\\``escaped code`` test';
+      data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql('<p>`&#96;escaped code&#96;&#96; test</p>');
+
+      content = '`code with \\` escaped backtick` test';
+      data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.eql('<p><code>code with \\</code> escaped backtick&#96; test</p>');
     });
   });
 
