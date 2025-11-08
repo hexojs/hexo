@@ -2195,8 +2195,6 @@ describe('Post', () => {
         content,
         engine: 'markdown'
       });
-      console.log(data.content.trim());
-
       data.content.trim().should.include('<!-- comment -->');
       data.content.trim().should.include(`<code>${escapeSwigTag('{{ code }}')}</code>`);
     });
