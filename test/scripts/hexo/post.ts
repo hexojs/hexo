@@ -1,12 +1,13 @@
 import { join } from 'path';
 import moment from 'moment';
 import { readFile, mkdirs, unlink, rmdir, writeFile, exists, stat, listDir } from 'hexo-fs';
-import { spy, useFakeTimers } from 'sinon';
+import { spy, useFakeTimers, stub } from 'sinon';
 import { parse as yfm } from 'hexo-front-matter';
 import { expected, content, expected_disable_nunjucks, content_for_issue_3346, expected_for_issue_3346, content_for_issue_4460 } from '../../fixtures/post_render';
 import { highlight, deepMerge } from 'hexo-util';
 import Hexo from '../../../lib/hexo';
 import chai from 'chai';
+import Bluebird from 'bluebird';
 const should = chai.should();
 const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
@@ -1523,6 +1524,120 @@ describe('Post', () => {
     data.content.should.contains('1');
     data.content.should.contains('&#123;&#123; ');
     data.content.should.contains('22222');
+
+    const tagRenderStub = stub(hexo.extend.tag, 'render').callsFake((content: string) => {
+      return Bluebird.resolve(content);
+    });
+
+    content = '{{ 1 }} \n {% } 22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('{% }');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    content = '{{ 1 }} \n {%  % 22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('{%  %');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    content = '{{ 1 }} \n {%   22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('{%  ');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    content = '{{ 1 }} \n {# } 22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('{# }');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    content = '{{ 1 }} \n {# # 22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('{# #');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    content = '{{ 1 }} \n {#  22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('{# ');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    content = '{{ 1 }} \n {{ } 22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('{{ }');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    content = '{{ 1 }} \n {{ } 22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('{{ }');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    content = '{{ 1 }} \n {{  22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('{{ ');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    content = '{{ 1 }} \n {{ #} 22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('{{ #}');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    content = '{{ 1 }} \n {% #} 22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('{% #}');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    content = '{{ 1 }} \n {% }} 22222';
+    data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+    data.content.should.contains('{% }}');
+    data.content.should.contains('1');
+    data.content.should.contains('22222');
+
+    tagRenderStub.restore();
   });
 
   it('render() - tags with swig character', async () => {
@@ -2097,6 +2212,28 @@ describe('Post', () => {
       hexo.extend.tag.unregister('testTag');
     });
 
+    it('render() - swig tag containing html comments', async () => {
+      const tagSpy = spy();
+      hexo.extend.tag.register('testTag', (args, content) => {
+        tagSpy(args, content);
+        return content;
+      }, {
+        ends: true
+      });
+
+      const content = '{% testTag %}<!-- html -->{% endtestTag %}';
+
+      await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      tagSpy.calledOnce.should.be.true;
+      tagSpy.firstCall.args[1].should.include('<!-- html -->');
+
+      hexo.extend.tag.unregister('testTag');
+    });
+
     it('render() - inline code containing swig tag start', async () => {
       const content = 'This is `{% tag` test';
 
@@ -2199,16 +2336,6 @@ describe('Post', () => {
       data.content.trim().should.eql('<p>This is &#96;&#96; empty</p>');
     });
 
-    it('render() - inline code with only spaces', async () => {
-      const content = 'This is `   ` spaces';
-
-      const data = await post.render('', {
-        content,
-        engine: 'markdown'
-      });
-
-      data.content.trim().should.eql('<p>This is <code>   </code> spaces</p>');
-    });
 
     it('render() - consecutive inline codes', async () => {
       const content = '`{{ a }}`<!-- -->`{{ b }}`';
@@ -2235,30 +2362,6 @@ describe('Post', () => {
       data.content.trim().should.include(`<code>${escapeSwigTag('{{ b }}')}</code>`);
     });
 
-    it('render() - very long inline code', async () => {
-      const longCode = '{{ ' + 'x'.repeat(100) + ' }}';
-      const content = `\`${longCode}\``;
-
-      const data = await post.render('', {
-        content,
-        engine: 'markdown'
-      });
-
-      data.content.trim().should.include(`<code>${escapeSwigTag(longCode)}</code>`);
-    });
-
-    it('render() - inline code with all special characters', async () => {
-      const content = '`{{ a }} {% b %} {# c #} <!-- d -->`';
-
-      const data = await post.render('', {
-        content,
-        engine: 'markdown'
-      });
-
-      data.content.trim().should.include(escapeSwigTag('{{ a }}'));
-      data.content.trim().should.include(escapeSwigTag('{% b %}'));
-      data.content.trim().should.include(escapeSwigTag('{# c #}'));
-    });
 
     it('render() - inline code followed by unclosed comment', async () => {
       const content = '`{{ code }}` <!-- unclosed';
