@@ -22,7 +22,6 @@ class File {
   /**
    * File type. The value can be create, update, skip, delete.
    */
-  // eslint-disable-next-line no-use-before-define
   public type: typeof File.TYPE_CREATE | typeof File.TYPE_UPDATE | typeof File.TYPE_SKIP | typeof File.TYPE_DELETE;
   static TYPE_CREATE: 'create';
   static TYPE_UPDATE: 'update';
