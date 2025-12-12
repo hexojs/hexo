@@ -44,7 +44,7 @@ jobs:
       comment_result: ".tmp-comment-flamegraph.md"
     steps:
       - name: download artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           run-id: ${{toJSON(github.event.workflow_run.id)}}
