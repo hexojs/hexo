@@ -66,7 +66,7 @@ jobs:
         run: |
           echo "https://${{ github.sha }}-${{ matrix.node-version }}-hexo.surge.sh/flamegraph.html" > ${{env.comment_file}}
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         if: ${{github.event_name == 'pull_request' }}
         with:
           retention-days: 1
@@ -82,7 +82,7 @@ jobs:
       - name: save PR number to file
         run: |
           echo -n "${{ github.event.number }}" > ${{env.pr_number_file}}
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           retention-days: 1
           name: comment-pr_number
