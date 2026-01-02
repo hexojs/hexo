@@ -51,7 +51,6 @@ const routeCache = new WeakMap();
 
 const castArray = (obj: any) => { return Array.isArray(obj) ? obj : [obj]; };
 
-// eslint-disable-next-line no-use-before-define
 const mergeCtxThemeConfig = (ctx: Hexo) => {
   // Merge hexo.config.theme_config into hexo.theme.config before post rendering & generating
   // config.theme_config has "_config.[theme].yml" merged in load_theme_config.js
@@ -60,7 +59,6 @@ const mergeCtxThemeConfig = (ctx: Hexo) => {
   }
 };
 
-// eslint-disable-next-line no-use-before-define
 const createLoadThemeRoute = function(generatorResult: BaseGeneratorReturn, locals: LocalsType, ctx: Hexo) {
   const { log, theme } = ctx;
   const { path, cache: useCache } = locals;
