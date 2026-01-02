@@ -23,7 +23,7 @@ function externalLinkFilter(this: Hexo, data: RenderData): void {
 
     if (rRelAttr.test(str)) {
       str = str.replace(rRelStrAttr, (relStr, rel) => {
-        return rel.includes('noopenner') ? relStr : `rel="${rel} noopener"`;
+        return rel.includes('noopener') ? relStr : `rel="${rel} noopener"`;
       });
       return str.replace('href=', 'target="_blank" href=');
     }
