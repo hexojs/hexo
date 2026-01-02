@@ -24,7 +24,7 @@ jobs:
         node-version: ["20", "22", "24"]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:
@@ -44,7 +44,7 @@ jobs:
     env:
       comment_file: ".tmp-comment-flamegraph-node${{ matrix.node-version }}.md"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:
