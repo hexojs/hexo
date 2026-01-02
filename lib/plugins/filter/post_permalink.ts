@@ -3,6 +3,8 @@ import { basename } from 'path';
 import type Hexo from '../../hexo';
 import type { PostSchema } from '../../types';
 
+import { defineLazyProperty } from 'foxts/define-lazy-property';
+
 let permalink: Permalink;
 
 function postPermalinkFilter(this: Hexo, data: PostSchema): string {
@@ -19,35 +21,73 @@ function postPermalinkFilter(this: Hexo, data: PostSchema): string {
     return __permalink;
   }
 
-  const hash = slug && date
-    ? createSha1Hash().update(slug + date.unix().toString()).digest('hex').slice(0, 12)
-    : null;
   const meta = {
     id: id || _id,
     title: slug,
-    name: typeof slug === 'string' ? basename(slug) : '',
-    post_title: slugize(title, {transform: 1}),
-    year: date.format('YYYY'),
-    month: date.format('MM'),
-    day: date.format('DD'),
-    hour: date.format('HH'),
-    minute: date.format('mm'),
-    second: date.format('ss'),
-    i_month: date.format('M'),
-    i_day: date.format('D'),
-    timestamp: date.format('X'),
-    hash,
-    category: config.default_category
+    name: typeof slug === 'string' ? basename(slug) : ''
   };
+
+  defineLazyProperty(
+    meta, 'hash',
+    () => {
+      return slug && date
+        ? createSha1Hash().update(slug + date.unix().toString()).digest('hex').slice(0, 12)
+        : null;
+    }
+  );
+  defineLazyProperty(
+    meta, 'post_title',
+    () => slugize(title, { transform: 1 })
+  );
+  defineLazyProperty(
+    meta, 'year',
+    () => date.format('YYYY')
+  );
+  defineLazyProperty(
+    meta, 'month',
+    () => date.format('MM')
+  );
+  defineLazyProperty(
+    meta, 'day',
+    () => date.format('DD')
+  );
+  defineLazyProperty(
+    meta, 'hour',
+    () => date.format('HH')
+  );
+  defineLazyProperty(
+    meta, 'minute',
+    () => date.format('mm')
+  );
+  defineLazyProperty(
+    meta, 'second',
+    () => date.format('ss')
+  );
+  defineLazyProperty(
+    meta, 'i_month',
+    () => date.format('M')
+  );
+  defineLazyProperty(
+    meta, 'i_day',
+    () => date.format('D')
+  );
+  defineLazyProperty(
+    meta, 'timestamp',
+    () => date.format('X')
+  );
+
+  defineLazyProperty(
+    meta, 'categories',
+    () => {
+      if (data.categories.length) {
+        return data.categories.last().slug;
+      }
+      return config.default_category;
+    }
+  );
 
   if (!permalink || permalink.rule !== config.permalink) {
     permalink = new Permalink(config.permalink, {});
-  }
-
-  const { categories } = data;
-
-  if (categories.length) {
-    meta.category = categories.last().slug;
   }
 
   const keys = Object.keys(data);
