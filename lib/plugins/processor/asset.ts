@@ -53,7 +53,9 @@ function processPage(ctx: Hexo, file: _File) {
     file.stat(),
     file.read()
   ]).spread((stats: Stats, content: string) => {
-    const data: PageSchema = yfm(content);
+    const data: PageSchema = yfm(content, {
+      defaultTimeZone: config.timezone
+    });
     const output = ctx.render.getOutput(path);
 
     data.source = path;

@@ -92,7 +92,9 @@ function processPost(ctx: Hexo, file: _File) {
     file.stat(),
     file.read()
   ]).spread((stats: Stats, content: string) => {
-    const data: PostSchema = yfm(content);
+    const data: PostSchema = yfm(content, {
+      defaultTimeZone: config.timezone
+    });
     const info = parseFilename(config.new_post_name, path);
     const keys = Object.keys(info);
 
@@ -119,15 +121,21 @@ function processPost(ctx: Hexo, file: _File) {
     }
 
     if (data.date) {
+      // hexo-front-matter now always returns date in UTC
+      // See https://github.com/hexojs/hexo-front-matter/pull/146
       data.date = toDate(data.date) as any;
     } else if (info && info.year && (info.month || info.i_month) && (info.day || info.i_day)) {
-      data.date = new Date(
+      // Date parsed from permalink should also use UTC
+      // to make the behavior consistent with hexo-front-matter
+      // It will be corrected by invoking adjustDateForTimezone later
+      data.date = new Date(Date.UTC(
         info.year,
         parseInt(info.month || info.i_month, 10) - 1,
         parseInt(info.day || info.i_day, 10)
-      ) as any;
+      )) as any;
     }
 
+    // Convert date and updated time from UTC to local time (based on timezone in Hexo config)
     if (data.date) {
       if (timezone) data.date = adjustDateForTimezone(data.date, timezone) as any;
     } else {
