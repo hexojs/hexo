@@ -3,7 +3,7 @@ import type Hexo from '../../../hexo';
 import type { RenderData } from '../../../types';
 
 let EXTERNAL_LINK_POST_ENABLED = true;
-const rATag = /<a(?:\s+?|\s+?[^<>]+?\s+?)href=["']((?:https?:|\/\/)[^<>"']+)["'][^<>]*>/gi;
+const rATag = /<a\s[^<>]*?href=["']((?:https?:|\/\/)[^<>"']+)["'][^<>]*>/gi;
 const rTargetAttr = /target=/i;
 const rRelAttr = /rel=/i;
 const rRelStrAttr = /rel=["']([^<>"']*)["']/i;
