@@ -4,7 +4,7 @@ import render from 'preact-render-to-string';
 import type { StoreFunctionData } from '../../extend/renderer';
 
 async function mdxRenderer(data: StoreFunctionData): Promise<string> {
-  const { text } = data;
+  const { text, path } = data;
 
   try {
     // Evaluate MDX content with Preact JSX runtime
@@ -20,7 +20,8 @@ async function mdxRenderer(data: StoreFunctionData): Promise<string> {
 
     return html;
   } catch (error) {
-    throw new Error(`MDX compilation error: ${error.message}`);
+    const fileInfo = path ? ` in ${path}` : '';
+    throw new Error(`MDX compilation error${fileInfo}: ${error.message}\n${error.stack || ''}`);
   }
 }
 

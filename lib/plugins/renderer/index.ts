@@ -22,5 +22,5 @@ export = (ctx: Hexo) => {
   renderer.register('njk', 'html', nunjucks, true);
   renderer.register('j2', 'html', nunjucks, true);
 
-  renderer.register('mdx', 'html', require('./mdx'));
+  renderer.register('mdx', 'html', require('./mdx'), false);
 };

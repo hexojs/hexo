@@ -37,10 +37,11 @@ This is a paragraph with **bold** and *italic* text.
   it('should handle errors gracefully', async () => {
     try {
       // Invalid MDX syntax - JSX that can't be evaluated
-      await r({ text: '<Component with invalid syntax' });
+      await r({ text: '<Component with invalid syntax', path: 'test.mdx' });
       throw new Error('Should have thrown an error');
     } catch (error) {
       error.message.should.include('MDX compilation error');
+      error.message.should.include('test.mdx');
     }
   });
 
