@@ -42,6 +42,7 @@
   ],
   "license": "MIT",
   "dependencies": {
+    "@mdx-js/mdx": "^3.1.1",
     "abbrev": "^3.0.0",
     "bluebird": "^3.7.2",
     "fast-archy": "^1.0.0",
@@ -60,6 +61,8 @@
     "moment-timezone": "^0.5.46",
     "nunjucks": "^3.2.4",
     "picocolors": "^1.1.1",
+    "preact": "^10.28.1",
+    "preact-render-to-string": "^6.6.5",
     "pretty-hrtime": "^1.0.3",
     "strip-ansi": "^7.1.0",
     "tildify": "^2.0.0",
