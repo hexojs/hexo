@@ -46,6 +46,7 @@
     "bluebird": "^3.7.2",
     "fast-archy": "^1.0.0",
     "fast-text-table": "^1.0.1",
+    "foxts": "^4.3.1",
     "hexo-cli": "^4.3.2",
     "hexo-front-matter": "^4.2.1",
     "hexo-fs": "^5.0.0",
