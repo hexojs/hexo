@@ -19,14 +19,29 @@ function postPermalinkFilter(this: Hexo, data: PostSchema): string {
     return __permalink;
   }
 
-  const hash = slug && date
-    ? createSha1Hash().update(slug + date.unix().toString()).digest('hex').slice(0, 12)
-    : null;
+  const hash
+    = slug && date
+      ? createSha1Hash()
+        .update(slug + date.unix().toString())
+        .digest('hex')
+        .slice(0, 12)
+      : null;
+
+  const relativeSourcePath = data.full_source
+    // Remove base directory
+    .replace(this.base_dir, '')
+    // Normalize path to handle both / and \ (cross-platform)
+    .replace(/\\/g, '/')
+    // Remove leading "source/" or "source/_posts/" if present
+    .replace(/^source\/(_posts\/)?/, '')
+    // Remove any extension
+    .replace(/\.[^/.]+$/, '');
+
   const meta = {
     id: id || _id,
     title: slug,
     name: typeof slug === 'string' ? basename(slug) : '',
-    post_title: slugize(title, {transform: 1}),
+    post_title: slugize(title, { transform: 1 }),
     year: date.format('YYYY'),
     month: date.format('MM'),
     day: date.format('DD'),
@@ -37,7 +52,8 @@ function postPermalinkFilter(this: Hexo, data: PostSchema): string {
     i_day: date.format('D'),
     timestamp: date.format('X'),
     hash,
-    category: config.default_category
+    category: config.default_category,
+    filepath: relativeSourcePath
   };
 
   if (!permalink || permalink.rule !== config.permalink) {
