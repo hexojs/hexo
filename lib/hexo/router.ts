@@ -21,8 +21,8 @@ class RouteStream extends Readable {
     this.modified = data.modified;
   }
 
-  // Assume we only accept Buffer, plain object, or string
-  _toBuffer(data: Buffer | object | string): Buffer | null {
+  // Accept Buffer, plain object, or string. Returns Buffer or string directly to avoid unnecessary conversion
+  _toBuffer(data: Buffer | object | string): Buffer | string | null {
     if (data instanceof Buffer) {
       return data;
     }
@@ -30,7 +30,8 @@ class RouteStream extends Readable {
       data = JSON.stringify(data);
     }
     if (typeof data === 'string') {
-      return Buffer.from(data); // Assume string is UTF-8 encoded string
+      // Return string directly to avoid Buffer conversion overhead for large content
+      return data;
     }
     return null;
   }
