@@ -174,6 +174,14 @@ describe('Router', () => {
     return checkStream(router.get('test'), JSON.stringify(obj));
   });
 
+  it('get() - large string content should not be converted to Buffer unnecessarily', () => {
+    const largeString = 'a'.repeat(100000); // 100KB string
+
+    router.set('test', largeString);
+
+    return checkStream(router.get('test'), largeString);
+  });
+
   it('list()', () => {
     const router = new Router();
 
