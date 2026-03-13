@@ -20,7 +20,7 @@ jobs:
     if: ${{github.event_name == 'pull_request_target'}}
     steps:
       - name: Comment PR - How to test
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v3
         with:
           header: How to test
           message: |
@@ -64,7 +64,7 @@ jobs:
 
       - name: Comment PR - flamegraph
         if: ${{env.pr_number!=''}}
-        uses: marocchino/sticky-pull-request-comment@v2
+        uses: marocchino/sticky-pull-request-comment@v3
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           number: ${{env.pr_number}}
