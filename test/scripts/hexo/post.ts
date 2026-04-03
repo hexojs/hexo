@@ -2423,4 +2423,137 @@ describe('Post', () => {
       data.content.trim().should.include('<code>c</code>');
     });
   });
+
+  describe('inline swig placeholder', () => {
+    it('render() - markdown link on same line as swig tag at beginning of line', async () => {
+      hexo.extend.tag.register('inlineTestTag', () => '<span>test</span>');
+
+      const content = '{% inlineTestTag %} text with [link](https://example.com) more';
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include('>link</a>');
+      data.content.trim().should.include('example.com');
+      data.content.trim().should.include('<span>test</span>');
+
+      hexo.extend.tag.unregister('inlineTestTag');
+    });
+
+    it('render() - swig tag alone on line should not be wrapped in <p>', async () => {
+      hexo.extend.tag.register('blockTestTag', () => '<div>block content</div>');
+
+      const content = '{% blockTestTag %}\n\nparagraph text';
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include('<div>block content</div>');
+      data.content.trim().should.include('<p>paragraph text</p>');
+      data.content.should.not.include('<p><div>');
+
+      hexo.extend.tag.unregister('blockTestTag');
+    });
+
+    it('render() - multiple swig tags on same line with markdown', async () => {
+      hexo.extend.tag.register('multiTestTag', args => `<span>${args[0]}</span>`);
+
+      const content = '{% multiTestTag a %} [link](https://example.com) {% multiTestTag b %}';
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include('>link</a>');
+      data.content.trim().should.include('example.com');
+      data.content.trim().should.include('<span>a</span>');
+      data.content.trim().should.include('<span>b</span>');
+
+      hexo.extend.tag.unregister('multiTestTag');
+    });
+
+    it('render() - full block tag should still work as block', async () => {
+      const content = [
+        '{% blockquote %}',
+        'quote text',
+        '{% endblockquote %}',
+        '',
+        'paragraph text'
+      ].join('\n');
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include('<blockquote>');
+      data.content.trim().should.include('<p>paragraph text</p>');
+    });
+
+    it('render() - variable tag with trailing markdown link should use inline format', async () => {
+      const content = '{{ "var-output" }} text [link](https://example.com) after';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include('>link</a>');
+      data.content.trim().should.include('example.com');
+      data.content.trim().should.include('var-output');
+    });
+
+    it('render() - variable tag alone on line should use block format', async () => {
+      const content = '{{ "block-var" }}\n\nparagraph text';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include('block-var');
+      data.content.trim().should.include('<p>paragraph text</p>');
+      data.content.should.not.include('<p>block-var</p>');
+    });
+
+    it('render() - swig tag with trailing whitespace only should use block format', async () => {
+      hexo.extend.tag.register('wsTestTag', () => '<div>ws content</div>');
+
+      const content = '{% wsTestTag %}   \n\nparagraph text';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include('<div>ws content</div>');
+      data.content.trim().should.include('<p>paragraph text</p>');
+      data.content.should.not.include('<p><div>');
+
+      hexo.extend.tag.unregister('wsTestTag');
+    });
+
+    it('render() - block format on first line does not prevent inline format on next line', async () => {
+      hexo.extend.tag.register('blockLineTag', () => '<div>block</div>');
+      hexo.extend.tag.register('inlineLineTag', () => '<span>inline</span>');
+
+      const content = '{% blockLineTag %}\n{% inlineLineTag %} [link](https://example.com)';
+
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include('<div>block</div>');
+      data.content.trim().should.include('<span>inline</span>');
+      data.content.trim().should.include('>link</a>');
+      data.content.should.not.include('<p><div>');
+
+      hexo.extend.tag.unregister('blockLineTag');
+      hexo.extend.tag.unregister('inlineLineTag');
+    });
+
+  });
 });

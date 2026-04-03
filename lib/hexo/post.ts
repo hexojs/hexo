@@ -16,6 +16,7 @@ const rHexoPostRenderEscape = /<hexoPostRenderCodeBlock>([\s\S]+?)<\/hexoPostRen
 const rSwigTag = /(\{\{.+?\}\})|(\{#.+?#\})|(\{%.+?%\})/s;
 
 const rSwigPlaceHolder = /(?:<|&lt;)!--swig\uFFFC(\d+)--(?:>|&gt;)/g;
+const rInlineSwigPlaceHolder = /(?:\uFFFC|&#(?:xFFFC|xfffc|65532);)swig(\d+)(?:\uFFFC|&#(?:xFFFC|xfffc|65532);)/g;
 const rCodeBlockPlaceHolder = /(?:<|&lt;)!--code\uFFFC(\d+)--(?:>|&gt;)/g;
 const rCommentHolder = /(?:<|&lt;)!--comment\uFFFC(\d+)--(?:>|&gt;)/g;
 
@@ -42,8 +43,9 @@ class PostRenderEscape {
     this.stored = [];
   }
 
-  static escapeContent(cache: string[], flag: string, str: string) {
-    return `<!--${flag}\uFFFC${cache.push(str) - 1}-->`;
+  static escapeContent(cache: string[], flag: string, str: string, inline = false) {
+    const idx = cache.push(str) - 1;
+    return inline ? `\uFFFC${flag}${idx}\uFFFC` : `<!--${flag}\uFFFC${idx}-->`;
   }
 
   static restoreContent(cache: string[]) {
@@ -56,8 +58,9 @@ class PostRenderEscape {
   }
 
   restoreAllSwigTags(str: string) {
-    const restored = str.replace(rSwigPlaceHolder, PostRenderEscape.restoreContent(this.stored));
-    return restored;
+    str = str.replace(rSwigPlaceHolder, PostRenderEscape.restoreContent(this.stored));
+    str = str.replace(rInlineSwigPlaceHolder, PostRenderEscape.restoreContent(this.stored));
+    return str;
   }
 
   restoreCodeBlocks(str: string) {
@@ -112,6 +115,16 @@ class PostRenderEscape {
     const pushAndReset = (value: string) => {
       output += value;
       plain_text_start = -1;
+    };
+
+    // Inline placeholder avoids triggering CommonMark HTML block (type 2),
+    // which would prevent Markdown processing on the rest of the line.
+    const hasTrailingContentOnLine = (startIdx: number): boolean => {
+      for (let j = startIdx; j < length; j++) {
+        if (str[j] === '\n' || str[j] === '\r') return false;
+        if (isNonWhiteSpaceChar(str[j])) return true;
+      }
+      return false;
     };
 
     while (idx < length) {
@@ -224,7 +237,8 @@ class PostRenderEscape {
               swig_tag_name = '';
               state = STATE_PLAINTEXT;
               // since we have already move idx to next char of '}', so here is idx -1
-              pushAndReset(PostRenderEscape.escapeContent(this.stored, 'swig', `{%${str.slice(buffer_start, idx - 1)}%}`));
+              const swigTagStr = `{%${str.slice(buffer_start, idx - 1)}%}`;
+              pushAndReset(PostRenderEscape.escapeContent(this.stored, 'swig', swigTagStr, hasTrailingContentOnLine(idx + 1)));
             }
 
           } else {
@@ -257,9 +271,10 @@ class PostRenderEscape {
             state = STATE_PLAINTEXT;
             pushAndReset(`{{${str.slice(buffer_start, idx)}${char}`);
           } else if (char === '}' && next_char === '}' && swig_string_quote === '') {
-            pushAndReset(PostRenderEscape.escapeContent(this.stored, 'swig', `{{${str.slice(buffer_start, idx)}}}`));
+            const swigVarStr = `{{${str.slice(buffer_start, idx)}}}`;
             idx++;
             state = STATE_PLAINTEXT;
+            pushAndReset(PostRenderEscape.escapeContent(this.stored, 'swig', swigVarStr, hasTrailingContentOnLine(idx + 1)));
           }
         } else if (state === STATE_SWIG_COMMENT) { // From swig back to plain text
           if (char === '#' && next_char === '}') {
