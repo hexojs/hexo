@@ -17,6 +17,9 @@ describe('is', () => {
     await current.call({path: 'foo/bar', config: hexo.config}, 'foo').should.be.true;
     await current.call({path: 'foo/bar', config: hexo.config}, 'foo/bar').should.be.true;
     await current.call({path: 'foo/bar', config: hexo.config}, 'foo/baz').should.be.false;
+    await current.call({path: 'foobar/baz', config: hexo.config}, 'foo').should.be.false;
+    await current.call({path: 'foobar/baz', config: hexo.config}, '/foo').should.be.false;
+    await current.call({path: 'foo/bar', config: hexo.config}, 'foo/').should.be.true;
   });
 
   it('is_home', async () => {

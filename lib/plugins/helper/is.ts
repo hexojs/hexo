@@ -16,7 +16,8 @@ function isCurrentHelper(this: LocalsType, path = '/', strict: boolean) {
 
   path = path.replace(/^[^/].*/, '/$&');
 
-  return currentPath.startsWith(path);
+  if (currentPath === path) return true;
+  return currentPath.startsWith(path.endsWith('/') ? path : `${path}/`);
 }
 
 function isHomeHelper() {
