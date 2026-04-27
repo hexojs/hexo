@@ -47,7 +47,7 @@
     "fast-archy": "^1.0.0",
     "fast-text-table": "^1.0.1",
     "hexo-cli": "^4.3.2",
-    "hexo-front-matter": "^4.2.1",
+    "hexo-front-matter": "^5.0.0",
     "hexo-fs": "^5.0.0",
     "hexo-i18n": "^2.0.0",
     "hexo-log": "^4.1.0",
