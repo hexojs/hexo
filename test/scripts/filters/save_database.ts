@@ -18,7 +18,7 @@ describe('Save database', () => {
     const exist = await exists(dbPath);
     exist.should.be.true;
 
-    unlink(dbPath);
+    await unlink(dbPath);
   });
 
   it('do nothing if hexo is not initialized', async () => {
