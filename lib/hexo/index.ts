@@ -5,7 +5,7 @@ import Database from 'warehouse';
 import { magenta, underline } from 'picocolors';
 import { EventEmitter } from 'events';
 import { readFile } from 'hexo-fs';
-import Module from 'module';
+import Module, { createRequire } from 'module';
 import { runInThisContext } from 'vm';
 const { version } = require('../../package.json');
 import logger from 'hexo-log';
@@ -176,14 +176,6 @@ interface Env {
 type DefaultConfigType = typeof defaultConfig;
 interface Config extends DefaultConfigType {
   [key: string]: any;
-}
-
-// Node.js internal APIs
-declare module 'module' {
-  function _nodeModulePaths(path: string): string[];
-  function _resolveFilename(request: string, parent: Module, isMain?: any, options?: any): string;
-  const _extensions: NodeJS.RequireExtensions,
-    _cache: any;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -509,20 +501,10 @@ class Hexo extends EventEmitter {
 
   loadPlugin(path: string, callback?: NodeJSLikeCallback<any>): Promise<any> {
     return readFile(path).then(script => {
-      // Based on: https://github.com/nodejs/node-v0.x-archive/blob/v0.10.33/src/node.js#L516
+      const req = createRequire(path);
+
       const module = new Module(path);
       module.filename = path;
-      module.paths = Module._nodeModulePaths(path);
-
-      function req(path: string) {
-        return module.require(path);
-      }
-
-      req.resolve = (request: string) => Module._resolveFilename(request, module);
-
-      req.main = require.main;
-      req.extensions = Module._extensions;
-      req.cache = Module._cache;
 
       script = `(async function(exports, require, module, __filename, __dirname, hexo){${script}\n});`;
 
@@ -762,7 +744,6 @@ Hexo.prototype.version = Hexo.version;
 // define global variable
 // this useful for plugin written in typescript
 declare global {
-  // eslint-disable-next-line one-var
   const hexo: Hexo;
 }
 
