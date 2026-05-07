@@ -12,9 +12,9 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 #6.0.1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #6.0.2
 
-      - uses: actions/setup-node@395ad3262231945c25e8478fd5baf05154b1d79f #6.1.0
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e #6.4.0
         with:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'

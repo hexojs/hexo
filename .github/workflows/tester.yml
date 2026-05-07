@@ -30,9 +30,9 @@ jobs:
         node-version: ["20", "22", "24"]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #6.0.2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e #6.4.0
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install Dependencies
@@ -51,9 +51,9 @@ jobs:
         os: [ubuntu-latest]
         node-version: ["22"]
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #6.0.2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e #6.4.0
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install Dependencies
@@ -63,6 +63,6 @@ jobs:
         env:
           CI: true
       - name: Coveralls
-        uses: coverallsapp/github-action@master
+        uses: coverallsapp/github-action@648a8eb78e6d50909eff900e4ec85cab4524a45b #2.3.6
         with:
           github-token: ${{ secrets.github_token }}

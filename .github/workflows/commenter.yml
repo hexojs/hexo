@@ -20,7 +20,7 @@ jobs:
     if: ${{github.event_name == 'pull_request_target'}}
     steps:
       - name: Comment PR - How to test
-        uses: marocchino/sticky-pull-request-comment@v3
+        uses: marocchino/sticky-pull-request-comment@0ea0beb66eb9baf113663a64ec522f60e49231c0 #3.0.4
         with:
           header: How to test
           message: |
@@ -44,7 +44,7 @@ jobs:
       comment_result: ".tmp-comment-flamegraph.md"
     steps:
       - name: download artifact
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c #8.0.1
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           run-id: ${{toJSON(github.event.workflow_run.id)}}
@@ -64,7 +64,7 @@ jobs:
 
       - name: Comment PR - flamegraph
         if: ${{env.pr_number!=''}}
-        uses: marocchino/sticky-pull-request-comment@v3
+        uses: marocchino/sticky-pull-request-comment@0ea0beb66eb9baf113663a64ec522f60e49231c0 #3.0.4
         with:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           number: ${{env.pr_number}}
