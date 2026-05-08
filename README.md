@@ -23,6 +23,13 @@
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhexojs%2Fhexo.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhexojs%2Fhexo?ref=badge_shield)
 [![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-v2.0%20adopted-ff69b4.svg)](CODE_OF_CONDUCT.md)
 
+## We lost 41k stars
+
+We accidentally changed the visibility of this repository to private and unexpectedly lost 41k GitHub stars accumulated over the past 14 years.
+Read more in: [Hexo Lost 41k GitHub Stars with One Command](https://hexo.io/news/2026/05/08/hexo-lost-41k-github-stars-with-one-command/)
+
+![star history](./.github/star-history.webp)
+
 ## Features
 
 - Blazing fast generating
