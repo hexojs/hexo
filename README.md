@@ -28,7 +28,7 @@
 We accidentally changed the visibility of this repository to private and unexpectedly lost 41k GitHub stars accumulated over the past 14 years.
 Read more in: [Hexo Lost 41k GitHub Stars with One Command](https://hexo.io/news/2026/05/08/hexo-lost-41k-github-stars-with-one-command/)
 
-![star history](./.github/star-history.webp)
+![star history](https://raw.githubusercontent.com/hexojs/site/master/source/_posts/2026-05-08-hexo-lost-41k-github-stars-with-one-command/star-history.webp)
 
 ## Features
 
