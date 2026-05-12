@@ -7,13 +7,14 @@ let prismHighlight: typeof import('hexo-util').prismHighlight;
 module.exports = function(this: Hexo, code: string, options: HighlightOptions) {
   const prismjsCfg = this.config.prismjs || {} as any;
   const line_threshold = options.line_threshold || prismjsCfg.line_threshold || 0;
-  const shouldUseLineNumbers = typeof options.line_number === 'undefined' ? prismjsCfg.line_number : options.line_number;
+  const globalLineNumber = prismjsCfg.line_number === 'inline' ? false : prismjsCfg.line_number;
+  const shouldUseLineNumbers = typeof options.line_number === 'undefined' ? globalLineNumber : options.line_number;
   const surpassesLineThreshold = options.lines_length > line_threshold;
   const lineNumber = shouldUseLineNumbers && surpassesLineThreshold;
 
   const prismjsOptions = {
     caption: options.caption,
-    firstLine: options.firstLine as number,
+    firstLine: (options.firstLine ?? options.firstLineNumber) as number,
     isPreprocess: prismjsCfg.preprocess,
     lang: options.lang,
     lineNumber,

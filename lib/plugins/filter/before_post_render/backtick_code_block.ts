@@ -158,6 +158,9 @@ export = (ctx: Hexo): (data: RenderData) => void => {
       // setup firstLineNumber;
       if (_args.includes('=')) {
         options.firstLineNumber = _args.split('=')[1] || 1;
+        if ((ctx.config.prismjs as any)?.line_number === 'inline') {
+          options.line_number = true;
+        }
       }
       content = ctx.extend.highlight.exec(ctx.config.syntax_highlighter, {
         context: ctx,

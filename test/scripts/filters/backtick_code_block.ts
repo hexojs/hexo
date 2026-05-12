@@ -1092,5 +1092,53 @@ describe('Backtick code block', () => {
       codeBlock(data);
       data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
     });
+
+    describe('line_number: \'inline\'', () => {
+      beforeEach(() => {
+        hexo.config.prismjs.line_number = 'inline' as any;
+      });
+
+      it('no = → no line numbers', () => {
+        const data = {
+          content: ['```js', code, '```'].join('\n')
+        };
+
+        codeBlock(data);
+
+        data.content.should.eql(
+          '<hexoPostRenderCodeBlock>'
+          + prism(code, { lang: 'js', lineNumber: false })
+          + '</hexoPostRenderCodeBlock>'
+        );
+      });
+
+      it('= → line numbers from 1', () => {
+        const data = {
+          content: ['```js=', code, '```'].join('\n')
+        };
+
+        codeBlock(data);
+
+        data.content.should.eql(
+          '<hexoPostRenderCodeBlock>'
+          + prism(code, { lang: 'js', lineNumber: true, firstLine: 1 })
+          + '</hexoPostRenderCodeBlock>'
+        );
+      });
+
+      it('=5 → line numbers from 5', () => {
+        const data = {
+          content: ['```js=5', code, '```'].join('\n')
+        };
+
+        codeBlock(data);
+
+        data.content.should.eql(
+          '<hexoPostRenderCodeBlock>'
+          + prism(code, { lang: 'js', lineNumber: true, firstLine: 5 })
+          + '</hexoPostRenderCodeBlock>'
+        );
+      });
+    });
   });
 });
