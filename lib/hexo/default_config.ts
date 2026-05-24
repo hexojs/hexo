@@ -36,6 +36,7 @@ export = {
   filename_case: 0,
   render_drafts: false,
   post_asset_folder: false,
+  post_extensions: [],
   relative_link: false,
   future: true,
   syntax_highlighter: 'highlight.js',
