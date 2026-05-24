@@ -24,9 +24,9 @@ jobs:
         node-version: ["20", "22", "24"]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #6.0.2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e #6.4.0
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
@@ -44,9 +44,9 @@ jobs:
     env:
       comment_file: ".tmp-comment-flamegraph-node${{ matrix.node-version }}.md"
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd #6.0.2
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e #6.4.0
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
@@ -54,7 +54,7 @@ jobs:
       - name: Running profiling
         run: node test/benchmark.js --profiling
       - name: Publish flamegraph to https://${{ github.sha }}-${{ matrix.node-version }}-hexo.surge.sh/flamegraph.html
-        uses: dswistowski/surge-sh-action@v1
+        uses: dswistowski/surge-sh-action@2ef23bb28f7240e4922a44df1807022af43782bf #1.1.0
         with:
           domain: ${{ github.sha }}-${{ matrix.node-version }}-hexo.surge.sh
           project: ./.tmp-hexo-theme-unit-test/0x/
@@ -66,7 +66,7 @@ jobs:
         run: |
           echo "https://${{ github.sha }}-${{ matrix.node-version }}-hexo.surge.sh/flamegraph.html" > ${{env.comment_file}}
 
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a #7.0.1
         if: ${{github.event_name == 'pull_request' }}
         with:
           retention-days: 1
@@ -82,7 +82,7 @@ jobs:
       - name: save PR number to file
         run: |
           echo -n "${{ github.event.number }}" > ${{env.pr_number_file}}
-      - uses: actions/upload-artifact@v7
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a #7.0.1
         with:
           retention-days: 1
           name: comment-pr_number
