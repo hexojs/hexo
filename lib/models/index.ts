@@ -8,3 +8,4 @@ export { default as PostAsset } from './post_asset';
 export { default as PostCategory } from './post_category';
 export { default as PostTag } from './post_tag';
 export { default as Tag } from './tag';
+export { default as Code } from './code';
