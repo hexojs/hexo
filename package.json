@@ -42,7 +42,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "abbrev": "^3.0.0",
+    "abbrev": "^4.0.0",
     "bluebird": "^3.7.2",
     "fast-archy": "^1.0.0",
     "fast-text-table": "^1.0.1",
