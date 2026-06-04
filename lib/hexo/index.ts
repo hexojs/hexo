@@ -6,7 +6,6 @@ import { magenta, underline } from 'picocolors';
 import { EventEmitter } from 'events';
 import { readFile } from 'hexo-fs';
 import Module, { createRequire } from 'module';
-import { runInThisContext } from 'vm';
 const { version } = require('../../package.json');
 import logger from 'hexo-log';
 
@@ -41,6 +40,8 @@ import type { BaseGeneratorReturn, FilterOptions, LocalsType, NodeJSLikeCallback
 import type { AddSchemaTypeOptions } from 'warehouse/dist/types';
 import type Schema from 'warehouse/dist/schema';
 import BinaryRelationIndex from '../models/binary_relation_index';
+
+const AsyncFunction = Object.getPrototypeOf(async () => { /* noop */ }).constructor as FunctionConstructor;
 
 const libDir = dirname(__dirname);
 const dbVersion = 1;
@@ -506,9 +507,7 @@ class Hexo extends EventEmitter {
       const module = new Module(path);
       module.filename = path;
 
-      script = `(async function(exports, require, module, __filename, __dirname, hexo){${script}\n});`;
-
-      const fn = runInThisContext(script, path);
+      const fn = new AsyncFunction('exports', 'require', 'module', '__filename', '__dirname', 'hexo', script);
 
       return fn(module.exports, req, module, path, dirname(path), this);
     }).asCallback(callback);

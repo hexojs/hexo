@@ -5,7 +5,7 @@ import { magenta } from 'picocolors';
 import type Hexo from './index';
 
 export = (ctx: Hexo): Promise<void[][]> => {
-  if (!ctx.env.init || ctx.env.safe) return;
+  if (!ctx.env.init || ctx.env.safe) return Promise.resolve([]);
 
   return loadModules(ctx).then(() => loadScripts(ctx));
 };
