@@ -2492,6 +2492,17 @@ describe('Post', () => {
       data.content.trim().should.include('<p>paragraph text</p>');
     });
 
+    it('render() - markdown link on same line as block tag closing', async () => {
+      const content = '{% blockquote %}quote{% endblockquote %} [link](https://example.com)';
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.trim().should.include('<blockquote>');
+      data.content.trim().should.include('>link</a>');
+    });
+
     it('render() - variable tag with trailing markdown link should use inline format', async () => {
       const content = '{{ "var-output" }} text [link](https://example.com) after';
 

@@ -303,7 +303,8 @@ class PostRenderEscape {
 
             if (swig_full_tag_found && swig_full_tag_end_buffer.includes(`end${swig_tag_name}`)) {
               state = STATE_PLAINTEXT;
-              pushAndReset(PostRenderEscape.escapeContent(this.stored, 'swig', `{%${str.slice(swig_full_tag_start_start, swig_full_tag_start_end)}%}${str.slice(buffer_start, idx)}{%${swig_full_tag_end_buffer}%}`));
+              const swigFullTagStr = `{%${str.slice(swig_full_tag_start_start, swig_full_tag_start_end)}%}${str.slice(buffer_start, idx)}{%${swig_full_tag_end_buffer}%}`;
+              pushAndReset(PostRenderEscape.escapeContent(this.stored, 'swig', swigFullTagStr, hasTrailingContentOnLine(_idx + 1)));
               idx = _idx;
               swig_full_tag_end_buffer = '';
             }
