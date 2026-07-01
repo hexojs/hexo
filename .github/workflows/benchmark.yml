@@ -42,7 +42,7 @@ jobs:
         node-version: ["20", "22", "24"]
       fail-fast: false
     env:
-      comment_file: ".tmp-comment-flamegraph-node${{ matrix.node-version }}.md"
+      comment_file: "tmp-comment-flamegraph-node${{ matrix.node-version }}.md"
     steps:
       - uses: actions/checkout@v7
       - name: Use Node.js ${{ matrix.node-version }}
@@ -53,31 +53,70 @@ jobs:
         run: npm install --silent
       - name: Running profiling
         run: node test/benchmark.js --profiling
-      - name: Publish flamegraph to https://${{ github.sha }}-${{ matrix.node-version }}-hexo.surge.sh/flamegraph.html
-        uses: dswistowski/surge-sh-action@v1
-        with:
-          domain: ${{ github.sha }}-${{ matrix.node-version }}-hexo.surge.sh
-          project: ./.tmp-hexo-theme-unit-test/0x/
-          login: ${{ secrets.SURGE_LOGIN }}
-          token: ${{ secrets.SURGE_TOKEN }}
 
-      - name: save comment to file
+      - name: mv flamegraph
+        run: |
+          mkdir -p ./flamegraph/
+          mv ./.tmp-hexo-theme-unit-test/0x/ ./flamegraph/${{ matrix.node-version }}/
+
+      - name: save URL to file
+        if: ${{github.event_name != 'pull_request' }}
+        run: |
+          echo "https://${{ github.sha }}-hexo.surge.sh/${{ matrix.node-version }}/flamegraph.html" > ${{env.comment_file}}
+
+      - name: save URL to file
         if: ${{github.event_name == 'pull_request' }}
         run: |
-          echo "https://${{ github.sha }}-${{ matrix.node-version }}-hexo.surge.sh/flamegraph.html" > ${{env.comment_file}}
+          echo "https://${{ github.event.number }}-pr-hexo.surge.sh/${{ matrix.node-version }}/flamegraph.html" > ${{env.comment_file}}
 
       - uses: actions/upload-artifact@v7
-        if: ${{github.event_name == 'pull_request' }}
         with:
           retention-days: 1
           name: comment-node${{ matrix.node-version }}
-          path: ${{env.comment_file}}
+          path: |
+            ${{env.comment_file}}
+            ./flamegraph/${{ matrix.node-version }}/
+
+  profiling-preview:
+    needs: profiling
+    if: ${{ github.event_name != 'pull_request' }}
+    runs-on: ubuntu-slim
+    environment:
+      name: 'profiling-preview'
+      url: ${{ env.url }}
+      deployment: false
+    permissions:
+      contents: read
+    env:
+      url: https://${{ github.sha }}-hexo.surge.sh/
+      comment_result: "tmp-comment-flamegraph.md"
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: "comment-*"
+          merge-multiple: true
+
+      - name: Publish flamegraph to ${{ env.url }}
+        uses: dswistowski/surge-sh-action@v1
+        with:
+          domain: ${{ env.url }}
+          project: ./flamegraph/
+          login: ${{ secrets.SURGE_LOGIN }}
+          token: ${{ secrets.SURGE_TOKEN }}
+
+      - name: Print full URLs
+        run: |
+          echo "## Flamegraph" > ${{ env.comment_result }}
+          echo "" >> ${{ env.comment_result }}
+          cat tmp-comment-flamegraph-*.md >> ${{ env.comment_result }}
+
+          cat "${{ env.comment_result }}" | tee -a "$GITHUB_STEP_SUMMARY"
 
   number:
     runs-on: ubuntu-latest
     if: ${{github.event_name == 'pull_request' }}
     env:
-      pr_number_file: .tmp-comment-pr_number
+      pr_number_file: tmp-comment-pr_number
     steps:
       - name: save PR number to file
         run: |

@@ -3,11 +3,6 @@ name: Commenter
 on:
   pull_request_target:
 
-  workflow_run:
-    workflows: ["Benchmark"]
-    types:
-      - completed
-
 permissions:
   contents: read
 
@@ -32,41 +27,3 @@ jobs:
             npm install
             npm test
             ```
-
-  comment-flamegraph:
-    name: Flamegraph
-    permissions:
-      pull-requests: write # for marocchino/sticky-pull-request-comment to create or update PR comment
-      actions: read # get artifact
-    runs-on: ubuntu-latest
-    if: ${{github.event_name == 'workflow_run' && github.event.workflow_run.conclusion=='success'}}
-    env:
-      comment_result: ".tmp-comment-flamegraph.md"
-    steps:
-      - name: download artifact
-        uses: actions/download-artifact@v8
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          run-id: ${{toJSON(github.event.workflow_run.id)}}
-          pattern: "comment-*"
-          merge-multiple: true
-
-      - name: get PR number
-        run: |
-          echo "pr_number=$(cat .tmp-comment-pr_number)" >> "$GITHUB_ENV"
-
-      - name: combime comment
-        if: ${{env.pr_number!=''}}
-        run: |
-          echo "## Flamegraph" > ${{env.comment_result}}
-          echo "" >> ${{env.comment_result}}
-          cat .tmp-comment-flamegraph-*.md >> ${{env.comment_result}}
-
-      - name: Comment PR - flamegraph
-        if: ${{env.pr_number!=''}}
-        uses: marocchino/sticky-pull-request-comment@v3
-        with:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          number: ${{env.pr_number}}
-          header: Flamegraph
-          path: ${{env.comment_result}}
