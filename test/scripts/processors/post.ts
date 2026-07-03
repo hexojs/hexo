@@ -1331,6 +1331,36 @@ describe('post', () => {
     return unlink(file.source);
   });
 
+  it('post - timezone - non-UTC front-matter date', async () => {
+    const body = [
+      'title: "Hello world"',
+      'date: 2014-04-24 01:32:21',
+      'updated: 2015-05-05 02:03:04',
+      '---'
+    ].join('\n');
+
+    const file = newFile({
+      path: 'foo.html',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+
+    hexo.config.timezone = 'Asia/Shanghai';
+
+    await writeFile(file.source, body);
+    await process(file);
+    const post = Post.findOne({ source: file.path });
+    const date = post.date.tz(hexo.config.timezone).format(dateFormat);
+    const updated = post.updated.tz(hexo.config.timezone).format(dateFormat);
+
+    post.remove();
+    await unlink(file.source);
+
+    date.should.eql('2014-04-24 01:32:21');
+    updated.should.eql('2015-05-05 02:03:04');
+  });
+
   it('post - new_post_name timezone', async () => {
     const body = [
       'title: "Hello world"',
