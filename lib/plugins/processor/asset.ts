@@ -56,6 +56,8 @@ function processPage(ctx: Hexo, file: _File) {
     const data: PageSchema = yfm(content, {
       defaultTimeZone: config.timezone
     });
+    const dateParsedWithTimezone = data.date instanceof Date;
+    const updatedParsedWithTimezone = data.updated instanceof Date;
     const output = ctx.render.getOutput(path);
 
     data.source = path;
@@ -64,7 +66,7 @@ function processPage(ctx: Hexo, file: _File) {
     data.date = toDate(data.date) as any;
 
     if (data.date) {
-      if (timezone) data.date = adjustDateForTimezone(data.date, timezone) as any;
+      if (timezone && !dateParsedWithTimezone) data.date = adjustDateForTimezone(data.date, timezone) as any;
     } else {
       data.date = stats.ctime as any;
     }
@@ -72,7 +74,7 @@ function processPage(ctx: Hexo, file: _File) {
     data.updated = toDate(data.updated) as any;
 
     if (data.updated) {
-      if (timezone) data.updated = adjustDateForTimezone(data.updated, timezone) as any;
+      if (timezone && !updatedParsedWithTimezone) data.updated = adjustDateForTimezone(data.updated, timezone) as any;
     } else if (updated_option === 'date') {
       data.updated = data.date;
     } else if (updated_option === 'empty') {

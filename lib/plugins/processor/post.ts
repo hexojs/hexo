@@ -95,6 +95,8 @@ function processPost(ctx: Hexo, file: _File) {
     const data: PostSchema = yfm(content, {
       defaultTimeZone: config.timezone
     });
+    const dateParsedWithTimezone = data.date instanceof Date;
+    const updatedParsedWithTimezone = data.updated instanceof Date;
     const info = parseFilename(config.new_post_name, path);
     const keys = Object.keys(info);
 
@@ -137,7 +139,7 @@ function processPost(ctx: Hexo, file: _File) {
 
     // Convert date and updated time from UTC to local time (based on timezone in Hexo config)
     if (data.date) {
-      if (timezone) data.date = adjustDateForTimezone(data.date, timezone) as any;
+      if (timezone && !dateParsedWithTimezone) data.date = adjustDateForTimezone(data.date, timezone) as any;
     } else {
       data.date = stats.birthtime as any;
     }
@@ -145,7 +147,7 @@ function processPost(ctx: Hexo, file: _File) {
     data.updated = toDate(data.updated) as any;
 
     if (data.updated) {
-      if (timezone) data.updated = adjustDateForTimezone(data.updated, timezone) as any;
+      if (timezone && !updatedParsedWithTimezone) data.updated = adjustDateForTimezone(data.updated, timezone) as any;
     } else if (updated_option === 'date') {
       data.updated = data.date;
     } else if (updated_option === 'empty') {
