@@ -348,7 +348,7 @@ describe('generate - future posts', () => {
         writeFile(join(hexo.source_dir, '_posts', 'scheduled.html'), [
           '---',
           'title: scheduled',
-          'date: 2099-01-01T00:01:00.000Z',
+          'date: 2098-12-31T18:31:00.000Z',
           'categories:',
           '  - web',
           'tags:',
