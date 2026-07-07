@@ -533,6 +533,59 @@ class Post {
     }).thenReturn(result).asCallback(callback);
   }
 
+  unpublish(data: PostData, replace?: boolean): Promise<Result>;
+  unpublish(data: PostData, callback?: NodeJSLikeCallback<Result>): Promise<Result>;
+  unpublish(data: PostData, replace: boolean, callback?: NodeJSLikeCallback<Result>): Promise<Result>;
+  unpublish(data: PostData, replace?: boolean | NodeJSLikeCallback<Result>, callback?: NodeJSLikeCallback<Result>): Promise<Result> {
+    if (!callback && typeof replace === 'function') {
+      callback = replace;
+      replace = false;
+    }
+
+    const ctx = this.context;
+    const { config } = ctx;
+    const postDir = join(ctx.source_dir, '_posts');
+    const slug = slugize(data.slug.toString(), { transform: config.filename_case });
+    data.slug = slug;
+    const regex = new RegExp(`^${escapeRegExp(slug)}(?:[^\\/\\\\]+)`);
+    let src = '';
+    const result: Result = {} as any;
+
+    // Find the post
+    return listDir(postDir).then(list => {
+      const item = list.find(item => regex.test(item));
+      if (!item) throw new Error(`Post "${slug}" does not exist.`);
+
+      // Read the content
+      src = join(postDir, item);
+      return readFile(src);
+    }).then(content => {
+      // Create draft
+      Object.assign(data, yfmParse(content));
+      data.content = data._content;
+      data._content = undefined;
+      data.layout = 'draft';
+
+      return this.create(data, replace as boolean);
+    }).then(post => {
+      result.path = post.path;
+      result.content = post.content;
+      return unlink(src);
+    }).then(() => { // Remove the original post file
+      if (!config.post_asset_folder) return;
+
+      // Copy assets
+      const assetSrc = removeExtname(src);
+      const assetDest = removeExtname(result.path);
+
+      return exists(assetSrc).then(exist => {
+        if (!exist) return;
+
+        return copyDir(assetSrc, assetDest).then(() => rmdir(assetSrc));
+      });
+    }).thenReturn(result).asCallback(callback);
+  }
+
   render(source: string, data: RenderData = {}, callback?: NodeJSLikeCallback<never>) {
     const ctx = this.context;
     const { config } = ctx;

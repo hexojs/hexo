@@ -688,6 +688,157 @@ describe('Post', () => {
     await unlink(path);
   });
 
+  it('unpublish()', async () => {
+    const postPath = join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const path = join(hexo.source_dir, '_drafts', 'Hello-World.md');
+
+    const content = [
+      '---',
+      'title: Hello World',
+      'tags:',
+      '---'
+    ].join('\n') + '\n';
+
+    const data = await post.create({
+      title: 'Hello World'
+    });
+    const result = await post.unpublish({
+      slug: 'Hello-World'
+    });
+    result.path.should.eql(path);
+    result.content.should.eql(content);
+
+    const exist = await exists(data.path);
+    exist.should.be.false;
+
+    const newdata = await readFile(path);
+    newdata.should.eql(content);
+
+    await unlink(postPath).catch(() => {});
+    await unlink(path);
+  });
+
+  it('unpublish() - rename if target existed', async () => {
+    const paths = [join(hexo.source_dir, '_drafts', 'Hello-World-1.md')];
+
+    const result = await Promise.all([
+      post.create({ title: 'Hello World' }),
+      post.create({ title: 'Hello World', layout: 'draft' })
+    ]);
+    paths.push(result[1].path);
+
+    const data = await post.unpublish({
+      slug: 'Hello-World'
+    });
+    data.path.should.eql(paths[0]);
+
+    for (const path of paths) {
+      await unlink(path);
+    }
+  });
+
+  it('unpublish() - replace existing files', async () => {
+    const path = join(hexo.source_dir, '_drafts', 'Hello-World.md');
+
+    await Promise.all([
+      post.create({ title: 'Hello World' }),
+      post.create({ title: 'Hello World', layout: 'draft' })
+    ]);
+    const data = await post.unpublish({
+      slug: 'Hello-World'
+    }, true);
+    data.path.should.eql(path);
+    await unlink(path);
+  });
+
+  it('unpublish() - asset folder', async () => {
+    const assetDir = join(hexo.source_dir, '_posts', 'Hello-World');
+    const newAssetDir = join(hexo.source_dir, '_drafts', 'Hello-World');
+    hexo.config.post_asset_folder = true;
+
+    await post.create({
+      title: 'Hello World'
+    });
+    // Put some files into the asset folder
+    await Promise.all([
+      writeFile(join(assetDir, 'a.txt'), 'a'),
+      writeFile(join(assetDir, 'b.txt'), 'b')
+    ]);
+    const result = await post.unpublish({
+      slug: 'Hello-World'
+    });
+
+    const exist = await exists(assetDir);
+    exist.should.be.false;
+    const files = await listDir(newAssetDir);
+    files.should.have.members(['a.txt', 'b.txt']);
+
+    await unlink(result.path);
+
+    await rmdir(newAssetDir);
+  });
+
+  // #1100
+  it('unpublish() - non-string title', async () => {
+    const path = join(hexo.source_dir, '_drafts', '12345.md');
+
+    await post.create({
+      title: 12345
+    });
+    const data = await post.unpublish({
+      slug: 12345
+    });
+    data.path.should.eql(path);
+    await unlink(path);
+  });
+
+  it('unpublish() - with callback', async () => {
+    const postPath = join(hexo.source_dir, '_posts', 'Hello-World.md');
+    const path = join(hexo.source_dir, '_drafts', 'Hello-World.md');
+
+    const content = [
+      '---',
+      'title: Hello World',
+      'tags:',
+      '---'
+    ].join('\n') + '\n';
+
+    const callback = spy();
+
+    const data = await post.create({
+      title: 'Hello World'
+    });
+
+    await post.unpublish({
+      slug: 'Hello-World'
+    }, callback);
+    callback.calledOnce.should.be.true;
+    callback.calledWithMatch(null, { path, content }).should.true;
+
+    const exist = await exists(data.path);
+    exist.should.be.false;
+
+    const newdata = await readFile(path);
+    newdata.should.eql(content);
+
+    await unlink(postPath).catch(() => {});
+    await unlink(path);
+  });
+
+  // #1139
+  it('unpublish() - preserve non-null data in posts', async () => {
+    await post.create({
+      title: 'foo',
+      tags: ['tag', 'test']
+    });
+    const data = await post.unpublish({
+      slug: 'foo'
+    });
+    const meta = yfm(data.content);
+    meta.tags.should.eql(['tag', 'test']);
+    await unlink(data.path);
+  });
+
   it('render()', async () => {
     // TODO: validate data
     const beforeHook = spy();

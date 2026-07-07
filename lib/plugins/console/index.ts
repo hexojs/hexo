@@ -67,6 +67,16 @@ export = function(ctx: Hexo) {
     ]
   }, require('./publish'));
 
+  console.register('unpublish', 'Moves a published post from _posts to _drafts folder.', {
+    usage: '<filename>',
+    arguments: [
+      {name: 'filename', desc: 'Post filename. "hello-world" for example.'}
+    ],
+    options: [
+      {name: '-r, --replace', desc: 'Replace the current draft if existed.'}
+    ]
+  }, require('./unpublish'));
+
   console.register('render', 'Render files with renderer plugins.', {
     init: true,
     desc: 'Render files with renderer plugins (e.g. Markdown) and save them at the specified path.',
