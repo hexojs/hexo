@@ -325,7 +325,7 @@ describe('new', () => {
     const date = moment(now);
     const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const body = [
-      'title: \'\'\'Hello\'\' World\'',
+      'title: "\'Hello\' World"',
       'foo: bar',
       'date: ' + date.format('YYYY-MM-DD HH:mm:ss'),
       'tags:',

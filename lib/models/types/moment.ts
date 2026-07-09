@@ -83,10 +83,18 @@ class SchemaTypeMoment extends warehouse.SchemaType<moment.Moment> {
 }
 
 function toMoment(value) {
-  // FIXME: Something is wrong when using a moment instance. I try to get the
-  // original date object and create a new moment object again.
-  if (moment.isMoment(value)) return moment((value as any)._d);
-  return moment(value);
+  // value passed here is a moment-like instance
+  // but it's a plain object that methods such as isValid are removed
+  // moment.isMoment is judged on its property but not constructor
+  // so the plain object still passes the moment.isMoment check
+
+  // hexo-front-matter now always returns date in UTC
+  // See https://github.com/hexojs/hexo-front-matter/pull/146
+  // We shall specify the timezone UTC here
+  // Otherwise, `moment()` set the timezone according to the $TZ on the machine
+  // Which still cause confusion
+  if (moment.isMoment(value)) return moment((value as any)._d).tz('UTC');
+  return moment(value).tz('UTC');
 }
 
 export = SchemaTypeMoment;
