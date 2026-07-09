@@ -19,9 +19,16 @@ interface AssetGenerator extends BaseGeneratorReturn {
 }
 
 const process = (name: string, ctx: Hexo) => {
-  return Promise.filter(ctx.model(name).toArray(), (asset: Document<AssetSchema>) => exists(asset.source).tap(exist => {
-    if (!exist) return asset.remove();
-  })).map((asset: Document<AssetSchema>) => {
+  return Promise.filter(ctx.model(name).toArray(), (asset: Document<AssetSchema>) => {
+    // Skip removal for assets that are marked as modified (programmatically created)
+    if (asset.modified) {
+      return true; // Keep modified assets even if source file doesn't exist
+    }
+    
+    return exists(asset.source).tap(exist => {
+      if (!exist) return asset.remove();
+    });
+  }).map((asset: Document<AssetSchema>) => {
     const { source } = asset;
     let { path } = asset;
     const data: AssetData = {
