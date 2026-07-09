@@ -1,7 +1,7 @@
 import { join } from 'path';
 import { emptyDir, exists, mkdirs, readFile, rmdir, stat, unlink, writeFile } from 'hexo-fs';
 import BluebirdPromise from 'bluebird';
-import { spy } from 'sinon';
+import { spy, useFakeTimers } from 'sinon';
 import chai from 'chai';
 const should = chai.should();
 import Hexo from '../../../lib/hexo';
@@ -307,6 +307,84 @@ describe('generate', () => {
   it('should generate all files even when concurrency is set', async () => {
     await generate({ concurrency: '1' });
     return generate({ concurrency: '2' });
+  });
+
+});
+
+describe('generate - future posts', () => {
+  let hexo: Hexo, generate: (...args: OriginalParams) => OriginalReturn;
+
+  beforeEach(async function() {
+    this.timeout(30000);
+    hexo = new Hexo(join(__dirname, 'generate_future_test'), {silent: true});
+    generate = generateConsole.bind(hexo);
+
+    await mkdirs(hexo.base_dir);
+    await emptyDir(hexo.base_dir);
+    await hexo.init();
+  });
+
+  afterEach(async () => {
+    const exist = await exists(hexo.base_dir);
+    if (exist) {
+      await emptyDir(hexo.base_dir);
+      await rmdir(hexo.base_dir);
+    }
+  });
+
+  it('reprocesses future posts after publish date passes', async () => {
+    const clock = useFakeTimers({
+      now: new Date('2098-12-31T18:30:00.000Z'),
+      toFake: ['Date']
+    });
+    const baseDir = join(__dirname, 'generate_future_test');
+
+    try {
+      hexo.config.future = false;
+      hexo.config.new_post_name = ':title.html';
+
+      await BluebirdPromise.all([
+        writeFile(join(hexo.theme_dir, 'layout', 'post.html'), '<%- page.content %>'),
+        writeFile(join(hexo.source_dir, '_posts', 'scheduled.html'), [
+          '---',
+          'title: scheduled',
+          'date: 2098-12-31T18:31:00.000Z',
+          'categories:',
+          '  - web',
+          'tags:',
+          '  - css',
+          '---',
+          'body'
+        ].join('\n'))
+      ]);
+
+      await generate();
+      hexo.locals.invalidate();
+      hexo.locals.toObject().posts.toArray().should.have.lengthOf(0);
+      await hexo.database.save();
+
+      clock.setSystemTime(new Date('2098-12-31T18:32:00.000Z'));
+      hexo = new Hexo(baseDir, {silent: true});
+      generate = generateConsole.bind(hexo);
+      await hexo.init();
+      hexo.config.future = false;
+      hexo.config.new_post_name = ':title.html';
+
+      await generate();
+      hexo.locals.invalidate();
+      const locals = hexo.locals.toObject();
+      const posts = locals.posts.toArray();
+      const tags = locals.tags.toArray();
+      const categories = locals.categories.toArray();
+
+      posts.should.have.lengthOf(1);
+      tags.should.have.lengthOf(1);
+      tags.map(tag => tag.name).should.eql(['css']);
+      categories.should.have.lengthOf(1);
+      categories.map(category => category.name).should.eql(['web']);
+    } finally {
+      clock.restore();
+    }
   });
 });
 
