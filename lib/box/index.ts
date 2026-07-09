@@ -24,6 +24,11 @@ interface BoxOptions {
   [key: string]: any;
 }
 
+interface FileStatus {
+  type: string;
+  path: string;
+}
+
 class Box extends EventEmitter {
   public options: BoxOptions;
   public context: Hexo;
@@ -115,12 +120,16 @@ class Box extends EventEmitter {
       .map(file => this._processFile(file.type, file.path).return(file.path));
   }
 
-  _checkFileStatus(path: string): { type: string; path: string } {
-    const { Cache, context: ctx } = this;
+  _getCacheId(path: string): string {
+    return escapeBackslash(join(this.base, path).substring(this.context.base_dir.length));
+  }
+
+  _checkFileStatus(path: string): BlueBirdPromise<FileStatus> {
+    const { Cache } = this;
     const src = join(this.base, path);
 
     return Cache.compareFile(
-      escapeBackslash(src.substring(ctx.base_dir.length)),
+      this._getCacheId(path),
       () => getHash(src),
       () => stat(src)
     ).then(result => ({
@@ -149,12 +158,28 @@ class Box extends EventEmitter {
   }
 
   _processFile(type: string, path: string): BlueBirdPromise<void | string> {
+    return this._processFileWithLock(path, () => this._processFileInternal(type, path));
+  }
+
+  _processFileByStatus(path: string): BlueBirdPromise<void | string> {
+    return this._processFileWithLock(path, () => this._checkFileStatus(path).then(file => this._processFileInternal(file.type, file.path)));
+  }
+
+  _processFileWithLock(path: string, fn: () => BlueBirdPromise<void>): BlueBirdPromise<void | string> {
     if (this._processingFiles[path]) {
       return BlueBirdPromise.resolve();
     }
 
     this._processingFiles[path] = true;
 
+    return BlueBirdPromise.resolve(fn()).catch(err => {
+      this.context.log.error({ err }, 'Process failed: %s', magenta(path));
+    }).finally(() => {
+      this._processingFiles[path] = false;
+    }).thenReturn(path);
+  }
+
+  _processFileInternal(type: string, path: string): BlueBirdPromise<void> {
     const { base, File, context: ctx } = this;
 
     this.emit('processBefore', {
@@ -186,11 +211,11 @@ class Box extends EventEmitter {
         type,
         path
       });
-    }).catch(err => {
-      ctx.log.error({ err }, 'Process failed: %s', magenta(path));
-    }).finally(() => {
-      this._processingFiles[path] = false;
-    }).thenReturn(path);
+    });
+  }
+
+  _removeFileCache(path: string): BlueBirdPromise<void> {
+    return BlueBirdPromise.resolve(this.Cache.removeById(this._getCacheId(path))).thenReturn();
   }
 
   watch(callback?: NodeJSLikeCallback<never>): BlueBirdPromise<void> {
@@ -208,15 +233,16 @@ class Box extends EventEmitter {
       this.watcher = watcher;
 
       watcher.on('add', path => {
-        this._processFile(File.TYPE_CREATE, getPath(path));
+        this._processFileByStatus(getPath(path));
       });
 
       watcher.on('change', path => {
-        this._processFile(File.TYPE_UPDATE, getPath(path));
+        this._processFileByStatus(getPath(path));
       });
 
       watcher.on('unlink', path => {
-        this._processFile(File.TYPE_DELETE, getPath(path));
+        const filePath = getPath(path);
+        this._removeFileCache(filePath).then(() => this._processFile(File.TYPE_DELETE, filePath));
       });
 
       watcher.on('addDir', path => {

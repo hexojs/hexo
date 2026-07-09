@@ -335,6 +335,42 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
+  it('watch() - create updates cache', async () => {
+    const box = newBox('test');
+    const path = 'a.txt';
+    const src = join(box.base, path);
+    const cacheId = 'test/' + path;
+    const processor = spy();
+
+    box.addProcessor(processor);
+
+    await mkdirs(box.base);
+    await box.watch();
+    await writeFile(src, 'a');
+    await BluebirdPromise.delay(500);
+
+    sinonAssert.calledWithMatch(processor.lastCall, {
+      source: src,
+      path,
+      type: 'create',
+      params: {}
+    });
+    should.exist(box.Cache.findById(cacheId));
+
+    processor.resetHistory();
+    box.unwatch();
+    await box.process();
+
+    sinonAssert.calledWithMatch(processor.lastCall, {
+      source: src,
+      path,
+      type: 'skip',
+      params: {}
+    });
+
+    await rmdir(box.base);
+  });
+
   it('watch() - update', async () => {
     const box = newBox('test');
     const path = 'a.txt';
@@ -388,6 +424,7 @@ describe('Box', () => {
       type: 'delete',
       params: {}
     });
+    should.not.exist(Cache.findById(cacheId));
 
     box.unwatch();
     await rmdir(box.base);
