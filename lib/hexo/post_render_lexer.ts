@@ -1,5 +1,3 @@
-import assert from 'assert';
-
 /*
  * Nunjucks delimiter handling in this file is adapted from its lexer.
  *
@@ -22,17 +20,12 @@ import assert from 'assert';
  * SUCH DAMAGE.
  */
 
-const rSwigPlaceHolder = /(?:<|&lt;)!--swig\uFFFC(\d+)--(?:>|&gt;)/g;
-const rCodeBlockPlaceHolder = /(?:<|&lt;)!--code\uFFFC(\d+)--(?:>|&gt;)/g;
-const rCommentHolder = /(?:<|&lt;)!--comment\uFFFC(\d+)--(?:>|&gt;)/g;
-const rContextHolder = /hexoPostRenderContext\uFFFC(\d+)\uFFFC/g;
-
-const BLOCK_START = '{%';
-const BLOCK_END = '%}';
-const VARIABLE_START = '{{';
-const VARIABLE_END = '}}';
-const COMMENT_START = '{#';
-const COMMENT_END = '#}';
+export const BLOCK_START = '{%';
+export const BLOCK_END = '%}';
+export const VARIABLE_START = '{{';
+export const VARIABLE_END = '}}';
+export const COMMENT_START = '{#';
+export const COMMENT_END = '#}';
 const NUNJUCKS_TOKEN_BOUNDARIES = ' \n\t\r\u00A0()[]{}%*-+~/#,:|.<>=!';
 
 type SimpleSegmentType = 'text' | 'inline-code' | 'html-comment';
@@ -58,9 +51,9 @@ export interface FencedCodeSegment {
 
 export type PostSegment = SimpleSegment | FencedCodeSegment;
 
-type NunjucksTokenType = 'block' | 'variable' | 'comment';
+export type NunjucksTokenType = 'block' | 'variable' | 'comment';
 
-interface NunjucksToken {
+export interface NunjucksToken {
   end: number;
   name?: string;
   start: number;
@@ -286,7 +279,7 @@ const getBlockName = (raw: string) => {
   return /^([^\s]+)/.exec(content)?.[1] || '';
 };
 
-const scanNunjucks = (str: string): NunjucksToken[] => {
+export const scanNunjucks = (str: string): NunjucksToken[] => {
   const tokens: NunjucksToken[] = [];
   let index = 0;
 
@@ -336,7 +329,7 @@ const scanNunjucks = (str: string): NunjucksToken[] => {
   return tokens;
 };
 
-const pairNunjucksBlocks = (tokens: NunjucksToken[]) => {
+export const pairNunjucksBlocks = (tokens: NunjucksToken[]) => {
   const endNames = new Set(tokens
     .filter(token => token.type === 'block' && token.name?.startsWith('end'))
     .map(token => token.name!.slice(3)));
@@ -359,124 +352,3 @@ const pairNunjucksBlocks = (tokens: NunjucksToken[]) => {
 
   return pairs;
 };
-
-class PostRenderEscape {
-  private readonly codeBlocks: Array<string | null> = [];
-  private readonly comments: Array<string | null> = [];
-  private readonly swig: Array<string | null> = [];
-  public hasNunjucks = false;
-
-  private static escapeContent(cache: Array<string | null>, flag: string, str: string) {
-    return `<!--${flag}\uFFFC${cache.push(str) - 1}-->`;
-  }
-
-  private static restoreContent(cache: Array<string | null>) {
-    return (_: string, index: string) => {
-      const value = cache[Number(index)];
-      assert(value != null);
-      cache[Number(index)] = null;
-      return value;
-    };
-  }
-
-  restoreAllSwigTags(str: string) {
-    return str.replace(rSwigPlaceHolder, PostRenderEscape.restoreContent(this.swig));
-  }
-
-  restoreCodeBlocks(str: string) {
-    return str.replace(rCodeBlockPlaceHolder, PostRenderEscape.restoreContent(this.codeBlocks));
-  }
-
-  restoreComments(str: string) {
-    return str.replace(rCommentHolder, PostRenderEscape.restoreContent(this.comments));
-  }
-
-  escapeCodeBlocks(str: string) {
-    return str.replace(/<hexoPostRenderCodeBlock>([\s\S]+?)<\/hexoPostRenderCodeBlock>/g,
-      (_, content) => PostRenderEscape.escapeContent(this.codeBlocks, 'code', content));
-  }
-
-  private escapeComment(str: string) {
-    // Nunjucks does not reparse expression output, so this recreates the first
-    // brace after rendering without evaluating the original comment contents.
-    const protectedComment = str.replace(/\{(?=[{%#])/g, () => {
-      this.hasNunjucks = true;
-      return '{{ "{" }}';
-    });
-    return PostRenderEscape.escapeContent(this.comments, 'comment', protectedComment);
-  }
-
-  private escapeSwig(str: string) {
-    return PostRenderEscape.escapeContent(this.swig, 'swig', str);
-  }
-
-  private escapeInlineCode(str: string) {
-    const tokens = scanNunjucks(str);
-    if (tokens.length === 0) return str;
-
-    this.hasNunjucks = true;
-    const pairs = pairNunjucksBlocks(tokens);
-    let output = '';
-    let cursor = 0;
-
-    tokens.forEach((token, index) => {
-      if (token.start < cursor || token.type !== 'block' || token.name !== 'raw') return;
-      const closingIndex = pairs.get(index);
-      if (closingIndex == null) return;
-
-      const closing = tokens[closingIndex];
-      output += str.slice(cursor, token.start);
-      output += this.escapeSwig(str.slice(token.start, closing.end));
-      cursor = closing.end;
-    });
-
-    return output + str.slice(cursor);
-  }
-
-  escapeAllSwigTags(str: string) {
-    if (!str.includes(VARIABLE_START) && !str.includes(BLOCK_START) && !str.includes(COMMENT_START)) return str;
-
-    const contexts: string[] = [];
-    const contextPlaceholder = (value: string) => `hexoPostRenderContext\uFFFC${contexts.push(value) - 1}\uFFFC`;
-    const restoreContexts = (value: string) => value.replace(rContextHolder, (_, index) => contexts[Number(index)]);
-
-    const contextual = scanPostSegments(str).map(segment => {
-      const value = str.slice(segment.start, segment.end);
-      if (segment.type === 'html-comment') return this.escapeComment(value);
-      if (segment.type === 'inline-code') return contextPlaceholder(this.escapeInlineCode(value));
-      if (segment.type === 'fenced-code') return contextPlaceholder(value);
-      return value;
-    }).join('');
-
-    const tokens = scanNunjucks(contextual);
-    if (tokens.length === 0) return restoreContexts(contextual);
-
-    this.hasNunjucks = true;
-    const pairs = pairNunjucksBlocks(tokens);
-    let output = '';
-    let cursor = 0;
-
-    for (let index = 0; index < tokens.length; index++) {
-      const token = tokens[index];
-      if (token.start < cursor) continue;
-
-      output += contextual.slice(cursor, token.start);
-      const closingIndex = pairs.get(index);
-      if (closingIndex == null) {
-        output += this.escapeSwig(contextual.slice(token.start, token.end));
-        cursor = token.end;
-        continue;
-      }
-
-      const closing = tokens[closingIndex];
-      output += this.escapeSwig(restoreContexts(contextual.slice(token.start, closing.end)));
-      cursor = closing.end;
-      index = closingIndex;
-    }
-
-    output += contextual.slice(cursor);
-    return restoreContexts(output);
-  }
-}
-
-export default PostRenderEscape;

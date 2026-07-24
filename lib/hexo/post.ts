@@ -7,7 +7,7 @@ import { slugize, escapeRegExp, deepMerge} from 'hexo-util';
 import { copyDir, exists, listDir, mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
 import { parse as yfmParse, split as yfmSplit, stringify as yfmStringify } from 'hexo-front-matter';
 import type Hexo from './index';
-import PostRenderEscape from './post_render_lexer';
+import PostRenderProcessor from './post_render_processor';
 import type { NodeJSLikeCallback, RenderData } from '../types';
 
 const preservedKeys = ['title', 'slug', 'path', 'layout', 'date', 'content'];
@@ -250,19 +250,14 @@ class Post {
     // front-matter overrides renderer's option
     if (typeof data.disableNunjucks === 'boolean') disableNunjucks = data.disableNunjucks;
 
-    const cacheObj = new PostRenderEscape();
+    const processor = new PostRenderProcessor(ctx);
 
     return promise.then(content => {
       data.content = content;
       // Run "before_post_render" filters
       return ctx.execFilter('before_post_render', data, { context: ctx });
     }).then(() => {
-      data.content = cacheObj.escapeCodeBlocks(data.content);
-      let hasSwigTag = false;
-      if (!disableNunjucks) {
-        data.content = cacheObj.escapeAllSwigTags(data.content);
-        hasSwigTag = cacheObj.hasNunjucks;
-      }
+      data.content = processor.prepare(data.content, !disableNunjucks);
 
       const options: { highlight?: boolean; } = data.markdown || {};
       if (!config.syntax_highlighter) options.highlight = null;
@@ -276,18 +271,18 @@ class Post {
         toString: true,
         onRenderEnd(content) {
           // Replace cache data with real contents
-          data.content = cacheObj.restoreAllSwigTags(content);
-          data.content = cacheObj.restoreComments(data.content);
+          data.content = processor.restoreAllSwigTags(content);
+          data.content = processor.restoreComments(data.content);
 
           // Return content after replace the placeholders
-          if (disableNunjucks || !hasSwigTag) return data.content;
+          if (disableNunjucks || !processor.hasNunjucks) return data.content;
 
           // Render with Nunjucks if there are Swig tags
           return tag.render(data.content, data);
         }
       }, options);
     }).then(content => {
-      data.content = cacheObj.restoreCodeBlocks(content);
+      data.content = processor.restoreCodeBlocks(content);
 
       // Run "after_post_render" filters
       return ctx.execFilter('after_post_render', data, { context: ctx });

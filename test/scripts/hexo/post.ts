@@ -705,6 +705,30 @@ describe('Post', () => {
     afterHook.calledOnce.should.be.true;
   });
 
+  it('render() - before_post_render receives the original Markdown', async () => {
+    const source = [
+      '```js',
+      'const value = {{ value }};',
+      '```'
+    ].join('\n');
+    const filter = spy(data => {
+      data.content.should.eql(source);
+    });
+
+    hexo.extend.filter.register('before_post_render', filter);
+
+    try {
+      await post.render('', {
+        content: source,
+        engine: 'markdown'
+      });
+
+      filter.calledOnce.should.be.true;
+    } finally {
+      hexo.extend.filter.unregister('before_post_render', filter);
+    }
+  });
+
   it('render() - callback', done => {
     post.render('', {
       content,
@@ -1926,6 +1950,24 @@ describe('Post', () => {
       '<p>bar</p>',
       ''
     ].join('\n'));
+  });
+
+  it('render() - nunjucks remains literal in an unhighlighted code fence', async () => {
+    const content = [
+      '```js highlight:false',
+      'const value = {{ value }};',
+      '```',
+      '',
+      '{{ 1 + 1 }}'
+    ].join('\n');
+
+    const data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.should.include('const value = &#123;&#123; value &#125;&#125;;');
+    data.content.trim().slice(-1).should.eql('2');
   });
 
   // https://github.com/hexojs/hexo/issues/5715
