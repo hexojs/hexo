@@ -35,13 +35,28 @@ const COMMENT_START = '{#';
 const COMMENT_END = '#}';
 const NUNJUCKS_TOKEN_BOUNDARIES = ' \n\t\r\u00A0()[]{}%*-+~/#,:|.<>=!';
 
-type SegmentType = 'text' | 'fenced-code' | 'inline-code' | 'html-comment';
+type SimpleSegmentType = 'text' | 'inline-code' | 'html-comment';
 
-interface Segment {
+interface SimpleSegment {
   end: number;
   start: number;
-  type: SegmentType;
+  type: SimpleSegmentType;
 }
+
+export interface FencedCodeSegment {
+  closed: boolean;
+  closingEnd: number;
+  contentEnd: number;
+  contentStart: number;
+  end: number;
+  info: string;
+  marker: string;
+  prefix: string;
+  start: number;
+  type: 'fenced-code';
+}
+
+export type PostSegment = SimpleSegment | FencedCodeSegment;
 
 type NunjucksTokenType = 'block' | 'variable' | 'comment';
 
@@ -99,9 +114,23 @@ const findInlineCodeEnd = (str: string, start: number, size: number) => {
 
 interface Fence {
   char: '`' | '~';
-  end: number;
+  contentStart: number;
+  info: string;
+  marker: string;
+  prefix: string;
   size: number;
 }
+
+interface FenceEnd {
+  closed: boolean;
+  closingEnd: number;
+  contentEnd: number;
+  end: number;
+}
+
+const trimHorizontalWhitespace = (str: string) => str
+  .replace(/^[^\S\r\n]*/, '')
+  .replace(/[^\S\r\n]*$/, '');
 
 const findFence = (str: string, start: number): Fence | undefined => {
   if (start > 0 && str[start - 1] !== '\n') return;
@@ -110,48 +139,74 @@ const findFence = (str: string, start: number): Fence | undefined => {
   if (lineEnd === -1) return;
 
   const line = str.slice(start, lineEnd).replace(/\r$/, '');
-  const match = /^((?:(?:[^\S\r\n]*>){0,3}|[-*+]|[0-9]+\.)[^\S\r\n]*)(`{3,}|~{3,})[^\r\n]*$/.exec(line);
+  const match = /^((?:(?:[^\S\r\n]*>){0,3}|[-*+]|[0-9]+\.)[^\S\r\n]*)(`{3,}|~{3,})([^\r\n]*)$/.exec(line);
   if (!match) return;
+
+  const info = trimHorizontalWhitespace(match[3]);
+  if (info.endsWith('`')) return;
 
   return {
     char: match[2][0] as '`' | '~',
-    end: lineEnd + 1,
+    contentStart: lineEnd + 1,
+    info,
+    marker: match[2],
+    prefix: match[1],
     size: match[2].length
   };
 };
 
-const findFenceEnd = (str: string, fence: Fence) => {
-  let lineStart = fence.end;
+const findFenceEnd = (str: string, fence: Fence): FenceEnd => {
+  let lineStart = fence.contentStart;
   while (lineStart < str.length) {
     const lineEnd = str.indexOf('\n', lineStart);
     const end = lineEnd === -1 ? str.length : lineEnd;
-    const line = str.slice(lineStart, end).replace(/\r$/, '');
-    const match = /^(?:(?:[^\S\r\n]*>){0,3}[^\S\r\n]*)(`+|~+)\s*$/.exec(line);
+    const closingEnd = str[end - 1] === '\r' ? end - 1 : end;
+    const line = str.slice(lineStart, closingEnd);
+    const match = /^(?:(?:[^\S\r\n]*>){0,3}[^\S\r\n]*)(`+|~+)[^\S\r\n]*$/.exec(line);
     if (match && match[1][0] === fence.char && match[1].length >= fence.size) {
-      return lineEnd === -1 ? str.length : lineEnd + 1;
+      return {
+        closed: true,
+        closingEnd,
+        contentEnd: lineStart,
+        end: lineEnd === -1 ? str.length : lineEnd + 1
+      };
     }
     if (lineEnd === -1) break;
     lineStart = lineEnd + 1;
   }
-  return str.length;
+  return {
+    closed: false,
+    closingEnd: str.length,
+    contentEnd: str.length,
+    end: str.length
+  };
 };
 
-export const scanPostSegments = (str: string): Segment[] => {
-  const segments: Segment[] = [];
+export const scanPostSegments = (str: string): PostSegment[] => {
+  const segments: PostSegment[] = [];
   let textStart = 0;
   let index = 0;
 
-  const pushSegment = (type: SegmentType, start: number, end: number) => {
-    if (textStart < start) segments.push({ type: 'text', start: textStart, end: start });
-    segments.push({ type, start, end });
-    textStart = end;
-    index = end;
+  const pushSegment = (segment: PostSegment) => {
+    if (textStart < segment.start) segments.push({ type: 'text', start: textStart, end: segment.start });
+    segments.push(segment);
+    textStart = segment.end;
+    index = segment.end;
   };
 
   while (index < str.length) {
     const fence = findFence(str, index);
     if (fence) {
-      pushSegment('fenced-code', index, findFenceEnd(str, fence));
+      const fenceEnd = findFenceEnd(str, fence);
+      pushSegment({
+        type: 'fenced-code',
+        start: index,
+        prefix: fence.prefix,
+        marker: fence.marker,
+        info: fence.info,
+        contentStart: fence.contentStart,
+        ...fenceEnd
+      });
       continue;
     }
 
@@ -159,7 +214,7 @@ export const scanPostSegments = (str: string): Segment[] => {
       const size = countBackticks(str, index);
       const end = findInlineCodeEnd(str, index, size);
       if (end !== -1) {
-        pushSegment('inline-code', index, end);
+        pushSegment({ type: 'inline-code', start: index, end });
         continue;
       }
       index += size;
@@ -168,7 +223,7 @@ export const scanPostSegments = (str: string): Segment[] => {
 
     if (str.startsWith('<!--', index)) {
       const commentEnd = str.indexOf('-->', index + 4);
-      pushSegment('html-comment', index, commentEnd === -1 ? str.length : commentEnd + 3);
+      pushSegment({ type: 'html-comment', start: index, end: commentEnd === -1 ? str.length : commentEnd + 3 });
       continue;
     }
 
@@ -178,10 +233,6 @@ export const scanPostSegments = (str: string): Segment[] => {
   if (textStart < str.length) segments.push({ type: 'text', start: textStart, end: str.length });
   return segments;
 };
-
-export const getHtmlCommentRanges = (str: string) => scanPostSegments(str)
-  .filter(segment => segment.type === 'html-comment')
-  .map(({ start, end }) => ({ start, end }));
 
 const findDelimiterEnd = (str: string, start: number, delimiter: string) => {
   let quote = '';

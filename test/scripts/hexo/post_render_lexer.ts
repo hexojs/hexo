@@ -1,6 +1,6 @@
 import chai from 'chai';
 import nunjucks from 'nunjucks';
-import PostRenderEscape, { getHtmlCommentRanges } from '../../../lib/hexo/post_render_lexer';
+import PostRenderEscape, { scanPostSegments } from '../../../lib/hexo/post_render_lexer';
 
 chai.should();
 
@@ -17,10 +17,31 @@ describe('PostRenderEscape', () => {
       '<!-- visible -->'
     ].join('\n');
 
-    const comments = getHtmlCommentRanges(content)
+    const comments = scanPostSegments(content)
+      .filter(segment => segment.type === 'html-comment')
       .map(({ start, end }) => content.slice(start, end));
 
     comments.should.eql(['<!-- visible -->']);
+  });
+
+  it('returns fenced code metadata for downstream filters', () => {
+    const content = [
+      '> ```js',
+      '> const value = 1;',
+      '> ````',
+      'after'
+    ].join('\n');
+
+    const fence = scanPostSegments(content).find(segment => segment.type === 'fenced-code');
+
+    chai.expect(fence).to.exist;
+    if (!fence || fence.type !== 'fenced-code') return;
+    fence.closed.should.be.true;
+    fence.prefix.should.eql('> ');
+    fence.marker.should.eql('```');
+    fence.info.should.eql('js');
+    content.slice(fence.contentStart, fence.contentEnd).should.eql('> const value = 1;\n');
+    content.slice(fence.closingEnd, fence.end).should.eql('\n');
   });
 
   it('pairs same-name nested Nunjucks blocks', () => {

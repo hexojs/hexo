@@ -464,6 +464,62 @@ describe('Backtick code block', () => {
       data.content.should.eql('```foo```\n\n<hexoPostRenderCodeBlock>' + highlight(code, {}) + '</hexoPostRenderCodeBlock>');
     });
 
+    it('does not process a code fence inside an HTML comment', () => {
+      const content = [
+        '<!--',
+        '```js',
+        'const value = {{ value }};',
+        '```',
+        '-->'
+      ].join('\n');
+      const data = { content };
+
+      codeBlock(data);
+
+      data.content.should.eql(content);
+    });
+
+    it('processes an HTML comment inside a code fence', () => {
+      const source = '<!-- comment -->';
+      const data = {
+        content: [
+          '```html',
+          source,
+          '```'
+        ].join('\n')
+      };
+
+      codeBlock(data);
+
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + highlight(source, { lang: 'html' }) + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('allows a closing fence longer than the opening fence', () => {
+      const data = {
+        content: [
+          '```js',
+          code,
+          '````'
+        ].join('\n')
+      };
+
+      codeBlock(data);
+
+      data.content.should.eql('<hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js' }) + '</hexoPostRenderCodeBlock>');
+    });
+
+    it('leaves an unclosed code fence unchanged', () => {
+      const content = [
+        '```js',
+        code
+      ].join('\n');
+      const data = { content };
+
+      codeBlock(data);
+
+      data.content.should.eql(content);
+    });
+
     // test for Issue #4190
     it('ignore triple backticks at the line which is started by extra characters', () => {
       const data = {

@@ -1,9 +1,8 @@
 import type { HighlightOptions } from '../../../extend/syntax_highlight';
 import type Hexo from '../../../hexo';
-import { getHtmlCommentRanges } from '../../../hexo/post_render_lexer';
+import { scanPostSegments } from '../../../hexo/post_render_lexer';
 import type { RenderData } from '../../../types';
 
-const rBacktick = /^((?:(?:[^\S\r\n]*>){0,3}|[-*+]|[0-9]+\.)[^\S\r\n]*)(`{3,}|~{3,})[^\S\r\n]*((?:.*?[^`\s])?)[^\S\r\n]*\n((?:[\s\S]*?\n)?)(?:(?:[^\S\r\n]*>){0,3}[^\S\r\n]*)\2[^\S\r\n]?(\n+|$)/gm;
 const rAllOptions = /([^\s]+)\s+(.+?)\s+(https?:\/\/\S+|\/\S+)\s*(.+)?/;
 const rLangCaption = /([^\s]+)\s*(.+)?/;
 const rAdditionalOptions = /\s((?:line_number|line_threshold|first_line|wrap|mark|language_attr|highlight):\S+)/g;
@@ -86,35 +85,22 @@ export = (ctx: Hexo): (data: RenderData) => void => {
     const dataContent = data.content;
 
     if ((!dataContent.includes('```') && !dataContent.includes('~~~')) || !ctx.extend.highlight.query(ctx.config.syntax_highlighter)) return;
-    const comments = getHtmlCommentRanges(dataContent);
-    let commentIndex = 0;
-    data.content = data.content.replace(rBacktick, ($0, start, $2, _args, _content, end, matchIndex) => {
-      // get the start and end of the code block
-      const codeBlockStart = matchIndex;
-      const codeBlockEnd = matchIndex + $0.length;
-      // check if the code block is nested in a comment
-      while (commentIndex < comments.length && comments[commentIndex].end <= codeBlockStart) {
-        commentIndex++;
-      }
-      if (commentIndex < comments.length && comments[commentIndex].start < codeBlockStart && comments[commentIndex].end > codeBlockEnd) {
-        // the code block is nested in a comment, return escaped content directly
-        return escapeSwigTag($0);
-      }
-      let content = _content.replace(/\n$/, '');
+    data.content = scanPostSegments(dataContent).map(segment => {
+      const source = dataContent.slice(segment.start, segment.end);
+      if (segment.type !== 'fenced-code' || !segment.closed) return source;
 
-      // neither highlight or prismjs is enabled, return escaped content directly.
-      if (!ctx.extend.highlight.query(ctx.config.syntax_highlighter)) return escapeSwigTag($0);
-
-      const parsedArgs = parseArgs(_args);
-      if (!parsedArgs.enableHighlight) return escapeSwigTag($0);
-      _args = parsedArgs._args;
+      let content = dataContent.slice(segment.contentStart, segment.contentEnd).replace(/\r?\n$/, '');
+      let args = segment.info;
+      const parsedArgs = parseArgs(args);
+      if (!parsedArgs.enableHighlight) return escapeSwigTag(source);
+      args = parsedArgs._args;
 
       // Extract language and caption of code blocks
-      const args = _args.split('=').shift();
+      const langArgs = args.split('=').shift();
       let lang: string, caption: string;
 
-      if (args) {
-        const match = rAllOptions.exec(args) || rLangCaption.exec(args);
+      if (langArgs) {
+        const match = rAllOptions.exec(langArgs) || rLangCaption.exec(langArgs);
 
         if (match) {
           lang = match[1];
@@ -130,9 +116,8 @@ export = (ctx: Hexo): (data: RenderData) => void => {
       }
 
       // PR #3765
-      if (start.includes('>')) {
-        // heading of last line is already removed by the top RegExp "rBacktick"
-        const depth = start.split('>').length - 1;
+      if (segment.prefix.includes('>')) {
+        const depth = segment.prefix.split('>').length - 1;
         const regexp = new RegExp(`^([^\\S\\r\\n]*>){0,${depth}}([^\\S\\r\\n]|$)`, 'mg');
         content = content.replace(regexp, '');
       }
@@ -144,22 +129,22 @@ export = (ctx: Hexo): (data: RenderData) => void => {
         ...parsedArgs.options
       };
       // setup line number by inline
-      _args = _args.replace('=+', '=');
+      args = args.replace('=+', '=');
 
       // setup firstLineNumber;
-      if (_args.includes('=')) {
-        options.firstLineNumber = _args.split('=')[1] || 1;
+      if (args.includes('=')) {
+        options.firstLineNumber = args.split('=')[1] || 1;
       }
       content = ctx.extend.highlight.exec(ctx.config.syntax_highlighter, {
         context: ctx,
         args: [content, options]
       });
 
-      return start
+      return segment.prefix
         + '<hexoPostRenderCodeBlock>'
         + escapeSwigTag(content)
         + '</hexoPostRenderCodeBlock>'
-        + end;
-    });
+        + dataContent.slice(segment.closingEnd, segment.end);
+    }).join('');
   };
 };

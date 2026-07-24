@@ -1900,7 +1900,7 @@ describe('Post', () => {
 
   // https://github.com/hexojs/hexo/issues/5433
   it('render() - code fence nesting in comments', async () => {
-    const code = 'alert("Hello world")';
+    const code = 'const value = {{ value }};';
     const content = [
       'foo',
       '<!--',
