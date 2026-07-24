@@ -1829,6 +1829,75 @@ describe('Post', () => {
     hexo.extend.tag.unregister('testTag');
   });
 
+  // https://github.com/hexojs/hexo/issues/5799
+  it('render() - comment protocol in same-name nested tags', async () => {
+    hexo.extend.tag.register('folding', (_args, content) => `<details>${content}</details>`, {
+      ends: true
+    });
+    hexo.extend.tag.register('tabs', (_args, content) => {
+      const match = /<!--\s*tab (.*?)\s*-->\n([\s\S]*?)<!--\s*endtab\s*-->/.exec(content);
+      if (!match) return '<div class="tabs"></div>';
+      return `<div class="tabs" data-caption="${match[1]}">${match[2]}</div>`;
+    }, {
+      ends: true
+    });
+
+    const content = [
+      '{% folding outer %}',
+      '{% tabs install %}',
+      '<!-- tab `JavaScript` -->',
+      '{% folding inner %}',
+      'visible content',
+      '{% endfolding %}',
+      '<!-- endtab -->',
+      '{% endtabs %}',
+      '{% endfolding %}'
+    ].join('\n');
+
+    try {
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.should.include('data-caption="`JavaScript`"');
+      data.content.should.include('visible content');
+    } finally {
+      hexo.extend.tag.unregister('tabs');
+      hexo.extend.tag.unregister('folding');
+    }
+  });
+
+  it('render() - nunjucks remains literal in comment protocol', async () => {
+    const tagSpy = spy();
+    hexo.extend.tag.register('commentProtocol', (_args, content) => {
+      tagSpy(content);
+      return '';
+    }, {
+      ends: true
+    });
+
+    const content = [
+      '{% commentProtocol %}',
+      '<!-- tab {{ 1 + 1 }} -->',
+      'content',
+      '<!-- endtab -->',
+      '{% endcommentProtocol %}'
+    ].join('\n');
+
+    try {
+      await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      tagSpy.calledOnce.should.be.true;
+      tagSpy.firstCall.args[0].should.include('<!-- tab {{ 1 + 1 }} -->');
+    } finally {
+      hexo.extend.tag.unregister('commentProtocol');
+    }
+  });
+
   // https://github.com/hexojs/hexo/issues/5433
   it('render() - code fence nesting in comments', async () => {
     const code = 'alert("Hello world")';
