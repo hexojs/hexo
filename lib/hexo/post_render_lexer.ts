@@ -1,39 +1,34 @@
-/*
- * Nunjucks delimiter handling in this file is adapted from its lexer.
- *
- * Copyright (c) 2012-2015, James Long
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
- * AND ANY EXPRESS OR IMPLIED WARRANTIES ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DAMAGES ARISING IN ANY
- * WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
- * SUCH DAMAGE.
- */
-
 export const BLOCK_START = '{%';
-export const BLOCK_END = '%}';
 export const VARIABLE_START = '{{';
-export const VARIABLE_END = '}}';
 export const COMMENT_START = '{#';
-export const COMMENT_END = '#}';
-const NUNJUCKS_TOKEN_BOUNDARIES = ' \n\t\r\u00A0()[]{}%*-+~/#,:|.<>=!';
 
-type SimpleSegmentType = 'text' | 'inline-code' | 'html-comment';
+const BLOCK_END = '%}';
+const VARIABLE_END = '}}';
+const COMMENT_END = '#}';
 
-interface SimpleSegment {
+interface TextSegment {
   end: number;
   start: number;
-  type: SimpleSegmentType;
+  type: 'text';
+}
+
+interface HtmlCommentSegment {
+  end: number;
+  start: number;
+  type: 'html-comment';
+}
+
+interface SourceRange {
+  end: number;
+  start: number;
+}
+
+export interface InlineCodeSegment {
+  end: number;
+  nunjucks: NunjucksToken[];
+  rawBlocks: SourceRange[];
+  start: number;
+  type: 'inline-code';
 }
 
 export interface FencedCodeSegment {
@@ -49,8 +44,7 @@ export interface FencedCodeSegment {
   type: 'fenced-code';
 }
 
-export type PostSegment = SimpleSegment | FencedCodeSegment;
-
+export type PostSegment = TextSegment | HtmlCommentSegment | InlineCodeSegment | FencedCodeSegment;
 export type NunjucksTokenType = 'block' | 'variable' | 'comment';
 
 export interface NunjucksToken {
@@ -58,6 +52,11 @@ export interface NunjucksToken {
   name?: string;
   start: number;
   type: NunjucksTokenType;
+}
+
+export interface PostTokens {
+  nunjucks: NunjucksToken[];
+  segments: PostSegment[];
 }
 
 const countBackticks = (str: string, start: number) => {
@@ -71,38 +70,146 @@ const isBlankLineBoundary = (str: string, index: number) => str.startsWith('\n\n
   || str.startsWith('\r\n\n', index)
   || str.startsWith('\n\r\n', index);
 
-const rRawStart = /^\{%-?\s*raw\s*-?%\}/;
-const rRawEnd = /\{%-?\s*endraw\s*-?%\}/;
+const canStartRegex = (str: string, index: number, expressionStart: number) => index === expressionStart
+  || /[\s()[\]{}%*+\-~/#,:|.<>=!]/.test(str[index - 1]);
 
-const findRawBlockEnd = (str: string, start: number) => {
-  const opening = rRawStart.exec(str.slice(start));
-  if (!opening) return -1;
+const findExpressionEnd = (str: string, start: number, delimiter: string) => {
+  let mode: 'code' | 'quote' | 'regex' = 'code';
+  let quote = '';
 
-  const contentStart = start + opening[0].length;
-  const closing = rRawEnd.exec(str.slice(contentStart));
-  return closing ? contentStart + closing.index + closing[0].length : -1;
+  for (let index = start; index < str.length; index++) {
+    const char = str[index];
+
+    if (mode === 'quote') {
+      if (char === '\\') {
+        index++;
+      } else if (char === quote) {
+        mode = 'code';
+      }
+      continue;
+    }
+
+    if (mode === 'regex') {
+      if (char === '\\') {
+        index++;
+      } else if (char === '/') {
+        mode = 'code';
+      }
+      continue;
+    }
+
+    if (char === '"' || char === '\'') {
+      mode = 'quote';
+      quote = char;
+      continue;
+    }
+
+    if (char === 'r' && str[index + 1] === '/' && canStartRegex(str, index, start)) {
+      mode = 'regex';
+      index++;
+      continue;
+    }
+
+    if (str.startsWith(delimiter, index)) return index + delimiter.length;
+    if (char === '-' && str.startsWith(delimiter, index + 1)) return index + delimiter.length + 1;
+  }
+
+  return -1;
 };
 
-const findInlineCodeEnd = (str: string, start: number, size: number) => {
-  let index = start + size;
+const getBlockName = (raw: string) => {
+  let content = raw.slice(BLOCK_START.length, -BLOCK_END.length).trim();
+  if (content.startsWith('-')) content = content.slice(1).trimStart();
+  if (content.endsWith('-')) content = content.slice(0, -1).trimEnd();
+  return /^([^\s]+)/.exec(content)?.[1] || '';
+};
+
+const readNunjucksToken = (str: string, start: number): NunjucksToken | undefined => {
+  if (str.startsWith(COMMENT_START, start)) {
+    const closing = str.indexOf(COMMENT_END, start + COMMENT_START.length);
+    if (closing === -1) return;
+    return { type: 'comment', start, end: closing + COMMENT_END.length };
+  }
+
+  let type: 'block' | 'variable', opening: string, closing: string;
+  if (str.startsWith(BLOCK_START, start)) {
+    type = 'block';
+    opening = BLOCK_START;
+    closing = BLOCK_END;
+  } else if (str.startsWith(VARIABLE_START, start)) {
+    type = 'variable';
+    opening = VARIABLE_START;
+    closing = VARIABLE_END;
+  } else {
+    return;
+  }
+
+  const end = findExpressionEnd(str, start + opening.length, closing);
+  if (end === -1) return;
+
+  const token: NunjucksToken = { type, start, end };
+  if (type === 'block') token.name = getBlockName(str.slice(start, end));
+  return token;
+};
+
+const findRawBlockEnd = (str: string, opening: NunjucksToken) => {
+  let index = opening.end;
   while (index < str.length) {
-    if (isBlankLineBoundary(str, index)) return -1;
-    if (str.startsWith(BLOCK_START, index)) {
-      const rawEnd = findRawBlockEnd(str, index);
-      if (rawEnd !== -1) {
-        index = rawEnd;
-        continue;
-      }
+    const start = str.indexOf(BLOCK_START, index);
+    if (start === -1) return;
+
+    const token = readNunjucksToken(str, start);
+    if (!token) {
+      index = start + BLOCK_START.length;
+      continue;
     }
+    if (token.name === 'endraw') return token;
+    index = token.end;
+  }
+};
+
+const findInlineCode = (str: string, start: number, size: number): Omit<InlineCodeSegment, 'start' | 'type'> | undefined => {
+  const nunjucks: NunjucksToken[] = [];
+  const rawBlocks: SourceRange[] = [];
+  let index = start + size;
+
+  while (index < str.length) {
+    if (isBlankLineBoundary(str, index)) return;
+
+    if (str.startsWith(BLOCK_START, index)) {
+      const opening = readNunjucksToken(str, index);
+      if (opening) {
+        nunjucks.push(opening);
+        if (opening.name === 'raw') {
+          const closing = findRawBlockEnd(str, opening);
+          if (closing) {
+            nunjucks.push(closing);
+            rawBlocks.push({ start: opening.start, end: closing.end });
+            index = closing.end;
+            continue;
+          }
+        }
+      }
+    } else if (str.startsWith(VARIABLE_START, index) || str.startsWith(COMMENT_START, index)) {
+      const token = readNunjucksToken(str, index);
+      if (token) nunjucks.push(token);
+    }
+
     if (str[index] === '`') {
       const currentSize = countBackticks(str, index);
-      if (currentSize === size) return index + size;
+      if (currentSize === size) {
+        const end = index + size;
+        return {
+          end,
+          nunjucks: nunjucks.filter(token => token.end <= end),
+          rawBlocks: rawBlocks.filter(block => block.end <= end)
+        };
+      }
       index += currentSize;
     } else {
       index++;
     }
   }
-  return -1;
 };
 
 interface Fence {
@@ -175,8 +282,9 @@ const findFenceEnd = (str: string, fence: Fence): FenceEnd => {
   };
 };
 
-export const scanPostSegments = (str: string): PostSegment[] => {
+export const lexPost = (str: string, enableNunjucks = true): PostTokens => {
   const segments: PostSegment[] = [];
+  const nunjucks: NunjucksToken[] = [];
   let textStart = 0;
   let index = 0;
 
@@ -205,9 +313,9 @@ export const scanPostSegments = (str: string): PostSegment[] => {
 
     if (str[index] === '`' && str[index - 1] !== '\\') {
       const size = countBackticks(str, index);
-      const end = findInlineCodeEnd(str, index, size);
-      if (end !== -1) {
-        pushSegment({ type: 'inline-code', start: index, end });
+      const inline = findInlineCode(str, index, size);
+      if (inline) {
+        pushSegment({ type: 'inline-code', start: index, ...inline });
         continue;
       }
       index += size;
@@ -220,113 +328,20 @@ export const scanPostSegments = (str: string): PostSegment[] => {
       continue;
     }
 
-    index++;
-  }
-
-  if (textStart < str.length) segments.push({ type: 'text', start: textStart, end: str.length });
-  return segments;
-};
-
-const findDelimiterEnd = (str: string, start: number, delimiter: string) => {
-  let quote = '';
-  let regex = false;
-  let index = start;
-
-  while (index < str.length) {
-    const char = str[index];
-    if (quote) {
-      if (char === '\\') {
-        index += 2;
+    if (enableNunjucks && str[index] === '{') {
+      const token = readNunjucksToken(str, index);
+      if (token) {
+        nunjucks.push(token);
+        index = token.end;
         continue;
       }
-      if (char === quote) quote = '';
-      index++;
-      continue;
-    }
-    if (regex) {
-      if (char === '\\') {
-        index += 2;
-        continue;
-      }
-      if (char === '/') regex = false;
-      index++;
-      continue;
-    }
-    if (char === '"' || char === '\'') {
-      quote = char;
-      index++;
-      continue;
-    }
-    const previous = str[index - 1];
-    if (char === 'r' && str[index + 1] === '/'
-      && (index === start || NUNJUCKS_TOKEN_BOUNDARIES.includes(previous))) {
-      regex = true;
-      index += 2;
-      continue;
-    }
-    if (str.startsWith(delimiter, index) || str.startsWith(`-${delimiter}`, index)) {
-      return index + delimiter.length + (str[index] === '-' ? 1 : 0);
-    }
-    index++;
-  }
-  return -1;
-};
-
-const getBlockName = (raw: string) => {
-  let content = raw.slice(BLOCK_START.length, -BLOCK_END.length).trim();
-  if (content.startsWith('-')) content = content.slice(1).trimStart();
-  if (content.endsWith('-')) content = content.slice(0, -1).trimEnd();
-  return /^([^\s]+)/.exec(content)?.[1] || '';
-};
-
-export const scanNunjucks = (str: string): NunjucksToken[] => {
-  const tokens: NunjucksToken[] = [];
-  let index = 0;
-
-  while (index < str.length) {
-    if (str.startsWith(COMMENT_START, index)) {
-      const close = str.indexOf(COMMENT_END, index + COMMENT_START.length);
-      if (close === -1) {
-        index += COMMENT_START.length;
-        continue;
-      }
-      const end = close + COMMENT_END.length;
-      tokens.push({ type: 'comment', start: index, end });
-      index = end;
-      continue;
-    }
-
-    if (str.startsWith(BLOCK_START, index)) {
-      const end = findDelimiterEnd(str, index + BLOCK_START.length, BLOCK_END);
-      if (end === -1) {
-        index += BLOCK_START.length;
-        continue;
-      }
-      tokens.push({
-        type: 'block',
-        name: getBlockName(str.slice(index, end)),
-        start: index,
-        end
-      });
-      index = end;
-      continue;
-    }
-
-    if (str.startsWith(VARIABLE_START, index)) {
-      const end = findDelimiterEnd(str, index + VARIABLE_START.length, VARIABLE_END);
-      if (end === -1) {
-        index += VARIABLE_START.length;
-        continue;
-      }
-      tokens.push({ type: 'variable', start: index, end });
-      index = end;
-      continue;
     }
 
     index++;
   }
 
-  return tokens;
+  if (textStart < str.length) segments.push({ type: 'text', start: textStart, end: str.length });
+  return { segments, nunjucks };
 };
 
 export const pairNunjucksBlocks = (tokens: NunjucksToken[]) => {

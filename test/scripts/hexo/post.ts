@@ -1464,6 +1464,41 @@ describe('Post', () => {
     data.content.should.eql('<blockquote><p>test</p>\n<footer><strong>{% }</strong></footer></blockquote>');
   });
 
+  it('render() - Markdown delimiters inside a Nunjucks variable', async () => {
+    const data = await post.render('', {
+      content: '{{ "`code`" }}',
+      engine: 'markdown'
+    });
+
+    data.content.should.eql('`code`');
+  });
+
+  it('render() - Markdown delimiters inside an atomic Nunjucks tag', async () => {
+    const tagSpy = spy(args => JSON.stringify(args));
+    hexo.extend.tag.register('atomicTag', tagSpy);
+
+    try {
+      const data = await post.render('', {
+        content: '{% atomicTag "`code`" %}',
+        engine: 'markdown'
+      });
+
+      data.content.should.eql('["`code`"]');
+      tagSpy.calledOnce.should.be.true;
+    } finally {
+      hexo.extend.tag.unregister('atomicTag');
+    }
+  });
+
+  it('render() - HTML comment delimiter inside a Nunjucks string', async () => {
+    const data = await post.render('', {
+      content: '{{ "<!--" }}',
+      engine: 'markdown'
+    });
+
+    data.content.should.eql('<!--');
+  });
+
   it('render() - dont escape incomplete tags with complete tags', async () => {
     // lost one character
     let content = '{{ 1 }} \n `{% "%}" }` 22222';

@@ -1,7 +1,7 @@
 import chai from 'chai';
 import nunjucks from 'nunjucks';
 import Hexo from '../../../lib/hexo';
-import { scanPostSegments } from '../../../lib/hexo/post_render_lexer';
+import { lexPost } from '../../../lib/hexo/post_render_lexer';
 import PostRenderProcessor from '../../../lib/hexo/post_render_processor';
 
 chai.should();
@@ -21,7 +21,7 @@ describe('Post render lexer', () => {
       '<!-- visible -->'
     ].join('\n');
 
-    const comments = scanPostSegments(content)
+    const comments = lexPost(content).segments
       .filter(segment => segment.type === 'html-comment')
       .map(({ start, end }) => content.slice(start, end));
 
@@ -36,7 +36,7 @@ describe('Post render lexer', () => {
       'after'
     ].join('\n');
 
-    const fence = scanPostSegments(content).find(segment => segment.type === 'fenced-code');
+    const fence = lexPost(content).segments.find(segment => segment.type === 'fenced-code');
 
     chai.expect(fence).to.exist;
     if (!fence || fence.type !== 'fenced-code') return;
@@ -46,6 +46,37 @@ describe('Post render lexer', () => {
     fence.info.should.eql('js');
     content.slice(fence.contentStart, fence.contentEnd).should.eql('> const value = 1;\n');
     content.slice(fence.closingEnd, fence.end).should.eql('\n');
+  });
+
+  it('treats Nunjucks tokens as opaque to Markdown and HTML delimiters', () => {
+    const content = [
+      '{{ "`code` <!--" }}',
+      '{% test "`title` <!--" %}'
+    ].join('\n');
+    const tokens = lexPost(content);
+
+    tokens.nunjucks.map(token => content.slice(token.start, token.end)).should.eql([
+      '{{ "`code` <!--" }}',
+      '{% test "`title` <!--" %}'
+    ]);
+    tokens.segments.map(segment => segment.type).should.eql(['text']);
+  });
+
+  it('keeps Nunjucks inactive inside Markdown code and HTML comments', () => {
+    const content = [
+      '`{{ "<!--" }}`',
+      '<!-- {{ "`code`" }} -->',
+      '```njk',
+      '{{ "<!--" }}',
+      '```'
+    ].join('\n');
+    const tokens = lexPost(content);
+
+    tokens.nunjucks.should.be.empty;
+    tokens.segments
+      .filter(segment => segment.type !== 'text')
+      .map(segment => segment.type)
+      .should.eql(['inline-code', 'html-comment', 'fenced-code']);
   });
 
   it('pairs same-name nested Nunjucks blocks', () => {
@@ -95,16 +126,49 @@ describe('Post render lexer', () => {
     processor.restoreAllSwigTags(escaped).should.eql(content);
   });
 
+  it('preserves backticks inside an atomic Nunjucks variable', () => {
+    const content = '{{ "`code`" }}';
+    const processor = new PostRenderProcessor(hexo);
+
+    const escaped = processor.prepare(content);
+
+    processor.hasNunjucks.should.be.true;
+    escaped.should.not.include('hexoPostRenderContext');
+    processor.restoreAllSwigTags(escaped).should.eql(content);
+  });
+
+  it('preserves backticks inside an atomic Nunjucks tag', () => {
+    const content = '{% test "`code`" %}';
+    const processor = new PostRenderProcessor(hexo);
+
+    const escaped = processor.prepare(content);
+
+    processor.hasNunjucks.should.be.true;
+    escaped.should.not.include('hexoPostRenderContext');
+    processor.restoreAllSwigTags(escaped).should.eql(content);
+  });
+
+  it('keeps an HTML comment opener inside a Nunjucks string', () => {
+    const content = '{{ "<!--" }}';
+    const processor = new PostRenderProcessor(hexo);
+
+    const escaped = processor.prepare(content);
+
+    processor.hasNunjucks.should.be.true;
+    processor.restoreAllSwigTags(escaped).should.eql(content);
+  });
+
   it('distinguishes division from a Nunjucks regex literal', () => {
     const content = [
       '{{ bar/baz }}',
-      '{% if value is matching(r/%}/) %}yes{% endif %}'
+      '{% if value is matching(r/%}/) %}yes{% endif %}',
+      '{% if value is matching(r/[\\/%}]/) %}yes{% endif %}'
     ].join('\n');
     const processor = new PostRenderProcessor(hexo);
 
     const escaped = processor.prepare(content);
 
-    (escaped.match(/<!--swig/g) || []).length.should.eql(2);
+    (escaped.match(/<!--swig/g) || []).length.should.eql(3);
     processor.restoreAllSwigTags(escaped).should.eql(content);
   });
 });

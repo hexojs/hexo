@@ -5,16 +5,15 @@ import {
   BLOCK_START,
   COMMENT_START,
   type FencedCodeSegment,
+  type NunjucksToken,
   VARIABLE_START,
-  pairNunjucksBlocks,
-  scanNunjucks,
-  scanPostSegments
+  lexPost,
+  pairNunjucksBlocks
 } from './post_render_lexer';
 
 const rSwigPlaceHolder = /(?:<|&lt;)!--swig\uFFFC(\d+)--(?:>|&gt;)/g;
 const rCodeBlockPlaceHolder = /(?:<|&lt;)!--code\uFFFC(\d+)--(?:>|&gt;)/g;
 const rCommentHolder = /(?:<|&lt;)!--comment\uFFFC(\d+)--(?:>|&gt;)/g;
-const rContextHolder = /hexoPostRenderContext\uFFFC(\d+)\uFFFC/g;
 
 const rAllOptions = /([^\s]+)\s+(.+?)\s+(https?:\/\/\S+|\/\S+)\s*(.+)?/;
 const rLangCaption = /([^\s]+)\s*(.+)?/;
@@ -24,6 +23,47 @@ const escapeCodeBraces = (str: string) => str.replace(/{/g, '&#123;').replace(/}
 const hasNunjucksSyntax = (str: string) => str.includes(VARIABLE_START)
   || str.includes(BLOCK_START)
   || str.includes(COMMENT_START);
+
+interface SourceRange {
+  end: number;
+  start: number;
+}
+
+interface Replacement extends SourceRange {
+  value: string;
+}
+
+const applyReplacements = (str: string, range: SourceRange, replacements: Replacement[]) => {
+  let output = '';
+  let cursor = range.start;
+
+  for (const replacement of replacements) {
+    assert(replacement.start >= cursor && replacement.end <= range.end);
+    output += str.slice(cursor, replacement.start) + replacement.value;
+    cursor = replacement.end;
+  }
+
+  return output + str.slice(cursor, range.end);
+};
+
+const getSwigRanges = (tokens: NunjucksToken[]) => {
+  const pairs = pairNunjucksBlocks(tokens);
+  const ranges: SourceRange[] = [];
+
+  for (let index = 0; index < tokens.length; index++) {
+    const token = tokens[index];
+    const closingIndex = pairs.get(index);
+    if (closingIndex == null) {
+      ranges.push({ start: token.start, end: token.end });
+      continue;
+    }
+
+    ranges.push({ start: token.start, end: tokens[closingIndex].end });
+    index = closingIndex;
+  }
+
+  return ranges;
+};
 
 function parseArgs(args: string) {
   const matches = [];
@@ -139,29 +179,6 @@ class PostRenderProcessor {
     ));
   }
 
-  private prepareInlineCode(str: string) {
-    const tokens = scanNunjucks(str);
-    if (tokens.length === 0) return str;
-
-    this.hasNunjucks = true;
-    const pairs = pairNunjucksBlocks(tokens);
-    let output = '';
-    let cursor = 0;
-
-    tokens.forEach((token, index) => {
-      if (token.start < cursor || token.type !== 'block' || token.name !== 'raw') return;
-      const closingIndex = pairs.get(index);
-      if (closingIndex == null) return;
-
-      const closing = tokens[closingIndex];
-      output += str.slice(cursor, token.start);
-      output += this.escapeSwig(str.slice(token.start, closing.end));
-      cursor = closing.end;
-    });
-
-    return output + str.slice(cursor);
-  }
-
   private escapeComment(str: string) {
     // Nunjucks does not reparse expression output, so this recreates the first
     // brace after rendering without evaluating the original comment contents.
@@ -229,53 +246,79 @@ class PostRenderProcessor {
       && !!this.ctx.extend.highlight.query(this.ctx.config.syntax_highlighter);
     if (!containsNunjucks && !canHighlight) return str;
 
-    const contexts: string[] = [];
-    const contextPlaceholder = (value: string) => `hexoPostRenderContext\uFFFC${contexts.push(value) - 1}\uFFFC`;
-    const restoreContexts = (value: string) => value.replace(rContextHolder, (_, index) => contexts[Number(index)]);
+    const tokens = lexPost(str, enableNunjucks);
+    const swigRanges = getSwigRanges(tokens.nunjucks);
+    const contextReplacements: Replacement[] = [];
+    let swigRangeIndex = 0;
 
-    const contextual = scanPostSegments(str).map(segment => {
+    if (swigRanges.length > 0) this.hasNunjucks = true;
+
+    for (const segment of tokens.segments) {
+      while (swigRanges[swigRangeIndex]?.end <= segment.start) swigRangeIndex++;
+      const swigRange = swigRanges[swigRangeIndex];
+      const insideSwig = swigRange != null
+        && swigRange.start <= segment.start
+        && segment.end <= swigRange.end;
       const value = str.slice(segment.start, segment.end);
       if (segment.type === 'fenced-code') {
         const rendered = this.renderFencedCode(str, segment, canHighlight);
-        if (rendered != null) return rendered;
-        return containsNunjucks ? contextPlaceholder(this.protectMarkdownCode(value)) : value;
-      }
-      if (!containsNunjucks) return value;
-      if (segment.type === 'html-comment') return this.escapeComment(value);
-      if (segment.type === 'inline-code') return contextPlaceholder(this.prepareInlineCode(value));
-      return value;
-    }).join('');
-
-    if (!containsNunjucks) return contextual;
-
-    const tokens = scanNunjucks(contextual);
-    if (tokens.length === 0) return restoreContexts(contextual);
-
-    this.hasNunjucks = true;
-    const pairs = pairNunjucksBlocks(tokens);
-    let output = '';
-    let cursor = 0;
-
-    for (let index = 0; index < tokens.length; index++) {
-      const token = tokens[index];
-      if (token.start < cursor) continue;
-
-      output += contextual.slice(cursor, token.start);
-      const closingIndex = pairs.get(index);
-      if (closingIndex == null) {
-        output += this.escapeSwig(contextual.slice(token.start, token.end));
-        cursor = token.end;
+        if (rendered != null) {
+          contextReplacements.push({ start: segment.start, end: segment.end, value: rendered });
+        } else if (enableNunjucks && hasNunjucksSyntax(value)) {
+          contextReplacements.push({
+            start: segment.start,
+            end: segment.end,
+            value: this.protectMarkdownCode(value)
+          });
+        }
         continue;
       }
 
-      const closing = tokens[closingIndex];
-      output += this.escapeSwig(restoreContexts(contextual.slice(token.start, closing.end)));
-      cursor = closing.end;
-      index = closingIndex;
+      if (!enableNunjucks) continue;
+      if (segment.type === 'html-comment' && containsNunjucks) {
+        contextReplacements.push({
+          start: segment.start,
+          end: segment.end,
+          value: this.escapeComment(value)
+        });
+        continue;
+      }
+
+      if (segment.type === 'inline-code' && segment.nunjucks.length > 0) {
+        this.hasNunjucks = true;
+        if (!insideSwig && segment.rawBlocks.length > 0) {
+          const rawReplacements = segment.rawBlocks.map(block => ({
+            ...block,
+            value: this.escapeSwig(str.slice(block.start, block.end))
+          }));
+          contextReplacements.push({
+            start: segment.start,
+            end: segment.end,
+            value: applyReplacements(str, segment, rawReplacements)
+          });
+        }
+      }
     }
 
-    output += contextual.slice(cursor);
-    return restoreContexts(output);
+    const replacements: Replacement[] = [];
+    let contextIndex = 0;
+    for (const swigRange of swigRanges) {
+      while (contextReplacements[contextIndex]?.end <= swigRange.start) {
+        replacements.push(contextReplacements[contextIndex++]);
+      }
+
+      const inner: Replacement[] = [];
+      while (contextReplacements[contextIndex]?.start < swigRange.end) {
+        inner.push(contextReplacements[contextIndex++]);
+      }
+      replacements.push({
+        ...swigRange,
+        value: this.escapeSwig(applyReplacements(str, swigRange, inner))
+      });
+    }
+    replacements.push(...contextReplacements.slice(contextIndex));
+
+    return applyReplacements(str, { start: 0, end: str.length }, replacements);
   }
 }
 
