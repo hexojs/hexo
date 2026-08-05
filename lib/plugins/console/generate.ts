@@ -170,8 +170,9 @@ class Generator {
       const task = (fn, path) => () => fn.call(this, path);
       const doTask = fn => fn();
       const routeList = route.list();
+      const routeSet = new Set(routeList);
       const publicFiles = Cache.filter(item => item._id.startsWith('public/')).map(item => item._id.substring(7));
-      const tasks = publicFiles.filter(path => !routeList.includes(path))
+      const tasks = publicFiles.filter(path => !routeSet.has(path))
         // Clean files
         .map(path => task(this.deleteFile, path))
         // Generate files

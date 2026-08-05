@@ -10,6 +10,7 @@ import type Hexo from '../../hexo';
 import type { Stats } from 'fs';
 import { PostAssetSchema, PostSchema } from '../../types';
 import type Document from 'warehouse/dist/document';
+import SourceIdIndex from './source_id_index';
 
 const postDir = '_posts/';
 const draftDir = '_drafts/';
@@ -26,6 +27,8 @@ const preservedKeys = {
 };
 
 export = (ctx: Hexo) => {
+  const postSourceIndex = new SourceIdIndex(ctx.model('Post'));
+
   return {
     pattern: new Pattern(path => {
       if (isTmpFile(path)) return;
@@ -59,7 +62,7 @@ export = (ctx: Hexo) => {
 
     process: function postProcessor(file: _File) {
       if (file.params.renderable) {
-        return processPost(ctx, file);
+        return processPost(ctx, file, postSourceIndex);
       } else if (ctx.config.post_asset_folder) {
         return processAsset(ctx, file);
       }
@@ -67,10 +70,10 @@ export = (ctx: Hexo) => {
   };
 };
 
-function processPost(ctx: Hexo, file: _File) {
+function processPost(ctx: Hexo, file: _File, sourceIndex: SourceIdIndex<PostSchema>) {
   const Post = ctx.model('Post');
   const { path } = file.params;
-  const doc = Post.findOne({source: file.path});
+  const doc = sourceIndex.find(file.path);
   const { config } = ctx;
   const { timezone, updated_option, use_slug_as_post_title } = config;
 
@@ -82,7 +85,10 @@ function processPost(ctx: Hexo, file: _File) {
 
   if (file.type === 'delete') {
     if (doc) {
-      return doc.remove();
+      return doc.remove().then(result => {
+        sourceIndex.delete(file.path);
+        return result;
+      });
     }
 
     return;
@@ -184,11 +190,15 @@ function processPost(ctx: Hexo, file: _File) {
     }
 
     return Post.insert(data);
-  }).then((doc: PostSchema) => Promise.all([
-    doc.setCategories(categories),
-    doc.setTags(tags),
-    scanAssetDir(ctx, doc)
-  ]));
+  }).then((doc: PostSchema) => {
+    sourceIndex.set(doc);
+
+    return Promise.all([
+      doc.setCategories(categories),
+      doc.setTags(tags),
+      scanAssetDir(ctx, doc)
+    ]);
+  });
 }
 
 function parseFilename(config: string, path: string) {

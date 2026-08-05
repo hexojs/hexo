@@ -134,6 +134,25 @@ describe('generate', () => {
     ]);
   });
 
+  it('delete only stale generated files', async () => {
+    let routes = ['existing.txt', 'deleted.txt'];
+    hexo.extend.generator.register('stale_routes', () => routes.map(path => ({
+      path,
+      data: path
+    })));
+
+    await generate();
+    routes = ['existing.txt'];
+    await generate();
+
+    const result = await BluebirdPromise.all([
+      exists(join(hexo.public_dir, 'existing.txt')),
+      exists(join(hexo.public_dir, 'deleted.txt'))
+    ]);
+    result[0].should.be.true;
+    result[1].should.be.false;
+  });
+
   it('force regenerate', async () => {
     const src = join(hexo.source_dir, 'test.txt');
     const dest = join(hexo.public_dir, 'test.txt');
