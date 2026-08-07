@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { Readable } from 'stream';
 import { emptyDir, exists, mkdirs, readFile, rmdir, stat, unlink, writeFile } from 'hexo-fs';
 import BluebirdPromise from 'bluebird';
 import { spy, useFakeTimers } from 'sinon';
@@ -302,6 +303,37 @@ describe('generate', () => {
       ]
     );
     return generate({ bail: true });
+  });
+
+  it('should only concatenate multiple chunks before writing', async () => {
+    hexo.extend.generator.register('resource', () => [
+      {
+        path: 'single-chunk',
+        data: Buffer.from('single')
+      },
+      {
+        path: 'multiple-chunks',
+        data: () => Readable.from([Buffer.from('multiple'), Buffer.from('-chunks')])
+      }
+    ]);
+
+    const concatSpy = spy(Buffer, 'concat');
+
+    try {
+      await generate({ bail: true });
+      concatSpy.calledOnce.should.be.true;
+      concatSpy.firstCall.args[0].should.have.lengthOf(2);
+    } finally {
+      concatSpy.restore();
+    }
+
+    const [singleChunk, multipleChunks] = await BluebirdPromise.all([
+      readFile(join(hexo.public_dir, 'single-chunk')),
+      readFile(join(hexo.public_dir, 'multiple-chunks'))
+    ]);
+
+    singleChunk.should.eql('single');
+    multipleChunks.should.eql('multiple-chunks');
   });
 
   it('should generate all files even when concurrency is set', async () => {
