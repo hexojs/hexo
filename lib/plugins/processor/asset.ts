@@ -8,10 +8,13 @@ import type { _File } from '../../box';
 import type Hexo from '../../hexo';
 import type { Stats } from 'fs';
 import { PageSchema } from '../../types';
+import SourceIdIndex from './source_id_index';
 
 export = (ctx: Hexo) => {
   let codeDir = ctx.config.code_dir;
   if (!codeDir.endsWith('/')) codeDir += '/';
+  const pageSourceIndex = new SourceIdIndex(ctx.model('Page'));
+
   return {
     pattern: new Pattern(path => {
       if (isExcludedFile(path, ctx.config)) return;
@@ -24,7 +27,7 @@ export = (ctx: Hexo) => {
 
     process: function assetProcessor(file: _File) {
       if (file.params.renderable) {
-        return processPage(ctx, file);
+        return processPage(ctx, file, pageSourceIndex);
       }
 
       return processAsset(ctx, file);
@@ -32,10 +35,10 @@ export = (ctx: Hexo) => {
   };
 };
 
-function processPage(ctx: Hexo, file: _File) {
+function processPage(ctx: Hexo, file: _File, sourceIndex: SourceIdIndex<PageSchema>) {
   const Page = ctx.model('Page');
   const { path } = file;
-  const doc = Page.findOne({source: path});
+  const doc = sourceIndex.find(path);
   const { config } = ctx;
   const { timezone } = config;
   const updated_option = config.updated_option;
@@ -46,7 +49,10 @@ function processPage(ctx: Hexo, file: _File) {
 
   if (file.type === 'delete') {
     if (doc) {
-      return doc.remove();
+      return doc.remove().then(result => {
+        sourceIndex.delete(path);
+        return result;
+      });
     }
 
     return;
@@ -109,6 +115,9 @@ function processPage(ctx: Hexo, file: _File) {
     }
 
     return Page.insert(data);
+  }).then((doc: PageSchema) => {
+    sourceIndex.set(doc);
+    return doc;
   });
 }
 

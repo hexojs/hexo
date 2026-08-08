@@ -3,7 +3,7 @@ import type Hexo from '../../../hexo';
 import type { RenderData } from '../../../types';
 
 let EXTERNAL_LINK_POST_ENABLED = true;
-const rATag = /<a(?:\s+?|\s+?[^<>]+?\s+?)href=["']((?:https?:|\/\/)[^<>"']+)["'][^<>]*>/gi;
+const rATag = /<a\s[^<>]*?href=["']((?:https?:|\/\/)[^<>"']+)["'][^<>]*>/gi;
 const rTargetAttr = /target=/i;
 const rRelAttr = /rel=/i;
 const rRelStrAttr = /rel=["']([^<>"']*)["']/i;
@@ -23,7 +23,7 @@ function externalLinkFilter(this: Hexo, data: RenderData): void {
 
     if (rRelAttr.test(str)) {
       str = str.replace(rRelStrAttr, (relStr, rel) => {
-        return rel.includes('noopenner') ? relStr : `rel="${rel} noopener"`;
+        return rel.includes('noopener') ? relStr : `rel="${rel} noopener"`;
       });
       return str.replace('href=', 'target="_blank" href=');
     }
