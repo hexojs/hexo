@@ -102,12 +102,14 @@ class Generator {
         return;
       }
 
+      const data = buffers.length > 1 ? Buffer.concat(buffers) : buffers[0] || Buffer.alloc(0);
+
       // Save new hash to cache
       return Cache.save({
         _id: cacheId,
         hash
       }).then(() => // Write cache data to public folder
-        writeFile(dest, Buffer.concat(buffers))).then(() => {
+        writeFile(dest, data)).then(() => {
         log.info('Generated: %s', magenta(path));
         return true;
       });

@@ -197,7 +197,7 @@ function processPost(ctx: Hexo, file: _File, sourceIndex: SourceIdIndex<PostSche
       doc.setCategories(categories),
       doc.setTags(tags),
       scanAssetDir(ctx, doc)
-    ]);
+    ]).then(() => markFuturePostDirty(ctx, file, doc));
   });
 }
 
@@ -281,6 +281,19 @@ function shouldSkipAsset(ctx: Hexo, post: PostSchema, asset: Document<PostAssetS
   }
 
   return asset !== undefined; // skip already existing assets
+}
+
+function markFuturePostDirty(ctx: Hexo, file: _File, post: PostSchema) {
+  if (ctx.config.future || post.published === false || !post.date || post.date.valueOf() <= Date.now()) return;
+
+  const id = file.source.substring(ctx.base_dir.length).replace(/\\/g, '/');
+  const cache = ctx.model('Cache').findById(id);
+  if (!cache) return;
+
+  cache.hash = '';
+  cache.modified = 0;
+
+  return cache.save();
 }
 
 function processAsset(ctx: Hexo, file: _File) {
