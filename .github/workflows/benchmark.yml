@@ -41,8 +41,6 @@ jobs:
         os: [ubuntu-latest]
         node-version: ["20", "22", "24"]
       fail-fast: false
-    env:
-      comment_file: "tmp-comment-flamegraph-node${{ matrix.node-version }}.md"
     steps:
       - uses: actions/checkout@v7
       - name: Use Node.js ${{ matrix.node-version }}
@@ -59,23 +57,11 @@ jobs:
           mkdir -p ./flamegraph/
           mv ./.tmp-hexo-theme-unit-test/0x/ ./flamegraph/${{ matrix.node-version }}/
 
-      - name: save URL to file
-        if: ${{github.event_name != 'pull_request' }}
-        run: |
-          echo "https://${{ github.sha }}-hexo.surge.sh/${{ matrix.node-version }}/flamegraph.html" > ${{env.comment_file}}
-
-      - name: save URL to file
-        if: ${{github.event_name == 'pull_request' }}
-        run: |
-          echo "https://${{ github.event.number }}-pr-hexo.surge.sh/${{ matrix.node-version }}/flamegraph.html" > ${{env.comment_file}}
-
       - uses: actions/upload-artifact@v7
         with:
           retention-days: 1
-          name: comment-node${{ matrix.node-version }}
-          path: |
-            ${{env.comment_file}}
-            ./flamegraph/${{ matrix.node-version }}/
+          name: flamegraph-node${{ matrix.node-version }}
+          path: ./flamegraph/
 
   profiling-preview:
     needs: profiling
@@ -89,11 +75,11 @@ jobs:
       contents: read
     env:
       url: https://${{ github.sha }}-hexo.surge.sh/
-      comment_result: "tmp-comment-flamegraph.md"
     steps:
       - uses: actions/download-artifact@v8
         with:
-          pattern: "comment-*"
+          pattern: "flamegraph-*"
+          path: ./flamegraph/
           merge-multiple: true
 
       - name: Publish flamegraph to ${{ env.url }}
@@ -106,23 +92,10 @@ jobs:
 
       - name: Print full URLs
         run: |
-          echo "## Flamegraph" > ${{ env.comment_result }}
-          echo "" >> ${{ env.comment_result }}
-          cat tmp-comment-flamegraph-*.md >> ${{ env.comment_result }}
-
-          cat "${{ env.comment_result }}" | tee -a "$GITHUB_STEP_SUMMARY"
-
-  number:
-    runs-on: ubuntu-latest
-    if: ${{github.event_name == 'pull_request' }}
-    env:
-      pr_number_file: tmp-comment-pr_number
-    steps:
-      - name: save PR number to file
-        run: |
-          echo -n "${{ github.event.number }}" > ${{env.pr_number_file}}
-      - uses: actions/upload-artifact@v7
-        with:
-          retention-days: 1
-          name: comment-pr_number
-          path: ${{env.pr_number_file}}
+          {
+            echo "## Flamegraph"
+            echo ""
+            for node_version in 20 22 24; do
+              echo "${{ env.url }}${node_version}/flamegraph.html"
+            done
+          } | tee -a "$GITHUB_STEP_SUMMARY"
