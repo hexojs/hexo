@@ -3,12 +3,12 @@ import moment from 'moment';
 import Promise from 'bluebird';
 import { join, extname, basename } from 'path';
 import { magenta } from 'picocolors';
-import { load } from 'js-yaml';
 import { slugize, escapeRegExp, deepMerge} from 'hexo-util';
 import { copyDir, exists, listDir, mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
 import { parse as yfmParse, split as yfmSplit, stringify as yfmStringify } from 'hexo-front-matter';
 import type Hexo from './index';
 import type { NodeJSLikeCallback, RenderData } from '../types';
+import parseYaml from './yaml';
 
 const preservedKeys = ['title', 'slug', 'path', 'layout', 'date', 'content'];
 
@@ -454,7 +454,7 @@ class Post {
       const jsonMode = separator.startsWith(';');
 
       // Parse front-matter
-      let obj = jsonMode ? JSON.parse(`{${frontMatter}}`) : load(frontMatter);
+      let obj = jsonMode ? JSON.parse(`{${frontMatter}}`) : parseYaml(frontMatter);
 
       obj = deepMerge(obj, Object.fromEntries(Object.entries(data).filter(([key, value]) => !preservedKeys.includes(key) && value != null)));
 

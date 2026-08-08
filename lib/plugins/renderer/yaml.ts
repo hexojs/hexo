@@ -1,22 +1,43 @@
-import yaml from 'js-yaml';
 import { escape } from 'hexo-front-matter';
-import logger from 'hexo-log';
+import type { ScalarTag } from 'yaml';
 import type { StoreFunctionData } from '../../extend/renderer';
+import parseYaml from '../../hexo/yaml';
 
-let schema: yaml.Schema;
-// FIXME: workaround for https://github.com/hexojs/hexo/issues/4917
-try {
-  schema = yaml.DEFAULT_SCHEMA.extend(require('js-yaml-js-types').all);
-} catch (e) {
-  if (e instanceof yaml.YAMLException) {
-    logger().warn('YAMLException: please see https://github.com/hexojs/hexo/issues/4917');
-  } else {
-    throw e;
+const jsRegexp: ScalarTag = {
+  identify: value => value instanceof RegExp,
+  tag: 'tag:yaml.org,2002:js/regexp',
+  resolve(value, onError) {
+    if (!value) {
+      onError('Invalid RegExp value');
+      return value;
+    }
+
+    let regexp = value;
+    let modifiers = '';
+
+    if (regexp[0] === '/') {
+      const tail = /\/([gim]*)$/.exec(regexp);
+      if (tail) modifiers = tail[1];
+
+      if (regexp[regexp.length - modifiers.length - 1] !== '/') {
+        onError('Invalid RegExp value');
+        return value;
+      }
+
+      regexp = regexp.slice(1, regexp.length - modifiers.length - 1);
+    }
+
+    try {
+      return new RegExp(regexp, modifiers);
+    } catch (error) {
+      onError(error instanceof Error ? error.message : 'Invalid RegExp value');
+      return value;
+    }
   }
-}
+};
 
 function yamlHelper(data: StoreFunctionData): any {
-  return yaml.load(escape(data.text), { schema });
+  return parseYaml(escape(data.text), { customTags: [jsRegexp] });
 }
 
 export = yamlHelper;

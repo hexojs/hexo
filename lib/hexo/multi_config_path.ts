@@ -1,8 +1,9 @@
 import { isAbsolute, resolve, join, extname } from 'path';
 import { existsSync, readFileSync, writeFileSync } from 'hexo-fs';
-import yml from 'js-yaml';
+import { stringify } from 'yaml';
 import { deepMerge } from 'hexo-util';
 import type Hexo from './index';
+import parseYaml from './yaml';
 
 export = (ctx: Hexo) => function multiConfigPath(base: string, configPaths?: string, outputDir?: string): string {
   const { log } = ctx;
@@ -47,10 +48,10 @@ export = (ctx: Hexo) => function multiConfigPath(base: string, configPaths?: str
     const ext = extname(paths[i]).toLowerCase();
 
     if (ext === '.yml') {
-      combinedConfig = deepMerge(combinedConfig, yml.load(file));
+      combinedConfig = deepMerge(combinedConfig, parseYaml(file));
       count++;
     } else if (ext === '.json') {
-      combinedConfig = deepMerge(combinedConfig, yml.load(file, {json: true}));
+      combinedConfig = deepMerge(combinedConfig, parseYaml(file, { uniqueKeys: false }));
       count++;
     } else {
       log.w(`Config file ${paths[i]} not supported type.`);
@@ -69,7 +70,7 @@ export = (ctx: Hexo) => function multiConfigPath(base: string, configPaths?: str
 
   log.d(`Writing _multiconfig.yml to ${outputPath}`);
 
-  writeFileSync(outputPath, yml.dump(combinedConfig));
+  writeFileSync(outputPath, stringify(combinedConfig));
 
   // write file and return path
   return outputPath;
