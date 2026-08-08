@@ -76,6 +76,13 @@ njkRenderer.compile = (data: StoreFunctionData): (locals: any) => string => {
   const { env, template } = njkCompile(data);
 
   return locals => {
+    // The top-level template is compiled directly and is not stored in the loader cache,
+    // so invalidating the cache here does not recompile it. This intentionally reloads
+    // extends/include/import dependencies before every render to preserve `hexo server`
+    // hot updates because the renderer has no signal indicating that a dependency changed.
+    // The trade-off is that unchanged dependencies are also recompiled on every render.
+    // If a reliable theme-template change signal becomes available, invalidate the cache
+    // in response to that signal instead of removing this call outright.
     env.invalidateCache();
     return template.render(locals);
   };
