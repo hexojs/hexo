@@ -99,6 +99,27 @@ describe('code', () => {
     await unlink(file.source);
   });
 
+  it('type: create - absolute source_dir', async () => {
+    const body = 'test';
+
+    const file = newFile({
+      path: 'users.json',
+      type: 'create'
+    });
+
+    hexo.config.source_dir = join(baseDir, defaults.source_dir);
+
+    await writeFile(file.source, body);
+    await process(file);
+    const data = Code.findOne({ slug: `${codeDir}/users.json` });
+
+    should.exist(data);
+    data.content.should.eql(body);
+
+    await data.remove();
+    await unlink(file.source);
+  });
+
   it('type: update', async () => {
     const body = '{{ 1 }}';
 

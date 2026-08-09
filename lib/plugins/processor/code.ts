@@ -15,7 +15,7 @@ export = (ctx: Hexo) => {
     }),
     process: function codeProcessor(file: _File) {
       const id = relative(ctx.base_dir, file.source).replace(/\\/g, '/');
-      const slug = relative(ctx.config.source_dir, id).replace(/\\/g, '/');
+      const slug = file.path;
       const Code = ctx.model('Code');
       const doc = Code.findById(id);
 
