@@ -1,7 +1,8 @@
 import { join } from 'path';
+import { Readable } from 'stream';
 import { emptyDir, exists, mkdirs, readFile, rmdir, stat, unlink, writeFile } from 'hexo-fs';
 import BluebirdPromise from 'bluebird';
-import { spy } from 'sinon';
+import { spy, useFakeTimers } from 'sinon';
 import chai from 'chai';
 const should = chai.should();
 import Hexo from '../../../lib/hexo';
@@ -132,6 +133,25 @@ describe('generate', () => {
       unlink(src),
       unlink(dest)
     ]);
+  });
+
+  it('delete only stale generated files', async () => {
+    let routes = ['existing.txt', 'deleted.txt'];
+    hexo.extend.generator.register('stale_routes', () => routes.map(path => ({
+      path,
+      data: path
+    })));
+
+    await generate();
+    routes = ['existing.txt'];
+    await generate();
+
+    const result = await BluebirdPromise.all([
+      exists(join(hexo.public_dir, 'existing.txt')),
+      exists(join(hexo.public_dir, 'deleted.txt'))
+    ]);
+    result[0].should.be.true;
+    result[1].should.be.false;
   });
 
   it('force regenerate', async () => {
@@ -304,9 +324,118 @@ describe('generate', () => {
     return generate({ bail: true });
   });
 
+  it('should only concatenate multiple chunks before writing', async () => {
+    hexo.extend.generator.register('resource', () => [
+      {
+        path: 'single-chunk',
+        data: Buffer.from('single')
+      },
+      {
+        path: 'multiple-chunks',
+        data: () => Readable.from([Buffer.from('multiple'), Buffer.from('-chunks')])
+      }
+    ]);
+
+    const concatSpy = spy(Buffer, 'concat');
+
+    try {
+      await generate({ bail: true });
+      concatSpy.calledOnce.should.be.true;
+      concatSpy.firstCall.args[0].should.have.lengthOf(2);
+    } finally {
+      concatSpy.restore();
+    }
+
+    const [singleChunk, multipleChunks] = await BluebirdPromise.all([
+      readFile(join(hexo.public_dir, 'single-chunk')),
+      readFile(join(hexo.public_dir, 'multiple-chunks'))
+    ]);
+
+    singleChunk.should.eql('single');
+    multipleChunks.should.eql('multiple-chunks');
+  });
+
   it('should generate all files even when concurrency is set', async () => {
     await generate({ concurrency: '1' });
     return generate({ concurrency: '2' });
+  });
+
+});
+
+describe('generate - future posts', () => {
+  let hexo: Hexo, generate: (...args: OriginalParams) => OriginalReturn;
+
+  beforeEach(async function() {
+    this.timeout(30000);
+    hexo = new Hexo(join(__dirname, 'generate_future_test'), {silent: true});
+    generate = generateConsole.bind(hexo);
+
+    await mkdirs(hexo.base_dir);
+    await emptyDir(hexo.base_dir);
+    await hexo.init();
+  });
+
+  afterEach(async () => {
+    const exist = await exists(hexo.base_dir);
+    if (exist) {
+      await emptyDir(hexo.base_dir);
+      await rmdir(hexo.base_dir);
+    }
+  });
+
+  it('reprocesses future posts after publish date passes', async () => {
+    const clock = useFakeTimers({
+      now: new Date('2098-12-31T18:30:00.000Z'),
+      toFake: ['Date']
+    });
+    const baseDir = join(__dirname, 'generate_future_test');
+
+    try {
+      hexo.config.future = false;
+      hexo.config.new_post_name = ':title.html';
+
+      await BluebirdPromise.all([
+        writeFile(join(hexo.theme_dir, 'layout', 'post.html'), '<%- page.content %>'),
+        writeFile(join(hexo.source_dir, '_posts', 'scheduled.html'), [
+          '---',
+          'title: scheduled',
+          'date: 2098-12-31T18:31:00.000Z',
+          'categories:',
+          '  - web',
+          'tags:',
+          '  - css',
+          '---',
+          'body'
+        ].join('\n'))
+      ]);
+
+      await generate();
+      hexo.locals.invalidate();
+      hexo.locals.toObject().posts.toArray().should.have.lengthOf(0);
+      await hexo.database.save();
+
+      clock.setSystemTime(new Date('2098-12-31T18:32:00.000Z'));
+      hexo = new Hexo(baseDir, {silent: true});
+      generate = generateConsole.bind(hexo);
+      await hexo.init();
+      hexo.config.future = false;
+      hexo.config.new_post_name = ':title.html';
+
+      await generate();
+      hexo.locals.invalidate();
+      const locals = hexo.locals.toObject();
+      const posts = locals.posts.toArray();
+      const tags = locals.tags.toArray();
+      const categories = locals.categories.toArray();
+
+      posts.should.have.lengthOf(1);
+      tags.should.have.lengthOf(1);
+      tags.map(tag => tag.name).should.eql(['css']);
+      categories.should.have.lengthOf(1);
+      categories.map(category => category.name).should.eql(['web']);
+    } finally {
+      clock.restore();
+    }
   });
 });
 

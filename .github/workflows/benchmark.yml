@@ -24,7 +24,7 @@ jobs:
         node-version: ["20", "22", "24"]
       fail-fast: false
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:
@@ -42,9 +42,9 @@ jobs:
         node-version: ["20", "22", "24"]
       fail-fast: false
     env:
-      comment_file: ".tmp-comment-flamegraph-node${{ matrix.node-version }}.md"
+      comment_file: "tmp-comment-flamegraph-node${{ matrix.node-version }}.md"
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v6
         with:
@@ -66,7 +66,7 @@ jobs:
         run: |
           echo "https://${{ github.sha }}-${{ matrix.node-version }}-hexo.surge.sh/flamegraph.html" > ${{env.comment_file}}
 
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         if: ${{github.event_name == 'pull_request' }}
         with:
           retention-days: 1
@@ -77,12 +77,12 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{github.event_name == 'pull_request' }}
     env:
-      pr_number_file: .tmp-comment-pr_number
+      pr_number_file: tmp-comment-pr_number
     steps:
       - name: save PR number to file
         run: |
           echo -n "${{ github.event.number }}" > ${{env.pr_number_file}}
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v7
         with:
           retention-days: 1
           name: comment-pr_number
