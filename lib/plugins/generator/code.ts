@@ -1,7 +1,7 @@
 import type Hexo from '../../hexo';
 import Promise from 'bluebird';
 import { exists } from 'hexo-fs';
-import { CodeSchema } from '../../types';
+import type { CodeSchema } from '../../types';
 import type Document from 'warehouse/dist/document';
 
 interface CodeData {

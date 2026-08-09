@@ -77,8 +77,8 @@ describe('code', () => {
 
     data.content.should.eql('{{ 1 }}');
 
-    data.remove();
-    unlink(file.source);
+    await data.remove();
+    await unlink(file.source);
   });
 
   it('type: create - non-renderable', async () => {
@@ -95,8 +95,8 @@ describe('code', () => {
 
     data.content.should.eql('{a: 1}');
 
-    data.remove();
-    unlink(file.source);
+    await data.remove();
+    await unlink(file.source);
   });
 
   it('type: update', async () => {
@@ -121,8 +121,8 @@ describe('code', () => {
 
     data.content.should.eql('{{ 1 }}');
 
-    data.remove();
-    unlink(file.source);
+    await data.remove();
+    await unlink(file.source);
   });
 
   it('type: skip', async () => {
@@ -140,7 +140,7 @@ describe('code', () => {
     const data = Code.findOne({ slug: `${codeDir}/users.j2` });
     await process(file);
     should.exist(data);
-    data.remove();
+    await data.remove();
   });
 
   it('type: delete', async () => {

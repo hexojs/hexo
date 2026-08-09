@@ -36,10 +36,12 @@ describe('code', () => {
       writeFile(source, content)
     ]);
     const data = await generator();
-    data[0].path.should.eql(`${codeDir}/${path}`);
-    data[0].data.modified.should.be.true;
+    const item = data.find(d => d.path === `${codeDir}/${path}`);
+    should.exist(item);
+    item.path.should.eql(`${codeDir}/${path}`);
+    item.data.modified.should.be.true;
 
-    const result = await data[0].data.data;
+    const result = await item.data.data;
     result.should.eql(content);
 
     await Promise.all([
@@ -63,10 +65,12 @@ describe('code', () => {
       writeFile(source, content)
     ]);
     const data = await generator();
-    data[0].path.should.eql(`${codeDir}/${path}`);
-    data[0].data.modified.should.be.true;
+    const item = data.find(d => d.path === `${codeDir}/${path}`);
+    should.exist(item);
+    item.path.should.eql(`${codeDir}/${path}`);
+    item.data.modified.should.be.true;
 
-    const result = await data[0].data.data;
+    const result = await item.data.data;
     result.should.eql(content);
 
     await Promise.all([
@@ -100,7 +104,9 @@ describe('code', () => {
       writeFile(source, '')
     ]);
     const data = await generator();
-    data[0].path.should.eql(`${codeDir}/${path}`);
+    const item = data.find(d => d.path === `${codeDir}/${path}`);
+    should.exist(item);
+    item.path.should.eql(`${codeDir}/${path}`);
 
     await Promise.all([
       Code.removeById(`${defaults.source_dir}/${codeDir}/${path}`),
