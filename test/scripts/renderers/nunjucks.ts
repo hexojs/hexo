@@ -1,6 +1,10 @@
 import r from '../../../lib/plugins/renderer/nunjucks';
+import nunjucks from 'nunjucks';
 import { dirname, join } from 'path';
+import { mkdtempSync, rmSync, writeFileSync } from 'fs';
+import { tmpdir } from 'os';
 import chai from 'chai';
+import { spy } from 'sinon';
 const _should = chai.should();
 
 
@@ -46,6 +50,71 @@ describe('nunjucks', () => {
       name: 'world'
     }).should.eql('Hello world!\n');
   });
+
+  it('compile template only once', () => {
+    const compile = spy(nunjucks, 'compile');
+
+    try {
+      const render = r.compile({
+        text: 'Hello {{ name }}!'
+      });
+
+      render({ name: 'world' }).should.eql('Hello world!');
+      render({ name: 'Hexo' }).should.eql('Hello Hexo!');
+      compile.calledOnce.should.be.true;
+    } finally {
+      compile.restore();
+    }
+  });
+
+  const dependencyCases = [
+    {
+      name: 'include',
+      source: '{%- include \'dependency.njk\' -%}',
+      firstDependency: 'one',
+      secondDependency: 'two',
+      firstResult: 'one',
+      secondResult: 'two'
+    },
+    {
+      name: 'extends',
+      source: '{% extends \'dependency.njk\' %}{% block body %}body{% endblock %}',
+      firstDependency: 'one:{% block body %}{% endblock %}',
+      secondDependency: 'two:{% block body %}{% endblock %}',
+      firstResult: 'one:body',
+      secondResult: 'two:body'
+    },
+    {
+      name: 'import',
+      source: '{%- import \'dependency.njk\' as dependency -%}{{ dependency.value() }}',
+      firstDependency: '{% macro value() %}one{% endmacro %}',
+      secondDependency: '{% macro value() %}two{% endmacro %}',
+      firstResult: 'one',
+      secondResult: 'two'
+    }
+  ];
+
+  for (const dependencyCase of dependencyCases) {
+    it(`invalidate ${dependencyCase.name} cache before rendering`, () => {
+      const fixtureDir = mkdtempSync(join(tmpdir(), 'hexo-nunjucks-'));
+      const templatePath = join(fixtureDir, 'template.njk');
+      const dependencyPath = join(fixtureDir, 'dependency.njk');
+
+      try {
+        writeFileSync(dependencyPath, dependencyCase.firstDependency);
+        const render = r.compile({
+          path: templatePath,
+          text: dependencyCase.source
+        });
+
+        render({}).should.eql(dependencyCase.firstResult);
+        writeFileSync(dependencyPath, dependencyCase.secondDependency);
+        render({}).should.eql(dependencyCase.secondResult);
+      } finally {
+        rmSync(fixtureDir, { recursive: true });
+      }
+    });
+  }
 
   describe('nunjucks filters', () => {
     const forLoop = [
