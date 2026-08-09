@@ -47,6 +47,22 @@ describe('code', () => {
     pattern.match('users.json').should.eql(false);
   });
 
+  it('pattern - exclude tmp file', () => {
+    pattern.match(`${codeDir}/users.json~`).should.eql(false);
+    pattern.match(`${codeDir}/users.json%`).should.eql(false);
+  });
+
+  it('pattern - exclude hidden file', () => {
+    pattern.match(`${codeDir}/_users.json`).should.eql(false);
+    pattern.match(`${codeDir}/.users.json`).should.eql(false);
+  });
+
+  it('pattern - exclude file by config', () => {
+    hexo.config.exclude = ['downloads/code/*.log'];
+    pattern.match(`${codeDir}/users.log`).should.eql(false);
+    hexo.config.exclude = [];
+  });
+
   it('type: create - renderable', async () => {
     const body = '{{ 1 }}';
 

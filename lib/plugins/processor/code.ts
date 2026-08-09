@@ -1,5 +1,6 @@
 import { Pattern } from 'hexo-util';
 import { relative } from 'path';
+import { isExcludedFile } from './common';
 import type Hexo from '../../hexo';
 import type { _File } from '../../box';
 
@@ -8,7 +9,9 @@ export = (ctx: Hexo) => {
   if (!codeDir.endsWith('/')) codeDir += '/';
   return {
     pattern: new Pattern(path => {
-      return path.startsWith(codeDir);
+      if (!path.startsWith(codeDir)) return false;
+      if (isExcludedFile(path, ctx.config)) return false;
+      return true;
     }),
     process: function codeProcessor(file: _File) {
       const id = relative(ctx.base_dir, file.source).replace(/\\/g, '/');
