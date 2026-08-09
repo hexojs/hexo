@@ -15,26 +15,32 @@ export = (ctx: Hexo) => function partial(this: LocalsType, name: string, locals?
   const currentView = this.filename.substring(viewDir.length);
   const path = join(dirname(currentView), name);
   const view = ctx.theme.getView(path) || ctx.theme.getView(name);
-  const viewLocals: Record<string, any> = {};
 
   if (!view) {
     throw new Error(`Partial ${name} does not exist. (in ${currentView})`);
   }
 
-  if (options.only) {
-    Object.assign(viewLocals, locals);
-  } else {
-    Object.assign(viewLocals, this, locals);
-  }
+  // Build locals lazily so a fragment cache hit does not copy the render context.
+  const render = () => {
+    const viewLocals: Record<string, any> = {};
 
-  // Partial don't need layout
-  viewLocals.layout = false;
+    if (options.only) {
+      Object.assign(viewLocals, locals);
+    } else {
+      Object.assign(viewLocals, this, locals);
+    }
+
+    // Partial don't need layout
+    viewLocals.layout = false;
+
+    return view.renderSync(viewLocals);
+  };
 
   if (cache) {
     const cacheId = typeof cache === 'string' ? cache : view.path;
 
-    return this.fragment_cache(cacheId, () => view.renderSync(viewLocals));
+    return this.fragment_cache(cacheId, render);
   }
 
-  return view.renderSync(viewLocals);
+  return render();
 };
