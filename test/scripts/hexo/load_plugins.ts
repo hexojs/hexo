@@ -121,6 +121,81 @@ describe('Load plugins', () => {
     });
   });
 
+  it('load ES module plugins with an .mjs entry', async () => {
+    const name = 'hexo-esm-plugin-test';
+    const pluginDir = join(hexo.plugin_dir, name);
+    const path = join(pluginDir, 'index.mjs');
+
+    await BluebirdPromise.all([
+      createPackageFile(name),
+      writeFile(join(pluginDir, 'package.json'), JSON.stringify({
+        name,
+        main: 'index.mjs'
+      })),
+      writeFile(join(pluginDir, 'value.mjs'), 'export const value = 42;'),
+      writeFile(path, [
+        'import { value } from "./value.mjs";',
+        'await Promise.resolve();',
+        'export default async function initialize(hexo) {',
+        '  await Promise.resolve();',
+        '  hexo._script_test = { value, url: import.meta.url };',
+        '}'
+      ].join('\n'))
+    ]);
+
+    await loadPlugins(hexo);
+
+    hexo._script_test.value.should.eql(42);
+    hexo._script_test.url.should.match(/^file:/);
+    delete hexo._script_test;
+    return rmdir(pluginDir);
+  });
+
+  it('load ES module plugins from a type module package', async () => {
+    const name = 'hexo-esm-js-plugin-test';
+    const pluginDir = join(hexo.plugin_dir, name);
+    const path = join(pluginDir, 'index.js');
+
+    await BluebirdPromise.all([
+      createPackageFile(name),
+      writeFile(join(pluginDir, 'package.json'), JSON.stringify({
+        name,
+        type: 'module',
+        main: 'index.js'
+      })),
+      writeFile(path, [
+        'export default function initialize(hexo) {',
+        '  hexo._script_test = true;',
+        '}'
+      ].join('\n'))
+    ]);
+
+    await loadPlugins(hexo);
+
+    hexo._script_test.should.eql(true);
+    delete hexo._script_test;
+    return rmdir(pluginDir);
+  });
+
+  it('reject ES module plugins without a default initializer', async () => {
+    const pluginDir = join(hexo.plugin_dir, 'hexo-invalid-esm-plugin-test');
+    const path = join(pluginDir, 'index.mjs');
+    let error: Error | undefined;
+
+    await writeFile(path, 'export const value = true;');
+
+    try {
+      await hexo.loadPlugin(path);
+    } catch (err) {
+      error = err as Error;
+    }
+
+    should.exist(error);
+    error.should.be.instanceOf(TypeError);
+    error.message.should.contain('must export a default initialization function');
+    return rmdir(pluginDir);
+  });
+
   it('load scoped plugins', () => {
     const name = '@some-scope/hexo-plugin-test';
     const path = join(hexo.plugin_dir, name, 'index.js');
