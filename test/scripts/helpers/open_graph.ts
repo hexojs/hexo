@@ -448,6 +448,29 @@ describe('open_graph', () => {
     result.should.have.string(meta({property: 'og:description', content: escaped}));
   });
 
+  it('fediverse_creator - string', () => {
+    const result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    }, {fediverse_creator: '@hexo@fosstodon.org'});
+
+    result.should.have.string(meta({name: 'fediverse:creator', content: '@hexo@fosstodon.org'}));
+  });
+
+  it('fediverse_creator - array', () => {
+    const result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    }, {fediverse_creator: ['@hexo@fosstodon.org', '@hexo@mastodon.social']});
+
+    result.should.have.string([
+      meta({name: 'fediverse:creator', content: '@hexo@fosstodon.org'}),
+      meta({name: 'fediverse:creator', content: '@hexo@mastodon.social'})
+    ].join('\n'));
+  });
+
   it('twitter_card - options', () => {
     const result = openGraph.call({
       page: {},
