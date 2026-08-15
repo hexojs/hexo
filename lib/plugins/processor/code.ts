@@ -5,10 +5,10 @@ import type Hexo from '../../hexo';
 import type { _File } from '../../box';
 
 export = (ctx: Hexo) => {
-  let codeDir = ctx.config.code_dir;
-  if (!codeDir.endsWith('/')) codeDir += '/';
   return {
     pattern: new Pattern(path => {
+      let codeDir = ctx.config.code_dir;
+      if (!codeDir.endsWith('/')) codeDir += '/';
       if (!path.startsWith(codeDir)) return false;
       if (isExcludedFile(path, ctx.config)) return false;
       return true;

@@ -63,6 +63,12 @@ describe('code', () => {
     hexo.config.exclude = [];
   });
 
+  it('pattern - custom code_dir', () => {
+    hexo.config.code_dir = 'snippets';
+    pattern.match('snippets/users.json').should.eql(true);
+    pattern.match(`${codeDir}/users.json`).should.eql(false);
+  });
+
   it('type: create - renderable', async () => {
     const body = '{{ 1 }}';
 

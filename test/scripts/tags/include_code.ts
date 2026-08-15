@@ -280,3 +280,33 @@ describe('include_code_j2', () => {
     result.should.eql(expected);
   });
 });
+
+describe('include_code_js with custom code_dir', () => {
+  const hexo = new Hexo(join(__dirname, 'include_code_custom_code_dir_test'));
+  require('../../../lib/plugins/highlight/')(hexo);
+  const includeCode = BluebirdPromise.method(tagIncludeCode(hexo)) as (arg1: string[]) => BluebirdPromise<string>;
+
+  const fixture = 'console.log(123);';
+
+  const code = args => includeCode(args.split(' '));
+
+  before(async () => {
+    await writeFile(join(hexo.base_dir, 'package.json'), '{"hexo": {"version": "0.0.0"}}\n');
+    await writeFile(join(hexo.base_dir, '_config.yml'), 'code_dir: snippets\n');
+    await writeFile(join(hexo.source_dir, 'snippets', 'test.js'), fixture);
+    await hexo.init();
+    await hexo.load();
+  });
+
+  after(() => rmdir(hexo.base_dir));
+
+  it('renders code from custom code_dir', async () => {
+    const expected = highlight(fixture, {
+      lang: 'js',
+      caption: '<span>test.js</span><a href="/snippets/test.js">view raw</a>'
+    });
+
+    const result = await code('test.js');
+    result.should.eql(expected);
+  });
+});

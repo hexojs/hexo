@@ -11,13 +11,13 @@ import { PageSchema } from '../../types';
 import SourceIdIndex from './source_id_index';
 
 export = (ctx: Hexo) => {
-  let codeDir = ctx.config.code_dir;
-  if (!codeDir.endsWith('/')) codeDir += '/';
   const pageSourceIndex = new SourceIdIndex(ctx.model('Page'));
 
   return {
     pattern: new Pattern(path => {
       if (isExcludedFile(path, ctx.config)) return;
+      let codeDir = ctx.config.code_dir;
+      if (!codeDir.endsWith('/')) codeDir += '/';
       if (path.startsWith(codeDir)) return;
 
       return {

@@ -69,6 +69,11 @@ describe('asset', () => {
     hexo.config.skip_render = ['fff/**'];
     pattern.match('fff/foo.json').should.have.property('renderable', false);
     hexo.config.skip_render = [];
+
+    // Custom code_dir
+    hexo.config.code_dir = 'snippets';
+    should.not.exist(pattern.match('snippets/foo.json'));
+    should.exist(pattern.match('foo.json'));
   });
 
   it('asset - type: create', async () => {
