@@ -3,6 +3,15 @@ import { readFileSync } from 'hexo-fs';
 import { dirname } from 'path';
 import type { StoreFunctionData } from '../../extend/renderer';
 
+interface CacheableEnvironment extends Environment {
+  invalidateCache(): void;
+}
+
+interface CompiledTemplate {
+  env: CacheableEnvironment;
+  template: nunjucks.Template;
+}
+
 function toArray(value) {
   if (Array.isArray(value)) {
     // Return if given value is an Array
@@ -42,27 +51,41 @@ const nunjucksAddFilter = (env: Environment): void => {
   env.addFilter('safedump', safeJsonStringify);
 };
 
-function njkCompile(data: StoreFunctionData): nunjucks.Template {
-  let env: Environment;
+function njkCompile(data: StoreFunctionData): CompiledTemplate {
+  let env: CacheableEnvironment;
   if (data.path) {
-    env = nunjucks.configure(dirname(data.path), nunjucksCfg);
+    env = nunjucks.configure(dirname(data.path), nunjucksCfg) as CacheableEnvironment;
   } else {
-    env = nunjucks.configure(nunjucksCfg);
+    env = nunjucks.configure(nunjucksCfg) as CacheableEnvironment;
   }
   nunjucksAddFilter(env);
 
   const text = 'text' in data ? data.text : readFileSync(data.path);
 
-  return nunjucks.compile(text, env, data.path);
+  return {
+    env,
+    template: nunjucks.compile(text, env, data.path)
+  };
 }
 
 function njkRenderer(data: StoreFunctionData, locals?: any): string {
-  return njkCompile(data).render(locals);
+  return njkCompile(data).template.render(locals);
 }
 
 njkRenderer.compile = (data: StoreFunctionData): (locals: any) => string => {
-  // Need a closure to keep the compiled template.
-  return locals => njkCompile(data).render(locals);
+  const { env, template } = njkCompile(data);
+
+  return locals => {
+    // The top-level template is compiled directly and is not stored in the loader cache,
+    // so invalidating the cache here does not recompile it. This intentionally reloads
+    // extends/include/import dependencies before every render to preserve `hexo server`
+    // hot updates because the renderer has no signal indicating that a dependency changed.
+    // The trade-off is that unchanged dependencies are also recompiled on every render.
+    // If a reliable theme-template change signal becomes available, invalidate the cache
+    // in response to that signal instead of removing this call outright.
+    env.invalidateCache();
+    return template.render(locals);
+  };
 };
 
 export = njkRenderer;
