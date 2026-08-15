@@ -162,12 +162,16 @@ describe('code', () => {
       _id: `${defaults.source_dir}/${codeDir}/users.j2`,
       slug: `${codeDir}/users.j2`,
       path: `${codeDir}/users.j2`,
+      modified: true,
       content: '{{ 1 }}'
     });
     const data = Code.findOne({ slug: `${codeDir}/users.j2` });
+    data.modified.should.eql(true);
     await process(file);
-    should.exist(data);
-    await data.remove();
+    const doc = Code.findById(`${defaults.source_dir}/${codeDir}/users.j2`);
+    should.exist(doc);
+    doc.modified.should.eql(false);
+    await doc.remove();
   });
 
   it('type: delete', async () => {

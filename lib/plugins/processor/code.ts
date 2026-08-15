@@ -28,7 +28,8 @@ export = (ctx: Hexo) => {
       }
 
       if (file.type === 'skip' && doc) {
-        return;
+        doc.modified = false;
+        return doc.save();
       }
 
       return file.read().then(content => {
