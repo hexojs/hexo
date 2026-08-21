@@ -94,5 +94,8 @@
   },
   "engines": {
     "node": ">=20.19.0"
+  },
+  "overrides": {
+    "nanoid": "5.1.16"
   }
 }
