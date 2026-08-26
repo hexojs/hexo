@@ -1,10 +1,10 @@
 import assert from 'assert';
 import moment from 'moment';
 import Promise from 'bluebird';
-import { join, extname, basename } from 'path';
+import { join, extname, basename, posix } from 'path';
 import { magenta } from 'picocolors';
 import { load } from 'js-yaml';
-import { slugize, escapeRegExp, deepMerge} from 'hexo-util';
+import { slugize, deepMerge} from 'hexo-util';
 import { copyDir, exists, listDir, mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
 import { parse as yfmParse, split as yfmSplit, stringify as yfmStringify } from 'hexo-front-matter';
 import type Hexo from './index';
@@ -360,6 +360,44 @@ const removeExtname = (str: string) => {
   return str.substring(0, str.length - extname(str).length);
 };
 
+const normalizeSourcePath = (str: string) => str.replace(/\\/g, '/').replace(/^(?:\.\/)+/, '');
+
+const removeSourceExtname = (str: string) => {
+  return str.substring(0, str.length - posix.extname(str).length);
+};
+
+const normalizeSourceBasename = (str: string, filenameCase: number) => {
+  const extension = posix.extname(str);
+  const directory = posix.dirname(str);
+  const filename = posix.basename(str, extension);
+  const normalizedFilename = slugize(filename, { transform: filenameCase }) + extension;
+
+  return directory === '.' ? normalizedFilename : posix.join(directory, normalizedFilename);
+};
+
+const findDraftFile = (list: string[], value: string | number, filenameCase: number) => {
+  const source = normalizeSourcePath(value.toString());
+  const normalizedSource = normalizeSourceBasename(source, filenameCase);
+  const files = list.map(item => ({ item, source: normalizeSourcePath(item) }));
+  const candidates = source === normalizedSource ? [source] : [source, normalizedSource];
+
+  for (const candidate of candidates) {
+    const exactMatch = files.find(file => file.source === candidate);
+    if (exactMatch) return exactMatch.item;
+
+    const matches = files.filter(file => removeSourceExtname(file.source) === candidate);
+
+    if (matches.length === 1) return matches[0].item;
+
+    if (matches.length > 1) {
+      const filenames = matches.map(file => file.source).sort().join(', ');
+      throw new Error(`Draft "${source}" is ambiguous. Please specify the full filename: ${filenames}.`);
+    }
+  }
+
+  throw new Error(`Draft "${source}" does not exist.`);
+};
+
 const createAssetFolder = (path: string, assetFolder: boolean) => {
   if (!assetFolder) return Promise.resolve();
 
@@ -491,9 +529,7 @@ class Post {
     const ctx = this.context;
     const { config } = ctx;
     const draftDir = join(ctx.source_dir, '_drafts');
-    const slug = slugize(data.slug.toString(), { transform: config.filename_case });
-    data.slug = slug;
-    const regex = new RegExp(`^${escapeRegExp(slug)}(?:[^\\/\\\\]+)`);
+    const source = data.slug;
     let src = '';
     const result: Result = {} as any;
 
@@ -501,8 +537,9 @@ class Post {
 
     // Find the draft
     return listDir(draftDir).then(list => {
-      const item = list.find(item => regex.test(item));
-      if (!item) throw new Error(`Draft "${slug}" does not exist.`);
+      const item = findDraftFile(list, source, config.filename_case);
+      const sourcePath = normalizeSourcePath(item);
+      data.slug = slugize(posix.basename(removeSourceExtname(sourcePath)), { transform: config.filename_case });
 
       // Read the content
       src = join(draftDir, item);
