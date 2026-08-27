@@ -43,6 +43,8 @@
   "license": "MIT",
   "dependencies": {
     "abbrev": "^5.0.0",
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
     "bluebird": "^3.7.2",
     "fast-archy": "^1.0.0",
     "fast-text-table": "^1.0.1",
