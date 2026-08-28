@@ -662,4 +662,35 @@ describe('asset', () => {
       unlink(file.source)
     ]);
   });
+
+  it('page - timezone - non-UTC front-matter date', async () => {
+    const body = [
+      'title: "Hello world"',
+      'date: 2014-04-24 01:32:21',
+      'updated: 2015-05-05 02:03:04',
+      '---'
+    ].join('\n');
+
+    const file = newFile({
+      path: 'hello.njk',
+      type: 'create',
+      renderable: true
+    });
+
+    hexo.config.timezone = 'Asia/Shanghai';
+
+    await writeFile(file.source, body);
+    await process(file);
+    const page = Page.findOne({source: file.path});
+    const date = page.date.tz(hexo.config.timezone).format(dateFormat);
+    const updated = page.updated.tz(hexo.config.timezone).format(dateFormat);
+
+    await Promise.all([
+      page.remove(),
+      unlink(file.source)
+    ]);
+
+    date.should.eql('2014-04-24 01:32:21');
+    updated.should.eql('2015-05-05 02:03:04');
+  });
 });
