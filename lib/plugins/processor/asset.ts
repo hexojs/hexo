@@ -16,6 +16,9 @@ export = (ctx: Hexo) => {
   return {
     pattern: new Pattern(path => {
       if (isExcludedFile(path, ctx.config)) return;
+      let codeDir = ctx.config.code_dir;
+      if (!codeDir.endsWith('/')) codeDir += '/';
+      if (path.startsWith(codeDir)) return;
 
       return {
         renderable: ctx.render.isRenderable(path) && !isMatch(path, ctx.config.skip_render)

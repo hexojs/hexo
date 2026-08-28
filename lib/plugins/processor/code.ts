@@ -1,0 +1,46 @@
+import { Pattern } from 'hexo-util';
+import { relative } from 'path';
+import { isExcludedFile } from './common';
+import type Hexo from '../../hexo';
+import type { _File } from '../../box';
+
+export = (ctx: Hexo) => {
+  return {
+    pattern: new Pattern(path => {
+      let codeDir = ctx.config.code_dir;
+      if (!codeDir.endsWith('/')) codeDir += '/';
+      if (!path.startsWith(codeDir)) return false;
+      if (isExcludedFile(path, ctx.config)) return false;
+      return true;
+    }),
+    process: function codeProcessor(file: _File) {
+      const id = relative(ctx.base_dir, file.source).replace(/\\/g, '/');
+      const slug = file.path;
+      const Code = ctx.model('Code');
+      const doc = Code.findById(id);
+
+      if (file.type === 'delete') {
+        if (doc) {
+          return doc.remove();
+        }
+
+        return;
+      }
+
+      if (file.type === 'skip' && doc) {
+        doc.modified = false;
+        return doc.save();
+      }
+
+      return file.read().then(content => {
+        return Code.save({
+          _id: id,
+          path: file.path,
+          slug,
+          modified: file.type !== 'skip',
+          content
+        });
+      });
+    }
+  };
+};
