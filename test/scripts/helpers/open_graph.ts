@@ -453,9 +453,9 @@ describe('open_graph', () => {
       page: {},
       config: hexo.config,
       is_post: isPost
-    }, {fediverse_creator: '@hexo@fosstodon.org'});
+    }, {fediverse_creator: '@hexo@example.com'});
 
-    result.should.have.string(meta({name: 'fediverse:creator', content: '@hexo@fosstodon.org'}));
+    result.should.have.string(meta({name: 'fediverse:creator', content: '@hexo@example.com'}));
   });
 
   it('fediverse_creator - array', () => {
@@ -463,11 +463,11 @@ describe('open_graph', () => {
       page: {},
       config: hexo.config,
       is_post: isPost
-    }, {fediverse_creator: ['@hexo@fosstodon.org', '@hexo@mastodon.social']});
+    }, {fediverse_creator: ['@hexo@example.com', '@hexo@example.org']});
 
     result.should.have.string([
-      meta({name: 'fediverse:creator', content: '@hexo@fosstodon.org'}),
-      meta({name: 'fediverse:creator', content: '@hexo@mastodon.social'})
+      meta({name: 'fediverse:creator', content: '@hexo@example.com'}),
+      meta({name: 'fediverse:creator', content: '@hexo@example.org'})
     ].join('\n'));
   });
 
