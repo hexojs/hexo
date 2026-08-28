@@ -4,7 +4,7 @@ import Promise from 'bluebird';
 import { magenta } from 'picocolors';
 import type Hexo from './index';
 
-export = (ctx: Hexo): Promise<void[][]> => {
+export default function loadPlugins(ctx: Hexo): Promise<void[][]> {
   if (!ctx.env.init || ctx.env.safe) return;
 
   return loadModules(ctx).then(() => loadScripts(ctx));
@@ -77,6 +77,7 @@ function loadScripts(ctx: Hexo): Promise<void[][]> {
   }));
 }
 
-function displayPath(path: string, baseDirLength: number): string {
+//EXPORTING displayPath FUNCTION FOR TESTING
+export function displayPath(path: string, baseDirLength: number): string {
   return magenta(path.substring(baseDirLength));
 }
