@@ -66,6 +66,7 @@ interface Options {
   updated?: Moment | Date | false;
   language?: string;
   author?: string;
+  fediverse_creator?: string | string[];
   twitter_image?: string;
   twitter_id?: string;
   twitter_site?: string;
@@ -164,6 +165,16 @@ function openGraphHelper(this: LocalsType, options: Options = {}) {
       return tag.name ? tag.name : tag;
     }).filter(Boolean).sort().forEach(keyword => {
       result += og('article:tag', keyword);
+    });
+  }
+
+  if (options.fediverse_creator) {
+    const fediverseCreators = Array.isArray(options.fediverse_creator)
+      ? options.fediverse_creator
+      : [options.fediverse_creator];
+
+    fediverseCreators.filter(Boolean).forEach(creator => {
+      result += meta('fediverse:creator', creator);
     });
   }
 
