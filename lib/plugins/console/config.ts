@@ -1,4 +1,4 @@
-import yaml from 'js-yaml';
+import { stringify } from 'yaml';
 import { exists, writeFile } from 'hexo-fs';
 import { extname } from 'path';
 import Promise from 'bluebird';
@@ -35,7 +35,7 @@ function configConsole(this: Hexo, args: ConfigArgs): Promise<void> {
 
     setProperty(config, key, castValue(value));
 
-    const result = ext === '.json' ? JSON.stringify(config) : yaml.dump(config);
+    const result = ext === '.json' ? JSON.stringify(config) : stringify(config);
 
     return writeFile(configPath, result);
   });

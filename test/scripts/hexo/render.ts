@@ -1,6 +1,6 @@
 import { writeFile, rmdir } from 'hexo-fs';
 import { join } from 'path';
-import yaml from 'js-yaml';
+import { parse } from 'yaml';
 import { spy, assert as sinonAssert } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import chai from 'chai';
@@ -23,7 +23,7 @@ describe('Render', () => {
     '- Banana'
   ].join('\n');
 
-  const obj = yaml.load(body);
+  const obj = parse(body);
   const path = join(hexo.base_dir, 'test.yml');
 
   before(async () => {

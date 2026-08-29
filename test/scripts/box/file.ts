@@ -1,6 +1,6 @@
 import { join } from 'path';
 import { rmdir, stat, statSync, writeFile } from 'hexo-fs';
-import { load } from 'js-yaml';
+import { parse } from 'yaml';
 import Hexo from '../../../lib/hexo';
 import Box from '../../../lib/box';
 
@@ -21,7 +21,7 @@ describe('File', () => {
     '- Banana'
   ].join('\n');
 
-  const obj = load(body);
+  const obj = parse(body);
   const path = 'test.yml';
 
   const makeFile = (path, props) => {

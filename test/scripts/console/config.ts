@@ -1,6 +1,6 @@
 import { mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
 import { join } from 'path';
-import { load } from 'js-yaml';
+import { parse } from 'yaml';
 import { stub, assert as sinonAssert } from 'sinon';
 import Hexo from '../../../lib/hexo';
 import configConsole from '../../../lib/plugins/console/config';
@@ -65,7 +65,7 @@ describe('config', () => {
   async function writeConfig(...args) {
     await config({_: args});
     const content = await readFile(hexo.config_path);
-    return load(content) as any;
+    return parse(content) as any;
   }
 
   it('write config', async () => {
