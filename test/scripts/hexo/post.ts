@@ -705,6 +705,30 @@ describe('Post', () => {
     afterHook.calledOnce.should.be.true;
   });
 
+  it('render() - before_post_render receives the original Markdown', async () => {
+    const source = [
+      '```js',
+      'const value = {{ value }};',
+      '```'
+    ].join('\n');
+    const filter = spy(data => {
+      data.content.should.eql(source);
+    });
+
+    hexo.extend.filter.register('before_post_render', filter);
+
+    try {
+      await post.render('', {
+        content: source,
+        engine: 'markdown'
+      });
+
+      filter.calledOnce.should.be.true;
+    } finally {
+      hexo.extend.filter.unregister('before_post_render', filter);
+    }
+  });
+
   it('render() - callback', done => {
     post.render('', {
       content,
@@ -1440,6 +1464,41 @@ describe('Post', () => {
     data.content.should.eql('<blockquote><p>test</p>\n<footer><strong>{% }</strong></footer></blockquote>');
   });
 
+  it('render() - Markdown delimiters inside a Nunjucks variable', async () => {
+    const data = await post.render('', {
+      content: '{{ "`code`" }}',
+      engine: 'markdown'
+    });
+
+    data.content.should.eql('`code`');
+  });
+
+  it('render() - Markdown delimiters inside an atomic Nunjucks tag', async () => {
+    const tagSpy = spy(args => JSON.stringify(args));
+    hexo.extend.tag.register('atomicTag', tagSpy);
+
+    try {
+      const data = await post.render('', {
+        content: '{% atomicTag "`code`" %}',
+        engine: 'markdown'
+      });
+
+      data.content.should.eql('["`code`"]');
+      tagSpy.calledOnce.should.be.true;
+    } finally {
+      hexo.extend.tag.unregister('atomicTag');
+    }
+  });
+
+  it('render() - HTML comment delimiter inside a Nunjucks string', async () => {
+    const data = await post.render('', {
+      content: '{{ "<!--" }}',
+      engine: 'markdown'
+    });
+
+    data.content.should.eql('<!--');
+  });
+
   it('render() - dont escape incomplete tags with complete tags', async () => {
     // lost one character
     let content = '{{ 1 }} \n `{% "%}" }` 22222';
@@ -1829,9 +1888,78 @@ describe('Post', () => {
     hexo.extend.tag.unregister('testTag');
   });
 
+  // https://github.com/hexojs/hexo/issues/5799
+  it('render() - comment protocol in same-name nested tags', async () => {
+    hexo.extend.tag.register('folding', (_args, content) => `<details>${content}</details>`, {
+      ends: true
+    });
+    hexo.extend.tag.register('tabs', (_args, content) => {
+      const match = /<!--\s*tab (.*?)\s*-->\n([\s\S]*?)<!--\s*endtab\s*-->/.exec(content);
+      if (!match) return '<div class="tabs"></div>';
+      return `<div class="tabs" data-caption="${match[1]}">${match[2]}</div>`;
+    }, {
+      ends: true
+    });
+
+    const content = [
+      '{% folding outer %}',
+      '{% tabs install %}',
+      '<!-- tab `JavaScript` -->',
+      '{% folding inner %}',
+      'visible content',
+      '{% endfolding %}',
+      '<!-- endtab -->',
+      '{% endtabs %}',
+      '{% endfolding %}'
+    ].join('\n');
+
+    try {
+      const data = await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      data.content.should.include('data-caption="`JavaScript`"');
+      data.content.should.include('visible content');
+    } finally {
+      hexo.extend.tag.unregister('tabs');
+      hexo.extend.tag.unregister('folding');
+    }
+  });
+
+  it('render() - nunjucks remains literal in comment protocol', async () => {
+    const tagSpy = spy();
+    hexo.extend.tag.register('commentProtocol', (_args, content) => {
+      tagSpy(content);
+      return '';
+    }, {
+      ends: true
+    });
+
+    const content = [
+      '{% commentProtocol %}',
+      '<!-- tab {{ 1 + 1 }} -->',
+      'content',
+      '<!-- endtab -->',
+      '{% endcommentProtocol %}'
+    ].join('\n');
+
+    try {
+      await post.render('', {
+        content,
+        engine: 'markdown'
+      });
+
+      tagSpy.calledOnce.should.be.true;
+      tagSpy.firstCall.args[0].should.include('<!-- tab {{ 1 + 1 }} -->');
+    } finally {
+      hexo.extend.tag.unregister('commentProtocol');
+    }
+  });
+
   // https://github.com/hexojs/hexo/issues/5433
   it('render() - code fence nesting in comments', async () => {
-    const code = 'alert("Hello world")';
+    const code = 'const value = {{ value }};';
     const content = [
       'foo',
       '<!--',
@@ -1857,6 +1985,24 @@ describe('Post', () => {
       '<p>bar</p>',
       ''
     ].join('\n'));
+  });
+
+  it('render() - nunjucks remains literal in an unhighlighted code fence', async () => {
+    const content = [
+      '```js highlight:false',
+      'const value = {{ value }};',
+      '```',
+      '',
+      '{{ 1 + 1 }}'
+    ].join('\n');
+
+    const data = await post.render('', {
+      content,
+      engine: 'markdown'
+    });
+
+    data.content.should.include('const value = &#123;&#123; value &#125;&#125;;');
+    data.content.trim().slice(-1).should.eql('2');
   });
 
   // https://github.com/hexojs/hexo/issues/5715

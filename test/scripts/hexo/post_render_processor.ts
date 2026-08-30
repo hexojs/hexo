@@ -1,22 +1,23 @@
 import { highlight as highlightJs, prismHighlight, escapeHTML } from 'hexo-util';
 import defaultConfig from '../../../lib/hexo/default_config';
 import Hexo from '../../../lib/hexo';
-import defaultCodeBlock from '../../../lib/plugins/filter/before_post_render/backtick_code_block';
+import PostRenderProcessor from '../../../lib/hexo/post_render_processor';
 import chai from 'chai';
 const should = chai.should();
 
-describe('Backtick code block', () => {
+describe('PostRenderProcessor fenced code', () => {
   const hexo = new Hexo();
   require('../../../lib/plugins/highlight/')(hexo);
-  const codeBlock = defaultCodeBlock(hexo);
+  const codeBlock = data => {
+    const processor = new PostRenderProcessor(hexo);
+    data.content = processor.restoreCodeBlocks(processor.prepare(data.content, false));
+  };
 
   const code = [
     'if (tired && night) {',
     '  sleep();',
     '}'
   ].join('\n');
-
-  const escapeSwigTag = (str: string) => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
 
   function highlight(code: string, options?) {
     return highlightJs(code, options || {})
@@ -108,7 +109,7 @@ describe('Backtick code block', () => {
       };
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + highlight(code, {lang: 'js'}) + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(highlight(code, {lang: 'js'}));
     });
 
     it('without language name', () => {
@@ -123,7 +124,7 @@ describe('Backtick code block', () => {
       const expected = highlight(code);
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('without language name - ignore tab character', () => {
@@ -138,7 +139,7 @@ describe('Backtick code block', () => {
       const expected = highlight(code);
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('title', () => {
@@ -156,7 +157,7 @@ describe('Backtick code block', () => {
       });
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('url', () => {
@@ -174,7 +175,7 @@ describe('Backtick code block', () => {
       });
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('link text', () => {
@@ -192,7 +193,7 @@ describe('Backtick code block', () => {
       });
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('indent', () => {
@@ -212,7 +213,7 @@ describe('Backtick code block', () => {
       });
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('line number false', () => {
@@ -232,7 +233,7 @@ describe('Backtick code block', () => {
       });
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('line number false, don`t first_line_number always1', () => {
@@ -253,7 +254,7 @@ describe('Backtick code block', () => {
       });
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('only wrap with pre and code', () => {
@@ -273,7 +274,7 @@ describe('Backtick code block', () => {
         wrap: false
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('line number false, don`t care first_line_number inline', () => {
@@ -294,7 +295,7 @@ describe('Backtick code block', () => {
       });
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('line number true', () => {
@@ -314,7 +315,7 @@ describe('Backtick code block', () => {
       });
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('line number, first_line_number always1, js=', () => {
@@ -336,7 +337,7 @@ describe('Backtick code block', () => {
       });
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('line number, first_line_number inline, js', () => {
@@ -358,7 +359,7 @@ describe('Backtick code block', () => {
       });
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('line number, first_line_number inline, js=1', () => {
@@ -380,7 +381,7 @@ describe('Backtick code block', () => {
       });
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('line number, first_line_number inline, js=2', () => {
@@ -402,7 +403,7 @@ describe('Backtick code block', () => {
       });
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('tab replace', () => {
@@ -428,7 +429,7 @@ describe('Backtick code block', () => {
       });
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('wrap', () => {
@@ -443,7 +444,7 @@ describe('Backtick code block', () => {
       };
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js', wrap: false }) + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(highlight(code, { lang: 'js', wrap: false }));
 
       hexo.config.highlight.wrap = true;
     });
@@ -461,7 +462,63 @@ describe('Backtick code block', () => {
       };
       codeBlock(data);
 
-      data.content.should.eql('```foo```\n\n<hexoPostRenderCodeBlock>' + highlight(code, {}) + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql('```foo```\n\n' + highlight(code, {}));
+    });
+
+    it('does not process a code fence inside an HTML comment', () => {
+      const content = [
+        '<!--',
+        '```js',
+        'const value = {{ value }};',
+        '```',
+        '-->'
+      ].join('\n');
+      const data = { content };
+
+      codeBlock(data);
+
+      data.content.should.eql(content);
+    });
+
+    it('processes an HTML comment inside a code fence', () => {
+      const source = '<!-- comment -->';
+      const data = {
+        content: [
+          '```html',
+          source,
+          '```'
+        ].join('\n')
+      };
+
+      codeBlock(data);
+
+      data.content.should.eql(highlight(source, { lang: 'html' }));
+    });
+
+    it('allows a closing fence longer than the opening fence', () => {
+      const data = {
+        content: [
+          '```js',
+          code,
+          '````'
+        ].join('\n')
+      };
+
+      codeBlock(data);
+
+      data.content.should.eql(highlight(code, { lang: 'js' }));
+    });
+
+    it('leaves an unclosed code fence unchanged', () => {
+      const content = [
+        '```js',
+        code
+      ].join('\n');
+      const data = { content };
+
+      codeBlock(data);
+
+      data.content.should.eql(content);
     });
 
     // test for Issue #4190
@@ -479,7 +536,7 @@ describe('Backtick code block', () => {
       };
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + highlight(code + '\nfoo```\n\nbar```\nbaz', {}) + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(highlight(code + '\nfoo```\n\nbar```\nbaz', {}));
     });
 
     // test for Issue #4573
@@ -519,7 +576,7 @@ describe('Backtick code block', () => {
       const data = {
         content: createCodeWithOptions('js highlight:false')
       };
-      const expected = escapeSwigTag(data.content);
+      const expected = data.content;
       codeBlock(data);
       data.content.should.eql(expected);
     });
@@ -533,7 +590,7 @@ describe('Backtick code block', () => {
         gutter: false
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
 
       data = {
         content: createCodeWithOptions('js line_number:true')
@@ -543,7 +600,7 @@ describe('Backtick code block', () => {
         gutter: true
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('line_threshold', () => {
@@ -555,7 +612,7 @@ describe('Backtick code block', () => {
         gutter: false
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
 
       data = {
         content: createCodeWithOptions('js line_number:true line_threshold:1')
@@ -565,7 +622,7 @@ describe('Backtick code block', () => {
         gutter: true
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
 
       data = {
         content: createCodeWithOptions('js line_number:true line_threshold:3')
@@ -575,7 +632,7 @@ describe('Backtick code block', () => {
         gutter: false
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('first_line', () => {
@@ -587,7 +644,7 @@ describe('Backtick code block', () => {
         firstLine: 1234
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
 
       data = {
         content: createCodeWithOptions('js')
@@ -597,7 +654,7 @@ describe('Backtick code block', () => {
         firstLine: 1
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('mark', () => {
@@ -623,7 +680,7 @@ describe('Backtick code block', () => {
         mark: [1, 7, 8, 9, 11]
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
 
       data = {
         content: createCodeWithOptions('js mark:11,9-7,1', source)
@@ -633,7 +690,7 @@ describe('Backtick code block', () => {
         mark: [1, 7, 8, 9, 11]
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('wrap', () => {
@@ -645,7 +702,7 @@ describe('Backtick code block', () => {
         wrap: false
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
 
       data = {
         content: createCodeWithOptions('js wrap:true')
@@ -655,7 +712,7 @@ describe('Backtick code block', () => {
         wrap: true
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('language_attr', () => {
@@ -667,7 +724,7 @@ describe('Backtick code block', () => {
         languageAttr: true
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('hybrid', () => {
@@ -680,17 +737,17 @@ describe('Backtick code block', () => {
         gutter: true
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
       data = {
         content: createCodeWithOptions('js line_number:true line_threshold:1 Hello world https://hexo.io/ Hexo')
       };
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
       data = {
         content: createCodeWithOptions('js Hello world line_number:true line_threshold:1 https://hexo.io/ Hexo')
       };
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     // https://github.com/hexojs/hexo/issues/5423
@@ -708,8 +765,8 @@ describe('Backtick code block', () => {
 
       codeBlock(data);
       data.content.should.eql([
-        '1. <hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js' }) + '</hexoPostRenderCodeBlock>',
-        '2. <hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js' }) + '</hexoPostRenderCodeBlock>'
+        '1. ' + highlight(code, { lang: 'js' }),
+        '2. ' + highlight(code, { lang: 'js' })
       ].join('\n'));
     });
 
@@ -728,8 +785,8 @@ describe('Backtick code block', () => {
 
       codeBlock(data);
       data.content.should.eql([
-        '- <hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js' }) + '</hexoPostRenderCodeBlock>',
-        '- <hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js' }) + '</hexoPostRenderCodeBlock>'
+        '- ' + highlight(code, { lang: 'js' }),
+        '- ' + highlight(code, { lang: 'js' })
       ].join('\n'));
 
       data = {
@@ -745,8 +802,8 @@ describe('Backtick code block', () => {
 
       codeBlock(data);
       data.content.should.eql([
-        '* <hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js' }) + '</hexoPostRenderCodeBlock>',
-        '* <hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js' }) + '</hexoPostRenderCodeBlock>'
+        '* ' + highlight(code, { lang: 'js' }),
+        '* ' + highlight(code, { lang: 'js' })
       ].join('\n'));
 
       data = {
@@ -762,8 +819,8 @@ describe('Backtick code block', () => {
 
       codeBlock(data);
       data.content.should.eql([
-        '+ <hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js' }) + '</hexoPostRenderCodeBlock>',
-        '+ <hexoPostRenderCodeBlock>' + highlight(code, { lang: 'js' }) + '</hexoPostRenderCodeBlock>'
+        '+ ' + highlight(code, { lang: 'js' }),
+        '+ ' + highlight(code, { lang: 'js' })
       ].join('\n'));
     });
   });
@@ -784,7 +841,7 @@ describe('Backtick code block', () => {
 
       codeBlock(data);
 
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + prism(code, {lang: 'js'}) + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(prism(code, {lang: 'js'}));
     });
 
     it('without language name', () => {
@@ -799,7 +856,7 @@ describe('Backtick code block', () => {
       const expected = prism(code);
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
 
@@ -815,7 +872,7 @@ describe('Backtick code block', () => {
       const expected = prism(code);
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('indent', () => {
@@ -832,7 +889,7 @@ describe('Backtick code block', () => {
       const expected = prism(code, { lang: 'js' });
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('line number false', () => {
@@ -852,7 +909,7 @@ describe('Backtick code block', () => {
       });
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('tab replace', () => {
@@ -878,7 +935,7 @@ describe('Backtick code block', () => {
       });
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('title', () => {
@@ -896,7 +953,7 @@ describe('Backtick code block', () => {
       });
 
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('prism only wrap with pre and code', () => {
@@ -911,7 +968,7 @@ describe('Backtick code block', () => {
       const escapeSwigTag = str => str.replace(/{/g, '&#123;').replace(/}/g, '&#125;');
       const expected = `<pre><code class="js">${escapeSwigTag(escapeHTML(code))}</code></pre>`;
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
       hexo.config.prismjs.exclude_languages = [];
     });
 
@@ -919,7 +976,7 @@ describe('Backtick code block', () => {
       const data = {
         content: createCodeWithOptions('js highlight:false')
       };
-      const expected = escapeSwigTag(data.content);
+      const expected = data.content;
       codeBlock(data);
       data.content.should.eql(expected);
     });
@@ -933,7 +990,7 @@ describe('Backtick code block', () => {
         lineNumber: false
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
 
       data = {
         content: createCodeWithOptions('js line_number:true')
@@ -943,7 +1000,7 @@ describe('Backtick code block', () => {
         lineNumber: true
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('line_threshold', () => {
@@ -955,7 +1012,7 @@ describe('Backtick code block', () => {
         lineNumber: false
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
 
       data = {
         content: createCodeWithOptions('js line_number:true line_threshold:1')
@@ -965,7 +1022,7 @@ describe('Backtick code block', () => {
         lineNumber: true
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
 
       data = {
         content: createCodeWithOptions('js line_number:true line_threshold:3')
@@ -975,7 +1032,7 @@ describe('Backtick code block', () => {
         lineNumber: false
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('first_line', () => {
@@ -987,7 +1044,7 @@ describe('Backtick code block', () => {
         firstLine: 1234
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
 
       data = {
         content: createCodeWithOptions('js')
@@ -997,7 +1054,7 @@ describe('Backtick code block', () => {
         firstLine: 1
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('mark', () => {
@@ -1023,7 +1080,7 @@ describe('Backtick code block', () => {
         mark: [1, 7, 8, 9, 11]
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
 
       data = {
         content: createCodeWithOptions('js mark:11,9-7,1', source)
@@ -1033,7 +1090,7 @@ describe('Backtick code block', () => {
         mark: [1, 7, 8, 9, 11]
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('wrap', () => {
@@ -1045,7 +1102,7 @@ describe('Backtick code block', () => {
         wrap: false
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
 
       data = {
         content: createCodeWithOptions('js wrap:true')
@@ -1055,7 +1112,7 @@ describe('Backtick code block', () => {
         wrap: true
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('language_attr', () => {
@@ -1067,7 +1124,7 @@ describe('Backtick code block', () => {
         languageAttr: true
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
 
     it('hybrid', () => {
@@ -1080,17 +1137,17 @@ describe('Backtick code block', () => {
         lineNumber: true
       });
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
       data = {
         content: createCodeWithOptions('js line_number:true line_threshold:1 Hello world https://hexo.io/ Hexo')
       };
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
       data = {
         content: createCodeWithOptions('js Hello world line_number:true line_threshold:1 https://hexo.io/ Hexo')
       };
       codeBlock(data);
-      data.content.should.eql('<hexoPostRenderCodeBlock>' + expected + '</hexoPostRenderCodeBlock>');
+      data.content.should.eql(expected);
     });
   });
 });
