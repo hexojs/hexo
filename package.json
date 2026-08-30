@@ -1,6 +1,6 @@
 {
   "name": "hexo",
-  "version": "8.1.2",
+  "version": "8.2.0",
   "description": "A fast, simple & powerful blog framework, powered by Node.js.",
   "main": "dist/hexo",
   "bin": {
