@@ -85,5 +85,11 @@ export = {
   ignore: [] as string[],
 
   // Category & Tag
-  meta_generator: true
+  meta_generator: true,
+
+  inline_template: {
+    enable: true,
+    partial_dir: '_partials',
+    compat: true
+  }
 };

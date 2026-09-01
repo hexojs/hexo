@@ -47,6 +47,10 @@ export default (ctx: Hexo) => {
 
   tag.register('url_for', require('./url_for')(ctx));
   tag.register('full_url_for', require('./full_url_for')(ctx));
+
+  const TemplateRegistry = require('./template_registry');
+  const registry = new TemplateRegistry(ctx);
+  tag.register('hbs', require('./hbs')(ctx, registry), {async: true, ends: true});
 };
 
 // Use WeakMap to track different ctx (in case there is any)
