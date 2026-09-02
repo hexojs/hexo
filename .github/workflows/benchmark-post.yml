@@ -1,0 +1,104 @@
+name: Benchmark - Post Process
+
+on:
+  workflow_run:
+    workflows: ["Benchmark"]
+    types:
+      - completed
+
+permissions:
+  contents: read
+
+jobs:
+  profiling-preview:
+    if:
+      ${{ github.event_name == 'workflow_run' && github.event.workflow_run.event
+      == 'pull_request' && github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-slim
+    environment:
+      name: "profiling-preview"
+      url: ${{ steps.get_info.outputs.url }}
+      deployment: false
+    permissions:
+      actions: read # download artifacts from the triggering workflow run
+      contents: read
+      pull-requests: write # for marocchino/sticky-pull-request-comment to create or update PR comment
+    env:
+      comment_result: "tmp-comment-flamegraph.md"
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ toJSON( github.event.workflow_run.id ) }}
+          pattern: "flamegraph-*"
+          path: ./flamegraph/
+          merge-multiple: true
+
+      - name: Get PR info
+        id: get_info
+        uses: actions/github-script@v8
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const run = context.payload.workflow_run;
+            let pullRequests = run.pull_requests || [];
+
+            if (pullRequests.length !== 1) {
+              if (!run.head_repository || !run.head_branch) {
+                throw new Error(`Missing head repository metadata for workflow run ${run.id}`);
+              }
+
+              const response = await github.rest.pulls.list({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                state: 'all',
+                head: `${run.head_repository.owner.login}:${run.head_branch}`,
+                base: context.payload.repository.default_branch
+              });
+
+              pullRequests = response.data.filter(pullRequest => (
+                pullRequest.head.sha === run.head_sha
+                && pullRequest.base.repo.full_name === `${context.repo.owner}/${context.repo.repo}`
+                && pullRequest.base.ref === context.payload.repository.default_branch
+              ));
+            }
+
+            if (pullRequests.length !== 1) {
+              throw new Error(`Expected one pull request for workflow run ${run.id}, found ${pullRequests.length}`);
+            }
+
+            const prNumber = pullRequests[0].number;
+            if (!Number.isSafeInteger(prNumber) || prNumber < 1) {
+              throw new Error(`Invalid pull request number for workflow run ${run.id}`);
+            }
+
+            core.setOutput('pr_number', prNumber);
+            core.setOutput('url', `https://${prNumber}-pr-hexo.surge.sh/`);
+
+      - name: Publish flamegraph to ${{ steps.get_info.outputs.url }}
+        uses: dswistowski/surge-sh-action@v1
+        with:
+          domain: ${{ steps.get_info.outputs.url }}
+          project: ./flamegraph/
+          login: ${{ secrets.SURGE_LOGIN }}
+          token: ${{ secrets.SURGE_TOKEN }}
+
+      - name: Print full URLs
+        env:
+          preview_url: ${{ steps.get_info.outputs.url }}
+        run: |
+          {
+            echo "## Flamegraph"
+            echo ""
+            for node_version in 20 22 24; do
+              echo "${preview_url}${node_version}/flamegraph.html"
+            done
+          } | tee "${{ env.comment_result }}" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Comment PR - flamegraph
+        uses: marocchino/sticky-pull-request-comment@v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ steps.get_info.outputs.pr_number }}
+          header: Flamegraph
+          path: ${{ env.comment_result }}
