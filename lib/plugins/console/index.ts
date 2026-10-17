@@ -63,7 +63,7 @@ export = function(ctx: Hexo) {
     usage: '[layout] <filename>',
     arguments: [
       {name: 'layout', desc: 'Post layout. Use post, page, draft or whatever you want.'},
-      {name: 'filename', desc: 'Draft filename. "hello-world" for example.'}
+      {name: 'filename', desc: 'Draft filename relative to _drafts. The extension may be omitted when unambiguous.'}
     ]
   }, require('./publish'));
 
