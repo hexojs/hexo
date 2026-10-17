@@ -325,6 +325,34 @@ describe('open_graph', () => {
     result.should.have.string(meta({property: 'og:image', content: new URL('/foo/bar/test.jpg', config.url).toString()}));
   });
 
+  it('images - skip a path that cannot be resolved instead of throwing', () => {
+    const result = openGraph.call({
+      page: {
+        content: [
+          '<img src="http://">',
+          '<img src="https://hexo.io/test.jpg">'
+        ].join('')
+      },
+      config: hexo.config,
+      is_post: isPost
+    });
+
+    result.should.have.string(meta({property: 'og:image', content: 'https://hexo.io/test.jpg'}));
+    result.should.not.have.string('content="http://"');
+  });
+
+  it('images - do not throw when config.url is not a valid base URL', () => {
+    hexo.config.url = '';
+
+    const result = openGraph.call({
+      page: {},
+      config: hexo.config,
+      is_post: isPost
+    }, {images: 'test.jpg'});
+
+    result.should.not.have.string('og:image');
+  });
+
   it('twitter_image - default same as og:image', () => {
     const result = openGraph.call({
       page: {},
