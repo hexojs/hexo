@@ -303,7 +303,7 @@ function scanAssetDir(ctx: Hexo, post: PostSchema) {
     return PostAsset.save({
       _id: id,
       post: post._id,
-      slug: item,
+      slug: item.replace(/\\/g, '/'),
       modified: true,
       renderable: ctx.render.isRenderable(renderablePath) && !isMatch(renderablePath, ctx.config.skip_render)
     });
