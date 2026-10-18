@@ -1193,7 +1193,7 @@ describe('post', () => {
     const linkDir = join(baseDir, 'source', '_posts', 'linked-assets', 'external');
 
     await BluebirdPromise.all([
-      writeFile(postFile.source, 'title: Symlinked assets\\n---'),
+      writeFile(postFile.source, 'title: Symlinked assets\n---'),
       writeFile(join(targetDir, 'photo.jpg'), 'photo'),
       mkdirs(dirname(linkDir))
     ]);
