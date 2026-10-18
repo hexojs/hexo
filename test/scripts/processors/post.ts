@@ -1205,6 +1205,9 @@ describe('post', () => {
 
     // A directory symlink must never be saved as a file asset (EISDIR).
     should.not.exist(PostAsset.findById('source/_posts/linked-assets/external'));
+    const scannedAsset = PostAsset.findById('source/_posts/linked-assets/external/photo.jpg');
+    should.exist(scannedAsset);
+    scannedAsset.slug.should.eql('external/photo.jpg');
 
     await process(assetFile);
     const asset = PostAsset.findById('source/_posts/linked-assets/external/photo.jpg');
