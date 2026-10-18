@@ -1,8 +1,8 @@
 import { toDate, adjustDateForTimezone, isExcludedFile, isTmpFile, isHiddenFile, isMatch } from './common';
 import Promise from 'bluebird';
 import { parse as yfm } from 'hexo-front-matter';
-import { readdir, realpath } from 'fs/promises';
-import { extname, join, posix, sep } from 'path';
+import { readdir, realpath, stat as statFile } from 'fs/promises';
+import { extname, join } from 'path';
 import { stat } from 'hexo-fs';
 import { slugize, Pattern, Permalink } from 'hexo-util';
 import { magenta } from 'picocolors';
@@ -251,7 +251,17 @@ async function listPostAssetFiles(dir: string, parent = '', ancestors = new Set<
       const filePath = join(dir, entry.name);
       const relativePath = posix.join(parent, entry.name);
 
-      if (entry.isDirectory() || (entry.isSymbolicLink() && (await stat(filePath)).isDirectory())) {
+      let isDirectory = entry.isDirectory();
+      if (entry.isSymbolicLink()) {
+        const target = await statFile(filePath).catch(err => {
+          if (err.code === 'ENOENT') return null;
+          throw err;
+        });
+        if (!target) return [];
+        isDirectory = target.isDirectory();
+      }
+
+      if (isDirectory) {
         return listPostAssetFiles(filePath, relativePath, nextAncestors);
       }
 
@@ -339,7 +349,7 @@ function processAsset(ctx: Hexo, file: _File) {
   const savePostAsset = (post: Document<PostSchema>) => {
     return PostAsset.save({
       _id: id,
-      slug: file.source.substring(post.asset_dir.length),
+      slug: file.source.substring(post.asset_dir.length).replace(/\\/g, '/'),
       post: post._id,
       modified: file.type !== 'skip',
       renderable: file.params.renderable
@@ -354,24 +364,19 @@ function processAsset(ctx: Hexo, file: _File) {
     }
   }
 
-  // NOTE: Must use `posix.sep` ('/') because id is normalized to use forward slashes.
-  //       Using os-specific `sep` would fail on Windows where backslashes wouldn't match.
-  const relativeAssetDirPath = id.slice(0, id.lastIndexOf(posix.sep));
-
-  // Convert relative path to OS-specific absolute path with trailing separator
-  const absoluteAssetDirPath = join(ctx.base_dir, relativeAssetDirPath) + sep;
-
-  /* NOTE:
-     Using `Post.filter()` instead to ensure we get the correct post.
-     Because `Post.findOne()` with a query function or object does not work as expected here.
-     It returns an incorrect post even when the condition doesn't match.
-
-     Examples that didn't work:
-       - `Post.findOne(p => p.asset_dir === absoluteAssetDirPath)`  // returned wrong post
-       - `Post.findOne({asset_dir: absoluteAssetDirPath})`          // returned null
-  */
-  const posts = Post.filter(p => p.asset_dir === absoluteAssetDirPath);
-  const post = posts.length === 1 ? posts.data[0] : null;
+  // Match the nearest enclosing post asset folder; assets can be nested
+  // below that folder, including in directories reached through symlinks.
+  // Each post asset_dir has a trailing separator, preventing prefix collisions.
+  const posts = Post.filter(p => {
+    const relativeDir = p.asset_dir.substring(ctx.base_dir.length).replace(/\\/g, '/');
+    return id.startsWith(relativeDir);
+  });
+  let post: Document<PostSchema> | null = null;
+  for (const candidate of posts.data) {
+    if (!post || candidate.asset_dir.length > post.asset_dir.length) {
+      post = candidate;
+    }
+  }
   if (post != null && (post.published || ctx._showDrafts())) {
     return savePostAsset(post);
   }
