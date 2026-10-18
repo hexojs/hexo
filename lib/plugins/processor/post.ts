@@ -1,8 +1,9 @@
 import { toDate, adjustDateForTimezone, isExcludedFile, isTmpFile, isHiddenFile, isMatch } from './common';
 import Promise from 'bluebird';
 import { parse as yfm } from 'hexo-front-matter';
+import { readdir, realpath } from 'fs/promises';
 import { extname, join, posix, sep } from 'path';
-import { stat, listDir } from 'hexo-fs';
+import { stat } from 'hexo-fs';
 import { slugize, Pattern, Permalink } from 'hexo-util';
 import { magenta } from 'picocolors';
 import type { _File } from '../../box';
@@ -234,6 +235,32 @@ function parseFilename(config: string, path: string) {
   };
 }
 
+// Unlike hexo-fs.listDir, include files in directory symlinks instead of
+// treating the symlink itself as a file (which would fail with EISDIR).
+async function listPostAssetFiles(dir: string, parent = '', ancestors = new Set<string>()): Promise<string[]> {
+  const realDir = await realpath(dir);
+  if (ancestors.has(realDir)) return [];
+
+  const nextAncestors = new Set(ancestors);
+  nextAncestors.add(realDir);
+
+  const entries = await readdir(dir, { withFileTypes: true });
+  const files = await Promise.all(entries
+    .filter(entry => !entry.name.startsWith('.'))
+    .map(async entry => {
+      const filePath = join(dir, entry.name);
+      const relativePath = posix.join(parent, entry.name);
+
+      if (entry.isDirectory() || (entry.isSymbolicLink() && (await stat(filePath)).isDirectory())) {
+        return listPostAssetFiles(filePath, relativePath, nextAncestors);
+      }
+
+      return [relativePath];
+    }));
+
+  return files.flat();
+}
+
 function scanAssetDir(ctx: Hexo, post: PostSchema) {
   if (!ctx.config.post_asset_folder) return;
 
@@ -247,7 +274,7 @@ function scanAssetDir(ctx: Hexo, post: PostSchema) {
   return stat(assetDir).then(stats => {
     if (!stats.isDirectory()) return [];
 
-    return listDir(assetDir);
+    return listPostAssetFiles(assetDir);
   }).catch(err => {
     if (err && err.code === 'ENOENT') return [];
     throw err;
