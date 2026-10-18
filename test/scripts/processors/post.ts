@@ -1091,7 +1091,7 @@ describe('post', () => {
     const normalId = 'source/_posts/linked-assets/nested/normal.txt';
 
     await BluebirdPromise.all([
-      writeFile(file.source, '---\\ntitle: Linked assets\\n---'),
+      writeFile(file.source, '---\ntitle: Linked assets\n---'),
       writeFile(join(externalDir, 'image.txt'), 'linked image'),
       writeFile(join(assetDir, 'nested', 'normal.txt'), 'normal image')
     ]);
