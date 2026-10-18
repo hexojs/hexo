@@ -1229,6 +1229,36 @@ describe('post', () => {
     ]);
   });
 
+  it('asset - nested file created after the post is processed', async () => {
+    hexo.config.post_asset_folder = true;
+
+    const file = newFile({
+      path: 'nested-hot/assets/photo.jpg',
+      published: true,
+      type: 'create',
+      renderable: false
+    });
+    const post = await Post.insert({ source: '_posts/nested-hot.html', slug: 'nested-hot' });
+    const otherPost = await Post.insert({ source: '_posts/nested.html', slug: 'nested' });
+
+    try {
+      await writeFile(file.source, 'photo');
+      await process(file);
+
+      const asset = PostAsset.findById('source/_posts/nested-hot/assets/photo.jpg');
+      should.exist(asset);
+      asset.post.should.eql(post._id);
+      asset.slug.should.eql('assets/photo.jpg');
+      asset.post.should.not.eql(otherPost._id);
+    } finally {
+      await BluebirdPromise.all([
+        post.remove(),
+        otherPost.remove(),
+        unlink(file.source)
+      ]);
+    }
+  });
+
   it('post - delete existing draft assets if draft posts are hidden', async () => {
     hexo.config.post_asset_folder = true;
 
