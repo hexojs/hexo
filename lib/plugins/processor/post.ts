@@ -1,7 +1,7 @@
 import { toDate, adjustDateForTimezone, isExcludedFile, isTmpFile, isHiddenFile, isMatch } from './common';
 import Promise from 'bluebird';
 import { parse as yfm } from 'hexo-front-matter';
-import { extname, join, posix, sep } from 'path';
+import { extname, join } from 'path';
 import { readdir, realpath, stat as statFile } from 'fs/promises';
 import { stat } from 'hexo-fs';
 import { slugize, Pattern, Permalink } from 'hexo-util';
