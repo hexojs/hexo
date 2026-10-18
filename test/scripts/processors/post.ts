@@ -1,6 +1,6 @@
 
-import { join } from 'path';
-import { exists, mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
+import { dirname, join } from 'path';
+import { exists, mkdirs, rmdir, symlink, unlink, writeFile } from 'hexo-fs';
 import BluebirdPromise from 'bluebird';
 import defaultConfig from '../../../lib/hexo/default_config';
 import Hexo from '../../../lib/hexo';
@@ -1171,6 +1171,53 @@ describe('post', () => {
       Post.removeById(post2._id),
       unlink(firstAsset.source),
       unlink(secondAsset.source)
+    ]);
+  });
+
+  it('asset - nested symlinked directory belongs to the post', async () => {
+    hexo.config.post_asset_folder = true;
+
+    const postFile = newFile({
+      path: 'linked-assets.html',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+    const assetFile = newFile({
+      path: 'linked-assets/external/photo.jpg',
+      published: true,
+      type: 'create',
+      renderable: false
+    });
+    const targetDir = join(baseDir, 'linked-assets-target');
+    const linkDir = join(baseDir, 'source', '_posts', 'linked-assets', 'external');
+
+    await BluebirdPromise.all([
+      writeFile(postFile.source, 'title: Symlinked assets\\n---'),
+      writeFile(join(targetDir, 'photo.jpg'), 'photo'),
+      mkdirs(dirname(linkDir))
+    ]);
+    await symlink(targetDir, linkDir, 'junction');
+
+    await process(postFile);
+    const post = Post.findOne({ source: postFile.path });
+    should.exist(post);
+
+    // A directory symlink must never be saved as a file asset (EISDIR).
+    should.not.exist(PostAsset.findById('source/_posts/linked-assets/external'));
+
+    await process(assetFile);
+    const asset = PostAsset.findById('source/_posts/linked-assets/external/photo.jpg');
+    should.exist(asset);
+    asset.post.should.eql(post._id);
+    asset.slug.should.eql('external/photo.jpg');
+    asset.source.should.eql(assetFile.source);
+
+    await BluebirdPromise.all([
+      post.remove(),
+      unlink(postFile.source),
+      unlink(linkDir),
+      rmdir(targetDir)
     ]);
   });
 
