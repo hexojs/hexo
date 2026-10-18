@@ -2,7 +2,8 @@ import { toDate, adjustDateForTimezone, isExcludedFile, isTmpFile, isHiddenFile,
 import Promise from 'bluebird';
 import { parse as yfm } from 'hexo-front-matter';
 import { extname, join, posix, sep } from 'path';
-import { stat, listDir } from 'hexo-fs';
+import { readdir, realpath, stat as statFile } from 'fs/promises';
+import { stat } from 'hexo-fs';
 import { slugize, Pattern, Permalink } from 'hexo-util';
 import { magenta } from 'picocolors';
 import type { _File } from '../../box';
@@ -234,6 +235,47 @@ function parseFilename(config: string, path: string) {
   };
 }
 
+// Unlike hexo-fs listDir(), this follows directory symlinks instead of
+// returning the symlink itself as a file. Guard against symlink cycles.
+async function listPostAssetFiles(
+  dir: string,
+  relative = '',
+  ancestors = new Set<string>()
+): Promise<string[]> {
+  const resolved = await realpath(dir);
+  if (ancestors.has(resolved)) return [];
+
+  const nextAncestors = new Set(ancestors);
+  nextAncestors.add(resolved);
+  const files: string[] = [];
+
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    if (entry.name.startsWith('.')) continue;
+
+    const source = join(dir, entry.name);
+    const relativePath = join(relative, entry.name);
+    let directory = entry.isDirectory();
+
+    if (entry.isSymbolicLink()) {
+      // Directory symlinks are otherwise mistaken for file assets (EISDIR).
+      const target = await statFile(source).catch(err => {
+        if (err.code === 'ENOENT') return null;
+        throw err;
+      });
+      if (!target) continue;
+      directory = target.isDirectory();
+    }
+
+    if (directory) {
+      files.push(...await listPostAssetFiles(source, relativePath, nextAncestors));
+    } else {
+      files.push(relativePath);
+    }
+  }
+
+  return files;
+}
+
 function scanAssetDir(ctx: Hexo, post: PostSchema) {
   if (!ctx.config.post_asset_folder) return;
 
@@ -247,7 +289,7 @@ function scanAssetDir(ctx: Hexo, post: PostSchema) {
   return stat(assetDir).then(stats => {
     if (!stats.isDirectory()) return [];
 
-    return listDir(assetDir);
+    return listPostAssetFiles(assetDir);
   }).catch(err => {
     if (err && err.code === 'ENOENT') return [];
     throw err;
@@ -312,7 +354,7 @@ function processAsset(ctx: Hexo, file: _File) {
   const savePostAsset = (post: Document<PostSchema>) => {
     return PostAsset.save({
       _id: id,
-      slug: file.source.substring(post.asset_dir.length),
+      slug: file.source.substring(post.asset_dir.length).replace(/\\/g, '/'),
       post: post._id,
       modified: file.type !== 'skip',
       renderable: file.params.renderable
@@ -327,24 +369,18 @@ function processAsset(ctx: Hexo, file: _File) {
     }
   }
 
-  // NOTE: Must use `posix.sep` ('/') because id is normalized to use forward slashes.
-  //       Using os-specific `sep` would fail on Windows where backslashes wouldn't match.
-  const relativeAssetDirPath = id.slice(0, id.lastIndexOf(posix.sep));
-
-  // Convert relative path to OS-specific absolute path with trailing separator
-  const absoluteAssetDirPath = join(ctx.base_dir, relativeAssetDirPath) + sep;
-
-  /* NOTE:
-     Using `Post.filter()` instead to ensure we get the correct post.
-     Because `Post.findOne()` with a query function or object does not work as expected here.
-     It returns an incorrect post even when the condition doesn't match.
-
-     Examples that didn't work:
-       - `Post.findOne(p => p.asset_dir === absoluteAssetDirPath)`  // returned wrong post
-       - `Post.findOne({asset_dir: absoluteAssetDirPath})`          // returned null
-  */
-  const posts = Post.filter(p => p.asset_dir === absoluteAssetDirPath);
-  const post = posts.length === 1 ? posts.data[0] : null;
+  // Find the nearest post asset directory containing this file, including
+  // files inside nested directories or directory symlinks.
+  const posts = Post.filter(p => {
+    const relativeDir = p.asset_dir.substring(ctx.base_dir.length).replace(/\\/g, '/');
+    return id.startsWith(relativeDir);
+  });
+  let post: Document<PostSchema> | null = null;
+  for (const candidate of posts.data) {
+    if (!post || candidate.asset_dir.length > post.asset_dir.length) {
+      post = candidate;
+    }
+  }
   if (post != null && (post.published || ctx._showDrafts())) {
     return savePostAsset(post);
   }
