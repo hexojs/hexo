@@ -88,9 +88,7 @@ function listArchivesHelper(this: LocalsType, options: Options = {}) {
   if (style === 'list') {
     result += `<ul class="${className}-list">`;
 
-    for (let i = 0, len = data.length; i < len; i++) {
-      const item = data[i];
-
+    for (const item of data) {
       result += `<li class="${className}-list-item">`;
 
       result += `<a class="${className}-list-link" href="${link(item)}">`;
@@ -106,10 +104,11 @@ function listArchivesHelper(this: LocalsType, options: Options = {}) {
 
     result += '</ul>';
   } else {
-    for (let i = 0, len = data.length; i < len; i++) {
-      const item = data[i];
+    let first = true;
 
-      if (i) result += separator;
+    for (const item of data) {
+      if (!first) result += separator;
+      first = false;
 
       result += `<a class="${className}-link" href="${link(item)}">`;
       result += transform ? transform(item.name) : item.name;

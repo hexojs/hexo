@@ -68,9 +68,8 @@ function listCategoriesHelper(this: LocalsType, categories?: Query<CategorySchem
 
       let isCurrent = false;
       if (showCurrent && this.page) {
-        for (let j = 0; j < cat.length; j++) {
-          const post = cat.posts.data[j];
-          if (post && post._id === this.page._id) {
+        for (const post of cat.posts.data) {
+          if (post._id === this.page._id) {
             isCurrent = true;
             break;
           }

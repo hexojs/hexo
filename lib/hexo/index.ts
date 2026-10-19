@@ -64,15 +64,13 @@ const createLoadThemeRoute = function(generatorResult: BaseGeneratorReturn, loca
   const { path, cache: useCache } = locals;
 
   const layout = [...new Set<string>(castArray(generatorResult.layout))];
-  const layoutLength = layout.length;
 
   // always use cache in fragment_cache
   locals.cache = true;
   return () => {
     if (useCache && routeCache.has(generatorResult)) return routeCache.get(generatorResult);
 
-    for (let i = 0; i < layoutLength; i++) {
-      const name = layout[i];
+    for (const name of layout) {
       const view = theme.getView(name);
 
       if (view) {
@@ -669,9 +667,7 @@ class Hexo extends EventEmitter {
         .thenReturn(path);
     }).then(newRouteList => {
       // Remove old routes
-      for (let i = 0, len = routeList.length; i < len; i++) {
-        const item = routeList[i];
-
+      for (const item of routeList) {
         if (!newRouteList.includes(item)) {
           route.remove(item);
         }

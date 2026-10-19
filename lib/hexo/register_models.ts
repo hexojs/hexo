@@ -6,8 +6,7 @@ export = (ctx: Hexo): void => {
 
   const keys = Object.keys(models);
 
-  for (let i = 0, len = keys.length; i < len; i++) {
-    const key = keys[i];
+  for (const key of keys) {
     db.model(key, models[key](ctx));
   }
 };
