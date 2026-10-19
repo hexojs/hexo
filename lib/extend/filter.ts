@@ -50,7 +50,7 @@ class Filter {
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 
     type = typeAlias[type as string] || type;
-    priority = priority == null ? 10 : priority;
+    priority ??= 10;
 
     const store = this.store[type as string] || [];
     this.store[type as string] = store;
