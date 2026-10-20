@@ -34,6 +34,7 @@ describe('View', () => {
   beforeEach(() => {
     // Restore compile function
     hexo.extend.renderer.store.njk.compile = compile;
+    delete hexo.extend.renderer.store.njk.disableManagedLayout;
   });
 
   after(() => rmdir(hexo.base_dir));
@@ -93,6 +94,21 @@ describe('View', () => {
       name: 'Hexo'
     });
     result.should.eql('Hello Hexo');
+  });
+
+  it('precompile - pass viewPath to compile', () => {
+    let compiledData;
+
+    hexo.extend.renderer.store.njk.compile = data => {
+      compiledData = data;
+      return () => 'foo';
+    };
+
+    const view = newView('partials/header.njk', 'header');
+
+    view.renderSync().should.eql('foo');
+    compiledData.path.should.eql(join(themeDir, 'layout', 'partials/header.njk'));
+    compiledData.viewPath.should.eql('partials/header.njk');
   });
 
   it('render()', async () => {
@@ -158,6 +174,32 @@ describe('View', () => {
       layout: 'wtf'
     });
     content.should.eql(body);
+  });
+
+  it('render() - disableManagedLayout', async () => {
+    const body = 'content';
+    let locals, compiledData;
+
+    hexo.extend.renderer.store.njk.disableManagedLayout = true;
+    hexo.extend.renderer.store.njk.compile = data => {
+      compiledData = data;
+      return l => {
+        locals = l;
+        return 'renderer-composed';
+      };
+    };
+
+    const view = newView('index.njk', body);
+
+    // The view is not wrapped by hexo, and the layout name is passed to the renderer
+    const content = await view.render({ layout: 'layout' });
+    content.should.eql('renderer-composed');
+    locals.layout.should.eql('layout');
+    compiledData.viewPath.should.eql('index.njk');
+
+    // Fallback to false when no layout is specified
+    await view.render({});
+    locals.layout.should.be.false;
   });
 
   it('render() - callback', callback => {
@@ -267,6 +309,29 @@ describe('View', () => {
     view.renderSync({
       layout: 'wtf'
     }).should.eql(body);
+  });
+
+  it('renderSync() - disableManagedLayout', () => {
+    const body = 'content';
+    let locals;
+
+    hexo.extend.renderer.store.njk.disableManagedLayout = true;
+    hexo.extend.renderer.store.njk.compile = () => {
+      return l => {
+        locals = l;
+        return 'renderer-composed';
+      };
+    };
+
+    const view = newView('index.njk', body);
+
+    // The view is not wrapped by hexo, and the layout name is passed to the renderer
+    view.renderSync({ layout: 'layout' }).should.eql('renderer-composed');
+    locals.layout.should.eql('layout');
+
+    // Fallback to false when no layout is specified
+    view.renderSync({});
+    locals.layout.should.be.false;
   });
 
   it.skip('renderSync() - execute after_render:html', () => {

@@ -1,4 +1,4 @@
-import { extname } from 'path';
+import { dirname, extname, join } from 'path';
 import Box from '../box';
 import View from './view';
 import I18n from 'hexo-i18n';
@@ -62,6 +62,18 @@ class Theme extends Box {
     }
 
     return views[Object.keys(views)[0]];
+  }
+
+  resolveLayout(viewPath: string, name: string): View {
+    const source = join(this.base, 'layout', viewPath);
+
+    // Relative path
+    let layoutView = this.getView(join(dirname(viewPath), name));
+    if (layoutView && layoutView.source !== source) return layoutView;
+
+    // Absolute path
+    layoutView = this.getView(name);
+    if (layoutView && layoutView.source !== source) return layoutView;
   }
 
   setView(path: string, data: string): void {
