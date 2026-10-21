@@ -1,10 +1,11 @@
 import Promise from 'bluebird';
-import { sep, join, dirname } from 'path';
+import { sep, join, dirname, basename, extname } from 'path';
+import { pathToFileURL } from 'url';
 import tildify from 'tildify';
 import Database from 'warehouse';
 import { magenta, underline } from 'picocolors';
 import { EventEmitter } from 'events';
-import { readFile } from 'hexo-fs';
+import { exists, readFile } from 'hexo-fs';
 import Module, { createRequire } from 'module';
 import { runInThisContext } from 'vm';
 const { version } = require('../../package.json');
@@ -42,8 +43,48 @@ import type { AddSchemaTypeOptions } from 'warehouse/dist/types';
 import type Schema from 'warehouse/dist/schema';
 import BinaryRelationIndex from '../models/binary_relation_index';
 
+type ESModulePlugin = {
+  default?: unknown;
+};
+
+// TypeScript transforms import() into require() when emitting CommonJS.
+// eslint-disable-next-line no-new-func
+const importModule = new Function('specifier', 'return import(specifier)') as (specifier: string) => PromiseLike<ESModulePlugin>;
+
 const libDir = dirname(__dirname);
 const dbVersion = 1;
+
+function findPackageType(dir: string): Promise<string | undefined> {
+  if (basename(dir) === 'node_modules') return Promise.resolve(undefined);
+
+  const packagePath = join(dir, 'package.json');
+
+  return exists(packagePath).then(exist => {
+    if (exist) {
+      return readFile(packagePath).then(content => {
+        try {
+          return JSON.parse(content).type;
+        } catch {
+          return undefined;
+        }
+      });
+    }
+
+    const parent = dirname(dir);
+    if (parent === dir) return undefined;
+
+    return findPackageType(parent);
+  });
+}
+
+function isESModule(path: string): Promise<boolean> {
+  const extension = extname(path);
+
+  if (extension === '.mjs') return Promise.resolve(true);
+  if (extension !== '.js') return Promise.resolve(false);
+
+  return findPackageType(dirname(path)).then(type => type === 'module');
+}
 
 const stopWatcher = (box: Box) => { if (box.isWatching()) box.unwatch(); };
 
@@ -500,17 +541,31 @@ class Hexo extends EventEmitter {
   }
 
   loadPlugin(path: string, callback?: NodeJSLikeCallback<any>): Promise<any> {
-    return readFile(path).then(script => {
-      const req = createRequire(path);
+    return isESModule(path).then(esModule => {
+      if (esModule) {
+        return Promise.resolve(importModule(pathToFileURL(path).href)).then(plugin => {
+          const initialize = plugin.default;
 
-      const module = new Module(path);
-      module.filename = path;
+          if (typeof initialize !== 'function') {
+            throw new TypeError(`ES module plugin "${path}" must export a default initialization function.`);
+          }
 
-      script = `(async function(exports, require, module, __filename, __dirname, hexo){${script}\n});`;
+          return Reflect.apply(initialize, undefined, [this]);
+        });
+      }
 
-      const fn = runInThisContext(script, path);
+      return readFile(path).then(script => {
+        const req = createRequire(path);
 
-      return fn(module.exports, req, module, path, dirname(path), this);
+        const module = new Module(path);
+        module.filename = path;
+
+        script = `(async function(exports, require, module, __filename, __dirname, hexo){${script}\n});`;
+
+        const fn = runInThisContext(script, path);
+
+        return fn(module.exports, req, module, path, dirname(path), this);
+      });
     }).asCallback(callback);
   }
 
