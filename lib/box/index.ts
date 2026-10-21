@@ -141,7 +141,10 @@ class Box extends EventEmitter {
 
       // Handle deleted files
       return this._readDir(base)
-        .then(files => cacheFiles.filter(path => !files.includes(path)))
+        .then(files => {
+          const fileSet = new Set(files);
+          return cacheFiles.filter(path => !fileSet.has(path));
+        })
         .map(path => this._processFile(File.TYPE_DELETE, path));
     }).catch(err => {
       if (err && err.code !== 'ENOENT') throw err;

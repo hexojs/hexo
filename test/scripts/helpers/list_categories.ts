@@ -316,4 +316,35 @@ describe('list_categories', () => {
       '</ul>'
     ].join(''));
   });
+
+  it('locale', async () => {
+    const names = ['生活', '技术', '编程', '随笔', '测试'];
+    await Category.insert(names.map(name => ({name})));
+
+    try {
+      const categories = Category.find({name: {$in: names}});
+      const renderedNames: string[] = [];
+      const options = {
+        style: false as const,
+        show_count: false,
+        transform(name: string) {
+          renderedNames.push(name);
+          return name;
+        }
+      };
+
+      listCategories(categories, options);
+      renderedNames.should.eql(['技术', '测试', '生活', '编程', '随笔']);
+
+      renderedNames.length = 0;
+      listCategories(categories, {...options, locale: 'zh-CN'});
+      renderedNames.should.eql(['编程', '测试', '技术', '生活', '随笔']);
+
+      renderedNames.length = 0;
+      listCategories(categories, {...options, locale: 'zh-CN', order: -1});
+      renderedNames.should.eql(['随笔', '生活', '技术', '测试', '编程']);
+    } finally {
+      await Category.remove({name: {$in: names}});
+    }
+  });
 });

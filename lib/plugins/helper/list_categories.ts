@@ -9,6 +9,7 @@ interface Options {
   depth?: number | string;
   orderby?: string;
   order?: number;
+  locale?: string;
   show_count?: boolean;
   show_current?: boolean;
   transform?: (name: string) => string;
@@ -33,6 +34,7 @@ function listCategoriesHelper(this: LocalsType, categories?: Query<CategorySchem
   const depth = options.depth ? parseInt(String(options.depth), 10) : 0;
   const orderby = options.orderby || 'name';
   const order = options.order || 1;
+  const collator = orderby === 'name' && options.locale ? new Intl.Collator(options.locale) : undefined;
   const showCurrent = options.show_current || false;
   const childrenIndicator = Object.prototype.hasOwnProperty.call(options, 'children_indicator') ? options.children_indicator : false;
 
@@ -45,7 +47,14 @@ function listCategoriesHelper(this: LocalsType, categories?: Query<CategorySchem
       query.parent = {$exists: false};
     }
 
-    return (categories as Query<CategorySchema>).find(query).sort(orderby, order);
+    const result = (categories as Query<CategorySchema>).find(query);
+
+    if (collator) {
+      const direction = order === -1 || String(order) === 'desc' ? -1 : 1;
+      return result.toArray().sort((a, b) => collator.compare(a.name, b.name) * direction);
+    }
+
+    return result.sort(orderby, order);
   };
 
   const hierarchicalList = (level: number, parent?: any) => {

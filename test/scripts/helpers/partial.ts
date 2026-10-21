@@ -71,6 +71,23 @@ describe('partial', () => {
     partial('test', {}, {cache: 'ash'}).should.eql('baz');
   });
 
+  it('does not build locals when cache is hit', () => {
+    hexo.theme.setView('test.njk', '{{ foo }}');
+    partial('test', {foo: 'bar'}, {cache: 'skip-locals'}).should.eql('bar');
+
+    let reads = 0;
+    const locals = Object.defineProperty({}, 'foo', {
+      enumerable: true,
+      get() {
+        reads++;
+        return 'baz';
+      }
+    });
+
+    partial('test', locals, {cache: 'skip-locals'}).should.eql('bar');
+    reads.should.eql(0);
+  });
+
   it('only', () => {
     hexo.theme.setView('test.njk', '{{ foo }}{{ bar }}');
 

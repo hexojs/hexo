@@ -229,6 +229,35 @@ describe('Box', () => {
     await rmdir(box.base);
   });
 
+  it('process() - delete only stale cache entries', async () => {
+    const box = newBox('test');
+    const existingName = 'existing.txt';
+    const deletedName = 'deleted.txt';
+    const processor = spy();
+    box.addProcessor(processor);
+
+    await BluebirdPromise.all([
+      writeFile(join(box.base, existingName), 'existing'),
+      box.Cache.insert({
+        _id: `test/${existingName}`,
+        modified: 0,
+        hash: hash('existing').toString('hex')
+      }),
+      box.Cache.insert({
+        _id: `test/${deletedName}`
+      })
+    ]);
+    await box.process();
+
+    const deletedFiles = processor.args
+      .map(([file]) => file)
+      .filter(file => file.type === 'delete');
+    deletedFiles.should.have.lengthOf(1);
+    deletedFiles[0].path.should.eql(deletedName);
+
+    await rmdir(box.base);
+  });
+
   it('process() - params', async () => {
     const box = newBox('test');
     const path = join(box.base, 'posts', '123456');

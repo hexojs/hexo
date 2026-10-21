@@ -102,12 +102,14 @@ class Generator {
         return;
       }
 
+      const data = buffers.length > 1 ? Buffer.concat(buffers) : buffers[0] || Buffer.alloc(0);
+
       // Save new hash to cache
       return Cache.save({
         _id: cacheId,
         hash
       }).then(() => // Write cache data to public folder
-        writeFile(dest, Buffer.concat(buffers))).then(() => {
+        writeFile(dest, data)).then(() => {
         log.info('Generated: %s', magenta(path));
         return true;
       });
@@ -170,8 +172,9 @@ class Generator {
       const task = (fn, path) => () => fn.call(this, path);
       const doTask = fn => fn();
       const routeList = route.list();
+      const routeSet = new Set(routeList);
       const publicFiles = Cache.filter(item => item._id.startsWith('public/')).map(item => item._id.substring(7));
-      const tasks = publicFiles.filter(path => !routeList.includes(path))
+      const tasks = publicFiles.filter(path => !routeSet.has(path))
         // Clean files
         .map(path => task(this.deleteFile, path))
         // Generate files
