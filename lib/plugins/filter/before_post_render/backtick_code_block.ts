@@ -20,11 +20,10 @@ function parseArgs(args: string) {
     matches.push(match[1]);
   }
 
-  const len = matches.length;
   const mark: number[] = [];
   let firstLine = 1;
-  for (let i = 0; i < len; i++) {
-    const [key, value] = matches[i].split(':');
+  for (const item of matches) {
+    const [key, value] = item.split(':');
 
     switch (key) {
       case 'highlight':

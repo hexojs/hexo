@@ -29,22 +29,20 @@ export = (ctx: Hexo) => function multiConfigPath(base: string, configPaths?: str
     return configPath;
   }
 
-  const numPaths = paths.length;
-
   // combine files
   let combinedConfig = {};
   let count = 0;
-  for (let i = 0; i < numPaths; i++) {
-    const configPath = isAbsolute(paths[i]) ? paths[i] : join(base, paths[i]);
+  for (const path of paths) {
+    const configPath = isAbsolute(path) ? path : join(base, path);
 
     if (!existsSync(configPath)) {
-      log.w(`Config file ${paths[i]} not found.`);
+      log.w(`Config file ${path} not found.`);
       continue;
     }
 
     // files read synchronously to ensure proper overwrite order
     const file = readFileSync(configPath);
-    const ext = extname(paths[i]).toLowerCase();
+    const ext = extname(path).toLowerCase();
 
     if (ext === '.yml') {
       combinedConfig = deepMerge(combinedConfig, yml.load(file));
@@ -53,7 +51,7 @@ export = (ctx: Hexo) => function multiConfigPath(base: string, configPaths?: str
       combinedConfig = deepMerge(combinedConfig, yml.load(file, {json: true}));
       count++;
     } else {
-      log.w(`Config file ${paths[i]} not supported type.`);
+      log.w(`Config file ${path} not supported type.`);
     }
   }
 
