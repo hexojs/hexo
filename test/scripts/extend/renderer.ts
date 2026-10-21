@@ -67,6 +67,94 @@ describe('Renderer', () => {
 
     r.register('swig', 'html', renderer);
     r.get('swig').compile!.should.eql(renderer.compile);
+
+    // callback-style renderer
+    function callbackRenderer(_data, _options, _callback) {
+      return BluebirdPromise.resolve();
+    }
+
+    callbackRenderer.compile = _ => {
+      return () => {};
+    };
+
+    r.register('ejs', 'html', callbackRenderer);
+    r.get('ejs').compile!.should.eql(callbackRenderer.compile);
+  });
+
+  it('register() - disableNunjucks', () => {
+    const r = new Renderer();
+
+    // promise-style renderer
+    function promiseRenderer(_data, _options) {
+      return BluebirdPromise.resolve();
+    }
+
+    promiseRenderer.disableNunjucks = true;
+
+    r.register('md', 'html', promiseRenderer);
+    r.get('md').disableNunjucks!.should.be.true;
+
+    // callback-style renderer
+    function callbackRenderer(_data, _options, _callback) {
+      return BluebirdPromise.resolve();
+    }
+
+    callbackRenderer.disableNunjucks = true;
+
+    r.register('ejs', 'html', callbackRenderer);
+    r.get('ejs').disableNunjucks!.should.be.true;
+
+    // sync renderer
+    function syncRenderer(_data, _options) {
+      return 'foo';
+    }
+
+    syncRenderer.disableNunjucks = true;
+
+    r.register('njk', 'html', syncRenderer, true);
+    r.get('njk').disableNunjucks!.should.be.true;
+
+    // not specified
+    r.register('txt', 'text', (_data, _options) => BluebirdPromise.resolve());
+    should.not.exist(r.get('txt').disableNunjucks);
+  });
+
+  it('register() - disableManagedLayout', () => {
+    const r = new Renderer();
+
+    // promise-style renderer
+    function promiseRenderer(_data, _options) {
+      return BluebirdPromise.resolve();
+    }
+
+    promiseRenderer.disableManagedLayout = true;
+
+    r.register('md', 'html', promiseRenderer);
+    r.get('md').disableManagedLayout!.should.be.true;
+
+    // callback-style renderer
+    function callbackRenderer(_data, _options, _callback) {
+      return BluebirdPromise.resolve();
+    }
+
+    callbackRenderer.disableManagedLayout = true;
+
+    r.register('ejs', 'html', callbackRenderer);
+    r.get('ejs').disableManagedLayout!.should.be.true;
+
+    // sync renderer
+    function syncRenderer(_data, _options) {
+      return 'foo';
+    }
+
+    syncRenderer.disableManagedLayout = true;
+
+    r.register('njk', 'html', syncRenderer, true);
+    r.get('njk').disableManagedLayout!.should.be.true;
+
+    // not specified
+    r.register('txt', 'text', (_data, _options) => BluebirdPromise.resolve());
+    should.not.exist(r.get('txt').disableManagedLayout);
   });
 
   it('getOutput()', () => {

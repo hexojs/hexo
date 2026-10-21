@@ -11,6 +11,7 @@ const getExtname = (str: string) => {
 
 export interface StoreFunctionData {
   path?: any;
+  viewPath?: string;
   text?: string;
   engine?: string;
   toString?: any;
@@ -25,6 +26,7 @@ export interface StoreSyncFunction {
   output?: string;
   compile?: (data: StoreFunctionData) => (local: any) => any;
   disableNunjucks?: boolean;
+  disableManagedLayout?: boolean;
   [key: string]: any;
 }
 
@@ -36,6 +38,7 @@ export interface StoreFunction {
   output?: string;
   compile?: (data: StoreFunctionData) => (local: any) => any;
   disableNunjucks?: boolean;
+  disableManagedLayout?: boolean;
   [key: string]: any;
 }
 
@@ -48,6 +51,7 @@ interface StoreFunctionWithCallback {
   output?: string;
   compile?: (data: StoreFunctionData) => (local: any) => any;
   disableNunjucks?: boolean;
+  disableManagedLayout?: boolean;
   [key: string]: any;
 }
 
@@ -105,19 +109,22 @@ class Renderer {
     name = getExtname(name);
     output = getExtname(output);
 
+    const { compile, disableNunjucks, disableManagedLayout } = fn as StoreFunction;
+
     if (sync) {
       this.storeSync[name] = fn;
       this.storeSync[name].output = output;
 
       this.store[name] = Promise.method(fn);
-      this.store[name].disableNunjucks = (fn as StoreFunction).disableNunjucks;
     } else {
       if (fn.length > 2) fn = Promise.promisify(fn);
       this.store[name] = fn;
     }
 
     this.store[name].output = output;
-    this.store[name].compile = fn.compile;
+    this.store[name].compile = compile;
+    this.store[name].disableNunjucks = disableNunjucks;
+    this.store[name].disableManagedLayout = disableManagedLayout;
   }
 }
 
