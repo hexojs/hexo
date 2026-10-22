@@ -27,13 +27,11 @@ function postPermalinkFilter(this: Hexo, data: PostSchema): string {
         .slice(0, 12)
       : null;
 
-  const relativeSourcePath = data.full_source
-    // Remove base directory
-    .replace(this.base_dir, '')
+  const relativeSourcePath = data.source
     // Normalize path to handle both / and \ (cross-platform)
     .replace(/\\/g, '/')
-    // Remove leading "source/" or "source/_posts/" if present
-    .replace(/^source\/(_posts\/)?/, '')
+    // Remove leading "_posts/" or "_drafts/" if present
+    .replace(/^_(?:posts|drafts)\//, '')
     // Remove any extension
     .replace(/\.[^/.]+$/, '');
 

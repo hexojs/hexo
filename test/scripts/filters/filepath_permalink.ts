@@ -1,5 +1,5 @@
 import { should } from 'chai';
-import Hexo from 'hexo';
+import Hexo from '../../../lib/hexo';
 import moment from 'moment';
 import path from 'path';
 import postPermalinkFilter from '../../../lib/plugins/filter/post_permalink';
