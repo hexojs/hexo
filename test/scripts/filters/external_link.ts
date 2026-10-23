@@ -308,3 +308,64 @@ describe('External link - post', () => {
     hexo.config.external_link.exclude = '';
   });
 });
+
+describe('External link - independent instances', () => {
+  const content = 'foo<a href="https://hexo.io/">Hexo</a>bar';
+  const processed = 'foo<a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>bar';
+
+  for (const field of ['site', 'post']) {
+    const filterType = field === 'site' ? '_after_html_render' : 'after_post_render';
+    const modulePath = field === 'site'
+      ? '../../../lib/plugins/filter/after_render/external_link'
+      : '../../../lib/plugins/filter/after_post_render/external_link';
+
+    for (const otherConfig of [
+      {name: 'disabled', enable: false, field},
+      {name: 'different field', enable: true, field: field === 'site' ? 'post' : 'site'}
+    ]) {
+      for (const enabledFirst of [false, true]) {
+        it(`${field}: ${otherConfig.name} instance does not disable another instance (${enabledFirst ? 'enabled first' : 'inactive first'})`, async () => {
+          // Reset between tests, but share the same loaded filter between instances.
+          delete require.cache[require.resolve(modulePath)];
+          const filter = require(modulePath);
+          const enabled = new Hexo();
+          const other = new Hexo();
+
+          enabled.config = {
+            ...enabled.config,
+            url: 'https://example.com',
+            external_link: {enable: true, field, exclude: ''}
+          };
+          other.config = {
+            ...other.config,
+            url: 'https://example.com',
+            external_link: {enable: otherConfig.enable, field: otherConfig.field, exclude: ''}
+          };
+
+          enabled.extend.filter.register(filterType, filter);
+          other.extend.filter.register(filterType, filter);
+          enabled.extend.filter.list(filterType)[0].should.equal(filter);
+          other.extend.filter.list(filterType)[0].should.equal(filter);
+
+          const render = async (hexo: Hexo, expected: string) => {
+            const data = field === 'site' ? content : {content};
+            const result = await hexo.execFilter(filterType, data, {context: hexo});
+            (field === 'site' ? result : result.content).should.eql(expected);
+            if (field === 'post') result.should.equal(data);
+
+            const syncData = field === 'site' ? content : {content};
+            const syncResult = hexo.execFilterSync(filterType, syncData, {context: hexo});
+            (field === 'site' ? syncResult : syncResult.content).should.eql(expected);
+            if (field === 'post') syncResult.should.equal(syncData);
+          };
+
+          if (enabledFirst) await render(enabled, processed);
+          await render(other, content);
+          const inactiveData = field === 'site' ? content : {content};
+          should.equal(filter.call(other, inactiveData), undefined);
+          await render(enabled, processed);
+        });
+      }
+    }
+  }
+});
