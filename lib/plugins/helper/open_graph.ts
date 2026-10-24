@@ -135,8 +135,9 @@ function openGraphHelper(this: LocalsType, options: Options = {}) {
     result += og('og:locale', localeToTerritory(language), false);
   }
 
-  images = images.map(path => new URL(path, url || config.url).toString())
-    .filter(url => !url.startsWith('data:'));
+  images = images
+    .map(path => URL.parse(path, url || config.url)?.toString())
+    .filter(imageUrl => imageUrl && !imageUrl.startsWith('data:'));
 
   images.forEach(path => {
     result += og('og:image', path, false);

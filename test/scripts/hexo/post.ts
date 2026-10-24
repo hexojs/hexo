@@ -495,6 +495,78 @@ describe('Post', () => {
     await unlink(path);
   });
 
+  // #1821
+  it('publish() - full filename in a subdirectory', async () => {
+    const draftDir = join(hexo.source_dir, '_drafts', 'nested-publish');
+    const draftPath = join(draftDir, 'Issue-1821.mkd');
+    const path = join(hexo.source_dir, '_posts', 'Issue-1821.md');
+
+    await writeFile(draftPath, [
+      '---',
+      'title: Issue 1821',
+      '---',
+      'content'
+    ].join('\n'));
+
+    const result = await post.publish({
+      slug: 'nested-publish/Issue-1821.mkd'
+    });
+
+    result.path.should.eql(path);
+    (await exists(draftPath)).should.be.false;
+
+    await unlink(path);
+    await rmdir(draftDir);
+  });
+
+  it('publish() - does not match a filename prefix', async () => {
+    const draftPath = join(hexo.source_dir, '_drafts', 'Issue-1821-prefix.md');
+    const otherDraftPath = join(hexo.source_dir, '_drafts', 'Issue-1821-prefix-extra.md');
+    const path = join(hexo.source_dir, '_posts', 'Issue-1821-prefix.md');
+    const content = '---\ntitle: Issue 1821\n---\n';
+
+    await Promise.all([
+      writeFile(draftPath, content),
+      writeFile(otherDraftPath, content)
+    ]);
+
+    await post.publish({ slug: 'Issue-1821-prefix' });
+
+    (await exists(draftPath)).should.be.false;
+    (await exists(otherDraftPath)).should.be.true;
+
+    await Promise.all([
+      unlink(otherDraftPath),
+      unlink(path)
+    ]);
+  });
+
+  it('publish() - rejects an ambiguous filename without an extension', async () => {
+    const markdownPath = join(hexo.source_dir, '_drafts', 'Issue-1821-ambiguous.md');
+    const mkdPath = join(hexo.source_dir, '_drafts', 'Issue-1821-ambiguous.mkd');
+    const content = '---\ntitle: Issue 1821\n---\n';
+    let error: Error | undefined;
+
+    await Promise.all([
+      writeFile(markdownPath, content),
+      writeFile(mkdPath, content)
+    ]);
+
+    try {
+      await post.publish({ slug: 'Issue-1821-ambiguous' });
+    } catch (err) {
+      error = err as Error;
+    }
+
+    should.exist(error);
+    error!.message.should.eql('Draft "Issue-1821-ambiguous" is ambiguous. Please specify the full filename: Issue-1821-ambiguous.md, Issue-1821-ambiguous.mkd.');
+
+    await Promise.all([
+      unlink(markdownPath),
+      unlink(mkdPath)
+    ]);
+  });
+
   it('publish() - layout', async () => {
     const path = join(hexo.source_dir, '_posts', 'Hello-World.md');
     const date = moment(now);
@@ -583,6 +655,37 @@ describe('Post', () => {
 
     await unlink(result.path);
 
+    await rmdir(newAssetDir);
+  });
+
+  // #5476
+  it('publish() - filename with spaces and asset folder', async () => {
+    const draftPath = join(hexo.source_dir, '_drafts', 'space file test.md');
+    const assetDir = join(hexo.source_dir, '_drafts', 'space file test');
+    const path = join(hexo.source_dir, '_posts', 'space-file-test.md');
+    const newAssetDir = join(hexo.source_dir, '_posts', 'space-file-test');
+    hexo.config.post_asset_folder = true;
+
+    await Promise.all([
+      writeFile(draftPath, [
+        '---',
+        'title: Space File Test',
+        '---',
+        'content'
+      ].join('\n')),
+      writeFile(join(assetDir, 'a.txt'), 'a')
+    ]);
+
+    const result = await post.publish({
+      slug: 'space file test'
+    });
+
+    result.path.should.eql(path);
+    (await exists(draftPath)).should.be.false;
+    (await exists(assetDir)).should.be.false;
+    (await listDir(newAssetDir)).should.eql(['a.txt']);
+
+    await unlink(path);
     await rmdir(newAssetDir);
   });
 
