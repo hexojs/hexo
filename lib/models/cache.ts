@@ -51,11 +51,14 @@ export = (_ctx: Hexo) => {
 
       const hash = result;
 
-      // Skip the file if the hash is unchanged
+      // The content is unchanged, but persist the new mtime so subsequent scans
+      // can skip hashing.
       if (cache.hash === hash) {
-        return {
+        cache.modified = mtime;
+
+        return cache.save().thenReturn({
           type: 'skip'
-        };
+        });
       }
 
       // Update cache info
