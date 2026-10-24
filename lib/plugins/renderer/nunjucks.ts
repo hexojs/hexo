@@ -19,9 +19,7 @@ function toArray(value) {
   } else if (typeof value.toArray === 'function') {
     return value.toArray();
   } else if (value instanceof Map) {
-    const arr = [];
-    value.forEach(v => arr.push(v));
-    return arr;
+    return [...value.values()];
   } else if (value instanceof Set || typeof value === 'string') {
     return [...value];
   } else if (typeof value === 'object' && value instanceof Object && Boolean(value)) {

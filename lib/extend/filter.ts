@@ -100,8 +100,8 @@ class Filter {
 
     args.unshift(data);
 
-    for (let i = 0, len = filtersLen; i < len; i++) {
-      const result = Reflect.apply(filters[i], ctx, args);
+    for (const filter of filters) {
+      const result = Reflect.apply(filter, ctx, args);
       args[0] = result == null ? args[0] : result;
     }
 

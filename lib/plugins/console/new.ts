@@ -54,8 +54,7 @@ function newConsole(this: Hexo, args: NewArgs): Promise<void> {
 
   const keys = Object.keys(args);
 
-  for (let i = 0, len = keys.length; i < len; i++) {
-    const key = keys[i];
+  for (const key of keys) {
     if (!reservedKeys[key]) data[key] = args[key];
   }
 

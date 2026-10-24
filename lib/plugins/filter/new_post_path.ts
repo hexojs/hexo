@@ -72,8 +72,7 @@ function newPostPathFilter(this: Hexo, data: Partial<PostSchema> = {}, replace?:
           hash
         };
 
-        for (let i = 0, len = keys.length; i < len; i++) {
-          const key = keys[i];
+        for (const key of keys) {
           if (!reservedKeys[key]) filenameData[key] = data[key];
         }
 

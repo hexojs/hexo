@@ -51,8 +51,7 @@ class Locals {
     const result = {};
     const keys = Object.keys(this.getters);
 
-    for (let i = 0, len = keys.length; i < len; i++) {
-      const key = keys[i];
+    for (const key of keys) {
       const item = this.get(key);
 
       if (item != null) result[key] = item;
