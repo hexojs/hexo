@@ -29,21 +29,20 @@ const rCaption = /\S[\S\s]*/;
 
 function parseArgs(args: string[]): HighlightOptions {
   const _else = [];
-  const len = args.length;
   let lang: string, language_attr: boolean,
     line_number: boolean, line_threshold: number, wrap: boolean;
   let firstLine = 1;
   const mark = [];
-  for (let i = 0; i < len; i++) {
-    const colon = args[i].indexOf(':');
+  for (const arg of args) {
+    const colon = arg.indexOf(':');
 
     if (colon === -1) {
-      _else.push(args[i]);
+      _else.push(arg);
       continue;
     }
 
-    const key = args[i].slice(0, colon);
-    const value = args[i].slice(colon + 1);
+    const key = arg.slice(0, colon);
+    const value = arg.slice(colon + 1);
 
     switch (key) {
       case 'lang':
@@ -85,7 +84,7 @@ function parseArgs(args: string[]): HighlightOptions {
         break;
       }
       default: {
-        _else.push(args[i]);
+        _else.push(arg);
       }
     }
   }

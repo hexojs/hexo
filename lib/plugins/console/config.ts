@@ -45,8 +45,8 @@ function getProperty(obj: object, key: string): any {
   const split = key.split('.');
   let result = obj[split[0]];
 
-  for (let i = 1, len = split.length; i < len; i++) {
-    result = result[split[i]];
+  for (const key of split.slice(1)) {
+    result = result[key];
   }
 
   return result;
@@ -57,8 +57,7 @@ function setProperty(obj: object, key: string, value: any): void {
   let cursor = obj;
   const lastKey = split.pop();
 
-  for (let i = 0, len = split.length; i < len; i++) {
-    const name = split[i];
+  for (const name of split) {
     cursor[name] = cursor[name] || {};
     cursor = cursor[name];
   }

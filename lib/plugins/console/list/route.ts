@@ -18,12 +18,11 @@ function buildTree(routes: string[]) {
   const obj: Record<string, any> = {};
   let cursor: typeof obj;
 
-  for (let i = 0, len = routes.length; i < len; i++) {
-    const item = routes[i].split('/');
+  for (const route of routes) {
+    const item = route.split('/');
     cursor = obj;
 
-    for (let j = 0, lenj = item.length; j < lenj; j++) {
-      const seg = item[j];
+    for (const seg of item) {
       cursor[seg] = cursor[seg] || {};
       cursor = cursor[seg];
     }
