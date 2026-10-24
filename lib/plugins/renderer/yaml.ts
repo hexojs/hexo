@@ -6,7 +6,13 @@ import type { StoreFunctionData } from '../../extend/renderer';
 let schema: yaml.Schema;
 // FIXME: workaround for https://github.com/hexojs/hexo/issues/4917
 try {
-  schema = yaml.DEFAULT_SCHEMA.extend(require('js-yaml-js-types').all);
+  // Only enable the safe js types (regexp/undefined); the executable
+  // `function` type must not be enabled by default.
+  // See https://github.com/hexojs/hexo/issues/5801
+  schema = yaml.DEFAULT_SCHEMA.extend([
+    require('js-yaml-js-types').regexp,
+    require('js-yaml-js-types').undefined
+  ]);
 } catch (e) {
   if (e instanceof yaml.YAMLException) {
     logger().warn('YAMLException: please see https://github.com/hexojs/hexo/issues/4917');
