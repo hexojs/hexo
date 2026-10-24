@@ -149,15 +149,17 @@ describe('Box', () => {
     box.addProcessor(processor);
 
     await writeFile(path, 'a');
-    await stat(path);
     await box.Cache.insert({
       _id: cacheId,
       modified: 0,
       hash: hash('a').toString('hex')
     });
     await box.process();
+    box.Cache.findById(cacheId).modified.should.eql((await stat(path)).mtime.getTime());
+    await box.process();
 
-    sinonAssert.calledWithMatch(processor, { type: 'skip', path: name });
+    sinonAssert.calledTwice(processor);
+    sinonAssert.alwaysCalledWithMatch(processor, { type: 'skip', path: name });
 
     await rmdir(box.base);
   });
