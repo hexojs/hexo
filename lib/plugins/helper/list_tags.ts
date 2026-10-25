@@ -15,16 +15,7 @@ interface Options {
   suffix?: string;
 }
 
-function listTagsHelper(this: LocalsType, tags?: Query<TagSchema> | Options, options?: Options) {
-  if (!options && (!tags || !Object.prototype.hasOwnProperty.call(tags, 'length'))) {
-    options = tags as Options;
-    tags = this.site.tags;
-  }
-  tags = tags as Query<TagSchema>;
-
-  if (!tags || !tags.length) return '';
-  options = options || {};
-
+function listTagsHelper(this: LocalsType, tags: Query<TagSchema>, options: Options) {
   const { style = 'list', transform, separator = ', ', suffix = '' } = options;
   const showCount = Object.prototype.hasOwnProperty.call(options, 'show_count') ? options.show_count : true;
   const classStyle = typeof style === 'string' ? `-${style}` : '';
@@ -103,22 +94,28 @@ function listTagsHelper(this: LocalsType, tags?: Query<TagSchema> | Options, opt
   return result;
 }
 
-function listTagsHelperFactory(tags?: Query<TagSchema> | Options, options?: Options) {
-  const transformArgs = () => {
-    if (!options && (!tags || !Object.prototype.hasOwnProperty.call(tags, 'length'))) {
-      options = tags as Options;
-      tags = this.site.tags;
-    }
-    tags = tags as Query<TagSchema>;
+const memoized = moize(listTagsHelper, {
+  maxSize: 5,
+  isDeepEqual: true,
+  transformArgs: (args: any[]) => [args[0].toArray().map(tag => [tag.name, tag.length, tag.path]), args[1]]
+});
 
-    return [tags.toArray(), options];
-  };
+function listTagsHelperFactory(this: LocalsType, tags?: Query<TagSchema> | Options, options?: Options) {
+  if (!options && (!tags || !Object.prototype.hasOwnProperty.call(tags, 'length'))) {
+    options = tags as Options;
+    tags = this.site.tags;
+  }
+  tags = tags as Query<TagSchema>;
 
-  return moize(listTagsHelper.bind(this), {
-    maxSize: 5,
-    isDeepEqual: true,
-    transformArgs
-  }).call(this, tags, options);
+  if (!tags || !tags.length) return '';
+  options = options || {};
+
+  if (this.config.relative_link || options.orderby === 'random' || options.orderby === 'rand'
+    || options.transform) {
+    return listTagsHelper.call(this, tags, options);
+  }
+
+  return memoized.call(this, tags, options);
 }
 
 export = listTagsHelperFactory;
