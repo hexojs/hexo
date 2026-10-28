@@ -316,4 +316,55 @@ describe('tagcloud', () => {
       '<a href="/tags/def/" style="font-size: 10px;">def<span class="tag-count">1</span></a>'
     ].join(' '));
   });
+
+  it('memoizes identical calls', () => {
+    let forEachCalls = 0;
+    const tags: any = {
+      length: 1,
+      toArray: () => [],
+      sort() {
+        return this;
+      },
+      limit() {
+        return this;
+      },
+      forEach() {
+        forEachCalls += 1;
+      }
+    };
+    const options = { class: `cache-test-${Date.now()}` };
+
+    const first = tagcloud(tags, options);
+    const second = tagcloud(tags, options);
+
+    second.should.eql(first);
+    forEachCalls.should.eql(2);
+  });
+
+  it('invalidates cache when tag length changes', () => {
+    const makeTags = (length: number): any => {
+      const tag: any = { name: 'foo', length, path: '/tags/foo/' };
+      return {
+        length: 1,
+        toArray: () => [tag],
+        sort() {
+          return this;
+        },
+        limit() {
+          return this;
+        },
+        forEach(callback) {
+          callback(tag, 0);
+        }
+      };
+    };
+    const options = { show_count: true, class: `cache-data-${Date.now()}` };
+
+    const first = tagcloud(makeTags(1), options);
+    const second = tagcloud(makeTags(2), options);
+
+    first.should.contain('<span class="count">1</span>');
+    second.should.contain('<span class="count">2</span>');
+    second.should.not.eql(first);
+  });
 });

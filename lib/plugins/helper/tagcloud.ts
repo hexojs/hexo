@@ -21,16 +21,7 @@ interface Options {
   end_color?: string;
 }
 
-function tagcloudHelper(this: LocalsType, tags?: Query<TagSchema> | Options, options?: Options) {
-  if (!options && (!tags || !Object.prototype.hasOwnProperty.call(tags, 'length'))) {
-    options = tags as Options;
-    tags = this.site.tags;
-  }
-  tags = tags as Query<TagSchema>;
-
-  if (!tags || !tags.length) return '';
-  options = options || {};
-
+function tagcloudHelper(this: LocalsType, tags: Query<TagSchema>, options: Options) {
   const min = options.min_font || 10;
   const max = options.max_font || 20;
   const orderby = options.orderby || 'name';
@@ -96,22 +87,28 @@ function tagcloudHelper(this: LocalsType, tags?: Query<TagSchema> | Options, opt
   return result.join(separator);
 }
 
+const memoized = moize(tagcloudHelper, {
+  maxSize: 5,
+  isDeepEqual: true,
+  transformArgs: (args: any[]) => [args[0].toArray().map(tag => [tag.name, tag.length, tag.path]), args[1]]
+});
+
 function tagcloudHelperFactory(this: LocalsType, tags?: Query<TagSchema> | Options, options?: Options) {
-  const transformArgs = () => {
-    if (!options && (!tags || !Object.prototype.hasOwnProperty.call(tags, 'length'))) {
-      options = tags as Options;
-      tags = this.site.tags;
-    }
-    tags = tags as Query<TagSchema>;
+  if (!options && (!tags || !Object.prototype.hasOwnProperty.call(tags, 'length'))) {
+    options = tags as Options;
+    tags = this.site.tags;
+  }
+  tags = tags as Query<TagSchema>;
 
-    return [tags.toArray(), options];
-  };
+  if (!tags || !tags.length) return '';
+  options = options || {};
 
-  return moize(tagcloudHelper.bind(this), {
-    maxSize: 5,
-    isDeepEqual: true,
-    transformArgs
-  }).call(this, tags, options);
+  if (this.config.relative_link || options.orderby === 'random' || options.orderby === 'rand'
+    || options.transform) {
+    return tagcloudHelper.call(this, tags, options);
+  }
+
+  return memoized.call(this, tags, options);
 }
 
 export = tagcloudHelperFactory;

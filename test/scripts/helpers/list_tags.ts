@@ -206,6 +206,57 @@ describe('list_tags', () => {
       '</ul>'
     ].join(''));
   });
+
+  it('memoizes identical calls', () => {
+    let forEachCalls = 0;
+    const tags: any = {
+      length: 1,
+      toArray: () => [],
+      sort() {
+        return this;
+      },
+      limit() {
+        return this;
+      },
+      forEach() {
+        forEachCalls += 1;
+      }
+    };
+    const options = { class: `cache-test-${Date.now()}` };
+
+    const first = listTags(tags, options);
+    const second = listTags(tags, options);
+
+    second.should.eql(first);
+    forEachCalls.should.eql(1);
+  });
+
+  it('invalidates cache when tag length changes', () => {
+    const makeTags = (length: number): any => {
+      const tag: any = { name: 'foo', length, path: '/tags/foo/' };
+      return {
+        length: 1,
+        toArray: () => [tag],
+        sort() {
+          return this;
+        },
+        limit() {
+          return this;
+        },
+        forEach(callback) {
+          callback(tag, 0);
+        }
+      };
+    };
+    const options = { class: `cache-data-${Date.now()}` };
+
+    const first = listTags(makeTags(1), options);
+    const second = listTags(makeTags(2), options);
+
+    first.should.contain('>1</span>');
+    second.should.contain('>2</span>');
+    second.should.not.eql(first);
+  });
 });
 
 describe('list_tags transform', () => {
