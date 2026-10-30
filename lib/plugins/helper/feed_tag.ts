@@ -47,9 +47,18 @@ function makeFeedTag(this: LocalsType, path?: string, options: Options = {}, con
   return '';
 }
 
+const memoized = moize.deep(makeFeedTag, {
+  maxSize: 10
+});
+
 function feedTagHelper(this: LocalsType, path?: string, options: Options = {}) {
   const { config } = this;
-  return moize.deep(makeFeedTag.bind(this))(path, options, (config as any).feed, config.title);
+
+  if (config.relative_link) {
+    return makeFeedTag.call(this, path, options, (config as any).feed, config.title);
+  }
+
+  return memoized.call(this, path, options, (config as any).feed, config.title);
 }
 
 export = feedTagHelper;

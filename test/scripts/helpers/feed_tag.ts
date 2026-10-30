@@ -18,6 +18,26 @@ describe('feed_tag', () => {
 
   const feed: (...args: FeedTagParams) => FeedTagReturn = feedTag.bind(ctx);
 
+  it('memoizes identical calls', () => {
+    const path = `cache-test-${Date.now()}.xml`;
+    let typeReads = 0;
+    const options: any = {};
+
+    Object.defineProperty(options, 'type', {
+      enumerable: true,
+      get() {
+        typeReads += 1;
+        return 'atom';
+      }
+    });
+
+    const first = feed(path, options);
+    const second = feed(path, options);
+
+    second.should.eql(first);
+    typeReads.should.eql(1);
+  });
+
   it('path - atom', () => {
     feed('atom.xml').should.eql('<link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">');
   });
