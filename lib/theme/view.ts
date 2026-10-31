@@ -1,4 +1,4 @@
-import { dirname, extname, join } from 'path';
+import { extname, join } from 'path';
 import { parse as yfm } from 'hexo-front-matter';
 import Promise from 'bluebird';
 import type Theme from '.';
@@ -32,6 +32,7 @@ class View {
   public _compiledSync: (locals: any) => any;
   public _helper: Helper;
   public _render: Render;
+  public _disableManagedLayout: boolean;
 
   constructor(path: string, data: string) {
     this.path = path;
@@ -52,8 +53,13 @@ class View {
     const { layout = (options as Options).layout } = data;
     const locals = this._buildLocals(options as Options);
 
+    if (this._disableManagedLayout) {
+      // Let the renderer compose the layout chain itself
+      locals.layout = layout || false;
+    }
+
     return this._compiled(this._bindHelpers(locals)).then(result => {
-      if (result == null || !layout) return result;
+      if (this._disableManagedLayout || result == null || !layout) return result;
 
       const layoutView = this._resolveLayout(layout);
       if (!layoutView) return result;
@@ -72,9 +78,15 @@ class View {
     const { data } = this;
     const { layout = options.layout } = data;
     const locals = this._buildLocals(options);
+
+    if (this._disableManagedLayout) {
+      // Let the renderer compose the layout chain itself
+      locals.layout = layout || false;
+    }
+
     const result = this._compiledSync(this._bindHelpers(locals));
 
-    if (result == null || !layout) return result;
+    if (this._disableManagedLayout || result == null || !layout) return result;
 
     const layoutView = this._resolveLayout(layout);
     if (!layoutView) return result;
@@ -108,15 +120,7 @@ class View {
   }
 
   _resolveLayout(name: string): View {
-    // Relative path
-    const layoutPath = join(dirname(this.path), name);
-    let layoutView = this._theme.getView(layoutPath);
-
-    if (layoutView && layoutView.source !== this.source) return layoutView;
-
-    // Absolute path
-    layoutView = this._theme.getView(name);
-    if (layoutView && layoutView.source !== this.source) return layoutView;
+    return this._theme.resolveLayout(this.path, name);
   }
 
   _precompile(): void {
@@ -124,8 +128,10 @@ class View {
     const ctx = render.context;
     const ext = extname(this.path);
     const renderer = render.getRenderer(ext);
+    this._disableManagedLayout = !!renderer?.disableManagedLayout;
     const data = {
       path: this.source,
+      viewPath: this.path,
       text: this.data._content
     };
 

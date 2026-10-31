@@ -56,4 +56,24 @@ describe('Theme', () => {
 
     should.not.exist(hexo.theme.getView('test.njk'));
   });
+
+  it('resolveLayout()', () => {
+    hexo.theme.setView('layout.njk', '');
+    hexo.theme.setView('partials/header.njk', '');
+
+    // Relative path
+    hexo.theme.resolveLayout('partials/header.njk', '../layout').should.have.property('path', 'layout.njk');
+
+    // Absolute path
+    hexo.theme.resolveLayout('partials/header.njk', 'layout').should.have.property('path', 'layout.njk');
+
+    // Can't be itself
+    should.not.exist(hexo.theme.resolveLayout('partials/header.njk', 'header'));
+
+    // not exist
+    should.not.exist(hexo.theme.resolveLayout('partials/header.njk', 'wtf'));
+
+    hexo.theme.removeView('layout.njk');
+    hexo.theme.removeView('partials/header.njk');
+  });
 });
