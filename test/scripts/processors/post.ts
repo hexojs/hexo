@@ -1,6 +1,6 @@
 
 import { join } from 'path';
-import { exists, mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
+import { exists, mkdirs, readFile, rmdir, symlink, unlink, writeFile } from 'hexo-fs';
 import BluebirdPromise from 'bluebird';
 import defaultConfig from '../../../lib/hexo/default_config';
 import Hexo from '../../../lib/hexo';
@@ -1074,6 +1074,61 @@ describe('post', () => {
     ]);
   });
 
+  it('post - includes files in nested directory symlinks', async () => {
+    hexo.config.post_asset_folder = true;
+
+    const file = newFile({
+      path: 'linked-assets.md',
+      published: true,
+      type: 'create',
+      renderable: true
+    });
+    const assetDir = join(source.base, '_posts', 'linked-assets');
+    const externalDir = join(baseDir, 'external-post-assets');
+    const linkDir = join(assetDir, 'assets1');
+    const linkedId = 'source/_posts/linked-assets/assets1/image.txt';
+    const directoryId = 'source/_posts/linked-assets/assets1';
+    const normalId = 'source/_posts/linked-assets/nested/normal.txt';
+
+    await BluebirdPromise.all([
+      writeFile(file.source, '---\ntitle: Linked assets\n---'),
+      writeFile(join(externalDir, 'image.txt'), 'linked image'),
+      writeFile(join(assetDir, 'nested', 'normal.txt'), 'normal image')
+    ]);
+    // Junctions also work without administrator privileges on Windows.
+    await symlink(externalDir, linkDir, 'junction');
+    // A link pointing back into the same directory must not recurse forever.
+    await symlink(externalDir, join(externalDir, 'loop'), 'junction');
+
+    try {
+      await process(file);
+
+      const post = Post.findOne({ source: file.path });
+      const linked = PostAsset.findById(linkedId);
+      should.exist(linked);
+      linked.post.should.eql(post._id);
+      linked.slug.should.eql('assets1/image.txt');
+      (await readFile(linked.source)).should.eql('linked image');
+
+      should.not.exist(PostAsset.findById(directoryId));
+      should.exist(PostAsset.findById(normalId));
+    } finally {
+      const post = Post.findOne({ source: file.path });
+      if (post) await post.remove();
+
+      for (const id of [linkedId, directoryId, normalId]) {
+        const asset = PostAsset.findById(id);
+        if (asset) await asset.remove();
+      }
+
+      await BluebirdPromise.all([
+        unlink(file.source),
+        rmdir(assetDir),
+        rmdir(externalDir)
+      ]);
+    }
+  });
+
   it('post - post_asset_folder enabled with unpublished posts', async () => {
     hexo.config.post_asset_folder = true;
 
@@ -1172,6 +1227,36 @@ describe('post', () => {
       unlink(firstAsset.source),
       unlink(secondAsset.source)
     ]);
+  });
+
+  it('asset - nested file created after the post is processed', async () => {
+    hexo.config.post_asset_folder = true;
+
+    const file = newFile({
+      path: 'nested-hot/assets/photo.jpg',
+      published: true,
+      type: 'create',
+      renderable: false
+    });
+    const post = await Post.insert({ source: '_posts/nested-hot.html', slug: 'nested-hot' });
+    const otherPost = await Post.insert({ source: '_posts/nested.html', slug: 'nested' });
+
+    try {
+      await writeFile(file.source, 'photo');
+      await process(file);
+
+      const asset = PostAsset.findById('source/_posts/nested-hot/assets/photo.jpg');
+      should.exist(asset);
+      asset.post.should.eql(post._id);
+      asset.slug.should.eql('assets/photo.jpg');
+      asset.post.should.not.eql(otherPost._id);
+    } finally {
+      await BluebirdPromise.all([
+        post.remove(),
+        otherPost.remove(),
+        unlink(file.source)
+      ]);
+    }
   });
 
   it('post - delete existing draft assets if draft posts are hidden', async () => {
