@@ -1245,8 +1245,7 @@ describe('Post', () => {
       '<blockquote>',
       '<p>This is a code-block</p>',
       '<blockquote>',
-      highlighted.replace('{', '&#123;').replace('}', '&#125;'),
-      '</blockquote>',
+      highlighted.replace('{', '&#123;').replace('}', '&#125;') + '</blockquote>',
       '<p>This is a following paragraph</p>',
       '</blockquote>'
     ].join('\n'));
