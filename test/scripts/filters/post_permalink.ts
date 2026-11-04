@@ -18,7 +18,7 @@ describe('post_permalink', () => {
     const apost = await Post.insert({
       source: 'foo.md',
       slug: 'foo',
-      date: moment('2014-01-02')
+      date: moment.utc('2014-01-02')
     });
     const id = apost._id;
     await apost.setCategories(['foo', 'bar']);
@@ -77,7 +77,7 @@ describe('post_permalink', () => {
       source: 'sub/2015-05-06-my-new-post.md',
       slug: '2015-05-06-my-new-post',
       title: 'My New Post',
-      date: moment('2015-05-06')
+      date: moment.utc('2015-05-06')
     });
     postPermalink(post).should.eql('2015/05/06/my-new-post/');
     Post.removeById(post._id);
@@ -90,7 +90,7 @@ describe('post_permalink', () => {
       source: 'sub/2015-05-06-my-new-post.md',
       slug: '2015-05-06-my-new-post',
       title: 'My New Post',
-      date: moment('2015-05-06 12:13:14')
+      date: moment.utc('2015-05-06 12:13:14')
     });
     postPermalink(post).should.eql('2015/05/06/12/13/14/my-new-post/');
     Post.removeById(post._id);
@@ -100,8 +100,8 @@ describe('post_permalink', () => {
     hexo.config.permalink = ':timestamp/:slug';
     const timestamp = '1736401514';
     const dates = [
-      moment('2025-01-09 05:45:14Z'),
-      moment('2025-01-08 22:45:14-07')
+      moment.utc('2025-01-09 05:45:14Z'),
+      moment.utc('2025-01-08 22:45:14-07')
     ];
     const posts = await Post.insert(
       dates.map((date, idx) => {
@@ -126,7 +126,7 @@ describe('post_permalink', () => {
       source: 'sub/2015-05-06-my-new-post.md',
       slug: '2015-05-06-my-new-post',
       title: 'My New Post',
-      date: moment('2015-05-06')
+      date: moment.utc('2015-05-06')
     });
     postPermalink(post).should.eql('2015/05/06/00/00/00/my-new-post/');
     Post.removeById(post._id);
@@ -180,14 +180,12 @@ describe('post_permalink', () => {
       source: 'my-new-post.md',
       slug: 'hexo/permalink-test',
       __permalink: 'hexo/permalink-test',
-      title: 'Permalink Test',
-      date: moment('2014-01-02')
+      title: 'Permalink Test'
     }, {
       source: 'another-new-post.md',
       slug: '/hexo-hexo/permalink-test-2',
       __permalink: '/hexo-hexo/permalink-test-2',
-      title: 'Permalink Test',
-      date: moment('2014-01-02')
+      title: 'Permalink Test'
     }]);
 
     postPermalink(posts[0]).should.eql('/hexo/permalink-test');
@@ -203,7 +201,7 @@ describe('post_permalink', () => {
     const post = await Post.insert({
       source: 'foo.md',
       slug: 'foo',
-      date: moment('2014-01-02')
+      date: moment.utc('2014-01-02')
     });
 
     postPermalink(post).should.eql('2014/01/02/foo/');
@@ -220,20 +218,17 @@ describe('post_permalink', () => {
       source: 'my-new-post.md',
       slug: 'hexo/permalink-test',
       __permalink: 'hexo/permalink-test',
-      title: 'Permalink Test',
-      date: moment('2014-01-02')
+      title: 'Permalink Test'
     }, {
       source: 'another-new-post.md',
       slug: '/hexo-hexo/permalink-test-2',
       __permalink: '/hexo-hexo/permalink-test-2/',
-      title: 'Permalink Test',
-      date: moment('2014-01-02')
+      title: 'Permalink Test'
     }, {
       source: 'another-another-new-post.md',
       slug: '/hexo-hexo/permalink-test-3',
       __permalink: '/hexo-hexo/permalink-test-3.html',
-      title: 'Permalink Test',
-      date: moment('2014-01-02')
+      title: 'Permalink Test'
     }]);
 
     postPermalink(posts[0]).should.eql('/hexo/permalink-test/');

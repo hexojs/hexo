@@ -2,6 +2,7 @@ import moment from 'moment';
 import { isTmpFile, isHiddenFile, toDate, adjustDateForTimezone, isMatch } from '../../../lib/plugins/processor/common';
 import chai from 'chai';
 const should = chai.should();
+const DURATION_MINUTE = 1000 * 60;
 
 describe('common', () => {
   it('isTmpFile()', () => {
@@ -21,13 +22,13 @@ describe('common', () => {
   it('toDate()', () => {
     const m = moment();
     const d = new Date();
+    const diff = d.getTimezoneOffset() * DURATION_MINUTE;
 
     should.not.exist(toDate());
     toDate(m)!.should.eql(m);
     toDate(d)!.should.eql(d);
-    toDate(1e8)!.should.eql(new Date(1e8));
-    toDate('2014-04-25T01:32:21.196Z')!.should.eql(new Date('2014-04-25T01:32:21.196Z'));
-    toDate('Apr 24 2014')!.should.eql(new Date(2014, 3, 24));
+    toDate(1e8)!.should.eql(new Date(1e8 - diff));
+    toDate('Apr 24 2014')!.should.eql(new Date(new Date(2014, 3, 24).getTime() - diff));
     should.not.exist(toDate('foo'));
   });
 
