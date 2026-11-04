@@ -8,6 +8,7 @@ export = (ctx: Hexo) => {
     processor.register(obj.pattern, obj.process);
   }
 
+  register('code');
   register('asset');
   register('data');
   register('post');
