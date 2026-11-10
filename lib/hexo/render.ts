@@ -1,10 +1,10 @@
 import { extname } from 'path';
-import Promise from 'bluebird';
 import { readFile, readFileSync } from 'hexo-fs';
 import type Hexo from './index';
 import type { Renderer } from '../extend';
 import type { StoreFunction, StoreFunctionData, StoreSyncFunction } from '../extend/renderer';
 import { NodeJSLikeCallback } from '../types';
+import { asCallback } from '../util/promise';
 
 const getExtname = (str: string): string => {
   if (typeof str !== 'string') return '';
@@ -76,10 +76,10 @@ class Render {
     } else if (!data.path) {
       return Promise.reject(new TypeError('No input file or string!'));
     } else {
-      promise = readFile(data.path);
+      promise = Promise.resolve(readFile(data.path)) as Promise<string>;
     }
 
-    return promise.then(text => {
+    return asCallback(promise.then(text => {
       data.text = text;
       ext = data.engine || getExtname(data.path);
       if (!ext || !this.isRenderable(ext)) return text;
@@ -99,7 +99,7 @@ class Render {
         context: ctx,
         args: [data]
       });
-    }).asCallback(callback);
+    }), callback);
   }
 
   renderSync(data: StoreFunctionData, options = {}): any {

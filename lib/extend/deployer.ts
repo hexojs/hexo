@@ -1,4 +1,4 @@
-import Promise from 'bluebird';
+import { method, promisify } from '../util/promise';
 import type { NodeJSLikeCallback } from '../types';
 import type Hexo from '../hexo';
 
@@ -42,9 +42,9 @@ class Deployer {
     if (typeof fn !== 'function') throw new TypeError('fn must be a function');
 
     if (fn.length > 1) {
-      fn = Promise.promisify(fn);
+      fn = promisify(fn);
     } else {
-      fn = Promise.method(fn);
+      fn = method(fn);
     }
 
     this.store[name] = fn;

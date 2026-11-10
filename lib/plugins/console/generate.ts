@@ -1,6 +1,6 @@
 import { exists, writeFile, unlink, stat, mkdirs } from 'hexo-fs';
 import { join } from 'path';
-import Promise from 'bluebird';
+import { promiseMap } from '../../util/promise';
 import prettyHrtime from 'pretty-hrtime';
 import { cyan, magenta } from 'picocolors';
 import tildify from 'tildify';
@@ -61,7 +61,7 @@ class Generator {
       promise = this.writeFile(path, true);
     } else {
       const dest = join(publicDir, path);
-      promise = exists(dest).then(exist => {
+      promise = Promise.resolve(exists(dest)).then(exist => {
         if (!exist) return this.writeFile(path, true);
         if (route.isModified(path)) return this.writeFile(path);
       });
@@ -105,10 +105,10 @@ class Generator {
       const data = buffers.length > 1 ? Buffer.concat(buffers) : buffers[0] || Buffer.alloc(0);
 
       // Save new hash to cache
-      return Cache.save({
+      return Promise.resolve(Cache.save({
         _id: cacheId,
         hash
-      }).then(() => // Write cache data to public folder
+      })).then(() => // Write cache data to public folder
         writeFile(dest, data)).then(() => {
         log.info('Generated: %s', magenta(path));
         return true;
@@ -120,7 +120,7 @@ class Generator {
     const publicDir = this.context.public_dir;
     const dest = join(publicDir, path);
 
-    return unlink(dest).then(() => {
+    return Promise.resolve(unlink(dest)).then(() => {
       log.info('Deleted: %s', magenta(path));
     }, err => {
       // Skip ENOENT errors (file was deleted)
@@ -157,7 +157,7 @@ class Generator {
 
 
     // Check the public folder
-    return stat(publicDir).then(stats => {
+    return Promise.resolve(stat(publicDir)).then(stats => {
       if (!stats.isDirectory()) {
         throw new Error(`${magenta(tildify(publicDir))} is not a directory`);
       }
@@ -180,7 +180,8 @@ class Generator {
         // Generate files
         .concat(routeList.map(path => task(this.generateFile, path)));
 
-      return Promise.all(Promise.map(tasks, doTask, { concurrency: parseFloat(concurrency || 'Infinity') }));
+      // At most `concurrency` tasks run at once (no limit by default).
+      return promiseMap(tasks, doTask, { concurrency: parseFloat(concurrency || 'Infinity') });
     }).then(result => {
       const interval = prettyHrtime(process.hrtime(this.start));
       const count = result.filter(Boolean).length;

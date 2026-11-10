@@ -188,7 +188,7 @@ describe('Post', () => {
     source: 'foo.md',
     slug: 'bar'
   }).then(post => post.setTags(['foo', 'bar', 'baz'])
-    .thenReturn(Post.findById(post._id))).then(post => {
+    .then(() => Post.findById(post._id))).then(post => {
     post.tags.map(tag => tag.name).should.have.members(['bar', 'baz', 'foo']);
 
     return Post.removeById(post._id);
@@ -198,7 +198,7 @@ describe('Post', () => {
     source: 'foo.md',
     slug: 'bar'
   }).then(post => post.setCategories(['foo', 'bar', 'baz'])
-    .thenReturn(Post.findById(post._id))).then(post => {
+    .then(() => Post.findById(post._id))).then(post => {
     const cats = post.categories;
 
     // Make sure the order of categories is correct
@@ -388,7 +388,7 @@ describe('Post', () => {
     source: 'foo.md',
     slug: 'bar'
   }).then(post => post.setCategories([['foo', '', 'bar'], '', 'baz'])
-    .thenReturn(Post.findById(post._id))).then(post => {
+    .then(() => Post.findById(post._id))).then(post => {
     const cats = post.categories.toArray();
 
     // There should have been 3 categories set; blanks eliminated
@@ -413,7 +413,7 @@ describe('Post', () => {
     source: 'foo.md',
     slug: 'bar'
   }).then(post => post.setCategories([['foo', 'bar'], ['foo', 'baz']])
-    .thenReturn(Post.findById(post._id))).then(post => {
+    .then(() => Post.findById(post._id))).then(post => {
     const cats = post.categories.toArray();
 
     // There should have been 3 categories set (foo is dupe)
@@ -426,7 +426,7 @@ describe('Post', () => {
     source: 'foo.md',
     slug: 'bar'
   }).then(post => post.setTags(['foo', 'bar', 'baz'])
-    .thenReturn(Post.findById(post._id))).then(post => Post.removeById(post._id)).then(post => {
+    .then(() => Post.findById(post._id))).then(post => Post.removeById(post._id)).then(post => {
     PostTag.find({post_id: post._id}).should.have.lengthOf(0);
     ReadOnlyPostTag.find({post_id: post._id}).should.have.lengthOf(0);
     Tag.findOne({name: 'foo'}).posts.should.have.lengthOf(0);
@@ -438,7 +438,7 @@ describe('Post', () => {
     source: 'foo.md',
     slug: 'bar'
   }).then(post => post.setCategories(['foo', 'bar', 'baz'])
-    .thenReturn(Post.findById(post._id))).then(post => Post.removeById(post._id)).then(post => {
+    .then(() => Post.findById(post._id))).then(post => Post.removeById(post._id)).then(post => {
     PostCategory.find({post_id: post._id}).should.have.lengthOf(0);
     ReadOnlyPostCategory.find({post_id: post._id}).should.have.lengthOf(0);
     Category.findOne({name: 'foo'}).posts.should.have.lengthOf(0);

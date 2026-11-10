@@ -1,5 +1,5 @@
 import { exists, createReadStream } from 'hexo-fs';
-import Promise from 'bluebird';
+import { promiseFilter, promiseMap } from '../../util/promise';
 import { extname } from 'path';
 import { magenta } from 'picocolors';
 import type Hexo from '../../hexo';
@@ -19,9 +19,10 @@ interface AssetGenerator extends BaseGeneratorReturn {
 }
 
 const process = (name: string, ctx: Hexo) => {
-  return Promise.filter(ctx.model(name).toArray(), (asset: Document<AssetSchema>) => exists(asset.source).tap(exist => {
-    if (!exist) return asset.remove();
-  })).map((asset: Document<AssetSchema>) => {
+  return promiseFilter(ctx.model(name).toArray(), (asset: Document<AssetSchema>) => Promise.resolve(exists(asset.source)).then(async exist => {
+    if (!exist) await asset.remove();
+    return exist;
+  })).then(assets => promiseMap(assets, (asset: Document<AssetSchema>) => {
     const { source } = asset;
     let { path } = asset;
     const data: AssetData = {
@@ -45,7 +46,7 @@ const process = (name: string, ctx: Hexo) => {
     }
 
     return { path, data };
-  });
+  }));
 };
 
 function assetGenerator(this: Hexo): Promise<AssetGenerator[]> {

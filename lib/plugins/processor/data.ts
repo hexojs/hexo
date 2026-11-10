@@ -18,7 +18,7 @@ export = (ctx: Hexo) => ({
 
     if (file.type === 'delete') {
       if (doc) {
-        return doc.remove();
+        return Promise.resolve(doc.remove());
       }
 
       return;

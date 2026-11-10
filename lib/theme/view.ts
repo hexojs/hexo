@@ -1,6 +1,6 @@
 import { dirname, extname, join } from 'path';
 import { parse as yfm } from 'hexo-front-matter';
-import Promise from 'bluebird';
+import { asCallback } from '../util/promise';
 import type Theme from '.';
 import type Render from '../hexo/render';
 import type { NodeJSLikeCallback } from '../types';
@@ -52,7 +52,7 @@ class View {
     const { layout = (options as Options).layout } = data;
     const locals = this._buildLocals(options as Options);
 
-    return this._compiled(this._bindHelpers(locals)).then(result => {
+    return asCallback(this._compiled(this._bindHelpers(locals)).then(result => {
       if (result == null || !layout) return result;
 
       const layoutView = this._resolveLayout(layout);
@@ -65,7 +65,7 @@ class View {
       };
 
       return layoutView.render(layoutLocals, callback);
-    }).asCallback(callback);
+    }), callback);
   }
 
   renderSync(options: Options = {}) {

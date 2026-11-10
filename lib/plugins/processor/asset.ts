@@ -1,5 +1,4 @@
 import { adjustDateForTimezone, toDate, isExcludedFile, isMatch } from './common';
-import Promise from 'bluebird';
 import { parse as yfm } from 'hexo-front-matter';
 import { extname, relative } from 'path';
 import { Pattern } from 'hexo-util';
@@ -46,7 +45,7 @@ function processPage(ctx: Hexo, file: _File, sourceIndex: SourceIdIndex<PageSche
 
   if (file.type === 'delete') {
     if (doc) {
-      return doc.remove().then(result => {
+      return Promise.resolve(doc.remove()).then(result => {
         sourceIndex.delete(path);
         return result;
       });
@@ -58,7 +57,7 @@ function processPage(ctx: Hexo, file: _File, sourceIndex: SourceIdIndex<PageSche
   return Promise.all([
     file.stat(),
     file.read()
-  ]).spread((stats: Stats, content: string) => {
+  ]).then(([stats, content]: [Stats, string]) => {
     const data: PageSchema = yfm(content);
     const output = ctx.render.getOutput(path);
 
@@ -125,16 +124,16 @@ function processAsset(ctx: Hexo, file: _File) {
 
   if (file.type === 'delete') {
     if (doc) {
-      return doc.remove();
+      return Promise.resolve(doc.remove());
     }
 
     return;
   }
 
-  return Asset.save({
+  return Promise.resolve(Asset.save({
     _id: id,
     path: file.path,
     modified: file.type !== 'skip',
     renderable: file.params.renderable
-  });
+  }));
 }

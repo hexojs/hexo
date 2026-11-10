@@ -1,4 +1,4 @@
-import Promise from 'bluebird';
+import { method, promiseEach } from '../util/promise';
 import { FilterOptions } from '../types';
 
 const typeAlias = {
@@ -84,7 +84,7 @@ class Filter {
 
     args.unshift(data);
 
-    return Promise.each(filters, filter => Reflect.apply(Promise.method(filter), ctx, args).then(result => {
+    return promiseEach(filters, filter => Reflect.apply(method(filter), ctx, args).then(result => {
       args[0] = result == null ? args[0] : result;
       return args[0];
     })).then(() => args[0]);

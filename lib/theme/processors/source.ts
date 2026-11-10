@@ -10,17 +10,17 @@ function process(file: _File) {
 
   if (file.type === 'delete') {
     if (doc) {
-      return doc.remove();
+      return Promise.resolve(doc.remove());
     }
 
     return;
   }
 
-  return Asset.save({
+  return Promise.resolve(Asset.save({
     _id: id,
     path,
     modified: file.type !== 'skip'
-  });
+  }));
 }
 
 const pattern = new Pattern(path => {

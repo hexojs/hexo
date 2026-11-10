@@ -1,5 +1,5 @@
 import { join, sep } from 'path';
-import BlueBirdPromise from 'bluebird';
+import { asCallback, method, promiseMap, promiseReduce } from '../util/promise';
 import File from './file';
 import { Pattern, createSha1Hash } from 'hexo-util';
 import { createReadStream, readdir, stat, watch } from 'hexo-fs';
@@ -106,16 +106,15 @@ class Box extends EventEmitter {
     });
   }
 
-  _readDir(base: string, prefix = ''): BlueBirdPromise<string[]> {
+  _readDir(base: string, prefix = ''): Promise<string[]> {
     const { context: ctx } = this;
     const results: string[] = [];
     return readDirWalker(ctx, base, results, this.ignore, prefix)
-      .return(results)
-      .map(path => this._checkFileStatus(path))
-      .map(file => this._processFile(file.type, file.path).return(file.path));
+      .then(() => promiseMap(results, path => this._checkFileStatus(path)))
+      .then(files => promiseMap(files, file => this._processFile(file.type, file.path).then(() => file.path)));
   }
 
-  _checkFileStatus(path: string): { type: string; path: string } {
+  _checkFileStatus(path: string): Promise<{ type: string; path: string }> {
     const { Cache, context: ctx } = this;
     const src = join(this.base, path);
 
@@ -129,10 +128,10 @@ class Box extends EventEmitter {
     }));
   }
 
-  process(callback?: NodeJSLikeCallback<any>): BlueBirdPromise<void | (string | void)[]> {
+  process(callback?: NodeJSLikeCallback<any>): Promise<void | (string | void)[]> {
     const { base, Cache, context: ctx } = this;
 
-    return stat(base).then(stats => {
+    return asCallback(Promise.resolve(stat(base)).then(stats => {
       if (!stats.isDirectory()) return;
 
       // Check existing files in cache
@@ -145,15 +144,15 @@ class Box extends EventEmitter {
           const fileSet = new Set(files);
           return cacheFiles.filter(path => !fileSet.has(path));
         })
-        .map(path => this._processFile(File.TYPE_DELETE, path));
+        .then(paths => promiseMap(paths, path => this._processFile(File.TYPE_DELETE, path)));
     }).catch(err => {
       if (err && err.code !== 'ENOENT') throw err;
-    }).asCallback(callback);
+    }), callback);
   }
 
-  _processFile(type: string, path: string): BlueBirdPromise<void | string> {
+  _processFile(type: string, path: string): Promise<void | string> {
     if (this._processingFiles[path]) {
-      return BlueBirdPromise.resolve();
+      return Promise.resolve();
     }
 
     this._processingFiles[path] = true;
@@ -165,7 +164,8 @@ class Box extends EventEmitter {
       path
     });
 
-    return BlueBirdPromise.reduce(this.processors, (count, processor) => {
+    // Processors run one at a time, in the order they were added.
+    return promiseReduce(this.processors, (count: number, processor) => {
       const params = processor.pattern.match(path);
       if (!params) return count;
 
@@ -178,8 +178,8 @@ class Box extends EventEmitter {
         type
       });
 
-      return Reflect.apply(BlueBirdPromise.method(processor.process), ctx, [file])
-        .thenReturn(count + 1);
+      return Reflect.apply(method(processor.process), ctx, [file])
+        .then(() => count + 1);
     }, 0).then(count => {
       if (count) {
         ctx.log.debug('Processed: %s', magenta(path));
@@ -193,12 +193,12 @@ class Box extends EventEmitter {
       ctx.log.error({ err }, 'Process failed: %s', magenta(path));
     }).finally(() => {
       this._processingFiles[path] = false;
-    }).thenReturn(path);
+    }).then(() => path);
   }
 
-  watch(callback?: NodeJSLikeCallback<never>): BlueBirdPromise<void> {
+  watch(callback?: NodeJSLikeCallback<never>): Promise<void> {
     if (this.isWatching()) {
-      return BlueBirdPromise.reject(new Error('Watcher has already started.')).asCallback(callback);
+      return asCallback(Promise.reject(new Error('Watcher has already started.')), callback);
     }
 
     const { base } = this;
@@ -207,7 +207,7 @@ class Box extends EventEmitter {
       return escapeBackslash(path.substring(base.length));
     }
 
-    return this.process().then(() => watch(base, this.options)).then(watcher => {
+    return asCallback(this.process().then(() => watch(base, this.options)).then(watcher => {
       this.watcher = watcher;
 
       watcher.on('add', path => {
@@ -228,7 +228,7 @@ class Box extends EventEmitter {
 
         this._readDir(path, prefix);
       });
-    }).asCallback(callback);
+    }), callback);
   }
 
   unwatch(): void {
@@ -248,11 +248,11 @@ function escapeBackslash(path: string): string {
   return path.replace(/\\/g, '/');
 }
 
-function getHash(path: string): BlueBirdPromise<string> {
+function getHash(path: string): Promise<string> {
   const src = createReadStream(path);
   const hasher = createSha1Hash();
 
-  const finishedPromise = new BlueBirdPromise((resolve, reject) => {
+  const finishedPromise = new Promise<void>((resolve, reject) => {
     src.once('error', reject);
     src.once('end', resolve);
   });
@@ -280,10 +280,10 @@ function isIgnoreMatch(path: string, ignore: string | string[]): boolean {
   return path && ignore && ignore.length && isMatch(path, ignore);
 }
 
-function readDirWalker(ctx: Hexo, base: string, results: string[], ignore: string | string[], prefix: string): BlueBirdPromise<any> {
-  if (isIgnoreMatch(base, ignore)) return BlueBirdPromise.resolve();
+function readDirWalker(ctx: Hexo, base: string, results: string[], ignore: string | string[], prefix: string): Promise<any> {
+  if (isIgnoreMatch(base, ignore)) return Promise.resolve();
 
-  return BlueBirdPromise.map(readdir(base).catch(err => {
+  return promiseMap(Promise.resolve(readdir(base)).catch(err => {
     ctx.log.error({ err }, 'Failed to read directory: %s', base);
     if (err && err.code === 'ENOENT') return [];
     throw err;

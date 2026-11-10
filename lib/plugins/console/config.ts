@@ -1,7 +1,6 @@
 import yaml from 'js-yaml';
 import { exists, writeFile } from 'hexo-fs';
 import { extname } from 'path';
-import Promise from 'bluebird';
 import type Hexo from '../../hexo';
 
 interface ConfigArgs {
@@ -27,7 +26,7 @@ function configConsole(this: Hexo, args: ConfigArgs): Promise<void> {
   const configPath = this.config_path;
   const ext = extname(configPath);
 
-  return exists(configPath).then(exist => {
+  return Promise.resolve(exists(configPath)).then(exist => {
     if (!exist) return {};
     return this.render.render({path: configPath});
   }).then(config => {

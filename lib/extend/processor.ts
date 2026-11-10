@@ -1,4 +1,4 @@
-import Promise from 'bluebird';
+import { method, promisify } from '../util/promise';
 import { Pattern } from 'hexo-util';
 import type File from '../box/file';
 
@@ -40,9 +40,9 @@ class Processor {
     }
 
     if (fn.length > 1) {
-      fn = Promise.promisify(fn);
+      fn = promisify(fn);
     } else {
-      fn = Promise.method(fn);
+      fn = method(fn);
     }
 
     this.store.push({

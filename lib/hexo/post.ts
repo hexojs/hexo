@@ -1,6 +1,5 @@
 import assert from 'assert';
 import moment from 'moment';
-import Promise from 'bluebird';
 import { join, extname, basename, posix } from 'path';
 import { magenta } from 'picocolors';
 import { load } from 'js-yaml';
@@ -9,6 +8,7 @@ import { copyDir, exists, listDir, mkdirs, readFile, rmdir, unlink, writeFile } 
 import { parse as yfmParse, split as yfmSplit, stringify as yfmStringify } from 'hexo-front-matter';
 import type Hexo from './index';
 import type { NodeJSLikeCallback, RenderData } from '../types';
+import { asCallback } from '../util/promise';
 
 const preservedKeys = ['title', 'slug', 'path', 'layout', 'date', 'content'];
 
@@ -405,7 +405,7 @@ const createAssetFolder = (path: string, assetFolder: boolean) => {
 
   if (basename(target) === 'index') return Promise.resolve();
 
-  return exists(target).then(exist => {
+  return Promise.resolve(exists(target)).then(exist => {
     if (!exist) return mkdirs(target);
   });
 };
@@ -446,17 +446,17 @@ class Post {
     data.layout = (data.layout || config.default_layout).toLowerCase();
     data.date = data.date ? moment(data.date) : moment();
 
-    return Promise.all([
+    return asCallback(Promise.all([
       // Get the post path
       ctx.execFilter('new_post_path', data, {
         args: [replace],
         context: ctx
       }),
       this._renderScaffold(data)
-    ]).spread((path: string, content: string) => {
+    ]).then(([path, content]: [string, string]) => {
       const result = { path, content };
 
-      return Promise.all<void, void | string>([
+      return Promise.all([
         // Write content to file
         writeFile(path, content),
         // Create asset folder
@@ -465,7 +465,7 @@ class Post {
         ctx.emit('new', result);
         return result;
       });
-    }).asCallback(callback);
+    }), callback);
   }
 
   _getScaffold(layout: string) {
@@ -536,7 +536,7 @@ class Post {
     data.layout = (data.layout || config.default_layout).toLowerCase();
 
     // Find the draft
-    return listDir(draftDir).then(list => {
+    return asCallback(Promise.resolve(listDir(draftDir)).then(list => {
       const item = findDraftFile(list, source, config.filename_case);
       const sourcePath = normalizeSourcePath(item);
       data.slug = slugize(posix.basename(removeSourceExtname(sourcePath)), { transform: config.filename_case });
@@ -567,7 +567,7 @@ class Post {
 
         return copyDir(assetSrc, assetDest).then(() => rmdir(assetSrc));
       });
-    }).thenReturn(result).asCallback(callback);
+    }).then(() => result), callback);
   }
 
   render(source: string, data: RenderData = {}, callback?: NodeJSLikeCallback<never>) {
@@ -576,15 +576,15 @@ class Post {
     const { tag } = ctx.extend;
     const ext = data.engine || (source ? extname(source) : '');
 
-    let promise;
+    let promise: Promise<any>;
 
     if (data.content != null) {
       promise = Promise.resolve(data.content);
     } else if (source) {
       // Read content from files
-      promise = readFile(source);
+      promise = Promise.resolve(readFile(source));
     } else {
-      return Promise.reject(new Error('No input file or string!')).asCallback(callback);
+      return asCallback(Promise.reject(new Error('No input file or string!')), callback);
     }
 
     // Files like js and css are also processed by this function, but they do not require preprocessing like markdown
@@ -592,7 +592,7 @@ class Post {
     const isPost = !data.source || ['html', 'htm'].includes(ctx.render.getOutput(data.source));
 
     if (!isPost) {
-      return promise.then(content => {
+      return asCallback(promise.then(content => {
         data.content = content;
         ctx.log.debug('Rendering file: %s', magenta(source));
 
@@ -605,7 +605,7 @@ class Post {
       }).then(content => {
         data.content = content;
         return data;
-      }).asCallback(callback);
+      }), callback);
     }
 
     // disable Nunjucks when the renderer specify that.
@@ -616,7 +616,7 @@ class Post {
 
     const cacheObj = new PostRenderEscape();
 
-    return promise.then(content => {
+    return asCallback(promise.then(content => {
       data.content = content;
       // Run "before_post_render" filters
       return ctx.execFilter('before_post_render', data, { context: ctx });
@@ -659,7 +659,7 @@ class Post {
 
       // Run "after_post_render" filters
       return ctx.execFilter('after_post_render', data, { context: ctx });
-    }).asCallback(callback);
+    }), callback);
   }
 }
 

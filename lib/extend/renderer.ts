@@ -1,5 +1,5 @@
 import { extname } from 'path';
-import Promise from 'bluebird';
+import { copyProps, method, promisify } from '../util/promise';
 import type { NodeJSLikeCallback } from '../types';
 
 const getExtname = (str: string) => {
@@ -109,11 +109,12 @@ class Renderer {
       this.storeSync[name] = fn;
       this.storeSync[name].output = output;
 
-      this.store[name] = Promise.method(fn);
+      this.store[name] = method(fn);
       this.store[name].disableNunjucks = (fn as StoreFunction).disableNunjucks;
     } else {
-      if (fn.length > 2) fn = Promise.promisify(fn);
-      this.store[name] = fn;
+      // Callback-style renderers (more than two arguments) are promisified;
+      // the others are wrapped so they always return a native promise.
+      this.store[name] = fn.length > 2 ? promisify(fn) : copyProps(fn, method(fn));
     }
 
     this.store[name].output = output;

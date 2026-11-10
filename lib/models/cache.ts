@@ -1,5 +1,4 @@
 import warehouse from 'warehouse';
-import Promise from 'bluebird';
 import type Hexo from '../hexo';
 import type fs from 'fs';
 import type Document from 'warehouse/dist/document';
@@ -13,26 +12,26 @@ export = (_ctx: Hexo) => {
   });
 
   Cache.static('compareFile', function(id: string,
-    hashFn: (id: string) => Promise<string>,
-    statFn: (id: string) => Promise<fs.Stats>): Promise<{ type: string }> {
+    hashFn: (id: string) => PromiseLike<string>,
+    statFn: (id: string) => PromiseLike<fs.Stats>): Promise<{ type: string }> {
     const cache = this.findById(id) as Document<CacheSchema>;
 
     // If cache does not exist, then it must be a new file. We have to get both
     // file hash and stats.
     if (!cache) {
-      return Promise.all([hashFn(id), statFn(id)]).spread((hash: string, stats: fs.Stats) => this.insert({
+      return Promise.all([hashFn(id), statFn(id)]).then(([hash, stats]) => this.insert({
         _id: id,
         hash,
         modified: stats.mtime.getTime()
-      })).thenReturn({
+      })).then(() => ({
         type: 'create'
-      });
+      }));
     }
 
     let mtime: number;
 
     // Get file stats
-    return statFn(id).then<any>(stats => {
+    return Promise.resolve(statFn(id)).then<any>(stats => {
       mtime = stats.mtime.getTime();
 
       // Skip the file if the modified time is unchanged
@@ -56,18 +55,18 @@ export = (_ctx: Hexo) => {
       if (cache.hash === hash) {
         cache.modified = mtime;
 
-        return cache.save().thenReturn({
+        return cache.save().then(() => ({
           type: 'skip'
-        });
+        }));
       }
 
       // Update cache info
       cache.hash = hash;
       cache.modified = mtime;
 
-      return cache.save().thenReturn({
+      return cache.save().then(() => ({
         type: 'update'
-      });
+      }));
     });
   });
 
