@@ -445,7 +445,7 @@ describe('post', () => {
     await process(file);
     const post = Post.findOne({ source: file.path });
     should.exist(post);
-    post.remove();
+    await post.remove();
   });
 
   it('post - type: delete - not exist', async () => {

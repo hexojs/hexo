@@ -1,7 +1,7 @@
 import { exists } from 'hexo-fs';
 import { underline, magenta } from 'picocolors';
 import type Hexo from '../../hexo';
-import type Promise from 'bluebird';
+import { promiseEach } from '../../util/promise';
 
 interface DeployArgs {
   _?: string[]
@@ -31,7 +31,7 @@ function deployConsole(this: Hexo, args: DeployArgs): Promise<any> {
   if (args.g || args.generate) {
     promise = this.call('generate', args);
   } else {
-    promise = exists(this.public_dir).then(exist => {
+    promise = Promise.resolve(exists(this.public_dir)).then(exist => {
       if (!exist) return this.call('generate', args);
     });
   }
@@ -41,7 +41,7 @@ function deployConsole(this: Hexo, args: DeployArgs): Promise<any> {
 
     if (!Array.isArray(config)) config = [config];
     return config;
-  }).each(item => {
+  }).then(items => promiseEach(items, (item: any) => {
     if (!item.type) return;
 
     const { type } = item;
@@ -56,7 +56,7 @@ function deployConsole(this: Hexo, args: DeployArgs): Promise<any> {
     return (Reflect.apply(deployers[type], this, [{ ...item, ...args }]) as any).then(() => {
       this.log.info('Deploy done: %s', magenta(type));
     });
-  }).then(() => {
+  })).then(() => {
     this.emit('deployAfter');
   });
 }

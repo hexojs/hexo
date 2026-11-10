@@ -1,4 +1,3 @@
-import Promise from 'bluebird';
 import { sep, join, dirname } from 'path';
 import tildify from 'tildify';
 import Database from 'warehouse';
@@ -9,6 +8,7 @@ import Module, { createRequire } from 'module';
 import { runInThisContext } from 'vm';
 const { version } = require('../../package.json');
 import logger from 'hexo-log';
+import { asCallback, promiseEach, promiseMap } from '../util/promise';
 
 import {
   Console,
@@ -81,12 +81,14 @@ const createLoadThemeRoute = function(generatorResult: BaseGeneratorReturn, loca
             context: ctx,
             args: [locals]
           }))
-          .tap(result => {
+          .then(result => {
             if (useCache) {
               routeCache.set(generatorResult, result);
             }
-          }).tapCatch(err => {
+            return result;
+          }).catch(err => {
             log.error({ err }, `Render HTML failed: ${magenta(path)}`);
+            throw err;
           });
       }
     }
@@ -449,7 +451,7 @@ class Hexo extends EventEmitter {
     require('../plugins/tag').default(this);
 
     // Load config
-    return Promise.each([
+    return promiseEach([
       'update_package', // Update package.json
       'load_config', // Load config
       'load_theme_config', // Load alternate theme config
@@ -478,7 +480,7 @@ class Hexo extends EventEmitter {
 
     const c = this.extend.console.get(name);
 
-    if (c) return (Reflect.apply(c, this, [args]) as any).asCallback(callback);
+    if (c) return asCallback(Reflect.apply(c, this, [args]), callback);
     return Promise.reject(new Error(`Console \`${name}\` has not been registered yet!`));
   }
 
@@ -498,7 +500,7 @@ class Hexo extends EventEmitter {
   }
 
   loadPlugin(path: string, callback?: NodeJSLikeCallback<any>): Promise<any> {
-    return readFile(path).then(script => {
+    return asCallback(Promise.resolve(readFile(path)).then(script => {
       const req = createRequire(path);
 
       const module = new Module(path);
@@ -509,7 +511,7 @@ class Hexo extends EventEmitter {
       const fn = runInThisContext(script, path);
 
       return fn(module.exports, req, module, path, dirname(path), this);
-    }).asCallback(callback);
+    }), callback);
   }
 
   _showDrafts(): boolean {
@@ -524,7 +526,7 @@ class Hexo extends EventEmitter {
    * @link https://hexo.io/api#Load-Files
    */
   load(callback?: NodeJSLikeCallback<any>): Promise<any> {
-    return loadDatabase(this).then(() => {
+    return asCallback(loadDatabase(this).then(() => {
       this._binaryRelationIndex.post_tag.load();
       this._binaryRelationIndex.post_category.load();
       this.log.info('Start processing');
@@ -536,7 +538,7 @@ class Hexo extends EventEmitter {
     }).then(() => {
       mergeCtxThemeConfig(this);
       return this._generate({ cache: false });
-    }).asCallback(callback);
+    }), callback);
   }
 
   /**
@@ -559,7 +561,7 @@ class Hexo extends EventEmitter {
     }
     this._watchBox = debounce(() => this._generate({ cache: useCache }), 100);
 
-    return loadDatabase(this).then(() => {
+    return asCallback(loadDatabase(this).then(() => {
       this._binaryRelationIndex.post_tag.load();
       this._binaryRelationIndex.post_category.load();
       this.log.info('Start processing');
@@ -578,7 +580,7 @@ class Hexo extends EventEmitter {
       });
 
       return this._generate({ cache: useCache });
-    }).asCallback(callback);
+    }), callback);
   }
 
   unwatch(): void {
@@ -634,14 +636,14 @@ class Hexo extends EventEmitter {
     const { log } = this;
 
     // Run generators
-    return Promise.map(Object.keys(generators), key => {
+    return promiseMap(Object.keys(generators), key => {
       const generator = generators[key];
 
       log.debug('Generator: %s', magenta(key));
       return Reflect.apply(generator, this, [siteLocals]);
-    }).reduce((result, data) => {
+    }).then(results => results.reduce<BaseGeneratorReturn[]>((result, data) => {
       return data ? result.concat(data) : result;
-    }, []);
+    }, []));
   }
 
   _routerRefresh(runningGenerators: Promise<BaseGeneratorReturn[]>, useCache: boolean): Promise<void> {
@@ -650,7 +652,7 @@ class Hexo extends EventEmitter {
     const Locals = this._generateLocals();
     Locals.prototype.cache = useCache;
 
-    return runningGenerators.map(generatorResult => {
+    return runningGenerators.then(generatorResults => promiseMap(generatorResults, generatorResult => {
       if (typeof generatorResult !== 'object' || generatorResult.path == null) return undefined;
 
       // add Route
@@ -664,8 +666,8 @@ class Hexo extends EventEmitter {
 
       return this.execFilter('template_locals', new Locals(path, data), { context: this })
         .then((locals: LocalsType) => { route.set(path, createLoadThemeRoute(generatorResult, locals, this)); })
-        .thenReturn(path);
-    }).then(newRouteList => {
+        .then(() => path);
+    })).then(newRouteList => {
       // Remove old routes
       for (const item of routeList) {
         if (!newRouteList.includes(item)) {

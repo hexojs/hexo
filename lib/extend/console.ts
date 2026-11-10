@@ -1,4 +1,4 @@
-import Promise from 'bluebird';
+import { method, promisify } from '../util/promise';
 import abbrev from 'abbrev';
 import type { NodeJSLikeCallback } from '../types';
 import type Hexo from '../hexo';
@@ -102,9 +102,9 @@ class Console {
     }
 
     if (fn.length > 1) {
-      fn = Promise.promisify(fn);
+      fn = promisify(fn);
     } else {
-      fn = Promise.method(fn);
+      fn = method(fn);
     }
 
     const c = fn as StoreFunction;

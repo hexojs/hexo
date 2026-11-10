@@ -1,7 +1,6 @@
 import tildify from 'tildify';
 import { magenta } from 'picocolors';
 import type Hexo from '../../hexo';
-import type Promise from 'bluebird';
 
 interface PublishArgs {
   _: string[]

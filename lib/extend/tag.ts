@@ -1,7 +1,7 @@
 import { stripIndent } from 'hexo-util';
 import { cyan, magenta, red, bold } from 'picocolors';
 import { Environment } from 'nunjucks';
-import Promise from 'bluebird';
+import { asCallback, fromCallback, method, promisify } from '../util/promise';
 import type { NodeJSLikeCallback } from '../types';
 
 const rSwigRawFullBlock = /{% *raw *%}/;
@@ -229,9 +229,9 @@ class Tag {
     if (options.async) {
       let asyncFn: AsyncTagFunction;
       if (fn.length > 2) {
-        asyncFn = Promise.promisify(fn);
+        asyncFn = promisify(fn);
       } else {
-        asyncFn = Promise.method(fn);
+        asyncFn = method(fn);
       }
 
       if (options.ends) {
@@ -268,7 +268,7 @@ class Tag {
     // Get path of post from source
     const { source = '' } = options as { source?: string };
 
-    return Promise.fromCallback(cb => {
+    return asCallback(fromCallback(cb => {
       this.env.renderString(
         str.replace(rCodeTag, s => {
           // https://hexo.io/docs/tag-plugins#Raw
@@ -281,8 +281,7 @@ class Tag {
       );
     }).catch(err => {
       return Promise.reject(formatNunjucksError(err, str, source));
-    })
-      .asCallback(callback);
+    }), callback);
   }
 }
 

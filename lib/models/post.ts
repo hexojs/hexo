@@ -1,7 +1,7 @@
 import warehouse from 'warehouse';
 import moment from 'moment';
 import { extname, join, sep } from 'path';
-import Promise from 'bluebird';
+import { promiseEach, promiseMap } from '../util/promise';
 import Moment from './types/moment';
 import { full_url_for, Cache } from 'hexo-util';
 import type Hexo from '../hexo';
@@ -90,7 +90,7 @@ export = (ctx: Hexo) => {
     const id = this._id;
     const existed = ReadOnlyPostTag.find({post_id: id}).map(pickID);
 
-    return Promise.map(tags, tag => {
+    return promiseMap(tags, tag => {
       // Find the tag by name
       const data = Tag.findOne({name: tag}, {lean: true});
       if (data) return data;
@@ -103,7 +103,7 @@ export = (ctx: Hexo) => {
         if (data) return data;
         throw err;
       });
-    }).map(tag => {
+    }).then(tags => promiseMap(tags, (tag: any) => {
       // Find the reference
       const ref = ReadOnlyPostTag.findOne({post_id: id, tag_id: tag._id});
       if (ref) return ref;
@@ -113,11 +113,11 @@ export = (ctx: Hexo) => {
         post_id: id,
         tag_id: tag._id
       });
-    }).then(tags => {
+    })).then(tags => {
       // Remove old tags
       const deleted = existed.filter(item => !tags.map(pickID).includes(item));
       return deleted;
-    }).map(tag => PostTag.removeById(tag));
+    }).then(deleted => promiseMap(deleted, tag => PostTag.removeById(tag)));
   });
 
   Post.virtual('categories').get(function() {
@@ -152,9 +152,9 @@ export = (ctx: Hexo) => {
     const addHierarchy = (catHierarchy: string | string[]) => {
       const parentIds = [];
       if (!Array.isArray(catHierarchy)) catHierarchy = [catHierarchy];
-      // Don't use "Promise.map". It doesn't run in series.
-      // MUST USE "Promise.each".
-      return Promise.each(catHierarchy, (cat, i) => {
+      // Don't use "promiseMap". It doesn't run in series.
+      // MUST USE "promiseEach".
+      return promiseEach(catHierarchy, (cat, i) => {
         // Find the category by name
         const data: CategorySchema = Category.findOne({
           name: cat,
@@ -188,8 +188,8 @@ export = (ctx: Hexo) => {
       });
     };
 
-    return (hasHierarchy ? Promise.each(cats, addHierarchy) : Promise.resolve(addHierarchy(cats as string[]))
-    ).then(() => allIds).map(catId => {
+    return (hasHierarchy ? promiseEach(cats, addHierarchy) : Promise.resolve(addHierarchy(cats as string[]))
+    ).then(() => promiseMap(allIds, catId => {
       // Find the reference
       const ref: PostCategorySchema = ReadOnlyPostCategory.findOne({post_id: id, category_id: catId});
       if (ref) return ref;
@@ -199,8 +199,8 @@ export = (ctx: Hexo) => {
         post_id: id,
         category_id: catId
       });
-    }).then((postCats: PostCategorySchema[]) => // Remove old categories
-      existed.filter(item => !postCats.map(pickID).includes(item))).map(cat => PostCategory.removeById(cat));
+    })).then((postCats: PostCategorySchema[]) => // Remove old categories
+      existed.filter(item => !postCats.map(pickID).includes(item))).then(deleted => promiseMap(deleted, cat => PostCategory.removeById(cat)));
   });
 
   // Remove PostTag references

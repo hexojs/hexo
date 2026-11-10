@@ -1,4 +1,4 @@
-import Promise from 'bluebird';
+import { method, promisify } from '../util/promise';
 import type { BaseGeneratorReturn, NodeJSLikeCallback, SiteLocals } from '../types';
 
 type ReturnType = BaseGeneratorReturn | BaseGeneratorReturn[];
@@ -50,8 +50,8 @@ class Generator {
       }
     }
 
-    if (fn.length > 1) fn = Promise.promisify(fn);
-    this.store[name as string] = Promise.method(fn);
+    if (fn.length > 1) fn = promisify(fn);
+    this.store[name as string] = method(fn);
   }
 }
 

@@ -5,7 +5,6 @@ import route from './route';
 import tag from './tag';
 import category from './category';
 import type Hexo from '../../../hexo';
-import type Promise from 'bluebird';
 
 interface ListArgs {
   _: string[]

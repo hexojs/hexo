@@ -1,4 +1,3 @@
-import type Promise from 'bluebird';
 import { readFile, readFileSync, stat, statSync, type ReadFileOptions } from 'hexo-fs';
 import type fs from 'fs';
 
@@ -41,7 +40,7 @@ class File {
   }
 
   read(options?: ReadFileOptions): Promise<string> {
-    return readFile(this.source, options) as Promise<string>;
+    return Promise.resolve(readFile(this.source, options)) as Promise<string>;
   }
 
   readSync(options?: ReadFileOptions): string {
@@ -49,7 +48,7 @@ class File {
   }
 
   stat(): Promise<fs.Stats> {
-    return stat(this.source);
+    return Promise.resolve(stat(this.source));
   }
 
   statSync(): fs.Stats {

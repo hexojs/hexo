@@ -1,5 +1,5 @@
 import { toDate, adjustDateForTimezone, isExcludedFile, isTmpFile, isHiddenFile, isMatch } from './common';
-import Promise from 'bluebird';
+import { promiseMap } from '../../util/promise';
 import { parse as yfm } from 'hexo-front-matter';
 import { extname, join, posix, sep } from 'path';
 import { stat, listDir } from 'hexo-fs';
@@ -85,7 +85,7 @@ function processPost(ctx: Hexo, file: _File, sourceIndex: SourceIdIndex<PostSche
 
   if (file.type === 'delete') {
     if (doc) {
-      return doc.remove().then(result => {
+      return Promise.resolve(doc.remove()).then(result => {
         sourceIndex.delete(file.path);
         return result;
       });
@@ -97,7 +97,7 @@ function processPost(ctx: Hexo, file: _File, sourceIndex: SourceIdIndex<PostSche
   return Promise.all([
     file.stat(),
     file.read()
-  ]).spread((stats: Stats, content: string) => {
+  ]).then(([stats, content]: [Stats, string]) => {
     const data: PostSchema = yfm(content);
     const info = parseFilename(config.new_post_name, path);
     const keys = Object.keys(info);
@@ -243,14 +243,14 @@ function scanAssetDir(ctx: Hexo, post: PostSchema) {
   const sourceDirLength = sourceDir.length;
   const PostAsset = ctx.model('PostAsset');
 
-  return stat(assetDir).then(stats => {
+  return Promise.resolve(stat(assetDir)).then(stats => {
     if (!stats.isDirectory()) return [];
 
     return listDir(assetDir);
   }).catch(err => {
     if (err && err.code === 'ENOENT') return [];
     throw err;
-  }).filter(item => !isExcludedFile(item, ctx.config)).map(item => {
+  }).then((items: string[]) => promiseMap(items.filter(item => !isExcludedFile(item, ctx.config)), item => {
     const id = join(assetDir, item).substring(baseDirLength).replace(/\\/g, '/');
     const renderablePath = id.substring(sourceDirLength + 1);
     const asset = PostAsset.findById(id);
@@ -264,7 +264,7 @@ function scanAssetDir(ctx: Hexo, post: PostSchema) {
       modified: true,
       renderable: ctx.render.isRenderable(renderablePath) && !isMatch(renderablePath, ctx.config.skip_render)
     });
-  });
+  }));
 }
 
 function shouldSkipAsset(ctx: Hexo, post: PostSchema, asset: Document<PostAssetSchema>) {
@@ -292,7 +292,7 @@ function markFuturePostDirty(ctx: Hexo, file: _File, post: PostSchema) {
   cache.hash = '';
   cache.modified = 0;
 
-  return cache.save();
+  return Promise.resolve(cache.save());
 }
 
 function processAsset(ctx: Hexo, file: _File) {
@@ -303,19 +303,19 @@ function processAsset(ctx: Hexo, file: _File) {
 
   if (file.type === 'delete' || Post.length === 0) {
     if (postAsset) {
-      return postAsset.remove();
+      return Promise.resolve(postAsset.remove());
     }
     return;
   }
 
   const savePostAsset = (post: Document<PostSchema>) => {
-    return PostAsset.save({
+    return Promise.resolve(PostAsset.save({
       _id: id,
       slug: file.source.substring(post.asset_dir.length),
       post: post._id,
       modified: file.type !== 'skip',
       renderable: file.params.renderable
-    });
+    }));
   };
 
   if (postAsset) {
@@ -350,6 +350,6 @@ function processAsset(ctx: Hexo, file: _File) {
 
   // NOTE: Probably, unreachable.
   if (postAsset) {
-    return postAsset.remove();
+    return Promise.resolve(postAsset.remove());
   }
 }

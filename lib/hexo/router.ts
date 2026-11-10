@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events';
-import Promise from 'bluebird';
+import { method, promisify } from '../util/promise';
 import Stream from 'stream';
 const { Readable } = Stream;
 
@@ -148,9 +148,9 @@ class Router extends EventEmitter {
 
     if (typeof obj.data === 'function') {
       if (obj.data.length) {
-        obj.data = Promise.promisify(obj.data);
+        obj.data = promisify(obj.data);
       } else {
-        obj.data = Promise.method(obj.data);
+        obj.data = method(obj.data);
       }
     }
 

@@ -4,7 +4,6 @@ import { exists, readdir } from 'hexo-fs';
 import { magenta } from 'picocolors';
 import { deepMerge } from 'hexo-util';
 import type Hexo from './index';
-import type Promise from 'bluebird';
 
 export = (ctx: Hexo): Promise<void> => {
   if (!ctx.env.init) return;
@@ -12,7 +11,7 @@ export = (ctx: Hexo): Promise<void> => {
 
   let configPath = join(ctx.base_dir, `_config.${String(ctx.config.theme)}.yml`);
 
-  return exists(configPath).then(exist => {
+  return Promise.resolve(exists(configPath)).then(exist => {
     return exist ? configPath : findConfigPath(configPath);
   }).then(path => {
     if (!path) return;
@@ -35,7 +34,7 @@ export = (ctx: Hexo): Promise<void> => {
 function findConfigPath(path: string): Promise<string> {
   const { dir, name } = parse(path);
 
-  return readdir(dir).then(files => {
+  return Promise.resolve(readdir(dir)).then(files => {
     const item = files.find(item => basename(item, extname(item)) === name);
     if (item != null) return join(dir, item);
   });
