@@ -1,4 +1,6 @@
-import { exists, mkdirs, readFile, rmdir, unlink } from 'hexo-fs';
+import { rejects } from 'assert/strict';
+import { readdir } from 'fs/promises';
+import { exists, mkdirs, readFile, rmdir, unlink, writeFile } from 'hexo-fs';
 import moment from 'moment';
 import { join } from 'path';
 import BluebirdPromise from 'bluebird';
@@ -167,6 +169,29 @@ describe('new', () => {
 
     await unlink(path);
   });
+
+  for (const assets of [true, false]) {
+    it(`requires a filename for -p with post_asset_folder=${assets}`, async () => {
+      const dir = join(hexo.source_dir, '_posts', 'dairy');
+      const existing = join(dir, 'archive', 'first.md');
+      await writeFile(existing, '# First\n');
+
+      const previous = hexo.config.post_asset_folder;
+      hexo.config.post_asset_folder = assets;
+      try {
+        await rejects(n({ _: ['dairy', '记焦作一中'], p: 'dairy/' }), /filename/);
+        (await readdir(dir)).should.eql(['archive']);
+        (await readFile(existing)).should.eql('# First\n');
+
+        await n({ _: ['dairy', '记焦作一中'], p: 'dairy/article.md' });
+        (await readFile(join(dir, 'article.md'))).should.include('title: 记焦作一中');
+        (await exists(join(dir, 'article/'))).should.equal(assets);
+      } finally {
+        hexo.config.post_asset_folder = previous;
+        await rmdir(dir);
+      }
+    });
+  }
 
   it('without _', async () => {
     const date = moment(now);

@@ -1,4 +1,5 @@
-import { join } from 'path';
+import { rejects } from 'assert/strict';
+import { join, sep } from 'path';
 import moment from 'moment';
 import { createSha1Hash } from 'hexo-util';
 import { mkdirs, rmdir, unlink, writeFile } from 'hexo-fs';
@@ -44,6 +45,19 @@ describe('new_post_path', () => {
       path: 'foo'
     });
     target.should.eql(join(postDir, 'foo.md'));
+  });
+
+  it('rejects a directory even when its name has an extension', async () => {
+    await rejects(newPostPath({ path: 'notes.md/', layout: 'page' }), /filename/);
+  });
+
+  it('rejects a trailing separator even when replacing a draft', async () => {
+    await rejects(newPostPath({ path: `notes${sep}`, layout: 'draft' }, true), /filename/);
+  });
+
+  it('appends the default extension to a nested filename', async () => {
+    const target = await newPostPath({ path: 'notes/article' });
+    target.should.eql(join(postDir, 'notes', 'article.md'));
   });
 
   it('page layout + slug', async () => {
