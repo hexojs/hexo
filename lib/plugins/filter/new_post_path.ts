@@ -1,4 +1,4 @@
-import { join, extname } from 'path';
+import { join, extname, sep } from 'path';
 import moment from 'moment';
 import Promise from 'bluebird';
 import { createSha1Hash, Permalink } from 'hexo-util';
@@ -45,6 +45,10 @@ function newPostPathFilter(this: Hexo, data: Partial<PostSchema> = {}, replace?:
 
       default:
         target = join(postDir, path);
+    }
+
+    if (target.endsWith(sep)) {
+      return Promise.reject(new TypeError(`Post path must include a filename: ${path}`));
     }
   } else if (slug) {
     switch (layout) {
